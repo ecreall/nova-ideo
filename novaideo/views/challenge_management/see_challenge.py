@@ -372,8 +372,7 @@ class ChallengeView(MultipleView):
     name = 'seechallenge'
     template = 'pontus:templates/views_templates/simple_multipleview.pt'
     viewid = 'challenge'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     views = (DetailChallengeView, ParticipateContentView)
     validators = [SeeChallenge.get_validator()]
 

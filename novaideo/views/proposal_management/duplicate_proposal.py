@@ -23,7 +23,7 @@ from ..filter import get_pending_challenges
 
 
 class DuplicateProposalFormView(FormView):
-    title = _('Duplicate')
+    title = _('Duplicate the proposal')
     name = 'duplicateproposal'
     schema = select(ProposalSchema(),
                     ['challenge',
@@ -36,6 +36,7 @@ class DuplicateProposalFormView(FormView):
 
     behaviors = [DuplicateProposal, Cancel]
     formid = 'formduplicateproposal'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         data = self.context.get_data(self.schema)

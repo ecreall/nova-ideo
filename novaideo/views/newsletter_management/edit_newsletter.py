@@ -32,6 +32,7 @@ class EditNewsletterView(FormView):
     behaviors = [EditNewsletter, Cancel]
     formid = 'formeditnewsletter'
     name = 'editnewsletter'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

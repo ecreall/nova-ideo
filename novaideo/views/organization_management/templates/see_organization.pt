@@ -8,7 +8,7 @@
   <div class="user-panel-container" style="
     ">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2" style="min-width: 120px;">
           <div class="user-img-container">
             <img tal:condition="organization_picture" class="" src="${profil_picture.url}">
           </div>

@@ -54,6 +54,7 @@ class UpdateView(FormView):
     behaviors = [Update, Cancel]
     formid = 'formupdateprocesses'
     name = 'updateprocesses'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         self.action = self.request.resource_url(

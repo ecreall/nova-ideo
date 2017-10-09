@@ -88,6 +88,7 @@ class EditProposalFormView(FormView):
     behaviors = [EditProposal, Cancel]
     formid = 'formeditproposal'
     name = 'editproposalform'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         data = self.context.get_data(self.schema)

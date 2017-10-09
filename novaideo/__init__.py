@@ -916,6 +916,28 @@ def evolve_examined_tokens(root, registry):
     log.info('Tokens evolved.')
 
 
+def evolve_source_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import ISearchableEntity
+    from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[ISearchableEntity]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if hasattr(node, 'source_data'):
+            source_data = dict(node.source_data)
+            node.source_data = PersistentDict({})
+            source_data['app_name'] = source_data.get('app_name', None) or source_data.pop('source_id', '')
+            node.set_source_data(source_data)
+            node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Source data evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -970,6 +992,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_state_pontusFiles)
     config.add_evolution_step(evolve_person_tokens)
     config.add_evolution_step(evolve_examined_tokens)
+    config.add_evolution_step(evolve_source_data)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

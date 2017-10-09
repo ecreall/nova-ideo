@@ -47,8 +47,7 @@ class SeeMyContentsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemycontents'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']

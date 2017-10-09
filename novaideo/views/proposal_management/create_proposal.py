@@ -212,6 +212,7 @@ class CreateProposalFormView(FormView):
     behaviors = [CreateProposal, Cancel]
     formid = 'formcreateproposal'
     name = 'createproposal'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         user = get_current(self.request)

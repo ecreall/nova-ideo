@@ -46,6 +46,7 @@ class AskQuestionView(FormView):
     behaviors = [AskQuestion, Cancel]
     formid = 'formaskquestion'
     name = 'askquestion'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         user = get_current(self.request)

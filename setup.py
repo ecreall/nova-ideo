@@ -38,7 +38,8 @@ requires = [
     'cipher.encryptingstorage',
     'yampy2',
     'ovh',
-    'pyramid-sms'
+    'pyramid-sms',
+    'velruse'
     ]
 
 setup(name='novaideo',

@@ -256,7 +256,7 @@ class ContentsByKeywordsForm(AnalyticsForm):
             self.schema = omit(self.schema, ['content_types'])
 
         formwidget = deform.widget.FormWidget(
-            css_class='analytics-form filter-form well')
+            css_class='analytics-form filter-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_keywords'})
@@ -268,6 +268,7 @@ class ContentsByKeywordsView(MultipleView):
     name = 'content_by_keywords_view'
     template = 'novaideo:views/templates/row_merged_multiple_view.pt'
     views = (ContentsByKeywordsForm, ContentsByKeywords)
+    expandable = True
 
 
 #****************************** Content by states ***********************************
@@ -364,7 +365,7 @@ class ContentsByStatesForm(AnalyticsForm):
             self.schema = omit(self.schema, ['content_types'])
 
         formwidget = deform.widget.FormWidget(
-            css_class='analytics-form filter-form well')
+            css_class='analytics-form filter-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_states'})
@@ -376,6 +377,7 @@ class ContentsByStatesView(MultipleView):
     name = 'content_by_states_view'
     template = 'novaideo:views/templates/row_merged_multiple_view.pt'
     views = (ContentsByStatesForm, ContentsByStates)
+    expandable = True
 
 
 #****************************** Content by Dates ***********************************
@@ -475,7 +477,7 @@ class ContentsByDatesForm(AnalyticsForm):
             self.schema = omit(self.schema, [('dates', ['date_of'])])
 
         formwidget = deform.widget.FormWidget(
-            css_class='analytics-form filter-form well')
+            css_class='analytics-form filter-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_dates'})
@@ -487,6 +489,7 @@ class ContentsByDatesView(MultipleView):
     name = 'content_by_dates_view'
     template = 'novaideo:views/templates/row_merged_multiple_view.pt'
     views = (ContentsByDatesForm, ContentsByDates)
+    expandable = True
 
 
 #****************************** Evaluations by organization **************************
@@ -527,7 +530,7 @@ class EvaluationsByOrganizationsForm(AnalyticsForm):
             self.schema = omit(self.schema, ['content_types'])
 
         formwidget = deform.widget.FormWidget(
-            css_class='analytics-form filter-form well')
+            css_class='analytics-form filter-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'evaluations_by_organizations'})
@@ -539,6 +542,7 @@ class EvaluationsByOrganizationsView(MultipleView):
     name = 'evaluation_by_organizations_view'
     template = 'novaideo:views/templates/row_merged_multiple_view.pt'
     views = (EvaluationsByOrganizationsForm, EvaluationsByOrganizations)
+    expandable = True
 
 
 #****************************** Ajax API ***********************************
@@ -553,11 +557,14 @@ class AnalyticsView(MultipleView):
     title = _('Analytics')
     name = 'analytics'
     validators = [SeeAnalytics.get_validator()]
-    template = 'novaideo:views/templates/resizable_multipleview.pt'
+    template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     views = (ContentsByStatesView, ContentsByKeywordsView,
              ContentsByDatesView, EvaluationsByOrganizationsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/analytics.js']}
+    css_class = 'panel'
+    center_tabs = True
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

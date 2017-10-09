@@ -39,6 +39,7 @@ class AddSubSmartFolderView(FormView):
     behaviors = [AddSubSmartFolder, Cancel]
     formid = 'formaaddsubsmartfolder'
     name = 'addsubsmartfolder'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         self.action = self.request.resource_url(

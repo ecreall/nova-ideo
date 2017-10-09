@@ -28,8 +28,7 @@ class SeeChannels(BasicView):
     template = 'novaideo:views/channel_management/templates/channels.pt'
     viewid = 'seechannels'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def _get_channels_bodies(self, root, user, channels, action_id):
         result_body = []

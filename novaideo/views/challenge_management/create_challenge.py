@@ -39,6 +39,7 @@ class CreateChallengeView(FormView):
     behaviors = [CrateAndPublish, CreateChallenge, Cancel]
     formid = 'formcreatechallenge'
     name = 'createchallenge'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

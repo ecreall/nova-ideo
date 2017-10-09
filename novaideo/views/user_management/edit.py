@@ -98,6 +98,7 @@ class EditView(FormView):
     behaviors = [Edit, Cancel]
     formid = 'formedit'
     name = 'edit'
+    css_class = "panel-transparent"
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
 

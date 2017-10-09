@@ -40,8 +40,7 @@ class SeeSmartFoldersView(BasicView):
     template = 'novaideo:views/smart_folder_management/templates/see_smartfolders.pt'
     viewid = 'seesmartfolders'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)

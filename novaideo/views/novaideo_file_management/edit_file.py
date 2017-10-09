@@ -31,6 +31,7 @@ class EditFileView(FormView):
     behaviors = [EditFile, Cancel]
     formid = 'formeditfile'
     name = 'editfile'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

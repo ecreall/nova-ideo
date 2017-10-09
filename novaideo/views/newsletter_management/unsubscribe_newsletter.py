@@ -56,6 +56,7 @@ class UnsubscribeNewsletterView(FormView):
     behaviors = [UnsubscribeNewsletter, Cancel]
     formid = 'formunsubscribenewsletter'
     name = 'unsubscribenewsletter'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

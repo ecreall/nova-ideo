@@ -38,8 +38,7 @@ class SeeInvitationView(BasicView):
     template = 'novaideo:views/invitation_management/templates/see_invitation.pt'
     viewid = 'seeinvitation'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)

@@ -2179,6 +2179,9 @@ METADATA_GETTERS = {
 
     'yammerprocess.remove': get_remove_connector_metadata,
     'yammerprocess.import_messages': get_import_connector_metadata,
+    'twitterprocess.remove': get_remove_connector_metadata,
+    'facebookprocess.remove': get_remove_connector_metadata,
+    'googleprocess.remove': get_remove_connector_metadata,
 }
 
 

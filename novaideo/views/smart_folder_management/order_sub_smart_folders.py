@@ -70,6 +70,7 @@ class OrderSmartFoldersView(FormView):
     behaviors = [OrderSubSmartFolders, Cancel]
     formid = 'formordersmartfolders'
     name = 'ordersubsmartfolders'
+    css_class = 'panel-transparent'
 
     def bind(self):
         user = get_current()

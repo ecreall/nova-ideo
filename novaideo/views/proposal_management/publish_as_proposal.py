@@ -146,6 +146,7 @@ class PublishAsProposalFormView(MultipleView):
     viewid = 'publishasproposalview'
     template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishAsProposalStudyReport, PublishFormView)
+    css_class = 'panel-transparent'
 
 
 @view_config(

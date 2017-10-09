@@ -438,6 +438,20 @@ class SearchableEntity(VisualisableElement, Entity):
                 getattr(self, 'description', ''),
                 ', '.join(getattr(self, 'keywords', []))]
 
+    def set_source_data(self, source_data):
+        if not hasattr(self, 'source_data'):
+            self.source_data = PersistentDict({})
+        
+        app_name = source_data.get('app_name')
+        self.source_data.setdefault(app_name, {})
+        self.source_data[app_name] = source_data
+
+    def get_source_data(self, app_id):
+        if not hasattr(self, 'source_data'):
+            return {}
+        
+        return self.source_data.get(app_id, {})
+
     def is_managed(self, root):
         return True
 

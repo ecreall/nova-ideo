@@ -53,8 +53,7 @@ class SeeUsersView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result_users.pt'
     viewid = 'seeusers'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['neagtion', 'states', 'keywords']),
                        'temporal_filter',
@@ -170,8 +169,7 @@ class SeeInactiveUsersView(BasicView):
     validators = [SeeInactiveUsersValidator]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['negation', 'keywords']),
                        'temporal_filter',

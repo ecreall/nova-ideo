@@ -161,6 +161,7 @@ class SubmitAmendmentView(FormView):
     schema = ExplanationGroupsSchema()
     behaviors = [SubmitAmendment, Cancel]
     validate_behaviors = False
+    css_class = 'panel-transparent'
 
     def default_data(self):
         groups = get_default_explanations_groups(self.context)
@@ -193,6 +194,7 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     requirements = {'css_links': ['novaideo:static/css/organize_amendments.css'],
                     'js_links': ['novaideo:static/js/organize_amendments.js',
                                  'novaideo:static/js/jquery.elastic.source.js']}
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-10-02 12:35+0200\n"
+"POT-Creation-Date: 2017-10-06 16:30+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -147,20 +147,20 @@ msgstr "La vue en blocs"
 msgid "General"
 msgstr "Générale"
 
-#: novaideo/__init__.py:1002
+#: novaideo/__init__.py:1025
 #: novaideo/views/templates/panels/novaideo_footer.pt:13
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:1003
+#: novaideo/__init__.py:1026
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:1007
+#: novaideo/__init__.py:1030
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:1008
+#: novaideo/__init__.py:1031
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
@@ -246,18 +246,50 @@ msgstr "Vous n'avez pas l'autorisation de réaliser cette action"
 msgid "Connector"
 msgstr "Connecteur"
 
-#: novaideo/connectors/core/content/behaviors.py:32
-msgid "Registered connectors"
-msgstr "Connecteurs enregistrés"
+#: novaideo/connectors/facebook/__init__.py:57
+msgid "Login with a Facebook account"
+msgstr "Se connecter avec un compte Facebook"
 
+#: novaideo/connectors/facebook/__init__.py:58
+msgid "Users can login with their Facebook account."
+msgstr "Les utilisateurs peuvent se connecter avec leur compte Facebook."
+
+#: novaideo/connectors/facebook/__init__.py:79
+#: novaideo/connectors/yammer/__init__.py:141
+#: novaideo/connectors/google/__init__.py:79
+#: novaideo/connectors/twitter/__init__.py:94
+msgid "Configure the autentication policy"
+msgstr "Configurer la politique d'authentification"
+
+#: novaideo/connectors/facebook/__init__.py:91
+msgid "Facebook"
+msgstr "Facebook"
+
+#: novaideo/connectors/facebook/content/behaviors.py:41
+msgid "Log in with Facebook"
+msgstr "Connectez-vous avec Facebook"
+
+#: novaideo/connectors/facebook/content/behaviors.py:74
+#: novaideo/connectors/facebook/content/definition.py:49
+#: novaideo/connectors/facebook/content/definition.py:50
+#: novaideo/connectors/facebook/views/create.py:27
+msgid "Add a Facebook connector"
+msgstr "Ajouter un connecteur Facebook"
+
+#: novaideo/connectors/facebook/content/behaviors.py:75
+#: novaideo/connectors/facebook/content/behaviors.py:120
 #: novaideo/connectors/core/content/behaviors.py:33
 #: novaideo/connectors/core/content/behaviors.py:59
-#: novaideo/connectors/yammer/content/behaviors.py:270
-#: novaideo/connectors/yammer/content/behaviors.py:304
-#: novaideo/content/processes/user_management/behaviors.py:139
-#: novaideo/content/processes/user_management/behaviors.py:312
-#: novaideo/content/processes/user_management/behaviors.py:388
-#: novaideo/content/processes/user_management/behaviors.py:514
+#: novaideo/connectors/yammer/content/behaviors.py:190
+#: novaideo/connectors/yammer/content/behaviors.py:224
+#: novaideo/connectors/google/content/behaviors.py:77
+#: novaideo/connectors/google/content/behaviors.py:122
+#: novaideo/connectors/twitter/content/behaviors.py:75
+#: novaideo/connectors/twitter/content/behaviors.py:120
+#: novaideo/content/processes/user_management/behaviors.py:140
+#: novaideo/content/processes/user_management/behaviors.py:313
+#: novaideo/content/processes/user_management/behaviors.py:389
+#: novaideo/content/processes/user_management/behaviors.py:515
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:192
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:220
 #: novaideo/content/processes/admin_process/behaviors.py:42
@@ -308,177 +340,28 @@ msgstr "Connecteurs enregistrés"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: novaideo/connectors/core/content/behaviors.py:58
-#: novaideo/connectors/core/content/definition.py:41
-#: novaideo/connectors/core/content/definition.py:45
-msgid "Connectors"
-msgstr "Connecteurs"
-
-#: novaideo/connectors/core/content/definition.py:32
-#: novaideo/connectors/core/content/definition.py:33
-msgid "Connectors process"
-msgstr "Processus des connecteurs"
-
-#: novaideo/connectors/core/content/definition.py:40
-msgid "See all connectors"
-msgstr "Voir tous les connecteurs"
-
-#: novaideo/connectors/core/content/definition.py:42
-#: novaideo/content/processes/user_management/definition.py:163
-#: novaideo/content/processes/novaideo_view_manager/definition.py:84
-#: novaideo/content/processes/novaideo_view_manager/definition.py:88
-#: novaideo/content/processes/novaideo_view_manager/definition.py:92
-#: novaideo/content/processes/novaideo_view_manager/definition.py:96
-#: novaideo/content/processes/novaideo_view_manager/definition.py:100
-#: novaideo/content/processes/novaideo_view_manager/definition.py:104
-#: novaideo/content/processes/novaideo_view_manager/definition.py:124
-#: novaideo/content/processes/newsletter_management/definition.py:90
-#: novaideo/content/processes/newsletter_management/definition.py:99
-#: novaideo/content/processes/invitation_management/definition.py:61
-#: novaideo/content/processes/smart_folder_management/definition.py:80
-#: novaideo/content/processes/novaideo_file_management/definition.py:67
-#: novaideo/content/processes/advertising_management/definition.py:61
-#: novaideo/content/processes/challenge_management/definition.py:105
-#: novaideo/content/processes/organization_management/definition.py:64
-msgid "See"
-msgstr "Voir"
-
-#: novaideo/connectors/core/content/definition.py:44
-msgid "Add connectors"
-msgstr "Ajouter des connecteurs"
-
-#: novaideo/connectors/core/content/definition.py:46
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
-#: novaideo/content/processes/proposal_management/definition.py:317
-#: novaideo/content/processes/newsletter_management/definition.py:55
-#: novaideo/content/processes/invitation_management/definition.py:53
-#: novaideo/content/processes/question_management/definition.py:79
-#: novaideo/content/processes/smart_folder_management/definition.py:52
-#: novaideo/content/processes/novaideo_file_management/definition.py:47
-#: novaideo/content/processes/advertising_management/definition.py:49
-#: novaideo/content/processes/challenge_management/definition.py:61
-#: novaideo/content/processes/organization_management/definition.py:52
-#: novaideo/content/processes/organization_management/definition.py:56
-#: novaideo/content/processes/idea_management/definition.py:69
-msgid "Add"
-msgstr "Ajouter"
-
-#: novaideo/connectors/core/views/add.py:27
-msgid "Add new connectors"
-msgstr "Ajouter un nouveau connecteur"
-
-#: novaideo/connectors/core/views/see.py:26
-msgid "No connector found"
-msgstr "Aucun connecteur trouvé"
-
-#: novaideo/connectors/core/views/see.py:27
-msgid "One connector found"
-msgstr "Un connecteur trouvé"
-
-# python-format
-#: novaideo/connectors/core/views/see.py:28
-#, python-format
-msgid "${number} connectors found"
-msgstr "${number} connecteurs trouvés"
-
-#: novaideo/connectors/core/views/see.py:38
-msgid "The Connectors"
-msgstr "Les connecteurs"
-
-#. Used in sentence: "Click ${here} to view the registered connectors."
-#. Used in sentence: "No available connectors. Click ${here} to view the
-#. registered connectors."
-#.
-#: novaideo/connectors/core/views/templates/add_connectors.pt:7
-#: novaideo/connectors/core/views/templates/add_connectors.pt:20
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:40
-#: novaideo/views/templates/alerts/wg_alert_result.pt:40
-msgid "here"
-msgstr "ici"
-
-#. Canonical text for ${here} is: "here"
-#: novaideo/connectors/core/views/templates/add_connectors.pt:6
-msgid "Click ${here} to view the registered connectors."
-msgstr "Cliquez ${here} pour voir les connecteurs enregistrés."
-
-#. Canonical text for ${here} is: "here"
-#: novaideo/connectors/core/views/templates/add_connectors.pt:19
-msgid ""
-"No available connectors. Click ${here} to view the registered connectors."
-msgstr ""
-"Aucun connecteur disponible. Cliquez ${here} pour voir les connecteurs "
-"enregistrés."
-
-#: novaideo/connectors/yammer/__init__.py:52
-msgid "Login with a Yammer account"
-msgstr "Se connecter avec un compte Yammer"
-
-#: novaideo/connectors/yammer/__init__.py:53
-msgid "Users can login with their Yammer account."
-msgstr "Les utilisateurs peuvent se connecter avec leur compte Yammer."
-
-#: novaideo/connectors/yammer/__init__.py:64
-msgid "Trusted networks"
-msgstr "Réseaux de confiance"
-
-#: novaideo/connectors/yammer/__init__.py:65
-msgid ""
-"To add trusted network, you need to tap the « Enter » key after each network "
-"or to separate them with commas."
-msgstr ""
-"Pour ajouter des réseaux de confiance, vous devez taper sur la touche « "
-"Entrée » après chaque email ou les séparer par des virgules."
-
-#: novaideo/connectors/yammer/__init__.py:97
-msgid "Enable notifications on Yammer"
-msgstr "Activer les notifications vers Yammer"
-
-#: novaideo/connectors/yammer/__init__.py:98
-msgid "Send a notification to Yammer when new content is published."
-msgstr ""
-"Envoyer une notification à Yammer lorsque de nouveaux contenus sont publiés."
-
-#: novaideo/connectors/yammer/__init__.py:106
-msgid "Default notification account"
-msgstr "Compte de notification par défaut"
-
-#: novaideo/connectors/yammer/__init__.py:113
-msgid "Notify only from the default account"
-msgstr "Notifier uniquement à partir du compte par défaut"
-
-#: novaideo/connectors/yammer/__init__.py:134
-msgid "Configure the autentication policy"
-msgstr "Configurer la politique d'authentification"
-
-#: novaideo/connectors/yammer/__init__.py:143
-msgid "Configure notifications"
-msgstr "Configurer les notifications"
-
-#: novaideo/connectors/yammer/__init__.py:155
-msgid "Yammer"
-msgstr "Yammer"
-
-#: novaideo/connectors/yammer/content/behaviors.py:221
-msgid "Log in with Yammer"
-msgstr "Connectez-vous avec Yammer"
-
-#: novaideo/connectors/yammer/content/behaviors.py:269
-#: novaideo/connectors/yammer/content/definition.py:48
-#: novaideo/connectors/yammer/content/definition.py:49
-#: novaideo/connectors/yammer/views/create.py:27
-msgid "Add a Yammer connector"
-msgstr "Ajouter un connecteur Yammer"
-
-#: novaideo/connectors/yammer/content/behaviors.py:303
-#: novaideo/connectors/yammer/content/definition.py:53
+#: novaideo/connectors/facebook/content/behaviors.py:119
+#: novaideo/connectors/facebook/content/definition.py:54
+#: novaideo/connectors/yammer/content/behaviors.py:223
+#: novaideo/connectors/yammer/content/definition.py:54
+#: novaideo/connectors/google/content/behaviors.py:121
+#: novaideo/connectors/google/content/definition.py:54
+#: novaideo/connectors/twitter/content/behaviors.py:119
+#: novaideo/connectors/twitter/content/definition.py:54
 #: novaideo/content/processes/admin_process/definition.py:43
 #: novaideo/content/processes/newsletter_management/definition.py:62
 msgid "Configure"
 msgstr "Configurer"
 
-#: novaideo/connectors/yammer/content/behaviors.py:331
-#: novaideo/connectors/yammer/content/definition.py:57
-#: novaideo/content/processes/user_management/behaviors.py:713
+#: novaideo/connectors/facebook/content/behaviors.py:147
+#: novaideo/connectors/facebook/content/definition.py:58
+#: novaideo/connectors/yammer/content/behaviors.py:251
+#: novaideo/connectors/yammer/content/definition.py:58
+#: novaideo/connectors/google/content/behaviors.py:149
+#: novaideo/connectors/google/content/definition.py:58
+#: novaideo/connectors/twitter/content/behaviors.py:147
+#: novaideo/connectors/twitter/content/definition.py:58
+#: novaideo/content/processes/user_management/behaviors.py:714
 #: novaideo/content/processes/user_management/definition.py:166
 #: novaideo/content/processes/newsletter_management/definition.py:74
 #: novaideo/content/processes/smart_folder_management/definition.py:63
@@ -495,13 +378,16 @@ msgstr "Configurer"
 msgid "Remove"
 msgstr "Supprimer"
 
-#: novaideo/connectors/yammer/content/behaviors.py:332
-#: novaideo/connectors/yammer/content/behaviors.py:364
-#: novaideo/content/processes/user_management/behaviors.py:223
-#: novaideo/content/processes/user_management/behaviors.py:463
-#: novaideo/content/processes/user_management/behaviors.py:486
-#: novaideo/content/processes/user_management/behaviors.py:615
-#: novaideo/content/processes/user_management/behaviors.py:920
+#: novaideo/connectors/facebook/content/behaviors.py:148
+#: novaideo/connectors/yammer/content/behaviors.py:252
+#: novaideo/connectors/yammer/content/behaviors.py:284
+#: novaideo/connectors/google/content/behaviors.py:150
+#: novaideo/connectors/twitter/content/behaviors.py:148
+#: novaideo/content/processes/user_management/behaviors.py:224
+#: novaideo/content/processes/user_management/behaviors.py:464
+#: novaideo/content/processes/user_management/behaviors.py:487
+#: novaideo/content/processes/user_management/behaviors.py:616
+#: novaideo/content/processes/user_management/behaviors.py:921
 #: novaideo/content/processes/admin_process/behaviors.py:110
 #: novaideo/content/processes/channel_management/behaviors.py:38
 #: novaideo/content/processes/channel_management/behaviors.py:68
@@ -558,47 +444,31 @@ msgstr "Supprimer"
 msgid "Continue"
 msgstr "Continuer"
 
-#: novaideo/connectors/yammer/content/behaviors.py:363
-#: novaideo/connectors/yammer/content/definition.py:61
-msgid "Import"
-msgstr "Importer"
+#: novaideo/connectors/facebook/content/definition.py:37
+#: novaideo/connectors/facebook/content/definition.py:38
+msgid "Facebook process"
+msgstr "Le processus de Facebook"
 
-#: novaideo/connectors/yammer/content/behaviors.py:393
-#: novaideo/content/comment.py:136 novaideo/content/novaideo_application.py:69
-#: novaideo/content/novaideo_application.py:72
-#: novaideo/content/novaideo_application.py:76
-#: novaideo/utilities/alerts_utility.py:123
-msgid "Remark"
-msgstr "Remarque"
+#: novaideo/connectors/facebook/content/definition.py:45
+#: novaideo/connectors/facebook/content/definition.py:46
+msgid "Login with Facebook"
+msgstr "Connectez-vous avec Facebook"
 
-#: novaideo/connectors/yammer/content/definition.py:36
-#: novaideo/connectors/yammer/content/definition.py:37
-msgid "Yammer process"
-msgstr "Le processus de Yammer"
+#: novaideo/connectors/facebook/content/definition.py:53
+#: novaideo/connectors/facebook/views/configure.py:26
+msgid "Configure the Facebook connector"
+msgstr "Configurer le connecteur Facebook"
 
-#: novaideo/connectors/yammer/content/definition.py:44
-#: novaideo/connectors/yammer/content/definition.py:45
-msgid "Login with Yammer"
-msgstr "Connectez-vous avec Yammer"
+#: novaideo/connectors/facebook/content/definition.py:57
+#: novaideo/connectors/facebook/views/remove.py:35
+msgid "Remove the Facebook connector"
+msgstr "Supprimer le connecteur Facebook"
 
-#: novaideo/connectors/yammer/content/definition.py:52
-#: novaideo/connectors/yammer/views/configure.py:26
-msgid "Configure the Yammer connector"
-msgstr "Configurer le connecteur Yammer"
-
-#: novaideo/connectors/yammer/content/definition.py:56
-#: novaideo/connectors/yammer/views/remove.py:35
-msgid "Remove the Yammer connector"
-msgstr "Supprimer le connecteur Yammer"
-
-#: novaideo/connectors/yammer/content/definition.py:60
-#: novaideo/connectors/yammer/views/import_messages.py:95
-#: novaideo/connectors/yammer/views/import_messages.py:117
-msgid "Import messages from Yammer"
-msgstr "Importer des messages de Yammer"
-
-#: novaideo/connectors/yammer/views/import_messages.py:28
-#: novaideo/connectors/yammer/views/remove.py:21
+#: novaideo/connectors/facebook/views/remove.py:21
+#: novaideo/connectors/yammer/views/import_messages.py:32
+#: novaideo/connectors/yammer/views/remove.py:23
+#: novaideo/connectors/google/views/remove.py:21
+#: novaideo/connectors/twitter/views/remove.py:21
 #: novaideo/views/proposal_management/delete_proposal.py:27
 #: novaideo/views/proposal_management/remove_file.py:22
 #: novaideo/views/question_management/del_question.py:21
@@ -613,32 +483,277 @@ msgstr "Importer des messages de Yammer"
 msgid "Alert for deletion"
 msgstr "Alerte pour supression"
 
-#: novaideo/connectors/yammer/views/import_messages.py:88
+#: novaideo/connectors/facebook/views/remove.py:56
+msgid "Facebook connector deletion"
+msgstr "Supression du connecteur Facebook"
+
+#: novaideo/connectors/facebook/views/templates/facebook_bloc.pt:20
+#: novaideo/connectors/facebook/views/templates/create_connector.pt:13
+msgid "Facebook connector"
+msgstr "Le connecteur Facebook"
+
+#: novaideo/connectors/facebook/views/templates/facebook_bloc.pt:24
+#: novaideo/connectors/facebook/views/templates/create_connector.pt:17
+msgid "The Facebook connector"
+msgstr "Le connecteur Facebook"
+
+#: novaideo/connectors/facebook/views/templates/alert_remove.pt:2
+#: novaideo/connectors/yammer/views/templates/alert_remove.pt:2
+#: novaideo/connectors/google/views/templates/alert_remove.pt:2
+#: novaideo/connectors/twitter/views/templates/alert_remove.pt:2
+msgid "Are you sure you want to remove this connector? This cannot be undone."
+msgstr ""
+"Êtes-vous certain de vouloir supprimer ce connecteur ? Cette action ne peut "
+"pas être annulée."
+
+#: novaideo/connectors/facebook/views/templates/log_in.pt:7
+#: novaideo/connectors/google/views/templates/log_in.pt:7
+#: novaideo/connectors/twitter/views/templates/log_in.pt:8
+msgid "Login with"
+msgstr "Connectez-vous avec"
+
+#: novaideo/connectors/core/content/behaviors.py:32
+msgid "Registered connectors"
+msgstr "Connecteurs enregistrés"
+
+#: novaideo/connectors/core/content/behaviors.py:58
+#: novaideo/connectors/core/content/definition.py:42
+#: novaideo/connectors/core/content/definition.py:46
+msgid "Connectors"
+msgstr "Connecteurs"
+
+#: novaideo/connectors/core/content/definition.py:33
+#: novaideo/connectors/core/content/definition.py:34
+msgid "Connectors process"
+msgstr "Processus des connecteurs"
+
+#: novaideo/connectors/core/content/definition.py:41
+msgid "See all connectors"
+msgstr "Voir tous les connecteurs"
+
+#: novaideo/connectors/core/content/definition.py:43
+#: novaideo/content/processes/user_management/definition.py:163
+#: novaideo/content/processes/novaideo_view_manager/definition.py:84
+#: novaideo/content/processes/novaideo_view_manager/definition.py:88
+#: novaideo/content/processes/novaideo_view_manager/definition.py:92
+#: novaideo/content/processes/novaideo_view_manager/definition.py:96
+#: novaideo/content/processes/novaideo_view_manager/definition.py:100
+#: novaideo/content/processes/novaideo_view_manager/definition.py:104
+#: novaideo/content/processes/novaideo_view_manager/definition.py:124
+#: novaideo/content/processes/newsletter_management/definition.py:90
+#: novaideo/content/processes/newsletter_management/definition.py:99
+#: novaideo/content/processes/invitation_management/definition.py:61
+#: novaideo/content/processes/smart_folder_management/definition.py:80
+#: novaideo/content/processes/novaideo_file_management/definition.py:67
+#: novaideo/content/processes/advertising_management/definition.py:61
+#: novaideo/content/processes/challenge_management/definition.py:105
+#: novaideo/content/processes/organization_management/definition.py:64
+msgid "See"
+msgstr "Voir"
+
+#: novaideo/connectors/core/content/definition.py:45
+msgid "Add connectors"
+msgstr "Ajouter des connecteurs"
+
+#: novaideo/connectors/core/content/definition.py:47
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
+#: novaideo/content/processes/proposal_management/definition.py:317
+#: novaideo/content/processes/newsletter_management/definition.py:55
+#: novaideo/content/processes/invitation_management/definition.py:53
+#: novaideo/content/processes/question_management/definition.py:79
+#: novaideo/content/processes/smart_folder_management/definition.py:52
+#: novaideo/content/processes/novaideo_file_management/definition.py:47
+#: novaideo/content/processes/advertising_management/definition.py:49
+#: novaideo/content/processes/challenge_management/definition.py:61
+#: novaideo/content/processes/organization_management/definition.py:52
+#: novaideo/content/processes/organization_management/definition.py:56
+#: novaideo/content/processes/idea_management/definition.py:69
+msgid "Add"
+msgstr "Ajouter"
+
+#: novaideo/connectors/core/views/add.py:28
+msgid "Add new connectors"
+msgstr "Ajouter un nouveau connecteur"
+
+#: novaideo/connectors/core/views/__init__.py:25
+msgid "Login complete"
+msgstr "Connexion terminée"
+
+#: novaideo/connectors/core/views/__init__.py:59
+msgid "Login denied"
+msgstr "Connexion refusée"
+
+#: novaideo/connectors/core/views/see.py:27
+msgid "No connector found"
+msgstr "Aucun connecteur trouvé"
+
+#: novaideo/connectors/core/views/see.py:28
+msgid "One connector found"
+msgstr "Un connecteur trouvé"
+
+# python-format
+#: novaideo/connectors/core/views/see.py:29
+#, python-format
+msgid "${number} connectors found"
+msgstr "${number} connecteurs trouvés"
+
+#: novaideo/connectors/core/views/see.py:39
+msgid "The Connectors"
+msgstr "Les connecteurs"
+
+#: novaideo/connectors/core/views/templates/result.pt:2
+msgid "Try again!"
+msgstr "Réessayer !"
+
+#: novaideo/connectors/core/views/templates/result.pt:3
+msgid "Connection failed"
+msgstr "La connexion a échoué"
+
+#. Used in sentence: "Click ${here} to view the registered connectors."
+#. Used in sentence: "No available connectors. Click ${here} to view the
+#. registered connectors."
+#.
+#: novaideo/connectors/core/views/templates/add_connectors.pt:7
+#: novaideo/connectors/core/views/templates/add_connectors.pt:20
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:40
+#: novaideo/views/templates/alerts/wg_alert_result.pt:40
+msgid "here"
+msgstr "ici"
+
+#. Canonical text for ${here} is: "here"
+#: novaideo/connectors/core/views/templates/add_connectors.pt:6
+msgid "Click ${here} to view the registered connectors."
+msgstr "Cliquez ${here} pour voir les connecteurs enregistrés."
+
+#. Canonical text for ${here} is: "here"
+#: novaideo/connectors/core/views/templates/add_connectors.pt:19
+msgid ""
+"No available connectors. Click ${here} to view the registered connectors."
+msgstr ""
+"Aucun connecteur disponible. Cliquez ${here} pour voir les connecteurs "
+"enregistrés."
+
+#: novaideo/connectors/yammer/__init__.py:59
+msgid "Login with a Yammer account"
+msgstr "Se connecter avec un compte Yammer"
+
+#: novaideo/connectors/yammer/__init__.py:60
+msgid "Users can login with their Yammer account."
+msgstr "Les utilisateurs peuvent se connecter avec leur compte Yammer."
+
+#: novaideo/connectors/yammer/__init__.py:71
+msgid "Trusted networks"
+msgstr "Réseaux de confiance"
+
+#: novaideo/connectors/yammer/__init__.py:72
+msgid ""
+"To add trusted network, you need to tap the « Enter » key after each network "
+"or to separate them with commas."
+msgstr ""
+"Pour ajouter des réseaux de confiance, vous devez taper sur la touche « "
+"Entrée » après chaque email ou les séparer par des virgules."
+
+#: novaideo/connectors/yammer/__init__.py:104
+msgid "Enable notifications on Yammer"
+msgstr "Activer les notifications vers Yammer"
+
+#: novaideo/connectors/yammer/__init__.py:105
+msgid "Send a notification to Yammer when new content is published."
+msgstr ""
+"Envoyer une notification à Yammer lorsque de nouveaux contenus sont publiés."
+
+#: novaideo/connectors/yammer/__init__.py:113
+msgid "Default notification account"
+msgstr "Compte de notification par défaut"
+
+#: novaideo/connectors/yammer/__init__.py:120
+msgid "Notify only from the default account"
+msgstr "Notifier uniquement à partir du compte par défaut"
+
+#: novaideo/connectors/yammer/__init__.py:150
+msgid "Configure notifications"
+msgstr "Configurer les notifications"
+
+#: novaideo/connectors/yammer/__init__.py:162
+msgid "Yammer"
+msgstr "Yammer"
+
+#: novaideo/connectors/yammer/content/behaviors.py:141
+msgid "Log in with Yammer"
+msgstr "Connectez-vous avec Yammer"
+
+#: novaideo/connectors/yammer/content/behaviors.py:189
+#: novaideo/connectors/yammer/content/definition.py:49
+#: novaideo/connectors/yammer/content/definition.py:50
+#: novaideo/connectors/yammer/views/create.py:28
+msgid "Add a Yammer connector"
+msgstr "Ajouter un connecteur Yammer"
+
+#: novaideo/connectors/yammer/content/behaviors.py:283
+#: novaideo/connectors/yammer/content/definition.py:62
+msgid "Import"
+msgstr "Importer"
+
+#: novaideo/connectors/yammer/content/behaviors.py:312
+#: novaideo/content/comment.py:136 novaideo/content/novaideo_application.py:69
+#: novaideo/content/novaideo_application.py:72
+#: novaideo/content/novaideo_application.py:76
+#: novaideo/utilities/alerts_utility.py:123
+msgid "Remark"
+msgstr "Remarque"
+
+#: novaideo/connectors/yammer/content/definition.py:37
+#: novaideo/connectors/yammer/content/definition.py:38
+msgid "Yammer process"
+msgstr "Le processus de Yammer"
+
+#: novaideo/connectors/yammer/content/definition.py:45
+#: novaideo/connectors/yammer/content/definition.py:46
+msgid "Login with Yammer"
+msgstr "Connectez-vous avec Yammer"
+
+#: novaideo/connectors/yammer/content/definition.py:53
+#: novaideo/connectors/yammer/views/configure.py:27
+msgid "Configure the Yammer connector"
+msgstr "Configurer le connecteur Yammer"
+
+#: novaideo/connectors/yammer/content/definition.py:57
+#: novaideo/connectors/yammer/views/remove.py:37
+msgid "Remove the Yammer connector"
+msgstr "Supprimer le connecteur Yammer"
+
+#: novaideo/connectors/yammer/content/definition.py:61
+#: novaideo/connectors/yammer/views/import_messages.py:98
+#: novaideo/connectors/yammer/views/import_messages.py:120
+msgid "Import messages from Yammer"
+msgstr "Importer des messages de Yammer"
+
+#: novaideo/connectors/yammer/views/import_messages.py:91
 msgid "Messages to import"
 msgstr "Messages à importer"
 
-#: novaideo/connectors/yammer/views/import_messages.py:89
+#: novaideo/connectors/yammer/views/import_messages.py:92
 msgid "Select the messages to import from your Yammer networks"
 msgstr "Sélectionnez les messages à importer à partir de vos réseaux Yammer"
 
-#: novaideo/connectors/yammer/views/remove.py:56
+#: novaideo/connectors/yammer/views/remove.py:58
 msgid "Yammer connector deletion"
 msgstr "Supression du connecteur Yammer"
 
-#: novaideo/connectors/yammer/views/login.py:29
-#: novaideo/content/processes/user_management/behaviors.py:90
+#: novaideo/connectors/yammer/views/login.py:30
+#: novaideo/content/processes/user_management/behaviors.py:91
 #: novaideo/content/processes/user_management/definition.py:57
 #: novaideo/content/processes/user_management/definition.py:58
 #: novaideo/views/user_management/login.py:41
 msgid "Log in"
 msgstr "Se connecter"
 
-#: novaideo/connectors/yammer/views/login.py:60
+#: novaideo/connectors/yammer/views/login.py:61
 #: novaideo/views/user_management/login.py:112
 msgid "Failed login"
 msgstr "La connexion a échoué"
 
-#: novaideo/connectors/yammer/views/login.py:88
+#: novaideo/connectors/yammer/views/login.py:76
 msgid "You don't have the right to login with this account."
 msgstr "Vous n'avez pas le droit de vous connecter avec ce compte."
 
@@ -665,19 +780,13 @@ msgstr "Initialiser le compte de notification par défaut"
 msgid "Remove the default notification account"
 msgstr "Supprimer le compte de notification par défaut"
 
-#: novaideo/connectors/yammer/views/templates/alert_remove.pt:2
-msgid "Are you sure you want to remove this connector? This cannot be undone."
-msgstr ""
-"Êtes-vous certain de vouloir supprimer ce connecteur ? Cette action ne peut "
-"pas être annulée."
-
-#: novaideo/connectors/yammer/views/templates/create_connector.pt:14
-#: novaideo/connectors/yammer/views/templates/yammer_bloc.pt:21
+#: novaideo/connectors/yammer/views/templates/create_connector.pt:13
+#: novaideo/connectors/yammer/views/templates/yammer_bloc.pt:20
 msgid "Yammer connector"
 msgstr "Le connecteur Yammer"
 
-#: novaideo/connectors/yammer/views/templates/create_connector.pt:19
-#: novaideo/connectors/yammer/views/templates/yammer_bloc.pt:27
+#: novaideo/connectors/yammer/views/templates/create_connector.pt:17
+#: novaideo/connectors/yammer/views/templates/yammer_bloc.pt:24
 msgid "The Yammer connector"
 msgstr "Le connecteur Yammer"
 
@@ -688,6 +797,120 @@ msgid ""
 msgstr ""
 "Les messages sélectionnés seront transformés en idées. Ce processus peut "
 "prendre plusieurs minutes, selon le nombre de messages sélectionnés."
+
+#: novaideo/connectors/google/__init__.py:57
+msgid "Login with a Google account"
+msgstr "Se connecter avec un compte Google"
+
+#: novaideo/connectors/google/__init__.py:58
+msgid "Users can login with their Google account."
+msgstr "Les utilisateurs peuvent se connecter avec leur compte Google."
+
+#: novaideo/connectors/google/__init__.py:91
+msgid "Google"
+msgstr "Google"
+
+#: novaideo/connectors/google/content/behaviors.py:41
+msgid "Log in with Google"
+msgstr "Connectez-vous avec Google"
+
+#: novaideo/connectors/google/content/behaviors.py:76
+#: novaideo/connectors/google/content/definition.py:49
+#: novaideo/connectors/google/content/definition.py:50
+#: novaideo/connectors/google/views/create.py:27
+msgid "Add a Google connector"
+msgstr "Ajouter un connecteur Google"
+
+#: novaideo/connectors/google/content/definition.py:37
+#: novaideo/connectors/google/content/definition.py:38
+msgid "Google process"
+msgstr "Le processus de Google"
+
+#: novaideo/connectors/google/content/definition.py:45
+#: novaideo/connectors/google/content/definition.py:46
+msgid "Login with Google"
+msgstr "Connectez-vous avec Google"
+
+#: novaideo/connectors/google/content/definition.py:53
+#: novaideo/connectors/google/views/configure.py:26
+msgid "Configure the Google connector"
+msgstr "Configurer le connecteur Google"
+
+#: novaideo/connectors/google/content/definition.py:57
+#: novaideo/connectors/google/views/remove.py:35
+msgid "Remove the Google connector"
+msgstr "Supprimer le connecteur Google"
+
+#: novaideo/connectors/google/views/remove.py:56
+msgid "Google connector deletion"
+msgstr "Supression du connecteur Google"
+
+#: novaideo/connectors/google/views/templates/create_connector.pt:13
+#: novaideo/connectors/google/views/templates/google_bloc.pt:20
+msgid "Google connector"
+msgstr "Le connecteur Google"
+
+#: novaideo/connectors/google/views/templates/create_connector.pt:17
+#: novaideo/connectors/google/views/templates/google_bloc.pt:24
+msgid "The Google connector"
+msgstr "Le connecteur Google"
+
+#: novaideo/connectors/twitter/__init__.py:72
+msgid "Login with a Twitter account"
+msgstr "Se connecter avec un compte Twitter"
+
+#: novaideo/connectors/twitter/__init__.py:73
+msgid "Users can login with their Twitter account."
+msgstr "Les utilisateurs peuvent se connecter avec leur compte Twitter."
+
+#: novaideo/connectors/twitter/__init__.py:106
+msgid "Twitter"
+msgstr "Twitter"
+
+#: novaideo/connectors/twitter/content/behaviors.py:41
+msgid "Log in with Twitter"
+msgstr "Connectez-vous avec Twitter"
+
+#: novaideo/connectors/twitter/content/behaviors.py:74
+#: novaideo/connectors/twitter/content/definition.py:49
+#: novaideo/connectors/twitter/content/definition.py:50
+#: novaideo/connectors/twitter/views/create.py:27
+msgid "Add a Twitter connector"
+msgstr "Ajouter un connecteur Twitter"
+
+#: novaideo/connectors/twitter/content/definition.py:37
+#: novaideo/connectors/twitter/content/definition.py:38
+msgid "Twitter process"
+msgstr "Le processus de Twitter"
+
+#: novaideo/connectors/twitter/content/definition.py:45
+#: novaideo/connectors/twitter/content/definition.py:46
+msgid "Login with Twitter"
+msgstr "Connectez-vous avec Twitter"
+
+#: novaideo/connectors/twitter/content/definition.py:53
+#: novaideo/connectors/twitter/views/configure.py:26
+msgid "Configure the Twitter connector"
+msgstr "Configurer le connecteur Twitter"
+
+#: novaideo/connectors/twitter/content/definition.py:57
+#: novaideo/connectors/twitter/views/remove.py:35
+msgid "Remove the Twitter connector"
+msgstr "Supprimer le connecteur Twitter"
+
+#: novaideo/connectors/twitter/views/remove.py:56
+msgid "Twitter connector deletion"
+msgstr "Supression du connecteur Twitter"
+
+#: novaideo/connectors/twitter/views/templates/create_connector.pt:13
+#: novaideo/connectors/twitter/views/templates/twitter_bloc.pt:20
+msgid "Twitter connector"
+msgstr "Le connecteur Twitter"
+
+#: novaideo/connectors/twitter/views/templates/create_connector.pt:17
+#: novaideo/connectors/twitter/views/templates/twitter_bloc.pt:24
+msgid "The Twitter connector"
+msgstr "Le connecteur Twitter"
 
 #: novaideo/content/correlation.py:78 novaideo/content/idea.py:67
 #: novaideo/content/comment.py:44 novaideo/content/proposal.py:65
@@ -1199,8 +1422,8 @@ msgid "Reporting reasons"
 msgstr "Les raisons du signalement"
 
 #: novaideo/content/report.py:73 novaideo/content/question.py:110
-#: novaideo/content/processes/user_management/behaviors.py:358
-#: novaideo/content/processes/user_management/behaviors.py:674
+#: novaideo/content/processes/user_management/behaviors.py:359
+#: novaideo/content/processes/user_management/behaviors.py:675
 #: novaideo/content/processes/user_management/definition.py:81
 #: novaideo/content/processes/user_management/definition.py:82
 #: novaideo/content/processes/user_management/definition.py:157
@@ -1583,14 +1806,14 @@ msgid "Function"
 msgstr "Fonction"
 
 #: novaideo/content/person.py:175 novaideo/views/templates/person_bloc.pt:44
-#: novaideo/views/templates/person_result.pt:44
+#: novaideo/views/templates/person_result.pt:56
 msgid "Topics of interest"
 msgstr "Centres d'intérêt"
 
 #: novaideo/content/person.py:186
 #: novaideo/views/user_management/confirmregistration.py:27
 #: novaideo/views/user_management/reset_password.py:104
-#: novaideo/views/user_management/templates/login.pt:12
+#: novaideo/views/user_management/templates/login.pt:13
 #: novaideo/views/invitation_management/accept_invitation.py:36
 msgid "Login (email)"
 msgstr "Identifiant (courriel)"
@@ -1626,14 +1849,17 @@ msgstr ""
 
 #: novaideo/content/person.py:230
 #: novaideo/views/user_management/confirmregistration.py:35
-#: novaideo/views/user_management/templates/login.pt:16
+#: novaideo/views/user_management/templates/login.pt:17
 #: novaideo/views/invitation_management/accept_invitation.py:45
 msgid "Password"
 msgstr "Mot de passe"
 
-#: novaideo/content/person.py:237 novaideo/views/templates/person_bloc.pt:40
+#: novaideo/content/person.py:237
+#: novaideo/views/user_management/templates/see_person.pt:28
+#: novaideo/views/templates/person_bloc.pt:40
 #: novaideo/views/templates/invitation_result.pt:23
-#: novaideo/views/templates/person_result.pt:40
+#: novaideo/views/templates/person_result.pt:42
+#: novaideo/views/templates/person_card.pt:29
 #: novaideo/views/invitation_management/templates/see_invitation.pt:26
 #: novaideo/adapters/__init__.py:28
 msgid "Organization"
@@ -1670,7 +1896,7 @@ msgstr ""
 msgid "The language for which the folder will be displayed"
 msgstr "La langue pour laquelle le dossier sera affiché"
 
-#: novaideo/content/smart_folder.py:145 novaideo/views/templates/filter.pt:9
+#: novaideo/content/smart_folder.py:145 novaideo/views/templates/filter.pt:8
 #: novaideo/views/filter/__init__.py:1054
 msgid "Filter"
 msgstr "Filtrer"
@@ -2024,14 +2250,14 @@ msgstr "Clôturée"
 msgid "Validated"
 msgstr "Validée"
 
-#: novaideo/content/processes/user_management/behaviors.py:108
+#: novaideo/content/processes/user_management/behaviors.py:109
 #: novaideo/content/processes/user_management/definition.py:61
 #: novaideo/content/processes/user_management/definition.py:62
 #: novaideo/views/user_management/logout.py:24
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: novaideo/content/processes/user_management/behaviors.py:138
+#: novaideo/content/processes/user_management/behaviors.py:139
 #: novaideo/content/processes/user_management/definition.py:65
 #: novaideo/content/processes/user_management/definition.py:66
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:63
@@ -2056,18 +2282,18 @@ msgstr "Se déconnecter"
 msgid "Edit"
 msgstr "Modifier"
 
-#: novaideo/content/processes/user_management/behaviors.py:174
+#: novaideo/content/processes/user_management/behaviors.py:175
 #: novaideo/content/processes/user_management/definition.py:89
 #: novaideo/content/processes/user_management/definition.py:90
 #: novaideo/views/user_management/api_token.py:71
 msgid "Get API token"
 msgstr "Obtenez un jeton d'API"
 
-#: novaideo/content/processes/user_management/behaviors.py:175
+#: novaideo/content/processes/user_management/behaviors.py:176
 msgid "Get a new API token"
 msgstr "Obtenir un nouveau jeton"
 
-#: novaideo/content/processes/user_management/behaviors.py:222
+#: novaideo/content/processes/user_management/behaviors.py:223
 #: novaideo/content/processes/user_management/definition.py:69
 #: novaideo/content/processes/user_management/definition.py:70
 #: novaideo/views/user_management/deactivate.py:37
@@ -2075,20 +2301,20 @@ msgstr "Obtenir un nouveau jeton"
 msgid "Disactivate the profile"
 msgstr "Désactiver le compte"
 
-#: novaideo/content/processes/user_management/behaviors.py:274
+#: novaideo/content/processes/user_management/behaviors.py:275
 #: novaideo/content/processes/user_management/definition.py:73
 #: novaideo/content/processes/user_management/definition.py:74
 #: novaideo/views/user_management/activate.py:23
 msgid "Activate the profile"
 msgstr "Activer le compte"
 
-#: novaideo/content/processes/user_management/behaviors.py:311
+#: novaideo/content/processes/user_management/behaviors.py:312
 #: novaideo/content/processes/user_management/definition.py:78
 #: novaideo/views/user_management/assign_roles.py:56
 msgid "Assign roles"
 msgstr "Assigner des rôles"
 
-#: novaideo/content/processes/user_management/behaviors.py:772
+#: novaideo/content/processes/user_management/behaviors.py:773
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:127
 #: novaideo/content/processes/reports_management/behaviors.py:227
@@ -2385,7 +2611,7 @@ msgstr "Mettre à jour les processus"
 #: novaideo/content/processes/admin_process/definition.py:48
 #: novaideo/content/processes/admin_process/definition.py:52
 #: novaideo/content/processes/invitation_management/behaviors.py:182
-#: novaideo/views/panels.py:315
+#: novaideo/views/panels.py:317
 #: novaideo/views/novaideo_view_manager/templates/search_result.pt:33
 #: novaideo/views/novaideo_view_manager/templates/table_result.pt:41
 #: novaideo/views/novaideo_view_manager/templates/search_result_blocs.pt:26
@@ -4042,7 +4268,7 @@ msgstr "Modération : Publier le challenge"
 msgid "Presentation of a challenge"
 msgstr "Présentation d'un challenge"
 
-#: novaideo/views/panels.py:598
+#: novaideo/views/panels.py:600
 #: novaideo/views/templates/panels/more_contents.pt:2
 msgid "My topics of interest"
 msgstr "Mes centres d'intérêt"
@@ -4289,21 +4515,21 @@ msgstr ""
 "courriel de confirmation vous sera envoyé. Merci de cliquer sur le lien "
 "présent dans le courriel pour compléter votre inscription."
 
-#: novaideo/views/user_management/templates/login.pt:3
-#: novaideo/views/user_management/templates/login.pt:21
+#: novaideo/views/user_management/templates/login.pt:4
+#: novaideo/views/user_management/templates/login.pt:22
 #: novaideo/views/novaideo_view_manager/templates/anonymous_view.pt:7
 #: novaideo/views/templates/alert_action_anonymous.pt:6
 #: novaideo/views/templates/panels/usermenu.pt:103
 msgid "Log In"
 msgstr "Se connecter"
 
-#: novaideo/views/user_management/templates/login.pt:24
-msgid "Or"
-msgstr "Ou"
-
-#: novaideo/views/user_management/templates/login.pt:34
+#: novaideo/views/user_management/templates/login.pt:27
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié?"
+
+#: novaideo/views/user_management/templates/login.pt:32
+msgid "Or"
+msgstr "Ou"
 
 #: novaideo/views/user_management/templates/forbidden.pt:11
 msgid ""
@@ -4338,13 +4564,13 @@ msgid "You don't have an API token yet, you can generate a token below:"
 msgstr ""
 "Vous n'avez pas encore de jeton, vous pouvez générer un jeton ci-dessous :"
 
-#: novaideo/views/user_management/templates/see_person.pt:43
+#: novaideo/views/user_management/templates/see_person.pt:57
 msgid "Last connection"
 msgstr "Dernière connexion"
 
-#: novaideo/views/user_management/templates/see_person.pt:49
+#: novaideo/views/user_management/templates/see_person.pt:63
 #: novaideo/views/templates/person_bloc.pt:29
-#: novaideo/views/templates/person_result.pt:29
+#: novaideo/views/templates/person_result.pt:30
 #: novaideo/views/templates/small_person_result.pt:18
 msgid "Member since"
 msgstr "Membre depuis le"

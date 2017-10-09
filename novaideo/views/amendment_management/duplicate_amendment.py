@@ -30,6 +30,7 @@ class DuplicateAmendmentView(FormView):
 
     behaviors = [DuplicateAmendment, Cancel]
     formid = 'formduplicateamendment'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

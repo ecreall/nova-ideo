@@ -47,8 +47,7 @@ class SeeReportedContentsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seereportedcontents'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 
