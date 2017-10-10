@@ -4757,7 +4757,7 @@ msgid ""
 "You have evaluated ${number} contents so far. You have ${tokens} remaining "
 "evaluation tokens"
 msgstr ""
-"${number} contenus appréciées et ${tokens} jeton(s) d'appréciation restant(s)"
+"${number} contenus appréciés et ${tokens} jeton(s) d'appréciation restant(s)"
 
 #: novaideo/views/novaideo_view_manager/see_users.py:37
 #: novaideo/views/proposal_management/see_members.py:29
