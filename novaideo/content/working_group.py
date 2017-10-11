@@ -108,3 +108,37 @@ class WorkingGroup(VisualisableElement, Entity):
 
     def inc_nonproductive_cycle(self):
         self.nonproductive_cycle = getattr(self, 'nonproductive_cycle', 0) + 1
+
+    def is_member(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.members or (mask and mask in self.members)
+
+    def in_wating_list(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.wating_list or (mask and mask in self.wating_list)
+
+    def get_member(self, user):
+        if not self.is_member(user):
+            return None
+
+        if user in self.members:
+            return user
+        
+        mask = getattr(user, 'mask', None)
+        if mask and mask in self.members:
+            return mask
+
+        return None
+
+    def get_member_in_wating_list(self, user):
+        if not self.in_wating_list(user):
+            return None
+
+        if user in self.wating_list:
+            return user
+        
+        mask = getattr(user, 'mask', None)
+        if mask and mask in self.wating_list:
+            return mask
+
+        return None

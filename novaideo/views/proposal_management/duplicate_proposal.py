@@ -25,12 +25,13 @@ from ..filter import get_pending_challenges
 class DuplicateProposalFormView(FormView):
     title = _('Duplicate the proposal')
     name = 'duplicateproposal'
-    schema = select(ProposalSchema(),
+    schema = select(ProposalSchema(omit=('anonymous',)),
                     ['challenge',
                      'title',
                      'description',
                      'keywords',
                      'text',
+                     'anonymous',
                      'related_ideas',
                      ('add_files', ['attached_files'])])
 

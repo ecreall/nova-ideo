@@ -33,11 +33,12 @@ def add_file_data(file_):
 class DuplicateIdeaView(FormView):
     title = _('Duplicate the idea')
     name = 'duplicateidea'
-    schema = select(IdeaSchema(), ['challenge',
+    schema = select(IdeaSchema(omit=('anonymous',)), ['challenge',
                                    'title',
                                    'text',
                                    'keywords',
                                    'attached_files',
+                                   'anonymous',
                                    'note'])
     behaviors = [DuplicateIdea, Cancel]
     formid = 'formduplicateidea'

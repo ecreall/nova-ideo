@@ -5,7 +5,7 @@
                  author object.author;
                  censored 'censored' in object.state
                  ">
-  <div class="media-body media-idea small-media" tal:define="author_picture getattr(author, 'picture', None)">
+  <div class="media-body media-idea small-media">
     <div class="object-title-block" >
       <a tal:condition="not censored" tal:attributes="href url">
         <h5>

@@ -36,7 +36,8 @@ def comment_textarea(node, kw):
     return deform.widget.TextAreaWidget(
         rows=2, cols=60, item_css_class="comment-form-group comment-textarea",
         emoji_form=emoji_form,
-        template='novaideo:views/templates/textarea_answer.pt')
+        template='novaideo:views/templates/textarea_answer.pt',
+        request=request)
 
 
 class AnswerSchema(AnswerSchemaBase):
@@ -60,8 +61,8 @@ class AnswerQuestionFormView(FormView):
     title = _('Answer the question')
     schema = select(AnswerSchema(factory=Answer,
                                  editable=True,
-                                 omit=('associated_contents',)),
-                    ['files', 'associated_contents', 'option', 'comment'])
+                                 omit=('associated_contents', 'anonymous')),
+                    ['files', 'associated_contents', 'option', 'comment', 'anonymous'])
     behaviors = [AnswerQuestion, Cancel]
     formid = 'formanswerquestion'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'

@@ -36,13 +36,14 @@ from ..filter import get_pending_challenges
 class AskQuestionView(FormView):
 
     title = _('Ask a question')
-    schema = select(QuestionSchema(factory=Question, editable=True),
+    schema = select(QuestionSchema(factory=Question, editable=True, omit=('anonymous',)),
                     ['challenge',
                      'title',
                      'text',
                      'options',
                      'keywords',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [AskQuestion, Cancel]
     formid = 'formaskquestion'
     name = 'askquestion'
@@ -117,7 +118,9 @@ class AskQuestionView_Json(BasicView):
                 user = get_current()
                 body = ''
                 if not redirect:
-                    question = user.questions[-1]
+                    question = sorted(
+                        user.get_questions(user),
+                        key=lambda w: w.created_at)[-1]
                     if not is_mycontents_view and \
                        'published' not in question.state:
                         redirect = True

@@ -26,7 +26,7 @@ from novaideo import _
 class CreateChallengeView(FormView):
 
     title = _('Create a challenge')
-    schema = select(ChallengeSchema(factory=Challenge, editable=True),
+    schema = select(ChallengeSchema(factory=Challenge, editable=True, omit=('anonymous',)),
                     ['title',
                      'description',
                      'keywords',
@@ -35,7 +35,8 @@ class CreateChallengeView(FormView):
                      'is_restricted',
                      'invited_users',
                      'deadline',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [CrateAndPublish, CreateChallenge, Cancel]
     formid = 'formcreatechallenge'
     name = 'createchallenge'

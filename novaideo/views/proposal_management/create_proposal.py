@@ -80,7 +80,8 @@ class AddIdeaSchema(Schema):
                     ['challenge',
                      'title',
                      'text',
-                     'keywords'])
+                     'keywords',
+                     'anonymous'])
 
 
 class AddIdea(Behavior):
@@ -201,12 +202,13 @@ class CreateProposalFormView(FormView):
 
     title = _('Create a proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['related_ideas', 'add_files']),
+                               omit=['related_ideas', 'add_files', 'anonymous']),
                     ['challenge',
                      'title',
                      'description',
                      'keywords',
                      'text',
+                     'anonymous',
                      'related_ideas',
                      ('add_files', ['attached_files'])])
     behaviors = [CreateProposal, Cancel]

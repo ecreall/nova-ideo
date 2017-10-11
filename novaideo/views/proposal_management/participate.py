@@ -3,16 +3,34 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import deform
+import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView
+from pontus.form import FormView
+from pontus.schema import Schema
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.proposal_management.behaviors import (
     Participate)
 from novaideo.content.proposal import Proposal
+from novaideo.content.idea import anonymous_widget
 from novaideo import _
+
+
+class ParticipateSchema(Schema):
+    """Schema for ParticipateView"""
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=anonymous_widget,
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
+        )
 
 
 @view_config(
@@ -20,15 +38,36 @@ from novaideo import _
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class ParticipateView(BasicView):
+class ParticipateView(FormView):
     title = _('Participate')
     name = 'participate'
-    behaviors = [Participate]
-    viewid = 'participate'
+    formid = 'formparticipate'
+    schema = ParticipateSchema()
+    behaviors = [Participate, Cancel]
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Participate.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
-    def update(self):
-        results = self.execute(None)
-        return results[0]
+# @view_config(
+#     name='participate',
+#     context=Proposal,
+#     renderer='pontus:templates/views_templates/grid.pt',
+#     )
+# class ParticipateView(BasicView):
+#     title = _('Participate')
+#     name = 'participate'
+#     behaviors = [Participate]
+#     viewid = 'participate'
+
+
+#     def update(self):
+#         results = self.execute({})
+#         return results[0]
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Participate:ParticipateView})

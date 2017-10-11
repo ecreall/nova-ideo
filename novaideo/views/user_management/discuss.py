@@ -98,6 +98,10 @@ class GeneralCommentsView(DiscussCommentsView):
 
 class GeneralDiscussFormView(DiscussFormView):
 
+    schema = select(CommentSchema(factory=Comment,
+                                  editable=True,
+                                  omit=('associated_contents', 'anonymous')),
+                    ['comment', 'intention', 'files', 'associated_contents', 'anonymous'])
     behaviors = [GeneralDiscuss]
 
     def before_update(self):

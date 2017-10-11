@@ -26,8 +26,8 @@ class RespondView(FormView):
     title = _('Answer')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
-                                  omit=('associated_contents',)),
-                    ['comment', 'intention', 'files', 'associated_contents'])
+                                  omit=('associated_contents', 'anonymous')),
+                    ['comment', 'intention', 'files', 'associated_contents', 'anonymous'])
     behaviors = [Respond]
     formid = 'formrespond'
     name = 'respond'

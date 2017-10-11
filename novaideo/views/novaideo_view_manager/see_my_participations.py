@@ -49,7 +49,9 @@ class SeeMyParticipationsView(SeeMyContentsView):
     sorts = ['release_date', 'created_at']
 
     def _get_content_ids(self, user):
-        return [get_oid(o) for o in getattr(user, 'participations', [])]
+        participations = user.get_participations(user) \
+            if hasattr(user, 'get_participations') else []
+        return [get_oid(o) for o in participations]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

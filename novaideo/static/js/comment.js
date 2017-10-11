@@ -304,6 +304,7 @@ $(document).on("submit", ".commentform:not(.comment-inline-form)", function(
   var $this = $(this)
   var button = $this.find('button[type="submit"]').last()
   var select_itention = $($this.find("select[name='intention']"))
+  var is_anonymous = $($this.find("input[name='anonymous']")).is(":checked")
   var intention = select_itention.val()
   var select_related_contents = $(
     $this.find("select[name='associated_contents']").first()
@@ -320,6 +321,7 @@ $(document).on("submit", ".commentform:not(.comment-inline-form)", function(
     )
     init_emoji($(preview.find(".comment-preview-text")))
     preview.removeClass("hide-bloc")
+    if(is_anonymous) preview.addClass("anonymous")
     init_comment_scroll(parent)
     $(button).addClass("disabled")
     var formData = new FormData($this[0])
@@ -394,6 +396,7 @@ $(document).on("submit", ".respondform", function(event) {
   var formid = $this.attr("id")
   var button = $this.find('button[type="submit"]').last()
   var select_itention = $($this.find("select[name='intention']"))
+  var is_anonymous = $($this.find("input[name='anonymous']")).is(":checked")
   var intention = select_itention.val()
   var textarea = $this.find("textarea")
   var comment = textarea.val()
@@ -420,6 +423,7 @@ $(document).on("submit", ".respondform", function(event) {
     )
     init_emoji($(preview.find(".comment-preview-text")))
     preview.removeClass("hide-bloc")
+    if(is_anonymous) preview.addClass("anonymous")
     comment_scroll_to(preview, true)
     $(button).addClass("disabled")
     alert_component({
@@ -659,6 +663,18 @@ $(document).on("click", ".comment-cancel", function() {
       .first()
   )
   close_btn.click()
+})
+
+$(document).on("click", ".commentform .comment-textarea-actions .comment-anonymous", function() {
+  var $this = $(this)
+  var form = $($this.parents("form").first())
+  $(".comment-form-group").removeClass("active")
+  $(".comment-data .comment-content.hide-bloc").removeClass("hide-bloc")
+  var input = $(
+      form.find(".comment-form-group.comment-anonymous-form input[name='anonymous']").first()
+    )
+    input.prop('checked', ! input.is(":checked"))
+    $this.toggleClass("active")
 })
 
 $(

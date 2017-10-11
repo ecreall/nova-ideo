@@ -47,6 +47,7 @@ from novaideo.core import (
     Debatable,
     Tokenable)
 from novaideo.content import get_file_widget
+from novaideo.content.idea import anonymous_widget
 from novaideo.utilities.util import (
     connect, disconnect, get_files_data)
 
@@ -209,6 +210,16 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
                         activator_icon="glyphicon glyphicon-file",
                         activator_title=_('Add files'))),
                     ["_csrf_token_"])
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=anonymous_widget,
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
+        )
 
 
 @content(

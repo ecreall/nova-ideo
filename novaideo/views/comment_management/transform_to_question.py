@@ -30,13 +30,13 @@ from ..filter import get_pending_challenges
 class AskQuestionView(FormView):
 
     title = _('Transform the comment into an idea')
-    schema = select(QuestionSchema(factory=Question, editable=True),
+    schema = select(QuestionSchema(factory=Question, editable=True, omit=('anonymous', )),
                     ['challenge',
                      'title',
                      'text',
                      'options',
                      'keywords',
-                     'attached_files'])
+                     'anonymous'])
     behaviors = [TransformToQuestion, Cancel]
     formid = 'formaskquestion'
     name = 'askquestion'

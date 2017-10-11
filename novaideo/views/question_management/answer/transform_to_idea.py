@@ -30,11 +30,12 @@ from novaideo.content.question import Answer
 class CreateIdeaView(FormView):
 
     title = _('Transform the answer into an idea')
-    schema = select(IdeaSchema(factory=Idea, editable=True),
+    schema = select(IdeaSchema(factory=Idea, editable=True, omit=('anonymous', )),
                     ['title',
                      'text',
                      'keywords',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, TransformToIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'

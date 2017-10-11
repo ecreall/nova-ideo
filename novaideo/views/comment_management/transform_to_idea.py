@@ -32,12 +32,13 @@ from ..filter import get_pending_challenges
 class CreateIdeaView(FormView):
 
     title = _('Transform the comment into an idea')
-    schema = select(IdeaSchema(factory=Idea, editable=True),
+    schema = select(IdeaSchema(factory=Idea, editable=True, omit=('anonymous', )),
                     ['challenge',
                      'title',
                      'text',
                      'keywords',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, TransformToIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'

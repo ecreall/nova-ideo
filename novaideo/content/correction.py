@@ -84,7 +84,9 @@ class Correction(VisualisableElement, Entity):
 
     def _get_adapted_content(self, user, text):
         """Return the appropriate text to the user"""
-
+        
+        user_ = self.proposal.working_group.get_member(user)
+        user_ = user_ or user
         soup = BeautifulSoup(text)
         corrections = soup.find_all("span", id='correction')
         # if user is self.author:
@@ -93,13 +95,13 @@ class Correction(VisualisableElement, Entity):
         # else:    
         for correction in corrections:
             correction_data = self.corrections[correction["data-item"]]
-            voters_favour = any((get_obj(v) is user
+            voters_favour = any((get_obj(v) is user_
                                 for v in correction_data['favour']))
             if voters_favour:
                 self._adapt_correction(correction, True)
                 continue
 
-            voters_against = any((get_obj(v) is user
+            voters_against = any((get_obj(v) is user_
                                  for v in correction_data['against']))
             if voters_against:
                 self._adapt_correction(correction, False)

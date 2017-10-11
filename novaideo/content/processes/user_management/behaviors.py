@@ -234,9 +234,14 @@ class Deactivate(InfiniteCardinality):
         context.state.append('deactivated')
         context.set_organization(None)
         proposals = getattr(context, 'participations', [])
+        anonymous_proposals = getattr(context.mask, 'participations', [])
         for proposal in proposals:
             exclude_participant_from_wg(
                 proposal, request, context, root)
+
+        for proposal in anonymous_proposals:
+            exclude_participant_from_wg(
+                proposal, request, context.mask, root)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
@@ -810,7 +815,7 @@ class Discuss(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
-        user = get_current()
+        user = get_current(request)
         channel = context.get_channel(user)
         if not channel:
             channel = PrivateChannel()
@@ -888,7 +893,9 @@ class GeneralDiscuss(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         comment = appstruct['_object_data']
-        user = get_current()
+        user = get_current(request)
+        mask = user.get_mask(root)
+        author = mask if appstruct.get('anonymous', False) and mask else user
         channel = root.channel
         #TODO get
         if channel:
@@ -897,13 +904,13 @@ class GeneralDiscuss(InfiniteCardinality):
             comment.state = PersistentList(['published'])
             comment.reindex()
             comment.format(request)
-            comment.setproperty('author', user)
-            grant_roles(user=user, roles=(('Owner', comment), ))
+            comment.setproperty('author', author)
+            grant_roles(user=author, roles=(('Owner', comment), ))
             if appstruct.get('associated_contents', []):
                 comment.set_associated_contents(
                     appstruct['associated_contents'], user)
 
-            self._alert_users(context, request, user, comment, channel)
+            self._alert_users(context, request, author, comment, channel)
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 

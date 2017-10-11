@@ -938,6 +938,29 @@ def evolve_source_data(root, registry):
     log.info('Source data evolved.')
 
 
+def evolve_user_masks(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from novaideo.content.mask import Mask
+
+    request = get_current_request()
+    request.root = root 
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not getattr(node, 'mask', None):
+            mask = Mask()
+            root.addtoproperty('masks', mask)
+            node.setproperty('mask', mask)
+            node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Masks evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -993,6 +1016,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_person_tokens)
     config.add_evolution_step(evolve_examined_tokens)
     config.add_evolution_step(evolve_source_data)
+    config.add_evolution_step(evolve_user_masks)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
