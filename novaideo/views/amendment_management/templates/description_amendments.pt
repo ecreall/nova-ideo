@@ -5,7 +5,7 @@
                  author amendment.author;
                  is_anonymous getattr(author, 'is_anonymous', False);
                  author_picture getattr(author, 'picture', None);
-                 default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png')
+                 default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
                  item_template item_template|field.widget.item_template">
   <div class="media-body media-amendment" tal:define="author_picture getattr(author, 'picture', None)">
     <span class="amendment-toggle glyphicon glyphicon-minus pull-right"></span>
