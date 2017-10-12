@@ -12,6 +12,7 @@ from dace.util import get_obj
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
+from novaideo.content.mask import Mask as SDMask
 from novaideo.content.bot import Bot as SDBot
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
@@ -176,6 +177,7 @@ class Person(Node, Debatable, graphene.ObjectType):
     channels = relay.ConnectionField(lambda: Channel)
     discussions = relay.ConnectionField(lambda: Channel)
     available_tokens = graphene.Int()
+    is_anonymous = graphene.Boolean()
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
     @classmethod
@@ -183,7 +185,10 @@ class Person(Node, Debatable, graphene.ObjectType):
         if isinstance(root, cls):
             return True
 
-        return isinstance(root, (SDPerson, SDBot))
+        return isinstance(root, (SDPerson, SDBot, SDMask))
+
+    def resolve_is_anonymous(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, 'is_anonymous', False)
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
         user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
