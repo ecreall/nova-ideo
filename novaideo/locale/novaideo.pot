@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-10-11 18:58+0200\n"
+"POT-Creation-Date: 2017-10-12 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:411 ./novaideo/content/site_configuration.py:363
+#: ./novaideo/core.py:411 ./novaideo/content/site_configuration.py:372
 msgid ""
 "To add keywords, you need to separate them by commas and then tap the « Enter"
 " » key to validate your selection."
@@ -921,7 +921,7 @@ msgstr ""
 
 #: ./novaideo/content/correlation.py:103 ./novaideo/content/comment.py:168
 #: ./novaideo/views/novaideo_view_manager/contact.py:71
-#: ./novaideo/views/question_management/answer_question.py:55
+#: ./novaideo/views/question_management/answer_question.py:56
 msgid "Message"
 msgstr ""
 
@@ -937,7 +937,7 @@ msgid "Abstract"
 msgstr ""
 
 #: ./novaideo/content/correction.py:51
-#: ./novaideo/content/site_configuration.py:252 ./novaideo/content/idea.py:143
+#: ./novaideo/content/site_configuration.py:261 ./novaideo/content/idea.py:143
 #: ./novaideo/content/file.py:31 ./novaideo/content/amendment.py:234
 #: ./novaideo/content/challenge.py:136 ./novaideo/content/proposal.py:194
 #: ./novaideo/views/templates/style_picker.pt:22
@@ -961,7 +961,7 @@ msgstr ""
 #: ./novaideo/content/workspace.py:51 ./novaideo/content/idea.py:168
 #: ./novaideo/content/comment.py:161 ./novaideo/content/question.py:127
 #: ./novaideo/content/challenge.py:160
-#: ./novaideo/views/idea_management/comment_idea.py:145
+#: ./novaideo/views/idea_management/comment_idea.py:146
 msgid "Attached files"
 msgstr ""
 
@@ -1118,45 +1118,53 @@ msgstr ""
 msgid "Minimum number of evaluation Tokens allocated to a Member"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:209
+#: ./novaideo/content/site_configuration.py:206
+msgid "Users can be anonymous"
+msgstr ""
+
+#: ./novaideo/content/site_configuration.py:207
+msgid "Users can submit content anonymously."
+msgstr ""
+
+#: ./novaideo/content/site_configuration.py:218
 #: ./novaideo/content/organization.py:137
 msgid "Logo"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:211
-#: ./novaideo/content/site_configuration.py:246
+#: ./novaideo/content/site_configuration.py:220
+#: ./novaideo/content/site_configuration.py:255
 msgid "Only PNG and SVG files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:217
+#: ./novaideo/content/site_configuration.py:226
 msgid "Favicon"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:219
+#: ./novaideo/content/site_configuration.py:228
 msgid "Only ICO files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:225
+#: ./novaideo/content/site_configuration.py:234
 msgid "Theme"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:227
+#: ./novaideo/content/site_configuration.py:236
 msgid "Only CSS files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:233
+#: ./novaideo/content/site_configuration.py:242
 msgid "Activate the sharing on social networks"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:244
+#: ./novaideo/content/site_configuration.py:253
 msgid "Picture of the homepage"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:283
+#: ./novaideo/content/site_configuration.py:292
 msgid "Language"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:290
+#: ./novaideo/content/site_configuration.py:299
 #: ./novaideo/content/newsletter.py:162
 #: ./novaideo/views/novaideo_view_manager/contact.py:65
 #: ./novaideo/views/proposal_management/present_proposal.py:61
@@ -1168,78 +1176,78 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:296
+#: ./novaideo/content/site_configuration.py:305
 msgid "Template"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:305
+#: ./novaideo/content/site_configuration.py:314
 msgid "Mail id"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:311
-#: ./novaideo/content/site_configuration.py:391
+#: ./novaideo/content/site_configuration.py:320
+#: ./novaideo/content/site_configuration.py:400
 #: ./novaideo/content/smart_folder.py:124 ./novaideo/adapters/__init__.py:22
 msgid "Title"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:318
+#: ./novaideo/content/site_configuration.py:327
 msgid "language"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:326
+#: ./novaideo/content/site_configuration.py:335
 msgid "Add a new language"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:327
+#: ./novaideo/content/site_configuration.py:336
 msgid "Languages"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:336
+#: ./novaideo/content/site_configuration.py:345
 msgid "E-mail template"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:344
+#: ./novaideo/content/site_configuration.py:353
 msgid "E-mail templates"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:371
+#: ./novaideo/content/site_configuration.py:380
 msgid "Authorize the addition of keywords"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:384
+#: ./novaideo/content/site_configuration.py:393
 msgid "You must enter at least one keyword."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:392
+#: ./novaideo/content/site_configuration.py:401
 msgid "The title of the application"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:398
+#: ./novaideo/content/site_configuration.py:407
 #: ./novaideo/content/person.py:221 ./novaideo/content/smart_folder.py:135
 msgid "Locale"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:412
+#: ./novaideo/content/site_configuration.py:421
 #: ./novaideo/content/organization.py:149
 msgid "Add a new contact"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:420
+#: ./novaideo/content/site_configuration.py:429
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:123
 #: ./novaideo/views/novaideo_view_manager/analytics.py:557
 #: ./novaideo/views/question_management/see_question.py:165
 msgid "Analytics"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:431
+#: ./novaideo/content/site_configuration.py:440
 msgid "Activate the push notifications on the browser"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:438
+#: ./novaideo/content/site_configuration.py:447
 msgid "Application id"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:444
+#: ./novaideo/content/site_configuration.py:453
 msgid "REST API Key"
 msgstr ""
 
@@ -1596,7 +1604,7 @@ msgstr ""
 
 #: ./novaideo/content/question.py:95
 #: ./novaideo/views/proposal_management/publish_proposal.py:135
-#: ./novaideo/views/question_management/answer_question.py:48
+#: ./novaideo/views/question_management/answer_question.py:49
 #: ./novaideo/views/ballot_processes/referendum/vote.py:86
 msgid "Options"
 msgstr ""
@@ -1616,7 +1624,7 @@ msgstr ""
 #: ./novaideo/content/processes/question_management/definition.py:102
 #: ./novaideo/content/processes/comment_management/definition.py:50
 #: ./novaideo/content/processes/comment_management/definition.py:51
-#: ./novaideo/views/comment_management/respond.py:26
+#: ./novaideo/views/comment_management/respond.py:27
 msgid "Answer"
 msgstr ""
 
@@ -2933,7 +2941,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:316
 #: ./novaideo/views/proposal_management/create_proposal.py:203
-#: ./novaideo/views/proposal_management/create_proposal.py:238
+#: ./novaideo/views/proposal_management/create_proposal.py:237
 msgid "Create a proposal"
 msgstr ""
 
@@ -3477,8 +3485,8 @@ msgid "Comment the question"
 msgstr ""
 
 #: ./novaideo/content/processes/question_management/definition.py:101
-#: ./novaideo/views/question_management/answer_question.py:61
-#: ./novaideo/views/question_management/answer_question.py:93
+#: ./novaideo/views/question_management/answer_question.py:62
+#: ./novaideo/views/question_management/answer_question.py:96
 msgid "Answer the question"
 msgstr ""
 
@@ -3572,7 +3580,7 @@ msgid "Validate"
 msgstr ""
 
 #: ./novaideo/content/processes/question_management/definition.py:222
-#: ./novaideo/views/question_management/answer/transform_to_idea.py:32
+#: ./novaideo/views/question_management/answer/transform_to_idea.py:33
 msgid "Transform the answer into an idea"
 msgstr ""
 
@@ -3719,7 +3727,7 @@ msgstr ""
 #: ./novaideo/content/processes/challenge_management/definition.py:60
 #: ./novaideo/content/processes/challenge_management/definition.py:63
 #: ./novaideo/content/processes/challenge_management/definition.py:64
-#: ./novaideo/views/challenge_management/create_challenge.py:28
+#: ./novaideo/views/challenge_management/create_challenge.py:29
 msgid "Create a challenge"
 msgstr ""
 
@@ -4243,7 +4251,7 @@ msgstr ""
 msgid "Second on the right banner"
 msgstr ""
 
-#: ./novaideo/views/core.py:15
+#: ./novaideo/views/core.py:17
 msgid "Alert for comment"
 msgstr ""
 
@@ -4354,25 +4362,25 @@ msgstr ""
 msgid "${number} registrations found"
 msgstr ""
 
-#: ./novaideo/views/user_management/discuss.py:27
-#: ./novaideo/views/idea_management/comment_idea.py:42
+#: ./novaideo/views/user_management/discuss.py:28
+#: ./novaideo/views/idea_management/comment_idea.py:43
 msgid "Messages"
 msgstr ""
 
-#: ./novaideo/views/user_management/discuss.py:41
-#: ./novaideo/views/idea_management/comment_idea.py:170
-#: ./novaideo/views/idea_management/comment_idea.py:195
-#: ./novaideo/views/idea_management/comment_idea.py:196
+#: ./novaideo/views/user_management/discuss.py:42
+#: ./novaideo/views/idea_management/comment_idea.py:171
+#: ./novaideo/views/idea_management/comment_idea.py:198
+#: ./novaideo/views/idea_management/comment_idea.py:199
 msgid "Discuss the idea"
 msgstr ""
 
-#: ./novaideo/views/user_management/discuss.py:66
 #: ./novaideo/views/user_management/discuss.py:67
+#: ./novaideo/views/user_management/discuss.py:68
 msgid "Private discussion"
 msgstr ""
 
-#: ./novaideo/views/user_management/discuss.py:123
-#: ./novaideo/views/user_management/discuss.py:124
+#: ./novaideo/views/user_management/discuss.py:126
+#: ./novaideo/views/user_management/discuss.py:127
 msgid "General discussion"
 msgstr ""
 
@@ -5110,7 +5118,7 @@ msgstr ""
 #: ./novaideo/views/templates/small_answer_result.pt:37
 #: ./novaideo/views/templates/comment_result.pt:36
 #: ./novaideo/views/templates/amendment_result.pt:29
-#: ./novaideo/views/templates/panels/challenge.pt:42
+#: ./novaideo/views/templates/panels/challenge.pt:45
 #: ./novaideo/views/proposal_management/create_proposal.py:128
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:97
 #: ./novaideo/views/newsletter_management/templates/newsletter_history.pt:13
@@ -5302,7 +5310,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_bloc.pt:24
 #: ./novaideo/views/templates/answer_result.pt:23
 #: ./novaideo/views/templates/small_answer_result.pt:28
-#: ./novaideo/views/templates/panels/challenge.pt:36
+#: ./novaideo/views/templates/panels/challenge.pt:38
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:90
 #: ./novaideo/views/question_management/templates/header_question.pt:31
 #: ./novaideo/views/challenge_management/templates/header_challenge.pt:36
@@ -5708,40 +5716,40 @@ msgid "Please ensure that the content has not already been added!"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:9
-#: ./novaideo/views/templates/panels/challenge.pt:57
+#: ./novaideo/views/templates/panels/challenge.pt:60
 #: ./novaideo/utilities/pseudo_react.py:1818
 #: ./novaideo/utilities/pseudo_react.py:1863
 msgid "Asked question"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:10
-#: ./novaideo/views/templates/panels/challenge.pt:58
+#: ./novaideo/views/templates/panels/challenge.pt:61
 #: ./novaideo/utilities/pseudo_react.py:1820
 #: ./novaideo/utilities/pseudo_react.py:1865
 msgid "Asked questions"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:13
-#: ./novaideo/views/templates/panels/challenge.pt:61
+#: ./novaideo/views/templates/panels/challenge.pt:64
 #: ./novaideo/utilities/pseudo_react.py:1837
 #: ./novaideo/utilities/pseudo_react.py:1889
 msgid "Published idea"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:14
-#: ./novaideo/views/templates/panels/challenge.pt:62
+#: ./novaideo/views/templates/panels/challenge.pt:65
 #: ./novaideo/utilities/pseudo_react.py:1839
 #: ./novaideo/utilities/pseudo_react.py:1891
 msgid "Published ideas"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:17
-#: ./novaideo/views/templates/panels/challenge.pt:65
+#: ./novaideo/views/templates/panels/challenge.pt:68
 msgid "Published proposal"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:18
-#: ./novaideo/views/templates/panels/challenge.pt:66
+#: ./novaideo/views/templates/panels/challenge.pt:69
 msgid "Published proposals"
 msgstr ""
 
@@ -5806,11 +5814,11 @@ msgstr ""
 msgid "Duplicated ideas from this idea:"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/challenge.pt:25
+#: ./novaideo/views/templates/panels/challenge.pt:27
 msgid "The end of the challenge is planned on"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/challenge.pt:26
+#: ./novaideo/views/templates/panels/challenge.pt:28
 msgid "The challenge ended on the"
 msgstr ""
 
@@ -7788,7 +7796,7 @@ msgid "Form to compare the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/duplicate_proposal.py:26
-#: ./novaideo/views/proposal_management/duplicate_proposal.py:81
+#: ./novaideo/views/proposal_management/duplicate_proposal.py:80
 msgid "Duplicate the proposal"
 msgstr ""
 
@@ -9068,11 +9076,11 @@ msgstr ""
 msgid "Submit the idea to others"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:141
+#: ./novaideo/views/idea_management/comment_idea.py:142
 msgid "Associations"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:149
+#: ./novaideo/views/idea_management/comment_idea.py:150
 msgid "Pinned"
 msgstr ""
 
