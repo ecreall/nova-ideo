@@ -15,11 +15,11 @@
 	      <img title="${challenge.title}" alt="${challenge.title}" class="challenge-img" src="${getattr(challenge_image, 'xlarge', challenge_image).url}" width="750" height="500">
 	    </div>
 	    <div class="col-md-7 col-xs-12 col-sm-7">
-	        <h1 class="challenge-title" >
+	        <h2 class="challenge-title" >
 	        	<a href="${request.resource_url(challenge, '@@index')}">
 	        		<span class="icon ${challenge.icon}"></span> ${challenge.title}
 	        	</a>
-	        </h1>
+	        </h2>
         	<div tal:omit-tag="" tal:condition="deadline">
 		       <div tal:define="expired challenge.is_expired;"
 		            class="challenge-deadline ${expired and 'expired'}">
