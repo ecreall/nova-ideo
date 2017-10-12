@@ -9,6 +9,7 @@ from dace.descriptors import (
     SharedMultipleProperty)
 
 from novaideo.content.interface import IMask
+from novaideo.core import AnonymisationKinds
 
 
 @implementer(IMask)
@@ -30,7 +31,17 @@ class Mask(Group):
 
     @property
     def title(self):
-        return 'Anonymous'
+        default_title = 'Anonymous'
+        root = getattr(self, '__parent__', None)
+        anonymisation_kind = getattr(
+            root, 'anonymisation_kind',
+            AnonymisationKinds.anonymity)
+        if anonymisation_kind == AnonymisationKinds.anonymity:
+            return default_title
+
+        name = self.name
+        return name if name else default_title
+
 
     @property
     def first_name(self):

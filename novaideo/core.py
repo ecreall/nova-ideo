@@ -64,6 +64,23 @@ ADVERTISING_CONTAINERS = {}
 ON_LOAD_VIEWS = {}
 
 
+class AnonymisationKinds(object):
+    anonymity = 'anonymity'
+    pseudonymity = 'pseudonymity'
+
+    @classmethod
+    def get_items(cls):
+        return {
+            cls.anonymity: _('Anonymity'),
+            cls.pseudonymity: _('Pseudonymity')
+        }
+
+    @classmethod
+    def get_title(cls, item):
+        items = cls.get_items()
+        return items.get(item, None)
+
+
 class Evaluations():
     support = 'support'
     oppose = 'oppose'
