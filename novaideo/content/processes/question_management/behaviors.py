@@ -78,7 +78,7 @@ class AskQuestion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.get('anonymous', False) and mask else user
         question = appstruct['_object_data']
         root.merge_keywords(question.keywords)
@@ -342,7 +342,7 @@ class AnswerQuestion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.get('anonymous', False) and mask else user
         answer = appstruct['_object_data']
         context.addtoproperty('answers', answer)

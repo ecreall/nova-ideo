@@ -82,7 +82,7 @@ class CreateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.get('anonymous', False) and mask else user
         idea = appstruct['_object_data']
         root.addtoproperty('ideas', idea)
@@ -150,7 +150,7 @@ class CrateAndPublish(InfiniteCardinality):
             idea = result.get('newcontext', None)
             if idea:
                 user = get_current(request)
-                mask = user.get_mask(root)
+                mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
                 author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 if request.moderate_ideas:
@@ -187,7 +187,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
             idea = result.get('newcontext', None)
             if idea:
                 user = get_current(request)
-                mask = user.get_mask(root)
+                mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
                 author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 related_ideas = [idea]
@@ -279,7 +279,7 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.pop('anonymous', False) and mask else user
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
@@ -847,7 +847,7 @@ class CommentIdea(InfiniteCardinality):
             comment.state = PersistentList(['published'])
             comment.reindex()
             user = appstruct.get('user', get_current())
-            mask = user.get_mask(getSite())
+            mask = user.get_mask(getSite()) if hasattr(user, 'get_mask') else user
             author = mask if appstruct.get('anonymous', False) and mask else user
             grant_roles(user=author, roles=(('Owner', comment), ))
             if getattr(self, 'subscribe_to_channel', True):

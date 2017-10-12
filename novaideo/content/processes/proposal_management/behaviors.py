@@ -438,7 +438,7 @@ class CreateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.get('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
@@ -804,7 +804,7 @@ class DuplicateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         author = mask if appstruct.pop('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         copy_of_proposal = copy(
@@ -1421,7 +1421,7 @@ class Participate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
-        mask = user.get_mask(root)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         member = mask if appstruct.get('anonymous', False) and mask else user
 
         working_group = context.working_group
