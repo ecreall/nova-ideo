@@ -15,7 +15,7 @@ from pontus.schema import select, omit
 from novaideo.content.processes.idea_management.behaviors import DuplicateIdea
 from novaideo.content.idea import Idea, IdeaSchema
 from novaideo import _
-from ..filter import get_pending_challenges
+from novaideo.views.core import update_anonymous_schemanode, update_challenge_schemanode
 
 
 def add_file_data(file_):
@@ -46,11 +46,10 @@ class DuplicateIdeaView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
-        if 'challenge' not in self.request.content_to_manage or \
-           not len(get_pending_challenges(user)) > 0:
-            self.schema = omit(
-                self.schema, ['challenge'])
-
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
+        self.schema = update_challenge_schemanode(
+            self.request, user, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

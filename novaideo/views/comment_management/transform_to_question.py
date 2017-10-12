@@ -19,7 +19,7 @@ from novaideo.content.question import QuestionSchema, Question
 from novaideo.views.proposal_management.create_proposal import add_file_data
 from novaideo import _
 from novaideo.content.comment import Comment
-from ..filter import get_pending_challenges
+from novaideo.views.core import update_anonymous_schemanode, update_challenge_schemanode
 
 
 @view_config(
@@ -62,11 +62,10 @@ class AskQuestionView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
-        if 'challenge' not in self.request.content_to_manage or \
-           not len(get_pending_challenges(user)) > 0:
-            self.schema = omit(
-                self.schema, ['challenge'])
-
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
+        self.schema = update_challenge_schemanode(
+            self.request, user, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

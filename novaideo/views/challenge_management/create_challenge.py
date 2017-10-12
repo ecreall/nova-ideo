@@ -16,6 +16,7 @@ from novaideo.content.processes.challenge_management.behaviors import (
 from novaideo.content.challenge import ChallengeSchema, Challenge
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
+from novaideo.views.core import update_anonymous_schemanode
 
 
 @view_config(
@@ -41,6 +42,10 @@ class CreateChallengeView(FormView):
     formid = 'formcreatechallenge'
     name = 'createchallenge'
     css_class = 'panel-transparent'
+
+    def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

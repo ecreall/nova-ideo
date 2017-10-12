@@ -606,14 +606,17 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
 
         return locale
 
-    def _init_mask(self, root=None):
+    def _init_mask(self, root):
         if not self.mask:
-            root = root if root else getSite()
             mask = Mask()
             root.addtoproperty('masks', mask)
             self.setproperty('mask', mask)
 
     def get_mask(self, root=None):
+        root = root if root else getSite()
+        if not getattr(root, 'anonymisation', False):
+            return self
+
         self._init_mask(root)
         return self.mask
 

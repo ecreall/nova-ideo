@@ -30,7 +30,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import to_localized_time
 from novaideo.widget import SimpleMappingtWidget
 from novaideo import _, log
-from ..filter import get_pending_challenges
+from novaideo.views.core import update_anonymous_schemanode, update_challenge_schemanode
 
 
 def add_file_data(file_):
@@ -218,11 +218,10 @@ class CreateProposalFormView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
-        if 'challenge' not in self.request.content_to_manage or \
-           not len(get_pending_challenges(user)) > 0:
-            self.schema = omit(
-                self.schema, ['challenge'])
-
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
+        self.schema = update_challenge_schemanode(
+            self.request, user, self.schema)
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'

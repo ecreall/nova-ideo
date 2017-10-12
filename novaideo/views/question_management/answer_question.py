@@ -21,6 +21,7 @@ from novaideo.content.question import (
 from novaideo import _
 from novaideo.utilities.util import get_emoji_form
 from novaideo.views.core import ActionAnonymousView
+from novaideo.views.core import update_anonymous_schemanode
 
 
 def options_choice(options):
@@ -69,6 +70,8 @@ class AnswerQuestionFormView(FormView):
     name = 'answerQuestion'
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         options = getattr(self.context, 'options', [])
         if options:
             self.schema.get('option').widget = options_choice(options)

@@ -6,9 +6,11 @@
 import venusian
 
 from pontus.view import BasicView
+from pontus.schema import omit
 
 from novaideo import _
 from novaideo.core import ON_LOAD_VIEWS
+from .filter import get_pending_challenges
 
 
 class ActionAnonymousView(BasicView):
@@ -92,3 +94,18 @@ class asyn_component_config(object):
 
         venusian.attach(wrapped, callback, category='site_widget')
         return wrapped
+
+
+def update_anonymous_schemanode(root, schema):
+    if not getattr(root, 'anonymisation', False):
+        return omit(schema, ['anonymous'])
+
+    return schema
+
+
+def update_challenge_schemanode(request, user, schema):
+    if 'challenge' not in request.content_to_manage or \
+       not len(get_pending_challenges(user)) > 0:
+        schema = omit(schema, ['challenge'])
+
+    return schema

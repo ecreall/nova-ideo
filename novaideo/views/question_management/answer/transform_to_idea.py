@@ -20,6 +20,7 @@ from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.views.proposal_management.create_proposal import add_file_data
 from novaideo import _
 from novaideo.content.question import Answer
+from novaideo.views.core import update_anonymous_schemanode
 
 
 @view_config(
@@ -57,6 +58,8 @@ class CreateIdeaView(FormView):
         return data
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

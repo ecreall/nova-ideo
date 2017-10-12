@@ -14,6 +14,7 @@ from pontus.schema import select
 from novaideo.content.processes.comment_management.behaviors import  Respond
 from novaideo.content.comment import CommentSchema, Comment
 from novaideo import _
+from novaideo.views.core import update_anonymous_schemanode
 
 
 @view_config(
@@ -35,6 +36,8 @@ class RespondView(FormView):
                     'js_links':['novaideo:static/js/comment.js']}
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

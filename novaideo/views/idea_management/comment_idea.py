@@ -31,6 +31,7 @@ from novaideo.utilities.util import (
     generate_navbars)
 from novaideo import _, log
 from novaideo.views.core import ActionAnonymousView
+from novaideo.views.core import update_anonymous_schemanode
 
 
 COMMENT_LEVEL = 2
@@ -177,6 +178,8 @@ class CommentIdeaFormView(FormView):
     name = 'commentideaform'
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

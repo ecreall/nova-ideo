@@ -6,7 +6,9 @@
         i18n:attributes="title"></span>  
 	  <div class="row" tal:define="
 		author challenge.author;
-		author_picture getattr(author, 'picture', None);
+		is_anonymous getattr(author, 'is_anonymous', False);
+        author_picture getattr(author, 'picture', None);
+        default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
 		challenge_image challenge.image;
 		deadline getattr(challenge, 'deadline', None)">
 	    <div class="col-md-5 col-xs-12 col-sm-5">                  
@@ -28,20 +30,21 @@
 		       </div>
 		    </div>
 	        <div class="author-block">
-		      <img class="author-img img-circle" 
-		         tal:condition="author_picture is not None" 
-		         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-		      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
-		      <small style="display: inline-block;">
-		        <span i18n:translate="">Submitted by</span>
-		        <a tal:attributes="href request.resource_url(author, '@@index')"
-		          data-oid="${getattr(author, '__oid__', '')}"
-		          class="toggle-popover">
-		          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
-		        </a>
-		        <span i18n:translate="">the</span>
-		        <span tal:replace="layout.to_localized_time(challenge.created_at)"/>
-		      </small>
+				<img class="author-img img-circle" 
+			         tal:condition="author_picture is not None" 
+			         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+		    	<img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
+		        <small>
+		          <span i18n:translate="">Submitted by</span>
+		          <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
+		            ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+		          </a>
+		          <span tal:condition="is_anonymous" class="user-title">
+		            ${getattr(author, 'title', author.name)}
+    		      </span>
+	              <span i18n:translate="">the</span>
+	              <span tal:replace="layout.to_localized_time(challenge.created_at)"/>
+		        </small>
 		    </div>
 		    <div class="keywords-result">
 	          <span class="glyphicon glyphicon-tags"></span> 

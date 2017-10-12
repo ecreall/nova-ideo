@@ -182,6 +182,15 @@ class UserParamsConfigurationSchema(Schema):
     #     default=3,
     #     )
 
+    anonymisation = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Users can be anonymous'),
+        description=_('Users can submit content anonymously.'),
+        title='',
+        missing=False
+    )
+
     participants_maxi = colander.SchemaNode(
         colander.Integer(),
         title=_('Maximum number of Participants per Working Group'),

@@ -20,6 +20,7 @@ from novaideo.content.comment import CommentSchema, Comment
 from novaideo.content.interface import IPerson
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.views.idea_management.comment_idea import CommentsView
+from novaideo.views.core import update_anonymous_schemanode
 from novaideo import _
 
 
@@ -105,6 +106,8 @@ class GeneralDiscussFormView(DiscussFormView):
     behaviors = [GeneralDiscuss]
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',
