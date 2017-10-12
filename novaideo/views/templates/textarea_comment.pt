@@ -10,6 +10,10 @@
     <span class="comment-intention glyphicon glyphicon-question-sign" i18n:attributes="title" title="Intention"></span>
     <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
     <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
+    <span tal:condition="field.get_root().schema.get('anonymous')" class="comment-anonymous" i18n:attributes="title" title="Remain anonymous" >
+        <img class="anonymous-img img-on img-circle" src="${field.widget.request.static_url('novaideo:static/images/anonymous_box.png')}" width="35"/>
+        <img class="anonymous-img img-off img-circle " src="${field.widget.request.static_url('novaideo:static/images/anonymous_box_gray.png')}" width="35"/>
+    </span>
     <span class="btn btn-default comment-cancel glyphicon glyphicon-remove-circle" i18n:attributes="title" title="Cancel"></span>
     <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
   </div>

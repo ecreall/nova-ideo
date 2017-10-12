@@ -31,6 +31,7 @@ from novaideo.utilities.util import (
     generate_navbars)
 from novaideo import _, log
 from novaideo.views.core import ActionAnonymousView
+from novaideo.views.core import update_anonymous_schemanode
 
 
 COMMENT_LEVEL = 2
@@ -170,13 +171,15 @@ class CommentIdeaFormView(FormView):
     title = _('Discuss the idea')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
-                                  omit=('associated_contents',)),
-                    ['comment', 'intention', 'files', 'associated_contents'])
+                                  omit=('associated_contents', 'anonymous')),
+                    ['comment', 'intention', 'files', 'associated_contents', 'anonymous'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name = 'commentideaform'
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

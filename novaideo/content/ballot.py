@@ -542,6 +542,27 @@ class Report(VisualisableElement, Entity):
 
         return self.ballottype.get_electeds(self.result)
 
+    def he_voted(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.voters or (mask and mask in self.voters)
+
+    def is_elector(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.electors or (mask and mask in self.electors)
+
+    def get_elector(self, user):
+        if not self.is_elector(user):
+            return None
+
+        if user in self.electors:
+            return user
+        
+        mask = getattr(user, 'mask', None)
+        if mask and mask in self.electors:
+            return mask
+
+        return None
+
 
 @content(
     'ballotbox',

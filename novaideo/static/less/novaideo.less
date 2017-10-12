@@ -1,3 +1,19 @@
+.conf-form-anonymisation-kind{
+  margin-left: 20px;
+  margin-bottom: 25px; 
+}
+
+.checkbox-anonymous{
+  margin-top: 15px;  
+}
+
+.anonymous-img{
+  margin-top: -10px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 7px grey;
+  display: inline-block!important;
+}
+
 .connector-item .object-menu .dropdown-toggle>span{
   color: white
 }
@@ -248,7 +264,6 @@ body{
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
   background-color: #54902a;
-  float: right;
 }
 
 .challenge-deadline.expired {
@@ -432,13 +447,14 @@ body{
 .challenge-container .keywords-result,
 .challenge-container .challenge-description {
   margin-left: 40px;
-  color: #222;
+   color: #676767;
 }
 
-.challenge-container .keywords-result a,
+.challenge-container .keywords-result .user-title,
 .challenge-container .author-block,
-.challenge-container .author-block a {
-  color: #222;
+.challenge-container .keywords-result a,
+.challenge-container .author-block .user-title {
+  color: #676767;
 }
 
 .challenge-container .keywords-result a:hover {
@@ -475,11 +491,11 @@ body{
 }
 
 .challenge-container .novaideo-contents span {
-  color: #ef6e18;
+  color: #3f6da6;
 }
 
 .challenge-container .challenge-title {
-  margin-top: 15px;
+  margin-top: 5px;
   color: #222222;
 }
 
@@ -490,16 +506,18 @@ body{
 .challenge-header .challenge-img {
   box-shadow: 0 1px 35px white;
   border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+  border: 1px solid rgba(146, 146, 146, 0.38);
 }
 
 .challenge-img {
   display: block;
+  background-color: white;
   height: auto;
   width: 100%;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
-  border: 1px solid #929292;
+  border-bottom: 1px solid rgba(146, 146, 146, 0.24);
 }
 
 .search-item-bloc .media-challenge {
@@ -3828,7 +3846,7 @@ ins {
   margin-top: 5px;
 }
 
-.author-block a {
+.author-block .user-title {
   color: gray;
   font-weight: bold;
 }
@@ -3888,7 +3906,6 @@ ins {
 }
 
 .media-bloc.media-challenge {
-  border-top: 5px solid @challenge-color !important;
   border-left: transparent !important;
 }
 
@@ -4492,12 +4509,21 @@ small .proposal-support .token {
   text-decoration: none;
 }
 
+.ajax-form{
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 15px;
+}
+
 .ajax-form .control-form-button {
   color: gray;
   cursor: pointer;
   display: inline-block;
   font-size: 15px;
   margin-bottom: 10px;
+}
+
+.ajax-form .control-form-button > span{
+  margin-right: 10px;
 }
 
 .ajax-form form {
@@ -4966,6 +4992,7 @@ span.circle {
 .view-filter-container:not(.block) .filter-form .ajax-form {
   width: 48%;
   display: inline-block;
+  border-top: none
 }
 
 .deform-seq-container .object-well.ajax-form {
@@ -5112,7 +5139,6 @@ span.circle {
 @media (max-width: 767px) {
   .challenge-deadline {
     display: block;
-    float: none;
   }
 
   .result-container {

@@ -31,7 +31,8 @@ class Vote(VoteBase):
         votefactory = report.ballottype.vote_factory
         vote_instance = votefactory(vote_result)
         ballot.ballot_box.addtoproperty('votes', vote_instance)
-        report.addtoproperty('voters', user)
+        elector = report.get_elector(user)
+        report.addtoproperty('voters', elector)
         return {'vote_uid': vote_instance.uid,
                 'ballot': ballot}
 

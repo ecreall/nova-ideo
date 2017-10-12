@@ -48,6 +48,7 @@ from novaideo.file import Image
 from novaideo.utilities.util import (
     text_urls_format, get_files_data)
 from novaideo.content import get_file_widget
+from novaideo.content.idea import anonymous_widget
 
 
 @colander.deferred
@@ -186,6 +187,16 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         description=_("If your challenge is punctual, you can add a deadline for participation."),
         missing=None
     )
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=anonymous_widget,
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
+        )
 
 
 @content(

@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 import colander
 from BTrees.OOBTree import OOBTree
 from persistent.dict import PersistentDict
@@ -44,6 +45,7 @@ from novaideo.core import (
     Debatable,
     can_access)
 from novaideo.content import get_file_widget
+from novaideo.content.idea import anonymous_widget
 from novaideo.content.comment import CommentSchema
 from novaideo.utilities.util import (
     text_urls_format, truncate_text, to_localized_time,
@@ -123,6 +125,16 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
+        )
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=anonymous_widget,
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
         )
 
 
@@ -276,7 +288,17 @@ class Question(VersionableEntity, DuplicableEntity,
 
 class AnswerSchema(CommentSchema):
     """Schema for Answer"""
-    pass
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(
+            item_css_class="comment-form-group comment-anonymous-form"),
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
+        )
 
 
 @content(

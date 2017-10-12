@@ -49,6 +49,7 @@ from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
+from novaideo.content.mask import Mask
 from novaideo.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 
@@ -261,6 +262,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                  'small': 'novaideo:views/templates/small_person_result.pt',
                  'popover': 'novaideo:views/templates/person_popover.pt',
                  'card': 'novaideo:views/templates/person_card.pt',}
+    default_picture = 'novaideo:static/images/user100.png'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')
@@ -274,6 +276,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     folders = SharedMultipleProperty('folders', 'author')
     questions = SharedMultipleProperty('questions', 'author')
     challenges = SharedMultipleProperty('challenges', 'author')
+    mask = SharedUniqueProperty('mask', 'member')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
@@ -331,7 +334,6 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
             self.len_allocated_tokens.setdefault(evaluation_type, 0)
             self.len_allocated_tokens[evaluation_type] -= 1
 
-    
     def add_reserved_token(self, obj):
         obj_oid = get_oid(obj)
         if obj_oid not in self.reserved_tokens:
@@ -405,9 +407,33 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.title = getattr(self, 'first_name', '') + ' ' + \
                      getattr(self, 'last_name', '')
 
+    def get_questions(self, user):
+        if user is self:
+            return self.questions + getattr(self.mask, 'questions', [])
+        
+        return self.questions
+
+    def get_ideas(self, user):
+        if user is self:
+            return self.ideas + getattr(self.mask, 'ideas', [])
+        
+        return self.ideas
+
+    def get_working_groups(self, user):
+        if user is self:
+            return self.working_groups + getattr(self.mask, 'working_groups', [])
+        
+        return self.working_groups
+
     @property
     def proposals(self):
         return [wg.proposal for wg in self.working_groups]
+
+    def get_proposals(self, user):
+        if user is self:
+            return self.proposals + getattr(self.mask, 'proposals', [])
+        
+        return self.proposals
 
     @property
     def contacts(self):
@@ -423,6 +449,12 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                              'votes for amendments'])]
         return result
 
+    def get_participations(self, user):
+        if user is self:
+            return self.participations + getattr(self.mask, 'participations', [])
+        
+        return self.participations
+
     @property
     def contents(self):
         result = [i for i in list(self.ideas) if i is i.current_version]
@@ -431,9 +463,21 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         result.extend(self.challenges)
         return result
 
+    def get_contents(self, user):
+        if user is self:
+            return self.contents + getattr(self.mask, 'contents', [])
+        
+        return self.contents
+
     @property
     def active_working_groups(self):
         return [p.working_group for p in self.participations]
+
+    def get_active_working_groups(self, user):
+        if user is self:
+            return self.active_working_groups + getattr(self.mask, 'active_working_groups', [])
+        
+        return self.active_working_groups
 
     @property
     def is_published(self):
@@ -492,9 +536,13 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         alert_keys_index = novaideo_catalog['alert_keys']
         alert_exclude_keys_index = novaideo_catalog['alert_exclude_keys']
         object_provides_index = dace_catalog['object_provides']
+        exclude = [str(get_oid(self))]
+        if self.mask:
+            exclude.append(str(get_oid(self.mask)))
+
         query = object_provides_index.any([IAlert.__identifier__]) & \
             alert_keys_index.any(self.get_alerts_keys()) & \
-            alert_exclude_keys_index.notany([str(get_oid(self))])
+            alert_exclude_keys_index.notany(exclude)
         return query.execute()
 
     @property
@@ -515,6 +563,9 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
 
     def get_alerts_keys(self):
         result = ['all', str(get_oid(self))]
+        if self.mask:
+            result.append(str(get_oid(self.mask)))
+
         return result
 
     def get_alerts(self, alerts=None, kind=None,
@@ -542,6 +593,9 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if self.organization:
             groups.append(self.organization)
 
+        if self.mask:
+            groups.append(self.mask)
+
         return groups
 
     @property
@@ -551,6 +605,20 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
             locale = getSite(self).locale
 
         return locale
+
+    def _init_mask(self, root):
+        if not self.mask:
+            mask = Mask()
+            root.addtoproperty('masks', mask)
+            self.setproperty('mask', mask)
+
+    def get_mask(self, root=None):
+        root = root if root else getSite()
+        if not getattr(root, 'anonymisation', False):
+            return self
+
+        self._init_mask(root)
+        return self.mask
 
 
 @content(

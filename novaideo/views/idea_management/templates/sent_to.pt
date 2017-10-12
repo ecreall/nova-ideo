@@ -18,14 +18,14 @@
           <span i18n:translate="">The content has been sent to:</span>
           <div class="working-group-section">
             <tal:loop repeat="m platform_members">
-                      <a tal:attributes="href request.resource_url(m, '@@index')"
-                        tal:define="picture getattr(m, 'picture', None);
-                                    profil_picture getattr(picture, 'profil', None)">
-                        <img class="author-img img-circle" 
-                          tal:condition="profil_picture is not None"
-                           tal:attributes="src profil_picture.url"  width="25"/>
-                        <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
-                        ${getattr(m, 'title', m.name)}</a>
+              <a tal:attributes="href request.resource_url(m, '@@index')"
+                tal:define="picture getattr(m, 'picture', None);
+                            profil_picture getattr(picture, 'profil', None)">
+                <img class="author-img img-circle" 
+                  tal:condition="profil_picture is not None"
+                   tal:attributes="src profil_picture.url"  width="25"/>
+                <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                ${getattr(m, 'title', m.name)}</a>
             </tal:loop>
         </div>
       </div>

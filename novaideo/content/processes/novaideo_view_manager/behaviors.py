@@ -73,7 +73,8 @@ def seemy_roles_validation(process, context):
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    contents = [o for o in getattr(user, 'contents', [])]
+    contents = user.get_contents(user) \
+        if hasattr(user, 'get_contents') else []
     return contents and global_user_processsecurity()
 
 
@@ -86,7 +87,9 @@ class SeeMyContents(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        contents = [o for o in getattr(user, 'contents', [])
+        contents = user.get_contents(user) \
+            if hasattr(user, 'get_contents') else []
+        contents = [o for o in contents
                     if not hasattr(o, 'is_managed') or
                     o.is_managed(request.root)]
         return len(contents)
@@ -125,8 +128,9 @@ def seemypa_processsecurity_validation(process, context):
     user = get_current()
     if not context.manage_proposals:
         return False
-
-    return getattr(user, 'participations', []) and \
+    participations = user.get_participations(user) \
+        if hasattr(user, 'get_participations') else []
+    return participations and \
                    global_user_processsecurity()
 
 
@@ -139,7 +143,9 @@ class SeeMyParticipations(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        return len(getattr(user, 'participations', []))
+        participations = user.get_participations(user) \
+            if hasattr(user, 'get_participations') else []
+        return len(participations)
 
     def start(self, context, request, appstruct, **kw):
         return {}

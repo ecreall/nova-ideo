@@ -1,3 +1,20 @@
+.comment-preview.anonymous .author-title:not(.author-title-anonymous),
+.comment-preview.anonymous .author-img:not(.author-img-anonymous),
+.comment-preview:not(.anonymous) .author-title.author-title-anonymous,
+.comment-preview:not(.anonymous) .author-img.author-img-anonymous{
+  display: none !important
+}
+
+.comment-anonymous:not(.active) .img-off,
+.comment-anonymous.active .img-on{
+  display: inline-block !important
+}
+
+.comment-anonymous:not(.active) .img-on,
+.comment-anonymous.active .img-off{
+  display: none !important
+}
+
 .comment-data > img {
   margin-right: 9px;
   margin-top: -5px;
@@ -164,9 +181,11 @@ form.answerform {
 }
 
 .comment-textarea-actions .comment-emoji {
-  font-size: 26px;
-  vertical-align: middle;
-  margin-top: -6px;
+  font-size: 23px !important;
+}
+
+.comment-textarea-actions .comment-anonymous img{
+  margin-top: -16px !important  
 }
 
 .commentform .emoji-container-input .emoji-groups {
@@ -229,6 +248,10 @@ form.answerform {
 .comment-textarea-container .comment-textarea-actions > span {
   cursor: pointer;
   color: #9e9ea6;
+  z-index: 0;
+  font-size: 20px;
+  margin-top: -15px;
+  vertical-align: middle!important;
 }
 
 .comment-textarea-container .comment-textarea-actions span.comment-submit {
@@ -265,10 +288,6 @@ form.answerform {
 
 .comment-textarea-container .comment-textarea-actions > span:not(.btn):hover {
   color: @brand-primary;
-}
-
-.comment-textarea-container .comment-textarea-actions > span {
-  z-index: 0;
 }
 
 .commentform .comment-form-group:not(.comment-textarea),
@@ -458,7 +477,8 @@ ul.commentulorigin:last-child {
   color: gray;
 }
 
-.comment-author > a {
+.comment-author > a,
+.comment-author > .author-title {
   color: #333;
   font-weight: 800;
   font-size: 16px;

@@ -104,13 +104,15 @@ class Respond(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        anonymous = appstruct.get('anonymous', False)
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         comment.format(request)
         user = appstruct.get('user', get_current())
-        comment.setproperty('author', user)
+        author = user if not anonymous else user.get_mask(root)
+        comment.setproperty('author', author)
         comment.state = PersistentList(['published'])
-        grant_roles(user=user, roles=(('Owner', comment), ))
+        grant_roles(user=author, roles=(('Owner', comment), ))
         content = comment.subject
         channel = comment.channel
         is_discuss = channel.is_discuss()
@@ -121,7 +123,7 @@ class Respond(InfiniteCardinality):
 
         if appstruct.get('associated_contents', []):
             comment.set_associated_contents(
-                appstruct['associated_contents'], user)
+                appstruct['associated_contents'], author)
 
         if appstruct.get('alert', True):
             author = getattr(content, 'author', None)
@@ -131,12 +133,15 @@ class Respond(InfiniteCardinality):
             if user in authors:
                 authors.remove(user)
 
+            if author in authors:
+                authors.remove(author)
+
             if comment_author in authors:
                 authors.remove(comment_author)
 
-            comment_kind = 'general_discuss' if not channel.get_subject(user) \
+            comment_kind = 'general_discuss' if not channel.get_subject(author) \
                 else 'discuss' if is_discuss else 'comment'
-            author_data = get_user_data(user, 'author', request)
+            author_data = get_user_data(author, 'author', request)
             alert_data = get_entity_data(comment, 'comment', request)
             alert_data.update(author_data)
             alert('internal', [root], authors,
@@ -161,7 +166,7 @@ class Respond(InfiniteCardinality):
                 alert('email', [root.get_site_sender()], [user_to_alert.email],
                       subject=subject, body=message)
 
-            if comment_author is not user:
+            if comment_author is not user and comment_author is not author:
                 alert('internal', [root], [comment_author],
                       internal_kind=InternalAlertKind.comment_alert,
                       subjects=[channel], is_respons=True,
@@ -214,7 +219,7 @@ class Edit(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.edited = True
-        user = get_current()
+        user = context.author
         if appstruct.get('associated_contents', []):
             context.set_associated_contents(
                 appstruct['associated_contents'], user)

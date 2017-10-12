@@ -9,7 +9,7 @@
       <div>
         <h4 class="content-title content-title-sm"><a tal:attributes="href url">${content.title} </a></h4>
         <div class="object-description object-description-sm">
-          <small><span i18n:translate="">(By</span> <a tal:attributes="href request.resource_url(content.author, '@@index')">${((content.author is current_user) and 'Vous') or getattr(content.author, 'title', content.author.name)}</a><span i18n:translate="">, the </span> <span tal:replace="layout.to_localized_time(content.created_at, date_only=True)"/></small>)</div>
+          <small><span i18n:translate="">(By</span> <a tal:attributes="href request.resource_url(content.author, '@@index') if not is_anonymous else '#'" tal:define="author content.author; is_anonymous getattr(author, 'is_anonymous', False)">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a><span i18n:translate="">, the </span> <span tal:replace="layout.to_localized_time(content.created_at, date_only=True)"/></small>)</div>
         
             <div tal:condition="'correlationaction' in content_dict"  id="correlationaction">
                 <div tal:omit-tag="" tal:define="correlationaction content_dict['correlationaction']">

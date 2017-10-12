@@ -73,7 +73,9 @@ class SeeMyContentsView(BasicView):
             source=source)
 
     def _get_content_ids(self, user):
-        return [get_oid(o) for o in getattr(user, 'contents', [])]
+        contents = user.get_contents(user) \
+            if hasattr(user, 'get_contents') else []
+        return [get_oid(o) for o in contents]
 
     def update(self):
         self.execute(None)

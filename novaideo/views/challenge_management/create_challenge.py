@@ -16,6 +16,7 @@ from novaideo.content.processes.challenge_management.behaviors import (
 from novaideo.content.challenge import ChallengeSchema, Challenge
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
+from novaideo.views.core import update_anonymous_schemanode
 
 
 @view_config(
@@ -26,7 +27,7 @@ from novaideo import _
 class CreateChallengeView(FormView):
 
     title = _('Create a challenge')
-    schema = select(ChallengeSchema(factory=Challenge, editable=True),
+    schema = select(ChallengeSchema(factory=Challenge, editable=True, omit=('anonymous',)),
                     ['title',
                      'description',
                      'keywords',
@@ -35,11 +36,16 @@ class CreateChallengeView(FormView):
                      'is_restricted',
                      'invited_users',
                      'deadline',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [CrateAndPublish, CreateChallenge, Cancel]
     formid = 'formcreatechallenge'
     name = 'createchallenge'
     css_class = 'panel-transparent'
+
+    def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

@@ -104,8 +104,11 @@ class DuplicateAmendment(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
+        proposal = context.proposal
+        working_group = proposal.working_group
+        author = working_group.get_member(user)
         copy_of_amendment = copy(context,
-                                 (context.proposal, 'amendments'),
+                                 (proposal, 'amendments'),
                                  omit=('created_at',
                                        'modified_at',
                                        'explanations'))
@@ -114,19 +117,19 @@ class DuplicateAmendment(InfiniteCardinality):
             copy_of_amendment.text)
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
-        copy_of_amendment.setproperty('author', user)
+        copy_of_amendment.setproperty('author', author)
         localizer = request.localizer
         copy_of_amendment.title = localizer.translate(
-            _('Amended version ')) + str(getattr(context.proposal,
+            _('Amended version ')) + str(getattr(proposal,
                                          '_amendments_counter', 1))
-        grant_roles(user=user, roles=(('Owner', copy_of_amendment), ))
+        grant_roles(user=author, roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.text_diff = get_text_amendment_diff(
-            context.proposal, copy_of_amendment)
+            proposal, copy_of_amendment)
         copy_of_amendment.reindex()
-        context.proposal._amendments_counter = getattr(
-            context.proposal, '_amendments_counter', 1) + 1
+        proposal._amendments_counter = getattr(
+            proposal, '_amendments_counter', 1) + 1
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], user))
+        request.registry.notify(ActivityExecuted(self, [context], author))
         return {'newcontext': copy_of_amendment}
 
     def redirect(self, context, request, **kw):
@@ -193,14 +196,18 @@ class EditAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
+        proposal = context.proposal
+        working_group = proposal.working_group
+        author = working_group.get_member(user)
         context.set_data(appstruct)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
-            context.proposal, context)
+            proposal, context)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -234,13 +241,16 @@ class ExplanationAmendment(InfiniteCardinality):
     state_validation = exp_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        working_group = context.proposal.working_group
+        author = working_group.get_member(user)
         context.state.append('explanation')
         explanations, text_diff = get_text_amendment_diff_explanation(
             context, request, self.process)
         context.explanations = PersistentDict(explanations)
         context.text_diff = text_diff
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -373,14 +383,14 @@ class SubmitAmendment(InfiniteCardinality):
         }
         return data
 
-    def _add_sub_amendment(self, context, request, group):
+    def _add_sub_amendment(self, context, request, group, author):
         data = self._get_explanation_data(context, group)
         amendment = Amendment()
         amendment.set_data(data)
         context.proposal.addtoproperty('amendments', amendment)
         amendment.state.append('submitted')
-        grant_roles(roles=(('Owner', amendment), ))
-        amendment.setproperty('author', get_current())
+        grant_roles(user=author, roles=(('Owner', amendment), ))
+        amendment.setproperty('author', author)
         explanations = sorted(group['explanations'], key=lambda e: e['oid'])
         for index, explanation in enumerate(explanations):
             oid = index + 1
@@ -394,6 +404,10 @@ class SubmitAmendment(InfiniteCardinality):
         amendment.reindex()
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        proposal = context.proposal
+        working_group = context.proposal.working_group
+        author = working_group.get_member(user)
         single_amendment = appstruct['single_amendment']
         groups = []
         if single_amendment:
@@ -430,7 +444,7 @@ class SubmitAmendment(InfiniteCardinality):
         else:
             for group in groups:
                 if group['explanations']:
-                    self._add_sub_amendment(context, request, group)
+                    self._add_sub_amendment(context, request, group, author)
 
             context.state.append('archived')
 
@@ -438,10 +452,10 @@ class SubmitAmendment(InfiniteCardinality):
         context.reindex()
         not_published_ideas.extend(context)
         request.registry.notify(ActivityExecuted(
-            self, not_published_ideas, get_current()))
-        alert('internal', [request.root], context.proposal.working_group.members,
+            self, not_published_ideas, author))
+        alert('internal', [request.root], working_group.members,
               internal_kind=InternalAlertKind.working_group_alert, alert_kind='new_amendments',
-              subjects=[context.proposal])
+              subjects=[proposal])
         return {}
 
     def redirect(self, context, request, **kw):

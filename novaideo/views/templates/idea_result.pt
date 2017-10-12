@@ -5,25 +5,32 @@
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  author object.author;
+                 is_anonymous getattr(author, 'is_anonymous', False);
+                 author_picture getattr(author, 'picture', None);
+                 default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
                  files object.get_attached_files_data();
                  len_files len(files);
                  oid object.__oid__;
                  examined 'examined' in object.state;
                  support_condition request.support_ideas and 'published' in object.state;
                  challenge getattr(object, 'challenge', None)">
-  <div class="media-body media-idea" tal:define="author_picture getattr(author, 'picture', None)">
+  <div class="media-body media-idea">
     <div class="author-block">
       <img class="author-img img-circle" 
          tal:condition="author_picture is not None" 
          tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
       <small>
         <span i18n:translate="">Submitted by</span>
-        <a tal:attributes="href request.resource_url(author, '@@index')"
-          data-oid="${getattr(author, '__oid__', '')}"
-          class="toggle-popover">
-          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        <a tal:condition="not is_anonymous"
+           class="user-title toggle-popover"
+           data-oid="${getattr(author, '__oid__', '')}"
+           tal:attributes="href request.resource_url(author, '@@index')">
+              ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
         </a>
+        <span tal:condition="is_anonymous" class="user-title">
+          ${getattr(author, 'title', author.name)}
+        </span>
         <span i18n:translate="">the</span>
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>

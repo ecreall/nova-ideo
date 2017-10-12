@@ -1,0 +1,21 @@
+<div class="checkbox checkbox-anonymous">
+  <label for="${field.oid}">
+    <input tal:define="name name|field.name;
+                       true_val true_val|field.widget.true_val;
+                       css_class css_class|field.widget.css_class;
+                       style style|field.widget.style;
+                       oid oid|field.oid"
+           type="checkbox"
+           name="${name}" value="${true_val}"
+           id="${oid}"
+           tal:attributes="checked cstruct == true_val;
+                           class css_class;
+                           style style;" />
+
+    <img class="anonymous-img img-circle" src="${field.widget.request.static_url('novaideo:static/images/anonymous_box.png')}" width="35"/>
+    <span tal:condition="hasattr(field, 'schema') and hasattr(field.schema, 'label')"
+          tal:replace="field.schema.label" class="checkbox-label" >
+    </span>
+
+  </label>                              
+</div>

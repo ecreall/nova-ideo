@@ -49,7 +49,8 @@ class ConfigureSiteView(FormView):
     formid = 'formconfiguresite'
     name = 'configuresite'
     requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/js/contact_management.js']}
+                    'js_links': ['novaideo:static/js/contact_management.js',
+                                 'novaideo:static/js/site_conf.js']}
     css_class = 'panel-transparent'
 
     def default_data(self):

@@ -4,7 +4,6 @@
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 author object.author;
                  files object.get_attached_files_data();
                  len_files len(files);
                  oid object.__oid__;
@@ -13,7 +12,7 @@
                  examined 'examined' in object.state;
                  submitted request.support_proposals and 'submitted_support' in object.state;
                  challenge getattr(object, 'challenge', None)">
-  <div class="media-body media-proposal media-bloc" tal:define="author_picture getattr(author, 'picture', None)">
+  <div class="media-body media-proposal media-bloc">
     <div class="wg-block">
         <h5>
           <span class="icon novaideo-icon icon-wg"></span> 
