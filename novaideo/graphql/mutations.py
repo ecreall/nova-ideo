@@ -26,6 +26,7 @@ class CreateIdea(graphene.Mutation):
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
@@ -34,7 +35,7 @@ class CreateIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
@@ -56,9 +57,11 @@ class CreateIdea(graphene.Mutation):
             CreateIdea.action_id, args)
         new_idea = None
         if action:
+            anonymous = args.pop('anonymous', False)
             new_idea = IdeaClass(**args)
             appstruct = {
-                '_object_data': new_idea
+                '_object_data': new_idea,
+                'anonymous': anonymous
             }
             action.execute(context, request, appstruct)
         else:
@@ -76,6 +79,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
         # the Upload object type deserialization currently doesn't work,
         # it fails silently, so we actually get a list of None.
         # So if we uploaded 3 files, we get attached_files = [None, None, None]
@@ -91,7 +95,7 @@ class CreateAndPublishIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
@@ -113,9 +117,11 @@ class CreateAndPublishIdea(graphene.Mutation):
             CreateAndPublishIdea.action_id, args)
         new_idea = None
         if action:
+            anonymous = args.pop('anonymous', False)
             new_idea = IdeaClass(**args)
             appstruct = {
-                '_object_data': new_idea
+                '_object_data': new_idea,
+                'anonymous': anonymous
             }
             action.execute(context, request, appstruct)
         else:
@@ -223,6 +229,7 @@ class CommentObject(graphene.Mutation):
         action = graphene.String()
         comment = graphene.String()
         attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
         # the Upload object type deserialization currently doesn't work,
         # it fails silently, so we actually get a list of None.
         # So if we uploaded 3 files, we get attached_files = [None, None, None]
@@ -237,7 +244,7 @@ class CommentObject(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         comment_schema = select(
-            CommentSchema(), ['comment', 'files'])
+            CommentSchema(), ['comment', 'files', 'anonymous'])
         args = dict(args)
         action_id = args.pop('action')
         context_oid = args.pop('context')
@@ -263,9 +270,11 @@ class CommentObject(graphene.Mutation):
             action_id, args)
         new_comment = None
         if action:
+            anonymous = args.get('anonymous', False)
             new_comment = CommentClass(**args)
             appstruct = {
-                '_object_data': new_comment
+                '_object_data': new_comment,
+                'anonymous': anonymous
             }
             action.execute(context, request, appstruct)
         else:

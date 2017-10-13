@@ -78,6 +78,7 @@ class Root(Node, Debatable, graphene.ObjectType):
 
     keywords = graphene.List(graphene.String)
     can_add_keywords = graphene.Boolean()
+    anonymisation = graphene.Boolean()
 
 
 class Action(Node, graphene.ObjectType):
@@ -191,7 +192,9 @@ class Person(Node, Debatable, graphene.ObjectType):
         return getattr(self, 'is_anonymous', False)
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
+        contents = self.get_contents(context.user) \
+            if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
+        user_ideas = [get_oid(o) for o in contents]
         oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
 
