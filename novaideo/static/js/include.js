@@ -1,3 +1,5 @@
+const resources_version = '2'
+
 var includejs_resources = []
 
 var includejs_resources_loaded = false
@@ -13,14 +15,15 @@ function init_resource_loader() {
 }
 
 function includejs(url, callback) {
-  window._lload(url, callback)
+  var resource_url = url+'?v='+resources_version
+  window._lload(resource_url, callback)
 }
 
 function includecss(url, callback) {
   var link = document.createElement("link")
   link.type = "text/css"
   link.rel = "stylesheet"
-  link.href = url
+  link.href = url+'?v='+resources_version
   document.getElementsByTagName("head")[0].appendChild(link)
   callback()
 }
