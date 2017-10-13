@@ -1405,6 +1405,11 @@ class Participate(InfiniteCardinality):
     processsecurity_validation = participate_processsecurity_validation
     state_validation = participate_state_validation
 
+    @property
+    def style_interaction_type(self):
+        root = getSite()
+        return 'modal' if getattr(root, 'anonymisation', False) else 'direct'
+
     def _send_mail_to_user(self, subject_template,
                            message_template, user,
                            context, request):
