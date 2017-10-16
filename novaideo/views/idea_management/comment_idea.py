@@ -30,8 +30,7 @@ from novaideo.utilities.util import (
     date_delta, generate_listing_menu, ObjectRemovedException,
     generate_navbars)
 from novaideo import _, log
-from novaideo.views.core import ActionAnonymousView
-from novaideo.views.core import update_anonymous_schemanode
+from novaideo.views.core import ActionAnonymousView, update_anonymous_schemanode
 
 
 COMMENT_LEVEL = 2

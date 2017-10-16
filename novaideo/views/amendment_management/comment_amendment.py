@@ -17,7 +17,7 @@ from novaideo.views.idea_management.comment_idea import (
     CommentsView as CommentsIdeaView)
 from novaideo.content.amendment import Amendment
 from novaideo import _
-
+from novaideo.views.core import update_anonymous_schemanode
 
 class CommentsView(CommentsIdeaView):
     validators = [CommentAmendment.get_validator()]
@@ -31,6 +31,8 @@ class CommentAmendmentFormView(CommentIdeaFormView):
     name = 'commentamendmentform'
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',
