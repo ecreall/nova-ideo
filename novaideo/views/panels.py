@@ -173,9 +173,6 @@ class UserNavBarPanel(object):
         if self.request.support_ideas or self.request.support_proposals:
             navbar_actions.append(SeeMySupports)
 
-        if self.request.support_ideas or self.request.support_proposals:
-            self.navbar_actions.append(SeeMySupports)
-
         actions_url = OrderedDict()
         for actionclass in navbar_actions:
             process_id, action_id = tuple(

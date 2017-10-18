@@ -114,15 +114,15 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                     params['current_user'] = getattr(request.user, '__oid__', '')
                     try:
                         _messages = operation(client, **params)
-                        for client, _events in _messages.items():
-                            messages.setdefault(client, [])
-                            messages[client].extend(_events)
+                        for client_, _events in _messages.items():
+                            messages.setdefault(client_, [])
+                            messages[client_].extend(_events)
                     except Exception:
                         pass
 
-        for client, events in messages.items():
+        for client_, events in messages.items():
             msg = json.dumps(events)
-            client.sendMessage(msg.encode('utf8'))
+            client_.sendMessage(msg.encode('utf8'))
 
     def event_channel_opened(
         self, client, channel_oid, **kwargs):
@@ -148,6 +148,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         request = kwargs.get('request')
         current_user = request.user
         current_user_oid = kwargs.get('current_user')
+        is_anonymous = kwargs.get('is_anonymous', False)
         channel = get_obj(int(channel_oid))
         messages = {}
         for client_ in self.clients:
@@ -164,7 +165,8 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                         'params': {
                             'channel_oid': str(channel_oid),
                             'user_oid': str(current_user_oid),
-                            'user_name': current_user.first_name
+                            'user_name': current_user.first_name if not is_anonymous else \
+                                getattr(current_user.mask, 'title', 'Anonymous')
                         }
                     }]
                     messages[client_] = events
@@ -176,6 +178,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         request = kwargs.get('request')
         current_user_oid = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
+        is_anonymous = kwargs.get('is_anonymous', False)
         messages = {}
         for client_ in self.clients:
             if client_ != client:

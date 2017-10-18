@@ -461,8 +461,10 @@ function update_sidebar_action() {
         var container_body = $(target.find(">.container-body").first())
         var wrapped = _wrap_action_body(action, action_body)
         var current_item = null
+        var item = null
         if (closed) {
           container_body.html(wrapped)
+          item = wrapped
         } else {
           current_item = $(
             container_body.find("#sidebar-" + action.attr("id") + "")
@@ -475,6 +477,7 @@ function update_sidebar_action() {
               container_body.find("#sidebar-" + action.attr("id") + "")
             )
           }
+          item = current_item
         }
         _update_sidebar_nav_items(container_body)
         if (current_item) {

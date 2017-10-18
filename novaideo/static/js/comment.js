@@ -477,6 +477,12 @@ $(document).on("submit", ".respondform", function(event) {
           try {
             deform.processCallbacks()
           } catch (err) {}
+          $(document).trigger({
+            type: 'answer-added',
+            comment_oid: data.comment_oid,
+            comment_parent_oid: data.comment_parent_oid,
+            channel_oid: data.channel_oid,
+            context_oid: data.context_oid})
         } else {
           alert_component({
             alert_msg: novaideo_translate("Your comment is not integrated"),

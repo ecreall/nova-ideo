@@ -130,7 +130,7 @@ function update_typing_message(messages_container){
       return '<strong>'+$(this).data("name")+'</strong> ';
     })).join();
     var message = users.length>1? novaideo_translate("are typing a message"): novaideo_translate("is typing a message");
-    typing_message = '<span class="typing-users-container"><span class="typing-users">'+typing_message+'</span> '+message+' <i class="ion-more typing-icon"></i></span>';
+    typing_message = '<span class="typing-users-container"><span class="typing-users">'+typing_message+'</span> <span class="typing-message">'+message+'</span> <i class="ion-more typing-icon"></i></span>';
   }
   var current_message_container = messages_container.find('.typing-users-container');
   if(current_message_container.length>0){
@@ -248,14 +248,14 @@ NovaIdeoWS.on('edit_comment', function(params){
 
 NovaIdeoWS.on('new_idea', function(params){
    var idea_id = params.id;
-   var home_component = $('.async-new-contents-component')
+   var home_component = $('.async-new-contents-component').first()
    var alert_new_idea = home_component.find('>.alert-new-idea').first()
    if(alert_new_idea.length>0){
       var ideas_ln = alert_new_idea.find('.new-content-id').length;
       ideas_ln+=1
-      alert_new_idea.replaceWith('<div data-content_type="idea" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new ideas')+' (<strong class="ideas-nb">'+ideas_ln+'</strong>)</div>')
+      alert_new_idea.replaceWith('<div data-content_type="-ideas" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new ideas')+' (<strong class="ideas-nb">'+ideas_ln+'</strong>)</div>')
    }else{
-       home_component.prepend('<div data-content_type="idea" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new idea')+'</div>')
+       home_component.prepend('<div data-content_type="-ideas" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new idea')+'</div>')
    }
    alert_new_idea = home_component.find('>.alert-new-idea').first()
    alert_new_idea.append('<span class="new-content-id" data-content_id="'+idea_id+'"></span>')
@@ -263,14 +263,14 @@ NovaIdeoWS.on('new_idea', function(params){
 
 NovaIdeoWS.on('new_question', function(params){
    var question_id = params.id;
-   var home_component = $('.async-new-contents-component')
+   var home_component = $('.async-new-contents-component').first()
    var alert_new_question = home_component.find('>.alert-new-question').first()
    if(alert_new_question.length>0){
       var questions_ln = alert_new_question.find('.new-content-id').length;
       questions_ln+=1
-      alert_new_question.replaceWith('<div data-content_type="question" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new questions')+' (<strong class="questions-nb">'+questions_ln+'</strong>)</div>')
+      alert_new_question.replaceWith('<div data-content_type="-questions" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new questions')+' (<strong class="questions-nb">'+questions_ln+'</strong>)</div>')
    }else{
-       home_component.prepend('<div data-content_type="question" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new question')+'</div>')
+       home_component.prepend('<div data-content_type="-questions" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new question')+'</div>')
    }
    alert_new_question = home_component.find('>.alert-new-question').first()
    alert_new_question.append('<span class="new-content-id" data-content_id="'+question_id+'"></span>')
@@ -278,14 +278,14 @@ NovaIdeoWS.on('new_question', function(params){
 
 NovaIdeoWS.on('new_wg', function(params){
    var wg_id = params.id;
-   var home_component = $('.async-new-contents-component')
+   var home_component = $('.async-new-contents-component').first()
    var alert_new_wg = home_component.find('>.alert-new-wg').first()
    if(alert_new_wg.length>0){
       var wgs_ln = alert_new_wg.find('.new-content-id').length;
       wgs_ln+=1
-      alert_new_wg.replaceWith('<div data-content_type="proposal"  class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working groups')+' (<strong class="wgs-nb">'+wgs_ln+'</strong>)</div>')
+      alert_new_wg.replaceWith('<div data-content_type="-proposals"  class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working groups')+' (<strong class="wgs-nb">'+wgs_ln+'</strong>)</div>')
    }else{
-       home_component.prepend('<div data-content_type="proposal" class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working group')+'</div>')
+       home_component.prepend('<div data-content_type="-proposals" class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working group')+'</div>')
    }
    alert_new_wg = home_component.find('>.alert-new-wg').first()
    alert_new_wg.append('<span class="new-content-id" data-content_id="'+wg_id+'"></span>')
@@ -296,7 +296,7 @@ $(document).on('click', '.alert-new-content', function (argument) {
   var $this = $(this)
   var content_type = $this.data('content_type')
   var container = $this.parents('.async-new-contents-component').first()
-  var result_container = container.find('#results-'+content_type+'>.result-container')
+  var result_container = container.find('[id^="results-"][id$="'+content_type+'"]>.result-container')
   var items_container = result_container.find('>.scroll-items-container').first()
   if(items_container.length>0){
     var ids = jQuery.makeArray($this.find('.new-content-id').map(function(){
@@ -308,6 +308,7 @@ $(document).on('click', '.alert-new-content', function (argument) {
       ids: ids,
       op: 'render_listing_contents'
     }
+    $('[id$="'+content_type+'-counter"]>a').click()
     loading_progress()
     $.post(url, data, function(data) {
       if(data.body){
@@ -324,6 +325,8 @@ $(document).on('click', '.alert-new-content', function (argument) {
 
 function user_typing(){
    var input = $(this)
+   var form = input.parents('form').first()
+   var is_anonymous = $(form.find("input[name='anonymous']")).is(":checked")
    var channel = input.parents('.comment-view-block').first()
        .find('ul.channel').first()
    var val = input.val()
@@ -336,7 +339,8 @@ function user_typing(){
       NovaIdeoWS.trigger_event({
          'event': 'stop_typing_comment',
          'params':{
-            'channel_oid': channel.data('channel_oid')
+            'channel_oid': channel.data('channel_oid'),
+            'is_anonymous': Boolean(is_anonymous)
          }
       })
    }else if($.inArray(channel_oid, NovaIdeoWS.typing_in_process)<0 && val.length >= 1){
@@ -344,7 +348,8 @@ function user_typing(){
     NovaIdeoWS.trigger_event({
          'event': 'typing_comment',
          'params':{
-            'channel_oid': channel.data('channel_oid')
+            'channel_oid': channel.data('channel_oid'),
+            'is_anonymous': Boolean(is_anonymous)
          }
       })
    }
@@ -352,6 +357,8 @@ function user_typing(){
 
 function user_stop_typing(){
    var input = $(this)
+   var form = input.parents('form').first()
+   var is_anonymous = $(form.find("input[name='anonymous']")).is(":checked")
    var channel = input.parents('.comment-view-block').first()
        .find('ul.channel').first()
    var channel_oid = channel.data('channel_oid')
@@ -361,7 +368,8 @@ function user_stop_typing(){
       NovaIdeoWS.trigger_event({
          'event': 'stop_typing_comment',
          'params':{
-            'channel_oid': channel_oid
+            'channel_oid': channel_oid,
+            'is_anonymous': Boolean(is_anonymous)
          }
        })
    }

@@ -65,7 +65,7 @@ class ContentView(BasicView):
                           self.request,
                           url=url,
                           default_size=BATCH_DEFAULT_SIZE)
-            batch.target = "#results-" + self.content_type
+            batch.target = "#results-" + self.content_id
             self.title = _(self.title, mapping={'nb': batch.seqlen})
             result_body, result = render_listing_objs(
                 self.request, batch, current_user)
