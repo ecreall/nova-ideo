@@ -59,12 +59,9 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.role import get_authorized_roles
-<<<<<<< HEAD
 from novaideo.web_socket.util import get_connected_users
-
-=======
 from novaideo.adapters import EXTRACTION_ATTR
->>>>>>> master
+
 
 def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):

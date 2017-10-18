@@ -870,6 +870,7 @@ $(document).on("submit", ".comment-remove-form", function(event) {
           channel_oid: data.channel_oid})
     }
   })
+
   event.preventDefault()
 })
 
