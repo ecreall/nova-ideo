@@ -47,6 +47,8 @@ from dace.util import get_obj
 from .util import get_request
 from novaideo.views.idea_management.comment_idea import (
     CommentsView)
+from novaideo.views.user_management.discuss import (
+    DiscussCommentsView)
 
 
 class NovaIdeoClientProtocol(WebSocketClientProtocol):
@@ -201,17 +203,17 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         return messages
 
     def event_new_comment(
-        self, client, context_oid,
+        self, client,
         channel_oid, **kwargs):
         request = kwargs.get('request')
         current_user_oid = kwargs.get('current_user')
-        context = get_obj(int(context_oid))
         channel = get_obj(int(channel_oid))
         comment = channel.comments[-1]
         messages = {}
         for client_ in self.clients:
             if client_ != client:
                 user = get_obj(self.clients[client_]['user'])
+                context = channel.get_subject(user)
                 channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
                 opened = self.clients[client_]['channels']['opened']
@@ -220,8 +222,9 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
+                        rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
                         request.user = user
-                        result_view = CommentsView(context, request)
+                        result_view = rendrer(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
                         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -240,17 +243,16 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         return messages
 
     def event_edit_comment(
-        self, client, context_oid,
-        channel_oid, comment_oid, **kwargs):
+        self, client, channel_oid, comment_oid, **kwargs):
         request = kwargs.get('request')
         current_user_oid = kwargs.get('current_user')
-        context = get_obj(int(context_oid))
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
         messages = {}
         for client_ in self.clients:
             if client_ != client:
                 user = get_obj(self.clients[client_]['user'])
+                context = channel.get_subject(user)
                 channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
                 opened = self.clients[client_]['channels']['opened']
@@ -259,8 +261,9 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
+                        rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
                         request.user = user
-                        result_view = CommentsView(context, request)
+                        result_view = rendrer(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
                         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -280,18 +283,18 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         return messages
 
     def event_new_answer(
-        self, client, context_oid,
+        self, client,
         channel_oid, comment_oid,
         comment_parent_oid, **kwargs):
         request = kwargs.get('request')
         current_user_oid = kwargs.get('current_user')
-        context = get_obj(int(context_oid))
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
         messages = {}
         for client_ in self.clients:
             if client_ != client:
                 user = get_obj(self.clients[client_]['user'])
+                context = channel.get_subject(user)
                 channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
                 opened = self.clients[client_]['channels']['opened']
@@ -300,8 +303,9 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
+                        rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
                         request.user = user
-                        result_view = CommentsView(context, request)
+                        result_view = rendrer(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
                         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
