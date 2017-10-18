@@ -114,7 +114,8 @@ def comment_textarea(node, kw):
     return deform.widget.TextAreaWidget(
         rows=2, cols=60, item_css_class="comment-form-group comment-textarea",
         emoji_form=emoji_form,
-        template='novaideo:views/templates/textarea_comment.pt')
+        template='novaideo:views/templates/textarea_comment.pt',
+        request=request)
 
 
 def context_is_a_comment(context, request):
@@ -165,6 +166,17 @@ class CommentSchema(VisualisableElementSchema):
         validator=colander.Length(max=2000),
         widget=comment_textarea,
         title=_("Message")
+        )
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(
+            item_css_class="comment-form-group comment-anonymous-form"),
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
         )
 
 

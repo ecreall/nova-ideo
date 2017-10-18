@@ -41,11 +41,11 @@ class StepsPanel(object):
         return self.context
 
     def _get_step1_informations(self, context, request):
-        proposal_nember = len(context.related_proposals)
+        proposal_number = len(context.related_proposals)
         duplicates_len = len(context.duplicates)
         return renderers.render(self.step1_0_template,
                                 {'context': context,
-                                 'proposal_nember': proposal_nember,
+                                 'proposal_number': proposal_number,
                                  'duplicates_len': duplicates_len},
                                 request)
 
@@ -62,7 +62,7 @@ class StepsPanel(object):
 
         return renderers.render(self.step2_0_template,
                                 {'context': context,
-                                 'proposal_nember': len_related_proposals},
+                                 'proposal_number': len_related_proposals},
                                 request)
 
     def _get_step3_informations(self, context, request):
@@ -146,15 +146,9 @@ class StepsPanel(object):
 
     def _get_step4_informations(self, context, request):
         user = get_current()
-        support = 0
-        if any(t.owner is user for t in context.tokens_support):
-            support = 1
-        elif any(t.owner is user for t in context.tokens_opposition):
-            support = -1
-
         return renderers.render(self.step4_0_template,
                                 {'context': context,
-                                 'support': support},
+                                 'support': context.evaluation(user)},
                                 request)
 
     def _get_step5_informations(self, context, request):
@@ -165,7 +159,8 @@ class StepsPanel(object):
     def __call__(self, context, request):
         self.context = context
         self.request = request
-        if 'proposal' not in self.request.content_to_manage:
+        is_index_view = self.request.view_name in ('index', '', 'novaideoapi')
+        if 'proposal' not in self.request.content_to_manage or not is_index_view:
             return {'condition': False}
 
         result = {}

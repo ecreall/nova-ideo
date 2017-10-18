@@ -83,7 +83,7 @@ class EditView(FormView):
     title = _('Edit the profile')
     schema = select(EditPersonSchema(factory=Person,
                                      editable=True,
-                                     omit=('change_password', )),
+                                     omit=('change_password', 'organization')),
                     ['user_title',
                      'first_name',
                      'last_name',
@@ -98,6 +98,7 @@ class EditView(FormView):
     behaviors = [Edit, Cancel]
     formid = 'formedit'
     name = 'edit'
+    css_class = "panel-transparent"
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
 

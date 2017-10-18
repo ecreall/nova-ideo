@@ -40,7 +40,7 @@ from novaideo.content.question import Question
 CONTENTS_MESSAGES = {
     '0': _(u"""No element found"""),
     '1': _(u"""One element found"""),
-    '*': _(u"""${nember} elements found""")
+    '*': _(u"""${number} elements found""")
 }
 
 DEFAULT_SEARCHABLE_CONTENT = [
@@ -70,7 +70,6 @@ class AdvancedSearchView(FilterView):
     behaviors = [Search]
     formid = 'formadvanced_search'
     wrapper_template = 'pontus:templates/views_templates/view_wrapper.pt'
-    container_css_class = 'home'
 
     def update(self):
         self.calculate_posted_filter()
@@ -234,8 +233,7 @@ class SearchResultView(BasicView):
     behaviors = [Search]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         user = get_current()
@@ -284,7 +282,7 @@ class SearchResultView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {'bodies': result_body,

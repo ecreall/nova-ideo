@@ -39,6 +39,7 @@ class EditSmartFolderView(FormView):
     behaviors = [EditSmartFolder, Cancel]
     formid = 'formeditsmartfolder'
     name = 'editsmartfolder'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         self.action = self.request.resource_url(

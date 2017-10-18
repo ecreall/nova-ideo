@@ -33,6 +33,7 @@ class EditChallengeFormView(FormView):
     formid = 'formeditchallenge'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     name = 'editChallenge'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

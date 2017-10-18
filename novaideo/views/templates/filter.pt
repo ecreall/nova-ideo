@@ -5,9 +5,8 @@
        data-filter_source="${filter_source}"
        data-filter_message="${filter_message}">
        <div class="filter-input-container">
-         <span class="glyphicon glyphicon-filter"></span>
          <input id="text_filter_terms" name="filter_input" class="filter-input" i18n:attributes="placeholder" placeholder="Filter" autocomplete="off" maxlength="250" aria-label="Filter" type="text">
-          <span class="filter-btn md ${(opened and 'md-expand-less open') or 'md-expand-more closed'}"></span>
+          <span class="filter-btn glyphicon glyphicon-filter ${(opened and 'open') or 'closed'}"></span>
        </div>
       </div>
       <div class="filter-form ${(not opened and 'hide-bloc')}" >

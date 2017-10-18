@@ -13,18 +13,24 @@
       <span tal:omit-tag="" tal:condition="not to_hide"><span class="icon ${icon}"></span> ${object.title}</span>
     </h3>
     <div class="object-description"
-      tal:define="author object.author;">
-     <small tal:define="author_picture getattr(author, 'picture', None)">
+      tal:define="author object.author;
+                  is_anonymous getattr(author, 'is_anonymous', False);
+                  author_picture getattr(author, 'picture', None);
+                  default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');">
+     <small>
         <div class="author-block">
           <img class="author-img img-circle" 
              tal:condition="author_picture is not None" 
              tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-          <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+          <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
           <span>
             <span i18n:translate="">Asked by</span>
-            <a tal:attributes="href request.resource_url(author, '@@index')">
+            <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
               ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
             </a>
+            <span tal:condition="is_anonymous" class="user-title">
+              ${getattr(author, 'title', author.name)}
+            </span>
             <span i18n:translate="">the</span>
             <span tal:replace="layout.to_localized_time(object.created_at)"/>
           </span>
@@ -43,7 +49,7 @@
     This content does not respect the terms of use.
    </div>
   </div>
-  <div tal:condition="not to_hide">
+  <div class="content-body" tal:condition="not to_hide">
     <div class="validated-answer-container">
         <div tal:replace="structure support_actions_body"/>
         <span i18n:attributes="title" title="${state}" tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
@@ -163,7 +169,7 @@
     <div class="container-body">
     </div>
   </div>
-  <div style="margin-top: 40px" tal:condition="object.answers">
+  <div style="float: left; margin-top: 20px;" tal:condition="object.answers">
     <div id="filter-results-answers-title">
       <div class="panel-title">
         <h4>${answers_title}</h4>

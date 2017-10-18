@@ -37,8 +37,7 @@ class SeeCommentView(BasicView):
     template = 'novaideo:views/comment_management/templates/see_comment.pt'
     viewid = 'seecomment'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 

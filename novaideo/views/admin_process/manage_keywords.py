@@ -57,6 +57,7 @@ class ManageKeywordsFormView(FormView):
     behaviors = [ManageKeywords, Cancel]
     formid = 'formmanagekeywords'
     name = 'formmanagekeywords'
+    css_class = 'panel-transparent'
 
 
 @view_config(
@@ -71,6 +72,7 @@ class ManageKeywordsView(MultipleView):
     template = 'daceui:templates/mergedmultipleview.pt'
     views = (ManageKeywordsViewStudyReport, ManageKeywordsFormView)
     validators = [ManageKeywords.get_validator()]
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({ManageKeywords: ManageKeywordsView})

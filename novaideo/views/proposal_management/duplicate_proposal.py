@@ -19,23 +19,25 @@ from novaideo.content.proposal import Proposal, ProposalSchema
 from novaideo import _
 from .edit_proposal import IdeaManagementView
 from .create_proposal import ideas_choice, add_file_data
-from ..filter import get_pending_challenges
+from novaideo.views.core import update_anonymous_schemanode, update_challenge_schemanode
 
 
 class DuplicateProposalFormView(FormView):
-    title = _('Duplicate')
+    title = _('Duplicate the proposal')
     name = 'duplicateproposal'
-    schema = select(ProposalSchema(),
+    schema = select(ProposalSchema(omit=('anonymous',)),
                     ['challenge',
                      'title',
                      'description',
                      'keywords',
                      'text',
+                     'anonymous',
                      'related_ideas',
                      ('add_files', ['attached_files'])])
 
     behaviors = [DuplicateProposal, Cancel]
     formid = 'formduplicateproposal'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         data = self.context.get_data(self.schema)
@@ -59,11 +61,10 @@ class DuplicateProposalFormView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
-        if 'challenge' not in self.request.content_to_manage or \
-           not len(get_pending_challenges(user)) > 0:
-            self.schema = omit(
-                self.schema, ['challenge'])
-
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
+        self.schema = update_challenge_schemanode(
+            self.request, user, self.schema)
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'

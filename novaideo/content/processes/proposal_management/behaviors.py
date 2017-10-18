@@ -49,7 +49,6 @@ from novaideo import _, nothing
 from novaideo.content.proposal import Proposal
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.correlation import CorrelationType
-from novaideo.content.token import Token
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,
@@ -60,7 +59,7 @@ from novaideo.utilities.util import (
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved)
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo.core import access_action, serialize_roles, can_access
+from novaideo.core import access_action, serialize_roles, can_access, Evaluations
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.workspace import Workspace
 from novaideo.views.filter import get_users_by_preferences
@@ -255,7 +254,7 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
     if working_group.wating_list:
         def _get_next_user(users):
             for user in users:
-                wgs = user.active_working_groups
+                wgs = user.get_active_working_groups(user)
                 if 'active' in user.state and \
                    len(wgs) < root.participations_maxi:
                     return user
@@ -439,26 +438,28 @@ class CreateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.get('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
         proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
-        grant_roles(user=user, roles=(('Owner', proposal), ))
-        grant_roles(user=user, roles=(('Participant', proposal), ))
-        proposal.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', proposal), ))
+        grant_roles(user=author, roles=(('Participant', proposal), ))
+        proposal.setproperty('author', author)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.init_workspace()
         wg.setproperty('proposal', proposal)
-        wg.addtoproperty('members', user)
+        wg.addtoproperty('members', author)
         wg.state.append('deactivated')
         if related_ideas:
             connect(proposal,
                     related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('Creation')},
-                    user,
+                    author,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
@@ -468,7 +469,7 @@ class CreateProposal(InfiniteCardinality):
         init_proposal_ballots(proposal)
         wg.reindex()
         proposal.subscribe_to_channel(user)
-        request.registry.notify(ActivityExecuted(self, [proposal, wg], user))
+        request.registry.notify(ActivityExecuted(self, [proposal, wg], author))
         return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
@@ -572,7 +573,7 @@ def pu_sub_processsecurity_validation(process, context):
                                   for i in context.related_ideas)
 
     return not (not_published_ideas or not_favorable_ideas) and \
-           len(user.active_working_groups) < root.participations_maxi and \
+           len(user.get_active_working_groups(user)) < root.participations_maxi and \
            global_user_processsecurity()
 
 
@@ -710,7 +711,7 @@ class PublishProposalModeration(InfiniteCardinality):
 
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
-            self, not_published_ideas, user))
+            self, not_published_ideas, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -745,9 +746,36 @@ class PublishProposal(InfiniteCardinality):
     state_validation = publish_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current(request)
+        user = context.author
         root = getSite()
         context.state.remove('draft')
+        # Share the proposal with the specified members 
+        # we need to execute the 'present' action
+        members_to_invite = appstruct.get('members_to_invite', [])
+        if members_to_invite:
+            present_actions = self.process.get_actions('present')
+            present_action = present_actions[0] if present_actions else None
+            if present_action:
+                mail_template = root.get_mail_template(
+                    'presentation_proposal', user.user_locale)
+                email_data = get_user_data(user, 'my', request)
+                email_data.update(get_entity_data(context, 'subject', request))
+                message = mail_template['template'].format(
+                    recipient_title='',
+                    recipient_first_name='',
+                    recipient_last_name='',
+                    novaideo_title=root.title,
+                    **email_data
+                )
+                data = {
+                    'members': members_to_invite,
+                    'send_to_me': False,
+                    'subject': mail_template['subject'].format(
+                        subject_title=context.title),
+                    'message': message,
+                }
+                result = present_action.start(context, request, data, **kw)
+
         not_published_ideas = confirm_proposal(
             context, request, user, appstruct, root)
         is_restricted = getattr(context.challenge, 'is_restricted', False)
@@ -793,7 +821,9 @@ class DuplicateProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.pop('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         copy_of_proposal = copy(
             context, (root, 'proposals'),
@@ -808,21 +838,21 @@ class DuplicateProposal(InfiniteCardinality):
             copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
-        grant_roles(user=user, roles=(('Owner', copy_of_proposal), ))
-        grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
-        copy_of_proposal.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', copy_of_proposal), ))
+        grant_roles(user=author, roles=(('Participant', copy_of_proposal), ))
+        copy_of_proposal.setproperty('author', author)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.init_workspace()
         wg.setproperty('proposal', copy_of_proposal)
-        wg.addtoproperty('members', user)
+        wg.addtoproperty('members', author)
         wg.state.append('deactivated')
         if related_ideas:
             connect(copy_of_proposal,
                     related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('Duplicate')},
-                    user,
+                    author,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
@@ -832,7 +862,7 @@ class DuplicateProposal(InfiniteCardinality):
         init_proposal_ballots(copy_of_proposal)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [copy_of_proposal, wg], user))
+            self, [copy_of_proposal, wg], author))
         copy_of_proposal.subscribe_to_channel(user)
         return {'newcontext': copy_of_proposal}
 
@@ -865,7 +895,7 @@ class EditProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current(request)
+        user = context.author
         if 'related_ideas' in appstruct:
             context.set_related_ideas(
                 appstruct['related_ideas'], user)
@@ -886,13 +916,14 @@ def support_roles_validation(process, context):
 
 
 def support_processsecurity_validation(process, context):
+    user = get_current()
     request = get_current_request()
     if not request.support_proposals:
         return False
 
-    user = get_current()
-    return context.get_token(user) and  \
-           not (user in [t.owner for t in context.tokens]) and \
+    return context.evaluation(user) != Evaluations.support and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.oppose) and \
            global_user_processsecurity()
 
 
@@ -911,10 +942,16 @@ class SupportProposal(InfiniteCardinality):
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
-        token = context.get_token(user)
-        context.addtoproperty('tokens_support', token)
+        user = get_current(request)
         context.init_support_history()
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
+        user.add_token(context, Evaluations.support, request.root)
+        context.add_token(user, Evaluations.support)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         context.reindex()
@@ -930,6 +967,19 @@ class SupportProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+
+def oppose_processsecurity_validation(process, context):
+    user = get_current()
+    request = get_current_request()
+    if not request.support_proposals:
+        return False
+
+    return context.evaluation(user) != Evaluations.oppose and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.support) and \
+           global_user_processsecurity()
+
+
 class OpposeProposal(InfiniteCardinality):
     # style = 'button' #TODO add style abstract class
     # style_descriminator = 'text-action'
@@ -937,14 +987,20 @@ class OpposeProposal(InfiniteCardinality):
     # style_order = 5
     context = IProposal
     roles_validation = support_roles_validation
-    processsecurity_validation = support_processsecurity_validation
+    processsecurity_validation = oppose_processsecurity_validation
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
-        token = context.get_token(user)
-        context.addtoproperty('tokens_opposition', token)
+        user = get_current(request)
         context.init_support_history()
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
+        user.add_token(context, Evaluations.oppose, request.root)
+        context.add_token(user, Evaluations.oppose)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         context.reindex()
@@ -1036,8 +1092,7 @@ class MakeOpinion(InfiniteCardinality):
 
 
 def withdrawt_processsecurity_validation(process, context):
-    user = get_current()
-    return any((t.owner is user) for t in context.tokens) and \
+    return context.evaluation(get_current()) and \
            global_user_processsecurity()
 
 
@@ -1053,11 +1108,8 @@ class WithdrawToken(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
-        user_tokens = [t for t in context.tokens
-                       if t.owner is user]
-        token = user_tokens[-1]
-        context.delfromproperty(token.__property__, token)
-        user.addtoproperty('tokens', token)
+        user.remove_token(context)
+        context.remove_token(user)
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
@@ -1243,7 +1295,7 @@ def withdraw_processsecurity_validation(process, context):
     user = get_current()
     wg = context.working_group
     return wg and\
-           user in wg.wating_list and \
+           wg.in_wating_list(user) and \
            global_user_processsecurity()
 
 
@@ -1265,24 +1317,25 @@ class Withdraw(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
         working_group = context.working_group
-        working_group.delfromproperty('wating_list', user)
-        if getattr(user, 'email', ''):
+        member = working_group.get_member_in_wating_list(user)
+        working_group.delfromproperty('wating_list', member)
+        if getattr(member, 'email', ''):
             root = getSite()
             mail_template = root.get_mail_template(
-                'withdeaw', user.user_locale)
+                'withdeaw', member.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
-            email_data = get_user_data(user, 'recipient', request)
+            email_data = get_user_data(member, 'recipient', request)
             email_data.update(get_entity_data(context, 'subject', request))
             message = mail_template['template'].format(
                 novaideo_title=request.root.title,
                 **email_data
             )
-            alert('email', [root.get_site_sender()], [user.email],
+            alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, working_group], member))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1290,9 +1343,8 @@ class Withdraw(InfiniteCardinality):
 
 
 def resign_roles_validation(process, context):
-    user = get_current()
     working_group = context.working_group
-    return working_group and user in working_group.members
+    return working_group and working_group.get_member(get_current()) is not None
 
 
 def resign_processsecurity_validation(process, context):
@@ -1309,7 +1361,7 @@ class Resign(InfiniteCardinality):
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 2
-    style_picto = 'typcn typcn-user-delete'
+    style_picto = 'octicon octicon-sign-out'
     style_css_class = 'btn-danger'
     submission_title = _('Continue')
     isSequential = False
@@ -1320,7 +1372,7 @@ class Resign(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = context.working_group.get_member(get_current(request))
         exclude_participant_from_wg(context, request, user, root)
         request.registry.notify(ActivityExecuted(
             self, [context, context.working_group], user))
@@ -1333,17 +1385,18 @@ class Resign(InfiniteCardinality):
 def participate_roles_validation(process, context):
     user = get_current()
     working_group = context.working_group
-    return working_group and has_role(role=('Member',)) and \
-        user not in working_group.members
+    return working_group and has_role(user=user, role=('Member',)) and \
+        not working_group.is_member(user)
 
 
 def participate_processsecurity_validation(process, context):
     working_group = context.working_group
     user = get_current()
     root = getSite()
-    wgs = getattr(user, 'active_working_groups', [])
+    wgs = user.get_active_working_groups(user) \
+        if hasattr(user, 'get_active_working_groups') else []
     return working_group and \
-       user not in working_group.wating_list and \
+       not working_group.in_wating_list(user) and \
        len(wgs) < root.participations_maxi and \
        global_user_processsecurity()
 
@@ -1360,16 +1413,20 @@ class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
-    style_interaction_type = 'direct'
     style_order = 1
     style_picto = 'typcn typcn-user-add'
     style_css_class = 'btn-success'
-    submission_title = _('Save')
+    submission_title = _('Continue')
     isSequential = False
     context = IProposal
     roles_validation = participate_roles_validation
     processsecurity_validation = participate_processsecurity_validation
     state_validation = participate_state_validation
+
+    @property
+    def style_interaction_type(self):
+        root = getSite()
+        return 'modal' if getattr(root, 'anonymisation', False) else 'direct'
 
     def _send_mail_to_user(self, subject_template,
                            message_template, user,
@@ -1387,6 +1444,9 @@ class Participate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        member = mask if appstruct.get('anonymous', False) and mask else user
+
         working_group = context.working_group
         participants = working_group.members
         mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
@@ -1398,14 +1458,15 @@ class Participate(InfiniteCardinality):
                       internal_kind=InternalAlertKind.working_group_alert,
                       subjects=[context], alert_kind='participate')
 
-            working_group.addtoproperty('members', user)
-            grant_roles(user, (('Participant', context),))
+            working_group.addtoproperty('members', member)
+            grant_roles(member, (('Participant', context),))
             #alert maw working groups
-            active_wgs = getattr(user, 'active_working_groups', [])
+            active_wgs = user.get_active_working_groups(user) \
+                if hasattr(user, 'get_active_working_groups') else []
             if len(active_wgs) == root.participations_maxi:
-                alert('internal', [root], [user],
+                alert('internal', [root], [member],
                       internal_kind=InternalAlertKind.working_group_alert,
-                      subjects=[user], alert_kind='participations_maxi')
+                      subjects=[member], alert_kind='participations_maxi')
 
             if (len_participants+1) == mode.participants_mini:
                 working_group.state = PersistentList(['active'])
@@ -1439,9 +1500,9 @@ class Participate(InfiniteCardinality):
                     )
 
             #Send Mail alert to user
-            if getattr(user, 'email', ''):
+            if getattr(member, 'email', ''):
                 mail_template = root.get_mail_template(
-                    'wg_participation', user.user_locale)
+                    'wg_participation', member.user_locale)
                 self._send_mail_to_user(
                     mail_template['subject'], mail_template['template'],
                     user, context, request)
@@ -1449,20 +1510,20 @@ class Participate(InfiniteCardinality):
             working_group.addtoproperty('wating_list', user)
             working_group.reindex()
             users = list(participants)
-            users.append(user)
+            users.append(member)
             alert('internal', [root], users,
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[context], alert_kind='wg_participation_max')
 
-            if getattr(user, 'email', ''):
+            if getattr(member, 'email', ''):
                 mail_template = root.get_mail_template(
-                    'wating_list', user.user_locale)
+                    'wating_list', member.user_locale)
                 self._send_mail_to_user(
                     mail_template['subject'], mail_template['template'],
                     user, context, request)
 
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, working_group], member))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1517,8 +1578,9 @@ class AttachFiles(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         add_attached_files({'add_files': appstruct}, context)
         context.reindex()
+        user = context.working_group.get_member( get_current(request))
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1632,7 +1694,7 @@ class VotingPublication(ElementaryAction):
                           subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1769,7 +1831,7 @@ class Work(ElementaryAction):
         context.reindex()
         working_group.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current(request)))
+            self, [context, working_group], context.author))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1854,11 +1916,8 @@ class SubmitProposal(ElementaryAction):
         working_group.setproperty('wating_list', [])
         members = working_group.members
         for member in members:
-            token = Token(title='Token_'+context.title)
-            token.setproperty('proposal', context)
-            member.addtoproperty('tokens_ref', token)
-            member.addtoproperty('tokens', token)
-            token.setproperty('owner', member)
+            real_member = getattr(member, 'member', member)
+            real_member.add_reserved_token(context)
             revoke_roles(member, (('Participant', context),))
 
         #Alert users
@@ -1895,7 +1954,7 @@ class SubmitProposal(ElementaryAction):
         working_group.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current(request)))
+            self, [context, working_group], context.author))
         return {}
 
     def redirect(self, context, request, **kw):

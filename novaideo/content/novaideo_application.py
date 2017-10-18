@@ -330,6 +330,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')
     connectors = CompositeMultipleProperty('connectors')
+    masks = CompositeMultipleProperty('masks')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

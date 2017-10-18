@@ -1,9 +1,11 @@
  <tal:block tal:condition="condition" tal:define="su request.static_url;">
-    <script type="text/javascript">
+    <script type="text/javascript" tal:define="
+        available_locales ['de', 'es', 'fr', 'it', 'nl', 'pl', 'pt', 'ru']">
         (function () {
               var scripts = [
-                  '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.'+request.locale_name+'.js')}',
-
+                  <span tal:omit-tag="" tal:condition="request.locale_name in available_locales">
+                    '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.'+request.locale_name+'.js')}',
+                  </span>
                   '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.js')}',
                   
                   '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.autoload.js')}'

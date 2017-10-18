@@ -31,7 +31,7 @@ from novaideo.views.filter import find_entities
 CONTENTS_MESSAGES = {
     '0': _(u"""No invitation found"""),
     '1': _(u"""One invitation found"""),
-    '*': _(u"""${nember} invitations found""")
+    '*': _(u"""${number} invitations found""")
 }
 
 
@@ -47,8 +47,7 @@ class SeeInvitationsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeinvitations'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)
@@ -66,7 +65,7 @@ class SeeInvitationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
 

@@ -4,11 +4,11 @@
       organization_picture organization.logo;
       profil_picture getattr(organization_picture, 'profil', organization_picture);">
 <div class="user-panel" style="
-  background: transparent url(${request.static_url('novaideo:static/images/background_organization.svg')}) no-repeat scroll center center / cover ;">
+  background: transparent url(${request.static_url('novaideo:static/images/background_organization.png')}) no-repeat scroll center center / cover ;">
   <div class="user-panel-container" style="
     ">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2" style="min-width: 120px;">
           <div class="user-img-container">
             <img tal:condition="organization_picture" class="" src="${profil_picture.url}">
           </div>

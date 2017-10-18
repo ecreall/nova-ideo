@@ -40,7 +40,7 @@ from ..user_management.behaviors import (
 from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
-from novaideo.core import access_action, serialize_roles, can_access
+from novaideo.core import access_action, serialize_roles, can_access,Evaluations
 from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
@@ -83,11 +83,13 @@ class CreateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.get('anonymous', False) and mask else user
         idea = appstruct['_object_data']
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
-        grant_roles(user=user, roles=(('Owner', idea), ))
-        idea.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', idea), ))
+        idea.setproperty('author', author)
         idea.subscribe_to_channel(user)
         if isinstance(context, (Comment, Answer)):
             content = context.subject
@@ -97,7 +99,7 @@ class CreateIdea(InfiniteCardinality):
                 {'comment': context.comment,
                  'type': getattr(context, 'intention',
                                  'Transformation from another content')},
-                user,
+                author,
                 ['transformation'],
                 CorrelationType.solid)
             for correlation in correlations:
@@ -115,7 +117,7 @@ class CreateIdea(InfiniteCardinality):
 
         idea.format(request)
         idea.reindex()
-        request.registry.notify(ActivityExecuted(self, [idea], user))
+        request.registry.notify(ActivityExecuted(self, [idea], author))
         return {'newcontext': idea}
 
     def redirect(self, context, request, **kw):
@@ -143,26 +145,29 @@ class CrateAndPublish(InfiniteCardinality):
         create_actions = self.process.get_actions('creat')
         create_action = create_actions[0] if create_actions else None
         idea = None
+        root = getSite()
         if create_action:
             result = create_action.start(context, request, appstruct, **kw)
             idea = result.get('newcontext', None)
             if idea:
-                user = get_current()
+                user = get_current(request)
+                mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+                author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 if request.moderate_ideas:
                     submit_actions = self.process.get_actions('submit')
                     submit_action = submit_actions[0] if submit_actions else None
                     if submit_action:
-                        submit_action.start(idea, request, {})
+                        submit_action.start(idea, request, {'user': author})
                 else:
                     publish_actions = self.process.get_actions('publish')
                     publish_action = publish_actions[0] if publish_actions else None
                     if publish_action:
-                        publish_action.start(idea, request, {})
+                        publish_action.start(idea, request, {'user': author})
 
                 return {'newcontext': idea, 'state': True}
 
-        return {'newcontext': getSite(), 'state': False}
+        return {'newcontext': root, 'state': False}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
@@ -182,7 +187,9 @@ class CrateAndPublishAsProposal(CrateAndPublish):
         if state:
             idea = result.get('newcontext', None)
             if idea:
-                user = get_current()
+                user = get_current(request)
+                mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+                author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 related_ideas = [idea]
                 localizer = request.localizer
@@ -206,9 +213,9 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 proposal.text = html_diff_wrapper.normalize_text(proposal.text)
                 root.addtoproperty('proposals', proposal)
                 proposal.state.append('draft')
-                grant_roles(user=user, roles=(('Owner', proposal), ))
-                grant_roles(user=user, roles=(('Participant', proposal), ))
-                proposal.setproperty('author', user)
+                grant_roles(user=author, roles=(('Owner', proposal), ))
+                grant_roles(user=author, roles=(('Participant', proposal), ))
+                proposal.setproperty('author', author)
                 challenge = idea.challenge
                 if challenge:
                     proposal.setproperty('challenge', challenge)
@@ -217,14 +224,14 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 root.addtoproperty('working_groups', wg)
                 wg.init_workspace()
                 wg.setproperty('proposal', proposal)
-                wg.addtoproperty('members', user)
+                wg.addtoproperty('members', author)
                 wg.state.append('deactivated')
                 if related_ideas:
                     connect(proposal,
                             related_ideas,
                             {'comment': _('Add related ideas'),
                              'type': _('Creation')},
-                            user,
+                            author,
                             ['related_proposals', 'related_ideas'],
                             CorrelationType.solid)
                 try:
@@ -243,7 +250,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 init_proposal_ballots(proposal)
                 wg.reindex()
                 request.registry.notify(
-                    ActivityExecuted(self, [idea, proposal, wg], user))
+                    ActivityExecuted(self, [idea, proposal, wg], author))
                 return {'newcontext': proposal}
 
         return {'newcontext': root}
@@ -273,6 +280,8 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.pop('anonymous', False) and mask else user
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea = copy(
@@ -284,8 +293,8 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.init_graph()
         copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.state = PersistentList(['to work'])
-        copy_of_idea.setproperty('author', user)
-        grant_roles(user=user, roles=(('Owner', copy_of_idea), ))
+        copy_of_idea.setproperty('author', author)
+        grant_roles(user=author, roles=(('Owner', copy_of_idea), ))
         copy_of_idea.set_data(appstruct)
         copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.subscribe_to_channel(user)
@@ -293,7 +302,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, copy_of_idea], user))
+            self, [context, copy_of_idea], author))
         return {'newcontext': copy_of_idea}
 
     def redirect(self, context, request, **kw):
@@ -362,7 +371,7 @@ class EditIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current(request)
+        user = context.author
         last_version = context.version
         copy_of_idea = copy(
             context,
@@ -477,10 +486,8 @@ class ArchiveIdea(InfiniteCardinality):
         root = getSite()
         explanation = appstruct['explanation']
         context.state = PersistentList(['archived'])
+        context.remove_tokens(True)
         context.reindex()
-        for token in list(context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
@@ -667,7 +674,7 @@ class PublishIdea(InfiniteCardinality):
                 idea=context
                 )
         root.merge_keywords(context.keywords)
-        user = get_current(request)
+        user = appstruct.get('user', context.author)
         is_restricted = getattr(context.challenge, 'is_restricted', False)
         def _condition(u):
             return can_access(u, context)
@@ -725,7 +732,7 @@ class AbandonIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -762,7 +769,7 @@ class RecuperateIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -795,7 +802,7 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def get_nb(self, context, request):
-        user = get_current()
+        user = get_current(request)
         channel = context.channel
         unread_comments = channel.get_comments_between(
             user.get_read_date(channel),
@@ -808,8 +815,8 @@ class CommentIdea(InfiniteCardinality):
         if nb_only:
             return str(len_comments)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_comments,
+        return _("${title} (${number})",
+                 mapping={'number': len_comments,
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request, channel):
@@ -862,17 +869,19 @@ class CommentIdea(InfiniteCardinality):
             comment.state = PersistentList(['published'])
             comment.reindex()
             user = appstruct.get('user', get_current())
-            grant_roles(user=user, roles=(('Owner', comment), ))
+            mask = user.get_mask(getSite()) if hasattr(user, 'get_mask') else user
+            author = mask if appstruct.get('anonymous', False) and mask else user
+            grant_roles(user=author, roles=(('Owner', comment), ))
             if getattr(self, 'subscribe_to_channel', True):
                 context.subscribe_to_channel(user)
 
-            comment.setproperty('author', user)
+            comment.setproperty('author', author)
             if appstruct.get('associated_contents', []):
                 comment.set_associated_contents(
-                    appstruct['associated_contents'], user)
+                    appstruct['associated_contents'], author)
 
             if appstruct.get('alert', True):
-                self._alert_users(context, request, user, comment)
+                self._alert_users(context, request, author, comment)
 
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
@@ -896,6 +905,7 @@ class CommentIdeaAnonymous(CommentIdea):
     processsecurity_validation = comma_processsecurity_validation
     style_interaction = 'ajax-action'
     style_interaction_type = 'popover'
+    behavior_id = 'comment_anonymous'
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -930,8 +940,8 @@ class PresentIdea(InfiniteCardinality):
         if nb_only:
             return str(len_members)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_members,
+        return _("${title} (${number})",
+                 mapping={'number': len_members,
                           'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):
@@ -1122,10 +1132,8 @@ class MakeOpinion(InfiniteCardinality):
         context.state = PersistentList(
             ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
+        context.remove_tokens()
         context.reindex()
-        for token in list(context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
         member = context.author
         root = getSite()
         users = list(get_users_by_preferences(context))
@@ -1175,8 +1183,9 @@ def support_processsecurity_validation(process, context):
     if not request.support_ideas:
         return False
 
-    return context.get_token(user) and  \
-           not (user in [t.owner for t in context.tokens]) and \
+    return context.evaluation(user) != Evaluations.support and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.oppose) and \
            global_user_processsecurity()
 
 
@@ -1197,9 +1206,15 @@ class SupportIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
-        token = context.get_token(user)
-        context.addtoproperty('tokens_support', token)
         context.init_support_history()
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
+        user.add_token(context, Evaluations.support, request.root)
+        context.add_token(user, Evaluations.support)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         context.reindex()
@@ -1215,6 +1230,18 @@ class SupportIdea(InfiniteCardinality):
         return nothing
 
 
+def oppose_processsecurity_validation(process, context):
+    user = get_current()
+    request = get_current_request()
+    if not request.support_ideas:
+        return False
+
+    return context.evaluation(user) != Evaluations.oppose and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.support) and \
+           global_user_processsecurity()
+
+
 class OpposeIdea(InfiniteCardinality):
     # style = 'button' #TODO add style abstract class
     # style_descriminator = 'text-action'
@@ -1222,14 +1249,20 @@ class OpposeIdea(InfiniteCardinality):
     # style_order = 5
     context = Iidea
     roles_validation = support_roles_validation
-    processsecurity_validation = support_processsecurity_validation
+    processsecurity_validation = oppose_processsecurity_validation
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
-        token = context.get_token(user)
-        context.addtoproperty('tokens_opposition', token)
+        user = get_current(request)
         context.init_support_history()
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
+        user.add_token(context, Evaluations.oppose, request.root)
+        context.add_token(user, Evaluations.oppose)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         context.reindex()
@@ -1246,8 +1279,7 @@ class OpposeIdea(InfiniteCardinality):
 
 
 def withdrawt_processsecurity_validation(process, context):
-    user = get_current()
-    return any((t.owner is user) for t in context.tokens) and \
+    return context.evaluation(get_current()) and \
            global_user_processsecurity()
 
 
@@ -1263,11 +1295,8 @@ class WithdrawToken(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
-        user_tokens = [t for t in context.tokens
-                       if t.owner is user]
-        token = user_tokens[-1]
-        context.delfromproperty(token.__property__, token)
-        user.addtoproperty('tokens', token)
+        user.remove_token(context)
+        context.remove_token(user)
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))

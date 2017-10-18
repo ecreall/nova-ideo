@@ -299,6 +299,11 @@ class IPerson(IVisualisableElement,
 
 
 @interface()
+class IMask(IEntityO):
+    pass
+
+
+@interface()
 @interface_config(type_id='bot')
 class IBot(IMachine):
 

@@ -141,6 +141,8 @@ class ImproveProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         data = {}
+        user = get_current(request)
+        user = context.working_group.get_member(user)
         localizer = request.localizer
         data['title'] = localizer.translate(_('Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
@@ -151,8 +153,8 @@ class ImproveProposal(InfiniteCardinality):
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
         amendment.state.append('draft')
-        grant_roles(roles=(('Owner', amendment), ))
-        amendment.setproperty('author', get_current())
+        grant_roles(user=user, roles=(('Owner', amendment), ))
+        amendment.setproperty('author', user)
         amendment.text_diff = get_text_amendment_diff(
             context, amendment)
         amendment.reindex()

@@ -9,7 +9,7 @@
       </div>
   </div>
   <div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
-    <div id="filter-${id}" tal:condition="filterbody">
+    <div class="view-filter-container ${filter_class | ''}" id="filter-${id}" tal:condition="filterbody">
       ${structure: filterbody}
       </div>
   </div>

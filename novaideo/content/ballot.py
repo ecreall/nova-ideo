@@ -542,6 +542,27 @@ class Report(VisualisableElement, Entity):
 
         return self.ballottype.get_electeds(self.result)
 
+    def he_voted(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.voters or (mask and mask in self.voters)
+
+    def is_elector(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.electors or (mask and mask in self.electors)
+
+    def get_elector(self, user):
+        if not self.is_elector(user):
+            return None
+
+        if user in self.electors:
+            return user
+        
+        mask = getattr(user, 'mask', None)
+        if mask and mask in self.electors:
+            return mask
+
+        return None
+
 
 @content(
     'ballotbox',
@@ -596,7 +617,8 @@ class Ballot(VisualisableElement, Entity):
 
     @property
     def group_id(self):
-        return self.group.get('group_id', None)
+        group = getattr(self, 'group', DEFAULT_BALLOT_GROUP)
+        return group.get('group_id', None)
 
     @property
     def is_finished(self):
@@ -625,6 +647,12 @@ class Ballot(VisualisableElement, Entity):
             return False
 
         return True
+
+    def get_url(self, request):
+        ballot_oid = get_oid(self, '')
+        return request.resource_url(
+            request.root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
 
     def finish_ballot(self):
         if 'finished' not in self.state:

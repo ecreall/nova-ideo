@@ -26,7 +26,7 @@ BATCH_DEFAULT_SIZE = 30
 CONTENTS_MESSAGES = {
     '0': _(u"""You have no new alert"""),
     '1': _(u"""You have one new alert"""),
-    '*': _(u"""You have ${nember} new alerts""")
+    '*': _(u"""You have ${number} new alerts""")
     }
 
 
@@ -40,10 +40,10 @@ class SeeAlertsView(BasicView):
     name = 'seealerts'
     behaviors = [SeeAlerts]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    addon_template = 'novaideo:views/novaideo_view_manager/templates/addon_alerts.pt'
     viewid = 'seealerts'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         user = get_current()
@@ -65,7 +65,7 @@ class SeeAlertsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body = []
         for obj in batch:
             render_dict = {
@@ -75,10 +75,13 @@ class SeeAlertsView(BasicView):
             body = self.content(args=render_dict,
                                 template=obj.templates['default'])['body']
             result_body.append(body)
-
+        
+        addon = self.content(
+            args={'user': user}, template=self.addon_template)['body'] if result_body else ''
         result = {}
         values = {'bodies': result_body,
-                  'batch': batch}
+                  'batch': batch,
+                  'addon': addon}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

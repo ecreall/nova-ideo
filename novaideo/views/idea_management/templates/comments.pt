@@ -23,11 +23,13 @@
               author comment.author;
               contents comment.get_related_contents(current_user);
               picture getattr(author, 'picture', None);
+              is_anonymous getattr(author, 'is_anonymous', False);
+              author_picture getattr(author, 'picture', None);
+              default_img request.static_url(getattr(author, 'default_picture', 'novaideo:static/images/user100.png'));
               profil_picture getattr(picture, 'profil', None);
               oid getattr(comment, '__oid__', 'None');
               id 'comment-'+str(oid);
               attached_files comment.files;
-              default_img request.static_url('novaideo:static/images/user.png');
               is_censored 'censored' in comment.state;
               to_hide is_censored and not (view.is_moderator or current_user is comment.author)">
          <div id="${id}" class="view-item-title thumbnail right-caption span4 comment-data"
@@ -36,7 +38,7 @@
              data-img="${getattr(profil_picture, 'url', default_img)}"
              >
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
-            <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
+            <img tal:condition="picture is None" class="img-circle" src="${default_img}" width="30"/>
             <div class="media-body comment-content">
               <div class="comment-menu">
                   <div tal:replace="structure item['menu_body']"/>
@@ -48,7 +50,7 @@
                 <a 
                   data-oid="${getattr(author, '__oid__', '')}"
                   class="toggle-popover"
-                  tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+                  tal:attributes="href request.resource_url(author, '@@index') if not is_anonymous else '#'">${getattr(author, 'title', author.name)}</a>
                 <div title="${layout.to_localized_time(comment.created_at)}" class="${not ignore_unread and is_unread_comment and 'unread-comment' or ''} comment-detail-container">
                   <span tal:condition="not ignore_unread and is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
                   <div  tal:omit-tag="" tal:condition="diff">
@@ -212,21 +214,31 @@
         <div tal:condition="not filtered"  tal:define="(body, r) view._rendre_comments(comment.comments, current_user, unread_comments=unread_comments)" tal:replace="structure body" />
       </li>
     </tal:loop>
-      <li class="commentli comment-preview hide-bloc" tal:define="current_picture getattr(current_user, 'picture', None)">
+      <li class="commentli comment-preview hide-bloc"
+          tal:define="current_picture getattr(current_user, 'picture', None)">
         <div class="thumbnail right-caption span4 comment-data">
-            <img tal:condition="current_picture is not None" class="img-circle" tal:attributes="src getattr(current_picture, 'profil', current_picture).url"  width="30"/>
-            <img tal:condition="current_picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
+            <img tal:condition="current_picture is not None" class="img-circle author-img" tal:attributes="src getattr(current_picture, 'profil', current_picture).url"  width="30"/>
+            <img tal:condition="current_picture is None" class="img-circle author-img" src="${request.static_url('novaideo:static/images/user100.png')}" width="30"/>
+            <img class="img-circle author-img author-img-anonymous" src="${request.static_url('novaideo:static/images/anonymous100.png')}" width="30"/>
             <div class="media-body comment-content">
-              <small class="comment-author">
-                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
+              <div class="comment-author">
+                <span class="author-title author-title-anonymous">${getattr(current_user.mask, 'title', 'Anonymous')}</span><a class="author-title" tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
                 <div class="comment-detail-container">
                   <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span>
                 </div>
-              </small>
-              <div class="object-text">
-                <p class="emoji-container">
-                  <div class="comment-preview-text"></div>     
-                </p>
+              </div>
+              <div class="content-text">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                      <div class="object-text">
+                        <div>
+                          <p class="emoji-container">
+                            <span class="comment-preview-text"></span>     
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
          </div>

@@ -2,11 +2,11 @@
   <div  i18n:domain="novaideo">
   		<div class="deadline-panel">
          <div class="progress progress-striped">
-           <div class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-warning'} " role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="width: ${percent}%;">
+           <div class="progress-bar ${expired and 'progress-bar-primary' or 'progress-bar-warning'} " role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="width: ${percent}%;">
               <span class="sr-only">${percent}% Complete</span>
            </div>
          </div>
-  		   <small class="deadline-text-danger" tal:condition="expired">
+  		   <small class="deadline-text-primary" tal:condition="expired">
           <span i18n:translate="">The review committee convened for the last time on</span> <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>, <span i18n:translate="">no new examination date was fixed.</span>
         </small>
          <small class="deadline-text-warning" tal:condition="not expired">

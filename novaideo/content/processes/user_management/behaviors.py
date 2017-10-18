@@ -1,26 +1,31 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
+from io import StringIO, BytesIO
+import csv
 import colander
 import transaction
 import uuid
 import datetime
 import pytz
+import itertools
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 from pyramid.threadlocal import get_current_request
+from pyramid import renderers
+from pyramid.response import FileIter
 
 from substanced.util import get_oid
 from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.util import (
-    getSite, name_chooser,
+    getSite, name_chooser, name_normalizer,
     push_callback_after_commit, get_socket)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
@@ -39,7 +44,6 @@ from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.interface import (
     INovaIdeoApplication, IPerson, IPreregistration)
-from novaideo.content.token import Token
 from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
@@ -55,8 +59,12 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.role import get_authorized_roles
+<<<<<<< HEAD
 from novaideo.web_socket.util import get_connected_users
 
+=======
+from novaideo.adapters import EXTRACTION_ATTR
+>>>>>>> master
 
 def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):
@@ -78,14 +86,6 @@ def accept_preregistration(request, preregistration, root):
             )
         alert('email', [root.get_site_sender()], [preregistration.email],
               subject=subject, body=message)
-
-
-def initialize_tokens(person, tokens_nb):
-    for i in range(tokens_nb):
-        token = Token(title='Token_'+str(i))
-        person.addtoproperty('tokens_ref', token)
-        person.addtoproperty('tokens', token)
-        token.setproperty('owner', person)
 
 
 def login_roles_validation(process, context):
@@ -239,9 +239,14 @@ class Deactivate(InfiniteCardinality):
         context.state.append('deactivated')
         context.set_organization(None)
         proposals = getattr(context, 'participations', [])
+        anonymous_proposals = getattr(context.mask, 'participations', [])
         for proposal in proposals:
             exclude_participant_from_wg(
                 proposal, request, context, root)
+
+        for proposal in anonymous_proposals:
+            exclude_participant_from_wg(
+                proposal, request, context.mask, root)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
@@ -542,7 +547,6 @@ class ConfirmRegistration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        initialize_tokens(person, root.tokens_mini)
         get_socket().send_pyobj(
             ('stop',
              'persistent_' + str(get_oid(context))))
@@ -776,8 +780,8 @@ class Discuss(InfiniteCardinality):
         if nb_only:
             return str(len_comments)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_comments,
+        return _("${title} (${number})",
+                 mapping={'number': len_comments,
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request, user, channel):
@@ -818,7 +822,7 @@ class Discuss(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
-        user = get_current()
+        user = get_current(request)
         channel = context.get_channel(user)
         if not channel:
             channel = PrivateChannel()
@@ -896,7 +900,9 @@ class GeneralDiscuss(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         comment = appstruct['_object_data']
-        user = get_current()
+        user = get_current(request)
+        mask = user.get_mask(root)
+        author = mask if appstruct.get('anonymous', False) and mask else user
         channel = root.channel
         #TODO get
         if channel:
@@ -905,13 +911,13 @@ class GeneralDiscuss(InfiniteCardinality):
             comment.state = PersistentList(['published'])
             comment.reindex()
             comment.format(request)
-            comment.setproperty('author', user)
-            grant_roles(user=user, roles=(('Owner', comment), ))
+            comment.setproperty('author', author)
+            grant_roles(user=author, roles=(('Owner', comment), ))
             if appstruct.get('associated_contents', []):
                 comment.set_associated_contents(
                     appstruct['associated_contents'], user)
 
-            self._alert_users(context, request, user, comment, channel)
+            self._alert_users(context, request, author, comment, channel)
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
@@ -919,6 +925,76 @@ class GeneralDiscuss(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class ExtractAlerts(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_picto = 'glyphicon glyphicon-export'
+    style_order = 8
+    submission_title = _('Continue')
+    context = IPerson
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = context
+        localizer = request.localizer
+        new_alerts = getattr(user, 'alerts', [])
+        old_alerts = getattr(user, 'old_alerts', [])
+        alerts = []
+        for obj in itertools.chain(new_alerts, old_alerts):
+            render_dict = {
+                'object': obj,
+                'current_user': user
+            }
+            alert = {
+                'content': renderers.render(
+                    obj.templates['default'],
+                    render_dict, request).replace('\n', ''),
+                'created_at': to_localized_time(obj.created_at, request, translate=True)
+            }
+            alerts.append(alert)
+
+        attributes_to_extract = ['created_at', 'content']
+        csv_file = StringIO()
+        fieldnames = []
+        for attr in attributes_to_extract:
+            fieldnames.append(
+                localizer.translate(EXTRACTION_ATTR[attr]['title']))
+
+        writer = csv.DictWriter(
+            csv_file, fieldnames=fieldnames, dialect='excel', delimiter=';')
+        writer.writeheader()
+        registry = request.registry
+        for obj in alerts:
+            writer.writerow(
+                dict([(localizer.translate(EXTRACTION_ATTR[attr]['title']),
+                       obj.get(attr)) for
+                      attr in attributes_to_extract]))
+
+        csv_file.seek(0)
+        return {'file': BytesIO(csv_file.read().encode('windows-1252', 'replace')), 'user': user}
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        user = kw.get('user', None)
+        user_title = getattr(user, 'title', user.name)
+        now = datetime.datetime.now()
+        date = to_localized_time(now, request=request, translate=True)
+        file_name = 'Alerts_Extraction_{user}_{date}_{app}'.format(
+            date=date, user=user_title, app=root.title)
+        file_name = name_normalizer(file_name.replace(' ', '-'))
+        csv_file = kw.get('file', '')
+        response = request.response
+        response.content_type = 'application/vnd.ms-excel;charset=windows-1252'
+        response.content_disposition = 'inline; filename="{file_name}.csv"'.format(
+            file_name=file_name)
+        response.app_iter = FileIter(csv_file)
+        return response
+
+
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Person] = {

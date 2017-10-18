@@ -60,6 +60,7 @@ class EditAPITokenView(FormView):
     behaviors = [GetAPIToken]
     formid = 'formgetapitoken'
     name = 'get_api_token'
+    css_class = 'panel-transparent'
 
 
 @view_config(
@@ -75,6 +76,7 @@ class GetAPITokenView(MultipleView):
     template = 'daceui:templates/mergedmultipleview.pt'
     views = (DisplayAPITokenStudyReport, EditAPITokenView)
     validators = [GetAPIToken.get_validator()]
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({

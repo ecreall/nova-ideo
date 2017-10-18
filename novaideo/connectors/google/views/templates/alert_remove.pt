@@ -1,0 +1,5 @@
+<div i18n:domain="novaideo">
+  <div i18n:translate="" class="alert alert-danger">
+      Are you sure you want to remove this connector? This cannot be undone.
+  </div>
+</div>

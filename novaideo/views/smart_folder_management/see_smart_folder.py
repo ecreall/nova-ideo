@@ -87,8 +87,7 @@ class OpenFolderView(BasicView):
                  'bloc': 'novaideo:views/novaideo_view_manager/templates/search_result_blocs.pt'}
     viewid = 'open_folder'
     wrapper_template = 'novaideo:views/smart_folder_management/templates/folder_view_wrapper.pt'
-    css_class = "open-folder simple-bloc"
-    container_css_class = 'home'
+    css_class = "open-folder panel-transparent"
 
     def _add_filter(self, folder, user):
         def source(**args):
@@ -154,7 +153,7 @@ class OpenFolderView(BasicView):
         len_result = len(objects)
         self.breadcrumb = self.content(
             args={'lineage': folder.folder_lineage,
-                  'nember': len_result},
+                  'number': len_result},
             template=self.breadcrumb_template)['body']
         self.title = '/'.join([f.title for f in folder.folder_lineage])
         if getattr(self, 'filter_instance', None) is not None:

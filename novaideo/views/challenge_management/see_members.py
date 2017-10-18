@@ -27,7 +27,7 @@ BATCH_DEFAULT_SIZE = 8
 WG_MESSAGES = {
     '0': _(u"""No participant"""),
     '1': _(u"""One participant"""),
-    '*': _(u"""${nember} participants""")}
+    '*': _(u"""${number} participants""")}
 
 
 @view_config(
@@ -65,7 +65,7 @@ class SeeMembersView(BasicView):
         if len_result > 1:
             index = '*'
 
-        self.title = _(WG_MESSAGES[index], mapping={'nember': len_result})
+        self.title = _(WG_MESSAGES[index], mapping={'number': len_result})
         result = {}
         # if included in another view
         if self.parent or self.request.view_name == self.name:

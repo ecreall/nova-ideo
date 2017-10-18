@@ -1,99 +1,28 @@
 # -*- coding: utf-8 -*-
+import datetime
+import pytz
 import graphene
 from graphene import relay
-from graphql_relay.connection.arrayconnection import cursor_to_offset
 
-from hypatia.interfaces import STABLE
 from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
-from dace.util import get_obj, find_catalog, getAllBusinessAction
-from dace.objectofcollaboration.entity import ActionCall
+from dace.util import get_obj
 
-from novaideo.views.filter import find_entities
+from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.person import Person as SDPerson
+from novaideo.content.mask import Mask as SDMask
+from novaideo.content.bot import Bot as SDBot
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
+from novaideo.core import Channel as SDChannel
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
-from novaideo.views.filter import get_comments
 from .mutations import Mutations, get_context
-
-
-def get_user_by_token(token):
-    current_user = None
-    novaideo_catalog = find_catalog('novaideo')
-    dace_catalog = find_catalog('dace')
-    identifier_index = novaideo_catalog['api_token']
-    object_provides_index = dace_catalog['object_provides']
-    query = object_provides_index.any([IPerson.__identifier__]) &\
-        identifier_index.eq(token)
-    users = list(query.execute().all())
-    return users[0] if users else None
-
-
-def get_entities(interfaces, states, args, info, intersect=None):  #pylint: disable=W0613
-    try:
-        after = cursor_to_offset(args.get('after'))
-        first = args.get('first')
-        if after is None:
-            limit = first
-        else:
-            limit = after + 1 + first
-
-        limit = limit + 1  # retrieve one more so the hasNextPage works
-    except Exception:  # FIXME:
-        limit = None
-
-    # For the scrolling of the results, it's important that the sort is stable.
-    # release_date is set to datetime.datetime.now(tz=pytz.UTC) when the event
-    # is published, so we have microsecond resolution and so have a stable sort
-    # even with not stable sort algorithms like nbest (because it's unlikely
-    # we have several events with the same date).
-    # When we specify limit in the query, the sort algorithm chosen will
-    # most likely be nbest instead of stable timsort (python sorted).
-    # The sort is ascending, meaning we will get new events published during
-    # the scroll, it's ok.
-    # The only issue we can found here is if x events are removed or unpublished
-    # during the scroll, we will skip x new events during the scroll.
-    # A naive solution is to implement our own graphql arrayconnection to slice
-    # from the last known oid + 1, but the last known oid may not be in the
-    # array anymore, so it doesn't work. It's not too bad we skip x events, in
-    # reality it should rarely happen.
-    rs = find_entities(
-        sort_on=None,
-        interfaces=interfaces,
-        metadata_filter={'states': states},
-        text_filter={'text_to_search': args.get('filter', '')},
-        intersect=intersect
-    )
-    catalog = find_catalog('novaideo')
-    release_date_index = catalog['release_date']
-    return list(release_date_index.sort(
-        list(rs.ids), limit=limit, sort_type=STABLE, reverse=True))  #pylint: disable=E1101
-
-
-def get_all_comments(container, args):
-    try:
-        after = cursor_to_offset(args.get('after'))
-        first = args.get('first')
-        if after is None:
-            limit = first
-        else:
-            limit = after + 1 + first
-
-        limit = limit + 1  # retrieve one more so the hasNextPage works
-    except Exception:  # FIXME:
-        limit = None
-
-    filter_ = args.get('filter', '')
-    comments = get_comments(
-        container, [], filter_, filter_)
-    catalog = find_catalog('novaideo')
-    release_date_index = catalog['release_date']
-    return list(release_date_index.sort(
-        list(comments.ids), limit=limit, sort_type=STABLE, reverse=True))
+from .interfaces import IEntity
+from .util import get_user_by_token, get_entities, get_all_comments, get_actions
 
 
 class Node(object):
@@ -104,32 +33,75 @@ class Node(object):
         return get_obj(oid)
 
 
-class Root(Node, graphene.ObjectType):
+class Debatable(graphene.AbstractType):
+
+    channel = graphene.Field(lambda: Channel)
+    comments = relay.ConnectionField(
+        lambda: Comment,
+        filter=graphene.String())
+    len_comments = graphene.Int()
+
+    def resolve_channel(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return None
+
+        return self.get_channel(getattr(context, 'user', None))
+
+    def resolve_comments(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return []
+
+        channel = self.get_channel(getattr(context, 'user', None))
+        return ResolverLazyList(
+            get_all_comments(channel, args),
+            Comment)
+
+    def resolve_len_comments(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return 0
+
+        channel = self.get_channel(getattr(context, 'user', None))
+        return channel.len_comments if channel else 0
+
+
+class Root(Node, Debatable, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
+
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, NovaIdeoApplication)
 
     keywords = graphene.List(graphene.String)
     can_add_keywords = graphene.Boolean()
+    anonymisation = graphene.Boolean()
 
 
 class Action(Node, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     process_id = graphene.String()
     node_id = graphene.String()
-    title = graphene.String()
+    behavior_id = graphene.String()
     counter = graphene.Int()
     style = graphene.String()
     style_descriminator = graphene.String()
     style_picto = graphene.String()
     style_order = graphene.Int()
     submission_title = graphene.String()
+    description = graphene.String()
 
     def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.action.title)
+
+    def resolve_description(self, args, context, info):  # pylint: disable=W0613
+        return context.localizer.translate(self.action.description)
 
     def resolve_submission_title(self, args, context, info):  # pylint: disable=W0613
         submission_title = getattr(self.action, 'submission_title', '')
@@ -137,9 +109,8 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_counter(self, args, context, info):  # pylint: disable=W0613
         action = self.action
-        request = get_current_request()
         if hasattr(action, 'get_title'):
-            return action.get_title(self.context, request, True)
+            return action.get_title(self.context, context, True)
 
         return None
 
@@ -148,6 +119,9 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_node_id(self, args, context, info):  # pylint: disable=W0613
         return self.action.node_id
+
+    def resolve_behavior_id(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self.action, 'behavior_id', self.action.__class__.__name__)
 
     def resolve_style(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style', '')
@@ -165,7 +139,7 @@ class Action(Node, graphene.ObjectType):
 class File(Node, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     url = graphene.String()
     mimetype = graphene.String()
@@ -177,17 +151,16 @@ class File(Node, graphene.ObjectType):
                 'application/x-shockwave-flash')
 
 
-class Person(Node, graphene.ObjectType):
+class Person(Node, Debatable, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     function = graphene.String()
     description = graphene.String()
     picture = graphene.Field(File)
     first_name = graphene.String()
     last_name = graphene.String()
-    title = graphene.String()
     user_title = graphene.String()
     locale = graphene.String()
     contents = relay.ConnectionField(
@@ -202,12 +175,27 @@ class Person(Node, graphene.ObjectType):
         lambda: Idea,
         filter=graphene.String()
     )
+    channels = relay.ConnectionField(lambda: Channel)
+    discussions = relay.ConnectionField(lambda: Channel)
+    available_tokens = graphene.Int()
+    is_anonymous = graphene.Boolean()
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, (SDPerson, SDBot, SDMask))
+
+    def resolve_is_anonymous(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, 'is_anonymous', False)
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
-        oids = get_entities([Iidea], [], args, info, intersect=user_ideas)
+        contents = self.get_contents(context.user) \
+            if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
+        user_ideas = [get_oid(o) for o in contents]
+        oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
@@ -216,9 +204,30 @@ class Person(Node, graphene.ObjectType):
         return ResolverLazyList(oids, Idea)
 
     def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = [get_oid(o) for o in getattr(self, 'supports', [])]
+        user_ideas = self.evaluated_objs_ids() if hasattr(self, 'evaluated_objs_ids') else []
         oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
+
+    def resolve_channels(self, args, context, info):  # pylint: disable=W0613
+        channels = sorted(
+            [c for c in getattr(self, 'following_channels', [])
+             if not c.is_discuss() and isinstance(c.subject, SDIdea)],
+            key=lambda e: getattr(e, 'created_at'), reverse=True)
+        channels.insert(0, context.root.channel)
+        return channels
+
+    def resolve_discussions(self, args, context, info):  # pylint: disable=W0613
+        return sorted(
+            [c for c in getattr(self, 'following_channels', [])
+             if c.is_discuss()],
+            key=lambda e: getattr(e, 'created_at'), reverse=True)
+
+    def resolve_available_tokens(self, args, context, info):  # pylint: disable=W0613
+        if hasattr(self, 'get_len_free_tokens'):
+            return self.get_len_free_tokens(context.root, True)
+        
+        return 0
+
 
 
 class Url(Node, graphene.ObjectType):
@@ -243,7 +252,7 @@ class Comment(Node, graphene.ObjectType):
     """Nova-Ideo ideas."""
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     created_at = graphene.String()
     state = graphene.List(graphene.String)
@@ -251,12 +260,17 @@ class Comment(Node, graphene.ObjectType):
     author = graphene.Field(Person)
     attached_files = graphene.List(File)
     urls = graphene.List(Url)
-    actions = graphene.List(Action)
+    actions = graphene.List(
+        Action,
+        process_id=graphene.String(),
+        node_ids=graphene.List(graphene.String))
     oid = graphene.String()
     comments = relay.ConnectionField(
         lambda: Comment,
         filter=graphene.String())
     len_comments = graphene.Int()
+    root_oid = graphene.String()
+    channel = graphene.Field(lambda: Channel)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -275,7 +289,7 @@ class Comment(Node, graphene.ObjectType):
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_oid(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self, '__oid__', None)
+        return get_oid(self, None)
 
     def resolve_attached_files(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'files', [])
@@ -288,44 +302,59 @@ class Comment(Node, graphene.ObjectType):
     def resolve_len_comments(self, args, context, info):
         return self.len_comments
 
+    def resolve_actions(self, args, context, info):  # pylint: disable=W0613
+        return get_actions(self, context, args)
+
+    def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
+        return get_oid(self.channel.get_subject(getattr(context, 'user', None)), None)
+        
+
 
 class Channel(Node, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     comments = relay.ConnectionField(
         Comment,
         filter=graphene.String())
+    
+    subject = graphene.Field(lambda: EntityUnion)
+    unread_comments = graphene.List(Comment)
+    len_comments = graphene.Int()
+    is_discuss = graphene.Boolean()
+    
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, SDChannel)
 
     def resolve_comments(self, args, context, info):
         return ResolverLazyList(
             get_all_comments(self, args),
             Comment)
 
+    def resolve_unread_comments(self, args, context, info):
+        if not context.user:
+            return []
 
-class Debatable(graphene.AbstractType):
-
-    channel = graphene.Field(Channel)
-    comments = relay.ConnectionField(
-        Comment,
-        filter=graphene.String())
-    len_comments = graphene.Int()
-
-    def resolve_channel(self, args, context, info):
-        return self.get_channel(getattr(context, 'user', None))
-
-    def resolve_comments(self, args, context, info):
-        channel = self.get_channel(getattr(context, 'user', None))
+        now = datetime.datetime.now(tz=pytz.UTC)
         return ResolverLazyList(
-            get_all_comments(channel, args),
-            Comment)
+            self.get_comments_between(
+                context.user.get_read_date(self), now), Comment)
 
-    def resolve_len_comments(self, args, context, info):
-        channel = self.get_channel(getattr(context, 'user', None))
-        return channel.len_comments if channel else 0
+    def resolve_subject(self, args, context, info):  # pylint: disable=W0613
+        return self.get_subject(getattr(context, 'user', None))
+
+    def resolve_title(self, args, context, info):  # pylint: disable=W0613
+        return context.localizer.translate(self.get_title(context.user))
+
+    def resolve_is_discuss(self, args, context, info):  # pylint: disable=W0613
+        return self.is_discuss()
 
 
 class Idea(Node, Debatable, graphene.ObjectType):
@@ -333,11 +362,9 @@ class Idea(Node, Debatable, graphene.ObjectType):
     """Nova-Ideo ideas."""
 
     class Meta(object):
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, IEntity)
 
     created_at = graphene.String()
-    state = graphene.List(graphene.String)
-    title = graphene.String()
     presentation_text = graphene.String()
     text = graphene.String()
     keywords = graphene.List(graphene.String)
@@ -348,9 +375,7 @@ class Idea(Node, Debatable, graphene.ObjectType):
     user_token = graphene.String()
     urls = graphene.List(Url)
     opinion = graphene.String()
-    actions = graphene.List(Action)
-    oid = graphene.String()
-
+    
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
         if isinstance(root, cls):
@@ -365,32 +390,37 @@ class Idea(Node, Debatable, graphene.ObjectType):
         return html_to_text(self.presentation_text(300))
 
     def resolve_tokens_opposition(self, args, context, info):  # pylint: disable=W0613
-        return len(self.tokens_opposition)
+        return self.len_opposition
 
     def resolve_tokens_support(self, args, context, info):  # pylint: disable=W0613
-        return len(self.tokens_support)
+        return self.len_support
 
     def resolve_urls(self, args, context, info):  # pylint: disable=W0613
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_user_token(self, args, context, info):  # pylint: disable=W0613
-        user = context.user
-        if not user:
-            return None
-        # @TODO optimization
-        if any(t.owner is user for t in self.tokens_support):
-            return 'support'
-
-        if any(t.owner is user for t in self.tokens_opposition):
-            return 'oppose'
-
-        return None
+        return self.evaluation(context.user)
 
     def resolve_opinion(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'opinion', {}).get('explanation', '')
 
-    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self, '__oid__', None)
+
+class EntityUnion(graphene.Union):
+    class Meta:
+        types = (Idea, Root, Person) # TODO add Question...
+
+    @classmethod
+    def resolve_type(cls, instance, context, info):
+        if isinstance(instance, SDIdea):
+            return Idea
+
+        if isinstance(instance, NovaIdeoApplication):
+            return Root
+
+        if isinstance(instance, SDPerson):
+            return Person
+
+        raise Exception()
 
 
 class ResolverLazyList(object):
@@ -468,24 +498,7 @@ class Query(graphene.ObjectType):
         return context.user
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
-        obj = get_context(args.get('context', ''))
-        process_id = args.get('process_id', '')
-        node_ids = args.get('node_ids', '')
-        if not node_ids:
-            return [ActionCall(a, obj) for a in getAllBusinessAction(
-                    obj, context,
-                    process_id=process_id,
-                    process_discriminator='Application')]
-
-        result = []
-        for node_id in node_ids:
-            result.extend(
-                [ActionCall(a, obj) for a in getAllBusinessAction(
-                 obj, context,
-                 process_id=process_id, node_id=node_id,
-                 process_discriminator='Application')])
-
-        return result
+        return get_actions(get_context(args.get('context', '')), context, args)
 
     def resolve_root(self, args, context, info):  # pylint: disable=W0613
         return context.root

@@ -25,7 +25,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No newsletter found"""),
     '1': _(u"""One newsletter found"""),
-    '*': _(u"""${nember} newsletters found""")
+    '*': _(u"""${number} newsletters found""")
     }
 
 
@@ -41,8 +41,7 @@ class SeeNewslettersView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seenewsletters'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)
@@ -55,7 +54,7 @@ class SeeNewslettersView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
 
         user = get_current()
         result_body, result = render_listing_objs(

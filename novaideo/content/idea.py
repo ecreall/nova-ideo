@@ -7,6 +7,7 @@
 
 import datetime
 import pytz
+import deform
 import colander
 from persistent.dict import PersistentDict
 from collections import OrderedDict
@@ -101,6 +102,14 @@ def challenge_choice(node, kw):
         item_css_class=item_css_class)
 
 
+@colander.deferred
+def anonymous_widget(node, kw):
+    request = node.bindings['request']
+    return deform.widget.CheckboxWidget(
+            request=request,
+            template='novaideo:views/templates/checkbox_anonymous.pt')
+
+
 def context_is_a_idea(context, request):
     return request.registry.content.istype(context, 'idea')
 
@@ -157,6 +166,16 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
+        )
+
+    anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=anonymous_widget,
+        label=_('Remain anonymous'),
+        description=_('Check this box if you want to remain anonymous.'),
+        title='',
+        missing=False,
+        default=False
         )
 
 
@@ -248,9 +267,6 @@ class Idea(VersionableEntity, DuplicableEntity,
     def init_examined_at(self):
         setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
 
-    def init_support_history(self):
-        if not hasattr(self, '_support_history'):
-            setattr(self, '_support_history', PersistentList())
 
     def presentation_text(self, nb_characters=400):
         return truncate_text(getattr(self, 'text', ""), nb_characters)

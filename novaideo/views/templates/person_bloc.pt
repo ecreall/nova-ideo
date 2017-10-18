@@ -32,7 +32,7 @@
         </h4>
       </a>
     </div>
-    <div class="support-col"></div>
+    <div class="content-body-left"></div>
     <div class="content-col">  
       <div class="user-function" >
         <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>

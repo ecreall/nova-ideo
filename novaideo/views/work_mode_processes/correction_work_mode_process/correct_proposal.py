@@ -37,6 +37,7 @@ class CorrectProposalView(FormView):
                     ['title', 'description', 'text'])
     requirements = {'css_links': [],
                     'js_links': []}
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return {'title': self.context.title,

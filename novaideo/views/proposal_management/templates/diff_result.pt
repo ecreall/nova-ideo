@@ -14,7 +14,7 @@
       </dd>
     </dl>
   </div>
-  <div class="content-text content-text-scroll malihu-scroll" id="contenttext">
+  <div class="content-text collapsible-text" id="contenttext">
     ${structure:textdiff}
   </div>
   <div id="legend">

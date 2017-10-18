@@ -18,11 +18,10 @@
  * - https://connect.microsoft.com/IE/feedback/details/729164/
  *           ie10-dynamic-script-element-fires-loaded-readystate-prematurely
  */
-(function () {
-
+;(function() {
   // Global state.
-  var pendingScripts = {};
-  var scriptCounter = 0;
+  var pendingScripts = {}
+  var scriptCounter = 0
 
   /**
    * Insert script into the DOM
@@ -30,18 +29,18 @@
    * @param {Object} script Script DOM object
    * @returns {void}
    */
-  var _addScript = function (script) {
+  var _addScript = function(script) {
     // Get the first script element, we're just going to use it
     // as a reference for where to insert ours. Do NOT try to do
     // this just once at the top and then re-use the same script
     // as a reference later. Some weird loaders *remove* script
     // elements after the browser has executed their contents,
     // so the same reference might not have a parentNode later.
-    var firstScript = document.getElementsByTagName("script")[0];
+    var firstScript = document.getElementsByTagName("script")[0]
 
     // Append the script to the DOM, triggering execution.
-    firstScript.parentNode.insertBefore(script, firstScript);
-  };
+    firstScript.parentNode.insertBefore(script, firstScript)
+  }
 
   /**
    * Load Script.
@@ -51,12 +50,12 @@
    * @param {Object}    context   (Optional) Callback context (`this`)
    * @returns {void}
    */
-  var _lload = function (src, callback, context) {
+  var _lload = function(src, callback, context) {
     /*eslint max-statements: [2, 25]*/
-    var script = document.createElement("script");
-    var done = false;
-    var err;
-    var _cleanup; // _must_ be set below.
+    var script = document.createElement("script")
+    var done = false
+    var err
+    var _cleanup // _must_ be set below.
 
     /**
      * Final handler for error or completion.
@@ -65,29 +64,31 @@
      *
      * @returns {void}
      */
-    var _finish = function () {
+    var _finish = function() {
       // Only call once.
-      if (done) { return; }
-      done = true;
+      if (done) {
+        return
+      }
+      done = true
 
       // Internal cleanup.
-      _cleanup();
+      _cleanup()
 
       // Callback.
       if (callback) {
-        callback.call(context, err);
+        callback.call(context, err)
       }
-    };
+    }
 
     /**
      * Error handler
      *
      * @returns {void}
      */
-    var _error = function () {
-      err = new Error(src || "EMPTY");
-      _finish();
-    };
+    var _error = function() {
+      err = new Error(src || "EMPTY")
+      _finish()
+    }
 
     if (script.readyState && !("async" in script)) {
       /*eslint-disable consistent-return*/
@@ -96,30 +97,32 @@
       // satisfy the above condition and enter this branch, but we don't
       // support those browsers anyway.
 
-      var id = scriptCounter++;
-      var isReady = { loaded: true, complete: true };
-      var inserted = false;
+      var id = scriptCounter++
+      var isReady = { loaded: true, complete: true }
+      var inserted = false
 
       // Clear out listeners, state.
-      _cleanup = function () {
-        script.onreadystatechange = script.onerror = null;
-        pendingScripts[id] = void 0;
-      };
+      _cleanup = function() {
+        script.onreadystatechange = script.onerror = null
+        pendingScripts[id] = void 0
+      }
 
       // Attach the handler before setting src, otherwise we might
       // miss events (consider that IE could fire them synchronously
       // upon setting src, for example).
-      script.onreadystatechange = function () {
-        var firstState = script.readyState;
+      script.onreadystatechange = function() {
+        var firstState = script.readyState
 
         // Protect against any errors from state change randomness.
-        if (err) { return; }
+        if (err) {
+          return
+        }
 
         if (!inserted && isReady[firstState]) {
-          inserted = true;
+          inserted = true
 
           // Append to DOM.
-          _addScript(script);
+          _addScript(script)
         }
 
         // --------------------------------------------------------------------
@@ -152,7 +155,7 @@
           // And, oh yeah, this hack is so hacky-ish we need the following
           // eslint disable...
           /*eslint-disable no-unused-expressions*/
-          script.children;
+          script.children
           /*eslint-enable no-unused-expressions*/
 
           if (script.readyState === "loading") {
@@ -160,7 +163,7 @@
             //
             // **Note**: We are not intending to _return_ a value, just have
             // a shorter short-circuit code path here.
-            return _error();
+            return _error()
           }
         }
 
@@ -169,59 +172,58 @@
         // above. So check readyState again here and react without
         // waiting for another onreadystatechange.
         if (script.readyState === "complete") {
-          _finish();
+          _finish()
         }
-      };
+      }
 
       // Onerror handler _may_ work here.
-      script.onerror = _error;
+      script.onerror = _error
 
       // Since we're not appending the script to the DOM yet, the
       // reference to our script element might get garbage collected
       // when this function ends, without onreadystatechange ever being
       // fired. This has been witnessed to happen. Adding it to
       // `pendingScripts` ensures this can't happen.
-      pendingScripts[id] = script;
+      pendingScripts[id] = script
 
       // This triggers a request for the script, but its contents won't
       // be executed until we append it to the DOM.
-      script.src = src;
+      script.src = src
 
       // In some cases, the readyState is already "loaded" immediately
       // after setting src. It's a lie! Don't append to the DOM until
       // the onreadystatechange event says so.
-
     } else {
       // This section is for modern browsers, including IE10+.
 
       // Clear out listeners.
-      _cleanup = function () {
-        script.onload = script.onerror = null;
-      };
+      _cleanup = function() {
+        script.onload = script.onerror = null
+      }
 
-      script.onerror = _error;
-      script.onload = _finish;
-      script.async = true;
-      script.charset = "utf-8";
-      script.src = src;
+      script.onerror = _error
+      script.onload = _finish
+      script.async = true
+      script.charset = "utf-8"
+      script.src = src
 
       // Append to DOM.
-      _addScript(script);
+      _addScript(script)
     }
-  };
+  }
 
   // UMD wrapper.
   /*global define:false*/
   if (typeof exports === "object" && typeof module === "object") {
     // CommonJS
-    module.exports = _lload;
-
+    module.exports = _lload
   } else if (typeof define === "function" && define.amd) {
     // AMD
-    define([], function () { return _lload; });
-
+    define([], function() {
+      return _lload
+    })
   } else {
     // VanillaJS
-    window._lload = _lload;
+    window._lload = _lload
   }
-}());
+})()

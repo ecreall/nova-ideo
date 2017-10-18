@@ -37,7 +37,7 @@ class AddOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 1
+    style_order = 5
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
@@ -73,7 +73,7 @@ class CreatOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 2
+    style_order = 5
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
@@ -124,6 +124,7 @@ class EditOrganizations(InfiniteCardinality):
             for manager in organization.managers:
                 if manager not in members:
                     organization.addtoproperty('members', manager)
+                    manager.init_contents_organizations()
 
             organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
             organization.reindex()
@@ -148,7 +149,7 @@ class SeeOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 3
+    style_order = 6
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeorgs_roles_validation
@@ -214,6 +215,7 @@ class EditOrganization(InfiniteCardinality):
         for manager in organization.managers:
             if manager not in members:
                 organization.addtoproperty('members', manager)
+                manager.init_contents_organizations()
 
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
         organization.reindex()
@@ -267,6 +269,7 @@ class AddMembers(InfiniteCardinality):
             new_member = False
             if member not in context.members:
                 context.addtoproperty('members', member)
+                member.init_contents_organizations()
                 new_member = True
 
             if are_managers and (new_member or not has_role(

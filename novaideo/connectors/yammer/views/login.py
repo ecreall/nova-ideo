@@ -1,9 +1,9 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# -*- coding: utf8 -*-
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
-# TODO: finish to clean, use our own templates, ... ?
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden
@@ -14,6 +14,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
 from novaideo import _
+from novaideo.connectors.core import YAMMER_CONNECTOR_ID
 from novaideo.connectors.yammer.content.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import generate_navbars
@@ -40,7 +41,7 @@ class LoginView(BasicView):
         messages = {}
         request = self.request
         root = getSite()
-        yammer_connectors = list(root.get_connectors('yammer'))
+        yammer_connectors = list(root.get_connectors(YAMMER_CONNECTOR_ID))
         yammer_connector = yammer_connectors[0] if yammer_connectors else None
         login_url = request.resource_url(request.context, 'login')
         login_url2 = request.resource_url(request.context, '@@login')
@@ -60,23 +61,9 @@ class LoginView(BasicView):
         error_message = _("Failed login")
         if yammer_connector and code:
             trusted_networks = getattr(yammer_connector, 'networks', [])
-            access_data = yammer_connector.authenticator.fetch_access_data(code)
-            access_token = access_data.access_token.token
-            user_info = access_data.user
-            user_networks = user_info.get('network_domains')
+            source_data, user_data = yammer_connector.extract_data(code)
             if not trusted_networks or \
-               any(n in trusted_networks for n in user_networks):
-                source_data = {
-                    'app_name': 'yammer',
-                    'user_id': user_info.get('id'),
-                    'network_domains': user_networks,
-                    'access_token': access_token
-                }
-                user_data = {
-                    'first_name': user_info.get('first_name'),
-                    'last_name': user_info.get('last_name'),
-                    'email': user_info.get('email')
-                }
+               any(n in trusted_networks for n in source_data['network_domains']):
                 result = self.execute({
                     'source_data': source_data,
                     'user_data': user_data,
@@ -84,6 +71,7 @@ class LoginView(BasicView):
                 })
                 if result[0].get('logged', False):
                     return result[0].get('redirect')
+
             elif trusted_networks:
                 error_message = _("You don't have the right to login with this account.")
 

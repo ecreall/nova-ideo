@@ -38,6 +38,7 @@ class CreateWebAdvertisingView(FormView):
     name = 'createwebadvertising'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/advertisting_management.js']}
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

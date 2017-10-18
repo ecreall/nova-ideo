@@ -10,7 +10,7 @@
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>
-        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm" i18n:translate="">Save the explanation</button> 
+        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm" i18n:translate="">Save the explanation</button>
        <button type="button" class="btn btn-default btn-sm explanation-close" i18n:translate="">Cancel</button>
       </div>
     </div>

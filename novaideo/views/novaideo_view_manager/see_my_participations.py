@@ -24,7 +24,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""I have participated in no working group so far"""),
     '1': _(u"""I have participated in one working group so far"""),
-    '*': _(u"""I have participated in ${nember} working groups so far""")
+    '*': _(u"""I have participated in ${number} working groups so far""")
 }
 
 
@@ -49,7 +49,9 @@ class SeeMyParticipationsView(SeeMyContentsView):
     sorts = ['release_date', 'created_at']
 
     def _get_content_ids(self, user):
-        return [get_oid(o) for o in getattr(user, 'participations', [])]
+        participations = user.get_participations(user) \
+            if hasattr(user, 'get_participations') else []
+        return [get_oid(o) for o in participations]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

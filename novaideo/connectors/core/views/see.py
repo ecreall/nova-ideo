@@ -1,5 +1,6 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# -*- coding: utf8 -*-
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -42,8 +43,7 @@ class SeeConnectorsView(BasicView):
     viewid = 'seeconnectors'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     # wrapper_template = 'novaideo:views/smart_folder_management/templates/folder_blocs_view_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)

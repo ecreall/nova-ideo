@@ -76,6 +76,7 @@ class ExplanationFormView(FormView):
     behaviors = [ExplanationAmendment, Cancel]
     viewid = 'formexplanationamendment'
     formid = 'explanationamendmentform'
+    css_class = 'panel-transparent'
 
 
 @view_config(

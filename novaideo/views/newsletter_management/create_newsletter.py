@@ -34,6 +34,7 @@ class CreateNewsletterView(FormView):
     behaviors = [CreateNewsletter, Cancel]
     formid = 'formcreatenewsletter'
     name = 'createnewsletter'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

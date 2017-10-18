@@ -67,7 +67,7 @@ class AskQuestion(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_interaction = 'ajax-action'
     style_picto = 'md md-live-help'
-    style_order = 0
+    style_order = 1
     title = _('Ask a question')
     unavailable_link = 'docanonymous'
     submission_title = _('Ask')
@@ -78,12 +78,14 @@ class AskQuestion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.get('anonymous', False) and mask else user
         question = appstruct['_object_data']
         root.merge_keywords(question.keywords)
         root.addtoproperty('questions', question)
         question.state.extend(['pending', 'published'])
-        grant_roles(user=user, roles=(('Owner', question), ))
-        question.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', question), ))
+        question.setproperty('author', author)
         if isinstance(context, Comment):
             related_contents = [question]
             content = context.subject
@@ -92,7 +94,7 @@ class AskQuestion(InfiniteCardinality):
                 list(related_contents),
                 {'comment': context.comment,
                  'type': context.intention},
-                user,
+                author,
                 ['transformation'],
                 CorrelationType.solid)
             for correlation in correlations:
@@ -124,7 +126,7 @@ class AskQuestion(InfiniteCardinality):
             return can_access(u, question)
 
         alert(
-            'real_time', recipients=None, exclude=[user],
+            'real_time', recipients=None, exclude=[author],
             event='new_question',
             params={
                 'id': str(question.__oid__)},
@@ -137,7 +139,7 @@ class AskQuestion(InfiniteCardinality):
                 'condition': _condition if is_restricted else None
             }
         )
-        request.registry.notify(ActivityExecuted(self, [question], user))
+        request.registry.notify(ActivityExecuted(self, [question], author))
         request.registry.notify(ObjectPublished(object=question))
         return {'newcontext': question}
 
@@ -312,8 +314,8 @@ class AnswerQuestion(InfiniteCardinality):
         if nb_only:
             return str(len_answers)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_answers,
+        return _("${title} (${number})",
+                 mapping={'number': len_answers,
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request):
@@ -356,7 +358,10 @@ class AnswerQuestion(InfiniteCardinality):
                   subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        root = getSite()
+        user = get_current(request)
+        mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
+        author = mask if appstruct.get('anonymous', False) and mask else user
         answer = appstruct['_object_data']
         context.addtoproperty('answers', answer)
         answer.init_title()
@@ -367,13 +372,13 @@ class AnswerQuestion(InfiniteCardinality):
             answer.question.add_selected_option(user, answer.option)
 
         transaction.commit()
-        grant_roles(user=user, roles=(('Owner', answer), ))
-        answer.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', answer), ))
+        answer.setproperty('author', author)
         if appstruct.get('associated_contents', []):
             answer.set_associated_contents(
-                appstruct['associated_contents'], user)
+                appstruct['associated_contents'], author)
 
-        self._alert_users(context, request, user, answer)
+        self._alert_users(context, request, author, answer)
         context.reindex()
         user.set_read_date(answer.channel, datetime.datetime.now(tz=pytz.UTC))
         return {}
@@ -772,13 +777,14 @@ class EditAnswer(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.edited = True
-        user = get_current()
+        user = get_current(request)
+        author = context.author
         if getattr(context, 'option', None) is not None:
             context.question.add_selected_option(user, context.option)
 
         if appstruct.get('associated_contents', []):
             context.set_associated_contents(
-                appstruct['associated_contents'], user)
+                appstruct['associated_contents'], author)
 
         context.format(request)
         context.reindex()

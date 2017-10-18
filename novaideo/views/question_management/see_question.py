@@ -37,7 +37,7 @@ from novaideo.views.filter.sort import (
 CONTENTS_MESSAGES = {
     '0': _(u"""No answer"""),
     '1': _(u"""One answer"""),
-    '*': _(u"""${nember} answers""")
+    '*': _(u"""${number} answers""")
 }
 
 
@@ -115,7 +115,7 @@ class AnswersView(BasicView):
         index = str(len_answers) if len_answers <= 1 else '*'
         if not self.parent:
             self.title = _(CONTENTS_MESSAGES[index],
-                           mapping={'nember': len_answers})
+                           mapping={'number': len_answers})
         elif index != '*':
             self.title = _('The answer')
 
@@ -134,7 +134,8 @@ class AnswersView(BasicView):
                   'empty_message': self.empty_message,
                   'empty_icon': self.empty_icon,
                   'filter_body': filter_body,
-                  'sort_body': sort_body}
+                  'sort_body': sort_body,
+                  'view': self}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['isactive'] = True
@@ -163,8 +164,7 @@ class AnalyticsView(BasicView):
 
     title = _('Analytics')
     requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/chartjs/Chart.js',
-                                 'novaideo:static/js/analytics.js']}
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
     def update(self):
         result = {}
@@ -199,6 +199,7 @@ class SeeQuestionHeaderView(BasicView):
     template = 'novaideo:views/question_management/templates/see_question.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'seequestionheader'
+    css_class = 'question-container'
 
     def update(self):
         self.execute(None)
@@ -221,7 +222,7 @@ class SeeQuestionHeaderView(BasicView):
             index = '*'
 
         answers_title = _(CONTENTS_MESSAGES[index],
-                          mapping={'nember': len_answers})
+                          mapping={'number': len_answers})
         answer_body = None
         if self.context.answer:
             answer_body = render_listing_obj(

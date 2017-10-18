@@ -5,12 +5,12 @@
         <small>
            <div tal:condition="'published' in context.state" class="proposal-support">
              <span class="label success">
-                <span class="token ${support == 1 and 'my-token'} token-success glyphicon glyphicon-triangle-top"></span>
-                <span class="support-nb">${len(context.tokens_support)}</span>
+                <span class="token ${support == 'support' and 'my-token'} token-success glyphicon glyphicon-triangle-top"></span>
+                <span class="support-nb">${context.len_allocated_tokens.get('support', 0)}</span>
              </span>
              <span class="label danger">
-                <span class="token ${support == -1 and 'my-token'} token-danger glyphicon glyphicon-triangle-bottom"></span>
-                <span class="support-nb">${len(context.tokens_opposition)}</span>
+                <span class="token ${support == 'oppose' and 'my-token'} token-danger glyphicon glyphicon-triangle-bottom"></span>
+                <span class="support-nb">${context.len_allocated_tokens.get('oppose', 0)}</span>
              </span>
             </div>
         </small>

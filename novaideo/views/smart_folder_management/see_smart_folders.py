@@ -24,7 +24,7 @@ from novaideo.utilities.util import (
 CONTENTS_MESSAGES = {
     '0': _(u"""No topic of interest found"""),
     '1': _(u"""One topic of interest found"""),
-    '*': _(u"""${nember} topics of interests found""")
+    '*': _(u"""${number} topics of interests found""")
 }
 
 
@@ -40,8 +40,7 @@ class SeeSmartFoldersView(BasicView):
     template = 'novaideo:views/smart_folder_management/templates/see_smartfolders.pt'
     viewid = 'seesmartfolders'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)
@@ -61,7 +60,7 @@ class SeeSmartFoldersView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, folders, user)
         values = {

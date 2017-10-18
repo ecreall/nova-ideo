@@ -30,7 +30,7 @@ BATCH_DEFAULT_SIZE = 20
 CONTENTS_MESSAGES = {
     '0': _(u"""No vote"""),
     '1': _(u"""One vote"""),
-    '*': _(u"""${nember} votes""")
+    '*': _(u"""${number} votes""")
 }
 
 
@@ -69,7 +69,7 @@ class VotesView(BasicView):
             index = str(len_votes) if len_votes <= 1 else '*'
             if not self.parent:
                 self.title = _(CONTENTS_MESSAGES[index],
-                               mapping={'nember': len_votes})
+                               mapping={'number': len_votes})
             elif index != '*':
                 self.title = _('The vote')
 
@@ -160,7 +160,7 @@ class SeeBallotHeaderView(BasicView):
             index = '*'
 
         votes_title = _(CONTENTS_MESSAGES[index],
-                        mapping={'nember': len_votes})
+                        mapping={'number': len_votes})
         result = {}
         ballot_type = context.report.ballottype
         values = {

@@ -8,7 +8,8 @@
                  profil_picture getattr(picture, 'profil', picture);
                  keywords getattr(object, 'keywords', []);
                  default_img request.static_url('novaideo:static/images/user.png');
-                 oid object.__oid__;">
+                 oid object.__oid__;
+                 organization getattr(object, 'organization', None)">
   <div class="media-body media-person">
     <div class="object-title-block view-item-title"
       data-title="${object.title}"
@@ -32,12 +33,23 @@
         </h4>
       </a>
     </div>
-    <div class="support-col"></div>
+    <div class="content-body-left"></div>
     <div class="content-col">
       <div class="user-function" >
         <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
-        <span tal:condition="getattr(object, 'organization', None)" >
-            <a i18n:attributes="title" style="color: #555C63" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
+        <span tal:condition="organization" >
+            <a i18n:attributes="title"
+               title="Organization"
+               style="color: #555C63"
+               tal:attributes="href request.resource_url(organization, '@@index')"
+               tal:define="picture getattr(organization, 'logo', None);
+                           profil_picture getattr(picture, 'profil', None)">
+                <img class="author-img img-circle" 
+                  tal:condition="profil_picture is not None"
+                   tal:attributes="src profil_picture.url"  width="25"/>
+                <span tal:condition="profil_picture is None" class="glyphicon glyphicon-home"></span>
+                ${organization.title}
+            </a>
         </span>
       </div>
       <div class="object-text">${object.presentation_text(300)}</div>

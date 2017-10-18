@@ -25,8 +25,8 @@ def vote_relation_validation(process, context):
 def vote_processsecurity_validation(process, context):
     user = get_current()
     report = process.ballot.report
-    return user in report.electors and \
-           user not in report.voters and \
+    elector = report.get_elector(user)
+    return elector and not report.he_voted(elector) and \
            global_user_processsecurity()
 
 
@@ -80,5 +80,6 @@ def remove_elector_vote_processes(ballot_action, user):
     ballots = ballot_process.ballots
     for ballot in ballots:
         report = ballot.report
-        if user in report.electors and user not in report.voters:
-            report.delfromproperty('electors', user)
+        elector = report.get_elector(user)
+        if elector and not report.he_voted(elector):
+            report.delfromproperty('electors', report.get_elector(user))

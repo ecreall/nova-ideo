@@ -30,7 +30,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No content found"""),
     '1': _(u"""One content found"""),
-    '*': _(u"""${nember} contents found""")
+    '*': _(u"""${number} contents found""")
     }
 
 
@@ -47,8 +47,7 @@ class SeeReportedContentsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seereportedcontents'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 
@@ -105,7 +104,7 @@ class SeeReportedContentsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(

@@ -22,8 +22,7 @@ from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
 from novaideo import _, nothing
 from novaideo.content.processes.user_management.behaviors import (
-    global_user_processsecurity,
-    initialize_tokens)
+    global_user_processsecurity)
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
@@ -108,7 +107,7 @@ def inviteuser_processsecurity_validation(process, context):
 class InviteUsers(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
-    style_order = 5
+    style_order = 8
     submission_title = _('Send')
     isSequential = False
     context = INovaIdeoApplication
@@ -203,7 +202,7 @@ def seeinvs_processsecurity_validation(process, context):
 class SeeInvitations(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
-    style_order = 6
+    style_order = 10
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeinvs_roles_validation
@@ -319,7 +318,6 @@ class AcceptInvitation(InfiniteCardinality):
         person.state.append('active')
         grant_roles(person, roles)
         grant_roles(person, (('Owner', person),))
-        initialize_tokens(person, root.tokens_mini)
         manager = context.manager
         root.delfromproperty('invitations', context)
         root.addtoproperty('news_letter_members', person)

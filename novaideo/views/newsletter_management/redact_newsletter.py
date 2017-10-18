@@ -43,6 +43,7 @@ class RedactFormNewsletterView(FormView):
     behaviors = [RedactNewsletter, Cancel]
     formid = 'formredactnewsletter'
     name = 'redactnewsletterform'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context
@@ -60,6 +61,7 @@ class RedactNewsletterView(MultipleView):
     template = 'daceui:templates/mergedmultipleview.pt'
     views = (RedactNewsletterViewStudyReport, RedactFormNewsletterView)
     validators = [RedactNewsletter.get_validator()]
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

@@ -36,6 +36,7 @@ class EditWebAdvertisingView(FormView):
     name = 'editwebadvertising'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/advertisting_management.js']}
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

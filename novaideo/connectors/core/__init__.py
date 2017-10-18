@@ -6,3 +6,11 @@
 # author: Amen Souissi
 
 CONNECTOR_PROCESSES = []
+
+YAMMER_CONNECTOR_ID = 'yammer'
+
+TWITTER_CONNECTOR_ID = 'twitter'
+
+FACEBOOK_CONNECTOR_ID = 'facebook'
+
+GOOGLE_CONNECTOR_ID = 'google'

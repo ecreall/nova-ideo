@@ -179,8 +179,9 @@ class PresentIdeaFormView(FormView):
         self.schema.widget = formwidget
 
     def bind(self):
+        user = get_current(self.request)
         root = self.request.root
-        mail_template = root.get_mail_template('presentation_idea')
+        mail_template = root.get_mail_template('presentation_idea', user.user_locale)
         return {'mail_template': mail_template}
 
 

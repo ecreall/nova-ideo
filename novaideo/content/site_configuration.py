@@ -135,6 +135,16 @@ class WorkParamsConfigurationSchema(Schema):
     # )
 
 
+@colander.deferred
+def anonymisation_kind_widget(node, kw):
+    request = node.bindings['request']
+    root = node.bindings['context']
+    values = core.AnonymisationKinds.get_items().items()
+    return deform.widget.RadioChoiceWidget(
+            values=values,
+            item_css_class='conf-form-anonymisation-kind')
+
+
 class UserParamsConfigurationSchema(Schema):
 
     only_invitation = colander.SchemaNode(
@@ -181,6 +191,24 @@ class UserParamsConfigurationSchema(Schema):
     #     title=_('Minimum number of participants for a working group'),
     #     default=3,
     #     )
+
+    anonymisation = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(
+            item_css_class='conf-form-anonymisation'),
+        label=_('Users can be anonymous'),
+        description=_('Users can submit content anonymously.'),
+        title='',
+        missing=False
+    )
+
+    anonymisation_kind = colander.SchemaNode(
+        colander.String(),
+        widget=anonymisation_kind_widget,
+        description=_('Choose the anonymization kind.'),
+        title=_('Anonymization kind'),
+        default='anonymity'
+    )
 
     participants_maxi = colander.SchemaNode(
         colander.Integer(),
@@ -360,8 +388,8 @@ class KeywordsConfSchema(Schema):
         colander.Set(),
         widget=keywords_choice,
         title='Keywords',
-        description=_("To add keywords, you need to tap the « Enter »"
-                      " key after each keyword or separate them with commas."),
+        description=_("To add keywords, you need to separate them by commas "
+                      "and then tap the « Enter » key to validate your selection."),
         missing=[]
         )
 

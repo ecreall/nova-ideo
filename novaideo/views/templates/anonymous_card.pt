@@ -1,0 +1,31 @@
+<div class="thumbnail right-caption span4 search-item search-item-bloc"
+     i18n:domain="novaideo"
+     tal:define="default_img request.static_url('novaideo:static/images/anonymous.png');
+                 ">
+  <div role="presentation" class="card-img" 
+       style="
+          background: transparent url(${request.static_url('novaideo:static/images/background_user.png')}) no-repeat scroll center center / cover ;">
+    <div class="object-menu pull-right">
+        <div tal:replace="structure menu_body"/>
+      </div>
+    <img class="img-circle"
+        tal:attributes="src default_img"  width="70"/>
+  </div>
+  <div class="caption">
+      <div class="card-data">
+          <span class="card-title" title="${getattr(object, 'title', object.name)}">
+                ${getattr(object, 'title', object.name)}
+          </span>
+        <div class="card-addon">
+          <small>
+            <span>This user is anonymous</span>
+          </small>
+        </div>
+      </div>
+      <div class="search-item-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
+      </div>
+  </div>
+</div>

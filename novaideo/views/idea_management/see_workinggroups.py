@@ -26,7 +26,7 @@ BATCH_DEFAULT_SIZE = 8
 WG_MESSAGES = {
     '0': _(u"""No related working group"""),
     '1': _(u"""One related working group"""),
-    '*': _(u"""${nember} related working groups""")}
+    '*': _(u"""${number} related working groups""")}
 
 
 @view_config(
@@ -68,7 +68,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         if len_result > 1:
             index = '*'
 
-        self.title = _(WG_MESSAGES[index], mapping={'nember': len_result})
+        self.title = _(WG_MESSAGES[index], mapping={'number': len_result})
         result = {}
         # if included in another view
         if self.parent or self.request.view_name == self.name:

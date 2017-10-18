@@ -52,8 +52,9 @@ class ProposalHeaderView(BasicView):
             if not is_active_user:
                 return None
 
-            active_working_groups = getattr(user, 'active_working_groups', [])
-            is_member = user in working_group.members
+            active_working_groups = user.get_active_working_groups(user) \
+                if hasattr(user, 'get_active_working_groups') else []
+            is_member = working_group.is_member(user)
             in_wl = user in working_group.wating_list
             max_participation = len(active_working_groups) >= \
                 root.participations_maxi
@@ -167,6 +168,7 @@ class DetailProposalView(BasicView):
     template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     title = _('Details')
+    expandable = True
 
     def update(self):
         navbars = self.get_binding('navbars')

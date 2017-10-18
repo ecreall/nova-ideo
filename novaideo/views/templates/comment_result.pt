@@ -6,11 +6,13 @@
     oid getattr(object, '__oid__', 'none');
     id 'comment-'+str(oid);
     author object.author;
+    is_anonymous getattr(author, 'is_anonymous', False);
+    author_picture getattr(author, 'picture', None);
+    default_img request.static_url(getattr(author, 'default_picture', 'novaideo:static/images/user100.png'));
     picture getattr(author, 'picture', None);
     profil_picture getattr(picture, 'profil', None);
     attached_files object.files;
-    contents object.get_related_contents(current_user);
-    default_img request.static_url('novaideo:static/images/user.png')"
+    contents object.get_related_contents(current_user);"
   i18n:domain="novaideo">
          <div class="commentli media-body media-comment">
           <div tal:condition="menu_body|nothing" class="object-menu pull-right">
@@ -29,7 +31,7 @@
                 <a 
                   data-oid="${getattr(author, '__oid__', '')}"
                   class="toggle-popover"
-                  tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+                  tal:attributes="href request.resource_url(author, '@@index') if not is_anonymous else '#'">${getattr(author, 'title', author.name)}</a>
                 <div title="${layout.to_localized_time(object.created_at)}" class="comment-detail-container">
                   <span i18n:translate="">the</span>
                   <span tal:replace="layout.to_localized_time(object.created_at)"/>

@@ -6,6 +6,7 @@
 
 import deform
 from pyramid.view import view_config
+from pyramid.traversal import find_resource
 
 from dace.objectofcollaboration.object import Object
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -21,9 +22,10 @@ from novaideo.utilities.pseudo_react import (
 from novaideo.content.processes.question_management.behaviors import (
     AskQuestion)
 from novaideo.content.question import QuestionSchema, Question
+from novaideo.content.challenge import Challenge
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _, log
-from ..filter import get_pending_challenges
+from novaideo.views.core import update_anonymous_schemanode, update_challenge_schemanode
 
 
 @view_config(
@@ -34,24 +36,25 @@ from ..filter import get_pending_challenges
 class AskQuestionView(FormView):
 
     title = _('Ask a question')
-    schema = select(QuestionSchema(factory=Question, editable=True),
+    schema = select(QuestionSchema(factory=Question, editable=True, omit=('anonymous',)),
                     ['challenge',
                      'title',
                      'text',
                      'options',
                      'keywords',
-                     'attached_files'])
+                     'attached_files',
+                     'anonymous'])
     behaviors = [AskQuestion, Cancel]
     formid = 'formaskquestion'
     name = 'askquestion'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         user = get_current(self.request)
-        if 'challenge' not in self.request.content_to_manage or \
-           not len(get_pending_challenges(user)) > 0:
-            self.schema = omit(
-                self.schema, ['challenge'])
-
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
+        self.schema = update_challenge_schemanode(
+            self.request, user, self.schema)
         if not getattr(self, 'is_home_form', False):
             self.action = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -85,6 +88,14 @@ class AskQuestionView_Json(BasicView):
             view_name = self.params('source_path')
             view_name = view_name if view_name else ''
             is_mycontents_view = view_name.endswith('seemycontents')
+            context = self.context
+            try:
+                source_path = '/'.join(view_name.split('/')[:-1])
+                context = find_resource(self.context, source_path)
+            except Exception as error:
+                log.warning(error)
+
+            is_challenge = isinstance(context, Challenge)
             redirect = False
             for action_id in self.behaviors_instances:
                 if action_id in self.request.POST:
@@ -106,13 +117,20 @@ class AskQuestionView_Json(BasicView):
                 user = get_current()
                 body = ''
                 if not redirect:
-                    question = user.questions[-1]
+                    question = sorted(
+                        user.get_questions(user),
+                        key=lambda w: w.created_at)[-1]
                     if not is_mycontents_view and \
                        'published' not in question.state:
                         redirect = True
                     else:
-                        result['item_target'] = 'results_contents' \
-                            if is_mycontents_view else 'results-question'
+                        if is_mycontents_view:
+                            result['item_target'] = 'results_contents'
+                        elif is_challenge:
+                            result['item_target'] = 'results-challenge-questions'
+                        else:
+                            result['item_target'] = 'results-home-questions'
+
                         body += render_listing_obj(
                             self.request, question, user)
 

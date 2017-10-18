@@ -66,7 +66,7 @@ def create_roles_validation(process, context):
 class AddSmartFolder(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-folder-open'
-    style_order = 0
+    style_order = 3
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = create_roles_validation
@@ -229,7 +229,7 @@ def seesmartfolders_roles_validation(process, context):
 class SeeSmartFolders(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-folder-open'
-    style_order = 0
+    style_order = 4
     context = INovaIdeoApplication
     roles_validation = seesmartfolders_roles_validation
 

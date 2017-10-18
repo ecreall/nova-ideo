@@ -7,14 +7,18 @@
 
 import json
 import requests
+import re
 from persistent.list import PersistentList
 # from urllib.request import urlopen
 
-from substanced.util import get_oid
-
 from pyramid.threadlocal import get_current_request
 
+from substanced.util import get_oid
+from pyramid_sms.utils import normalize_us_phone_number
+from pyramid_sms.outgoing import send_sms
+
 from dace.objectofcollaboration.principal.util import get_current
+import html_diff_wrapper
 
 from novaideo.ips.mailer import mailer_send
 # from novaideo.content.resources import (
@@ -114,6 +118,8 @@ def alert_comment_nia(context, request, root, **kwargs):
         alert = alert_class(**kwargs)
         alert.subject = context
         comment_text = alert.render('nia', None, request).strip()
+        # remove spaces and new lines between tags
+        comment_text = re.sub('>[\n|\r|\s]*<', '><', comment_text)
         comment = Comment(
             intention=_('Remark'),
             comment=comment_text
@@ -165,6 +171,17 @@ def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
             recipients=recipients, sender=sender)
 
 
+def alert_sms(senders=[], recipients=[], exclude=[], **kwargs):
+    """
+        recipients: ['+33....']
+    """
+    message = kwargs.get('message', None)
+    request = kwargs.get('request', get_current_request())
+    for recipient in recipients:
+        to = normalize_us_phone_number(recipient)
+        send_sms(request, to, message)
+
+
 def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: [user1, user2],
@@ -172,7 +189,7 @@ def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
     """
     kind = kwargs.pop('internal_kind', None)
     alert_class = INTERNAL_ALERTS.get(kind, None)
-    if alert_class:
+    if alert_class and recipients:
         subjects = kwargs.pop('subjects', [])
         sender = senders[0]
         alert = alert_class(**kwargs)
@@ -244,6 +261,7 @@ def alert(kind="", senders=[], recipients=[], exclude=[], **kwargs):
     alert_op = ALERTS.get(kind, None)
     if alert_op:
         try:
+            recipients = list(set(recipients)) if isinstance(recipients, (list, set)) else recipients
             return alert_op(senders, recipients, exclude, **kwargs)
         except Exception as error:
             log.warning(error)
@@ -258,5 +276,6 @@ ALERTS = {
     # 'slack': alert_slack,
     # 'arango': alert_arango,
     'email': alert_email,
-    'real_time': alert_real_time
+    'real_time': alert_real_time,
+    'sms': alert_sms
 }

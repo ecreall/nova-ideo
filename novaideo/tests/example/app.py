@@ -20,7 +20,6 @@ class User(Object):
 
 
 def add_user(data, request, roles=('Member',)):
-    from novaideo.content.processes.user_management.behaviors import initialize_tokens
     from novaideo.content.person import Person
     root = request.root
     person = Person(**data)
@@ -32,7 +31,6 @@ def add_user(data, request, roles=('Member',)):
     grant_roles(person, roles=roles)
     grant_roles(person, (('Owner', person),))
     person.state.append('active')
-    initialize_tokens(person, root.tokens_mini)
     person.init_annotations()
     person.reindex()
     return person

@@ -30,7 +30,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""I have contributed to no content so far"""),
     '1': _(u"""I have contributed to one content so far"""),
-    '*': _(u"""I have contributed to ${nember} contents so far""")
+    '*': _(u"""I have contributed to ${number} contents so far""")
     }
 
 
@@ -47,8 +47,7 @@ class SeeMyContentsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemycontents'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
@@ -57,7 +56,7 @@ class SeeMyContentsView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                       mapping={'nember': args.get('len_result')})
+                       mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user):
         def source(**args):
@@ -74,7 +73,9 @@ class SeeMyContentsView(BasicView):
             source=source)
 
     def _get_content_ids(self, user):
-        return [get_oid(o) for o in getattr(user, 'contents', [])]
+        contents = user.get_contents(user) \
+            if hasattr(user, 'get_contents') else []
+        return [get_oid(o) for o in contents]
 
     def update(self):
         self.execute(None)

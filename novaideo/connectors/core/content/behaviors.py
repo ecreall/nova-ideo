@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -28,7 +28,7 @@ class SeeConnectors(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'icon fa fa-plug'
-    style_order = 0
+    style_order = 7
     title = _('Registered connectors')
     submission_title = _('Save')
     context = INovaIdeoApplication
@@ -54,7 +54,7 @@ class AddConnectors(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'icon fa fa-plug'
-    style_order = 0
+    style_order = 6
     title = _('Connectors')
     submission_title = _('Save')
     context = INovaIdeoApplication

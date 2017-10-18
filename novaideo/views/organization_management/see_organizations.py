@@ -26,7 +26,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No organization found"""),
     '1': _(u"""One organization found"""),
-    '*': _(u"""${nember} organizations found""")
+    '*': _(u"""${number} organizations found""")
     }
 
 
@@ -42,8 +42,7 @@ class SeeOrganizationsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeorganizations'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)
@@ -61,7 +60,7 @@ class SeeOrganizationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         user = get_current()
         result_body, result = render_listing_objs(
             self.request, batch, user)

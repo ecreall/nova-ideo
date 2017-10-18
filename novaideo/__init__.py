@@ -8,6 +8,8 @@
 import pytz
 import os
 import logging
+import re
+from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 
 from pyramid.config import Configurator
@@ -18,7 +20,7 @@ from pyramid.threadlocal import get_current_request
 
 from substanced.db import root_factory
 
-from dace.util import getSite, find_service
+from dace.util import getSite, find_service, get_obj
 from dace.objectofcollaboration.principal.util import grant_roles
 from pontus.file import File
 
@@ -654,7 +656,6 @@ def evolve_add_nia_bot(root, registry):
 def add_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -672,7 +673,6 @@ def add_guide_tour_data(root, registry):
 def init_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -761,12 +761,11 @@ def evolve_mails_languages(root, registry):
 
 def evolve_colors(root, registry):
     from novaideo.content.novaideo_application import DEFAULT_COLORS
-    from persistent.dict import PersistentDict
     root.colors_mapping = PersistentDict(DEFAULT_COLORS)
     log.info('Colors evolved.')
 
 
-def evolve_user_management_process(root, registry):
+def evolve_usermanagement_process(root, registry):
     from dace import process_definitions_evolve
     process_definitions_evolve(root, registry)
     runtime = root['runtime']
@@ -776,6 +775,190 @@ def evolve_user_management_process(root, registry):
         log.info('user_management process evolved.')
     except KeyError as e:
         pass 
+
+
+def evolve_idea_management_process(root, registry):
+    from dace import process_definitions_evolve
+    process_definitions_evolve(root, registry)
+    runtime = root['runtime']
+    try:
+        proc = runtime['ideamanagement']
+        runtime.delfromproperty('processes', proc)
+        log.info('ideamanagement process evolved.')
+    except KeyError as e:
+        pass 
+
+
+def evolve_abstract_process(root, registry):
+    from dace import process_definitions_evolve
+    process_definitions_evolve(root, registry)
+    runtime = root['runtime']
+    try:
+        proc = runtime['novaideoabstractprocess']
+        runtime.delfromproperty('processes', proc)
+        log.info('novaideoabstractprocess process evolved.')
+    except KeyError as e:
+        pass 
+
+
+def evolve_nia_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment
+    nia = root['principals']['users'].get('nia', None)
+    if nia:
+        request = get_current_request()
+        contents = find_entities(
+            interfaces=[IComment],
+            contribution_filter={
+                'authors': [nia]
+            }
+        )
+        for comment in contents:
+            comment.comment = re.sub('>[\n|\r|\s]*<', '><', comment.comment)
+
+        log.info('Nia Comments evolved.')
+
+
+def evolve_state_pontusFiles(root, registry):
+    from novaideo.views.filter import find_entities
+    from pontus.interfaces import IFile
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+    contents = find_entities(interfaces=[IFile])
+    for file_ in contents:
+        if file_:
+            try:
+                file_.generate_variants()
+            except Exception as error:
+                log.warning(error)
+
+    log.info('Pontus files evolved.')
+
+
+def evolve_person_tokens(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson, Iidea, IProposal
+    from BTrees.OOBTree import OOBTree
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+    contents = find_entities(
+        interfaces=[Iidea, IProposal]
+        )
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'allocated_tokens'):
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'allocated_tokens'):
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+            node.reserved_tokens = PersistentList([])
+            supports = [t for t in node.tokens_ref
+                        if t.__parent__ is not node]
+            for token in supports:
+                obj = token.__parent__
+                if obj.__parent__:
+                    evaluation = 'oppose' if token in obj.tokens_opposition else 'support'
+                    node.add_token(obj, evaluation, root)
+                    obj.add_token(node, evaluation)
+                    if token.proposal:
+                        node.add_reserved_token(obj)
+
+                    node.reindex()
+
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Persons evolved.')
+
+
+def evolve_examined_tokens(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import Iidea, IProposal
+    from BTrees.OOBTree import OOBTree
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+
+    contents = find_entities(
+        interfaces=[Iidea, IProposal],
+        metadata_filter={'states': ['examined']}
+        )
+    evaluations = {
+        1: 'support',
+        -1: 'withdraw',
+        0: 'oppose'
+    }
+    for index, node in enumerate(contents):
+        if hasattr(node, '_support_history'):
+            history = sorted(node._support_history, key=lambda e: e[1])
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+            for value in history:
+                user, date, evaluation = value
+                user = get_obj(user)
+                evaluation = evaluations[evaluation]
+                if evaluation == 'withdraw':
+                    node.remove_token(user)
+                else:
+                    node.add_token(user, evaluation)
+
+            node.reindex()
+
+    log.info('Tokens evolved.')
+
+
+def evolve_source_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import ISearchableEntity
+    from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[ISearchableEntity]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if hasattr(node, 'source_data'):
+            source_data = dict(node.source_data)
+            node.source_data = PersistentDict({})
+            source_data['app_name'] = source_data.get('app_name', None) or source_data.pop('source_id', '')
+            node.set_source_data(source_data)
+            node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Source data evolved.')
+
+
+def evolve_user_masks(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from novaideo.content.mask import Mask
+
+    request = get_current_request()
+    request.root = root 
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not getattr(node, 'mask', None):
+            mask = Mask()
+            root.addtoproperty('masks', mask)
+            node.setproperty('mask', mask)
+            node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Masks evolved.')
 
 
 def main(global_config, **settings):
@@ -825,13 +1008,22 @@ def main(global_config, **settings):
     config.add_evolution_step(publish_organizations)
     config.add_evolution_step(evolve_mails_languages)
     config.add_evolution_step(evolve_colors)
-    config.add_evolution_step(evolve_user_management_process)
+    config.add_evolution_step(evolve_usermanagement_process)
+    config.add_evolution_step(evolve_idea_management_process)
+    config.add_evolution_step(evolve_abstract_process)
+    config.add_evolution_step(evolve_nia_comments)
+    config.add_evolution_step(evolve_state_pontusFiles)
+    config.add_evolution_step(evolve_person_tokens)
+    config.add_evolution_step(evolve_examined_tokens)
+    config.add_evolution_step(evolve_source_data)
+    config.add_evolution_step(evolve_user_masks)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
     config.include('.graphql')
+    config.include("pyramid_sms")
     config.scan()
     config.add_static_view('novaideostatic',
                            'novaideo:static',

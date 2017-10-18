@@ -1,0 +1,10 @@
+<div tal:omit-tag="" tal:define="google_connectors list(request.root.get_connectors('google'));
+	             google_connector google_connectors[0] if google_connectors else None"
+	 i18n:domain="novaideo">
+	 <form class="form-signin-social" tal:condition="google_connector" id="${google_connector.name}" method="post" action="${google_connector.get_login_url(request)}">
+	    <button type="submit" class="btn btn-block btn-social btn-google">
+	    <span class="fa fa-google"></span>
+	        <span i18n:translate="">Login with</span> Google
+	  </button>
+	</form>
+</div>

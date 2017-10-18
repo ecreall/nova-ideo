@@ -39,6 +39,7 @@ class EditOrganizationsView(FormView):
     behaviors = [EditOrganizations, Cancel]
     formid = 'formeditorganizations'
     name = 'editorganizations'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         result = {}

@@ -1,43 +1,16 @@
+import datetime
+import pytz
 import graphene
 import urllib
-from pyramid.threadlocal import get_current_request
 
 from pontus.schema import select
-from dace.objectofcollaboration.principal.util import has_role
-from dace.util import get_obj, find_catalog, getSite, getAllBusinessAction
-from pontus.file import File
 
-from novaideo.content.interface import IPerson
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
+from novaideo.content.comment import Comment as CommentClass, CommentSchema
+from .util import get_context, get_action, get_execution_data
+from novaideo import _
 
-def get_context(oid):
-    try:
-        return get_obj(int(oid))
-    except:
-        return getSite()
-
-
-def get_action(action_id, context, request):
-    node_process = action_id.split('.')
-    if len(node_process) == 2:
-        process_id, node_id = node_process
-        node_actions = getAllBusinessAction(
-            context, request,
-            process_id=process_id, node_id=node_id,
-            process_discriminator='Application')
-        if node_actions:
-            return node_actions[0]
-
-    return None
-
-
-def get_execution_data(action_id, args):
-    data = dict(args)
-    context = get_context(
-        data.pop('context') if 'context' in data else None)
-    request = get_current_request()
-    action = get_action(action_id, context, request)
-    return context, request, action, data
+_marker = object()
 
 
 class Upload(graphene.InputObjectType):
@@ -53,6 +26,7 @@ class CreateIdea(graphene.Mutation):
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
@@ -61,7 +35,7 @@ class CreateIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
@@ -83,13 +57,16 @@ class CreateIdea(graphene.Mutation):
             CreateIdea.action_id, args)
         new_idea = None
         if action:
+            anonymous = args.pop('anonymous', False)
             new_idea = IdeaClass(**args)
             appstruct = {
-                '_object_data': new_idea
+                '_object_data': new_idea,
+                'anonymous': anonymous
             }
             action.execute(context, request, appstruct)
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         status = new_idea is not None
         return CreateIdea(idea=new_idea, status=status)
@@ -102,6 +79,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
         # the Upload object type deserialization currently doesn't work,
         # it fails silently, so we actually get a list of None.
         # So if we uploaded 3 files, we get attached_files = [None, None, None]
@@ -117,7 +95,7 @@ class CreateAndPublishIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
@@ -139,13 +117,16 @@ class CreateAndPublishIdea(graphene.Mutation):
             CreateAndPublishIdea.action_id, args)
         new_idea = None
         if action:
+            anonymous = args.pop('anonymous', False)
             new_idea = IdeaClass(**args)
             appstruct = {
-                '_object_data': new_idea
+                '_object_data': new_idea,
+                'anonymous': anonymous
             }
             action.execute(context, request, appstruct)
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         status = new_idea is not None
         return CreateAndPublishIdea(idea=new_idea, status=status)
@@ -157,6 +138,7 @@ class Support(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.support'
     withdraw_action_id = 'ideamanagement.withdraw_token'
@@ -176,9 +158,10 @@ class Support(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
-        return Support(idea=context, status=status)
+        return Support(user=request.user, idea=context, status=status)
 
 
 class Oppose(graphene.Mutation):
@@ -187,6 +170,7 @@ class Oppose(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.oppose'
     withdraw_action_id = 'ideamanagement.withdraw_token'
@@ -206,9 +190,10 @@ class Oppose(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
-        return Oppose(idea=context, status=status)
+        return Oppose(user=request.user, idea=context, status=status)
 
 
 class WithdrawToken(graphene.Mutation):
@@ -217,6 +202,7 @@ class WithdrawToken(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.withdraw_token'
 
@@ -230,9 +216,143 @@ class WithdrawToken(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
-        return WithdrawToken(idea=context, status=status)
+        return WithdrawToken(user=request.user, idea=context, status=status)
+
+
+class CommentObject(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        action = graphene.String()
+        comment = graphene.String()
+        attached_files = graphene.List(Upload)
+        anonymous = graphene.Boolean()
+        # the Upload object type deserialization currently doesn't work,
+        # it fails silently, so we actually get a list of None.
+        # So if we uploaded 3 files, we get attached_files = [None, None, None]
+        # We retrieve the files with the hard coded
+        # variables.attachedFiles.{0,1,2} below.
+        # This code will not work if batched mode is
+        # implemented in graphql-wsgi and batched mode is enabled on apollo.
+
+    status = graphene.Boolean()
+    comment = graphene.Field('novaideo.graphql.schema.Comment')
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        comment_schema = select(
+            CommentSchema(), ['comment', 'files', 'anonymous'])
+        args = dict(args)
+        action_id = args.pop('action')
+        context_oid = args.pop('context')
+        attached_files = args.pop('attached_files', None)
+        uploaded_files = []
+        if attached_files:
+            for index, file_ in enumerate(attached_files):
+                file_storage = context.POST.get(
+                    'variables.attachedFiles.'+str(index))
+                fp = file_storage.file
+                fp.seek(0)
+                uploaded_files.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
+
+        args['files'] = uploaded_files
+        args = comment_schema.deserialize(args)
+        args['files'] = [f['_object_data']
+                                  for f in args['files']]
+        args['context'] = context_oid
+        args['intention'] = 'Remark' # TODO the intention must be submitted by the user
+        context, request, action, args = get_execution_data(
+            action_id, args)
+        new_comment = None
+        if action:
+            anonymous = args.get('anonymous', False)
+            new_comment = CommentClass(**args)
+            appstruct = {
+                '_object_data': new_comment,
+                'anonymous': anonymous
+            }
+            action.execute(context, request, appstruct)
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        status = new_comment is not None
+        return CommentObject(comment=new_comment, status=status)
+
+
+class MarkCommentsAsRead(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        data = dict(args)
+        channel = get_context(data.get('context'), _marker)
+        status = False
+        if context.user and channel is not _marker:
+            now = datetime.datetime.now(tz=pytz.UTC)
+            context.user.set_read_date(channel, now)
+            status = True
+
+        return MarkCommentsAsRead(status=status)
+
+
+class Select(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'novaideoabstractprocess.select'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Select.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Select(idea=context, status=status)
+
+
+class Deselect(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'novaideoabstractprocess.deselect'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Deselect.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Deselect(idea=context, status=status)
 
 
 class Mutations(graphene.ObjectType):
@@ -240,4 +360,8 @@ class Mutations(graphene.ObjectType):
     create_and_publish = CreateAndPublishIdea.Field()
     support_idea = Support.Field()
     oppose_idea = Oppose.Field()
+    select = Select.Field()
+    deselect = Deselect.Field()
     withdraw_token_idea = WithdrawToken.Field()
+    comment_object = CommentObject.Field()
+    mark_comments_as_read = MarkCommentsAsRead.Field()

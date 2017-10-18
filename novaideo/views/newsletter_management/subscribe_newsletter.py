@@ -85,6 +85,7 @@ class SubscribeNewsletterView(FormView):
     behaviors = [SubscribeNewsletter, Cancel]
     formid = 'formsubscribenewsletter'
     name = 'subscribenewsletter'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         user = get_current()

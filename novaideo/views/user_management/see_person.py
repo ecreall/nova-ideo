@@ -35,50 +35,61 @@ class ContentView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_attr = 'ideas'
+    isactive = False
+    hasparent = True
 
     def update(self):
-        user = self.context
-        current_user = get_current()
-        objects = []
-        if current_user is user:
-            objects = list(filter(lambda o: 'archived' not in o.state,
-                             getattr(user, self.content_attr, [])))
-        else:
-            objects = list(filter(lambda o: can_access(current_user, o) and
-                                       'archived' not in o.state,
-                             getattr(user, self.content_attr, [])))
-        sort_url = self.request.resource_url(
-            self.context, '@@index',
-            query={'view_content_attr': self.content_attr})
-        objects, sort_body = sort_view_objects(
-            self, objects, [self.content_type], user,
-            sort_url=sort_url)
-        url = self.request.resource_url(
-            self.context, '@@index',
-            query={'view_content_attr': self.content_attr})
-        batch = Batch(objects,
-                      self.request,
-                      url=url,
-                      default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results-" + self.content_type
-        self.title = _(self.title, mapping={'nb': batch.seqlen})
-        result_body, result = render_listing_objs(
-            self.request, batch, current_user)
-        values = {'bodies': result_body,
-                  'batch': batch,
-                  'empty_message': self.empty_message,
-                  'empty_icon': self.empty_icon,
-                  'sort_body': sort_body}
-        body = self.content(args=values, template=self.template)['body']
+        body = ''
+        result = {}
+        if self.isactive or self.params('on_demand') == 'load':
+            user = self.context
+            current_user = get_current()
+            objects = []
+            if current_user is user:
+                objects = list(filter(lambda o: 'archived' not in o.state,
+                                 getattr(user, self.content_attr, [])))
+            else:
+                objects = list(filter(lambda o: can_access(current_user, o) and
+                                           'archived' not in o.state,
+                                 getattr(user, self.content_attr, [])))
+            sort_url = self.request.resource_url(
+                self.context, '@@index',
+                query={'view_content_id': self.content_id})
+            objects, sort_body = sort_view_objects(
+                self, objects, [self.content_type], user,
+                sort_url=sort_url)
+            url = self.request.resource_url(
+                self.context, '@@index',
+                query={'view_content_id': self.content_id})
+            batch = Batch(objects,
+                          self.request,
+                          url=url,
+                          default_size=BATCH_DEFAULT_SIZE)
+            batch.target = "#results-" + self.content_type
+            self.title = _(self.title, mapping={'nb': batch.seqlen})
+            result_body, result = render_listing_objs(
+                self.request, batch, current_user)
+            values = {'bodies': result_body,
+                      'batch': batch,
+                      'empty_message': self.empty_message,
+                      'empty_icon': self.empty_icon,
+                      'sort_body': sort_body}
+            body = self.content(args=values, template=self.template)['body']
+
         item = self.adapt_item(body, self.viewid)
         item['isactive'] = getattr(self, 'isactive', False)
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
+@asyn_component_config(
+    id='person-questions',
+    on_demand=True,
+    delegate='person_see_person')
 class QuestionsView(ContentView):
-    title = _('His/her questions (${nb})')
+    title = _('His/her questions')
     content_attr = 'questions'
+    content_id = 'person-questions'
     content_type = 'question'
     viewid = 'person-questions'
     view_icon = 'icon md md-live-help'
@@ -88,8 +99,9 @@ class QuestionsView(ContentView):
 
 
 class IdeasView(ContentView):
-    title = _('His/her ideas (${nb})')
+    title = _('His/her ideas')
     content_attr = 'ideas'
+    content_id = 'person-ideas'
     content_type = 'idea'
     viewid = 'person-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
@@ -99,9 +111,14 @@ class IdeasView(ContentView):
     isactive = True
 
 
+@asyn_component_config(
+    id='person-proposals',
+    on_demand=True,
+    delegate='person_see_person')
 class ProposalsView(ContentView):
-    title = _('His/her working groups (${nb})')
+    title = _('His/her working groups')
     content_attr = 'proposals'
+    content_id = 'person-proposals'
     content_type = 'proposal'
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
@@ -124,6 +141,7 @@ class PersonContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
+            delegated_by = kwargs.get('delegated_by', None)
             views = [IdeasView]
             if 'question' in self.request.content_to_manage:
                 views = [QuestionsView, IdeasView]
@@ -132,13 +150,14 @@ class PersonContentsView(MultipleView):
                 views.append(ProposalsView)
 
             views = tuple(views)
-            if self.params('view_content_attr') == 'ideas':
+            view_id = self.params('view_content_id')
+            if 'person-ideas' in (delegated_by, view_id):
                 views = (IdeasView, )
 
-            if self.params('view_content_attr') == 'proposals':
+            if 'person-proposals' in (delegated_by, view_id):
                 views = (ProposalsView, )
 
-            if self.params('view_content_attr') == 'questions':
+            if 'person-questions' in (delegated_by, view_id):
                 views = (QuestionsView, )
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
@@ -197,8 +216,7 @@ class SeePersonView(MultipleView):
     name = 'seeperson'
     template = 'novaideo:views/templates/entity_multipleview.pt'
     viewid = 'seeperson'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     views = (DetailsView, PersonContentsView)
     validators = [SeePerson.get_validator()]
 

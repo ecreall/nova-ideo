@@ -26,7 +26,7 @@ from novaideo import _
 
 COMPARE_MESSAGE = {'0': _(u"""No other version"""),
                    '1': _(u"""One available version"""),
-                   '*': _(u"""${nember} available versions""")}
+                   '*': _(u"""${number} available versions""")}
 
 
 class DiffView(BasicView):
@@ -147,7 +147,7 @@ class CompareIdeaView(MultipleView):
             index = '*'
 
         self.title = _(COMPARE_MESSAGE[index],
-                       mapping={'nember': len_history})
+                       mapping={'number': len_history})
         super(CompareIdeaView, self).before_update()
 
 

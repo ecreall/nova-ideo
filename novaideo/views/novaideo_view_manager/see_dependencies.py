@@ -27,7 +27,7 @@ BATCH_DEFAULT_SIZE = 20
 WG_MESSAGES = {
     '0': _(u"""No association"""),
     '1': _(u"""One association"""),
-    '*': _(u"""${nember} associations""")}
+    '*': _(u"""${number} associations""")}
 
 
 @view_config(
@@ -65,7 +65,7 @@ class SeeDependenciesView(BasicView):
         if len_result > 1:
             index = '*'
 
-        self.title = _(WG_MESSAGES[index], mapping={'nember': len_result})
+        self.title = _(WG_MESSAGES[index], mapping={'number': len_result})
         result = {}
         result_body = render_small_listing_objs(
             self.request, batch, user)

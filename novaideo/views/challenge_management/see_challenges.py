@@ -34,7 +34,7 @@ BATCH_HOME_DEFAULT_SIZE = 4
 CONTENTS_MESSAGES = {
     '0': _(u"""No challenge found"""),
     '1': _(u"""One challenge found"""),
-    '*': _(u"""${nember} challenges found""")
+    '*': _(u"""${number} challenges found""")
     }
 
 
@@ -51,8 +51,7 @@ class SeeChallengesView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seechallenges'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def _add_filter(self, user):
         def source(**args):
@@ -102,7 +101,7 @@ class SeeChallengesView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(

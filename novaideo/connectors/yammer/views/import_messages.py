@@ -1,8 +1,10 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# -*- coding: utf8 -*-
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
+
 import deform
 import colander
 from pyramid.view import view_config
@@ -20,8 +22,10 @@ from novaideo.content.interface import Iidea
 from novaideo.connectors.yammer.content.behaviors import Import
 from novaideo.connectors.yammer import YammerConnector
 from novaideo.connectors.yammer.views import find_yammer_content
+from novaideo.connectors.core import YAMMER_CONNECTOR_ID
 from novaideo.widget import AjaxCheckBoxWidget
 from novaideo import _, log
+from novaideo.utilities.util import html_to_text
 
 
 class ImportViewStudyReport(BasicView):
@@ -42,11 +46,10 @@ class ImportViewStudyReport(BasicView):
 def messages_choice(node, kw):
     request = node.bindings['request']
     root = request.root
-    yammer_connectors = list(root.get_connectors('yammer'))
+    yammer_connectors = list(root.get_connectors(YAMMER_CONNECTOR_ID))
     yammer_connector = yammer_connectors[0] if yammer_connectors else None
-    access_token = getattr(
-        get_current(), 'source_data', {}).get(
-        'access_token', None)
+    access_token = yammer_connector.get_access_tokens(get_current()).get('access_token', None) \
+        if yammer_connector else None
     values = []
     page = ''
     limit = 10
@@ -56,7 +59,7 @@ def messages_choice(node, kw):
             yammer = yampy.Yammer(access_token=access_token)
             messages = yammer.client.get('/messages', threaded=True, limit=limit)
             page = messages['messages'][-1]['id']
-            values = [(str(e['id']), e['body']['plain'][:150]+'...')
+            values = [(str(e['id']), html_to_text(e['body']['plain'][:150])+'...')
                       for e in messages['messages']]
             if messages['meta']['older_available']:
                 ajax_url = request.resource_url(
@@ -75,7 +78,7 @@ def messages_choice(node, kw):
 
 @colander.deferred
 def default_messages(node, kw):
-    return [i.source_data['id']
+    return [i.source_data[YAMMER_CONNECTOR_ID]['id']
             for i in find_yammer_content([Iidea])]
 
 

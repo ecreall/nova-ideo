@@ -4,7 +4,7 @@
 	  	<a href="${request.resource_url(request.root, 'open', query={'folderid':folder.__oid__})}">${folder.title}</a>
 	  </li>
 	</ol> : 
-	<span i18n:translate="" tal:condition="nember == 0">No element found</span>
-	<span i18n:translate="" tal:condition="nember == 1">One element found</span>
-	<span tal:condition="nember > 1">${nember} <span i18n:translate="">elements found</span></span>
+	<span i18n:translate="" tal:condition="number == 0">No element found</span>
+	<span i18n:translate="" tal:condition="number == 1">One element found</span>
+	<span tal:condition="number > 1">${number} <span i18n:translate="">elements found</span></span>
 </h4>

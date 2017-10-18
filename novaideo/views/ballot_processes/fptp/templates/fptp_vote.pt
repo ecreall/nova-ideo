@@ -10,16 +10,34 @@
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors" i18n:translate="">Participants in the ballot</dt>
        <dd tal:condition="ballot_report.electors">
-         <tal:loop repeat="e ballot_report.electors">
-          <a tal:attributes="href request.resource_url(e, '@@index')">${getattr(e, 'title', e.name)}</a>
-          <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
+         <tal:loop repeat="m ballot_report.electors">
+            <a tal:attributes="href request.resource_url(m, '@@index') if not is_anonymous else '#'"
+                tal:define="picture getattr(m, 'picture', None);
+                            profil_picture getattr(picture, 'profil', None);
+                            is_anonymous getattr(m, 'is_anonymous', False);
+                            default_picture getattr(m, 'default_picture', 'novaideo:static/images/user100.png')">
+                <img class="author-img img-circle" 
+                  tal:condition="profil_picture is not None"
+                   tal:attributes="src profil_picture.url"  width="25"/>
+                <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url(default_picture)}" width="25"/>
+                ${getattr(m, 'title', m.name)}</a>
+          <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
          </tal:loop>
        </dd>
        <dt tal:condition="ballot_report.voters" i18n:translate="">Participants having participated in the ballot</dt>
        <dd tal:condition="ballot_report.voters">
-         <tal:loop repeat="e ballot_report.voters">
-          ${getattr(e, 'title', e.name)}
-          <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
+         <tal:loop repeat="m ballot_report.voters">
+            <a tal:attributes="href request.resource_url(m, '@@index') if not is_anonymous else '#'"
+                tal:define="picture getattr(m, 'picture', None);
+                            profil_picture getattr(picture, 'profil', None);
+                            is_anonymous getattr(m, 'is_anonymous', False);
+                            default_picture getattr(m, 'default_picture', 'novaideo:static/images/user100.png')">
+                <img class="author-img img-circle" 
+                  tal:condition="profil_picture is not None"
+                   tal:attributes="src profil_picture.url"  width="25"/>
+                <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url(default_picture)}" width="25"/>
+                ${getattr(m, 'title', m.name)}</a>
+          <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
          </tal:loop>
        </dd>
        <dt i18n:translate="">Duration</dt>

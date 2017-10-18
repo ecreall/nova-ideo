@@ -36,7 +36,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No member"""),
     '1': _(u"""One member was found"""),
-    '*': _(u"""${nember} members were found""")
+    '*': _(u"""${number} members were found""")
     }
 
 
@@ -53,8 +53,7 @@ class SeeUsersView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result_users.pt'
     viewid = 'seeusers'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['neagtion', 'states', 'keywords']),
                        'temporal_filter',
@@ -62,7 +61,7 @@ class SeeUsersView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                 mapping={'nember': args.get('len_result')})
+                 mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user, is_manager):
         def source(**args):
@@ -170,8 +169,7 @@ class SeeInactiveUsersView(BasicView):
     validators = [SeeInactiveUsersValidator]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['negation', 'keywords']),
                        'temporal_filter',
@@ -179,7 +177,7 @@ class SeeInactiveUsersView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                 mapping={'nember': args.get('len_result')})
+                 mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user, alert_date_min):
         def source(**args):

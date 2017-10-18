@@ -861,7 +861,8 @@ def render_listing_obj(
         if view_type == 'bloc':
             args['tounmerge'] = [
                 'communication-action',
-                'access-action']
+                'access-action',
+                'support-action']
 
         navbars = generate_listing_menu(
             request, obj, view_type=view_type, **args)
@@ -946,7 +947,8 @@ def render_listing_objs(
     if view_type == 'bloc':
         args['tounmerge'] = [
             'communication-action',
-            'access-action']
+            'access-action',
+            'support-action']
 
     for obj in objs:
         try:

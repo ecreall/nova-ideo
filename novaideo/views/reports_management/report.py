@@ -44,6 +44,7 @@ class ReportFormView(FormView):
     behaviors = [Report, Cancel]
     formid = 'formreport'
     name = 'formreport'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         self.action = self.request.resource_url(

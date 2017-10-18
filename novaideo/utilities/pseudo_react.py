@@ -251,10 +251,15 @@ def load_components(request, context, api, **kwargs):
     resources = {}
     for loading_component in loading_components:
         loaded_views.append(loading_component)
-        view = ON_LOAD_VIEWS.get(loading_component, None)
+        source_view = ON_LOAD_VIEWS.get(loading_component, None)
+        delegate = getattr(source_view, 'delegate', None)
+        view_id = delegate or loading_component
+        view = ON_LOAD_VIEWS.get(view_id, None) or source_view
         if view:
             try:
-                view_instance = view(source_context, request)
+                view_instance = view(
+                    source_context, request,
+                    delegated_by=getattr(source_view, 'component_id', None))
                 view_result = view_instance()
                 item = view_result['coordinates'][view_instance.coordinates][0]
                 body = view_instance.render_item(item, view_instance.coordinates, None)
@@ -265,7 +270,7 @@ def load_components(request, context, api, **kwargs):
                 resources = merge_dicts(view_resources, resources)
                 result[loading_component] = body
             except ViewError as error:
-                result[loading_component] = error.render(request)
+                result[loading_component] = error.render_message(request)
         else:
             result[loading_component] = ''
 
@@ -905,7 +910,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(INVITATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result = {
         'action': 'redirect_action',
         'view': api,
@@ -1060,7 +1065,7 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(REGISTRATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result['ignore_redirect'] = not kwargs['is_source_context']
     result['view_title'] = view_title
     return result
@@ -1474,7 +1479,7 @@ def get_participate_proposal_metadata(action, request, context, api, **kwargs):
     if user in working_group.wating_list:
         msg = _("You are now on the waiting list.")
 
-    if user in working_group.members:
+    if working_group.is_member(user):
         msg = _("You are now a member of the Working Group.")
 
     result = get_dirct_edit_entity_metadata(
@@ -1631,7 +1636,7 @@ def get_remove_organization_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(ORGANIZATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result['view_title'] = view_title
     return result
 
@@ -1767,7 +1772,7 @@ def component_navbar_myselections(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
                 _(SELECT_CONTENTS_MESSAGES[index],
-                  mapping={'nember': len_selections}))
+                  mapping={'number': len_selections}))
         result.update({
             'view_title': view_title,
             'view_name': view_name
@@ -1780,26 +1785,27 @@ def component_navbar_mysupports(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    item_nb = len(getattr(user, 'supports', []))
+    root = request.root
+    item_nb = user.get_len_evaluations()
     result = {
         'component-navbar-mysupports.item_nb': item_nb,
-        'component-navbar-mysupports.all_item_nb': len(getattr(user, 'tokens_ref', [])),
+        'component-navbar-mysupports.all_item_nb': user.get_len_tokens(root=root),
         'component-navbar-mysupports.title': localizer.translate(_("My evaluations")),
         'component-navbar-mysupports.icon': 'ion-ios7-circle-filled',
         'component-navbar-mysupports.url': request.resource_url(
-            request.root, 'seemysupports')
+            root, 'seemysupports')
     }
 
     view_name = 'seemysupports'
     if source_view_name == view_name:
-        len_tokens = len(getattr(user, 'tokens', []))
+        len_tokens = user.get_len_free_tokens(root=root)
         index = str(item_nb)
         if item_nb > 1:
             index = '*'
 
         view_title = localizer.translate(
             _(CONTENTS_MESSAGES[index],
-              mapping={'nember': item_nb,
+              mapping={'number': item_nb,
                        'tokens': len_tokens}))
         result.update({
             'view_title': view_title,
@@ -1813,7 +1819,9 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    contents = [o for o in getattr(user, 'contents', [])
+    contents = user.get_contents(user) \
+        if hasattr(user, 'get_contents') else []
+    contents = [o for o in contents
                 if not hasattr(o, 'is_managed') or
                 o.is_managed(request.root)]
     item_nb = len(contents)
@@ -1833,7 +1841,7 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(MY_CONTENTS_MESSAGES[index],
-              mapping={'nember': item_nb}))
+              mapping={'number': item_nb}))
         result.update({
             'view_title': view_title,
             'view_name': view_name
@@ -1936,7 +1944,9 @@ def component_navbar_myparticipations(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    item_nb = len(getattr(user, 'participations', []))
+    participations = user.get_participations(user) \
+        if hasattr(user, 'get_participations') else []
+    item_nb = len(participations)
     result = {
         'component-navbar-myparticipations.item_nb': item_nb,
         'component-navbar-myparticipations.title': request.localizer.translate(_('My working groups')),
@@ -1953,7 +1963,7 @@ def component_navbar_myparticipations(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(MY_PARTICIPATIONS_MESSAGES[index],
-              mapping={'nember': item_nb}))
+              mapping={'number': item_nb}))
         result.update({
             'view_title': view_title,
             'view_name': view_name
@@ -2215,6 +2225,9 @@ METADATA_GETTERS = {
 
     'yammerprocess.remove': get_remove_connector_metadata,
     'yammerprocess.import_messages': get_import_connector_metadata,
+    'twitterprocess.remove': get_remove_connector_metadata,
+    'facebookprocess.remove': get_remove_connector_metadata,
+    'googleprocess.remove': get_remove_connector_metadata,
 }
 
 

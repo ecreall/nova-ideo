@@ -73,7 +73,8 @@ def seemy_roles_validation(process, context):
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    contents = [o for o in getattr(user, 'contents', [])]
+    contents = user.get_contents(user) \
+        if hasattr(user, 'get_contents') else []
     return contents and global_user_processsecurity()
 
 
@@ -86,7 +87,9 @@ class SeeMyContents(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        contents = [o for o in getattr(user, 'contents', [])
+        contents = user.get_contents(user) \
+            if hasattr(user, 'get_contents') else []
+        contents = [o for o in contents
                     if not hasattr(o, 'is_managed') or
                     o.is_managed(request.root)]
         return len(contents)
@@ -125,8 +128,9 @@ def seemypa_processsecurity_validation(process, context):
     user = get_current()
     if not context.manage_proposals:
         return False
-
-    return getattr(user, 'participations', []) and \
+    participations = user.get_participations(user) \
+        if hasattr(user, 'get_participations') else []
+    return participations and \
                    global_user_processsecurity()
 
 
@@ -139,7 +143,9 @@ class SeeMyParticipations(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        return len(getattr(user, 'participations', []))
+        participations = user.get_participations(user) \
+            if hasattr(user, 'get_participations') else []
+        return len(participations)
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -150,9 +156,7 @@ def seemysu_processsecurity_validation(process, context):
     if context.support_ideas or \
        (context.support_proposals and context.manage_proposals):
         root = getSite(context)
-        supports = [o for o in getattr(user, 'supports', [])
-                    if 'archived' not in o.state
-                    and o.is_managed(root)]
+        supports = user.evaluated_objs() if hasattr(user, 'evaluated_objs') else []
         return supports and global_user_processsecurity()
 
     return False
@@ -167,9 +171,11 @@ class SeeMySupports(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        len_supports = len([o for o in getattr(user, 'supports', [])
-                            if 'archived' not in o.state])
-        return str(len_supports)+'/'+str(len(getattr(user, 'tokens_ref', [])))
+        root = request.root
+        if not hasattr(user, 'get_len_evaluations'):
+            return '0/0'
+
+        return str(user.get_len_evaluations())+'/'+str(user.get_len_tokens(root=root))
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -190,7 +196,7 @@ def seeproposals_processsecurity_validation(process, context):
 class SeeOrderedProposal(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'novaideo-icon icon-proposal-ex'
-    style_order = -2
+    style_order = 2
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeproposals_roles_validation
@@ -215,7 +221,7 @@ def seeindeas_processsecurity_validation(process, context):
 class SeeIdeasToExamine(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'novaideo-icon icon-idea-ex'
-    style_order = -4
+    style_order = 1
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeindeas_roles_validation
@@ -385,7 +391,7 @@ def seeusers_processsecurity_validation(process, context):
 class SeeUsers(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-user'
-    style_order = 0
+    style_order = 8
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeusers_roles_validation

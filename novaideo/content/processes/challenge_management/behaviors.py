@@ -60,7 +60,7 @@ class CreateChallenge(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'lateral-action'
     style_picto = 'ion-trophy'
-    style_order = 1
+    style_order = 2
     title = _('Create a challenge')
     unavailable_link = 'docanonymous'
     submission_title = _('Save')
@@ -71,10 +71,12 @@ class CreateChallenge(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        anonymous = appstruct.get('anonymous', False)
+        author = user if not anonymous else user.get_mask()
         challenge = appstruct['_object_data']
         root.addtoproperty('challenges', challenge)
         challenge.state.append('private')
-        grant_roles(user=user, roles=(('Owner', challenge), ))
+        grant_roles(user=author, roles=(('Owner', challenge), ))
         if challenge.is_restricted:
             invited_users = challenge.invited_users
             invited_users.append(user)
@@ -82,7 +84,7 @@ class CreateChallenge(InfiniteCardinality):
                 grant_roles(
                     user=invited, roles=(('ChallengeParticipant', challenge), ))
 
-        challenge.setproperty('author', user)
+        challenge.setproperty('author', author)
         challenge.subscribe_to_channel(user)
         # if isinstance(context, (Comment, Answer)):
         #     content = context.subject
@@ -92,7 +94,7 @@ class CreateChallenge(InfiniteCardinality):
         #         {'comment': context.comment,
         #          'type': getattr(context, 'intention',
         #                          'Transformation from another content')},
-        #         user,
+        #         author,
         #         ['transformation'],
         #         CorrelationType.solid)
         #     for correlation in correlations:
@@ -110,7 +112,7 @@ class CreateChallenge(InfiniteCardinality):
 
         challenge.format(request)
         challenge.reindex()
-        request.registry.notify(ActivityExecuted(self, [challenge], user))
+        request.registry.notify(ActivityExecuted(self, [challenge], author))
         return {'newcontext': challenge}
 
     def redirect(self, context, request, **kw):
@@ -141,19 +143,21 @@ class CrateAndPublish(InfiniteCardinality):
             result = create_action.start(context, request, appstruct, **kw)
             challenge = result.get('newcontext', None)
             if challenge:
-                user = get_current()
+                user = get_current(request)
+                anonymous = appstruct.get('anonymous', False)
+                author = user if not anonymous else user.get_mask()
                 challenge.subscribe_to_channel(user)
                 is_moderator = has_role(role=('Moderator',))
                 if not is_moderator:
                     submit_actions = self.process.get_actions('submit')
                     submit_action = submit_actions[0] if submit_actions else None
                     if submit_action:
-                        submit_action.start(challenge, request, {})
+                        submit_action.start(challenge, request, {'user': author})
                 else:
                     publish_actions = self.process.get_actions('publish')
                     publish_action = publish_actions[0] if publish_actions else None
                     if publish_action:
-                        publish_action.start(challenge, request, {})
+                        publish_action.start(challenge, request, {'user': author})
 
                 return {'newcontext': challenge, 'state': True}
 
@@ -281,7 +285,7 @@ class PublishChallenge(InfiniteCardinality):
         context.init_published_at()
         root.merge_keywords(context.keywords)
         context.reindex()
-        user = get_current(request)
+        user = appstruct.get('user', get_current(request))
         author = context.author
         alert('internal', [root], [author],
               internal_kind=InternalAlertKind.moderation_alert,
@@ -393,7 +397,7 @@ class EditChallenge(InfiniteCardinality):
         context.format(request)
         context.reindex()
         request.registry.notify(
-            ActivityExecuted(self, [context], get_current()))
+            ActivityExecuted(self, [context], context.author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -544,7 +548,7 @@ class SeeChallenges(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'ion-trophy'
-    style_order = -10
+    style_order = 0
     isSequential = False
     context = INovaIdeoApplication
 

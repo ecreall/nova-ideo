@@ -65,7 +65,8 @@ class CorrectProposal(InfiniteCardinality):
     state_validation = correct_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
+        user = context.working_group.get_member(user)
         related_ideas = appstruct.pop('related_ideas')
         add_files = appstruct.pop('add_files')
         copy_of_proposal = context.get_version(user, (context, 'version'))

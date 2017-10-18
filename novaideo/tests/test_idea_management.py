@@ -508,9 +508,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         support_action.execute(
             idea_result, self.request, {})
         self.assertEqual(idea_result.len_support, 1)
-        self.assertIs(idea_result.tokens_support[0].owner, alice)
+        self.assertIs(idea_result.evaluation(alice), 'support')
         self.assertEqual(idea_result.len_opposition, 0)
-        self.assertEqual(len(alice.supports), 1)
+        self.assertEqual(len(alice.evaluated_objs()), 1)
         self.assertEqual(len(idea_result._support_history), 1)
         # _support_history = [(user_oid, date, type[1, 0, -1])]
         self.assertIs(idea_result._support_history[0][0], alice_oid)
@@ -523,9 +523,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         expected_actions = [
             'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
-            'see', 'withdraw_token']
+            'see', 'withdraw_token', 'oppose']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 8)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Withdraw
@@ -538,7 +538,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request, {})
         self.assertEqual(idea_result.len_support, 0)
         self.assertEqual(idea_result.len_opposition, 0)
-        self.assertEqual(len(alice.supports), 0)
+        self.assertEqual(len(alice.evaluated_objs()), 0)
         self.assertEqual(len(idea_result._support_history), 2)
         self.assertIs(idea_result._support_history[1][0], alice_oid)
         # -1 == withdraw
@@ -565,7 +565,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request, {})
         self.assertEqual(idea_result.len_support, 0)
         self.assertEqual(idea_result.len_opposition, 1)
-        self.assertEqual(len(alice.supports), 1)
+        self.assertEqual(len(alice.evaluated_objs()), 1)
         self.assertEqual(len(idea_result._support_history), 3)
         self.assertIs(idea_result._support_history[2][0], alice_oid)
         # 0 == oppose
@@ -577,9 +577,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         expected_actions = [
             'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
-            'see', 'withdraw_token']
+            'see', 'withdraw_token', 'support']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 8)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
@@ -770,7 +770,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         support_action.execute(
             idea_result, self.request, {})
         self.assertEqual(idea_result.len_support, 1)
-        self.assertEqual(len(alice.supports), 1)
+        self.assertEqual(len(alice.evaluated_objs()), 1)
         # Alice can't examine
         actions = getAllBusinessAction(
             idea_result, self.request,
@@ -797,8 +797,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertIn('examined', idea_result.state)
         self.assertIn('published', idea_result.state)
         self.assertIn('to_study', idea_result.state)
-        self.assertEqual(idea_result.len_support, 0)
-        self.assertEqual(len(alice.supports), 0)
+        # Tokens are not removed from the idea
+        self.assertEqual(idea_result.len_support, 1)
+        # Tokens are removed from the user object
+        self.assertEqual(len(alice.evaluated_objs()), 0)
         # actions: can't support
         self.request.user = alice
         actions = getAllBusinessAction(

@@ -27,7 +27,7 @@ from novaideo.content.interface import IPreregistration
 CONTENTS_MESSAGES = {
         '0': _(u"""No registration found"""),
         '1': _(u"""One registration found"""),
-        '*': _(u"""${nember} registrations found""")
+        '*': _(u"""${number} registrations found""")
         }
 
 
@@ -43,8 +43,7 @@ class SeeRegistrationsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeregistrations'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)
@@ -63,7 +62,7 @@ class SeeRegistrationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
 

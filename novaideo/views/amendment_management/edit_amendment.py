@@ -31,6 +31,7 @@ class EditAmendmentView(FormView):
     behaviors = [EditAmendment, Cancel]
     formid = 'formeditamendment'
     name = 'editamendment'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

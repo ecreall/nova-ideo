@@ -17,7 +17,7 @@ from novaideo.views.idea_management.comment_idea import (
     CommentsView as CommentsIdeaView)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.views.core import ActionAnonymousView
+from novaideo.views.core import ActionAnonymousView, update_anonymous_schemanode
 
 
 class CommentsView(CommentsIdeaView):
@@ -32,6 +32,8 @@ class CommentProposalFormView(CommentIdeaFormView):
     name = 'commentproposalform'
 
     def before_update(self):
+        self.schema = update_anonymous_schemanode(
+            self.request.root, self.schema)
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

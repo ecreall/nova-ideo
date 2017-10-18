@@ -6,118 +6,117 @@
 
 /* Toggle Styles */
 
-
 .bar-wrapper {
-    padding-left: 250px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  padding-left: 250px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .bar-wrapper.toggled {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 .sidebar-wrapper {
-    background-color: @novaideo-sidebar-color;
-    box-shadow: -3px 0 10px black;
-    height: 100%;
-    left: 250px;
-    margin-left: -250px;
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    width: 250px;
-    z-index: 2000;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  background-color: @novaideo-sidebar-color;
+  box-shadow: -3px 0 10px black;
+  height: 100%;
+  left: 250px;
+  margin-left: -250px;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 250px;
+  z-index: 2000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .bar-wrapper.toggled .sidebar-wrapper {
-    left: -250px;
+  left: -250px;
 }
 
 #page-content-wrapper {
-    width: 100%;
-    position: absolute;
-    padding: 15px;
+  width: 100%;
+  position: absolute;
+  padding: 15px;
 }
 
 .bar-wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    margin-right: -250px;
+  position: absolute;
+  margin-right: -250px;
 }
 
 /* Sidebar Styles */
 
-
-.sidebar-background.toggled{
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0px;
-    left: 0px;
-    opacity: 1;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    will-change: opacity;
-    transform: translateZ(0px);
-    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-    z-index: 1200;
-    pointer-events: auto;
-    background-color: rgba(0, 0, 0, 0.541176);
+.sidebar-background.toggled {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  will-change: opacity;
+  transform: translateZ(0px);
+  transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms,
+    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  z-index: 1200;
+  pointer-events: auto;
+  background-color: rgba(0, 0, 0, 0.541176);
 }
 
-.menu-toggle{
-    cursor: pointer;
+.menu-toggle {
+  cursor: pointer;
 }
 
-.menu-toggle.close{
-    margin: 5px 10px;
-    color: white;
+.menu-toggle.close {
+  margin: 5px 10px;
+  color: white;
 }
 
-.menu-toggle.top{
-    color: @novaideo-sidebar-color;
-    float: left;
-    font-size: 24px;
-    height: 100%;
-    padding: 6px 10px;
+.menu-toggle.top {
+  color: @novaideo-sidebar-color;
+  float: left;
+  font-size: 24px;
+  height: 100%;
+  padding: 6px 10px;
 }
 
 .sidebar-nav {
-    position: absolute;
-    top: 0;
-    width: 250px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .sidebar-nav li {
-    line-height: 40px;
+  line-height: 40px;
 }
 
 .sidebar-nav li a {
-    color: white;
-    cursor: pointer;
-    display: block;
-    padding: 5px 15px;
-    text-decoration: none;
+  color: white;
+  cursor: pointer;
+  display: block;
+  padding: 5px 15px;
+  text-decoration: none;
 }
 .sidebar-nav li > a:focus,
 .sidebar-nav li > a:hover {
-  background-color: white;
-  color: @novaideo-sidebar-color !important;
+  background-color: #3f6da6;
+  color: white !important;
   text-decoration: none;
 }
 
 .sidebar-nav .nav li.active-item > a,
 .sidebar-nav .nav li > a:focus,
 .sidebar-nav .nav li > a:hover {
-  background-color: gray;
+  background-color: #3f6da6;
   color: white !important;
 }
 
@@ -126,20 +125,25 @@
   color: @novaideo-sidebar-color !important;
 }
 
+.sidebar-nav .nav li > a > span,
+.sidebar-nav li a > span{
+  margin-right: 7px;  
+}
+
 .sidebar-nav > .sidebar-brand {
-    height: 35px;
-    font-size: 18px;
+  height: 35px;
+  font-size: 18px;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #999999;
+  color: #999999;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
-    background: none;
+  color: #fff;
+  background: none;
 }
 
-.sidebar-nav ul.nav{
-    margin-left: 0px !important
+.sidebar-nav ul.nav {
+  margin-left: 0px !important;
 }
