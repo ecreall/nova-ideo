@@ -61,6 +61,7 @@ from novaideo.content.processes import (
 from novaideo.role import get_authorized_roles
 from novaideo.adapters import EXTRACTION_ATTR
 
+
 def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()

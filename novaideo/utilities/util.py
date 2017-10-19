@@ -856,6 +856,7 @@ def render_small_listing_objs(
 def render_listing_obj(
     request, obj, user,
     view_type='default', **kw):
+    display_state = kw.get('display_state', True)
     try:
         args = {}
         if view_type == 'bloc':
@@ -880,7 +881,7 @@ def render_listing_obj(
         'access_body': navbars['access_body'],
         'state': get_states_mapping(
             user, obj,
-            getattr(obj, 'state_or_none', [None])[0])}
+            getattr(obj, 'state_or_none', [None])[0]) if display_state else None}
     object_values.update(kw)
     return renderers.render(
         obj.templates.get(view_type),
@@ -942,6 +943,7 @@ def render_listing_objs(
     request, objs, user,
     view_type='default', **kw):
     result_body = []
+    display_state = kw.get('display_state', True)
     resources = {'css_links': [], 'js_links': []}
     args = {}
     if view_type == 'bloc':
@@ -968,7 +970,7 @@ def render_listing_objs(
             'support_actions_body': navbars['support_actions_body'],
             'access_body': navbars['access_body'],
             'state': get_states_mapping(user, obj,
-                getattr(obj, 'state_or_none', [None])[0])}
+                getattr(obj, 'state_or_none', [None])[0]) if display_state else None}
         object_values.update(kw)
         body = renderers.render(
             obj.templates.get(view_type),

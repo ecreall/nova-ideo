@@ -106,7 +106,8 @@ class SeeMyContentsView(BasicView):
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(
-            self.request, batch, user)
+            self.request, batch, user,
+            display_state=getattr(self, 'display_state', True))
         if filter_form:
             result = merge_dicts(
                 {'css_links': filter_form['css_links'],
