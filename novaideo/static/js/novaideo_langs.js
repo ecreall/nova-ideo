@@ -106,7 +106,12 @@ novaideoI18n = {
     "View new questions": "View new questions",
     "View new question": "View new question",
     "is typing a message": "is typing a message",
-    "are typing a message": "are typing a message"
+    "are typing a message": "are typing a message",
+    "Offline": "Offline",
+    "Try again": "Try again",
+    "The connection is re-established": "The connection is re-established",
+    "Connection failed, the next connection attempt is in ": "Connection failed, the next connection attempt is in ",
+    "the next connection attempt is in ": "the next connection attempt is in "
   },
 
   fr: {
@@ -216,7 +221,12 @@ novaideoI18n = {
     "View new questions": "Voir les nouvelles questions",
     "View new question": "Voir la nouvelle question",
     "is typing a message": "est en train de taper un message",
-    "are typing a message": "sont en train de taper un message"
+    "are typing a message": "sont en train de taper un message",
+    "Offline": "Hors connexion",
+    "Try again": "Réessayer",
+    "The connection is re-established": "La connexion est rétablie",
+    "Connection failed, the next connection attempt is in ": "La connexion a échoué, la prochaine tentative de connexion est dans ",
+    "the next connection attempt is in ": "la prochaine tentative de connexion est dans "
   }
 }
 

@@ -13,33 +13,29 @@
 
   NovaIdeoWS.connect_to_ws_server = function(first) {
     if (!NovaIdeoWS.sock) {
-      var wsuri
       var wsuri =
         "ws://" +
         window.location.hostname +
         ":8080/ws?source_path=" +
         window.location.pathname
-      try {
-        if ("WebSocket" in window) {
-          NovaIdeoWS.sock = new WebSocket(wsuri)
-        } else if ("MozWebSocket" in window) {
-          NovaIdeoWS.sock = new MozWebSocket(wsuri)
-        } else {
-          log("Browser does not support WebSocket!")
-        }
-      } catch (e) {
-        log(e)
+      
+      if ("WebSocket" in window) {
+        NovaIdeoWS.sock = new WebSocket(wsuri)
+      } else if ("MozWebSocket" in window) {
+        NovaIdeoWS.sock = new MozWebSocket(wsuri)
+      } else {
+        log("Browser does not support WebSocket!")
       }
     }
 
     if (NovaIdeoWS.sock) {
       NovaIdeoWS.sock.onopen = function() {
-        NovaIdeoWS.timeout = 2000
+        NovaIdeoWS.timeout = 5000
         NovaIdeoWS.timeoutId = null
         if (!first) {
           $(".ws-connection-state").remove()
           alert_component({
-            alert_msg: novaideo_translate("La connexion est rétablie"),
+            alert_msg: novaideo_translate("The connection is re-established"),
             alert_type: "success"
           })
         }
@@ -54,7 +50,7 @@
         alert_component({
           alert_msg:
             novaideo_translate(
-              "La connexion a échoué, la prochaine tentative de connexion est dans "
+              "Connection failed, the next connection attempt is in "
             ) +
             NovaIdeoWS.timeout / 1000 +
             "s",
@@ -63,6 +59,10 @@
         NovaIdeoWS.timeoutId = setTimeout(function() {
           NovaIdeoWS.reconnect()
         }, NovaIdeoWS.timeout)
+      }
+
+      NovaIdeoWS.sock.onerror = function(e) {
+        console.log(e)
       }
 
       NovaIdeoWS.sock.onmessage = function(e) {
@@ -82,7 +82,13 @@
     $(".ws-connection-state").remove()
     $(".ws-messages").append(
       '<div class="ws-connection-state">' +
-        novaideo_translate("Hors connexion") +
+        novaideo_translate("Offline") +
+        ' <span class="ws-connection-attempt"> ('+
+        novaideo_translate(
+              "the next connection attempt is in "
+            ) +
+            NovaIdeoWS.timeout / 1000 +
+            "s)</span>"+
         ' <span title="' +
         novaideo_translate("Try again") +
         '" class="refresh-ws-connection-btn glyphicon glyphicon-refresh"></span></div>'
@@ -347,7 +353,8 @@ NovaIdeoWS.on("new_idea", function(params) {
   var home_component = $(".async-new-contents-component").first()
   var alert_new_idea = home_component.find(">.alert-new-idea").first()
   if (alert_new_idea.length > 0) {
-    var ideas_ln = alert_new_idea.find(".new-content-id").length
+    var current_contents = alert_new_idea.find(".new-content-id")
+    var ideas_ln = current_contents.length
     ideas_ln += 1
     alert_new_idea.replaceWith(
       '<div data-content_type="-ideas" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> ' +
@@ -356,6 +363,8 @@ NovaIdeoWS.on("new_idea", function(params) {
         ideas_ln +
         "</strong>)</div>"
     )
+    alert_new_idea = home_component.find(">.alert-new-idea").first()
+    alert_new_idea.append(current_contents)
   } else {
     home_component.prepend(
       '<div data-content_type="-ideas" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> ' +
@@ -374,7 +383,8 @@ NovaIdeoWS.on("new_question", function(params) {
   var home_component = $(".async-new-contents-component").first()
   var alert_new_question = home_component.find(">.alert-new-question").first()
   if (alert_new_question.length > 0) {
-    var questions_ln = alert_new_question.find(".new-content-id").length
+    var current_contents = alert_new_question.find(".new-content-id")
+    var questions_ln = current_contents.length
     questions_ln += 1
     alert_new_question.replaceWith(
       '<div data-content_type="-questions" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  ' +
@@ -383,6 +393,8 @@ NovaIdeoWS.on("new_question", function(params) {
         questions_ln +
         "</strong>)</div>"
     )
+    alert_new_question = home_component.find(">.alert-new-question").first()
+    alert_new_question.append(current_contents)
   } else {
     home_component.prepend(
       '<div data-content_type="-questions" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  ' +
@@ -401,7 +413,8 @@ NovaIdeoWS.on("new_wg", function(params) {
   var home_component = $(".async-new-contents-component").first()
   var alert_new_wg = home_component.find(">.alert-new-wg").first()
   if (alert_new_wg.length > 0) {
-    var wgs_ln = alert_new_wg.find(".new-content-id").length
+    var current_contents = alert_new_wg.find(".new-content-id")
+    var wgs_ln = current_contents.length
     wgs_ln += 1
     alert_new_wg.replaceWith(
       '<div data-content_type="-proposals"  class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> ' +
@@ -410,6 +423,8 @@ NovaIdeoWS.on("new_wg", function(params) {
         wgs_ln +
         "</strong>)</div>"
     )
+    alert_new_wg = home_component.find(">.alert-new-wg").first()
+    alert_new_wg.append(current_contents)
   } else {
     home_component.prepend(
       '<div data-content_type="-proposals" class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> ' +
@@ -433,6 +448,7 @@ $(document).on("click", ".alert-new-content", function(argument) {
   var items_container = result_container
     .find(">.scroll-items-container")
     .first()
+  $('[id$="' + content_type + '-counter"]>a').click()
   if (items_container.length > 0) {
     var ids = jQuery.makeArray(
       $this.find(".new-content-id").map(function() {
@@ -444,7 +460,6 @@ $(document).on("click", ".alert-new-content", function(argument) {
       ids: ids,
       op: "render_listing_contents"
     }
-    $('[id$="' + content_type + '-counter"]>a').click()
     loading_progress()
     $.post(url, data, function(data) {
       if (data.body) {
@@ -458,6 +473,10 @@ $(document).on("click", ".alert-new-content", function(argument) {
         })
       }
       finish_progress()
+    })
+  }else{
+    $this.slideUp("slow", function() {
+      $this.remove()
     })
   }
 })

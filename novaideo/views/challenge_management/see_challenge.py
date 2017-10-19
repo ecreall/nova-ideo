@@ -174,7 +174,8 @@ class ContentView(BasicView):
                 filter_data['filter_message'] = self.title
                 filter_body = filter_instance.get_body(filter_data)
             result_body, result = render_listing_objs(
-                self.request, batch, user)
+                self.request, batch, user,
+                display_state=getattr(self, 'display_state', True))
             values = {'bodies': result_body,
                       'batch': batch,
                       'empty_message': self.empty_message,
@@ -206,6 +207,7 @@ class IdeasView(ContentView):
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
     isactive = True
+    display_state = False
 
 
 @asyn_component_config(

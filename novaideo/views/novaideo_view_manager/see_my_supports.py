@@ -46,6 +46,7 @@ class SeeMySupportsView(SeeMyContentsView):
                        'text_filter', 'other_filter']
     include_archived = False
     content_types = ['idea', 'proposal']
+    display_state = False
 
     def _get_title(self, **args):
         user = args.get('user')

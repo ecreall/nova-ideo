@@ -68,7 +68,8 @@ class ContentView(BasicView):
             batch.target = "#results-" + self.content_id
             self.title = _(self.title, mapping={'nb': batch.seqlen})
             result_body, result = render_listing_objs(
-                self.request, batch, current_user)
+                self.request, batch, current_user,
+                display_state=getattr(self, 'display_state', True))
             values = {'bodies': result_body,
                       'batch': batch,
                       'empty_message': self.empty_message,
@@ -109,6 +110,7 @@ class IdeasView(ContentView):
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
     isactive = True
+    display_state = False
 
 
 @asyn_component_config(
