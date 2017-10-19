@@ -134,7 +134,7 @@ class PersonContentsView(MultipleView):
     title = ''
     name = 'see-person-contents'
     viewid = 'person-contents'
-    css_class = 'simple-bloc async-new-contents-component'
+    css_class = 'simple-bloc'
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     container_css_class = 'person-view'
