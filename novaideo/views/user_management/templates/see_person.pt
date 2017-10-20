@@ -86,4 +86,42 @@
       </div>
   </div>
 </div>
+<div class="stat-container" tal:condition="contributions_len is not None">
+  <div class="stat-body">
+    <div class="card-unit-stats card-unit-stats-person">
+      <div class="one-third">
+        <div class="stat">${contributions_len}</div>
+        <div tal:condition="contributions_len>1" class="stat-value" i18n:translate="">Contributions</div>
+        <div tal:condition="contributions_len<=1" class="stat-value" i18n:translate="">Contribution</div>
+      </div>
+    </div>
+    <div class="card-unit-stats-details card-unit-stats card-unit-stats-person clearfix"
+         tal:define="width 100/len(details)">
+
+      <div tal:condition="'questions' in details" class="one-third" style="width: ${width}%">
+        <div class="stat">${details['questions']}</div>
+        <div tal:condition="details['questions']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Questions</div>
+        <div tal:condition="details['questions']<=1" class="stat-value" i18n:translate="">Question</div>
+      </div>
+
+      <div class="one-third" style="width: ${width}%">
+        <div class="stat">${details['ideas']}</div>
+        <div tal:condition="details['ideas']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Ideas</div>
+        <div tal:condition="details['ideas']<=1" class="stat-value" i18n:translate="">Idea</div>
+      </div>
+
+      <div tal:condition="'proposals' in details" class="one-third" style="width: ${width}%">
+        <div class="stat">${details['proposals']}</div>
+        <div tal:condition="details['proposals']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Proposals</div>
+        <div tal:condition="details['proposals']<=1" class="stat-value" i18n:translate="">Proposal</div>
+      </div>
+
+      <div class="one-third" style="width: ${width}%">
+        <div class="stat">${details['others']}</div>
+        <div class="stat-value" i18n:translate="">Comments, Evaluations...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>

@@ -25,6 +25,7 @@ from dace.objectofcollaboration.principal.util import Anonymous
 from dace.util import getSite, find_catalog, get_obj, request_memoize
 from dace.objectofcollaboration.principal.util import (
     get_current, has_any_roles)
+from dace.interfaces import IEntity
 from pontus.widget import (
     Select2Widget, AjaxSelect2Widget, SimpleMappingWidget)
 from pontus.schema import Schema, omit, select
@@ -1576,6 +1577,17 @@ def get_organizations_by_evaluations(
             }
 
     return result, object_ids.__len__()
+
+
+def get_all_user_contributions(user, interfaces=[IEntity]):
+    novaideo_index = find_catalog('novaideo')
+    object_authors_index = novaideo_index['object_authors']
+    query = object_authors_index.any([get_oid(user)])
+    return find_entities(
+        interfaces=interfaces,
+        metadata_filter={
+            'states': ['published']},
+        add_query=query)
 
 
 @request_memoize

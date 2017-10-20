@@ -49,7 +49,8 @@ from novaideo.utilities.util import (
     get_debatescore_data,
     get_action_view,
     render_listing_obj)
-from novaideo.views.filter import find_entities, find_more_contents
+from novaideo.views.filter import (
+    find_entities, find_more_contents, get_all_user_contributions)
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.guide_tour import get_guide_tour_page
 from novaideo.steps import steps_panels
@@ -732,14 +733,7 @@ class PersonCard(object):
 
         contributions_len = None
         if not getattr(user_to_display, 'is_anonymous', False):
-            novaideo_index = find_catalog('novaideo')
-            object_authors_index = novaideo_index['object_authors']
-            query = object_authors_index.any([get_oid(user_to_display)])
-            contributions = find_entities(
-                interfaces=[IEntity],
-                metadata_filter={
-                    'states': ['published']},
-                add_query=query)
+            contributions = get_all_user_contributions(user_to_display)
             contributions_len = len(contributions) + len(user_to_display.evaluated_objs_ids())
 
         result['card'] = render_listing_obj(

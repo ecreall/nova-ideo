@@ -1,3 +1,21 @@
+.stat-container{
+  overflow: hidden;
+  height: 60px;
+  box-shadow: 0 0.5px 1px rgba(138,138,138,.5);
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.stat-body{
+  position: relative;
+  top: 0px;
+  transition: top 0.25s ease-in-out;
+}
+
+.stat-details .stat-body{
+   top: -60px;
+}
+
 .panel-transparent > .panel-body{
   padding: 15px 0
 }
@@ -173,6 +191,13 @@ body {
   text-transform: uppercase;
   font-weight: 400;
   font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-unit-stats-details .one-third{
+  float: left;
 }
 
 .col-footer,

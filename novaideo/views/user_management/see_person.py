@@ -23,11 +23,13 @@ from novaideo.content.processes.user_management.behaviors import SeePerson
 from novaideo.content.person import Person
 from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 from novaideo.content.processes import get_states_mapping
+from novaideo.content.interface import Iidea, IProposal, IQuestion
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
 from novaideo import _
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.filter import get_all_user_contributions
 from novaideo.views.core import asyn_component_config
 
 
@@ -182,6 +184,22 @@ class DetailsView(BasicView):
 
         user = self.context
         current_user = get_current()
+        details = {}
+        contributions = len(get_all_user_contributions(user)) + len(user.evaluated_objs_ids())
+        ideas = contents = len(get_all_user_contributions(user, [Iidea]))
+        details['ideas'] = ideas
+        if 'proposal' in self.request.content_to_manage:
+            proposals = len(get_all_user_contributions(user, [IProposal]))
+            contents += proposals
+            details['proposals'] = proposals
+
+        if 'question' in self.request.content_to_manage:
+            questions = len(get_all_user_contributions(user, [IQuestion]))
+            contents += questions
+            details['questions'] = questions
+
+        others = contributions - contents 
+        details['others'] = others
         values = {
             'user': user,
             'proposals': None,
@@ -191,7 +209,9 @@ class DetailsView(BasicView):
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
-            'is_portal_manager': has_role(role=('PortalManager',))
+            'is_portal_manager': has_role(role=('PortalManager',)),
+            'contributions_len': contributions,
+            'details': details
         }
         result = {}
         result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
