@@ -15,7 +15,7 @@
     <img class="img-circle"
         tal:attributes="src profil_picture.url if profil_picture else default_img"  width="70"/>
   </div>
-  <div class="caption">
+  <div>
       <div class="card-data">
           <a href="${url}" class="card-title" title="${getattr(object, 'title', object.name)}">
                 ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
@@ -43,6 +43,12 @@
       <div class="search-item-footer">
         <div class="actions-block">
           <div tal:replace="structure footer_body"/>
+        </div>
+      </div>
+      <div class="card-unit-stats card-unit-stats-person">
+        <div class="one-third">
+          <div class="stat">${contributions_len}</div>
+          <div class="stat-value" i18n:translate="">Contributions</div>
         </div>
       </div>
   </div>
