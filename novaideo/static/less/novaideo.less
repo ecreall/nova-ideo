@@ -1,9 +1,10 @@
 .stat-container{
   overflow: hidden;
-  height: 45px;
-  box-shadow: 0 0.5px 1px rgba(138,138,138,.5);
+  height: 50px;
+  box-shadow: 0 0.7px 1px rgba(138,138,138,.5);
   cursor: pointer;
   margin-bottom: 30px;
+  border-top: solid 1px #dadada;
 }
 
 .stat-body{
@@ -12,8 +13,12 @@
   transition: top 0.25s ease-in-out;
 }
 
+.stat-body .card-unit-stats {
+  border: none  
+}
+
 .stat-details .stat-body{
-   top: -51px;
+   top: -50px;
 }
 
 .panel-transparent > .panel-body{
@@ -161,12 +166,12 @@ body {
 
 .card-unit-stats-person {
   background: #eae8e8;
-  border-top: solid 1px #dadada;
 }
 
 .card-unit-stats {
   color: #363636;
   font-weight: 700;
+  border-top: solid 1px #dadada;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
