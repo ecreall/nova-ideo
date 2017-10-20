@@ -45,7 +45,7 @@
           <div tal:replace="structure footer_body"/>
         </div>
       </div>
-      <div class="card-unit-stats card-unit-stats-person">
+      <div tal:condition="contributions_len is not None" class="card-unit-stats card-unit-stats-person">
         <div class="one-third">
           <div class="stat">${contributions_len}</div>
           <div class="stat-value" i18n:translate="">Contributions</div>

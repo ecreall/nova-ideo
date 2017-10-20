@@ -730,15 +730,18 @@ class PersonCard(object):
         if not user_to_display or not hasattr(user_to_display, 'templates'):
             return result
 
-        novaideo_index = find_catalog('novaideo')
-        object_authors_index = novaideo_index['object_authors']
-        query = object_authors_index.any([get_oid(user_to_display)])
-        contributions = find_entities(
-            interfaces=[IEntity],
-            metadata_filter={
-                'states': ['published']},
-            add_query=query)
-        contributions_len = len(contributions) + len(user_to_display.evaluated_objs_ids())
+        contributions_len = None
+        if not getattr(user_to_display, 'is_anonymous', False):
+            novaideo_index = find_catalog('novaideo')
+            object_authors_index = novaideo_index['object_authors']
+            query = object_authors_index.any([get_oid(user_to_display)])
+            contributions = find_entities(
+                interfaces=[IEntity],
+                metadata_filter={
+                    'states': ['published']},
+                add_query=query)
+            contributions_len = len(contributions) + len(user_to_display.evaluated_objs_ids())
+
         result['card'] = render_listing_obj(
             self.request, user_to_display, user,
             view_type='card', contributions_len=contributions_len) if user_to_display else None
