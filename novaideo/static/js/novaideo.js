@@ -1026,6 +1026,10 @@ $(document).on("click", ".collapsible-activator.activated", function(
   activator.addClass("glyphicon-triangle-top")
 })
 
+$(document).on("click", ".stat-container", function() {
+  $(this).toggleClass('stat-details')
+})
+
 $(window).load(function() {
   initscroll()
 })

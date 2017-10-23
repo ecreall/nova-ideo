@@ -278,7 +278,12 @@ class Proposal(VersionableEntity,
 
     @property
     def authors(self):
-        return self.working_group.members
+        authors = self.working_group.members
+        author = self.author
+        if author not in authors:
+            authors.append(author)
+
+        return authors
 
     @property
     def workspace(self):

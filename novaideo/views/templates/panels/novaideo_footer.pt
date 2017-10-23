@@ -1,8 +1,7 @@
 <div i18n:domain="novaideo" class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
     <div class="row clearfix">
-      <div class="${accessible_to_anonymous and 'col-md-2' or 'col-md-3'}">
-      </div>
-      <div class="${accessible_to_anonymous and 'col-md-7' or 'col-md-6'}">   
+      <div class="col-md-3"></div>
+      <div class="col-md-6 col-footer">   
             <div id="footer">
               <div tal:replace="structure navbar_body"/>
                 <div id="custom-footer">
@@ -23,7 +22,6 @@
                 </div>
             </div>
       </div>
-      <div class="${accessible_to_anonymous and 'col-md-2' or 'col-md-3'} column ui-sortable novaideo-left">
-      </div>
+      <div class="col-md-3"></div>
   </div>
 </div>

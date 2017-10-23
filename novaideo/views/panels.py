@@ -23,6 +23,7 @@ from dace.util import (
     get_obj)
 from dace.objectofcollaboration.principal.util import get_current
 from daceui.interfaces import IDaceUIAPI
+from dace.interfaces import IEntity
 from pontus.util import merge_dicts
 
 from novaideo.utilities.util import (
@@ -48,7 +49,8 @@ from novaideo.utilities.util import (
     get_debatescore_data,
     get_action_view,
     render_listing_obj)
-from novaideo.views.filter import find_entities, find_more_contents
+from novaideo.views.filter import (
+    find_entities, find_more_contents, get_all_user_contributions)
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.guide_tour import get_guide_tour_page
 from novaideo.steps import steps_panels
@@ -729,9 +731,14 @@ class PersonCard(object):
         if not user_to_display or not hasattr(user_to_display, 'templates'):
             return result
 
+        contributions_len = None
+        if not getattr(user_to_display, 'is_anonymous', False):
+            contributions = get_all_user_contributions(user_to_display)
+            contributions_len = len(contributions) + len(user_to_display.evaluated_objs_ids())
+
         result['card'] = render_listing_obj(
             self.request, user_to_display, user,
-            view_type='card') if user_to_display else None
+            view_type='card', contributions_len=contributions_len) if user_to_display else None
         return result
 
 

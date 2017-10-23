@@ -1,3 +1,26 @@
+.stat-container{
+  overflow: hidden;
+  height: 50px;
+  box-shadow: 0 0.7px 1px rgba(138,138,138,.5);
+  cursor: pointer;
+  margin-bottom: 30px;
+  border-top: solid 1px #dadada;
+}
+
+.stat-body{
+  position: relative;
+  top: 0px;
+  transition: top 0.25s ease-in-out;
+}
+
+.stat-body .card-unit-stats {
+  border: none  
+}
+
+.stat-details .stat-body{
+   top: -50px;
+}
+
 .panel-transparent > .panel-body{
   padding: 15px 0
 }
@@ -190,7 +213,7 @@ body {
 
 .card-title {
   font-size: 18px;
-  margin-top: 15px;
+  margin-top: 25px;
   color: #333;
   display: inline-block;
 }
@@ -207,6 +230,52 @@ body {
   margin-top: 5px;
 }
 
+.card-addon-item:first-child {
+  margin-top: 15px;
+}
+
+.card-unit-stats-person {
+  background: #eae8e8;
+}
+
+.card-unit-stats {
+  color: #363636;
+  font-weight: 700;
+  border-top: solid 1px #dadada;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.card-unit-stats .one-third {
+  padding: 7px;
+  text-align: center;
+}
+
+.card-unit-stats sup {
+  position: absolute;
+  bottom: 4px;
+  font-size: 45%;
+  margin-left: 2px;
+}
+.card-unit-stats .stat {
+  position: relative;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+.card-unit-stats .stat-value {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-unit-stats-details .one-third{
+  float: left;
+}
+
+.col-footer,
 .novaideo-main,
 .novaideo-info > .column {
   max-width: 800px;

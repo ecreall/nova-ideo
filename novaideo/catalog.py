@@ -654,11 +654,12 @@ class SearchableObject(Adapter):
         return keywords
 
     def object_authors(self):
+        authors = getattr(self.context, 'authors', [])
         author = getattr(self.context, 'author', None)
-        if author:
-            return [get_oid(author)]
+        if not authors and author:
+            authors.append(author)
 
-        return []
+        return [get_oid(a) for a in authors]
 
     def organizations(self):
         organization = getattr(self.context, 'organization', None)
