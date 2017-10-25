@@ -23,7 +23,7 @@ from novaideo.utilities.util import (
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
-from novaideo.views.proposal_management.seeamendments import (
+from novaideo.views.proposal_management.see_amendments import (
     AllAmendmentsView)
 from novaideo.views.proposal_management.see_related_ideas import (
     SeeRelatedIdeasView)
