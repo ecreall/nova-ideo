@@ -23,8 +23,8 @@ from novaideo.utilities.util import (
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
-from novaideo.views.proposal_management.see_amendments import (
-    SeeAmendmentsView)
+from novaideo.views.proposal_management.seeamendments import (
+    AllAmendmentsView)
 from novaideo.views.proposal_management.see_related_ideas import (
     SeeRelatedIdeasView)
 from novaideo.views.proposal_management.compare_proposal import (
@@ -202,7 +202,7 @@ class SeeProposalActionsView(MultipleView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     title = ''
     views = (DetailProposalView,
-             SeeAmendmentsView,
+             AllAmendmentsView,
              SeeRelatedIdeasView,
              CompareProposalView)
 

@@ -2,7 +2,7 @@ import datetime
 import pytz
 from pyramid import renderers
 
-from dace.util import getSite
+from dace.util import getSite, getBusinessAction
 from dace.objectofcollaboration.principal.util import get_current
 
 from novaideo.content.processes import get_states_mapping
@@ -35,7 +35,7 @@ class StepsPanel(object):
         self.request = None
 
     def _get_process_context(self):
-        if isinstance(self.context, (Amendment, Workspace)):
+        if isinstance(self.context, Workspace):
             return self.context.proposal
 
         return self.context
@@ -205,4 +205,73 @@ class StepsPanel(object):
         return result
 
 
+class StepsAmendmentPanel(object):
+    step1_template = 'novaideo:views/templates/panels/amendment_step1.pt'
+    step2_template = 'novaideo:views/templates/panels/amendment_step2.pt'
+    step3_template = 'novaideo:views/templates/panels/amendment_step3.pt'
+    step4_template = 'novaideo:views/templates/panels/amendment_step4.pt'
+
+    def __init__(self):
+        self.context = None
+        self.request = None
+
+    def _get_step1_informations(self, context, request):
+        return renderers.render(self.step1_template,
+                                {'context': context},
+                                request)
+
+    def _get_step2_informations(self, context, request):
+        return renderers.render(self.step2_template,
+                                {'context': context},
+                                request)
+
+    def _get_step3_informations(self, context, request):
+        return renderers.render(self.step3_template,
+                                {'context': context},
+                                request)
+
+    def _get_step4_informations(self, context, request):
+        return renderers.render(self.step4_template,
+                                {'context': context},
+                                request)
+
+    def __call__(self, context, request):
+        self.context = context
+        self.request = request
+        result = {}
+        context = self.context
+        result['condition'] = isinstance(context, Amendment)
+        if not result['condition']:
+            return result
+
+        result['current_step'] = 0
+        result['step1_message'] = ""
+        result['step2_message'] = ""
+        result['step3_message'] = ""
+        result['step4_message'] = ""
+        to_submit = getBusinessAction(
+            context, request,
+            'amendmentmanagement', 'submit')
+        if ('draft' in context.state and 'explanation' not in context.state) or \
+           request.view_name.endswith('duplicateamendment'):
+            result['current_step'] = 1
+            # result['step1_message'] = self._get_step1_informations(
+            #     context, self.request)
+        elif 'explanation' in context.state and not to_submit:
+            result['current_step'] = 2
+            # result['step2_message'] = self._get_step2_informations(
+            #     context, self.request)
+        elif 'explanation' in context.state and to_submit:
+            result['current_step'] = 3
+            # result['step3_message'] = self._get_step3_informations(
+            #     context, self.request)
+        elif 'submitted' in context.state:
+            result['current_step'] = 4
+            # result['step4_message'] = self._get_step4_informations(
+            #     context, self.request)
+
+        return result
+
 steps_panels = StepsPanel()
+
+steps_amendment_panels = StepsAmendmentPanel()

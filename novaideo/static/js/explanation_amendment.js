@@ -79,7 +79,6 @@ function submit_explanation() {
   var intention_form = $(form.find(".intention-bloc").first())
   var url = $(this).data("url")
   var item = $(this).data("item")
-  var commentmessagedanger = target.find("#messagedanger")
   var comment = $(intention_form.find("textarea[name='comment']").first()).val()
   var related_ideas = $(
     intention_form.find("select[name='related_ideas']").first()
@@ -98,10 +97,10 @@ function submit_explanation() {
     item: item
   }
   if (relatedexplanation == "" && !validate_intention(datas)) {
-    $(commentmessagedanger)
-      .text(novaideo_translate("There was a problem with your submission."))
-      .show()
-      .fadeOut(4000)
+    alert_component({
+      alert_msg: novaideo_translate("There was a problem with your submission."),
+      alert_type: "error"
+    })
     return false
   }
   $.getJSON(url, datas, function(data) {

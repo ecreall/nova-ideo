@@ -53,10 +53,11 @@ from novaideo.views.filter import (
     find_entities, find_more_contents, get_all_user_contributions)
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.guide_tour import get_guide_tour_page
-from novaideo.steps import steps_panels
+from novaideo.steps import steps_panels, steps_amendment_panels
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.question import Question
+from novaideo.content.amendment import  Amendment
 from novaideo.content.smart_folder import SmartFolder
 from novaideo.fr_lexicon import normalize_title
 from novaideo.content.processes.challenge_management.behaviors import (
@@ -256,6 +257,21 @@ class StepsPanel(object):
 
     def __call__(self):
         return steps_panels(self.context, self.request)
+
+
+@panel_config(
+    name='steps_amendment',
+    context=Amendment,
+    renderer='templates/panels/steps_amendment.pt'
+    )
+class StepsAmendmentPanel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        return steps_amendment_panels(self.context, self.request)
 
 
 @panel_config(
@@ -721,7 +737,7 @@ class PersonCard(object):
         result = {'card': None}
         is_index_view = self.request.view_name in ('index', '')
         is_root = self.context is self.request.root
-        is_valid = is_root or isinstance(self.context, (Question, Idea, Proposal))
+        is_valid = is_root or isinstance(self.context, (Question, Idea, Proposal, Amendment))
         if not is_index_view or not is_valid:
             return result
 

@@ -1,0 +1,42 @@
+<div class="instruction-block" i18n:domain="novaideo">
+    <div class="instruction-details">
+	    <p i18n:translate="">
+		   With the amendment mode, the different members of the working group can submit improvements in the form of amendments. An amended version of the proposal contains several improvements.
+		</p>
+	    <p i18n:translate="">
+	       The submission of amendments is done in three steps. Firstly the creation of the amended version, then the explanation of the various improvements made to the text of the proposal and finally the preparation and submission of the amendments (grouping the various improvements into separate amendments).
+	    </p>
+    </div>
+	 <ul class="nav nav-steps instruction-steps ">
+		 <li class="0 first active glyphicon glyphicon-pencil" style="width: 25%;">
+		    <span class="active step-content" data-step="message-step-1">
+		      <div class="step-text">
+		        <span i18n:translate="">Improvement</span>
+		      </div>
+		    </span>
+		 </li>
+		 <li class="1  glyphicon glyphicon-question-sign"  style="width: 25%;">
+		    <span class=" step-content" data-step="message-step-2">
+		      <div class="step-text">
+		        <span i18n:translate="">Explanation of improvements</span>
+		      </div>
+		    </span>
+		 </li>
+		 <li class="2  glyphicon glyphicon-share"  style="width: 25%;">
+		       <span class="step-content" data-step="message-step-3">
+		         <div class="step-text">
+		           <span i18n:translate="">Preparation and submission of amendments</span>
+		           <br>
+		         </div>
+		       </span>
+		 </li>
+		 <li class="3 glyphicon glyphicon-eye-open" style="width: 25%;">
+               <span class="step-content" data-step="message-step-4">
+                 <div class="step-text" >
+                   <span i18n:translate="" >Submitted</span>
+                   <br />
+                 </div>
+               </span>
+         </li>
+	 </ul>
+</div>

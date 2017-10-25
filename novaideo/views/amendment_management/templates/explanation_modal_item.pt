@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" ><button type="button" class="btn btn-warning">${item['oid']}</button> <span  i18n:translate="">Explain your improvement</span></h4>
+        <div class="modal-title explanation-modal-title" ><button type="button" class="btn btn-warning">${item['oid']}</button> <span  i18n:translate="">Explain your improvement</span></div>
       </div>
       <div class="modal-body">
       </div>

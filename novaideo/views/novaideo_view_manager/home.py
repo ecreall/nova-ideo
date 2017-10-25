@@ -38,7 +38,6 @@ CONTENTS_MESSAGES = {
 
 class ContentView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
-    anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_type = 'idea'
     isactive = False

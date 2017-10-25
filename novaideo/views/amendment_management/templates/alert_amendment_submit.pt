@@ -8,7 +8,7 @@
         </ol>
 </div>
 <div class="alert alert-info">
-  <span class="glyphicon glyphicon-info-sign pull-right"></span>
+  <span class="glyphicon glyphicon-share pull-right"></span>
   <p i18n:domain="novaideo" i18n:translate="">As a default, the improvements that share the same explanation are grouped in the same amendment. It is preferable to submit several amendments to the other participants in the working group, so as to increase the chances that they will accept at least some of them. However, you must beware that each amendment can be accepted separately, independently from the others.</p>
 </div>
 

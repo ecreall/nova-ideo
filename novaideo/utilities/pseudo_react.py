@@ -55,6 +55,7 @@ from novaideo.content.interface import (
     Iidea, IQuestion)
 from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
+from novaideo.content.amendment import Amendment
 from novaideo.core import can_access, ON_LOAD_VIEWS
 
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_uid_result.pt'
@@ -125,10 +126,16 @@ def update_contextual_help(request, context, user, view_name, contextual_help):
 
 
 def update_steps_navbar(request, context, steps_navbars):
-    from novaideo.steps import steps_panels
-    result = steps_panels(context, request)
+    from novaideo.steps import steps_panels, steps_amendment_panels
+    if isinstance(context, Amendment):
+        result = steps_amendment_panels(context, request)
+        template = 'novaideo:views/templates/panels/steps_amendment.pt'
+    else:
+        result = steps_panels(context, request)
+        template = 'novaideo:views/templates/panels/steps.pt'
+
     return {steps_navbars[0]+'.body': renderers.render(
-        'novaideo:views/templates/panels/steps.pt',
+        template,
         result,
         request)}
 
@@ -1703,6 +1710,17 @@ def get_import_connector_metadata(action, request, context, api, **kwargs):
     return result
 
 
+#Amendments
+
+def get_directsubmit_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The amendment has been submitted."),
+        **kwargs)
+    return result
+
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2141,6 +2159,7 @@ METADATA_GETTERS = {
 
     'amendmentmanagement.comment': get_comment_metadata,
     'amendmentmanagement.present': get_present_metadata,
+    'amendmentmanagement.directsubmit': get_directsubmit_metadata,
 
     'usermanagement.discuss': get_discuss_metadata,
     'usermanagement.general_discuss': get_general_discuss_metadata,
