@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item search-item-bloc result-item view-item component-obj-view component-listing-view"
+<div class="right-caption span4 search-item search-item-bloc challenge-item-bloc result-item view-item component-obj-view component-listing-view"
      id="listingbloc_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
@@ -12,10 +12,10 @@
         class="challenge-restricted ion-locked"
         title="Is restricted"
         i18n:attributes="title"></span>
-  <img src="${getattr(challenge_image, 'large', challenge_image).url}" role="presentation" class="challenge-img">
-
-  <div class="caption media-bloc media-challenge">
-    <div class="challenge-progress progress progress-striped"
+  <div role="presentation" class="card-img" 
+       style="
+          background: transparent url(${getattr(challenge_image, 'blur', challenge_image).url}) no-repeat scroll center center / cover ;">
+      <div class="challenge-progress progress progress-striped"
          tal:condition="deadline"
          title="${layout.to_localized_time(deadline)}">
        <div tal:define="expired object.is_expired;
@@ -28,19 +28,25 @@
             style="width: ${percent if percent else 1}%;">
           <span class="sr-only">${percent}% Complete</span>
        </div>
-    </div>
+      </div>
+      <div class="object-menu pull-right">
+        <div tal:replace="structure menu_body"/>
+      </div>
+      <img class="img-circle"
+        tal:attributes="src getattr(challenge_image, 'large', challenge_image).url"  width="150"/>
+  </div>
+
+  <div class="caption media-bloc media-challenge">
+
     <div class="media-challenge-body">
       <div class="">
         <div class="object-title-block view-item-title"
           data-title="${object.title}"
           data-icon="${icon}"
           data-img="">
-          <div class="object-menu pull-right">
-            <div tal:replace="structure menu_body"/>
-          </div>
           <a tal:attributes="href url">
             <h4 title="${object.title}">
-              <span class="icon ${icon}"></span>  ${object.title}
+              ${object.title}
             </h4>
           </a>
         </div>
@@ -50,7 +56,9 @@
           </div>
         </div>
       </div>
-
+      <a tal:attributes="href url" class="btn-master">
+         <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Participate</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
+      </a>
       <div class="search-item-footer">
         <div class="actions-block">
           <div tal:replace="structure footer_body"/>

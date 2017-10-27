@@ -135,7 +135,7 @@ class SeeChallengesHomeView(BasicView):
     behaviors = [SeeChallenges]
     template = 'novaideo:views/challenge_management/templates/see_challenges.pt'
     viewid = 'seehomechallenges'
-    wrapper_template = 'novaideo:views/smart_folder_management/templates/folder_blocs_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     css_class = 'simple-bloc challenges-bloc'
     container_css_class = 'home'
 
@@ -159,7 +159,7 @@ class SeeChallengesHomeView(BasicView):
         else:
             self.title = self.request.localizer.translate(self.title)
             result_body, result = render_listing_objs(
-                self.request, batch, user, 'bloc')
+                self.request, batch, user, 'card')
 
         values = {
             'bodies': result_body,

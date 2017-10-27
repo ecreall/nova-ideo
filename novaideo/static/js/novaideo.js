@@ -287,7 +287,7 @@ function init_channels_top() {
 }
 
 function init_card_position() {
-    var card = $('.person-card-container:first')
+    var card = $('.person-card-container:first>.search-item')
     if (card.length > 0){
       var min_top = 50
       var offset_top = card.offset().top
@@ -1043,6 +1043,33 @@ $(window).scroll(function() {
 })
 
 $(document).ready(function() {
+  $('.challenges-bloc').slick({
+    dots: true,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 1600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 630,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+      // You can unslick at a given breakpoint now by adding:
+      // settings: "unslick"
+      // instead of a settings object
+    ]
+  });
   init_collapsible_contents()
 
   init_emoji($(".emoji-container:not(.emojified)"))
