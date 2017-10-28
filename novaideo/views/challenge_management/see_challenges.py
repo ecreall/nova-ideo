@@ -48,7 +48,7 @@ class SeeChallengesView(BasicView):
     title = _('Participate in our challenges')
     name = 'seechallenges'
     behaviors = [SeeChallenges]
-    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/search_result_blocs.pt'
     viewid = 'seechallenges'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     css_class = 'panel-transparent'
@@ -100,12 +100,13 @@ class SeeChallengesView(BasicView):
         if len_result > 1:
             index = '*'
 
-        self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'number': len_result})
+        self.title = self.request.localizer.translate(
+            _(CONTENTS_MESSAGES[index],
+              mapping={'number': len_result}))
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(
-            self.request, batch, user)
+            self.request, batch, user, 'card')
         if filter_form:
             result = merge_dicts(
                 {'css_links': filter_form['css_links'],

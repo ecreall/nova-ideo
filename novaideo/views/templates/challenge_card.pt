@@ -8,10 +8,6 @@
                  challenge_image object.image;
                  deadline getattr(object, 'deadline', None)
                  ">
-  <span tal:condition="getattr(object, 'is_restricted', False)"
-        class="challenge-restricted ion-locked"
-        title="Is restricted"
-        i18n:attributes="title"></span>
   <div role="presentation" class="card-img" 
        style="
           background: transparent url(${getattr(challenge_image, 'blur', challenge_image).url}) no-repeat scroll center center / cover ;">
@@ -29,11 +25,17 @@
           <span class="sr-only">${percent}% Complete</span>
        </div>
       </div>
+      <span tal:condition="getattr(object, 'is_restricted', False)"
+            class="challenge-restricted ion-locked"
+            title="Is restricted"
+            i18n:attributes="title"></span>
       <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
-      <img class="img-circle"
-        tal:attributes="src getattr(challenge_image, 'large', challenge_image).url"  width="150"/>
+      <div class="img-container">
+        <img class="img-circle"
+             tal:attributes="src getattr(challenge_image, 'large', challenge_image).url"  width="150"/>
+      </div>
   </div>
 
   <div class="caption media-bloc media-challenge">
@@ -56,8 +58,11 @@
           </div>
         </div>
       </div>
-      <a tal:attributes="href url" class="btn-master">
+      <a tal:condition="object.can_add_content" tal:attributes="href url" class="btn-master">
          <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Participate</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
+      </a>
+      <a tal:condition="not object.can_add_content" tal:attributes="href url" class="btn-master btn-master-danger">
+         <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Consult</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
       </a>
       <div class="search-item-footer">
         <div class="actions-block">
