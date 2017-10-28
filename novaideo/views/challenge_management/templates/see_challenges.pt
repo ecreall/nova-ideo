@@ -1,4 +1,4 @@
-<div class="challenge-col-container" tal:condition="bodies" tal:repeat="body bodies+bodies+bodies">
+<div class="challenge-col-container" tal:condition="bodies" tal:repeat="body bodies">
   <div  class="scroll-item challenge-col" >
       ${structure:body}
   </div>
