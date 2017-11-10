@@ -70,7 +70,7 @@ class ExplanationGroupSchema(Schema):
         widget=explanations_choice,
         missing=[],
         default=[],
-        title=_('Explanations'),
+        title=_('Improvements'),
     )
 
     justification = colander.SchemaNode(
@@ -87,9 +87,13 @@ class ExplanationGroupSchema(Schema):
 @colander.deferred
 def groups_widget(node, kw):
     context = node.bindings['context']
-    return DragDropSequenceWidget(item_css_class="explanation-groups",
-                                  item_title_template=context.title+'-',
-                                  max_len=len(context.explanations))
+    return DragDropSequenceWidget(
+        item_css_class="explanation-groups",
+        item_title_template=context.title+'-',
+        node_description=_("To do so, you can drag-and-drop your improvements "
+                           "from one amendment to the other, add amendments or "
+                           "suppress the empty ones."),
+        max_len=len(context.explanations))
 
 
 class ExplanationGroupsSchema(Schema):

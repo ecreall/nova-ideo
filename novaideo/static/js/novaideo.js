@@ -238,6 +238,14 @@ function reset_cookie_channels_bar() {
   }
 }
 
+function reset_cookie_challenges_bar(isOpened) {
+  if (isOpened) {
+    $.cookie("challenges", "off", { path: "/", expires: 1 })
+  } else {
+    $.cookie("challenges", "on", { path: "/", expires: 1 })
+  }
+}
+
 function init_channels_scroll() {
   if (!window.matchMedia("(max-width: 767px)").matches) {
     $(".channels-container").mCustomScrollbar({
@@ -287,25 +295,25 @@ function init_channels_top() {
 }
 
 function init_card_position() {
-    var card = $('.person-card-container:first')
-    if (card.length > 0){
-      var min_top = 50
-      var offset_top = card.offset().top
-      var offset_left = card.offset().left
-      if (!card.hasClass('fixed')){
-        card.data('initial_top', offset_top)
-      }else{
-        offset_top = card.data('initial_top')
-      }
-      var top = offset_top - $(window).scrollTop()
-      if(top<=min_top){
-        card.addClass('fixed')
-        card.css("top", min_top + "px")
-        card.css("left", offset_left + "px")
-      }else{
-        card.removeClass('fixed')
-      }
+  var card = $(".person-card-container:first>.search-item")
+  if (card.length > 0) {
+    var min_top = 50
+    var offset_top = card.offset().top
+    var offset_left = card.offset().left
+    if (!card.hasClass("fixed")) {
+      card.data("initial_top", offset_top)
+    } else {
+      offset_top = card.data("initial_top")
     }
+    var top = offset_top - $(window).scrollTop()
+    if (top <= min_top) {
+      card.addClass("fixed")
+      card.css("top", min_top + "px")
+      card.css("left", offset_left + "px")
+    } else {
+      card.removeClass("fixed")
+    }
+  }
 }
 
 function init_collapsible(element) {
@@ -832,6 +840,35 @@ $(document).on("click", ".all-channels-toggle", function(e) {
   reset_cookie_channels_bar()
 })
 
+$(document).on("click", ".challenges-container .challenges-header", function(
+  e
+) {
+  e.preventDefault()
+  var $this = $(this)
+  var container = $this.parents(".challenges-container").first()
+  var isOpened = container.hasClass("opened")
+  var items = container.find(".challenges-items")
+  if (isOpened) {
+    $this
+      .find(".icon-activator")
+      .removeClass("glyphicon-menu-up")
+      .addClass("glyphicon-menu-down")
+    items.slideUp("fast", function() {
+      container.toggleClass("opened")
+    })
+  } else {
+    $this
+      .find(".icon-activator")
+      .removeClass("glyphicon-menu-down")
+      .addClass("glyphicon-menu-up")
+    items.slideDown("fast", function() {
+      container.toggleClass("opened")
+      container.find(".challenges-bloc").slick("refresh")
+    })
+  }
+  reset_cookie_challenges_bar(isOpened)
+})
+
 $(document).on("hide.bs.collapse", ".panel-collapse", function() {
   $(this)
     .siblings()
@@ -1027,7 +1064,7 @@ $(document).on("click", ".collapsible-activator.activated", function(
 })
 
 $(document).on("click", ".stat-container", function() {
-  $(this).toggleClass('stat-details')
+  $(this).toggleClass("stat-details")
 })
 
 $(window).load(function() {
@@ -1043,6 +1080,34 @@ $(window).scroll(function() {
 })
 
 $(document).ready(function() {
+  $(".challenges-bloc").slick({
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 1600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 630,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false
+        }
+      }
+      // You can unslick at a given breakpoint now by adding:
+      // settings: "unslick"
+      // instead of a settings object
+    ]
+  })
   init_collapsible_contents()
 
   init_emoji($(".emoji-container:not(.emojified)"))

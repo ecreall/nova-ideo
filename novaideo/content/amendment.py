@@ -112,7 +112,7 @@ class IntentionItemSchema(Schema):
         default=[],
         )
 
-    add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
+    # add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
 
 class Intention(object):

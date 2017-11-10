@@ -57,21 +57,23 @@
           </a>
         </small>
       </div>  
-      <div class="object-text">${object.presentation_text(500)}</div>
-      <dl>
+      <div class="object-text">${object.presentation_text(200)}</div>
+      <dl class="block-details">
         <div tal:omit-tag=""
           tal:condition="getattr(object, 'justification', '')"
           tal:define="justification getattr(object, 'justification', '')">
-          <dt  i18n:translate="">Justification</dt>
+          <dt  class="item-title" i18n:translate="">Justification</dt>
           <dd >
               ${justification}
           </dd>
         </div> 
         <div tal:omit-tag="" tal:condition="object.related_ideas">
-          <dt  i18n:translate="">Related ideas</dt>
+          <dt  class="item-title" i18n:translate="">Related ideas</dt>
            <dd>
             <tal:loop repeat="idea object.related_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+               <a data-oid="${getattr(idea, '__oid__', '')}"
+                  class="toggle-popover"
+                  tal:attributes="href request.resource_url(idea, '@@index')"><span class="${getattr(idea, 'icon', '')}"></span> ${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>
           </dd>
         </div>

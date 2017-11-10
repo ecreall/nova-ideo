@@ -1,17 +1,28 @@
 <div i18n:domain="novaideo" tal:condition="condition">
-  <div class="container-fluid challenges-container" tal:condition="challenges">      
-	<div class="row">
-	    <div class="col-md-2 col-xs-12 col-sm-1"></div>
-	    <div class="col-md-8 col-xs-12 col-sm-10">
-		    <tal:block tal:repeat="jslink js_links">
-		              <script src="${request.static_url(jslink)}"></script>
-		    </tal:block>
-		    <tal:block tal:repeat="csslink css_links">
-		        <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
-		    </tal:block>
+  <div class="container-fluid challenges-container ${opened and 'opened'}" tal:condition="challenges"
+       tal:define="opened request.cookies.get('challenges', 'on') != 'off'">
+	  <tal:block tal:repeat="jslink js_links">
+	    <script src="${request.static_url(jslink)}"></script>
+	  </tal:block>
+	  <tal:block tal:repeat="csslink css_links">
+	    <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+	  </tal:block>
+	  <div class="row challenges-header">
+		  <div class="col-md-3"></div>
+		  <div class="col-md-9">
+		    <div class="panel-title" i18n:translate="">Participate in our challenges</div>
+		    <span class="icon-activator glyphicon ${opened and 'glyphicon-menu-up' or 'glyphicon-menu-down'}"></span>
+		  </div>
+	  </div>
+	  <div class="row challenges-items">
+		  <div class="col-md-2"></div>
+		  <div class="col-md-8" style="max-width: 1090px;">      
 		    <div tal:replace="structure challenges"/>
-	    </div>
-	    <div class="col-md-2 col-xs-12 col-sm-1"></div>
-	</div>
+		    <div class="btn-more-all pull-right">
+              <a href="${request.resource_url(request.root, '@@seechallenges')}" i18n:translate="">All challenges</a>
+		    </div>
+		  </div>
+		  <div class="col-md-2"></div>
+	  </div>
   </div>
 </div>

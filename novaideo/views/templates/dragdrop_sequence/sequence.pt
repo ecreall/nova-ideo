@@ -10,6 +10,7 @@
                  orderable orderable and 1 or 0;
                  prototype field.widget.prototype(field);
                  title title|field.title;
+                 node_description node_description|field.widget.node_description;
                  item_title item_title|field.widget.item_title_template;"
      class="deform-seq"
      id="${oid}">
@@ -34,6 +35,9 @@
 
   <div class="panel-default drag-drop-panel">
     <h3>${title}</h3>
+    <p class="help-block">
+      ${node_description}
+    </p>
     <div class="panel-body" style="padding-bottom: 30px">
 
       <div class="deform-seq-container drag-drop-container"

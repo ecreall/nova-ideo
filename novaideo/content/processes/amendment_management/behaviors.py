@@ -31,7 +31,7 @@ from dace.processinstance.core import ActivityExecuted
 
 from novaideo.content.interface import IAmendment
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.content.amendment import Amendment
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
@@ -341,7 +341,7 @@ def pub_state_validation(process, context):
 class SubmitAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-share'
+    style_picto = 'fa fa-sitemap'
     style_order = 6
     title = _('Prepare amendments')
     submission_title = _('Submit amendments')
@@ -456,10 +456,60 @@ class SubmitAmendment(InfiniteCardinality):
         alert('internal', [request.root], working_group.members,
               internal_kind=InternalAlertKind.working_group_alert, alert_kind='new_amendments',
               subjects=[proposal])
+        return {'single_amendment': single_amendment or len(groups) == 1}
+
+    def redirect(self, context, request, **kw):
+        if kw.get('single_amendment', False):
+            return HTTPFound(request.resource_url(context, "@@index"))
+
+        return HTTPFound(request.resource_url(context.proposal, "@@seeproposalamendments"))
+
+
+class DirectSubmitAmendment(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 5
+    submission_title = _('Submit')
+    context = IAmendment
+    roles_validation = pub_roles_validation
+    processsecurity_validation = pub_processsecurity_validation
+    state_validation = pub_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        proposal = context.proposal
+        working_group = context.proposal.working_group
+        author = working_group.get_member(user)
+        context.state.remove('draft')
+        context.state.remove('explanation')
+        not_published_ideas = []
+        if not request.moderate_ideas and\
+           'idea' not in request.content_to_examine:
+            not_published_ideas = [i for i in context.get_used_ideas()
+                                   if 'published' not in i.state]
+            publish_ideas(not_published_ideas, request)
+
+        context.justification = appstruct.get('justification', '')
+        context.state.append('submitted')
+        explanations, text_diff = get_text_amendment_diff_submitted(
+            context, request)
+        context.explanations = PersistentDict(explanations)
+        context.text_diff = text_diff
+
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.reindex()
+        not_published_ideas.extend(context)
+        request.registry.notify(ActivityExecuted(
+            self, not_published_ideas, author))
+        alert('internal', [request.root], working_group.members,
+              internal_kind=InternalAlertKind.working_group_alert, alert_kind='new_amendments',
+              subjects=[proposal])
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context.proposal, "@@index"))
+        return nothing
 
 
 def comm_roles_validation(process, context):

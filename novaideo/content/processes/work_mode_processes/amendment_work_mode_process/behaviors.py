@@ -19,7 +19,8 @@ from substanced.util import get_oid
 import html_diff_wrapper
 from dace.util import (
     getSite,
-    get_obj)
+    get_obj,
+    getAllBusinessAction)
 from dace.objectofcollaboration.principal.util import (
     has_role,
     grant_roles,
@@ -164,6 +165,26 @@ class ImproveProposal(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+
+
+class ImproveProposalAndExplain(ImproveProposal):
+    style = None #TODO add style abstract class
+    style_descriminator = None
+    submission_title = _('Save and explain improvements')
+
+    def start(self, context, request, appstruct, **kw):
+        result = super(ImproveProposalAndExplain, self).start(context, request, appstruct, **kw)
+        amendment = result.get('newcontext', None)
+        if amendment:
+            explanations_actions = getAllBusinessAction(
+                amendment,
+                request,
+                node_id="explanation",
+                process_id="amendmentmanagement")
+            if explanations_actions:
+                explanations_actions[0].execute(amendment, request, {})
+
+        return {'newcontext': amendment}
 
 
 def va_relation_validation(process, context):

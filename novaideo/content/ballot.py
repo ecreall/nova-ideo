@@ -227,7 +227,7 @@ class MajorityJudgment(object):
     def get_median_notes(self, result):
         len_voters = len(self.report.voters)
         if len_voters == 0:
-            return None
+            return {}
 
         judgments = sorted(list(self.judgments.keys()),
                            key=lambda o: self.judgments[o])

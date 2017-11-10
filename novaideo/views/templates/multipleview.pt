@@ -1,7 +1,7 @@
 <div tal:omit-tag="" tal:define=" items subitem['items'];
                                   itemslen len(items)|0;
                                   center_tabs getattr(subitem['view'], 'center_tabs', False);
-                                  class_label 'col-sm-6 col-xs-12 col-md' if center_tabs else 'principal-tab-item';
+                                  class_label 'nav-col col-sm-6 col-xs-12 col-md' if center_tabs else 'principal-tab-item';
                                   col_class class_label+'-'+str(int(12/itemslen)) if itemslen > 0 else class_label+'-'+'12'">
                                   
   <div tal:omit-tag="" tal:condition="items and itemslen == 1">

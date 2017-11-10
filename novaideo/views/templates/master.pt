@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=20"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=22"
             rel="stylesheet"/>
     </div>
 
@@ -95,13 +95,13 @@
             type="text/javascript"></script>
     <script src="${su('daceui:static/jquery-endless-scroll/js/jquery.endless-scroll.js')}"
             type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo_langs.js')}?v=2"
+    <script src="${su('novaideo:static/js/novaideo_langs.js')}?v=3"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/action_interaction.js')}?v=11"
+    <script src="${su('novaideo:static/js/action_interaction.js')}?v=13"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/home_add_content.js')}?v=3"
+    <script src="${su('novaideo:static/js/home_add_content.js')}?v=4"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=16"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=18"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
@@ -129,7 +129,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/little-loader.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/include.js')}?v=2"
+    <script src="${su('novaideo:static/js/include.js')}?v=4"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/ws.js')}"
           type="text/javascript"></script>
@@ -211,6 +211,7 @@
           </div>
         </div>
         ${panel('steps')}
+        ${panel('steps_amendment')}
       </div>
         <metal:slot metal:define-slot="outer-content">
           <div class="container-fluid">

@@ -31,7 +31,8 @@ from .behaviors import (
     SeeAmendment,
     DuplicateAmendment,
     ExplanationAmendment,
-    ExplanationItem)
+    ExplanationItem,
+    DirectSubmitAmendment)
 from novaideo import _
 
 
@@ -69,6 +70,10 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Justification of the item"),
                                        groups=[]),
                 submit = ActivityDefinition(contexts=[SubmitAmendment],
+                                       description=_("Prepare amendments"),
+                                       title=_("Prepare amendments"),
+                                       groups=[]),
+                directsubmit = ActivityDefinition(contexts=[DirectSubmitAmendment],
                                        description=_("Submit the amendment"),
                                        title=_("Submit"),
                                        groups=[]),
@@ -96,6 +101,7 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('pg', 'submit'),
+                TransitionDefinition('pg', 'directsubmit'),
                 TransitionDefinition('pg', 'explanation'),
                 TransitionDefinition('pg', 'explanationitem'),
                 TransitionDefinition('pg', 'delamendment'),
@@ -106,6 +112,7 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('submit', 'eg'),
+                TransitionDefinition('directsubmit', 'eg'),
                 TransitionDefinition('delamendment', 'eg'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('comment', 'eg'),

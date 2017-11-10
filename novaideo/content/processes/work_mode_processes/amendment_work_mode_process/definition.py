@@ -38,6 +38,7 @@ from .behaviors import (
     VotingAmendments,
     Alert,
     AmendmentsResult,
+    ImproveProposalAndExplain,
     VOTE_AMENDMENTS_MESSAGE,
     AMENDMENTS_VOTE_DEFAULT_DURATION,
     close_votes
@@ -192,11 +193,16 @@ class AmendmentWorkModeProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Improve the proposal"),
                                        title=_("Improve"),
                                        groups=[]),
+                improveandexplain = ActivityDefinition(contexts=[ImproveProposalAndExplain],
+                                       description=_("Improve and explain"),
+                                       title=_("Improve and explain"),
+                                       groups=[]),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'pg1'),
                 TransitionDefinition('pg1', 'improve'),
+                TransitionDefinition('pg1', 'improveandexplain'),
                 TransitionDefinition('pg1', 'timer'),
                 TransitionDefinition('timer', 'eg1'),
                 TransitionDefinition('eg1', 'votingamendments', eg4_votingamendments_condition, sync=True),

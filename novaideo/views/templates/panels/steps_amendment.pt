@@ -1,0 +1,74 @@
+<div class="steps-navbar-container"
+     id="process_steps_component"
+     data-component_type="process_steps"
+     i18n:domain="novaideo"
+     tal:condition="condition">
+    <div  class="hidden-xs" id="steps-messages">
+        <div id="messages">
+            <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="step-message step-popover popover fade bottom">
+                <div class="arrow"></div>
+                <div class="popover-content">
+                    ${structure:step1_message}
+                </div>
+            </div>
+            <div tal:condition="step2_message != ''" id="message-step-2" role="tooltip" class="step-message step-popover popover fade bottom">
+                <div class="arrow"></div>
+                <div class="popover-content">
+                    ${structure:step2_message}
+                </div>
+            </div>
+            <div tal:condition="step3_message != ''" id="message-step-3" role="tooltip" class="step-message step-popover popover fade bottom">
+                <div class="arrow"></div>
+                <div class="popover-content">
+                    ${structure:step3_message}
+                </div>
+            </div>
+            <div tal:condition="step4_message != ''" id="message-step-4" role="tooltip" class="step-message step-popover popover fade bottom">
+                <div class="arrow"></div>
+                <div class="popover-content">
+                    ${structure:step4_message}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hidden-xs container-fluid">
+      <div class="steps-container row">
+        <div class="col-md-3"></div>
+    	  <div class="steps col-md-6">
+          <ul class="nav nav-steps">
+             <li class="0 first ${(current_step == 1)  and 'active'} glyphicon glyphicon-pencil" style="width: 25%;">
+                <span class="${(current_step == 1)  and 'active'} step-content" data-step="message-step-1">
+                  <div class="step-text">
+                    <span i18n:translate="" >Improvement</span>
+                  </div>
+                </span>
+             </li>
+             <li class="1 ${(current_step == 2)  and 'active'} glyphicon glyphicon-question-sign" style="width: 25%;">
+                <span class="${(current_step == 2)  and 'active'} step-content" data-step="message-step-2">
+                  <div class="step-text">
+                    <span i18n:translate="" >Explanation of improvements</span>
+                  </div>
+                </span>
+             </li>
+             <li class="2 ${(current_step == 3)  and 'active'} glyphicon glyphicon-share" style="width: 25%;">
+                   <span class="${(current_step == 3)  and 'active'} step-content" data-step="message-step-3">
+                     <div class="step-text" >
+                       <span i18n:translate="" >Preparation and submission of amendments</span>
+                       <br />
+                     </div>
+                   </span>
+             </li>
+             <li class="2 ${(current_step == 4)  and 'active'} glyphicon glyphicon-eye-open" style="width: 25%;">
+                   <span class="${(current_step == 4)  and 'active'} step-content" data-step="message-step-4">
+                     <div class="step-text" >
+                       <span i18n:translate="" >Submitted</span>
+                       <br />
+                     </div>
+                   </span>
+             </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>
+

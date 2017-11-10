@@ -1,5 +1,7 @@
-<div class="alert alert-info" i18n:domain="novaideo">
+<div class="alert alert-danger" i18n:domain="novaideo">
 	<span class="glyphicon glyphicon-info-sign pull-right"></span>
-	<p i18n:translate="">In order for the other participants to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can prepare your amendements and submit them to the other participants.</p>
+	<p i18n:translate="">
+	  By clicking on Continue you will not be able to modify your improvements. Are you sure you want to go to the explanation of your improvements? This action is not reversible.
+	</p>
 </div>
 

@@ -859,7 +859,7 @@ def render_listing_obj(
     display_state = kw.get('display_state', True)
     try:
         args = {}
-        if view_type == 'bloc':
+        if view_type in ('bloc', 'card'):
             args['tounmerge'] = [
                 'communication-action',
                 'access-action',
@@ -946,7 +946,7 @@ def render_listing_objs(
     display_state = kw.get('display_state', True)
     resources = {'css_links': [], 'js_links': []}
     args = {}
-    if view_type == 'bloc':
+    if view_type in ('bloc', 'card'):
         args['tounmerge'] = [
             'communication-action',
             'access-action',

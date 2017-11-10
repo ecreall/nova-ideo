@@ -38,7 +38,7 @@
    <div tal:condition="getattr(challenge, 'is_restricted', False)" class="alert alert-info alert-discret">
     <span class="ion-locked" style="font-size: 20px;"></span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
    </div>
-   <div id="contenttext" class="content-text"
+   <div id="contenttext"
     tal:define="files challenge.get_attached_files_data();
                 len_files len(files)">
     <div tal:omit-tag="not files">
