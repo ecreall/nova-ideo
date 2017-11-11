@@ -18,7 +18,7 @@
 		  <div class="col-md-2"></div>
 		  <div class="col-md-8" style="max-width: 1090px;">      
 		    <div tal:replace="structure challenges"/>
-		    <div class="btn-more-all pull-right" i18n:translate="">
+		    <div class="btn-more-all pull-right">
               <a href="${request.resource_url(request.root, '@@seechallenges')}" i18n:translate="">All challenges</a>
 		    </div>
 		  </div>
