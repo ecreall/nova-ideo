@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-11-10 22:52+0100\n"
+"POT-Creation-Date: 2017-11-11 13:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2468,8 +2468,8 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:58
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:59
-#: ./novaideo/views/novaideo_view_manager/search.py:132
-#: ./novaideo/views/novaideo_view_manager/search.py:156
+#: ./novaideo/views/novaideo_view_manager/search.py:133
+#: ./novaideo/views/novaideo_view_manager/search.py:157
 #: ./novaideo/views/channel_management/templates/channel_navbar_actions.pt:16
 msgid "Search"
 msgstr ""
@@ -4665,13 +4665,13 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:128
+#: ./novaideo/views/novaideo_view_manager/search.py:129
 msgid ""
 "If you wish to search with several keywords, you should separate these "
 "keywords with commas."
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:230
+#: ./novaideo/views/novaideo_view_manager/search.py:231
 msgid "Nova-Ideo contents"
 msgstr ""
 

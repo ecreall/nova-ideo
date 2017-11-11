@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-11-10 22:52+0100\n"
+"POT-Creation-Date: 2017-11-11 13:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -2508,8 +2508,8 @@ msgstr "Gestionnaire de l'accès des utilisateurs"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:58
 #: novaideo/content/processes/novaideo_view_manager/definition.py:59
-#: novaideo/views/novaideo_view_manager/search.py:132
-#: novaideo/views/novaideo_view_manager/search.py:156
+#: novaideo/views/novaideo_view_manager/search.py:133
+#: novaideo/views/novaideo_view_manager/search.py:157
 #: novaideo/views/channel_management/templates/channel_navbar_actions.pt:16
 msgid "Search"
 msgstr "Rechercher"
@@ -4766,7 +4766,7 @@ msgstr "${number} éléments trouvés"
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: novaideo/views/novaideo_view_manager/search.py:128
+#: novaideo/views/novaideo_view_manager/search.py:129
 msgid ""
 "If you wish to search with several keywords, you should separate these "
 "keywords with commas."
@@ -4774,7 +4774,7 @@ msgstr ""
 "Pour les recherches sur plusieurs mots, il faut mettre des virgules entre "
 "les mots."
 
-#: novaideo/views/novaideo_view_manager/search.py:230
+#: novaideo/views/novaideo_view_manager/search.py:231
 msgid "Nova-Ideo contents"
 msgstr "Contenus de Nova-Ideo"
 
