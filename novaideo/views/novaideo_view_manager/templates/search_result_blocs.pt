@@ -1,14 +1,15 @@
 <div class="items-main-view-container" 
    id="items-main-view-container-${id}"
    tal:define="batch_value batch|nothing;
-               id (batch_value and batch_value.target.replace('#', '')) or 'results'"
+               id (batch_value and batch_value.target.replace('#', '')) or 'results';
+               sortbody sort_body|nothing;
+               filterbody filter_body|nothing"
    i18n:domain="novaideo">
-  <div tal:omit-tag="" tal:define="sortbody sort_body|nothing">
+  <div class="results-header"
+      tal:condition="sortbody or filterbody">
     <div id="sort-${id}" tal:condition="sortbody">
       ${structure: sortbody}
       </div>
-  </div>
-  <div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
     <div class="view-filter-container ${filter_class | ''}" id="filter-${id}" tal:condition="filterbody">
       ${structure: filterbody}
       </div>

@@ -11,8 +11,10 @@
     <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
+    <div class="img-container">
     <img class="img-circle"
         tal:attributes="src request.static_url('novaideo:static/connectors/facebook/images/facebook.png')"  width="70"/>
+    </div>
   </div>
   <div class="caption">
       <div class="card-data">
