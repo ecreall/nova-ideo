@@ -287,7 +287,7 @@ class AcceptInvitation(InfiniteCardinality):
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     context = IInvitation
-    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_picto = 'glyphicon glyphicon-ok'
     submission_title = _('Save')
     roles_validation = accept_roles_validation
     state_validation = accept_state_validation
@@ -371,7 +371,7 @@ class RefuseInvitation(InfiniteCardinality):
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
-    style_picto = 'glyphicon glyphicon-thumbs-down'
+    style_picto = 'glyphicon glyphicon-remove'
     context = IInvitation
     roles_validation = refuse_roles_validation
     state_validation = refuse_state_validation

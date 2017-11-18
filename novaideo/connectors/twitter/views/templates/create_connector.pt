@@ -4,8 +4,10 @@
   <div role="presentation" class="card-img" 
        style="
           background-color: #2aaae0;">
-    <img class="img-circle"
-        tal:attributes="src request.static_url('novaideo:static/connectors/twitter/images/twitter.png')"  width="70"/>
+    <div class="img-container">
+      <img class="img-circle"
+          tal:attributes="src request.static_url('novaideo:static/connectors/twitter/images/twitter.png')"  width="70"/>
+    </div>
   </div>
   <div class="caption">
       <div class="card-data">

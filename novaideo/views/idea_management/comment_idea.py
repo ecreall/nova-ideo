@@ -69,6 +69,7 @@ class CommentsView(BasicView):
             object_values = {
                 'context': obj,
                 'menu_body': navbars['menu_body'],
+                'primary_menu_body': navbars['primary_menu_body'],
                 'footer_actions_body': navbars['footer_actions_body'],
                 'footer_body': navbars['footer_body']}
             all_comments.append(object_values)

@@ -3,6 +3,7 @@
      data-component_type="object-view"
      tal:define="oid file.__oid__">
 	<div class="object-menu pull-right">
+	    <div tal:replace="structure primary_menu_body"/>
 	    <div tal:replace="structure menu_body"/>
 	</div>
 	<a target="_blank" href="${file.url}" class="file-header ">
