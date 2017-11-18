@@ -42,6 +42,7 @@
     </div>
     <div class="content-col">
       <div class="object-menu pull-right">
+        <div tal:replace="structure primary_menu_body"/>
         <div tal:replace="structure menu_body"/>
       </div>
       <div class="object-title-block view-item-title"

@@ -109,6 +109,9 @@
               <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </div>
+      <div class="object-menu pull-right">
+        <div tal:replace="structure primary_menu_body"/>
+      </div>
       <div class="row object-row-content" >
         <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
           <div class="object-text">${object.presentation_text(500)}</div>

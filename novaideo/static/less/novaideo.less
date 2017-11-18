@@ -1,3 +1,18 @@
+.listing-object-menu ul.primary-actions{
+  margin-bottom: 10px;
+  margin-top: -10px;
+  display: block !important;
+  font-size: 14px;
+}
+
+.object-menu > .listing-object-menu{
+  display: inline-block;
+}
+
+.author-block > small{
+  margin-left: 5px  
+}
+
 .challenges-items {
   display: none;
 }
@@ -675,7 +690,6 @@ body {
 
 .media-challenge .view-item-title h4 {
   text-align: center;
-  line-height: 25px;
   font-size: 19px;
 }
 
@@ -1462,6 +1476,7 @@ a.answer-btn {
 .search-item .view-item-title h4,
 .search-item .view-item-title h5 {
   font-weight: 800 !important;
+  line-height: 25px;
 }
 
 .search-item .view-item-title h4 {
@@ -2813,9 +2828,7 @@ form .btn {
 }
 
 .object-menu .listing-object-menu {
-  float: right;
   margin-top: 5px;
-  /*margin-top: 10px;*/
 }
 
 .plus-menu .listing-object-menu .dropdown-toggle {
@@ -5833,7 +5846,8 @@ span.circle {
 
 .primary-actions a,
 .wg-block .wg-actions ul a {
-  color: #d0d0d0; //#b6b8b6
+  color: #d0d0d0; //#b6b8b6;
+  transition: all .1s ease-in-out;
 }
 
 .invitation_menu .primary-actions a {
@@ -5844,6 +5858,13 @@ span.circle {
   .primary-actions a,
   .wg-block .wg-actions ul a {
     color: #2297bf;
+  }
+
+  .primary-actions a.publishasproposal-btn{
+    color: white !important;
+    background-color: #337ab7;
+    padding: 7px 7px 5px;
+    border-radius: 10px;
   }
 }
 

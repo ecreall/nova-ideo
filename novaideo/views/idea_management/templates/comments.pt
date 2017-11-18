@@ -38,6 +38,7 @@
             <img tal:condition="picture is None" class="img-circle" src="${default_img}" width="30"/>
             <div class="media-body comment-content">
               <div class="comment-menu">
+                  <div tal:replace="structure item['primary_menu_body']"/>
                   <div tal:replace="structure item['menu_body']"/>
               </div>
               <div class="comment-author" tal:define="

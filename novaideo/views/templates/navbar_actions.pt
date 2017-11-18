@@ -56,7 +56,7 @@
                     <li tal:condition="hasattr(a, 'url')">
                       <a tal:condition="a not in ajax_actions"
                          tal:attributes="href a.url(obj)"
-                         class="${getattr(a, 'process_id', '')}-btn ${getattr(a, 'node_id', '')}-btn btn btn-sm">
+                         class="${getattr(a, 'process_id', '')}-btn ${getattr(a, 'node_id', '')}-btn">
                          <span class="${getattr(a,'style_picto','')}" ></span> ${a.title}
                       </a>
                       <div tal:omit-tag="" 

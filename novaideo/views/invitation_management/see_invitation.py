@@ -65,6 +65,7 @@ class SeeInvitationView(BasicView):
         values = {
             'invitation': self.context,
             'menu_body': navbars['menu_body'],
+            'primary_menu_body': navbars['primary_menu_body'],
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),}
         result = {}

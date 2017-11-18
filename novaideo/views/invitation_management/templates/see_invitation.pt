@@ -32,6 +32,7 @@
                </dd>
            </dl>
           <div class="invitation_menu object-menu pull-right">
+            <div tal:replace="structure primary_menu_body"/>
             <div tal:replace="structure menu_body"/>
           </div>
         </div>

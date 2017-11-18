@@ -813,6 +813,8 @@ DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_foote
 
 DEFAUL_WG_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/wg_listing_actions.pt'
 
+DEFAUL_LISTING_PRIMARY_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_object_primary_actions.pt'
+
 DEFAUL_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_object_actions.pt'
 
 DEFAUL_NAVBAR_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
@@ -873,6 +875,7 @@ def render_listing_obj(
     object_values = {
         'object': obj,
         'current_user': user,
+        'primary_menu_body': navbars['primary_menu_body'],
         'menu_body': navbars['menu_body'],
         'footer_body': navbars['footer_body'],
         'wg_body': navbars['wg_body'],
@@ -963,6 +966,7 @@ def render_listing_objs(
         object_values = {
             'object': obj,
             'current_user': user,
+            'primary_menu_body': navbars['primary_menu_body'],
             'menu_body': navbars['menu_body'],
             'footer_body': navbars['footer_body'],
             'wg_body': navbars['wg_body'],
@@ -1254,7 +1258,11 @@ def generate_listing_menu(request, context, view_type='default', **args):
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
                 args.get('template', DEFAUL_LISTING_ACTIONS_TEMPLATE),
-                ['actions', 'primary-action'], view_type=view_type),
+                ['actions'], view_type=view_type),
+            'primary_menu_body': render_navbar_body(
+                request, context, actions_navbar,
+                args.get('primary_template', DEFAUL_LISTING_PRIMARY_ACTIONS_TEMPLATE),
+                ['primary-action'], view_type=view_type),
             'footer_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('footer_template',
@@ -1296,6 +1304,7 @@ def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
         object_values = {
             'extension': extension,
             'file': file_,
+            'primary_menu_body': navbars.get('primary_menu_body', None),
             'menu_body': navbars.get('menu_body', None)
         }
         bodies.append(renderers.render(
