@@ -8,19 +8,23 @@
                               node_id (view.get_folder_name(view.get_folder_parent(node))+view.get_folder_name(node)).replace(' ','-')+'-folder';
                               is_active node.contains(active_folder)">
 		  		<li tal:condition="not children" class="menu-item ${node_id} ${node.contains(active_folder) and 'opened'}">
+		  		  <div class="item-container">
 		  			<span class="folder-icon ${node.icon}"></span>
                    <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}" class="folder-title" title="${node_name}">${node_name}</a>
+                  </div>
 		  		</li>
 		  		<li tal:condition="children"
 		  		 	tal:define="issubmenu current_level+1 <= maxi_level"
 		  		 	class="submenu-item menu-item ${(issubmenu and 'dropdown') or ''} ${node_id} ${node.contains(active_folder) and 'opened'}">
-		  		 	<span class="folder-icon ${node.icon}"></span>
-			          <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}" 
-                        role="button"
-                        class="folder-title" title="${node_name}">${node_name}</a>
-                  <span class="primary collapsed icon-state pull-right ${is_active and 'ion-chevron-down' or 'ion-chevron-up'}"
-	                 data-toggle="collapse" data-target="#${node_id}" aria-expanded="${is_active and 'true' or 'false'}" id="${node_id}-btn"
-	                  ></span>
+		  		 	<div class="item-container">
+			  		 	<span class="folder-icon ${node.icon}"></span>
+				          <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}" 
+	                        role="button"
+	                        class="folder-title" title="${node_name}">${node_name}</a>
+	                  <span class="primary collapsed icon-state pull-right ${is_active and 'ion-chevron-up' or 'ion-chevron-down'}"
+		                 data-toggle="collapse" data-target="#${node_id}" aria-expanded="${is_active and 'true' or 'false'}" id="${node_id}-btn"
+		                  ></span>
+	               </div>
 	              <div tal:condition="issubmenu" tal:replace="structure view.get_sub_menu(children, parent_name+'/'+node_name, (current_level+1), active_folder, is_active, node_id)"/>
 			    </li>
 	  	</div>

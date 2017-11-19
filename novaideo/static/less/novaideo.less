@@ -1120,46 +1120,52 @@ a.answer-btn {
   margin-top: 20px;
 }
 
-.smartfolder-nav li::after {
+.smartfolder-nav li >.item-container::after {
   clear: both;
   content: " ";
 }
-.smartfolder-nav li {
+.smartfolder-nav li >.item-container{
   color: #797979 !important;
   cursor: pointer;
   font-size: 15px;
   outline: medium none;
   overflow: hidden;
-  padding: 5px 10px 5px 5px;
-  transition: background-color 0.3s cubic-bezier(0, 0, 0.2, 1) 0s;
+  padding: 4px 11px 4px;
+  transition: all .1s ease-in-out;
+  margin-top: 1px;
 }
 
-.smartfolder-nav li > a.folder-title:hover,
-.smartfolder-nav li > a.folder-title:focus {
+.smartfolder-nav li >.item-container> a.folder-title:hover,
+.smartfolder-nav li >.item-container> a.folder-title:focus {
+  color: white !important;
   background-color: transparent !important;
-  text-decoration: underline;
 }
 
-.smartfolder-nav li > .folder-icon {
+.smartfolder-nav li >.item-container> .folder-icon {
   font-weight: 300;
   display: inline;
   height: inherit;
   padding-right: 5px;
-  padding-top: 1px;
   width: 20px;
   font-size: 15px;
-  color: #3f6da6;
-  vertical-align: super;
+  color: #548cc1;
+  vertical-align: text-bottom;
 }
 
-.smartfolder-nav li.opened {
-  background-color: #eee !important;
+.smartfolder-nav li >.item-container:hover,
+.smartfolder-nav li.opened >.item-container{
+  background-color: #548cc1!important;
+  color: white !important;
+  border-radius: 6px;
+  >.folder-icon,
   > a.folder-title {
-    text-decoration: underline;
+    color: white !important;
+    background-color: transparent !important;
+    text-shadow: 0 1px 0 rgba(0,0,0,.1);
   }
 }
 
-.smartfolder-nav li > a.folder-title {
+.smartfolder-nav li >.item-container> a.folder-title {
   color: #797979 !important;
   overflow: hidden;
   display: inline;
@@ -1167,8 +1173,9 @@ a.answer-btn {
   white-space: nowrap;
   word-break: break-all;
   padding: 0px !important;
-  width: 75%;
+  width: 80%;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .smartfolder-nav .smartfolder-nav {
@@ -1371,7 +1378,7 @@ a.answer-btn {
 .sort-container .sort-form select.sort-input {
   border-color: transparent;
   background-color: transparent;
-  color: #4580c5;
+  color: #548cc1;
   outline: none !important;
   cursor: pointer;
 }
