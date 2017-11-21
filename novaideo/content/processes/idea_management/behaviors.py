@@ -1094,7 +1094,7 @@ def opinion_state_validation(process, context):
 
 class MakeOpinion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-checklist'
     style_order = 10

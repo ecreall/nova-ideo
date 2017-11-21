@@ -109,7 +109,7 @@
               <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </div>
-      <div class="object-menu pull-right">
+      <div class="primary-menu object-menu">
         <div tal:replace="structure primary_menu_body"/>
       </div>
       <div class="row object-row-content" >
