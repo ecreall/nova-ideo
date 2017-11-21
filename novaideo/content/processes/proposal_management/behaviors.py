@@ -1194,10 +1194,6 @@ class SeeAmendments(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def seem_processsecurity_validation(process, context):
-    return global_user_processsecurity()
-
-
 class SeeMembers(InfiniteCardinality):
     style_descriminator = 'listing-wg-action'
     style_interaction = 'ajax-action'
@@ -1205,7 +1201,6 @@ class SeeMembers(InfiniteCardinality):
     style_picto = 'fa fa-users'
     isSequential = False
     context = IProposal
-    processsecurity_validation = seem_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -1273,11 +1268,8 @@ class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'slider'
-    # style_interaction_container = 'modal-l'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
-    #processsecurity_validation = seeideas_processsecurity_validation
-    #roles_validation = seeideas_roles_validation
     state_validation = seeideas_state_validation
 
     def start(self, context, request, appstruct, **kw):

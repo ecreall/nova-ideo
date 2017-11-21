@@ -1,328 +1,337 @@
-.step-title{
-    font-size: 30px;
-    margin-bottom: 10px;
-
+.step-title {
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
-.step-title .step-icon{
-    padding: 10px;
-    border-radius: 50%;
-    color: white;
-    box-shadow: 0 1px 6px rgba(0,0,0,.6);
-    background-color: #156e9d;
+.step-title .step-icon {
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .6);
+  background-color: #156e9d;
 }
 
 .step-metadata {
-    font-size: 15px;
-    vertical-align: middle;
-    text-align: center;
+  font-size: 15px;
+  vertical-align: middle;
+  text-align: center;
 }
 
-.nb-iteration{
-    position: absolute;
-    color: #7cc67c;
-    font-size: 53pt;
-    margin-top: 76px;
-    margin-left: 121px;
+.nb-iteration {
+  position: absolute;
+  color: @novaideo-primary-color;
+  font-size: 53pt;
+  margin-top: 76px;
+  margin-left: 126px;
 }
 
-
-#steps-messages .popover.bottom{
-    top: 53px; 
-    display: block; 
-    min-width:325px;
-    z-index: -1010;
+#steps-messages .popover.bottom {
+  top: 53px;
+  display: block;
+  min-width: 325px;
+  z-index: -1010;
 }
 
-#steps-messages .popover.bottom .arrow{
-    top: -11px;
-    left: 162px
+#steps-messages .popover.bottom .arrow {
+  top: -11px;
+  left: 162px;
 }
 
-#steps-messages #message-step-3.popover.bottom{
-    left: 226pt;
+#steps-messages #message-step-3.popover.bottom {
+  left: 226pt;
 }
 
 .steps-container {
-	width: 100%;
-    margin: 4px 0;
+  width: 100%;
+  margin: 4px 0;
 }
 
 .steps {
-	padding-left: 6px;
-    position: unset;
-	overflow: hidden;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    max-width: 800px;
-    margin: auto;
+  padding-left: 6px;
+  position: unset;
+  overflow: hidden;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  max-width: 800px;
+  margin: auto;
 }
 
-.steps ul, .steps li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+.steps ul,
+.steps li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .nav-steps li::before {
-    background-color: #fafafa;
-    border: 2px solid #afadad;
-    border-radius: 50%;
-    display: block;
-    height: 30px;
-    line-height: 27px;
-    margin: 0 auto 0;
-    text-align: center;
-    width: 30px;
+  background-color: #fafafa;
+  border: 2px solid #afadad;
+  border-radius: 50%;
+  display: block;
+  height: 30px;
+  line-height: 27px;
+  margin: 0 auto 0;
+  text-align: center;
+  width: 30px;
 }
 .nav-steps li.active + li::after {
-    background-color: @novaideo-secondary-color;
+  background-color: @novaideo-secondary-color;
 }
 .nav-steps li::after {
-    background-color: #afadad;
-    content: "";
-    height: 2px;
-    left: -50%;
-    position: absolute;
-    top: 15px;
-    width: 100%;
-    z-index: -1;
+  background-color: #afadad;
+  content: "";
+  height: 2px;
+  left: -50%;
+  position: absolute;
+  top: 15px;
+  width: 100%;
+  z-index: -1;
 }
 .nav-steps li {
-    color: #afadad;
-    float: left;
-    font-size: 12px;
-    list-style-type: none;
-    position: relative;
-    text-align: center;
-    text-transform: uppercase;
-    width: 25%;
-    font-family: 'Glyphicons Halflings';
+  color: #afadad;
+  float: left;
+  font-size: 12px;
+  list-style-type: none;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  width: 25%;
+  font-family: 'Glyphicons Halflings';
 }
 
 .nav-steps li:first-child::after {
-    content: none;
+  content: none;
 }
 
 .nav-steps li.active::before {
-    border-color: @novaideo-secondary-color;
-    background-color: @novaideo-secondary-color;
-    color: white;
+  border-color: @novaideo-secondary-color;
+  background-color: @novaideo-secondary-color;
+  color: white;
 }
 
 .nav-steps li.active {
-    color: @novaideo-secondary-color;
+  color: @novaideo-secondary-color;
 }
 
-ul, ol {
-    margin: 0 0 10px 25px;
-    padding: 0;
+ul,
+ol {
+  margin: 0 0 10px 25px;
+  padding: 0;
 }
-
 
 .steps li .step-content {
-	display: block;
-	line-height: 1em;
-	text-decoration: none;
-    text-align:center;
+  display: block;
+  line-height: 1em;
+  text-decoration: none;
+  text-align: center;
 }
 
-.step-text{
-    display: inline-block;
-    line-height: unset;
-    text-align: center;
-    vertical-align: sub;
-    font-family: "LatoWebMedium","Helvetica Neue",Helvetica,Arial,sans-serif!important;
+.step-text {
+  display: inline-block;
+  line-height: unset;
+  text-align: center;
+  vertical-align: sub;
+  font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
-
 
 /*Sub-steps*/
 
-.sub-steps li.step, .sub-steps li.step .step-content {
-	position: relative;
-	z-index: 4;
-    height: 6.5em;
-        
+.sub-steps li.step,
+.sub-steps li.step .step-content {
+  position: relative;
+  z-index: 4;
+  height: 6.5em;
 }
 
-.sub-steps li.sub-step-2, .sub-steps li.sub-step-4{
-        height: 13.5em;
-         width: 90px;
+.sub-steps li.sub-step-2,
+.sub-steps li.sub-step-4 {
+  height: 13.5em;
+  width: 90px;
 }
 
-.sub-steps li.sub-step-1{
-    right: -48px;
-    top: 0;
-    z-index: 5;
-
+.sub-steps li.sub-step-1 {
+  right: 17px;
+  top: 25px;
+  z-index: 5;
 }
 
-.sub-steps li.sub-step-2{
-    right: -176px;
-    top: -51px;
-    z-index: 4;
+.sub-steps li.sub-step-2 {
+  right: -176px;
+  top: -51px;
+  z-index: 4;
 }
 
-.sub-steps li.sub-step-3{
-    left: 35px;
-    top: -125px;
-    z-index: 3;
+.sub-steps li.sub-step-3 {
+  left: 154px;
+  top: -226px;
+  z-index: 3;
 }
 
-.sub-steps li.sub-step-4{
-    left: 15px;
-    top: -351px;
-    z-index: 2;
+.sub-steps li.sub-step-4 {
+  left: 80px;
+  top: -246px;
+  z-index: 3;
 }
 
-.sub-steps .step-text{
-    width: 80px;
-    color: #325f32;
+.sub-steps .step-text {
+  width: 80px;
+  color: #2f3b44;
 }
 
-.sub-step-1 .step-text{
-    margin-left: 5px;
-    margin-top: 5px;
+.sub-step-1 .step-text {
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
-.sub-step-2 .step-text{
-    margin-top: 55px;
-    margin-left:10px;
+.sub-step-2 .step-text {
+  margin-top: 55px;
+  margin-left: 10px;
 }
 
-.sub-step-3 .step-text{
-    margin-top: 45px;
+.sub-step-3 .step-text {
+  margin-top: 45px;
 }
 
-.sub-step-4 .step-text{
-    margin-top: 75px;
-    margin-left: -25px;
+.sub-step-4 .step-text {
+  margin-top: 75px;
+  margin-left: -25px;
 }
 
 .sub-steps {
-	padding: 1px 0;
-	overflow: hidden;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-
+  padding: 1px 0;
+  overflow: hidden;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-.sub-steps ul, .steps li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+.sub-steps ul,
+.steps li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.sub-steps ul { 
-    float: left;
-    height: 246px;
-    width: 90px;
+.sub-steps ul {
+  float: left;
+  height: 246px;
+  width: 90px;
 }
 
 .sub-steps li {
-	float: left;
-    width: 200px;
+  float: left;
+  width: 200px;
 }
 
 .sub-steps li .step-content {
-	display: block;
-	padding: 15px 20px;
-	background: #d0d0d0;
-	color: #fff;
-	line-height: 1em;
-	text-decoration: none;
-    text-align:center;
+  display: block;
+  padding: 15px 20px;
+  color: #fff;
+  line-height: 1em;
+  text-decoration: none;
+  text-align: center;
 }
 
-.sub-steps li.sub-step-1 .step-content{
-	background: transparent url(step-pub.png) center right no-repeat;
-        background-size: cover;
-        padding-bottom: 4px;
-        padding-right: 25px;
-        padding-top: 4px;
+.sub-steps li.sub-step-1 .step-content {
+  background-size: cover;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
-.sub-steps li.sub-step-2 .step-content{
-	background: transparent url(step-corr.png) center right no-repeat;
-        background-size: 90px;
-        height: 13.5em;
-        padding-bottom: 4px;
-        padding-right: 25px;
-        padding-top: 4px;
+.sub-steps li.sub-step-2 .step-content {
+  background-size: 90px;
+  height: 13.5em;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
-.sub-steps li.sub-step-2 .step-content.step-ignored{
-    background: transparent url(step-corr-ig.png) no-repeat scroll right center / 90px auto !important;
-        background-size: 90px;
-        height: 13.5em;
-        padding-bottom: 4px;
-        padding-right: 25px;
-        padding-top: 4px;
+.sub-steps li.sub-step-2 .step-content.step-ignored {
+  background-size: 90px;
+  height: 13.5em;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
 .sub-steps li.sub-step-3 .step-content {
-	background: transparent url(step-imp.png) center right no-repeat;
-        background-size: cover;
-        padding-bottom: 4px;
-        padding-right: 25px;
-        padding-top: 4px;
+  background-size: cover;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
 .sub-steps li.sub-step-4 .step-content {
-	background: transparent url(step-am.png) center right no-repeat;
-    background-size: 90px;
-    height: 13.5em;
-    padding-bottom: 4px;
-    padding-right: 25px;
-    padding-top: 4px;
+  background-size: 90px;
+  height: 13.5em;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
 .sub-steps li.sub-step-4 .step-content.step-ignored {
-    background: transparent url(step-am-ig.png) no-repeat scroll right center / 90px auto !important;
-    background-size: 90px;
-    height: 13.5em;
-    padding-bottom: 4px;
-    padding-right: 25px;
-    padding-top: 4px;
+  background-size: 90px;
+  height: 13.5em;
+  padding-bottom: 4px;
+  padding-right: 25px;
+  padding-top: 4px;
 }
 
-
-.sub-steps li.sub-step-1.off .step-content{
-	background: transparent url(step-pub-off.png) center right no-repeat;
-    background-size: cover;
+.sub-steps li.sub-step-1.off .step-content {
+  background-size: cover;
 }
 
-.sub-steps li.sub-step-2.off .step-content{
-	background: transparent url(step-corr-off.png) center right no-repeat;
-    background-size: 90px;
+.sub-steps li.sub-step-2.off .step-content {
+  background-size: 90px;
 }
 
-.sub-steps li.sub-step-2.off .step-content.step-ignored{
-    background: transparent url(step-corr-ig-off.png) no-repeat scroll right center / 90px auto !important;
+.sub-steps li.sub-step-2.off .step-content.step-ignored {
 }
 
-.sub-steps li.sub-step-3.off .step-content{
-	background: transparent url(step-imp-off.png) center right no-repeat;
-    background-size: cover;
+.sub-steps li.sub-step-3.off .step-content {
+  background-size: cover;
 }
 
-.sub-steps li.sub-step-4.off .step-content{
-	background: transparent url(step-am-off.png) center right no-repeat;
-    background-size: 90px;
+.sub-steps li.sub-step-4.off .step-content {
+  background-size: 90px;
 }
 
-.sub-steps li.sub-step-4.off .step-content.step-ignored{
-    background: transparent url(step-am-ig-off.png) no-repeat scroll right center / 90px auto !important;
-    background-size: 90px;
+.sub-steps li.sub-step-4.off .step-content.step-ignored {
+  background-size: 90px;
 }
 
-.step-ignored .step-text{
-    display: none !important;
+.step-ignored .step-text {
+  display: none !important;
 }
 
-.glyphicons-group{
-    background: transparent url(glyphicons_043_group.png) center no-repeat;  
-    background-size: cover;
-    height: 18px;
-    width: 25px;
+.sub-steps.steps-amendment.steps-vote-amendment {
+  background: transparent url(steps/svg/step-amendment-2.svg) center no-repeat;
+  background-size: 258px;
+}
+
+.sub-steps.steps-amendment.steps-amendable {
+  background: transparent url(steps/svg/step-amendment-1.svg) center no-repeat;
+  background-size: 258px;
+}
+
+.sub-steps.steps-amendment.steps-vote-publishing {
+  background: transparent url(steps/svg/step-amendment-3.svg) center no-repeat;
+  background-size: 258px;
+}
+
+.sub-steps.steps-amendable:not(.steps-amendment) {
+  background: transparent url(steps/svg/step-correction-1.svg) center no-repeat;
+  background-size: 258px;
+}
+
+.sub-steps.steps-vote-publishing:not(.steps-amendment) {
+  background: transparent url(steps/svg/step-correction-2.svg) center no-repeat;
+  background-size: 258px;
+}
+
+.glyphicons-group {
+  background: transparent url(steps/glyphicons_043_group.png) center no-repeat;
+  background-size: cover;
+  height: 18px;
+  width: 25px;
 }
