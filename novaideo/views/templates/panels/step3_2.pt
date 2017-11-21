@@ -32,8 +32,8 @@
      </dd>
   </dl>
 </div>
-
-<div class="object-well vote-well" i18n:domain="novaideo">  
+<div class="separator"></div>
+<div class="object-well" i18n:domain="novaideo">  
 <dl >
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors" i18n:translate="">Participants in the ballot</dt>
@@ -57,31 +57,35 @@
 <div class="nb-iteration">${getattr(context.working_group, 'iteration', 1)}</div>
 
 
-<div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.working_group.work_mode, 'work_id', '')=='amendment')">
+<div class="sub-steps ${is_amendment and 'steps-amendment'} ${is_vote_for_amendment and 'steps-vote-amendment'} ${is_amendable and 'steps-amendable'} ${is_vote_for_publishing and 'steps-vote-publishing'}" i18n:domain="novaideo"
+    tal:define="is_amendment (getattr(context.working_group.work_mode, 'work_id', '')=='amendment');
+                is_vote_for_amendment is_amendment and 'votes for amendments' in context.state;
+                is_amendable 'amendable' in context.state;
+                is_vote_for_publishing 'votes for publishing' in context.state">
       <ul>
-          <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
+          <li class="step sub-step-1">
               <span class="step-content">
                   <div class="step-text" i18n:translate="">
                      Vote on whether to improve the proposal or not
                   </div>
               </span>
             </li>
-            <li class="step sub-step-2 ${( 'amendable' not in context.state) and 'off'}">
+            <li class="step sub-step-2">
               <span class="step-content step-ignored">
                  <div class="step-text" i18n:translate="">
                    Correction of the proposal
                  </div>
               </span>
             </li>
-            <li class="step sub-step-3 ${( 'amendable' not in context.state) and 'off'}">
+            <li class="step sub-step-3">
                <span data-step="message-step-3" class="step-content">
                  <div class="step-text" i18n:translate="">
                    Proposal improvement
                  </div>
                </span>
             </li>
-            <li class="step sub-step-4 ${((is_amendment and ('votes for amendments' not in context.state)) or ((not is_amendment) and ('votes for publishing' not in context.state))) and 'off'} ">
-               <span class="step-content ${(not is_amendment) and 'step-ignored'}">
+            <li class="step sub-step-4">
+               <span class="step-content ${not is_amendment and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
                    Vote on amendments
                  </div>

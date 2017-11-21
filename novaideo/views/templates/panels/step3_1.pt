@@ -40,7 +40,7 @@
                 is_vote_for_amendment is_amendment and 'votes for amendments' in context.state;
                 is_amendable 'amendable' in context.state;
                 is_vote_for_publishing 'votes for publishing' in context.state">
-  	  <ul>
+      <ul>
     	    <li class="step sub-step-1">
       	      <span class="step-content">
                   <div class="step-text" i18n:translate="">
@@ -63,7 +63,7 @@
                </span>
             </li>
             <li class="step sub-step-4">
-      	       <span class="step-content ${(not is_amendment) and 'step-ignored'}">
+      	       <span class="step-content ${not is_amendment and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
                    Vote on amendments
                  </div>
