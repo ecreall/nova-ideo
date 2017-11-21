@@ -1,3 +1,25 @@
+.primary-menu.object-menu{
+  display: inline;
+  .listing-object-menu{
+    float: right
+  }
+}
+
+
+a{
+  color: @novaideo-primary-color
+}
+
+.workspace-block {
+  span {
+   margin-right: 5px
+  }
+}
+
+.object-well dt > span{
+  margin-right: 5px
+}
+
 .results-header{
   margin-top: 15px;
   margin-bottom: 5px;  
@@ -50,7 +72,8 @@
 }
 
 .btn-master > .icon-left {
-  background-color: rgba(84, 144, 42, 0.7);
+  background-color: @novaideo-secondary-color;
+  opacity: 0.7;
   color: white;
   padding: 8px 8px 6px 8px;
   border-radius: 3px;
@@ -62,7 +85,7 @@
 }
 
 .btn-master.btn-master-danger > .icon-left {
-  background-color: rgb(227, 116, 58, 0.7);
+  background-color: @brand-danger;
 }
 
 .btn-master > .icon-right {
@@ -96,12 +119,12 @@
 
 .challenge-item-bloc:hover .btn-master > .icon-left,
 .btn-master:hover > .icon-left {
-  background-color: #54902a;
+  opacity: 1;
 }
 
 .challenge-item-bloc:hover .btn-master.btn-master-danger > .icon-left,
 .btn-master.btn-master-danger:hover > .icon-left {
-  background-color: #e3743a;
+  background-color: @brand-danger;
 }
 
 .challenge-item-bloc .card-img .img-container {
@@ -139,7 +162,7 @@
 .navbar-nav .correct-btn,
 .navbar-nav .makeitsopinion-btn,
 .directsubmit-btn {
-  background-color: #54902a !important;
+  background-color: @novaideo-secondary-color !important;
   background-repeat: repeat-x;
   border-color: #ddd;
   border-radius: 0;
@@ -348,7 +371,7 @@ body {
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
   position: relative;
-  background-color: #3a84b6;
+  background-color: @novaideo-primary-color;
 }
 
 .card-img .img-container {
@@ -449,13 +472,13 @@ body {
   float: right;
   font-size: 17px;
   margin-right: 10px;
-  color: #54902a;
+  color: @novaideo-secondary-color;
   cursor: pointer;
   opacity: 0.7;
 }
 
 .collapsible-activator.activated {
-  color: #ef6e18;
+  color: @activator;
 }
 
 .question-container {
@@ -566,7 +589,7 @@ body {
   display: inline-block;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
-  background-color: #54902a;
+  background-color: @novaideo-secondary-color;
 }
 
 .challenge-deadline.expired {
@@ -606,7 +629,7 @@ body {
 }
 
 .challenge-input > label {
-  color: #54902a;
+  color: @novaideo-secondary-color;
   font-size: 17px;
   font-weight: 100;
 }
@@ -622,14 +645,14 @@ body {
 }
 
 .challenge-block {
-  color: #ef6e18;
+  color: @challenge-color;
   margin-top: -10px;
   margin-bottom: 10px;
   margin-left: 13px;
 }
 
 .challenge-block a {
-  color: #ef6e18;
+  color: @challenge-color;
 }
 
 .challenge-restricted {
@@ -682,7 +705,7 @@ body {
 
 .content-more .content-more-message {
   margin-top: 40px;
-  color: #ef6e18;
+  color: @activator;
   cursor: s-resize;
 }
 
@@ -693,7 +716,7 @@ body {
 }
 
 .content-more .content-more-message:hover {
-  color: #54902a;
+  color: @novaideo-secondary-color;
 }
 
 .challenge-header {
@@ -725,9 +748,8 @@ body {
 }
 
 .challenges-container .challenges-header {
-  color: #4076a5;
+  color: @novaideo-primary-color;
   font-weight: 700;
-  text-shadow: 0 1px #fff;
   font-size: 24px;
   background-color: #ffffff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.27);
@@ -834,7 +856,7 @@ body {
 }
 
 .challenge-container .novaideo-contents span {
-  color: #3f6da6;
+  color: @novaideo-primary-color;
 }
 
 .challenge-container .challenge-title {
@@ -919,7 +941,7 @@ challenge-container .author-block {
   color: #fff;
   box-shadow: -2px 0px 3px rgba(0, 0, 0, .15);
   z-index: 1047;
-  border: 1px solid #337ab7;
+  border: 1px solid @novaideo-primary-color;
   border-radius: 3px;
 }
 
@@ -1000,7 +1022,7 @@ span.md {
 .validated-answer,
 .validated-question,
 .pending-question {
-  color: #4eaf4e;
+  color: @support-top;
   font-size: 22px;
   float: left;
   margin-left: 4px;
@@ -1035,15 +1057,15 @@ span.md {
 }
 
 .free-support  .success .my-token {
-  color: #4eaf4e !important;
+  color: @support-top !important;
 }
 
 .free-support  .danger .my-token {
-  color: #ef6e18 !important;
+  color: @support-bottom !important;
 }
 
 .free-support .danger .support-nb {
-  color: #ef6e18 !important;
+  color: @support-bottom !important;
 }
 
 .answer-item.search-item {
@@ -1148,13 +1170,13 @@ a.answer-btn {
   padding-right: 5px;
   width: 20px;
   font-size: 15px;
-  color: #548cc1;
+  color: @novaideo-primary-color;
   vertical-align: text-bottom;
 }
 
 .smartfolder-nav li >.item-container:hover,
 .smartfolder-nav li.opened >.item-container{
-  background-color: #548cc1!important;
+  background-color: @novaideo-primary-color!important;
   color: white !important;
   border-radius: 6px;
   >.folder-icon,
@@ -1332,9 +1354,9 @@ a.answer-btn {
 
 .views-container .wg-actions-navbar li > a {
   color: #fff;
-  border-color: #204d74;
-  padding: 5px 7px;
-  background-color: #337ab7;
+  border-color: darken(@novaideo-primary-color, 7%);
+  padding: 8px 5px 6px 5px;
+  background-color: @novaideo-primary-color;
   height: 31px;
   line-height: 32px;
   border-radius: 2px;
@@ -1348,7 +1370,16 @@ a.answer-btn {
 }
 
 .views-container .wg-actions-navbar li > a:hover {
-  background-color: #245580;
+  background-color: darken(@novaideo-primary-color, 7%);
+}
+
+.views-container .wg-actions-navbar li > a.resign-btn {
+  border-color: darken(@brand-danger, 7%);
+  background-color: @brand-danger;
+}
+
+.views-container .wg-actions-navbar li > a.resign-btn:hover{
+  background-color:darken(@brand-danger, 7%);
 }
 
 .listing-access-menu {
@@ -1378,7 +1409,7 @@ a.answer-btn {
 .sort-container .sort-form select.sort-input {
   border-color: transparent;
   background-color: transparent;
-  color: #548cc1;
+  color: @novaideo-primary-color;
   outline: none !important;
   cursor: pointer;
 }
@@ -1659,7 +1690,7 @@ a.answer-btn {
   position: relative;
   margin-top: 10px;
   cursor: pointer;
-  color: #ef6e18;
+  color: @activator;
 }
 
 .btn-more-all,
@@ -1672,7 +1703,7 @@ a.answer-btn {
 .btn-more-scroll:hover,
 .btn-more-scroll:active,
 .btn-more-scroll:focus {
-  color: #54902a;
+  color: @novaideo-secondary-color;
 }
 
 .btn-more-scroll span.more-icon {
@@ -1811,7 +1842,7 @@ a.answer-btn {
 }
 
 .nl-last-sinding > span {
-  color: #54902a;
+  color: @novaideo-secondary-color;
   display: block;
   font-weight: bold;
 }
@@ -1936,7 +1967,7 @@ a.answer-btn {
 }
 
 .assigned-emoji .emoji-nb {
-  color: #156e9d;
+  color: @novaideo-primary-color;
   font-size: 12px;
   padding: 0 1px 0 3px;
   position: relative;
@@ -3070,12 +3101,12 @@ ul.btn-sub-menu li {
 
 .btn-sub-menu .btn-floating {
   line-height: 46px;
-  background-color: #2196f3;
+  background-color: @novaideo-primary-color;
 }
 
 .btn-sub-menu-control {
   padding-left: 8px;
-  color: #3f6da6;
+  color: @novaideo-primary-color;
 }
 
 .btn-sub-menu-container:hover .btn-sub-menu-control,
@@ -3088,7 +3119,7 @@ ul.btn-sub-menu li {
 }
 
 .btn-floating {
-  background-color: @novaideo-hover-link;
+  background-color: @novaideo-secondary-color;
   border-radius: 50%;
   color: #fff;
   cursor: pointer;
@@ -3101,6 +3132,11 @@ ul.btn-sub-menu li {
   vertical-align: middle;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
+
+.btn-floating.creat-btn {
+  background-color: @idea-color;  
+}
+
 .btn-floating i {
   text-align: center;
   width: inherit;
@@ -3324,7 +3360,7 @@ ins.hide-correction {
 }
 
 .footer-entity-actions a.ajax-action {
-  color: @novaideo-hover-link;
+  color: @novaideo-secondary-color;
   font-size: 12px;
   font-weight: bold;
 }
@@ -3624,7 +3660,7 @@ ul.nav.navbar-right a.dropdown-toggle {
 }
 
 .alert-block.opened > span.icon {
-  color: #54902a;
+  color: @novaideo-secondary-color;
 }
 
 .alert-block > span.alert-nb {
@@ -4063,7 +4099,7 @@ ins {
 }
 
 .keywords-result a:hover {
-  color: @novaideo-hover-link;
+  color: @novaideo-secondary-color;
 }
 
 .object-description-sm {
@@ -4138,7 +4174,7 @@ ins {
 }
 
 .working-group-toggle:hover {
-  color: @novaideo-hover-actions;
+  color: @novaideo-secondary-color;
 }
 
 .working-group-result {
@@ -4646,7 +4682,7 @@ small .proposal-support .token {
 }
 
 .token-success {
-  background-color: #4eaf4e;
+  background-color: @support-top;
 }
 
 .proposal-support.disabled .token {
@@ -4663,27 +4699,27 @@ small .proposal-support .token {
 .my-token.token-success {
   background-image: none;
   background-color: white;
-  color: #4eaf4e;
-  border: solid 1px #4eaf4e;
-  box-shadow: 0px 0px 5px #4eaf4e;
+  color: @support-top;
+  border: solid 1px @support-top;
+  box-shadow: 0px 0px 5px @support-top;
 }
 
 .token-danger {
-  background-color: #ef6e18;
+  background-color: @support-bottom;
 }
 
 .my-token.token-danger {
   background-image: none;
   background-color: white;
-  color: #ef6e18;
-  border: solid 1px #ef6e18;
-  box-shadow: 0px 0px 5px #ef6e18;
+  color: @support-bottom;
+  border: solid 1px @support-bottom;
+  box-shadow: 0px 0px 5px @support-bottom;
 }
 
 .my-token-success {
   margin-right: -25px;
   margin-top: -45px;
-  color: #4eaf4e;
+  color: @support-top;
 }
 
 .my-token-danger {
@@ -4705,11 +4741,11 @@ small .proposal-support .token {
 }
 
 .proposal-support .danger .support-nb {
-  color: #ef6e18;
+  color: @support-bottom;
 }
 
 .proposal-support .success .support-nb {
-  color: #4eaf4e;
+  color: @support-top;
 }
 
 .vertical-support.proposal-support .danger .support-nb {
@@ -4785,8 +4821,8 @@ small .proposal-support .token {
 }
 
 .label-basic {
-  border: 1px solid #5595b6;
-  color: #156e9d;
+  border: 1px solid @novaideo-primary-color;
+  color: @novaideo-primary-color;
   background-color: white;
   margin-top: 3px;
   margin-left: 5px;
@@ -4876,7 +4912,7 @@ small .proposal-support .token {
 
 .nav.access-menu > li > a.disabled:hover,
 .nav > li > a.disabled:focus {
-  background: @novaideo-hover-actions;
+  background: @novaideo-secondary-color;
   color: white;
   text-decoration: none;
 }
@@ -5135,8 +5171,8 @@ small .proposal-support .token {
   text-decoration: none;
 }
 .admin-nav.list-group .list-group-item.active-item {
-  background-color: @novaideo-hover-link;
-  border-color: @novaideo-hover-link;
+  background-color: @novaideo-secondary-color;
+  border-color: @novaideo-secondary-color;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
   text-decoration: none;
 }
@@ -5145,7 +5181,7 @@ small .proposal-support .token {
   background-image: linear-gradient(
     to bottom,
     #5cb85c 0%,
-    @novaideo-hover-link 100%
+    @novaideo-secondary-color 100%
   );
   text-decoration: none;
 }
@@ -5214,7 +5250,7 @@ small .proposal-support .token {
 .deadline-text-primary {
   margin-top: -18px;
   display: block;
-  color: @brand-primary;
+  color: @novaideo-primary-color;
 }
 
 .deadline-text-success {
@@ -5343,7 +5379,7 @@ span.circle {
 
 .filter-form > .filter-title {
   font-size: 20px;
-  color: #337ab7;
+  color: @novaideo-primary-color;
   text-align: center;
   width: 100%;
 }
@@ -5404,7 +5440,7 @@ span.circle {
 
 .filter-form .ajax-form .control-form-button,
 .deform-seq-container .ajax-form .control-form-button {
-  color: #337ab7;
+  color: @novaideo-primary-color;
 }
 
 .filter-form .form-group,
@@ -5453,8 +5489,8 @@ span.circle {
 }
 
 .filter-form  .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #337ab7;
-  border: 1px solid #337ab7;
+  background-color: @novaideo-primary-color;
+  border: 1px solid @novaideo-primary-color;
   color: white;
 }
 
@@ -5938,27 +5974,36 @@ span.circle {
 }
 
 .invitation_menu .primary-actions a {
-  color: #2297bf !important;
+  color: @novaideo-primary-color !important;
 }
 
 .search-item:hover {
   .primary-actions a,
   .wg-block .wg-actions ul a {
-    color: #2297bf;
+    color: @novaideo-primary-color;
   }
 
-  .primary-actions a.publishasproposal-btn{
+  .primary-actions a.publishasproposal-btn,
+  .primary-actions a.makeitsopinion-btn,
+  .primary-actions a.close-btn,
+  .wg-block .wg-actions ul a.resign-btn,
+  .wg-block .wg-actions ul a.participate-btn
+  {
     color: white !important;
-    background-color: #337ab7;
+    background-color: @novaideo-primary-color;
     padding: 7px 7px 5px;
     border-radius: 10px;
+  }
+  .wg-block .wg-actions ul a.resign-btn,
+  .primary-actions a.close-btn{
+    background-color: @brand-danger;
   }
 }
 
 .search-item .wg-block .wg-actions ul a:hover,
 .primary-actions a:hover,
 .listing-object-menu .dropdown-toggle:hover {
-  color: @novaideo-hover-actions !important;
+  color: @novaideo-secondary-color !important;
 }
 
 .search-item .search-item-footer a,
@@ -5977,13 +6022,13 @@ span.circle {
 .content-footer a:hover,
 .popover .actions-block a:hover,
 .footer-actions-bodies a:hover {
-  color: @novaideo-hover-actions;
+  color: @novaideo-secondary-color;
 }
 
 .search-item  .search-item-footer a.activated,
 .content-footer .actions-block a.activated,
 .popover .actions-block a.activated {
-  color: @novaideo-hover-actions;
+  color: @novaideo-secondary-color;
   font-weight: bold;
 }
 

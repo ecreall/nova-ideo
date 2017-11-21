@@ -62,7 +62,7 @@
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
                 <a id="${item['action_id']}-btn" 
-                  class="btn-floating btn-large ajax-action dace-action-${interaction_type}"
+                  class="${getattr(a,'style_action_class','')} ${getattr(a, 'node_id', '')}-btn btn-floating btn-large ajax-action dace-action-${interaction_type}"
                   data-toggle="${interaction_type}"
                   data-target="#action-${interaction_type}-container"
                   data-actionid ="${item['action_id']}" 

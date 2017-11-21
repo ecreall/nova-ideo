@@ -173,7 +173,7 @@
               </dd>
             </div>
         </dl>
-        <div class="pull-right" tal:condition="is_participant and working_group and working_group.workspace" style="margin-top: -20px">
+        <div class="pull-right workspace-block" tal:condition="is_participant and working_group and working_group.workspace" style="margin-top: -20px">
           <a href="${request.resource_url(working_group.workspace, '@@index')}">
             <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
           </a>
