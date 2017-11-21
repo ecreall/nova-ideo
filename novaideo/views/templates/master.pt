@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=26"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=27"
             rel="stylesheet"/>
     </div>
 
@@ -49,13 +49,13 @@
                      to_support request.support_proposals;
                      tosupport_toexamine to_examine and to_support">
       <link tal:condition="tosupport_toexamine"
-              href="${su('novaideo:static/css/steps/steps_5.css')}?v=2"
+              href="${su('novaideo:static/css/steps/steps_5.css')}?v=3"
               rel="stylesheet"/>
       <link tal:condition="not tosupport_toexamine and (to_examine or to_support)" 
-              href="${su('novaideo:static/css/steps/steps_4.css')}?v=2"
+              href="${su('novaideo:static/css/steps/steps_4.css')}?v=3"
               rel="stylesheet"/>
       <link tal:condition="not (to_examine or to_support)"
-              href="${su('novaideo:static/css/steps/steps_3.css')}?v=2"
+              href="${su('novaideo:static/css/steps/steps_3.css')}?v=3"
               rel="stylesheet"/>
     </div>
 
