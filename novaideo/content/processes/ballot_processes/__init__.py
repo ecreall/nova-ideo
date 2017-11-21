@@ -77,7 +77,7 @@ def remove_vote_processes(ballot_action, runtime):
 
 def remove_elector_vote_processes(ballot_action, user):
     ballot_process = ballot_action.sub_process
-    ballots = ballot_process.ballots
+    ballots = ballot_process.ballots if ballot_process else []
     for ballot in ballots:
         report = ballot.report
         elector = report.get_elector(user)
