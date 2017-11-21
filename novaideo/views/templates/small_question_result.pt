@@ -9,7 +9,6 @@
                  censored 'censored' in object.state
                  ">
   <div class="media-body media-question small-media">
-    <span tal:condition="state" class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
     <div class="object-title-block" >
       <a data-oid="${getattr(object, '__oid__', '')}"
          class="toggle-popover"
@@ -18,6 +17,7 @@
           <span class="icon ${icon}"></span>  ${object.title}
         </h5>
       </a>
+      <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
     </div>
     <div class="author-block">
       <img class="author-img img-circle" 

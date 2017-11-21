@@ -1296,13 +1296,10 @@ def seewgs_state_validation(process, context):
     if 'proposal' not in request.content_to_manage:
         return False
 
-    condition = False
     if 'idea' in request.content_to_examine:
-        condition = 'favorable' in context.state
+        return 'favorable' in context.state
     else:
-        condition = 'published' in context.state
-
-    return condition and has_role(role=('Member',))
+        return 'published' in context.state
 
 
 class SeeRelatedWorkingGroups(InfiniteCardinality):

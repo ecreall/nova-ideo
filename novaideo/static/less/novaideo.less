@@ -1,43 +1,46 @@
-.primary-menu.object-menu{
+.small-result .object-title-block .label-basic {
+  border: none;
+}
+
+.primary-menu.object-menu {
   display: inline;
-  .listing-object-menu{
-    float: right
+  .listing-object-menu {
+    float: right;
   }
 }
 
-
-a{
-  color: @novaideo-primary-color
+a {
+  color: @novaideo-primary-color;
 }
 
 .workspace-block {
   span {
-   margin-right: 5px
+    margin-right: 5px;
   }
 }
 
-.object-well dt > span{
-  margin-right: 5px
+.object-well dt > span {
+  margin-right: 5px;
 }
 
-.results-header{
+.results-header {
   margin-top: 15px;
-  margin-bottom: 5px;  
+  margin-bottom: 5px;
 }
 
-.listing-object-menu ul.primary-actions{
+.listing-object-menu ul.primary-actions {
   margin-bottom: 10px;
   margin-top: -10px;
   display: block !important;
   font-size: 14px;
 }
 
-.object-menu > .listing-object-menu{
+.object-menu > .listing-object-menu {
   display: inline-block;
 }
 
-.author-block > small{
-  margin-left: 5px  
+.author-block > small {
+  margin-left: 5px;
 }
 
 .challenges-items {
@@ -1072,11 +1075,11 @@ a.answer-btn {
   margin-top: 20px;
 }
 
-.smartfolder-nav li >.item-container::after {
+.smartfolder-nav li > .item-container::after {
   clear: both;
   content: " ";
 }
-.smartfolder-nav li >.item-container{
+.smartfolder-nav li > .item-container {
   color: #797979 !important;
   cursor: pointer;
   font-size: 15px;
@@ -1087,13 +1090,13 @@ a.answer-btn {
   margin-top: 1px;
 }
 
-.smartfolder-nav li >.item-container> a.folder-title:hover,
-.smartfolder-nav li >.item-container> a.folder-title:focus {
+.smartfolder-nav li > .item-container > a.folder-title:hover,
+.smartfolder-nav li > .item-container > a.folder-title:focus {
   color: white !important;
   background-color: transparent !important;
 }
 
-.smartfolder-nav li >.item-container> .folder-icon {
+.smartfolder-nav li > .item-container > .folder-icon {
   font-weight: 300;
   display: inline;
   height: inherit;
@@ -1104,20 +1107,20 @@ a.answer-btn {
   vertical-align: text-bottom;
 }
 
-.smartfolder-nav li >.item-container:hover,
-.smartfolder-nav li.opened >.item-container{
+.smartfolder-nav li > .item-container:hover,
+.smartfolder-nav li.opened > .item-container {
   background-color: @novaideo-primary-color!important;
   color: white !important;
   border-radius: 6px;
-  >.folder-icon,
+  > .folder-icon,
   > a.folder-title {
     color: white !important;
     background-color: transparent !important;
-    text-shadow: 0 1px 0 rgba(0,0,0,.1);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
   }
 }
 
-.smartfolder-nav li >.item-container> a.folder-title {
+.smartfolder-nav li > .item-container > a.folder-title {
   color: #797979 !important;
   overflow: hidden;
   display: inline;
@@ -1308,8 +1311,8 @@ a.answer-btn {
   background-color: @brand-danger;
 }
 
-.views-container .wg-actions-navbar li > a.resign-btn:hover{
-  background-color:darken(@brand-danger, 7%);
+.views-container .wg-actions-navbar li > a.resign-btn:hover {
+  background-color: darken(@brand-danger, 7%);
 }
 
 .listing-access-menu {
@@ -3064,7 +3067,7 @@ ul.btn-sub-menu li {
 }
 
 .btn-floating.creat-btn {
-  background-color: @idea-color;  
+  background-color: @idea-color;
 }
 
 .btn-floating i {
@@ -5895,6 +5898,7 @@ span.circle {
 
 .wg-actions {
   margin-left: 8px;
+  font-size: 14px;
 }
 
 .primary-actions a,
@@ -5917,15 +5921,14 @@ span.circle {
   .primary-actions a.makeitsopinion-btn,
   .primary-actions a.close-btn,
   .wg-block .wg-actions ul a.resign-btn,
-  .wg-block .wg-actions ul a.participate-btn
-  {
+  .wg-block .wg-actions ul a.participate-btn {
     color: white !important;
     background-color: @novaideo-primary-color;
     padding: 7px 7px 5px;
     border-radius: 10px;
   }
   .wg-block .wg-actions ul a.resign-btn,
-  .primary-actions a.close-btn{
+  .primary-actions a.close-btn {
     background-color: @brand-danger;
   }
 }

@@ -4,7 +4,6 @@
                  picture object.picture;
                  profil_picture getattr(picture, 'profil', picture)">
   <div class="media-body media-person small-media">
-    <span tal:condition="state" class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
     <div class="object-title-block" >
       <a tal:attributes="href url">
         <h5>
