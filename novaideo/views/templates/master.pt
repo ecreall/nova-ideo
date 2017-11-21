@@ -40,12 +40,9 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=25"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=26"
             rel="stylesheet"/>
     </div>
-
-    <link href="${su('novaideo:static/css/steps/steps.css')}?v=3"
-          rel="stylesheet"/>
 
     <div tal:omit-tag=""
          tal:define="to_examine request.examine_proposals;
@@ -101,7 +98,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}?v=4"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=19"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=20"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
