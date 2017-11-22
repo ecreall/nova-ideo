@@ -1,3 +1,8 @@
+
+.home-panel-container > .container-fluid {
+  background-color: rgba(0, 125, 177, 0.2);
+}
+
 .max-container {
   max-width: 1400px;
   margin-left: auto;
@@ -38,6 +43,19 @@ a {
 .workspace-block {
   span {
     margin-right: 5px;
+  }
+  a {
+    background-color: @novaideo-secondary-color !important;
+    background-repeat: repeat-x;
+    border-color: #ddd;
+    color: #fff!important;
+    font-weight: 700;
+    height: 30px;
+    padding: 7px 7px 5px;
+    border-radius: 10px;
+  }
+  a:hover{
+    background-color: darken(@novaideo-secondary-color, 7%) !important;
   }
 }
 
@@ -295,11 +313,11 @@ body {
 }
 
 .person-card-container .object-menu {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: @novaideo-secondary-color;
   border-radius: 51px;
   padding: 0px 6px;
   margin: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 7px rgba(0,0,0,0.3);
   opacity: 0;
 }
 
@@ -323,7 +341,7 @@ body {
 }
 
 .card-img {
-  height: 100px;
+  height: 80px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
   position: relative;
@@ -702,8 +720,7 @@ body {
 }
 
 .challenges-container .challenges-header {
-  color: @novaideo-primary-color;
-  font-weight: 700;
+  color: @novaideo-color;
   font-size: 24px;
   background-color: #ffffff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.27);
@@ -1511,6 +1528,7 @@ a.answer-btn {
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 13px;
   margin-bottom: 10px;
+  background-color: white;
 }
 
 .workspace-files .file-container .file-header {
@@ -1519,10 +1537,11 @@ a.answer-btn {
 
 .workspace-files .file-container .file-header .file-meta {
   margin: -3px 0px 0px 4px !important;
+  font-size: 13px !important;
 }
 
 .workspace-files .file-container .file-header .file-title {
-  font-size: 17px !important;
+  font-size: 14px !important;
 }
 
 .workspace-files .file-container:hover {
@@ -1619,22 +1638,22 @@ a.answer-btn {
 
 .notifyjs-bootstrap-success {
   color: white !important;
-  background-color: #2e7d32 !important;
+  background-color: @brand-success !important;
 }
 
 .notifyjs-bootstrap-error {
   color: white !important;
-  background-color: #d32f2f !important;
+  background-color: @brand-danger !important;
 }
 
 .notifyjs-bootstrap-info {
   color: white !important;
-  background-color: #1565c0 !important;
+  background-color: @brand-info !important;
 }
 
 .notifyjs-bootstrap-warning {
   color: white !important;
-  background-color: #ec971f !important;
+  background-color: @brand-warning !important;
 }
 
 .btn-more-scroll,
@@ -2122,7 +2141,7 @@ a.emoji-group-tab:hover {
 .user-access-action:hover,
 .user-access-action:focus,
 .user-access-action:active {
-  color: #373a35 !important;
+  color: @novaideo-color !important;
 }
 
 .amendment-toggle {
@@ -2480,6 +2499,7 @@ form .btn {
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
+  transition: background-color 0.3s ease-out 0s;
 }
 
 .full-screen .content-text {
@@ -2495,7 +2515,18 @@ form .btn {
   cursor: pointer;
   font-size: 17px;
   color: gray;
+  margin-bottom: 10px;
+  margin-top: -30px;
 }
+
+.full-screen.full .full-screen-btn{
+  margin-top: 0px;
+}
+
+.full-screen-btn:hover{
+  color: @novaideo-secondary-color;
+}
+
 
 .progress {
   height: 10px !important;
@@ -3866,6 +3897,10 @@ dt {
   line-height: 1.3
 }
 
+.content-title > span {
+  margin-right: 10px
+}
+
 .content-title > img {
   margin-top: -11px;
 }
@@ -3910,7 +3945,7 @@ a:focus {
 }
 
 .attached-contents {
-  border-left: 4px solid #dcdcdc;
+  border-left: 2px solid #dcdcdc;
   font-size: 13.5px;
   margin: 15px 0 0;
   padding: 0 11px;
@@ -4187,6 +4222,7 @@ ins {
 .user-description {
   margin-bottom: 20px;
   margin-top: 15px;
+  font-size: 14px
 }
 
 .user-function {
@@ -5949,9 +5985,20 @@ span.circle {
     padding: 7px 7px 5px;
     border-radius: 10px;
   }
+  .primary-actions a.publishasproposal-btn:hover,
+  .primary-actions a.makeitsopinion-btn:hover,
+  .primary-actions a.close-btn:hover,
+  .wg-block .wg-actions ul a.resign-btn:hover,
+  .wg-block .wg-actions ul a.participate-btn:hover {
+    background-color: darken(@novaideo-primary-color, 7%);
+  }
   .wg-block .wg-actions ul a.resign-btn,
   .primary-actions a.close-btn {
     background-color: @brand-danger;
+  }
+  .wg-block .wg-actions ul a.resign-btn:hover,
+  .primary-actions a.close-btn:hover {
+    background-color: darken(@brand-danger, 7%);
   }
 }
 

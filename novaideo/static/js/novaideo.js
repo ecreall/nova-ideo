@@ -694,28 +694,28 @@ $(document).on("click", ".btn-more-scroll", function() {
   result_scroll.triggerHandler("scroll")
 })
 
-$(document).on("click", ".full-screen-btn.small", function() {
+$(document).on("click", ".full-screen-btn.screen-small", function() {
   var $this = $(this)
   var target_class = $this.data("target")
-  var target = target_class ? $this.parent(target) : $(".pontus-main")
+  var target = target_class ? $this.parents(target_class).first() : $(".pontus-main")
   target.addClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-full")
     .addClass("glyphicon glyphicon-resize-small")
-  $this.removeClass("small").addClass("full")
-  target.removeClass("small").addClass("full")
+  $this.removeClass("screen-small").addClass("full")
+  target.removeClass("screen-small").addClass("full")
 })
 
 $(document).on("click", ".full-screen-btn.full", function() {
   var $this = $(this)
   var target_class = $this.data("target")
-  var target = target_class ? $this.parent(target) : $(".pontus-main")
+  var target = target_class ? $this.parents(target_class).first() : $(".pontus-main")
   target.removeClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-small")
     .addClass("glyphicon glyphicon-resize-full")
-  $this.removeClass("full").addClass("small")
-  target.removeClass("full").addClass("small")
+  $this.removeClass("full").addClass("screen-small")
+  target.removeClass("full").addClass("screen-small")
 })
 
 $(document).on("click", ".proposal-opinion", activate_explanation)

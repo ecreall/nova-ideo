@@ -7,11 +7,11 @@
 <div tal:replace="structure navbar_body"/>
 <div class="right-caption span4">
   <div class="caption" tal:define="proposal workspace.proposal">
-  <h3 class="content-title"
+  <h4 class="content-title"
         data-title="${proposal.title}/${workspace.type_title}"
         data-icon="glyphicon glyphicon-folder-open"
         data-img="">
-        <span class="glyphicon glyphicon-folder-open"></span> <a href="${request.resource_url(proposal, '@@index')}">${proposal.title}</a>/${workspace.type_title}</h3>
+        <span class="glyphicon glyphicon-folder-open"></span> <a href="${request.resource_url(proposal, '@@index')}">${proposal.title}</a>/${workspace.type_title}</h4>
     <div class="workspace-files">
       <tal:loop repeat="f files">
         <div tal:replace="structure f"/>

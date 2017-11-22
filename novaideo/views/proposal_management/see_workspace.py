@@ -33,6 +33,7 @@ class SeeWorkspaceView(BasicView):
     template = 'novaideo:views/proposal_management/templates/see_workspace.pt'
     file_template = 'novaideo:views/proposal_management/templates/up_file_result.pt'
     viewid = 'seeworkspace'
+    css_class = "panel-transparent"
 
     def update(self):
         self.execute(None)
