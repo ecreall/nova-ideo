@@ -7,22 +7,30 @@
 	  <tal:block tal:repeat="csslink css_links">
 	    <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
 	  </tal:block>
-	  <div class="row challenges-header">
-		  <div class="col-md-3"></div>
-		  <div class="col-md-9">
-		    <div class="panel-title" i18n:translate="">Participate in our challenges</div>
-		    <span class="icon-activator glyphicon ${opened and 'glyphicon-menu-up' or 'glyphicon-menu-down'}"></span>
+	  <div class="challenges-header">
+	     <div class="max-container">
+			  <div class="row ">
+				<div class="col-md-3"></div>
+				<div class="col-md-9">
+				  <div class="panel-title" i18n:translate="">Participate in our challenges</div>
+				  <span class="icon-activator glyphicon ${opened and 'glyphicon-menu-up' or 'glyphicon-menu-down'}"></span>
+				</div>
+			  </div>
 		  </div>
 	  </div>
-	  <div class="row challenges-items">
-		  <div class="col-md-2"></div>
-		  <div class="col-md-8" style="max-width: 1090px;">      
-		    <div tal:replace="structure challenges"/>
-		    <div class="btn-more-all pull-right">
-              <a href="${request.resource_url(request.root, '@@seechallenges')}" i18n:translate="">All challenges</a>
-		    </div>
+	  <div class="challenges-items">
+		  <div class="max-container">
+			  <div class="row">
+				  <div class="col-md-1"></div>
+				  <div class="col-md-10">      
+				    <div tal:replace="structure challenges"/>
+				    <div class="btn-more-all pull-right">
+		              <a href="${request.resource_url(request.root, '@@seechallenges')}" i18n:translate="">All challenges</a>
+				    </div>
+				  </div>
+				  <div class="col-md-1"></div>
+			  </div>
 		  </div>
-		  <div class="col-md-2"></div>
 	  </div>
   </div>
 </div>

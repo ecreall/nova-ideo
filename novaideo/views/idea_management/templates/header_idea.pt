@@ -8,15 +8,13 @@
        <span class="glyphicon glyphicon-info-sign pull-right"></span>
         <span  i18n:translate="">In order for your duplicated idea to be published, you must modify it berforehand, so that it be different from the original idea.</span>
     </div>
-    <h4 tal:condition="state">
-      <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
-    </h4>
     <h3 class="content-title"
         data-title="${idea.title}"
         data-icon="${icon}"
         data-img=""
       >
       <span tal:omit-tag="" tal:condition="not to_hide"><span class="icon ${icon}"></span> ${idea.title}</span>
+      <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
     </h3>
     <div class="object-description"
       tal:define="author idea.author;

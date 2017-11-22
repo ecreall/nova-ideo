@@ -1,26 +1,28 @@
 <nav class="navbar navbar-inverse navbar-bottom" i18n:domain="novaideo">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3"></div>
-      <div class="access-menu col-md-9">
-        <div class="container-fluid">
-          <div class="navbar-collapse">
-            <ul tal:condition="actions"  class="nav navbar-nav">
-              <li class="menu-item hidden-xs" i18n:attributes="title" title="Home">
-                  <a class="home-link ${is_root and 'active'}" href="${request.resource_url(request.virtual_root, '')}">
-                     <span class="glyphicon glyphicon-home"></span>
-                  </a>
-               </li>
-               <li tal:repeat="(k, a) actions.items()" class="menu-item counter" data-component_type="navbar_component" id="component-navbar-${actions[k]['action_id']}">
-                  <a class="${(request.view_name == actions[k]['view_name']) and 'active'} ${((actions[k]['url']  is None) and 'disabled') or ''}" href="${actions[k]['url']}" tal:define="action actions[k]['action']">
-                     <span class="hidden-xs">${k} <span tal:condition="action is not None" class=" item-nb">${action.contents_nb(view.request, view.context)}</span></span>
-                     <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
-                  </a>
-               </li>
-               <li i18n:attributes="title" title="Activate the contextual help" class="contextual-help-toggle-container">
-                 <div class="contextual-help-toggle glyphicon glyphicon-info-sign"></div>
-               </li> 
-            </ul>
+  <div class="max-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="access-menu col-md-9">
+          <div class="container-fluid">
+            <div class="navbar-collapse">
+              <ul tal:condition="actions"  class="nav navbar-nav">
+                <li class="menu-item hidden-xs" i18n:attributes="title" title="Home">
+                    <a class="home-link ${is_root and 'active'}" href="${request.resource_url(request.virtual_root, '')}">
+                       <span class="glyphicon glyphicon-home"></span>
+                    </a>
+                 </li>
+                 <li tal:repeat="(k, a) actions.items()" class="menu-item counter" data-component_type="navbar_component" id="component-navbar-${actions[k]['action_id']}">
+                    <a class="${(request.view_name == actions[k]['view_name']) and 'active'} ${((actions[k]['url']  is None) and 'disabled') or ''}" href="${actions[k]['url']}" tal:define="action actions[k]['action']">
+                       <span class="hidden-xs">${k} <span tal:condition="action is not None" class=" item-nb">${action.contents_nb(view.request, view.context)}</span></span>
+                       <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
+                    </a>
+                 </li>
+                 <li i18n:attributes="title" title="Activate the contextual help" class="contextual-help-toggle-container">
+                   <div class="contextual-help-toggle glyphicon glyphicon-info-sign"></div>
+                 </li> 
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -130,7 +130,7 @@ class ImproveProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-edit'
-    style_order = 3
+    style_order = 1
     submission_title = _('Save')
     isSequential = False
     context = IProposal

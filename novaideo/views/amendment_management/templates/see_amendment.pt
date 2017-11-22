@@ -60,12 +60,13 @@
       </div>
     </div>
 
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"
         data-title="${amendment.title}"
         data-icon="${icon}"
         data-img=""
-      ><span class="icon ${icon}"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>
+      ><span><span class="icon ${icon}"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</span>
+      <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
+    </h3>
     <div class="object-description"
       tal:define="author amendment.author;
                   is_anonymous getattr(author, 'is_anonymous', False);

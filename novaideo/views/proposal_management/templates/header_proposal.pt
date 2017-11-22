@@ -66,12 +66,13 @@
           });
       </script>
     </nav>
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"
         data-title="${proposal.title}"
         data-icon="${icon}"
         data-img=""
-      ><span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></span></h3>
+      ><span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></span>
+      <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
+    </h3>
     <div class="object-description" 
       tal:define="author proposal.author;
                   is_anonymous getattr(author, 'is_anonymous', False);
@@ -110,7 +111,7 @@
    </div>
   </div>
   <div tal:condition="not to_hide">
-    <div class="well object-well proposal-well"  i18n:domain="novaideo">
+    <div class="object-well proposal-well"  i18n:domain="novaideo">
         <dl >
             <dt>
               <span class="glyphicon glyphicon-compressed"></span> <span i18n:translate="">Abstract</span>
