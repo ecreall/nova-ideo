@@ -7,13 +7,13 @@
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
 
-    <div tal:condition="to_submit" role="alert" class="alert alert-success alert-dismissible">
+    <div tal:condition="to_submit" role="alert" class="delayed-block alert alert-success alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-share pull-right"></span>
         <span  i18n:translate="">You have now provided explanations to all of your improvements. You can now prepare the amendments that you will submit to the other participants.</span>
     </div>
     <div tal:omit-tag="" tal:condition="'draft' in amendment.state and 'explanation' not in amendment.state">
-      <div role="alert" class="alert alert-info alert-dismissible">
+      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
          <button type="button" class="close" data-dismiss="alert">
            <span aria-hidden="true">&times;</span>
            <span class="sr-only">Close</span>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and not to_submit">
-      <div role="alert" class="alert alert-info alert-dismissible">
+      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
          <button type="button" class="close" data-dismiss="alert">
            <span aria-hidden="true">&times;</span>
            <span class="sr-only">Close</span>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
-      <div role="alert" class="alert alert-info alert-dismissible">
+      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
          <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">

@@ -937,7 +937,7 @@ class CommentSearch(SearchableObject):
         return ids
 
     def has_related_contents(self):
-        return True if self.related_contents() else False
+        return True if self.related_contents else False
 
     def has_file(self):
         return True if self.context.files else False

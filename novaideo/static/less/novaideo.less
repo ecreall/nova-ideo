@@ -1,3 +1,28 @@
+.label {
+    padding: .3em .6em .3em;  
+}
+
+.modal-title img{
+  margin-right: 10px
+}
+
+.delayed-block {
+  display: none;
+}
+
+.inline {
+  display: inline;
+}
+
+.wg-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wg-actions-navbar li > a {
+  border-radius: 10px !important;
+}
 
 .home-panel-container > .container-fluid {
   background-color: rgba(0, 125, 177, 0.2);
@@ -33,6 +58,7 @@
   display: inline;
   .listing-object-menu {
     float: right;
+    margin-top: 13px;
   }
 }
 
@@ -41,6 +67,7 @@ a {
 }
 
 .workspace-block {
+  margin-bottom: 10px;
   span {
     margin-right: 5px;
   }
@@ -48,13 +75,13 @@ a {
     background-color: @novaideo-secondary-color !important;
     background-repeat: repeat-x;
     border-color: #ddd;
-    color: #fff!important;
+    color: #fff !important;
     font-weight: 700;
     height: 30px;
     padding: 7px 7px 5px;
     border-radius: 10px;
   }
-  a:hover{
+  a:hover {
     background-color: darken(@novaideo-secondary-color, 7%) !important;
   }
 }
@@ -147,7 +174,7 @@ a {
 }
 
 .challenge-col .challenge-item-bloc {
-  box-shadow: 0 0 20px rgba(2, 2, 2, .1);
+  box-shadow: 0 0 5px rgba(2, 2, 2, .2);
   background-color: #f0efef;
   border: none;
 }
@@ -158,7 +185,7 @@ a {
 }
 
 .challenge-item-bloc:hover {
-  box-shadow: none !important;
+  box-shadow: 0 0 5px rgba(2, 2, 2, .2) !important;
 }
 
 .challenge-item-bloc:hover .btn-master > .icon-left,
@@ -169,6 +196,10 @@ a {
 .challenge-item-bloc:hover .btn-master.btn-master-danger > .icon-left,
 .btn-master.btn-master-danger:hover > .icon-left {
   background-color: @brand-danger;
+}
+
+.card-img .object-menu {
+  z-index: 2;
 }
 
 .challenge-item-bloc .card-img .img-container {
@@ -282,10 +313,11 @@ a {
 
 body {
   font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
 }
 
 .connector-item .actions-block {
@@ -317,7 +349,7 @@ body {
   border-radius: 51px;
   padding: 0px 6px;
   margin: 5px;
-  box-shadow: 0 0 7px rgba(0,0,0,0.3);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
   opacity: 0;
 }
 
@@ -773,14 +805,14 @@ body {
 .challenge-container .keywords-result,
 .challenge-container .challenge-description {
   margin-left: 40px;
-  color: #676767;
+  color: #444444;
 }
 
 .challenge-container .keywords-result .user-title,
 .challenge-container .author-block,
 .challenge-container .keywords-result a,
 .challenge-container .author-block .user-title {
-  color: #676767;
+  color: #444444;
 }
 
 .challenge-container .keywords-result a:hover {
@@ -1141,7 +1173,7 @@ a.answer-btn {
   padding-right: 5px;
   width: 20px;
   font-size: 15px;
-  color: @novaideo-primary-color;
+  color: @novaideo-color;
   vertical-align: text-bottom;
 }
 
@@ -1977,6 +2009,7 @@ a.answer-btn {
 
 .popover {
   z-index: 2000;
+  border: 1px solid #ddd;
 }
 
 .action-popover-container {
@@ -2071,6 +2104,9 @@ a.emoji-group-tab:hover {
 .popover .popover-title {
   color: #333;
   line-height: 1.5;
+  a {
+    color: #333;
+  }
 }
 
 .popover-person .popover-title {
@@ -2134,14 +2170,14 @@ a.emoji-group-tab:hover {
 }
 
 .user-access-action {
-  color: #438117;
+  color: @novaideo-color;
   margin-left: 15px;
 }
 
 .user-access-action:hover,
 .user-access-action:focus,
 .user-access-action:active {
-  color: @novaideo-color !important;
+  color: @novaideo-secondary-color !important;
 }
 
 .amendment-toggle {
@@ -2519,14 +2555,13 @@ form .btn {
   margin-top: -30px;
 }
 
-.full-screen.full .full-screen-btn{
+.full-screen.full .full-screen-btn {
   margin-top: 0px;
 }
 
-.full-screen-btn:hover{
+.full-screen-btn:hover {
   color: @novaideo-secondary-color;
 }
-
 
 .progress {
   height: 10px !important;
@@ -2849,9 +2884,8 @@ form .btn {
   overflow: visible !important;
 }
 
-.small-media .author-block {
-  margin-top: -10px;
-  margin-left: 15px;
+.small-media .object-title-block {
+  margin-left: 30px;
 }
 
 .thumbnail.small-result {
@@ -3686,10 +3720,6 @@ ul.nav.navbar-right a.dropdown-toggle {
   margin-left: -215px;
 }
 
-body {
-  background-color: #fafafa;
-}
-
 .contextual-help-toggle {
   cursor: pointer;
 }
@@ -3894,11 +3924,11 @@ dt {
 .content-title {
   font-weight: bold;
   margin-bottom: 22px;
-  line-height: 1.3
+  line-height: 1.3;
 }
 
 .content-title > span {
-  margin-right: 10px
+  margin-right: 10px;
 }
 
 .content-title > img {
@@ -4040,7 +4070,7 @@ ins {
 .object-description {
   margin-bottom: 10px;
   margin-top: -20px;
-  margin-left: 15px;
+  margin-left: 30px;
   color: gray;
 }
 
@@ -4076,7 +4106,6 @@ ins {
 
 .search-item .keywords-result {
   margin-bottom: 8px;
-  margin-top: -4px;
 }
 
 .keywords-result > span {
@@ -4185,6 +4214,7 @@ ins {
 
 .author-img {
   display: inline-block !important;
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.25);
 }
 
 .object-title-block {
@@ -4222,7 +4252,7 @@ ins {
 .user-description {
   margin-bottom: 20px;
   margin-top: 15px;
-  font-size: 14px
+  font-size: 14px;
 }
 
 .user-function {
@@ -4246,7 +4276,7 @@ ins {
 }
 
 .author-block .user-title {
-  color: gray;
+  color: #545454;
   font-weight: bold;
 }
 
@@ -5356,10 +5386,12 @@ span.circle {
 .proposal-explanation .text {
   overflow: auto;
   max-height: 170px;
+  margin-top: 10px;
 }
 
 .proposal-explanation button.close {
   margin-top: -17px;
+  padding: 5px 5px 0px 5px;
 }
 
 .proposal-explanation-step {
@@ -5782,6 +5814,10 @@ span.circle {
   .filter-container .filter-input-container input {
     display: none;
   }
+  .filter-activator .filter-btn {
+    border-left: transparent;
+    padding-right: 10px;
+  }
 }
 
 @media (max-width: 1141px) {
@@ -5960,7 +5996,8 @@ span.circle {
 }
 
 .primary-actions a,
-.wg-block .wg-actions ul a {
+.wg-block .wg-actions ul a,
+.listing-access-menu a {
   color: #d0d0d0; //#b6b8b6;
   transition: all .1s ease-in-out;
 }
@@ -5973,6 +6010,16 @@ span.circle {
   .primary-actions a,
   .wg-block .wg-actions ul a {
     color: @novaideo-primary-color;
+  }
+  .listing-access-menu a {
+    color: #fff !important;
+    background-color: @novaideo-secondary-color;
+    padding: 7px 6px 3px;
+    border-radius: 50%;
+  }
+
+  .listing-access-menu a:hover {
+    background-color: darken(@novaideo-secondary-color, 7%);
   }
 
   .primary-actions a.publishasproposal-btn,

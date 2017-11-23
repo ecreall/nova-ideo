@@ -6,15 +6,15 @@
     i18n:domain="novaideo">
 	<div style="top: 50%;" class="arrow">
 	</div>
-    <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
       <h4 class="popover-title view-item-title"
         data-title="${object.title}"
         data-icon="${icon}"
         data-img=""
         >
-      	<span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
+        <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
+      	  <span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
+        </a>
       </h4>
-    </a>
     <div class="popover-content">
       <div class="popover-text">
         <div tal:condition="censored">

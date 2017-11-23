@@ -86,15 +86,15 @@
         <div class="object-menu pull-right">
           <div tal:replace="structure menu_body"/>
         </div>
-        <a tal:attributes="href url">
-          <h4>
+        <h4 class="inline">
+          <a tal:attributes="href url">
             <span class="icon ${icon}"></span>  ${object.title} 
-            <div class="listing-access-menu">
-              <div tal:replace="structure access_body"/>
-            </div>
-            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-          </h4>
-        </a>
+          </a>
+          <div class="listing-access-menu">
+            <div tal:replace="structure access_body"/>
+          </div>
+          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+        </h4>
       </div>
 
       <div tal:condition="'challenge' in request.content_to_manage and challenge" class="challenge-block">

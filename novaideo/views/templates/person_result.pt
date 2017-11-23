@@ -18,20 +18,20 @@
       <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
-      <a tal:attributes="href url">
-        <h4>
-          <img class="img-circle" tal:condition="profil_picture is not None"
-               tal:attributes="src profil_picture.url"  width="50"/>
-          <img class="img-circle"
-               tal:condition="profil_picture is None"
-               src="${default_img}" width="50"/>
+      <h4 class="inline">
+        <img class="img-circle" tal:condition="profil_picture is not None"
+             tal:attributes="src profil_picture.url"  width="50"/>
+        <img class="img-circle"
+             tal:condition="profil_picture is None"
+             src="${default_img}" width="50"/>
+        <a tal:attributes="href url">
           ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
           <small class="date">
             <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
           </small>
            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-        </h4>
-      </a>
+        </a>
+      </h4>
     </div>
     <div class="content-body-left"></div>
     <div class="content-col">

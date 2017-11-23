@@ -9,16 +9,6 @@
                  censored 'censored' in object.state
                  ">
   <div class="media-body media-challenge small-media">
-    <div class="object-title-block" >
-      <a data-oid="${getattr(object, '__oid__', '')}"
-         class="toggle-popover"
-         tal:condition="not censored" tal:attributes="href url">
-        <h5>
-          <span class="icon ${icon}"></span>  ${object.title}
-        </h5>
-      </a>
-      <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-    </div>
     <div class="author-block">
       <img class="author-img img-circle" 
          tal:condition="author_picture is not None" 
@@ -37,6 +27,16 @@
         <span i18n:translate="">the</span>
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
+    </div>
+    <div class="object-title-block" >
+      <h5 tal:condition="not censored" class="inline">
+        <a data-oid="${getattr(object, '__oid__', '')}"
+           class="toggle-popover"
+           tal:attributes="href url">
+          <span class="icon ${icon}"></span>  ${object.title}
+        </a>
+      </h5>
+      <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
     </div>
     <div tal:condition="censored">
      <div class="alert-terms-of-use" i18n:translate="">

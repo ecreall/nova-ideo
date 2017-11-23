@@ -46,11 +46,11 @@
           data-title="${object.title}"
           data-icon="${icon}"
           data-img="">
-          <a tal:attributes="href url">
-            <h4 title="${object.title}">
+          <h4 title="${object.title}">
+            <a tal:attributes="href url">
               ${object.title}
-            </h4>
-          </a>
+             </a>
+          </h4>
         </div>
         <div class="row object-row-content">
           <div class="col col-xs-12 col-md-12">
