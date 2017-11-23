@@ -5,7 +5,9 @@
 	             empty_message empty_message|None;
 	             empty_icon empty_icon|nothing;
 	             sortbody sort_body|nothing;
-	             filterbody filter_body|nothing"
+	             filterbody filter_body|nothing;
+	             request_data request.POST or request.GET;
+	             is_filter request_data.get('filter_result', False)"
 	 i18n:domain="novaideo">
 	<div class="results-header"
 	    tal:condition="sortbody or filterbody">
@@ -26,7 +28,7 @@
 	      </div>
 	      <div  class="row scroll-items-container">
 	      	<div tal:omit-tag="" tal:condition="bodies" >
-	            <div class="scroll-item col-md-12" tal:repeat="body bodies">
+	            <div class="scroll-item col-md-12 ${(repeat['body'].start > 0 and not is_filter) and 'delayed-block'}" tal:repeat="body bodies">
 	                ${structure:body}
 	            </div>
             </div>

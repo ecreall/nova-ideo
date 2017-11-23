@@ -5,13 +5,13 @@
                  ">
   <div class="media-body media-person small-media">
     <div class="object-title-block" >
-      <a data-oid="${getattr(object, '__oid__', '')}"
-         class="toggle-popover"
-         tal:attributes="href url">
-        <h5>
+      <h5 class="inline">
+        <a data-oid="${getattr(object, '__oid__', '')}"
+           class="toggle-popover"
+           tal:attributes="href url">
           <span class="icon ${icon}"></span>  ${object.title}
-        </h5>
-      </a>
+        </a>
+      </h5>
     </div>
   </div>
 </div>

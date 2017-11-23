@@ -15,7 +15,7 @@
          tal:condition="deadline"
          title="${layout.to_localized_time(deadline)}">
        <div tal:define="expired object.is_expired;
-                        percent (object.duration - object.remaining_duration) * 100 / object.duration"
+                        percent (object.duration - object.remaining_duration) * 100 / object.duration if object.duration else 100"
             class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-success'} "
             role="progressbar"
             aria-valuenow="${percent}"
@@ -46,11 +46,11 @@
           data-title="${object.title}"
           data-icon="${icon}"
           data-img="">
-          <a tal:attributes="href url">
-            <h4 title="${object.title}">
+          <h4 title="${object.title}" class="inline">
+            <a tal:attributes="href url">
               ${object.title}
-            </h4>
-          </a>
+            </a>
+          </h4>
         </div>
         <div class="row object-row-content">
           <div class="col col-xs-12 col-md-12">

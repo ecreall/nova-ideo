@@ -6,7 +6,7 @@
   <div tal:replace="structure vote_actions_body"/>
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
-    <div tal:condition="'open to a working group' in proposal.state" role="alert" class="alert alert-info alert-dismissible">
+    <div tal:condition="'open to a working group' in proposal.state" role="alert" class="delayed-block alert alert-info alert-dismissible">
       <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(working_group, 'work_mode', None), 'participants_mini', 3)">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
@@ -15,7 +15,7 @@
          <p i18n:translate="">To improve it, the Working Group must gather at least ${participants_mini} participants.</p>
       </div>
     </div>   
-    <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
+    <div tal:condition="cant_publish" role="alert" class="delayed-block alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-warning-sign pull-right"></span>
        <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not (request.examine_ideas and not_favorable_ideas)">
@@ -66,12 +66,13 @@
           });
       </script>
     </nav>
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"
         data-title="${proposal.title}"
         data-icon="${icon}"
         data-img=""
-      ><span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></span></h3>
+      ><span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></span>
+      <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
+    </h3>
     <div class="object-description" 
       tal:define="author proposal.author;
                   is_anonymous getattr(author, 'is_anonymous', False);
@@ -110,7 +111,7 @@
    </div>
   </div>
   <div tal:condition="not to_hide">
-    <div class="well object-well proposal-well"  i18n:domain="novaideo">
+    <div class="object-well proposal-well"  i18n:domain="novaideo">
         <dl >
             <dt>
               <span class="glyphicon glyphicon-compressed"></span> <span i18n:translate="">Abstract</span>
@@ -167,16 +168,18 @@
                 <div tal:condition="ct_participate" class="alert alert-info alert-wg-closed" role="alert">
                   <p>${ct_participate}</p>
                 </div>
-                <div tal:condition="wg_body" class="wg-actions-navbar">
-                  <div tal:replace="structure wg_body"/>
-                 </div>
               </dd>
             </div>
         </dl>
-        <div class="pull-right workspace-block" tal:condition="is_participant and working_group and working_group.workspace" style="margin-top: -20px">
-          <a href="${request.resource_url(working_group.workspace, '@@index')}">
-            <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
-          </a>
+        <div class="wg-menu">
+          <div tal:condition="wg_body" class="wg-actions-navbar">
+            <div tal:replace="structure wg_body"/>
+          </div>
+          <div class="workspace-block" tal:condition="is_participant and working_group and working_group.workspace">
+            <a href="${request.resource_url(working_group.workspace, '@@index')}">
+              <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
+            </a>
+          </div>
         </div>
     </div>
   </div>

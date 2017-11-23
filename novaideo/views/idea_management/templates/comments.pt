@@ -32,7 +32,7 @@
               attached_files comment.files;
               is_censored 'censored' in comment.state;
               to_hide is_censored and not (view.is_moderator or current_user is comment.author)">
-         <div id="${id}" class="view-item-title thumbnail right-caption span4 comment-data"
+         <div id="${id}" class="view-item-title thumbnail right-caption span4 comment-data ${comment.pinned and 'comment-pinned'}"
              data-title="${getattr(author, 'title', author.__name__)}"
              data-icon="${getattr(comment, 'icon', '')}"
              data-img="${getattr(profil_picture, 'url', default_img)}"

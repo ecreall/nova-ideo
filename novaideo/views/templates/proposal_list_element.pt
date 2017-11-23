@@ -7,11 +7,11 @@
                  ">
   <div class="media-body media-proposal small-media" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="object-title-block" >
-      <a tal:condition="not censored" tal:attributes="href url">
-        <h5>
-          <span class="icon ${icon}"></span>  ${object.title}
+        <h5 tal:condition="not censored" class="inline">
+          <a tal:attributes="href url">
+             <span class="icon ${icon}"></span>  ${object.title}
+          </a>
         </h5>
-      </a>
     </div>
     <div class="author-block">
       <span i18n:translate="">modified on</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/>

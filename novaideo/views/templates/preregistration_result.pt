@@ -11,11 +11,11 @@
       <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
-      <a tal:attributes="href url">
-        <h4>
+      <h4 class="inline">
+         <a tal:attributes="href url">
           <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-        </h4>
-      </a>
+        </a>
+      </h4>
     </div>
     <dl class="dl-horizontal film-data">
         <dt i18n:translate="">Email</dt>

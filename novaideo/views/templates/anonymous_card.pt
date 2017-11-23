@@ -4,12 +4,14 @@
                  ">
   <div role="presentation" class="card-img" 
        style="
-          background: transparent url(${request.static_url('novaideo:static/images/background_user.png')}) no-repeat scroll center center / cover ;">
+          background: #3a84b6 url(${request.static_url('novaideo:static/images/background_user.png')}) no-repeat scroll center center / cover ;">
     <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
-    <img class="img-circle"
+    <div class="img-container">
+      <img class="img-circle"
         tal:attributes="src default_img"  width="70"/>
+    </div>
   </div>
   <div class="caption">
       <div class="card-data">

@@ -192,6 +192,7 @@ function object_view_component(data) {
             var new_comp = parent.find("#" + component_id).first()
             init_collapsible(new_comp.find(".collapsible-text"))
             rebuild_scrolls(new_comp.find(".malihu-scroll"))
+            init_delayed_blocks(new_comp.find(".delayed-block"))
             var result_scroll = new_comp.find(".result-scroll")
             initscroll(result_scroll)
             init_emoji($(new_comp.find(".emoji-container:not(.emojified)")))
@@ -467,12 +468,14 @@ function loading_component(data) {
     var container = original_components
       .parents(".async-component-container")
       .first()
+    var parent = container.parent()
     container = container.length > 0 ? container : original_components
     container.replaceWith(data[component_id])
     try {
       deform.processCallbacks()
     } catch (err) {}
     initscroll()
+    init_delayed_blocks(parent.find(".delayed-block"))
     $(document).trigger("component_loaded", [component_id])
   })
 }

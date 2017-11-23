@@ -575,6 +575,17 @@ function init_collapsible_contents() {
   })
 }
 
+function init_delayed_blocks(blocks) {
+  var delayed_blocks = blocks ? blocks : $(".delayed-block")
+  $.each(delayed_blocks, function() {
+    var delayed_block = $(this)
+    var delay = delayed_block.data("delay")
+    setTimeout(function() {
+      delayed_block.slideDown()
+    }, delay || 400)
+  })
+}
+
 var alert_unread_messages_bottom_pt =
   '<div class="alert-messages-scroll down">' +
   '<span class="fa fa-long-arrow-down"></span> <span>' +
@@ -694,28 +705,32 @@ $(document).on("click", ".btn-more-scroll", function() {
   result_scroll.triggerHandler("scroll")
 })
 
-$(document).on("click", ".full-screen-btn.small", function() {
+$(document).on("click", ".full-screen-btn.screen-small", function() {
   var $this = $(this)
   var target_class = $this.data("target")
-  var target = target_class ? $this.parent(target) : $(".pontus-main")
+  var target = target_class
+    ? $this.parents(target_class).first()
+    : $(".pontus-main")
   target.addClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-full")
     .addClass("glyphicon glyphicon-resize-small")
-  $this.removeClass("small").addClass("full")
-  target.removeClass("small").addClass("full")
+  $this.removeClass("screen-small").addClass("full")
+  target.removeClass("screen-small").addClass("full")
 })
 
 $(document).on("click", ".full-screen-btn.full", function() {
   var $this = $(this)
   var target_class = $this.data("target")
-  var target = target_class ? $this.parent(target) : $(".pontus-main")
+  var target = target_class
+    ? $this.parents(target_class).first()
+    : $(".pontus-main")
   target.removeClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-small")
     .addClass("glyphicon glyphicon-resize-full")
-  $this.removeClass("full").addClass("small")
-  target.removeClass("full").addClass("small")
+  $this.removeClass("full").addClass("screen-small")
+  target.removeClass("full").addClass("screen-small")
 })
 
 $(document).on("click", ".proposal-opinion", activate_explanation)
@@ -804,16 +819,20 @@ $(document).on("click", ".sidebar-right-background.toggled", function() {
   $(".sidebar-right-wrapper .sidebar-container>.container-body").html("")
 })
 
-$(document).on("click", ".smartfolder-nav li >.item-container > span.icon-state", function(
-  event
-) {
-  var $this = $(this)
-  if ($this.hasClass("ion-chevron-up")) {
-    $this.addClass("ion-chevron-down").removeClass("ion-chevron-up")
-  } else {
-    $this.addClass("ion-chevron-up").removeClass("ion-chevron-down")
+$(
+  document
+).on(
+  "click",
+  ".smartfolder-nav li >.item-container > span.icon-state",
+  function(event) {
+    var $this = $(this)
+    if ($this.hasClass("ion-chevron-up")) {
+      $this.addClass("ion-chevron-down").removeClass("ion-chevron-up")
+    } else {
+      $this.addClass("ion-chevron-up").removeClass("ion-chevron-down")
+    }
   }
-})
+)
 
 $(document).on("click", ".content-more-message", function() {
   var more_btn = $(this).parents(".content-more").first()
@@ -1177,6 +1196,8 @@ $(document).ready(function() {
   )
 
   init_collapsible()
+
+  init_delayed_blocks()
 
   focus_on_form($(".pontus-main"))
 })
