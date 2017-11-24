@@ -33,6 +33,7 @@ class CreatOrganizationsSchema(Schema):
                ['title',
                 'description',
                 'logo',
+                'cover_picture',
                 'contacts']),
         widget=SequenceWidget(min_len=1),
         title=_('Organizations to create')

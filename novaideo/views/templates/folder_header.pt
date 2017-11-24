@@ -1,0 +1,36 @@
+<div data-component_type="object-header" class="header-panel-container"
+    style="background: transparent url('${cover_picture}')  no-repeat scroll center center / cover ;'" 
+    tal:define="
+      oid object.__oid__;
+      default_picture request.static_url('novaideo:static/images/background-folder.jpg');
+      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);
+      ">
+	<div class="container-fluid">
+		<div class="max-container">
+			<div class="row">
+			    <div class="col-md-3 col-sm-3"></div>
+			    <div class="col-md-6 col-sm-6">
+				    <div class="header-content-container">
+		                <div class="row">
+					        <div class="col-md-12">
+					          	<div class="header-data-container">
+						          <h3 class="view-item-title header-title"
+						            data-title="${getattr(object, 'title', object.name)}"
+						            data-icon="">
+						            <span>
+						                <span class="title-icon ${getattr(object, 'icon', '')}" ></span> ${object.title}
+						            </span>
+						          </h3>
+						          <div class="header-data-addon">
+                                    ${getattr(object, 'description', '')}
+						          </div>
+					        	</div>
+					     	</div>
+					    </div>
+				    </div>      
+				</div>
+				<div class="col-md-3 col-sm-3"></div>
+			</div>
+		</div>
+	</div>
+</div>

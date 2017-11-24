@@ -33,8 +33,8 @@ from pontus.util import update_resources
 from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
-from dace.objectofcollaboration.principal.util import get_current
-from dace.util import getSite, getAllBusinessAction, getBusinessAction
+from dace.objectofcollaboration.principal.util import get_current, has_role
+from dace.util import getSite, getAllBusinessAction, getBusinessAction, get_obj
 from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
@@ -834,6 +834,31 @@ FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
 
 DEFAULT_SUPPORT_TEMPLATE = 'novaideo:views/templates/support_entity_actions.pt'
+
+
+def render_object_header(context, request):
+    active_folder_id = None
+    active_folder = None
+    if request.GET:
+        active_folder_id = dict(request.GET._items).get('folderid', None)
+
+    try:
+        if active_folder_id:
+            active_folder = get_obj(int(active_folder_id))
+    except (TypeError, ValueError):
+        active_folder = None
+    
+    context = active_folder or context
+    header_template = getattr(context, 'templates', {}).get('header', None)
+    body = ''
+    if header_template:
+        body = renderers.render(
+            header_template,
+            {'object': context,
+             'is_portal_manager': has_role(role=('PortalManager',))},
+            request)
+
+    return body
 
 
 def render_small_listing_objs(

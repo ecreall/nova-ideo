@@ -8,20 +8,20 @@
 <div class="right-caption span4"  i18n:domain="novaideo">
   <div class="caption">
   	<h3 tal:define="parents object.parents"><a tal:condition="parents" tal:attributes="href request.resource_url(parents[0], '@@index')" >${parents[0].title}</a> <span tal:condition="parents">/</span> ${object.title} </h3>
-    <div id="contenttext" class="content-text">
+    <div id="contenttext">
       ${getattr(object, 'description', '')}
     </div>
   </div>
 
-<div class="object-nav-tabs">
+<div class="object-nav-tabs" tal:condition="subfolders">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li tal:condition="subfolders" class="active" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
+        <li class="active" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
-        <div tal:condition="subfolders" role="tabpanel" class="tab-pane active" id="contents">
+        <div  role="tabpanel" class="tab-pane active" id="contents">
           <div tal:condition="body_actions" tal:repeat="action_body body_actions" >
               ${structure:action_body}
           </div>

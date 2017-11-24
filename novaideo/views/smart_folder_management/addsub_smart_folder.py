@@ -31,6 +31,7 @@ class AddSubSmartFolderView(FormView):
                     ['title',
                      'description',
                      'locale',
+                     'cover_picture',
                      'view_type',
                      'icon_data',
                      # 'style',

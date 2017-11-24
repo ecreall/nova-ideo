@@ -1,0 +1,63 @@
+<div data-component_type="object-header" class="header-panel-container" style="background: transparent url('${cover_picture}')  no-repeat scroll center center / cover ;'" 
+    tal:define="
+      oid object.__oid__;
+      organization_picture object.logo;
+      profil_picture getattr(organization_picture, 'profil', organization_picture);
+      default_picture request.static_url('novaideo:static/images/background-organization.jpg');
+      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);">
+	<div class="container-fluid">
+		<div class="max-container">
+			<div class="row">
+			    <div class="col-md-3 col-sm-3"></div>
+			    <div class="col-md-6 col-sm-6">
+				    <div class="header-content-container">
+		                <div class="row">
+					        <div class="col-md-3 col-sm-3 header-image-col">
+					          <div class="header-img-container">
+					            <img class="img-circle" tal:condition="organization_picture" class="" src="${profil_picture.url}">
+					          </div>
+					        </div>
+					        <div class="col-md-9 col-sm-9">
+					          	<div class="header-data-container">
+						          <h3 class="view-item-title header-title"
+						            data-title="${getattr(object, 'title', object.name)}"
+						            data-icon=""
+						            data-img="${getattr(profil_picture, 'url', '')}">
+						            <span>
+						                <span tal:condition="not organization_picture" class="${getattr(object, 'icon', '')}" ></span> ${object.title}
+						            </span>
+						          </h3>
+						          <div class="header-data-addon">
+						              <div>
+						                <dl tal:define="managers object.managers">
+						                  <dt tal:condition="managers and len(managers)>1"  i18n:translate="">The managers</dt>
+						                  <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
+						                  <dd tal:condition="managers">
+						                    <div class="working-group-section">
+						                        <tal:loop repeat="m managers">
+						                          <a tal:attributes="href request.resource_url(m, '@@index')"
+						                            data-oid="${getattr(m, '__oid__', '')}"
+						                            class="toggle-popover"
+						                            tal:define="picture getattr(m, 'picture', None);
+						                                        profil_picture getattr(picture, 'profil', None)">
+						                            <img class="author-img img-circle" 
+						                              tal:condition="profil_picture is not None"
+						                               tal:attributes="src profil_picture.url"  width="25"/>
+						                            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+						                            ${getattr(m, 'title', m.name)}</a>
+						                       </tal:loop>
+						                      </div>
+						                  </dd>
+						                </dl>
+						              </div>
+						          </div>
+					        	</div>
+					     	</div>
+					    </div>
+				    </div>      
+				</div>
+				<div class="col-md-3 col-sm-3"></div>
+			</div>
+		</div>
+	</div>
+</div>

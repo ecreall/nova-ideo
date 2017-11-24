@@ -92,6 +92,7 @@ class EditView(FormView):
                      'description',
                      'keywords',
                      'picture',
+                     'cover_picture',
                      'email',
                      'locale',
                      'change_password'])

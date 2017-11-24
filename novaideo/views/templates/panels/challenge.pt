@@ -1,59 +1,77 @@
-<div class="challenge-header" tal:define="challenge challenge|nothing" i18n:domain="novaideo">
-	<div class="container home-panel-container challenge-container" tal:condition="challenge">
-	<span tal:condition="getattr(challenge, 'is_restricted', False)"
-        class="challenge-restricted ion-locked"
-        title="Is restricted"
-        i18n:attributes="title"></span>  
-	  <div class="row" tal:define="
-		author challenge.author;
-		is_anonymous getattr(author, 'is_anonymous', False);
-        author_picture getattr(author, 'picture', None);
-        default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
-		challenge_image challenge.image;
-		deadline getattr(challenge, 'deadline', None)">
-	    <div class="col-md-5 col-xs-12 col-sm-5">                  
-	      <img title="${challenge.title}" alt="${challenge.title}" class="challenge-img" src="${getattr(challenge_image, 'xlarge', challenge_image).url}" width="750" height="500">
-	    </div>
-	    <div class="col-md-7 col-xs-12 col-sm-7">
-	        <h2 class="challenge-title" >
-	        	<a href="${request.resource_url(challenge, '@@index')}">
-	        		<span class="icon ${challenge.icon}"></span> ${challenge.title}
-	        	</a>
-	        </h2>
-        	<div tal:omit-tag="" tal:condition="deadline">
-		       <div tal:define="expired challenge.is_expired;"
-		            class="challenge-deadline ${expired and 'expired'}">
-		          <span class="glyphicon glyphicon-calendar"></span> 
-		          <span tal:condition="not expired" i18n:translate="">The end of the challenge is planned on</span>
-		          <span tal:condition="expired" i18n:translate="">The challenge ended on the</span>
-		          <span tal:replace="layout.to_localized_time(deadline)"/>
-		       </div>
-		    </div>
-	        <div class="author-block">
-				<img class="author-img img-circle" 
-			         tal:condition="author_picture is not None" 
-			         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-		    	<img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
-		        <small>
-		          <span i18n:translate="">Submitted by</span>
-		          <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
-		            ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
-		          </a>
-		          <span tal:condition="is_anonymous" class="user-title">
-		            ${getattr(author, 'title', author.name)}
-    		      </span>
-	              <span i18n:translate="">the</span>
-	              <span tal:replace="layout.to_localized_time(challenge.created_at)"/>
-		        </small>
-		    </div>
-		    <div class="keywords-result">
-	          <span class="glyphicon glyphicon-tags"></span> 
-	          <tal:loop repeat="k challenge.keywords">
-	                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-	          </tal:loop>
-	        </div>
-		    <div class="challenge-description">${challenge.description}</div>
-		    <nav class="hidden-xs novaideo-contents" style="margin-top: 10px">
+<div tal:omit-tag="" tal:define="challenge challenge|nothing" i18n:domain="novaideo">
+	<div data-component_type="object-header"
+	    class="home-panel-container header-panel-container" style="background: transparent url('${cover_picture}')  no-repeat scroll center center / cover ;'"
+		tal:condition="challenge"
+		tal:define="
+		  default_picture request.static_url('novaideo:static/images/background-person.png');
+	      cover_picture getattr(getattr(challenge, 'image', None), 'url', default_picture);">
+		<span tal:condition="getattr(challenge, 'is_restricted', False)"
+	        class="challenge-restricted ion-locked"
+	        title="Is restricted"
+	        i18n:attributes="title"></span> 
+		<div class="container-fluid"
+		     tal:define="
+				author challenge.author;
+				is_anonymous getattr(author, 'is_anonymous', False);
+		        author_picture getattr(author, 'picture', None);
+		        deadline getattr(challenge, 'deadline', None)">
+			<div class="max-container">
+				<div class="row">
+				    <div class="col-md-3 col-sm-3"></div>
+				    <div class="col-md-6 col-sm-6">
+					    <div class="header-content-container">
+			                <div class="row">
+						        <div class="col-md-12">
+						          <div class="header-data-container">
+							        <h2 class="challenge-title header-title" >
+							        	<a href="${request.resource_url(challenge, '@@index')}">
+							        		<span class="icon ${challenge.icon}"></span> ${challenge.title}
+							        	</a>
+							        </h2>
+						        	<div tal:omit-tag="" tal:condition="deadline">
+								       <div tal:define="expired challenge.is_expired;"
+								            class="challenge-deadline ${expired and 'expired'}">
+								          <span class="glyphicon glyphicon-calendar"></span> 
+								          <span tal:condition="not expired" i18n:translate="">The end of the challenge is planned on</span>
+								          <span tal:condition="expired" i18n:translate="">The challenge ended on the</span>
+								          <span tal:replace="layout.to_localized_time(deadline)"/>
+								       </div>
+								    </div>
+							        <div class="author-block">
+										<img class="author-img img-circle" 
+									         tal:condition="author_picture is not None" 
+									         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+								    	<img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
+								        <small>
+								          <span i18n:translate="">Submitted by</span>
+								          <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
+								            ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+								          </a>
+								          <span tal:condition="is_anonymous" class="user-title">
+								            ${getattr(author, 'title', author.name)}
+						    		      </span>
+							              <span i18n:translate="">the</span>
+							              <span tal:replace="layout.to_localized_time(challenge.created_at)"/>
+								        </small>
+								    </div>
+							        <div class="header-data-addon">
+									    <div class="keywords-result">
+								          <span class="glyphicon glyphicon-tags"></span> 
+								          <tal:loop repeat="k challenge.keywords">
+								                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+								          </tal:loop>
+								        </div>
+									    <div class="challenge-description">${challenge.description}</div>
+								    </div>
+								 </div>
+						        </div>
+						    </div>
+					    </div>      
+					</div>
+					<div class="col-md-3 col-sm-3"></div>
+				</div>
+			</div>
+			<nav class="hidden-xs novaideo-contents" tal:condition="nb_question + nb_idea + nb_proposal > 0">
 			    <div class="novaideo-contents-list">
 			            <ul>
 			                <div tal:omit-tag="" tal:condition="nb_question > 0">
@@ -71,7 +89,6 @@
 			            </ul>
 			    </div>
 			</nav>
-	    </div>
-	 </div>
-  </div>
+		</div>
+	</div>
 </div>

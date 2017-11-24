@@ -195,6 +195,7 @@
         ${panel('challenge')}
         ${panel('usernavbar', True if contextual_help else False)}
         ${panel('challenges')}
+        ${panel('header')}
       </div>
       <div class="max-container">
         <div class="container-fluid">

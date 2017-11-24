@@ -21,7 +21,7 @@ from dace.objectofcollaboration.principal.util import (
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     AjaxSelect2Widget, SimpleMappingWidget, SequenceWidget)
-from pontus.file import Image, ObjectData
+from pontus.file import Image, ObjectData, File
 from pontus.schema import omit, select
 
 from novaideo.core_schema import ContactSchema
@@ -137,6 +137,14 @@ class OrganizationSchema(VisualisableElementSchema):
         title=_('Logo'),
         )
 
+    cover_picture = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
+        title=_('Cover picture'),
+        missing=None,
+        description=_("Only PNG and SVG files are supported."),
+    )
+
     contacts = colander.SchemaNode(
         colander.Sequence(),
         omit(select(ContactSchema(name='contact',
@@ -177,13 +185,15 @@ class Organization(VisualisableElement, Group):
     templates = {
         'default': 'novaideo:views/templates/organization_result.pt',
         'popover': 'novaideo:views/templates/organization_popover.pt',
-        'small': 'novaideo:views/templates/small_organization_result.pt'
+        'small': 'novaideo:views/templates/small_organization_result.pt',
+        'header': 'novaideo:views/templates/organization_header.pt',
     }
     icon = 'glyphicon glyphicon-home'
     name = renamer()
     managers = managers()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')
+    cover_picture = CompositeUniqueProperty('cover_picture')
 
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)

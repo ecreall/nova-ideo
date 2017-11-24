@@ -14,8 +14,11 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty
+from dace.descriptors import (
+    SharedMultipleProperty, SharedUniqueProperty,
+    CompositeUniqueProperty)
 from dace.util import get_obj
+from pontus.file import File, ObjectData
 from pontus.schema import Schema, omit, select
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
@@ -34,6 +37,7 @@ from novaideo.widget import (
     BootstrapIconInputWidget
     )
 from novaideo.views.filter import FilterSchema
+from novaideo.content import get_file_widget
 
 
 DEFAULT_FOLDER_COLORS = {'usual_color': 'white, #2d6ca2',
@@ -138,6 +142,14 @@ class SmartFolderSchema(VisualisableElementSchema):
         missing=''
     )
 
+    cover_picture = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
+        title=_('Cover picture'),
+        missing=None,
+        description=_("Only PNG and SVG files are supported."),
+        )
+
     filters = colander.SchemaNode(
         colander.Sequence(),
         omit(select(FilterSchema(
@@ -205,12 +217,14 @@ class SmartFolder(VisualisableElement, Entity):
     templates = {
         'default': 'novaideo:views/templates/folder_result.pt',
         'bloc': 'novaideo:views/templates/folder_result.pt',
+        'header': 'novaideo:views/templates/folder_header.pt',
     }
     name = renamer()
     children = SharedMultipleProperty('children', 'parents')
     parents = SharedMultipleProperty('parents', 'children')
     author = SharedUniqueProperty('author', 'folders')
     contents = SharedMultipleProperty('contents')
+    cover_picture = CompositeUniqueProperty('cover_picture')
 
     def __init__(self, **kwargs):
         super(SmartFolder, self).__init__(**kwargs)
