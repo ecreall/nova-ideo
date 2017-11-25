@@ -3,14 +3,16 @@ FROM python:3.6
 ARG userid=1000
 ARG run_buildout=true
 
+# varnish 4.1 repo has a package for debian jessie, debian stretch,
+# ubuntu xenial (16.04), but not ubuntu zesty (17.04) so defaults to varnish 5.0.0 from ubuntu repo.
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl git libzmq3-dev libyaml-dev apt-transport-https lsb-release && \
     curl -L https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - && \
     oslower=$(lsb_release -s -i | tr '[:upper:]' '[:lower:]') && \
     oscodename=$(lsb_release -s -c) && \
-    echo "deb https://packagecloud.io/varnishcache/varnish41/${oslower}/ ${oscodename} main" > /etc/apt/sources.list.d/varnishcache_varnish41.list && \
+    (test $oscodename != 'zesty' && echo "deb https://packagecloud.io/varnishcache/varnish41/${oslower}/ ${oscodename} main" > /etc/apt/sources.list.d/varnishcache_varnish41.list || true) && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish=4.1.9-1~${oscodename} && \
+    (test $oscodename != 'zesty' && apt-get install -y varnish=4.1.9-1~${oscodename} || apt-get install -y varnish) && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \
