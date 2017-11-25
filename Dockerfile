@@ -3,13 +3,14 @@ FROM python:3.6
 ARG userid=1000
 ARG run_buildout=true
 
-# Modify /var/lib/varnish to be on a tmpfs (/dev is a rw tmpfs)
-# This is for the 82MB shared memory file named "_.vsm".
-# /dev/varnish is created in start.bash
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish curl git libzmq3-dev libyaml-dev && \
-    rm -rf /var/lib/varnish && \
-    ln -s /dev/varnish /var/lib/varnish && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y curl git libzmq3-dev libyaml-dev apt-transport-https lsb-release && \
+    curl -L https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - && \
+    oslower=$(lsb_release -s -i | tr '[:upper:]' '[:lower:]') && \
+    oscodename=$(lsb_release -s -c) && \
+    echo "deb https://packagecloud.io/varnishcache/varnish41/${oslower}/ ${oscodename} main" > /etc/apt/sources.list.d/varnishcache_varnish41.list && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish=4.1.9-1~${oscodename} && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \
