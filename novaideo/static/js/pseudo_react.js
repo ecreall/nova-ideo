@@ -243,6 +243,17 @@ function process_steps_component(data) {
   })
 }
 
+function header_component(data) {
+  if (data.has_header){
+    var components = $('[data-component_type="object-header"]').first()
+    if (components.length > 0) {
+      var original_component = $(components[0])
+      original_component.html(data["header.body"])
+    }
+  }
+}
+
+
 function tab_component_component(data) {
   var components = $('[data-component_type="tab_component"]')
   var components_to_update = components.map(function() {
@@ -501,7 +512,8 @@ var pseudo_react_components = {
     novaideo_content_nb_component,
     tab_component_component,
     contextual_help_component,
-    process_steps_component
+    process_steps_component,
+    header_component
   ],
   redirect_action: [
     nav_bar_component,
@@ -513,14 +525,16 @@ var pseudo_react_components = {
     tab_component_component,
     object_view_component,
     contextual_help_component,
-    process_steps_component
+    process_steps_component,
+    header_component
   ],
   dropdown_action: [
     dropdown_action_component,
     list_channels_component,
     alert_component,
     contextual_help_component,
-    process_steps_component
+    process_steps_component,
+    header_component
   ],
   "loading-action": [loading_component]
 }

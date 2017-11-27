@@ -1,3 +1,41 @@
+blockquote {
+  border-left: 3px solid #eee;
+}
+
+.contact-container {
+  padding-left: 5px;
+  .contact-title {
+    color: #636363;
+    font-size: 15px;
+  }
+  .contact-content {
+    font-size: 14px;
+    margin-left: 20px;
+    color: gray;
+    > span {
+      font-size: 12px;
+      margin-right: 5px;
+    }
+    a {
+      color: gray;
+    }
+  }
+}
+
+.media-person .content-col {
+  margin-left: 56px!important;
+}
+
+.open-folder {
+  margin-top: 22px;
+  .breadcrumb li{
+    font-weight: 100;
+  }
+}
+.title-icon {
+  margin-right: 5px  
+}
+
 .label {
   padding: .3em .6em .3em;
 }
@@ -24,8 +62,31 @@
   border-radius: 10px !important;
 }
 
+
+.header-panel-container > .container-fluid,
 .home-panel-container > .container-fluid {
-  background-color: rgba(0, 125, 177, 0.2);
+  background-color: rgba(7, 73, 101, 0.5);
+}
+
+.header-panel-container {
+  .novaideo-contents {
+    background-color: rgba(0, 32, 45, 0.4);
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 5px;
+    strong {
+      color: white;
+    }
+    .novaideo-contents-list {
+      margin-bottom: 0px;
+      ul {
+        margin-bottom: 0px;
+        li {
+          color: white;
+        }
+      }
+    }
+  }
 }
 
 .max-container {
@@ -750,9 +811,10 @@ body {
   border-bottom-right-radius: 3em;
 }
 
-.challenge-container .challenge-restricted {
+.header-panel-container .challenge-restricted {
   right: 0px;
   top: 40px;
+  background-color: rgba(239, 110, 24, 0.81);
 }
 
 .invitedusers-input.closed {
@@ -898,15 +960,17 @@ body {
   padding-bottom: 15px;
   margin-bottom: 20px;
   margin-top: 15px;
-}
+  .attached-files {
+    margin-left: 0px;
+  } 
+  nav {
+    min-height: inherit !important;
+    ul.nav.navbar-nav {
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
+  }
 
-.challenge-detail nav ul.nav.navbar-nav {
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-.challenge-detail nav {
-  min-height: inherit !important;
 }
 
 .challenges-container {
@@ -1074,6 +1138,7 @@ challenge-container .author-block {
   background-image: none !important;
   background-color: transparent !important;
   border: none !important;
+  padding: 0px
 }
 
 span.md {
@@ -1186,11 +1251,14 @@ a.answer-btn {
   margin-top: 15px;
 }
 
+.header-panel-container,
 .home-panel-container {
   margin-top: -20px;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.home-panel-container {
   padding-bottom: 20px;
 }
 
@@ -1201,13 +1269,16 @@ a.answer-btn {
   transition: none !important;
 }
 
-.home-panel-text {
+.header-content-container {
   vertical-align: middle;
-  display: table-cell;
+  display: flex;
+  align-items: center;
   font-size: 20px;
   color: #fff;
   height: 400px;
-  opacity: 0.9;
+  > .row {
+    width: 100%;
+  }
 }
 
 .smartfolder-source-nav {
@@ -1244,7 +1315,7 @@ a.answer-btn {
   padding-right: 5px;
   width: 20px;
   font-size: 15px;
-  color: @novaideo-color;
+  color: @novaideo-primary-color;
   vertical-align: text-bottom;
 }
 
@@ -1262,7 +1333,7 @@ a.answer-btn {
 }
 
 .smartfolder-nav li > .item-container > a.folder-title {
-  color: #797979 !important;
+  color: #525252!important;
   overflow: hidden;
   display: inline;
   text-overflow: ellipsis;
@@ -2965,6 +3036,10 @@ form .btn {
   margin-bottom: 10px;
 }
 
+.header-image-col{
+  max-width: 110px;
+}
+
 .user-panel {
   margin-top: -16px;
 }
@@ -2974,25 +3049,34 @@ form .btn {
   background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.46));
 }
 
-.user-img-container {
+.header-img-container {
   margin-top: 15px;
   padding-left: 10px;
   padding-bottom: 15px;
   text-align: center;
+  float: right
 }
 
-.user-img-container > img {
+.header-img-container > img {
   position: unset;
   width: 80px;
+  height: 80px;
   border: 3px solid #fff;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.58);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+  background-color: white;
 }
 
-.user-data-container {
+.header-data-container {
   color: white;
   font-size: 13px;
-  margin-left: -20px;
   min-height: 100px;
+  .header-title{
+    font-family: LatoWebLight;
+    font-size: 35px;
+  }
+  .user-function{
+    color: white;
+  }
 }
 
 .user-data-detail {
@@ -3005,18 +3089,28 @@ form .btn {
   width: 93%;
 }
 
-.user-data-container a,
-.user-data-container small {
+.header-data-container a,
+.header-data-container small {
   color: white !important;
 }
 
-.user-data-addon {
-  font-size: 11px;
+.header-data-addon {
+  font-size: 16px;
   margin-top: 15px;
+  font-family: LatoWeb;
+  padding: 5px 15px;
+  font-style: italic;
+  .keywords-result,
+  .keywords-result a {
+    color: white
+  }
+  dl {
+    margin-bottom: 0px
+  }
 }
 
-.user-data-addon dd,
-.user-data-addon dt {
+.header-data-addon dd,
+.header-data-addon dt {
   display: inline-block;
 }
 
@@ -4286,6 +4380,7 @@ ins {
 .author-img {
   display: inline-block !important;
   box-shadow: 0 0px 3px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
 }
 
 .object-title-block {
@@ -4632,7 +4727,7 @@ ins {
   padding: 5px 10px;
   border: none;
   border-radius: 0px;
-  font-weight: bold;
+  letter-spacing: initial;
 }
 
 .navbar-entity .navbar-nav {
@@ -5666,6 +5761,19 @@ span.circle {
 }
 
 @media (max-width: 767px) {
+  .header-content-container {
+    justify-content: center;
+  }
+
+  .header-image-col {
+   max-width: initial;
+  }
+
+  .header-data-container {
+    margin-left: 0px;
+    text-align: center;
+  }
+
   .challenge-deadline {
     display: block;
   }
@@ -5712,15 +5820,16 @@ span.circle {
     padding-left: 40px;
     padding-right: 10px;
   }
-  .user-data-container > h3 > span {
+  .header-data-container > h3 > span {
     display: block !important;
   }
-  .user-data-addon .pull-right {
+  .header-data-addon .pull-right {
     float: none !important;
   }
 
-  .user-img-container {
+  .header-img-container {
     text-align: center;
+    float: none;
   }
   .navbar-entity-content .nav > li.pull-right:not(.plus-menu) {
     float: none !important;
@@ -5910,10 +6019,6 @@ span.circle {
 }
 
 @media (max-width: 991px) {
-  .user-data-container {
-    margin-left: 0px;
-    text-align: center;
-  }
   .search-form.navbar-form {
     width: 100%;
   }
@@ -6069,8 +6174,13 @@ span.circle {
 .primary-actions a,
 .wg-block .wg-actions ul a,
 .listing-access-menu a {
-  color: #d0d0d0; //#b6b8b6;
+  color: #d0d0d0;
   transition: all .1s ease-in-out;
+}
+
+.listing-access-menu a {
+  padding: 7px 5px 3px;
+  font-size: 13px;
 }
 
 .invitation_menu .primary-actions a {
@@ -6085,7 +6195,6 @@ span.circle {
   .listing-access-menu a {
     color: #fff !important;
     background-color: @novaideo-secondary-color;
-    padding: 7px 6px 3px;
     border-radius: 50%;
   }
 

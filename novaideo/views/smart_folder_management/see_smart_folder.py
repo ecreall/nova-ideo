@@ -152,10 +152,8 @@ class OpenFolderView(BasicView):
              'file', 'person'], user)
         len_result = len(objects)
         self.breadcrumb = self.content(
-            args={'lineage': folder.folder_lineage,
-                  'number': len_result},
+            args={'number': len_result},
             template=self.breadcrumb_template)['body']
-        self.title = '/'.join([f.title for f in folder.folder_lineage])
         if getattr(self, 'filter_instance', None) is not None:
             filter_data['filter_message'] = self.breadcrumb
             filter_body = getattr(self, 'filter_instance').get_body(filter_data)

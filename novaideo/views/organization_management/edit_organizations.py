@@ -34,6 +34,7 @@ class EditOrganizationsView(FormView):
                     [(u'organizations', ['title',
                                          'description',
                                          'logo',
+                                         'cover_picture',
                                          'managers',
                                          'contacts'])])
     behaviors = [EditOrganizations, Cancel]

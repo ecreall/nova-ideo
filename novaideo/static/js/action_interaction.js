@@ -31,6 +31,7 @@ function get_action_metadata(action) {
       return $(this).attr("id")
     })
     .get()
+  var has_header = $('[data-component_type="object-header"]').length > 0
   return {
     source_path: window.location.pathname,
     view_name: view_name,
@@ -39,6 +40,7 @@ function get_action_metadata(action) {
     included_resources: JSON.stringify(includejs_resources),
     contextual_help: JSON.stringify(contextual_help),
     steps_navbars: JSON.stringify(steps_navbars),
+    has_header: has_header,
     load_view: "load"
   }
 }

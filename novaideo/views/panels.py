@@ -21,7 +21,7 @@ from dace.util import (
     getSite,
     find_catalog, getAllBusinessAction,
     get_obj)
-from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.principal.util import get_current, has_role
 from daceui.interfaces import IDaceUIAPI
 from dace.interfaces import IEntity
 from pontus.util import merge_dicts
@@ -48,7 +48,8 @@ from novaideo.utilities.util import (
     FOOTER_NAVBAR_TEMPLATE,
     get_debatescore_data,
     get_action_view,
-    render_listing_obj)
+    render_listing_obj,
+    render_object_header)
 from novaideo.views.filter import (
     find_entities, find_more_contents, get_all_user_contributions)
 from novaideo.contextual_help_messages import render_contextual_help
@@ -830,7 +831,6 @@ class ChallengePanel(object):
         self.request = request
 
     def __call__(self):
-        # TODO Add communication actions
         challenge = getattr(self.context, 'challenge', None)
         if challenge is None or 'challenge' not in self.request.content_to_manage:
             return {}
@@ -854,20 +854,36 @@ class ChallengePanel(object):
             states_index.any(['published'])
         result['nb_idea'] = query.execute().__len__()
         result['nb_question'] = 0
-        if 'question' not in self.request.content_to_manage:
+        if 'question' in self.request.content_to_manage:
             query = challenges.any([challenge.__oid__]) & \
                 object_provides_index.any((IQuestion.__identifier__,)) & \
                 states_index.any(['published'])
             result['nb_question'] = query.execute().__len__()
 
         result['nb_proposal'] = 0
-        if 'proposal' not in self.request.content_to_manage:
+        if 'proposal' in self.request.content_to_manage:
             query = challenges.any([challenge.__oid__]) & \
                 object_provides_index.any((IProposal.__identifier__,)) & \
                 states_index.notany(['archived', 'draft'])
             result['nb_proposal'] = query.execute().__len__()
 
         return result
+
+
+@panel_config(
+    name='header',
+    context=Entity,
+    renderer='templates/panels/object_header.pt'
+    )
+class HeaderPanel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        body = render_object_header(self.context, self.request)
+        return {'header': body}
 
 
 @panel_config(

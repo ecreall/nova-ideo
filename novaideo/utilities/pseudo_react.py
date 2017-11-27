@@ -48,7 +48,8 @@ from novaideo.connectors.core.views.see import (
     CONTENTS_MESSAGES as CONNECTORS_CONTENTS_MESSAGES)
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj,
-    render_index_obj, render_view_obj, render_view_comment)
+    render_index_obj, render_view_obj, render_view_comment,
+    render_object_header)
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
     IPreregistration, IInvitation, IOrganization,
@@ -57,6 +58,7 @@ from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import Amendment
 from novaideo.core import can_access, ON_LOAD_VIEWS
+
 
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_uid_result.pt'
 
@@ -140,6 +142,13 @@ def update_steps_navbar(request, context, steps_navbars):
         request)}
 
 
+def update_object_header(request, context):
+    body = render_object_header(context, request)
+    return {
+        'header.body': body,
+        'has_header': body}
+
+
 def get_all_updated_data(action, request, context, api, **kwargs):
     result = {'action': None, 'view': api}
     if not action:
@@ -162,6 +171,7 @@ def get_all_updated_data(action, request, context, api, **kwargs):
     contextual_help = json.loads(contextual_help) if contextual_help else []
     steps_navbars = api.params('steps_navbars')
     steps_navbars = json.loads(steps_navbars) if steps_navbars else []
+    has_header = api.params('has_header')
     object_views_to_update = []
     if metadatagetter:
         user = get_current()
@@ -225,6 +235,12 @@ def get_all_updated_data(action, request, context, api, **kwargs):
             result['stepsnavbars_to_update'] = steps_navbars
             result.update(update_steps_navbar(
                 request, context, steps_navbars))
+
+        #update header
+        object_header = has_header and result.get('update-header', False)
+        if context is source_context and object_header:
+            result.update(update_object_header(
+                request, context))
 
     result['resources'] = _get_resources_to_include(
         request, resources, current_resources)
@@ -863,7 +879,8 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
         'object_views_to_update': object_views_to_update,
         'new_body': None,
         'alert_msg': request.localizer.translate(alert_msg) if alert_msg else None,
-        'alert_type': 'success'
+        'alert_type': 'success',
+        'update-header': True
     }
     return result
 
@@ -1082,11 +1099,13 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
 
 
 def get_edit_folder_metadata(action, request, context, api, **kwargs):
-    return get_edit_entity_metadata(
+    result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The topic of interest has been modified."),
         **kwargs)
+    result['update-header'] = True
+    return result
 
 
 def get_remove_folder_metadata(action, request, context, api, **kwargs):
@@ -1612,7 +1631,8 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
         'objects_to_hide': objects_to_hide,
         'view_name': 'index',
         'object_views_to_update': object_views_to_update,
-        'new_body': json.dumps(body) if body else None
+        'new_body': json.dumps(body) if body else None,
+        'update-header': True,
     }
     result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
     result['alert_type'] = 'success'
@@ -1620,11 +1640,13 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
 
 
 def get_edit_organization_metadata(action, request, context, api, **kwargs):
-    return get_edit_entity_metadata(
+    result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The data relating to the organisation have been updated."),
         **kwargs)
+    result['update-header'] = True
+    return result
 
 
 def get_remove_organization_metadata(action, request, context, api, **kwargs):
@@ -1649,11 +1671,13 @@ def get_remove_organization_metadata(action, request, context, api, **kwargs):
 
 
 def get_assigne_roles_user_metadata(action, request, context, api, **kwargs):
-    return get_edit_entity_metadata(
+    result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The role of the user has been modified."),
         **kwargs)
+    result['update-header'] = True
+    return result
 
 
 def get_update_processes_metadata(action, request, context, api, **kwargs):

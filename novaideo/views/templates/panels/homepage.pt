@@ -1,12 +1,14 @@
 <div tal:condition="is_homepage and picture" 
-	 class="home-panel-container"
+	 class="home-panel-container header-panel-container "
 	 style="background-image: url('${picture.url}');'">
 	<div class="container-fluid">
 		<div class="row">
 		  <div class="col-md-2 col-sm-2"></div>
 		  <div class="col-md-4 col-sm-7" style="margin-top: -20px;">
-		  	<div class="home-panel-text">
-		  	${structure: text}
+		  	<div class="header-content-container">
+			  	<div>
+			  	  ${structure: text}
+			  	</div>
 		    </div>
 		  </div>
 		  <div class="col-md-6 col-sm-3"></div>
