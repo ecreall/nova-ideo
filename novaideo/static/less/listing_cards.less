@@ -1,0 +1,158 @@
+.listing-card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  padding: 5px 5px 5px 10px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+  transition: border .2s ease-in-out;
+
+  .listing-card-header {
+    color: gray;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .view-item-title a {
+      color: #333;
+    }
+
+    .user-title {
+      color: #545454;
+      font-weight: bold;
+    }
+
+    > small {
+      margin-left: 5px;
+    }
+  }
+
+  .listing-card-container {
+    display: flex;
+
+    .listing-card-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .listing-card-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-left: 15px;
+
+      .action-inline-container {
+        > .container-body:first-child {
+          padding: 0;
+          margin-top: 0;
+        }
+      }
+
+      .listing-card-footer {
+        color: #8b93a3;
+        font-size: 12px;
+        margin-top: 10px;
+        position: relative;
+        display: inline-block;
+
+        .actions-block {
+          a {
+            display: inline-block;
+            color: #797979;
+
+            .activated {
+              color: @novaideo-secondary-color;
+              font-weight: bold;
+            }
+          }
+
+          a:hover {
+            color: @novaideo-secondary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.listing-card-idea {
+  border-left: 3px solid @idea-color !important;
+}
+
+.listing-card-question {
+  border-left: 3px solid @question-color !important;
+}
+
+.listing-card-proposal {
+  border-left: 3px solid @proposal-color !important;
+}
+
+.listing-card-file {
+  border-left: 3px solid @file-color !important;
+}
+
+.listing-card-organization {
+  border-left: 3px solid @organization-color !important;
+}
+
+.listing-card-person {
+  border-left: 3px solid @person-color !important;
+
+  .listing-card-left {
+    min-width: 40px;
+  }
+}
+
+.listing-card-amendment {
+  border-left: 3px solid @amendment-color !important;
+
+  .listing-card-left {
+    min-width: 25px;
+  }
+}
+
+.listing-card-challenge {
+  border-left: 3px solid @challenge-color !important;
+
+  .listing-card-left {
+    min-width: 25px;
+  }
+}
+
+.listing-card-invitation {
+  border-left: 3px solid @invitation-color !important;
+}
+
+.listing-card-advertising {
+  border-left: 3px solid @advertising-color !important;
+
+  .announcement > .carousel {
+    box-shadow: none;
+  }
+}
+
+.listing-card-newsletter {
+  border-left: 3px solid @newsletter-color !important;
+}
+
+.listing-card-comment {
+  .listing-card-left {
+    min-width: 10px;
+  }
+
+  .listing-card-footer {
+    margin-top: 0px;
+  }
+}
+
+.listing-card.listing-card-comment.comment-card {
+  border: none;
+}

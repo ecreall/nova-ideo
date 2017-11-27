@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-invitation search-item result-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   i18n:domain="novaideo"
@@ -11,26 +11,33 @@
               organization getattr(object, 'organization', None);
               oid object.__oid__;
             ">
-  <div class="media-body media-invitation">
-    <div class="object-title-block view-item-title" >
+  <div class="listing-card-header">
+    <div class="view-item-title" >
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span> Invitation pour ${user_title} ${last_name} ${first_name} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
     </div>
-     <dl class="dl-horizontal" style="margin-bottom: 35px;">
-         <dt tal:condition="organization" i18n:translate="">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
-         <dt tal:condition="roles">Invitée en tant que</dt>
-         <dd tal:condition="roles">
-            <ul class="nav nav-list">
-               <li tal:repeat="r roles" i18n:translate="">${r}</li>
-            </ul>
-         </dd>
-     </dl>
-    <div class="invitation_menu object-menu pull-right">
-      <div tal:replace="structure primary_menu_body"/>
-      <div tal:replace="structure menu_body"/>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <dl class="dl-horizontal" style="margin-bottom: 35px;">
+           <dt tal:condition="organization" i18n:translate="">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
+           <dt tal:condition="roles">Invitée en tant que</dt>
+           <dd tal:condition="roles">
+              <ul class="nav nav-list">
+                 <li tal:repeat="r roles" i18n:translate="">${r}</li>
+              </ul>
+           </dd>
+        </dl>
+      </div>
+      <div class="invitation_menu">
+        <div tal:replace="structure primary_menu_body"/>
+        <div tal:replace="structure menu_body"/>
+      </div>
     </div>
   </div>
 </div>

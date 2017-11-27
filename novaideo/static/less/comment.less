@@ -3,7 +3,7 @@
 }
 
 .comment-content .attached-files {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 .comment-pinned {
@@ -31,7 +31,7 @@
   display: none !important;
 }
 
-.comment-data > img {
+.comment-card > img {
   margin-right: 9px;
   margin-top: -5px;
   box-shadow: 0 0 3px rgba(0, 0, 0, .25);
@@ -44,7 +44,7 @@ form.answerform {
 
 .comment-menu {
   position: absolute;
-  right: 0;
+  right: 5px;
 }
 
 .comment-menu ul.dropdown-menu {
@@ -52,18 +52,22 @@ form.answerform {
   left: auto;
   margin-right: 15px;
   right: 0;
-  top: 0px;
+  top: 0;
 }
 
 .comment-content .alert {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
-.media-comment .author-block > img {
+.comment-author {
+  display: flex;
+}
+
+.media-comment .comment-author-block > img {
   vertical-align: super;
 }
 
-.media-comment .author-block .comment-author {
+.media-comment .comment-author-block .comment-author-data {
   display: inline-block;
 }
 
@@ -152,11 +156,6 @@ form.answerform {
   color: gray;
 }
 
-.commentli .content-text {
-  margin-top: 10px;
-  padding-left: 0px;
-}
-
 .commentform:not(.answerform) {
   background-color: white;
   height: 50px;
@@ -216,7 +215,7 @@ form.answerform {
   min-height: 64px;
   padding: 10px;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   z-index: 1;
 }
 
@@ -247,7 +246,7 @@ form.answerform {
 }
 
 .comment-textarea-container .message-alert {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   position: absolute;
   right: 30%;
 }
@@ -327,16 +326,16 @@ form.answerform {
   color: @brand-danger !important;
 }
 
-.comment-data .footer-actions-bodies {
+.comment-card .footer-actions-bodies {
   float: none;
-  margin-top: 0px;
+  margin-top: 0;
 }
 
-.comment-data .footer-actions-bodies a {
+.comment-card .footer-actions-bodies a {
   color: #d0d0d0;
 }
 
-.comment-data .footer-actions-bodies a:hover {
+.comment-card .footer-actions-bodies a:hover {
   color: @novaideo-secondary-color !important;
 }
 
@@ -371,12 +370,13 @@ form.answerform {
   border-radius: 3px;
   cursor: pointer;
   font-size: 3rem;
-  margin: 0px;
+  margin: 0;
 }
 
 .emoji-container-input span.emoji-sizer:hover {
   background-color: gray;
 }
+
 .url-block {
   margin: .4rem 0;
   max-width: 510px;
@@ -445,7 +445,7 @@ form.answerform {
   max-height: 600px;
 }
 
-.comment-data {
+.comment-card {
   border-radius: 13px;
 }
 
@@ -453,16 +453,16 @@ form.answerform {
   background-color: #f7f7f7;
 }
 
-.comment-data,
+.comment-card,
 .img-thumbnail {
   box-shadow: none;
 }
 
 .replay-body .img-thumbnail {
-  box-shadow: 0 0px 3px gray;
+  box-shadow: 0 0 3px gray;
 }
 
-.comment-data,
+.comment-card,
 .btn-xs,
 .btn-group-xs > .btn {
   border-radius: 10px;
@@ -474,18 +474,8 @@ form.answerform {
   padding-left: 0;
 }
 
-.commentli,
-.commentli .thumbnail {
-  margin-bottom: 5px !important;
-  border: none !important;
-}
-
 ul.commentulorigin:last-child {
   padding-bottom: 35px;
-}
-
-.commentli p {
-  margin: 16px 0 0;
 }
 
 .commentul {
@@ -494,13 +484,14 @@ ul.commentulorigin:last-child {
   padding-left: 0;
 }
 
-.comment-author {
+.comment-author-data {
   color: #717274;
   font-size: 12px;
+  margin-left: 10px;
 }
 
-.comment-author > a,
-.comment-author > .author-title {
+.comment-author-data > a,
+.comment-author-data > .author-title {
   color: #2c2d30;
   font-weight: 800;
   font-size: 16px;
@@ -560,29 +551,22 @@ li.comment-text-search-container {
   margin-right: -26px;
 }
 
-.commentli .object-text {
-  margin-top: -15px;
-}
-
-.commentli .attached-files {
-  margin-top: 0px;
-}
-
-.comment-data .dropdown-menu {
+.comment-card .dropdown-menu {
   box-shadow: none;
 }
 
-.comment-data .listing-object-menu .dropdown-toggle {
+.comment-card .listing-object-menu .dropdown-toggle {
   color: #bcbbba;
 }
 
-.commentli.replay-active > .comment-data {
-  margin-bottom: 0px !important;
+.commentli.replay-active > .comment-card {
+  margin-bottom: 0 !important;
   padding: 0 0 0 4px;
 }
 
-.comment-data:hover:not(.replay-active) {
+.comment-card:hover:not(.replay-active) {
   background-color: #f4f4f4 !important;
+
   .footer-actions-bodies a,
   .primary-actions a,
   .listing-object-menu .dropdown-toggle {
@@ -603,13 +587,15 @@ li.comment-text-search-container {
   padding: 1px 5px;
 }
 
+.comment-content {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+}
+
 @media (max-width: 767px) {
   .sidebar-right-wrapper .commentform:not(.answerform) {
     width: 100% !important;
-  }
-  .comment-content .content-text .row {
-    margin-left: 0px;
-    margin-right: 0px;
   }
 
   .commentform .comment-form-group.active {

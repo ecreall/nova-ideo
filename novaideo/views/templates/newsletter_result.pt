@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-newsletter search-item result-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   i18n:domain="novaideo"
@@ -10,49 +10,53 @@
   oid object.__oid__;
   "
   >
-  <div class="media-body media-file">
-    <div class="object-title-block view-item-title pull-left" >
-      <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
-      </div>
+  <div class="listing-card-header">
+    <h4 class="view-item-title">
       <a tal:attributes="href url">
-        <h4>
-          <span class="icon ${icon}"></span>  ${object.title}
-        </h4>
+        <span class="title-icon icon ${icon}"></span>  ${object.title}
       </a>
+    </h4>
+    <div class="object-menu" >
+      <div tal:replace="structure menu_body"/>
     </div>
-    <div class="object-text">
-      ${object.description}
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <div class="object-text">
+          ${object.description}
+        </div>
+        <dl class="dl-horizontal">
+            <dt tal:condition="recurrence">
+              <span class="glyphicon glyphicon-repeat"></span> 
+              <span i18n:translate="">Recurrence</span>
+            </dt>
+            <dd class="nl-sinding" tal:condition="recurrence">
+              <span>
+                <span i18n:translate="">Every</span> ${object.recurrence_nb} <span i18n:translate="">days</span>
+              </span>
+            </dd>
+            <dt tal:condition="last_sending_date">
+              <span class="glyphicon glyphicon-send"></span> 
+              <span i18n:translate="">Last sending</span>
+            </dt>
+            <dd  class="nl-last-sinding" tal:condition="last_sending_date">
+              <span>
+                <span tal:replace="layout.to_localized_time(last_sending_date)"/>
+              </span>
+            </dd>
+            <dt  tal:condition="sending_date">
+              <span class="glyphicon glyphicon-calendar"></span> 
+              <span i18n:translate="">Next sending</span>
+            </dt>
+            <dd class="nl-sinding"  tal:condition="sending_date">
+              <span>
+               <span tal:replace="layout.to_localized_time(sending_date)"/>
+              </span>
+            </dd>
+        </dl>
+      </div>
     </div>
-
-    <dl class="dl-horizontal">
-        <dt tal:condition="recurrence">
-          <span class="glyphicon glyphicon-repeat"></span> 
-          <span i18n:translate="">Recurrence</span>
-        </dt>
-        <dd class="nl-sinding" tal:condition="recurrence">
-          <span>
-            <span i18n:translate="">Every</span> ${object.recurrence_nb} <span i18n:translate="">days</span>
-          </span>
-        </dd>
-        <dt tal:condition="last_sending_date">
-          <span class="glyphicon glyphicon-send"></span> 
-          <span i18n:translate="">Last sending</span>
-        </dt>
-        <dd  class="nl-last-sinding" tal:condition="last_sending_date">
-          <span>
-            <span tal:replace="layout.to_localized_time(last_sending_date)"/>
-          </span>
-        </dd>
-        <dt  tal:condition="sending_date">
-          <span class="glyphicon glyphicon-calendar"></span> 
-          <span i18n:translate="">Next sending</span>
-        </dt>
-        <dd class="nl-sinding"  tal:condition="sending_date">
-          <span>
-           <span tal:replace="layout.to_localized_time(sending_date)"/>
-          </span>
-        </dd>
-    </dl>
   </div>
 </div>

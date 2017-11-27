@@ -37,7 +37,7 @@
                   data-body="${item['body']}"
                   data-icon="${icon}"
                   data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
-                   <span class="${icon}" ></span> ${item['action'].title}
+                   <span class="title-icon ${icon}" ></span> ${item['action'].title}
                  </a>
                  <script tal:condition="'toreplay' in item">       
                       $(document).ready(function(){

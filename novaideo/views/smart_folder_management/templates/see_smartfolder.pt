@@ -16,7 +16,7 @@
 <div class="object-nav-tabs" tal:condition="subfolders">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li class="active" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
+        <li class="active" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="title-icon glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
       </ul>
 
       <!-- Tab panes -->

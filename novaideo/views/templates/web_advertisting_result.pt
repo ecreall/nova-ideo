@@ -1,56 +1,66 @@
-<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-advertising search-item result-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   i18n:domain="novaideo"
   tal:define="url request.resource_url(object, '@@index');
               icon getattr(object, 'icon', '');
               oid object.__oid__;">
-  <div class="media-body media-advertisting">
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-    <div class="object-title-block" >
+  <div class="listing-card-header">
+    <div class="view-item-title" >
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span>  ${object.title}
           <small style="color:gray">
             (${getattr(object, 'click', 0)} <span i18n:translate="">click(s)</span>)
           </small>
+          <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
     </div>
-    <div class="announcement">
-        <div data-ride="carousel" data-interval="10000" class="pull-right carousel slide  announcement-preview" id="announcement_preview">
-          <div role="listbox" class="carousel-inner announcement-container">
-                <div tal:define="source object.get_content_data()" class="item active">
-                   <a class="image-preview" tal:condition="source['type'] == 'img'" href="#" target="_blank">
-                     <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="100">
-                   </a>
-                   <object tal:condition="source['type'] == 'flash'" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
-                <param name="movie" value="${source['content']}">
-                <param name="quality" value="high">
-                <embed src="${source['content']}" quality="high" height="90"
-                  type="application/x-shockwave-flash"
-                            pluginspage="http://www.macromedia.com/go/getflashplayer">
-                </embed>
-               </object>
-               <div tal:condition="source['type'] == 'html'" style="height: 90px">
-                ${structure:source['content']}
-               </div>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <div class="announcement">
+          <div data-ride="carousel" data-interval="10000" class="pull-right carousel slide  announcement-preview" id="announcement_preview">
+              <div role="listbox" class="carousel-inner announcement-container">
+                    <div tal:define="source object.get_content_data()" class="item active">
+                       <a class="image-preview" tal:condition="source['type'] == 'img'" href="#" target="_blank">
+                         <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="100">
+                       </a>
+                       <object tal:condition="source['type'] == 'flash'" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+                    <param name="movie" value="${source['content']}">
+                    <param name="quality" value="high">
+                    <embed src="${source['content']}" quality="high" height="90"
+                      type="application/x-shockwave-flash"
+                                pluginspage="http://www.macromedia.com/go/getflashplayer">
+                    </embed>
+                   </object>
+                   <div tal:condition="source['type'] == 'html'" style="height: 90px">
+                    ${structure:source['content']}
+                   </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-   </div>
-   <dl tal:condition="getattr(object,'positions', [])">
-     <dt i18n:translate="">Positions</dt>
-     <dd>
-       <tal:loop repeat="k object.get_positions()">
-         ${k}
-        <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-       </tal:loop>
-     </dd>
-   </dl>
-    <dl>
-        <dt i18n:translate="">Date</dt>
-        <dd>${object.visibility_dates}</dd>
-    </dl>
+          <dl tal:condition="getattr(object,'positions', [])">
+           <dt i18n:translate="">Positions</dt>
+           <dd>
+             <tal:loop repeat="k object.get_positions()">
+               ${k}
+              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+             </tal:loop>
+           </dd>
+          </dl>
+          <dl>
+            <dt i18n:translate="">Date</dt>
+            <dd>${object.visibility_dates}</dd>
+          </dl>
+      </div>
+    </div>
   </div>
 </div>

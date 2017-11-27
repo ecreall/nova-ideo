@@ -1,0 +1,146 @@
+.person-card-container {
+  float: right;
+  width: 100%;
+
+  > .search-item-bloc.fixed {
+    position: fixed;
+    width: 220px;
+    z-index: 100;
+  }
+
+  > .search-item-bloc {
+    width: 220px;
+    float: right !important;
+  }
+
+  .object-menu {
+    background-color: @novaideo-secondary-color;
+    border-radius: 51px;
+    padding: 0 6px;
+    margin: 5px;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+  }
+
+  .listing-object-menu .dropdown-toggle {
+    color: white;
+  }
+
+  .listing-object-menu .dropdown-toggle:hover {
+    color: gray !important;
+  }
+}
+
+.person-card-container:hover {
+  .object-menu {
+    opacity: 1;
+  }
+}
+
+.card-img {
+  height: 80px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  position: relative;
+  background-color: @novaideo-primary-color;
+
+  .img-container {
+    bottom: -15px;
+    position: absolute;
+    width: 100%;
+  }
+
+  img {
+    border: solid 3px white;
+    box-shadow: 0 0 7px rgba(2, 2, 2, 0.6);
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
+  .object-menu {
+    z-index: 2;
+  }
+}
+
+.card-data {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.card-title {
+  font-size: 18px;
+  margin-top: 25px;
+  color: #333;
+  display: inline-block;
+}
+
+.card-addon {
+  color: gray;
+  padding: 0 10px;
+
+  a {
+    color: gray;
+  }
+}
+
+.card-addon-item {
+  margin-top: 5px;
+}
+
+.card-addon-item:first-child {
+  margin-top: 15px;
+}
+
+.card-unit-stats-person {
+  background: #eae8e8;
+}
+
+.card-unit-stats {
+  color: #363636;
+  font-weight: 700;
+  border-top: solid 1px #dadada;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+
+  .one-third {
+    padding: 7px;
+    text-align: center;
+  }
+
+  sup {
+    position: absolute;
+    bottom: 4px;
+    font-size: 45%;
+    margin-left: 2px;
+  }
+
+  .stat {
+    position: relative;
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  .stat-value {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.card-unit-stats-details .one-third {
+  float: left;
+}
+
+.stat-body .card-unit-stats {
+  border: none;
+}
+
+@media (max-width: 991px) {
+  .person-card-container {
+    display: none;
+  }
+}

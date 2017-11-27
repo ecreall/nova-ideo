@@ -1,16 +1,18 @@
-<div class="file-container result-item search-item component-obj-view component-listing-view"
+<div class="file-container listing-card listing-card-fileup result-item search-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      tal:define="oid file.__oid__">
-	<div class="object-menu pull-right">
-	    <div tal:replace="structure primary_menu_body"/>
-	    <div tal:replace="structure menu_body"/>
+    <div class="listing-card-header">
+		<a target="_blank" href="${file.url}" class="file-header ">
+			<i class="file-icon file-icon-l" data-type="${extension}"></i>
+			<h4 class="file-title">${file.title}</h4>
+			<p class="file-meta">
+				<span class="size">${file.get_size()}B</span>
+			</p>
+	    </a>
+		<div class="object-menu pull-right">
+		    <div tal:replace="structure primary_menu_body"/>
+		    <div tal:replace="structure menu_body"/>
+		</div>
 	</div>
-	<a target="_blank" href="${file.url}" class="file-header ">
-		<i class="file-icon file-icon-l" data-type="${extension}"></i>
-		<h4 class="file-title">${file.title}</h4>
-		<p class="file-meta">
-			<span class="size">${file.get_size()}B</span>
-		</p>
-    </a>
 </div>

@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-invitation search-item result-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   i18n:domain="novaideo"
@@ -6,27 +6,34 @@
               url request.resource_url(object, '@@index');
               trusted_email object.has_trusted_email(getattr(request.root, 'trusted_emails', []));
               oid object.__oid__;">
-  <div class="media-body media-person">
-    <div class="object-title-block view-item-title pull-left" >
-      <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
-      </div>
+  <div class="listing-card-header">
+    <div class="view-item-title" >
       <h4 class="inline">
          <a tal:attributes="href url">
           <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </a>
       </h4>
     </div>
-    <dl class="dl-horizontal film-data">
-        <dt i18n:translate="">Email</dt>
-        <dd tal:define="mail getattr(object, 'email', '')">
-          <a href="mailto:${mail}">${mail}</a>
-          <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
-        </dd>
-        <dt i18n:translate="">Registered on</dt>
-        <dd><span tal:replace="layout.to_localized_time(object.created_at)"/></dd>
-        <dt i18n:translate="">Expires on</dt>
-        <dd><span tal:replace="layout.to_localized_time(object.get_deadline_date())"/></dd>
-    </dl>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <dl class="dl-horizontal film-data">
+            <dt i18n:translate="">Email</dt>
+            <dd tal:define="mail getattr(object, 'email', '')">
+              <a href="mailto:${mail}">${mail}</a>
+              <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
+            </dd>
+            <dt i18n:translate="">Registered on</dt>
+            <dd><span tal:replace="layout.to_localized_time(object.created_at)"/></dd>
+            <dt i18n:translate="">Expires on</dt>
+            <dd><span tal:replace="layout.to_localized_time(object.get_deadline_date())"/></dd>
+        </dl>
+      </div>
+    </div>
   </div>
 </div>

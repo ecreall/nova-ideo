@@ -1,31 +1,35 @@
-<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-file search-item result-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   i18n:domain="novaideo"
   tal:define="icon getattr(object, 'icon', '');
    url request.resource_url(object, '@@index');
    oid object.__oid__;">
-  <div class="media-body media-file">
-    <div class="object-title-block view-item-title pull-left" >
-      <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
-      </div>
-        <h4 class="inline">
-          <a tal:attributes="href url">
-              <span class="icon ${icon}"></span>  ${object.title} 
-          </a>
-          <div class="listing-access-menu">
-              <div tal:replace="structure access_body"/>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="object-title-block view-item-title pull-left" >
+          <div class="object-menu pull-right">
+            <div tal:replace="structure menu_body"/>
           </div>
-          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-        </h4>
-    </div>
-    <div class="heterogeneous-content article-content">
-      ${object.presentation_text(400)}
-    </div>
-    <div class="search-item-footer">
-      <div class="actions-block">
-        <div tal:replace="structure footer_body"/>
+          <h4 class="inline">
+            <a tal:attributes="href url">
+                <span class="icon ${icon}"></span>  ${object.title} 
+            </a>
+            <div class="listing-access-menu">
+                <div tal:replace="structure access_body"/>
+            </div>
+            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+          </h4>
+        </div>
+        <div class="heterogeneous-content article-content">
+          ${object.presentation_text(400)}
+        </div>
+      </div>
+      <div class="listing-card-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
       </div>
     </div>
   </div>
