@@ -50,6 +50,9 @@
 						                  </dd>
 						                </dl>
 						              </div>
+						              <div>
+						                ${object.description}
+						              </div>
 						          </div>
 					        	</div>
 					     	</div>
