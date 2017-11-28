@@ -1,10 +1,10 @@
-<div class="thumbnail right-caption span4 search-item result-item" 
+<div class="listing-card result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
      tal:define="
          icon object.icon;
          alert_kind getattr(object, 'alert_kind', '');">
-  <div class="media-body" tal:define="subject object.subjects[0]">
+  <div tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     <span i18n:translate="" tal:condition="alert_kind == 'moderation'">The moderators have decided on the contribution <a i18n:name="dynamic"  href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">

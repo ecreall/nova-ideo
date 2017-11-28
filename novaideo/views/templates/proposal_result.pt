@@ -1,4 +1,4 @@
-<div class="listing-card listing-card-proposal search-item result-item view-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-proposal result-item view-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"

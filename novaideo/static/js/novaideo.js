@@ -295,7 +295,7 @@ function init_channels_top() {
 }
 
 function init_card_position() {
-  var card = $(".person-card-container:first>.search-item")
+  var card = $(".person-card-container:first>.listing-card")
   if (card.length > 0) {
     var min_top = 50
     var offset_top = card.offset().top
@@ -449,7 +449,7 @@ function init_morecontent_scroll() {
   var result_scrolls = $(".more-content-carousel")
   for (var i = 0; i <= result_scrolls.length; i++) {
     var result_scroll = $(result_scrolls[i])
-    var last_child = $(result_scroll.find(".search-item").last())
+    var last_child = $(result_scroll.find(".result-item").last())
     if (last_child.length > 0) {
       var top =
         last_child.offset().top -

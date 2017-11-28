@@ -134,7 +134,7 @@
                                 </script>
                            </div>
                           </div>
-                          <div class="col-xs-12 col-md-12" tal:condition="formatted_urls">
+                          <div tal:condition="comment.urls" class="col-xs-12 col-md-12">
                             <div class="object-text">
                               <div>${structure:formatted_urls}</div>
                             </div>
@@ -230,33 +230,36 @@
       <li class="commentli comment-preview hide-bloc"
           tal:define="current_picture getattr(current_user, 'picture', None)">
         <div class="listing-card listing-card-comment comment-card">
-          <div class="listing-card-header">
-            <div class="view-item-title comment-author">
-              <div>
-                <img tal:condition="current_picture is not None" class="img-circle author-img" tal:attributes="src getattr(current_picture, 'profil', current_picture).url"  width="30"/>
-                <img tal:condition="current_picture is None" class="img-circle author-img" src="${request.static_url('novaideo:static/images/user100.png')}" width="30"/>
-                <img class="img-circle author-img author-img-anonymous" src="${request.static_url('novaideo:static/images/anonymous100.png')}" width="30"/>
-              </div>
-              <div class="comment-author-data">
-                <span class="author-title author-title-anonymous">${getattr(current_user.mask, 'title', 'Anonymous')}</span><a class="author-title" tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
-                <div class="comment-detail-container">
-                  <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span>
+            <div class="listing-card-header">
+              <div class="view-item-title comment-author">
+                <div>
+                  <img tal:condition="current_picture is not None" class="img-circle author-img" tal:attributes="src getattr(current_picture, 'profil', current_picture).url"  width="30"/>
+                  <img tal:condition="current_picture is None" class="img-circle author-img" src="${request.static_url('novaideo:static/images/user100.png')}" width="30"/>
+                  <img class="img-circle author-img author-img-anonymous" src="${request.static_url('novaideo:static/images/anonymous100.png')}" width="30"/>
+                </div>
+                <div class="comment-author-data">
+                  <span class="author-title author-title-anonymous">${getattr(current_user.mask, 'title', 'Anonymous')}</span><a class="author-title" tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
+                  <div class="comment-detail-container">
+                    <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="listing-card-container">
               <div class="listing-card-left"></div>
               <div class="listing-card-content">
-                <div class="row">
-                    <div class="col-xs-12 col-md-12">
-                      <div class="object-text">
-                        <div>
-                          <p class="emoji-container">
-                            <span class="comment-preview-text"></span>     
-                          </p>
+                <div class="comment-content">
+                  <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <div class="object-text">
+                          <div>
+                            <p class="emoji-container">
+                              <span class="comment-preview-text"></span>     
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                  </div>
                 </div>
               </div>
             </div>

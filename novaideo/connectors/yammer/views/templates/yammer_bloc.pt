@@ -1,38 +1,42 @@
-<div class="connector-item thumbnail right-caption span4 search-item search-connector search-item-bloc result-item view-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-block listing-card-connector search-item result-item view-item component-obj-view component-listing-view"
+     i18n:domain="novaideo"
      id="listingbloc_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
      tal:define="icon getattr(object, 'icon');
                  oid object.__oid__;
                  ">
-  <div role="presentation" class="card-img" 
+  <div class="listing-card-img" 
        style="
-          background-color: #0092bd;">
+              background-color: #0092bd;">
     <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
+      <div tal:replace="structure menu_body"/>
     </div>
     <div class="img-container">
       <img class="img-circle"
           tal:attributes="src request.static_url('novaideo:static/connectors/yammer/images/yammer.png')"  width="70"/>
     </div>
   </div>
-  <div class="caption">
-      <div class="card-data">
-          <span class="card-title" title="${getattr(object, 'title', object.name)}">
-                <span i18n:translate="">Yammer connector</span>
-          </span>
-        <div class="card-addon">
-          <small>
-            <div i18n:translate="">The Yammer connector</div>
-          </small>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="listing-card-data">
+            <span class="listing-card-title">
+                  <span i18n:translate="">Yammer connector</span>
+            </span>
+          <div class="listing-card-addon">
+            <small>
+              <div i18n:translate="">The Yammer connector</div>
+            </small>
+          </div>
         </div>
       </div>
-
-      <div class="search-item-footer">
+      <div class="listing-card-footer">
         <div class="actions-block">
           <div tal:replace="structure footer_body"/>
         </div>
       </div>
+    </div>
   </div>
     <div class="action-interation-container action-slider-container"
          data-interaction_kind="slider">

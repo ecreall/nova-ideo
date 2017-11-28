@@ -1,4 +1,4 @@
-<div class="file-container listing-card listing-card-folder result-item search-item component-obj-view component-listing-view"
+<div class="file-container listing-card listing-card-folder result-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      tal:define="oid object.__oid__;

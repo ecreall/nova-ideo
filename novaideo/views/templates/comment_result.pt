@@ -1,5 +1,5 @@
 <div 
-  class="listing-card listing-card-comment result-item search-item view-item component-obj-view component-listing-view"
+  class="listing-card listing-card-comment result-item view-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   tal:define="
@@ -98,7 +98,7 @@
                   </script>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-12">
+              <div tal:condition="object.urls" class="col-xs-12 col-md-12">
                 <div class="object-text">
                   <div>${structure:getattr(object, 'formatted_urls', '')}</div>
                 </div>
