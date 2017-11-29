@@ -8,7 +8,7 @@
       data-origin_url="${(origin and batch.origin_url)}"
       >
     <tal:loop repeat="comment_data enumerate(comments)">
-      <li class="view-item commentli ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''} component-obj-view component-listing-view" 
+      <li class="view-item commentli ${is_unread_comment and 'commentli-unread'} ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''} component-obj-view component-listing-view" 
           id="comment_${oid}"
           data-component_type="object-view"
           data-association="${(contents and 'true') or 'false'}"
@@ -28,7 +28,9 @@
               id 'comment-'+str(oid);
               attached_files comment.files;
               is_censored 'censored' in comment.state;
-              to_hide is_censored and not (view.is_moderator or current_user is comment.author)">
+              to_hide is_censored and not (view.is_moderator or current_user is comment.author);
+              is_unread_comment oid in unread_comments">
+              <div class="comment-unread" tal:condition="is_unread_comment"><span i18n:translate="">new comments</span></div>
         <div id="${id}" class="listing-card listing-card-comment comment-card ${comment.pinned and 'comment-pinned'}"
              data-title="${getattr(author, 'title', author.__name__)}"
              data-icon="${getattr(comment, 'icon', '')}"
@@ -43,14 +45,12 @@
                 <div class="comment-author-data" 
                      tal:define="
                           diff_len  len(diff.keys());
-                          is_unread_comment oid in unread_comments
                           ">
                   <a 
                     data-oid="${getattr(author, '__oid__', '')}"
                     class="toggle-popover"
                     tal:attributes="href request.resource_url(author, '@@index') if not is_anonymous else '#'">${getattr(author, 'title', author.name)}</a>
-                  <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unread_comment and 'unread-comment' or ''} comment-detail-container">
-                    <span tal:condition="is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
+                  <div title="${layout.to_localized_time(comment.created_at)}" class="comment-detail-container">
                     <div  tal:omit-tag="" tal:condition="diff">
                       <span i18n:translate="">For</span>  
                       <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 

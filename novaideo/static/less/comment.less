@@ -557,23 +557,33 @@ li.comment-text-search-container {
   }
 }
 
-.unread-comment.comment-detail-container {
-  color: #e8621c;
-}
-
-.unread-comment-tag {
-  background-color: #e8621c;
-  border-radius: 6px;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  padding: 1px 5px;
-}
-
 .comment-content {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 10px;
+}
+
+ul > .commentli-unread {
+  .comment-unread {
+    display: block;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    border-top: solid 0.5px rgba(232, 14, 14, 0.64);
+
+    span {
+      float: right;
+      margin-top: -15px;
+      padding: 0 12px;
+      color: #ec5454;
+      background-color: white;
+    }
+  }
+}
+
+ul > .commentli-unread ~ .commentli-unread {
+  .comment-unread {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {

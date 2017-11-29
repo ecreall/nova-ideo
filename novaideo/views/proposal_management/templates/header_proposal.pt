@@ -1,11 +1,11 @@
-<div tal:omit-tag="" i18n:domain="novaideo"
+<div class="content-view-header" i18n:domain="novaideo"
    tal:define="
      editoid 'edit_item_text_area';
      icon getattr(proposal, 'icon');
      working_group proposal.working_group">
   <div tal:replace="structure vote_actions_body"/>
   <div tal:replace="structure navbar_body"/>
-  <div class="media-body content-title-body">
+  <div class="content-view-title-container">
     <div tal:condition="'open to a working group' in proposal.state" role="alert" class="delayed-block alert alert-info alert-dismissible">
       <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(working_group, 'work_mode', None), 'participants_mini', 3)">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -177,7 +177,7 @@
           </div>
           <div class="workspace-block" tal:condition="is_participant and working_group and working_group.workspace">
             <a href="${request.resource_url(working_group.workspace, '@@index')}">
-              <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
+              <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Resources</span>
             </a>
           </div>
         </div>
