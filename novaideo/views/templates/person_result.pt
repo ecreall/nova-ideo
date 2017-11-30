@@ -49,7 +49,7 @@
                              profil_picture getattr(picture, 'profil', None)">
                   <img class="author-img img-circle" 
                     tal:condition="profil_picture is not None"
-                     tal:attributes="src profil_picture.url"  width="25"/>
+                     tal:attributes="src profil_picture.url"  width="25" height="25"/>
                   <span tal:condition="profil_picture is None" class="glyphicon glyphicon-home"></span>
                   ${organization.title}
               </a>

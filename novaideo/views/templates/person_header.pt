@@ -36,7 +36,7 @@
 							                    <small>
 							                      <img class="author-img img-circle" 
 							                        tal:condition="profil_picture is not None"
-							                         tal:attributes="src profil_picture.url"  style="vertical-align: sub;" width="25"/>
+							                         tal:attributes="src profil_picture.url"  style="vertical-align: sub;" width="25" height="25"/>
 							                      <span tal:condition="profil_picture is None" class="title-icon glyphicon glyphicon-home"></span>
 							                      ${organization.title}
 							                    </small>
