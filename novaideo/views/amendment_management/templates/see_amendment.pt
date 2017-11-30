@@ -1,115 +1,126 @@
-<div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
+<div class="content-view component-obj-view component-index-view"
+     i18n:domain="novaideo"
      tal:define="
          icon getattr(amendment, 'icon');
          oid amendment.__oid__"
      id="index_${oid}"
      data-component_type="object-view">
-  <div tal:replace="structure navbar_body"/>
-  <div class="media-body content-title-body">
-
-    <div tal:condition="to_submit" role="alert" class="delayed-block alert alert-success alert-dismissible">
-       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-       <span class="glyphicon glyphicon-share pull-right"></span>
+  <div class="content-view-header">
+    <div tal:replace="structure navbar_body"/>
+    <div class="content-view-alerts">
+      <div tal:condition="to_submit" role="alert" class="delayed-block alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <span class="glyphicon glyphicon-share pull-right"></span>
         <span  i18n:translate="">You have now provided explanations to all of your improvements. You can now prepare the amendments that you will submit to the other participants.</span>
-    </div>
-    <div tal:omit-tag="" tal:condition="'draft' in amendment.state and 'explanation' not in amendment.state">
-      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
-         <button type="button" class="close" data-dismiss="alert">
-           <span aria-hidden="true">&times;</span>
-           <span class="sr-only">Close</span>
-         </button>
-         <span class="glyphicon glyphicon-pencil pull-right"></span>
-         <span i18n:translate="">
-            If you are not satisfied with your modified version, you can improve it. Once satisfied with your improvements you need to explain them.
-         </span>
       </div>
-    </div>
-    <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and not to_submit">
-      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
-         <button type="button" class="close" data-dismiss="alert">
-           <span aria-hidden="true">&times;</span>
-           <span class="sr-only">Close</span>
-         </button>
-         <span class="glyphicon glyphicon-question-sign pull-right"></span>
-         <p i18n:translate="">In order for the other participants to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can prepare your amendements and submit them to the other participants.</p>
-         <p>
-            <strong i18n:translate="">To explain each of your improvements, you can click on the corresponding number.</strong>
-         </p>
-      </div>
-    </div>
-    <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
-      <div role="alert" class="delayed-block alert alert-info alert-dismissible">
-         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-         <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-         <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
-          <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published by the moderators. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
-          <ol class="list-unstyled not-published-list">
-            <tal:loop repeat="i not_published_ideas">
-              <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-            </tal:loop>
-          </ol>
-         </div>
-         <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
-          <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published and have received a positive opinion by the Examiners. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
-          <ol class="list-unstyled not-published-list">
-            <tal:loop repeat="i not_favorable_ideas">
-              <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-            </tal:loop>
-          </ol>
-         </div>
-      </div>
-    </div>
-
-    <h3 class="content-title"
-        data-title="${amendment.title}"
-        data-icon="${icon}"
-        data-img=""
-      ><span><span class="icon ${icon}"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</span>
-      <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
-    </h3>
-    <div class="object-description"
-      tal:define="author amendment.author;
-                  is_anonymous getattr(author, 'is_anonymous', False);
-                  author_picture getattr(author, 'picture', None);
-                  default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png')">
-      <small>
-        <div class="author-block">
-          <img class="author-img img-circle"
-             tal:condition="author_picture is not None"
-             tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-          <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
-          <span i18n:translate="">Version amended by</span>
-          <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
-            ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
-          </a>
-          <span tal:condition="is_anonymous" class="user-title">
-            ${getattr(author, 'title', author.name)}
+      <div tal:omit-tag="" tal:condition="'draft' in amendment.state and 'explanation' not in amendment.state">
+        <div role="alert" class="delayed-block alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <span class="glyphicon glyphicon-pencil pull-right"></span>
+          <span i18n:translate="">
+              If you are not satisfied with your modified version, you can improve it. Once satisfied with your improvements you need to explain them.
           </span>
         </div>
-        <span i18n:translate="">the</span>
-        <span tal:replace="layout.to_localized_time(amendment.created_at)"/> <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>
-      </small>
-    </div>
-  </div>
-  <div class="amendment-diff" i18n:domain="novaideo">
-   <div id="diff-container" tal:define="justification getattr(amendment, 'justification', '')">
-    <div tal:condition="justification" class="well object-well proposal-well">
-      <dl>
-          <dt>
-            <span class="glyphicon glyphicon-comment"></span>
-            <span i18n:translate="">Justification</span></dt>
-          <dd tal:condition="justification">${justification}</dd>
-      </dl>
-    </div>
-    <div id="contenttext" class="collapsible-text content-text">
-      ${structure:textdiff}
-    </div>
-   </div>
-  </div>
-  <div class="content-footer">
-        <div class="actions-block">
-            <div tal:replace="structure footer_body"/>
+      </div>
+      <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and not to_submit">
+        <div role="alert" class="delayed-block alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <span class="glyphicon glyphicon-question-sign pull-right"></span>
+          <p i18n:translate="">In order for the other participants to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can prepare your amendements and submit them to the other participants.</p>
+          <p>
+            <strong i18n:translate="">To explain each of your improvements, you can click on the corresponding number.</strong>
+          </p>
         </div>
+      </div>
+      <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
+        <div role="alert" class="delayed-block alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+          <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
+            <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published by the moderators. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
+            <ol class="list-unstyled not-published-list">
+              <tal:loop repeat="i not_published_ideas">
+                <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+              </tal:loop>
+            </ol>
+          </div>
+          <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
+            <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published and have received a positive opinion by the Examiners. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
+            <ol class="list-unstyled not-published-list">
+              <tal:loop repeat="i not_favorable_ideas">
+                <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+              </tal:loop>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-view-title-container">
+      <h3 class="content-title"
+          data-title="${amendment.title}"
+          data-icon="${icon}"
+          data-img=""
+        ><span><span class="icon ${icon}"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</span>
+        <span class="label label-basic content-state" i18n:translate="" tal:content="state"/>
+      </h3>
+      <div class="object-description"
+        tal:define="author amendment.author;
+                    is_anonymous getattr(author, 'is_anonymous', False);
+                    author_picture getattr(author, 'picture', None);
+                    default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png')">
+        <small>
+          <div class="author-block">
+            <img class="author-img img-circle"
+               tal:condition="author_picture is not None"
+               tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+            <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
+            <span i18n:translate="">Version amended by</span>
+            <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
+              ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+            </a>
+            <span tal:condition="is_anonymous" class="user-title">
+              ${getattr(author, 'title', author.name)}
+            </span>
+          </div>
+          <span i18n:translate="">the</span>
+          <span tal:replace="layout.to_localized_time(amendment.created_at)"/> <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>
+        </small>
+      </div>
+      <div tal:define="justification getattr(amendment, 'justification', '')">
+        <div tal:condition="justification" class="well object-well proposal-well">
+          <dl>
+            <dt>
+              <span class="glyphicon glyphicon-comment"></span>
+              <span i18n:translate="">Justification</span></dt>
+            <dd tal:condition="justification">${justification}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-view-container">
+    <div class="content-view-body">
+      <div class="content-view-body-container">
+        <div class="amendment-diff">
+          <div id="diff-container">
+            <div id="contenttext" class="collapsible-text">
+              ${structure:textdiff}
+            </div>
+          </div>
+        </div>
+        <div class="content-view-body-footer">
+          <div class="actions-block">
+              <div tal:replace="structure footer_body"/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="actions-footer-container" style="display: none;">
       <div class="container-body">

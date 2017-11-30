@@ -8,6 +8,7 @@
         <img class="anonymous-img img-on img-circle" src="${field.widget.request.static_url('novaideo:static/images/anonymous_box.png')}" width="35"/>
         <img class="anonymous-img img-off img-circle " src="${field.widget.request.static_url('novaideo:static/images/anonymous_box_gray.png')}" width="35"/>
     </span>
+    <span class="btn btn-default comment-cancel glyphicon glyphicon-remove-circle" i18n:attributes="title" title="Cancel"></span>
     <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
   </div>
   <textarea tal:define="rows rows|field.widget.rows;

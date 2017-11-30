@@ -186,7 +186,7 @@
                         <div tal:replace="structure a"/>
                       </div>
                     </div>
-                    <div tal:condition="item['footer_body']" class="content-footer">
+                    <div tal:condition="item['footer_body']">
                       <div class="actions-block">
                           <div tal:replace="structure item['footer_body']"/>
                       </div>
@@ -214,11 +214,11 @@
             </div>
           </div>
          </div>
-         <ul  class="commentul replay-bloc hide-bloc">
+         <ul  class="commentul action-interation-container action-inline-container">
           <li>
             <div id="action-comment-replay-container-${getattr(item['context'], '__oid__', '')}" class="replay-body">
               <div class="comment-card ">
-                 <div class="media-body">
+                 <div class="container-body comment-form-body">
                  </div>
               </div>     
             </div>

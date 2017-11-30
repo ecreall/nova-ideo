@@ -44,7 +44,7 @@
                <script tal:condition="('toreplay' not in item) and (request.view_name in ('index', '@@index') and getattr(a,'style_activate', False))">       
                     $(document).ready(function(){
                         if(window.location.hash.replace('#comment-', '')) {
-                              $(${'\'.content-footer #'+item['action_id']+'-btn\''}).click();
+                              $(${'\'.content-view-body-footer #'+item['action_id']+'-btn\''}).click();
                           }
                     });
                </script>

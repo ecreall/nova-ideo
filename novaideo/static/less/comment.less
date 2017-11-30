@@ -83,20 +83,12 @@ form.answerform {
   margin-top: -15px !important;
 }
 
-.replay-form-container {
-  padding-top: 3px;
-}
-
 .comment-replay-nb-container {
   margin-right: 10px;
 }
 
 .modal-backdrop {
   z-index: 1048;
-}
-
-.comment-content .content-footer {
-  margin-top: 5px !important;
 }
 
 .comment-loading {
@@ -143,6 +135,22 @@ form.answerform {
   background-color: white;
   height: 50px;
   padding: 10px;
+}
+
+.commentul.action-interation-container {
+  padding-left: 50px;
+}
+
+.result-item .action-interation-container {
+  .replay-form-container > button {
+    display: none;
+  }
+
+  .commentform {
+    padding: 0;
+    height: auto;
+    margin-top: 15px;
+  }
 }
 
 .commentform:not(.comment-inline-form) .comment-form-changes {
@@ -339,9 +347,11 @@ form.answerform {
   z-index: 1300;
 }
 
-.answerform .comment-form-group.active,
-.answerform .emoji-container-input.active {
+.result-item .comment-form-group.active,
+.result-item .emoji-container-input.active {
   position: absolute !important;
+  min-width: 400px;
+  max-height: 265px;
 }
 
 .emoji-container-input {
@@ -544,7 +554,6 @@ li.comment-text-search-container {
 
 .commentli.replay-active > .comment-card {
   margin-bottom: 0 !important;
-  padding: 0 0 0 4px;
 }
 
 .comment-card:hover:not(.replay-active) {
@@ -555,6 +564,10 @@ li.comment-text-search-container {
   .listing-object-menu .dropdown-toggle {
     color: @novaideo-color !important;
   }
+}
+
+.modal-title .comment-card:hover {
+  background-color: transparent !important;
 }
 
 .comment-content {
@@ -595,6 +608,10 @@ ul > .commentli-unread ~ .commentli-unread {
     max-height: 250px;
     right: 10px;
     width: 94% !important;
+  }
+
+  .commentul.action-interation-container {
+    padding-left: 20px;
   }
 }
 

@@ -1,5 +1,5 @@
 <div 
-  class="listing-card listing-card-comment result-item view-item component-obj-view component-listing-view"
+  class="commentli listing-card listing-card-comment result-item view-item component-obj-view component-listing-view"
   id="listing_${oid}"
   data-component_type="object-view"
   tal:define="
@@ -12,135 +12,136 @@
     picture getattr(author, 'picture', None);
     profil_picture getattr(picture, 'profil', None);
     attached_files object.files;
-    contents object.get_related_contents(current_user);"
+    contents object.get_related_contents(current_user);
+    subject object.subject"
   i18n:domain="novaideo">
-    <div class="listing-card-header">
-      <div class="view-item-title comment-author"
-         data-title="${getattr(author, 'title', author.__name__)}"
-         data-icon="${getattr(object, 'icon', '')}"
-         data-img="${getattr(profil_picture, 'url', default_img)}"
-         >
-        <div>
-          <img class="comment-author-img img-circle" 
-             tal:condition="picture is not None" 
-             tal:attributes="src getattr(picture, 'profil', picture).url"  width="35"/>
-          <img class="comment-author img-circle" tal:condition="picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
-        </div>
-        <div class="comment-author-data">
-          <a 
-            data-oid="${getattr(author, '__oid__', '')}"
-            class="toggle-popover"
-            tal:attributes="href request.resource_url(author, '@@index') if not is_anonymous else '#'">${getattr(author, 'title', author.name)}</a>
-          <div title="${layout.to_localized_time(object.created_at)}" class="comment-detail-container">
-            <span i18n:translate="">the</span>
-            <span tal:replace="layout.to_localized_time(object.created_at)"/>
-            <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span> 
-            <span tal:condition="getattr(object, 'intention', None)" i18n:translate="" tal:content="object.intention"/>
-          </div>
-        </div>
+  <div class="listing-card-header">
+    <div class="view-item-title comment-author"
+       data-title="${getattr(author, 'title', author.__name__)}"
+       data-icon="${getattr(object, 'icon', '')}"
+       data-img="${getattr(profil_picture, 'url', default_img)}"
+       >
+      <div>
+        <img class="comment-author-img img-circle" 
+           tal:condition="picture is not None" 
+           tal:attributes="src getattr(picture, 'profil', picture).url"  width="35"/>
+        <img class="comment-author img-circle" tal:condition="picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
       </div>
-      <div tal:condition="menu_body|nothing" class="object-menu">
-          <div tal:replace="structure menu_body"/>
+      <div class="comment-author-data">
+        <a 
+          data-oid="${getattr(author, '__oid__', '')}"
+          class="toggle-popover"
+          tal:attributes="href request.resource_url(author, '@@index') if not is_anonymous else '#'">${getattr(author, 'title', author.name)}</a>
+        <div title="${layout.to_localized_time(object.created_at)}" class="comment-detail-container">
+          <span i18n:translate="">the</span>
+          <span tal:replace="layout.to_localized_time(object.created_at)"/>
+          <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span> 
+          <span tal:condition="getattr(object, 'intention', None)" i18n:translate="" tal:content="object.intention"/>
+        </div>
       </div>
     </div>
-    <div class="listing-card-container">
-      <div class="listing-card-left"></div>
-      <div class="listing-card-content">
-        <div class="comment-content"> 
-          <div class="row" tal:define="files object.get_attached_files_data();
-                      len_files len(files)">
-              <div class="col-xs-12 col-md-12">
-                <div class="object-text">
-                  <div>${structure:getattr(object, 'formatted_comment', object.comment)}</div>
-                  <div tal:condition="getattr(object, 'edited', False)" i18n:translate="" style="color: gray">(edited)</div>
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-4" tal:condition="files">
-                <div class="file-slider">
-                  <div id="filecarousel-${id}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
-                    <div role="listbox" class="carousel-inner">
-                      <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
-                         <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
-                           <div 
-                            class="img-content"
-                            data-holder-rendered="true"
-                            style="
-                              background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover"/>
-                         </a>
-                         <object tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
-                            <param name="movie" value="${source['content']}">
-                            <param name="quality" value="high">
-                            <embed src="${source['content']}" quality="high" class="img-content" 
-                              type="application/x-shockwave-flash" 
-                                        pluginspage="http://www.macromedia.com/go/getflashplayer">
-                            </embed>
-                         </object>
-                      </div>
-                    </div>
-                    <div tal:omit-tag="" tal:condition="len_files>1">
-                      <a class="left carousel-control" href="#filecarousel-${id}" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="right carousel-control" href="#filecarousel-${id}" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                    </div>
-                  </div>
-                  <script>
-                    deform.addCallback(
-                         'filecarousel-${id}',
-                         function(oid) {
-                           $('#' + oid).carousel();
-                         }
-                       );
-                  </script>
-                </div>
-              </div>
-              <div tal:condition="object.urls" class="col-xs-12 col-md-12">
-                <div class="object-text">
-                  <div>${structure:getattr(object, 'formatted_urls', '')}</div>
-                </div>
-              </div>
+    <div tal:condition="menu_body|nothing" class="object-menu">
+      <div tal:replace="structure primary_menu_body"/>
+      <div tal:replace="structure menu_body"/>
+    </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div class="comment-content"> 
+        <div class="row" tal:define="files object.get_attached_files_data();
+                  len_files len(files)">
+          <div class="col-xs-12 col-md-12">
+            <div class="object-text">
+              <div>${structure:getattr(object, 'formatted_comment', object.comment)}</div>
+              <div tal:condition="getattr(object, 'edited', False)" i18n:translate="" style="color: gray">(edited)</div>
+            </div>
           </div>
-          <div tal:condition="attached_files or object.related_correlation is not None" class="attached-files">
-            <small>
-             <blockquote class="attached-contents">
-                <dl >
-                  <div tal:omit-tag=""
-                       tal:condition="attached_files"
-                       tal:define="file_len len(attached_files)">
-                      <dt tal:condition="file_len>1"><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachments:</span></dt>
-                      <dt tal:condition="file_len==1" ><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachment:</span></dt>
-                      <dd>
-                          <tal:loop repeat="f layout.render_files(attached_files)">
-                            <div tal:replace="structure f"/>
-                          </tal:loop>
-                      </dd>
+          <div class="col-xs-12 col-md-4" tal:condition="files">
+            <div class="file-slider">
+              <div id="filecarousel-${id}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
+                <div role="listbox" class="carousel-inner">
+                  <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
+                     <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
+                       <div 
+                        class="img-content"
+                        data-holder-rendered="true"
+                        style="
+                          background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover"/>
+                     </a>
+                     <object tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+                        <param name="movie" value="${source['content']}">
+                        <param name="quality" value="high">
+                        <embed src="${source['content']}" quality="high" class="img-content" 
+                          type="application/x-shockwave-flash" 
+                                    pluginspage="http://www.macromedia.com/go/getflashplayer">
+                        </embed>
+                     </object>
                   </div>
-                  <div tal:omit-tag=""
-                       tal:condition="object.related_correlation is not None"
-                       >
-                    <div tal:omit-tag="" tal:define="
-                       contents_len len(contents)">
-                       <dt tal:condition="contents_len > 1"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated contents:</span></dt>
-                       <dt tal:condition="contents_len == 1" ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated content:</span></dt>
-                       <dd tal:condition="contents">
-                         <tal:loop repeat="f contents">
-                             <a 
-                              data-oid="${getattr(f, '__oid__', '')}"
-                              class="toggle-popover"
-                              tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
-                             <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-                         </tal:loop>
-                       </dd>
-                    </div>
-                  </div>
-                </dl>
-             </blockquote>
-            </small>
+                </div>
+                <div tal:omit-tag="" tal:condition="len_files>1">
+                  <a class="left carousel-control" href="#filecarousel-${id}" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#filecarousel-${id}" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+              </div>
+              <script>
+                deform.addCallback(
+                     'filecarousel-${id}',
+                     function(oid) {
+                       $('#' + oid).carousel();
+                     }
+                   );
+              </script>
+            </div>
           </div>
+          <div tal:condition="object.urls" class="col-xs-12 col-md-12">
+            <div class="object-text">
+              <div>${structure:getattr(object, 'formatted_urls', '')}</div>
+            </div>
+          </div>
+        </div>
+        <div tal:condition="attached_files or object.related_correlation is not None" class="attached-files">
+          <small>
+           <blockquote class="attached-contents">
+              <dl >
+                <div tal:omit-tag=""
+                     tal:condition="attached_files"
+                     tal:define="file_len len(attached_files)">
+                    <dt tal:condition="file_len>1"><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachments:</span></dt>
+                    <dt tal:condition="file_len==1" ><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachment:</span></dt>
+                    <dd>
+                        <tal:loop repeat="f layout.render_files(attached_files)">
+                          <div tal:replace="structure f"/>
+                        </tal:loop>
+                    </dd>
+                </div>
+                <div tal:omit-tag=""
+                     tal:condition="object.related_correlation is not None"
+                     >
+                  <div tal:omit-tag="" tal:define="
+                     contents_len len(contents)">
+                     <dt tal:condition="contents_len > 1"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated contents:</span></dt>
+                     <dt tal:condition="contents_len == 1" ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated content:</span></dt>
+                     <dd tal:condition="contents">
+                       <tal:loop repeat="f contents">
+                           <a 
+                            data-oid="${getattr(f, '__oid__', '')}"
+                            class="toggle-popover"
+                            tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
+                           <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                       </tal:loop>
+                     </dd>
+                  </div>
+                </div>
+              </dl>
+           </blockquote>
+          </small>
         </div>
         <small tal:condition="menu_body|nothing or footer_actions_body|nothing">
           <a href="${object.get_discuss_url(request, current_user)}">
@@ -148,38 +149,36 @@
             <span i18n:translate="">View in the discussion</span>
           </a>
         </small>
-        <div class="listing-card-footer">
-          <div class="comment-replay-nb-container pull-right" tal:define="commentlen len(object.comments)">
-            <span tal:condition="commentlen > 0" 
-                class="comment-replay-nb disabled">
-              <small>
-                <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answer</span>
-                <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answers</span>
-              </small>
-            </span>
-          </div>
+      </div>
+      <div class="listing-card-footer">
+        <div class="comment-replay-nb-container pull-right" tal:define="commentlen len(object.comments)">
+          <span tal:condition="commentlen > 0" 
+              class="comment-replay-nb disabled">
+            <small>
+              <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answer</span>
+              <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answers</span>
+            </small>
+          </span>
+        </div>
 
-          <div tal:condition="footer_actions_body|nothing" class="footer-actions-bodies">
-            <div tal:repeat="a footer_actions_body" >
-              <div tal:replace="structure a"/>
-            </div>
-          </div> 
-          <div tal:condition="footer_body|nothing" class="content-footer">
-            <div class="actions-block">
-                <div tal:replace="structure footer_body"/>
-            </div>
+        <div tal:condition="footer_actions_body|nothing" class="footer-actions-bodies">
+          <div tal:repeat="a footer_actions_body" >
+            <div tal:replace="structure a"/>
+          </div>
+        </div> 
+        <div tal:condition="footer_body|nothing">
+          <div class="actions-block">
+              <div tal:replace="structure footer_body"/>
           </div>
         </div>
+      </div>
+      <ul  class="commentul action-interation-container action-inline-container">
+        <li>
+          <div id="action-comment-replay-container-${oid}" class="replay-body">
+            <div class="container-body"></div>
+          </div>
+        </li>
+      </ul>
     </div>
-    <ul  class="commentul replay-bloc hide-bloc">
-      <li>
-        <div id="action-comment-replay-container-${oid}" class="replay-body">
-          <div class="comment-data ">
-             <div class="media-body">
-             </div>
-          </div>     
-        </div>
-      </li>
-    </ul>
   </div>
 </div>

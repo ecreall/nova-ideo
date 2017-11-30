@@ -41,7 +41,7 @@ function get_explanation_form() {
       $(target.find(".modal-content")).addClass("explanation-modal")
       target.show()
       init_explanation_select()
-      $(".content-text")
+      $(".amendment-diff")
         .find(".explanation-action.active")
         .removeClass("active")
       btn.addClass("active")
@@ -67,7 +67,7 @@ function get_explanation_form() {
 
 function close_explanation() {
   var button = $(this)
-  $(".content-text").find(".explanation-action.active").removeClass("active")
+  $(".amendment-diff").find(".explanation-action.active").removeClass("active")
   var parent = $($(this).parents(".explanation-modal").first())
   parent.remove()
 }

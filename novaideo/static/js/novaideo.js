@@ -523,10 +523,12 @@ function display_carousel() {
 }
 
 function get_comment_author_bloc(element) {
-  var comment_data = $(element.parents(".comment-data").first())
+  var comment_data = $(element.parents(".comment-card").first())
   var clone = $(comment_data.clone())
-  clone.find(".comment-content>div").not(".comment-author").remove()
-  clone.removeClass("comment-data")
+  var header = clone.find(".listing-card-header").first()
+  clone.html(header)
+  var author = clone.find(".listing-card-header .comment-author")
+  header.html(author)
   return clone
 }
 

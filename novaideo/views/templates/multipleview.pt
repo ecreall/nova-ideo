@@ -25,7 +25,9 @@
                tal:attributes="id item['id']+coordinates;
                               class 'tab-pane fade'+(item['isactive'] and ' in active' or '')+' '+(getattr(item['view'], 'expandable', False) and ' full' or '') ">
               <div class="max-container">
-                <span data-target=".tab-pane" tal:condition="getattr(item['view'], 'expandable', False)" class="full-screen-btn glyphicon glyphicon-resize-full pull-right screen-small"></span>
+                <div class="full-screen-btn-container">
+                  <span data-target=".tab-pane" tal:condition="getattr(item['view'], 'expandable', False)" class="full-screen-btn glyphicon glyphicon-resize-full pull-right screen-small"></span>
+                </div>
                 <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
               </div>
           </div>
