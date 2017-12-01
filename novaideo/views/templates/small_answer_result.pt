@@ -36,7 +36,7 @@
              class="toggle-popover"
              tal:condition="not censored" tal:attributes="href url">
           <h5 class="inline">
-              <a data-oid="${getattr(object, '__oid__', '')}"
+              <a data-oid="${getattr(object, '__oid__', '')}">
                <span class="icon ${icon}"></span>  ${object.title}
               </a>
           </h5>
