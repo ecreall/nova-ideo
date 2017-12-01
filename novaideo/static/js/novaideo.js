@@ -270,8 +270,8 @@ function init_channels_scroll() {
 function init_channels_top() {
   var navbar_top_h = $(".navbar.navbar-fixed-top").height()
   navbar_top_h = navbar_top_h == undefined ? 0 : navbar_top_h
-  var home_top_h = $(".home-panel-container").outerHeight()
-  home_top_h = home_top_h == undefined ? 0 : home_top_h - 20
+  var header_top_h = $(".header-panel-container").outerHeight()
+  header_top_h = header_top_h == undefined ? 0 : header_top_h -17
   var navbar_h = $("nav.navbar.navbar-bottom").height()
   navbar_h = navbar_h == undefined ? 0 : navbar_h
   var default_top = navbar_h + navbar_top_h - 3
@@ -281,9 +281,9 @@ function init_channels_top() {
   btn.addClass("notransition")
   blocks.addClass("notransition")
   blocks.css("display", "block")
-  if (scrolltop <= navbar_h + home_top_h) {
-    btn.css("top", default_top + home_top_h - scrolltop + "px")
-    blocks.css("top", default_top + home_top_h - scrolltop + "px")
+  if (scrolltop <= navbar_h + header_top_h) {
+    btn.css("top", default_top + header_top_h - scrolltop + "px")
+    blocks.css("top", default_top + header_top_h - scrolltop + "px")
   } else {
     btn.css("top", default_top - navbar_h + "px")
     blocks.css("top", default_top - navbar_h + "px")

@@ -134,7 +134,7 @@ $(document).on("click", ".explanation-comment", init_explanation)
 
 $(document).on("click", ".amendment-toggle", function() {
   var $this = $(this)
-  var parent = $($this.parents(".media-body").first())
+  var parent = $($this.parents(".listing-card").first())
   parent.toggleClass("small-amendment")
   if ($this.hasClass("glyphicon-minus")) {
     $this.addClass("glyphicon-plus")
@@ -150,7 +150,7 @@ $(document).on("click", ".amendment-toggle", function() {
       parent.find(
         ".author-block," + ".object-text," + ".majorityjudgment-choices>label"
       )
-    ).slideUp()
+    ).slideUp('fast')
   } else {
     $this.addClass("glyphicon-minus")
     $this.removeClass("glyphicon-plus")
@@ -165,7 +165,7 @@ $(document).on("click", ".amendment-toggle", function() {
       parent.find(
         ".author-block," + ".object-text," + ".majorityjudgment-choices>label"
       )
-    ).slideDown()
+    ).slideDown('fast')
   }
 })
 

@@ -7,7 +7,6 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-bottom: 20px;
 }
 
 .header-panel-container {
@@ -32,6 +31,7 @@
 
     .novaideo-contents-list {
       margin-bottom: 0;
+      font-family: LatoWebLight;
 
       ul {
         margin-bottom: 0;
@@ -69,6 +69,7 @@
 
   .user-function {
     color: white;
+    margin-left: 0;
   }
 
   a,
@@ -78,11 +79,13 @@
 }
 
 .header-data-addon {
+  display: flex;
+  justify-content: space-between;
   font-size: 16px;
-  margin-top: 15px;
   font-family: LatoWeb;
-  padding: 5px 15px;
   font-style: italic;
+  margin-top: 15px;
+  padding: 5px 15px;
 
   .keywords-result,
   .keywords-result a {
@@ -112,8 +115,8 @@
 
   > img {
     position: unset;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border: 3px solid #fff;
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
     background-color: white;
@@ -136,10 +139,6 @@
     > h3 > span {
       display: block !important;
     }
-  }
-
-  .header-data-addon .pull-right {
-    float: none !important;
   }
 
   .header-img-container {

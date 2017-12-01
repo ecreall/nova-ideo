@@ -5,69 +5,69 @@
      working_group proposal.working_group">
   <div tal:replace="structure vote_actions_body"/>
   <div tal:replace="structure navbar_body"/>
-  <div class="content-view-alerts">
-    <div tal:condition="'open to a working group' in proposal.state" role="alert" class="delayed-block alert alert-info alert-dismissible">
-      <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(working_group, 'work_mode', None), 'participants_mini', 3)">
+  <div class="content-view-title-container">
+    <div class="content-view-alerts">
+      <div tal:condition="'open to a working group' in proposal.state" role="alert" class="delayed-block alert alert-info alert-dismissible">
+        <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(working_group, 'work_mode', None), 'participants_mini', 3)">
+           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+           <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+           <p i18n:translate="">This Proposal is published. It is visible to all Members. The related Working Group is inactive, waiting for the quorum to be reached.</p>
+
+           <p i18n:translate="">To improve it, the Working Group must gather at least ${participants_mini} participants.</p>
+        </div>
+      </div>   
+      <div tal:condition="cant_publish" role="alert" class="delayed-block alert alert-info alert-dismissible">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-         <p i18n:translate="">This Proposal is published. It is visible to all Members. The related Working Group is inactive, waiting for the quorum to be reached.</p>
-
-         <p i18n:translate="">To improve it, the Working Group must gather at least ${participants_mini} participants.</p>
+         <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not (request.examine_ideas and not_favorable_ideas)">
+          <span  i18n:translate="">You have reached the limit of the number of working groups in which you can participate simultaneously. In order to submit your proposal, please quit one of</span> <a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">your current working groups</a>.
+         </div>
+         <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
+          <p tal:condition="not request.moderate_proposals" i18n:translate="">
+            In order for you to publish you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
+          <p tal:condition="request.moderate_proposals" i18n:translate="">
+            In order for you to submit you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
+          
+          <p i18n:translate="">
+             You can access below the ideas related to the proposal that have not been approved by the Moderation.</p>
+          <p i18n:translate="" tal:condition="request.examine_ideas">
+             These ideas must afterwards be favourably examined by an Examiner.</p>
+          <ol class="list-unstyled not-published-list">
+            <tal:loop repeat="i not_published_ideas">
+              <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+            </tal:loop>
+          </ol>
+         </div>
+         <div tal:omit-tag="" tal:condition="not_favorable_ideas and request.examine_ideas">
+          <p tal:condition="not request.moderate_proposals" i18n:translate="">
+            For you to be allowed to publish your proposal, all of its related ideas must have been favourably examined by an Examiner.</p>
+          <p tal:condition="request.moderate_proposals" i18n:translate="">
+            For you to be allowed to submit your proposal, all of its related ideas must have been favourably examined by an Examiner.</p>
+          <p i18n:translate="">
+             You can access below the ideas related to the proposal that were not favourably examined.</p>
+          <ol class="list-unstyled not-published-list">
+            <tal:loop repeat="i not_favorable_ideas">
+              <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+            </tal:loop>
+          </ol>
+         </div>
       </div>
-    </div>   
-    <div tal:condition="cant_publish" role="alert" class="delayed-block alert alert-info alert-dismissible">
-       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-       <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not (request.examine_ideas and not_favorable_ideas)">
-        <span  i18n:translate="">You have reached the limit of the number of working groups in which you can participate simultaneously. In order to submit your proposal, please quit one of</span> <a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">your current working groups</a>.
-       </div>
-       <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
-        <p tal:condition="not request.moderate_proposals" i18n:translate="">
-          In order for you to publish you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
-        <p tal:condition="request.moderate_proposals" i18n:translate="">
-          In order for you to submit you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
-        
-        <p i18n:translate="">
-           You can access below the ideas related to the proposal that have not been approved by the Moderation.</p>
-        <p i18n:translate="" tal:condition="request.examine_ideas">
-           These ideas must afterwards be favourably examined by an Examiner.</p>
-        <ol class="list-unstyled not-published-list">
-          <tal:loop repeat="i not_published_ideas">
-            <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-          </tal:loop>
-        </ol>
-       </div>
-       <div tal:omit-tag="" tal:condition="not_favorable_ideas and request.examine_ideas">
-        <p tal:condition="not request.moderate_proposals" i18n:translate="">
-          For you to be allowed to publish your proposal, all of its related ideas must have been favourably examined by an Examiner.</p>
-        <p tal:condition="request.moderate_proposals" i18n:translate="">
-          For you to be allowed to submit your proposal, all of its related ideas must have been favourably examined by an Examiner.</p>
-        <p i18n:translate="">
-           You can access below the ideas related to the proposal that were not favourably examined.</p>
-        <ol class="list-unstyled not-published-list">
-          <tal:loop repeat="i not_favorable_ideas">
-            <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-          </tal:loop>
-        </ol>
-       </div>
+      <nav tal:condition="enable_corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
+        <ul class="nav navbar-nav correction-nav-actions"
+            tal:define="correction corrections[-1]"
+            data-url="${request.resource_url(correction, '@@correctallitems')}">
+              <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
+              <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
+              <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
+              <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
+        </ul>
+        <script type="text/javascript">
+            deform.addCallback('${editoid}', function(oid) {
+              init_correction_textarea(oid, '<tal:block i18n:translate="language-code">en</tal:block>')
+            });
+        </script>
+      </nav>
     </div>
-    <nav tal:condition="enable_corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
-      <ul class="nav navbar-nav correction-nav-actions"
-          tal:define="correction corrections[-1]"
-          data-url="${request.resource_url(correction, '@@correctallitems')}">
-            <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
-            <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
-            <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
-            <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
-      </ul>
-      <script type="text/javascript">
-          deform.addCallback('${editoid}', function(oid) {
-            init_correction_textarea(oid, '<tal:block i18n:translate="language-code">en</tal:block>')
-          });
-      </script>
-    </nav>
-  </div>
-  <div class="content-view-title-container">
     <h3 class="content-title"
         data-title="${proposal.title}"
         data-icon="${icon}"

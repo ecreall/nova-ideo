@@ -42,26 +42,26 @@
       <div class="card-unit-stats-details card-unit-stats card-unit-stats-person clearfix"
            tal:define="width 100/len(details)">
 
-        <div tal:condition="'questions' in details" class="one-third" style="width: ${width}%">
-          <div class="stat">${details['questions']}</div>
-          <div tal:condition="details['questions']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Questions</div>
-          <div tal:condition="details['questions']<=1" class="stat-value" i18n:translate="">Question</div>
+        <div tal:condition="'nb_question' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_question']}</div>
+          <div tal:condition="details['nb_question']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Questions</div>
+          <div tal:condition="details['nb_question']<=1" class="stat-value" i18n:translate="">Question</div>
         </div>
 
         <div class="one-third" style="width: ${width}%">
-          <div class="stat">${details['ideas']}</div>
-          <div tal:condition="details['ideas']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Ideas</div>
-          <div tal:condition="details['ideas']<=1" class="stat-value" i18n:translate="">Idea</div>
+          <div class="stat">${details['nb_idea']}</div>
+          <div tal:condition="details['nb_idea']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Ideas</div>
+          <div tal:condition="details['nb_idea']<=1" class="stat-value" i18n:translate="">Idea</div>
         </div>
 
-        <div tal:condition="'proposals' in details" class="one-third" style="width: ${width}%">
-          <div class="stat">${details['proposals']}</div>
-          <div tal:condition="details['proposals']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Proposals</div>
-          <div tal:condition="details['proposals']<=1" class="stat-value" i18n:translate="">Proposal</div>
+        <div tal:condition="'nb_proposal' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_proposal']}</div>
+          <div tal:condition="details['nb_proposal']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Proposals</div>
+          <div tal:condition="details['nb_proposal']<=1" class="stat-value" i18n:translate="">Proposal</div>
         </div>
 
-        <div class="one-third" style="width: ${width}%">
-          <div class="stat">${details['others']}</div>
+        <div tal:condition="'nb_other' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_other']}</div>
           <div class="stat-value" i18n:translate="">Comments, Evaluations...</div>
         </div>
       </div>

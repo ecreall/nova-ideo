@@ -175,6 +175,7 @@
       .listing-card-addon {
         color: gray;
         padding: 0 10px;
+        margin-bottom: 15px;
 
         a {
           color: gray;
@@ -197,7 +198,7 @@
 
   .primary-actions a,
   .wg-block .wg-actions ul a {
-    color: @novaideo-primary-color;
+    color: @novaideo-primary-color !important;
   }
 
   .listing-access-menu a {
@@ -373,6 +374,7 @@
 
 .listing-card.listing-card-comment.comment-card {
   border: none;
+  box-shadow: none;
 }
 
 .listing-card-block {
@@ -562,6 +564,54 @@
 
 .stat-body .card-unit-stats {
   border: none;
+}
+
+.listing-small-card {
+  margin-bottom: 10px;
+  padding: 0 10px;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.listing-small-card:hover {
+  box-shadow: none;
+}
+
+.listing-small-card.listing-card-idea {
+  border-left: 2px solid @idea-color !important;
+}
+
+.listing-small-card.listing-card-person {
+  border-left: 2px solid @person-color !important;
+
+  .listing-card-content {
+    padding: 0;
+  }
+
+  .user-function {
+    font-size: 13px;
+  }
+}
+
+.listing-small-card.listing-card-invitation {
+  border-left: 2px solid @invitation-color !important;
+}
+
+.listing-small-card.listing-card-organization {
+  border-left: 2px solid @organization-color !important;
+}
+
+.listing-small-card.listing-card-proposal {
+  border-left: 2px solid @proposal-color !important;
+}
+
+.listing-small-card.listing-card-question {
+  border-left: 2px solid @question-color !important;
+}
+
+.listing-small-card.listing-card-answer {
+  border-left: 2px solid @answer-color !important;
 }
 
 @media (max-width: 991px) {

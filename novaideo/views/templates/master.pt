@@ -191,13 +191,13 @@
           </div>
         </div>
         <!-- bar  -->
+        ${panel('usernavbar', True if contextual_help else False)}
         ${panel('homepage')}
         ${panel('challenge')}
-        ${panel('usernavbar', True if contextual_help else False)}
         ${panel('challenges')}
         ${panel('header')}
       </div>
-      <div class="max-container">
+      <div class="max-container master-container">
         <div class="container-fluid">
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
