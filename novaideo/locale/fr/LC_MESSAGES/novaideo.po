@@ -10228,7 +10228,7 @@ msgstr "Le contenu a été envoyé à ${external_len} personnes externes"
 
 #: novaideo/views/idea_management/templates/comments.pt:33
 msgid "new comments"
-msgstr "Nouveaux commentaires"
+msgstr "nouveaux commentaires"
 
 #: novaideo/views/idea_management/templates/comments.pt:55
 msgid "For"
