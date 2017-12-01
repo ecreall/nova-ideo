@@ -10,9 +10,12 @@ RUN apt-get update && \
     curl -L https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - && \
     oslower=$(lsb_release -s -i | tr '[:upper:]' '[:lower:]') && \
     oscodename=$(lsb_release -s -c) && \
+    echo "Package: varnish" >/etc/apt/preferences.d/varnish && \
+    echo "Pin: release l=varnish41" >>/etc/apt/preferences.d/varnish && \
+    echo "Pin-Priority: 999" >>/etc/apt/preferences.d/varnish && \
     (test $oscodename != 'zesty' && echo "deb https://packagecloud.io/varnishcache/varnish41/${oslower}/ ${oscodename} main" > /etc/apt/sources.list.d/varnishcache_varnish41.list || true) && \
     apt-get update && \
-    (test $oscodename != 'zesty' && apt-get install -y varnish=4.1.9-1~${oscodename} || apt-get install -y varnish) && \
+    apt-get install -y varnish && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \
