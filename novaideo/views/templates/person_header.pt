@@ -6,7 +6,9 @@
       default_img request.static_url('novaideo:static/images/user100.png');
       organization getattr(object, 'organization', None);
       default_picture request.static_url('novaideo:static/images/background-person.png');
-      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);">
+      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);
+      stat stat|nothing;"
+      i18n:domain="novaideo">
 	<div class="container-fluid">
 		<div class="max-container">
 			<div class="row">
@@ -36,7 +38,7 @@
 							                    <small>
 							                      <img class="author-img img-circle" 
 							                        tal:condition="profil_picture is not None"
-							                         tal:attributes="src profil_picture.url"  style="vertical-align: sub;" width="25"/>
+							                         tal:attributes="src profil_picture.url"  style="vertical-align: sub;" width="25" height="25"/>
 							                      <span tal:condition="profil_picture is None" class="title-icon glyphicon glyphicon-home"></span>
 							                      ${organization.title}
 							                    </small>
@@ -75,6 +77,9 @@
 				</div>
 				<div class="col-md-3 col-sm-3"></div>
 			</div>
+		</div>
+		<div tal:omit-tag="" tal:condition="stat">
+		  <div tal:replace="structure stat"/>
 		</div>
 	</div>
 </div>

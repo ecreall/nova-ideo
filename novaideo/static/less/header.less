@@ -1,0 +1,148 @@
+.home-panel-container {
+  > .container-fluid {
+    background-color: rgba(7, 73, 101, 0.5);
+  }
+
+  margin-top: -20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.header-panel-container {
+  margin-top: -20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  > .container-fluid {
+    background-color: rgba(7, 73, 101, 0.5);
+  }
+
+  .novaideo-contents {
+    background-color: rgba(0, 32, 45, 0.4);
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 5px;
+
+    strong {
+      color: white;
+    }
+
+    .novaideo-contents-list {
+      margin-bottom: 0;
+      font-family: LatoWebLight;
+
+      ul {
+        margin-bottom: 0;
+
+        li {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.header-content-container {
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: #fff;
+  height: 400px;
+
+  > .row {
+    width: 100%;
+  }
+}
+
+.header-data-container {
+  color: white;
+  font-size: 13px;
+  min-height: 100px;
+
+  .header-title {
+    font-family: LatoWebLight;
+    font-size: 35px;
+  }
+
+  .user-function {
+    color: white;
+    margin-left: 0;
+  }
+
+  a,
+  small {
+    color: white !important;
+  }
+}
+
+.header-data-addon {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-family: LatoWeb;
+  font-style: italic;
+  margin-top: 15px;
+  padding: 5px 15px;
+
+  .keywords-result,
+  .keywords-result a {
+    color: white;
+  }
+
+  dl {
+    margin-bottom: 0;
+  }
+
+  dd,
+  dt {
+    display: inline-block;
+  }
+}
+
+.header-image-col {
+  max-width: 110px;
+}
+
+.header-img-container {
+  margin-top: 15px;
+  padding-left: 10px;
+  padding-bottom: 15px;
+  text-align: center;
+  float: right;
+
+  > img {
+    position: unset;
+    width: 100px;
+    height: 100px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+    background-color: white;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-content-container {
+    justify-content: center;
+  }
+
+  .header-image-col {
+    max-width: initial;
+  }
+
+  .header-data-container {
+    margin-left: 0;
+    text-align: center;
+
+    > h3 > span {
+      display: block !important;
+    }
+  }
+
+  .header-img-container {
+    text-align: center;
+    float: none;
+  }
+}

@@ -217,7 +217,7 @@ class Challenge(
     type_title = _('Challenge')
     icon = 'ion-trophy'
     templates = {'default': 'novaideo:views/templates/challenge_result.pt',
-                 'bloc': 'novaideo:views/templates/challenge_bloc.pt',
+                 'bloc': 'novaideo:views/templates/challenge_card.pt',
                  'small': 'novaideo:views/templates/small_challenge_result.pt',
                  'popover': 'novaideo:views/templates/challenge_popover.pt',
                  'card': 'novaideo:views/templates/challenge_card.pt'}

@@ -1,4 +1,4 @@
-<div class="right-caption span4 search-item search-item-bloc challenge-item-bloc result-item view-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-block listing-card-challenge result-item view-item component-obj-view component-listing-view"
      id="listingbloc_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
@@ -8,7 +8,7 @@
                  challenge_image object.image;
                  deadline getattr(object, 'deadline', None)
                  ">
-  <div role="presentation" class="card-img" 
+  <div role="presentation" class="listing-card-img" 
        style="
           background: transparent url(${getattr(challenge_image, 'blur', challenge_image).url}) no-repeat scroll center center / cover ;">
       <div class="challenge-progress progress progress-striped"
@@ -38,33 +38,32 @@
       </div>
   </div>
 
-  <div class="caption media-bloc media-challenge">
-
-    <div class="media-challenge-body">
-      <div class="">
-        <div class="object-title-block view-item-title"
-          data-title="${object.title}"
-          data-icon="${icon}"
-          data-img="">
-          <h4 title="${object.title}">
-            <a tal:attributes="href url">
-              ${object.title}
-             </a>
-          </h4>
-        </div>
-        <div class="row object-row-content">
-          <div class="col col-xs-12 col-md-12">
-            <div class="object-text">${structure:object.presentation_text(150)}</div>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="">
+          <div class="view-item-title"
+            data-title="${object.title}"
+            data-icon="${icon}"
+            data-img="">
+            <h4 title="${object.title}">
+              <a class="listing-card-title" tal:attributes="href url">
+                ${object.title}
+               </a>
+            </h4>
+          </div>
+          <div>
+           ${structure:object.presentation_text(150)}
           </div>
         </div>
+        <a tal:condition="object.can_add_content" tal:attributes="href url" class="btn-master">
+           <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Participate</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
+        </a>
+        <a tal:condition="not object.can_add_content" tal:attributes="href url" class="btn-master btn-master-danger">
+           <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Consult</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
+        </a>
       </div>
-      <a tal:condition="object.can_add_content" tal:attributes="href url" class="btn-master">
-         <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Participate</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
-      </a>
-      <a tal:condition="not object.can_add_content" tal:attributes="href url" class="btn-master btn-master-danger">
-         <span class="icon-left icon ${icon}"></span> <span i18n:translate="">Consult</span> <span class="icon-right glyphicon glyphicon-menu-right"></span>
-      </a>
-      <div class="search-item-footer">
+      <div class="listing-card-footer">
         <div class="actions-block">
           <div tal:replace="structure footer_body"/>
         </div>

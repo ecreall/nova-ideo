@@ -34,7 +34,7 @@ from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
 from dace.objectofcollaboration.principal.util import get_current, has_role
-from dace.util import getSite, getAllBusinessAction, getBusinessAction, get_obj
+from dace.util import getSite, getAllBusinessAction, getBusinessAction, get_obj, request_memoize
 from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
@@ -48,6 +48,7 @@ from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
 from novaideo.emojis import DEFAULT_EMOJIS
+from novaideo.adapters.stat_adapter import IStat, DEFAULT_STAT_TEMPLATE
 
 
 try:
@@ -836,7 +837,28 @@ VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
 DEFAULT_SUPPORT_TEMPLATE = 'novaideo:views/templates/support_entity_actions.pt'
 
 
-def render_object_header(context, request):
+@request_memoize
+def get_object_stat(context, request, adapter=None):
+    result = {}
+    if adapter is None:
+        adapter = get_current_registry().queryAdapter(
+            context, IStat)
+
+    if adapter is not None:
+        result = adapter.get_content_stat(request)
+
+    return result
+
+def render_object_stat(context, request, template=DEFAULT_STAT_TEMPLATE):
+    adapter = get_current_registry().queryAdapter(
+        context, IStat)
+    if adapter is not None:
+        data = get_object_stat(context, request, adapter)
+        return adapter.render_stat(request, data=data)
+
+    return None
+
+def render_object_header(context, request, **kw):
     active_folder_id = None
     active_folder = None
     if request.GET:
@@ -852,10 +874,13 @@ def render_object_header(context, request):
     header_template = getattr(context, 'templates', {}).get('header', None)
     body = ''
     if header_template:
+        data = {
+            'object': context,
+            'is_portal_manager': has_role(role=('PortalManager',))}
+        data.update(kw)
         body = renderers.render(
             header_template,
-            {'object': context,
-             'is_portal_manager': has_role(role=('PortalManager',))},
+            data,
             request)
 
     return body

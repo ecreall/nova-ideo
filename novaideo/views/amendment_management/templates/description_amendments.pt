@@ -1,4 +1,4 @@
-<div tal:condition="not is_proposal" class="thumbnail right-caption span4 search-item result-item view-item"
+<div tal:condition="not is_proposal" class="listing-card listing-card-amendment result-item view-item"
      i18n:domain="novaideo"
      tal:define="url request.resource_url(amendment, '@@index');
                  icon getattr(amendment, 'icon');
@@ -7,68 +7,78 @@
                  author_picture getattr(author, 'picture', None);
                  default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
                  item_template item_template|field.widget.item_template">
-  <div class="media-body media-amendment" tal:define="author_picture getattr(author, 'picture', None)">
-    <span class="amendment-toggle glyphicon glyphicon-minus pull-right"></span>
-      <div class="author-block">
-        <img class="author-img img-circle"
-           tal:condition="author_picture is not None and not is_anonymous"
-           tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
-        <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
-        <small>
-          <span i18n:translate="">Version amended by</span>
-          <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
-            ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+  <div class="listing-card-header">
+    <div class="author-container">
+      <img class="author-img img-circle"
+         tal:condition="author_picture is not None and not is_anonymous"
+         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
+      <small>
+        <span i18n:translate="">Version amended by</span>
+        <a tal:condition="not is_anonymous" class="user-title" tal:attributes="href request.resource_url(author, '@@index')">
+          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        </a>
+        <span tal:condition="is_anonymous" class="user-title">
+          ${getattr(author, 'title', author.name)}
+        </span>
+        <span i18n:translate="">the</span>
+        <span tal:replace="layout.to_localized_time(amendment.created_at)"/>
+      </small>
+    </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <span class="amendment-toggle glyphicon glyphicon-minus pull-right"></span>
+        <div class="object-title-block view-item-title" >
+          <a tal:attributes="href url">
+            <h4>
+              <span class="icon ${icon}"></span> ${amendment.title}
+            </h4>
           </a>
-          <span tal:condition="is_anonymous" class="user-title">
-            ${getattr(author, 'title', author.name)}
-          </span>
-          <span i18n:translate="">the</span>
-          <span tal:replace="layout.to_localized_time(amendment.created_at)"/>
-        </small>
-      </div>
-    <div class="object-title-block view-item-title" >
-      <a tal:attributes="href url">
-        <h4>
-          <span class="icon ${icon}"></span> ${amendment.title}
-        </h4>
-      </a>
-    </div>
-    <div class="object-text">
-      <div class="scroll-able trimmed-text amendment-trimmed-text">
-        ${structure:text}
+        </div>
+        <div class="object-text">
+          <div class="scroll-able trimmed-text amendment-trimmed-text">
+            ${structure:text}
+          </div>
+        </div>
+        ${field.start_mapping()}
+          <div tal:repeat="child field.children"
+               tal:replace="structure child.render_template(item_template)" >
+          </div>     
+        ${field.end_mapping()}
       </div>
     </div>
-    ${field.start_mapping()}
-      <div tal:repeat="child field.children"
-           tal:replace="structure child.render_template(item_template)" >
-      </div>     
-    ${field.end_mapping()}
   </div>
 </div>
 
 
-<div tal:condition="is_proposal" class="thumbnail right-caption span4 search-item result-item view-item"  
+<div tal:condition="is_proposal" class="listing-card listing-card-proposal result-item view-item"  
      i18n:domain="novaideo"
      tal:define="url request.resource_url(amendment, '@@index');
                  icon getattr(amendment, 'icon');
                  item_template item_template|field.widget.item_template">
-  <div class="media-body media-proposal">
-    <div class="object-title-block view-item-title" >
-        <a tal:attributes="href url">
-          <h4>
-            <span class="icon ${icon}"></span> ${amendment.title} <span style="color: #ef3128" i18n:translate="">(original version)</span>
-          </h4>
-        </a>
-    </div>
-    <div class="object-text">
-      <div class="scroll-able trimmed-text proposal-trimmed-text">
-        ${structure:text}
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="object-title-block view-item-title" >
+            <a tal:attributes="href url">
+              <h4>
+                <span class="icon ${icon}"></span> ${amendment.title} <span style="color: #ef3128" i18n:translate="">(original version)</span>
+              </h4>
+            </a>
+        </div>
+        <div class="object-text">
+          <div class="scroll-able trimmed-text proposal-trimmed-text">
+            ${structure:text}
+          </div>
+        </div>
+        ${field.start_mapping()}
+          <div tal:repeat="child field.children"
+               tal:replace="structure child.render_template(item_template)" >
+          </div>     
+        ${field.end_mapping()}
       </div>
     </div>
-    ${field.start_mapping()}
-      <div tal:repeat="child field.children"
-           tal:replace="structure child.render_template(item_template)" >
-      </div>     
-    ${field.end_mapping()}
   </div>
 </div>

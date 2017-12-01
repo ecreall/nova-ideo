@@ -1,30 +1,37 @@
-<div class="thumbnail right-caption span4 small-result" 
+<div class="listing-card listing-small-card listing-card-idea" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 author object.author;
                  censored 'censored' in object.state
                  ">
-  <div class="media-body media-idea small-media">
-    <div class="object-title-block" >
-      <h5 tal:condition="not censored" class="inline">
-        <a tal:attributes="href url">
-          <span class="icon ${icon}"></span>  ${object.title}
-        </a>
-      </h5>
-    </div>
+  <div class="listing-card-header">
     <div class="author-block">
       <span i18n:translate="">modified on</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/>
-	  <div class="version-note" tal:condition="hasattr(object, 'note')">
-	    <small>
-	       ${object.note}
-	    </small>
-	  </div>
+      <div class="version-note" tal:condition="hasattr(object, 'note')">
+        <small>
+           ${object.note}
+        </small>
+      </div>
     </div>
-    <div tal:condition="censored">
-     <div class="alert-terms-of-use" i18n:translate="">
-        This content does not respect the terms of use.
-     </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="object-title-block" >
+          <h5 tal:condition="not censored" class="inline">
+            <a data-oid="${getattr(object, '__oid__', '')}"
+               class="toggle-popover"
+               tal:attributes="href url">
+                <span class="icon ${icon}"></span>  ${object.title}
+            </a>
+          </h5>
+        </div>
+        <div tal:condition="censored">
+         <div class="alert-terms-of-use" i18n:translate="">
+            This content does not respect the terms of use.
+         </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-amendment result-item view-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
@@ -9,13 +9,13 @@
                  author_picture getattr(author, 'picture', None);
                  default_picture getattr(author, 'default_picture', 'novaideo:static/images/user100.png');
                  oid object.__oid__;">
-  <div class="media-body media-amendment">
-    <div class="author-block">
+  <div class="listing-card-header">
+    <div class="author-container">
       <img class="author-img img-circle" 
          tal:condition="author_picture is not None" 
          tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
       <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url(default_picture)}" width="35"/>
-      <small>
+      <small class="author-title">
         <span i18n:translate="">Version amended by</span>
         <a tal:condition="not is_anonymous"
            class="user-title toggle-popover"
@@ -30,58 +30,62 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div class="content-body-left"></div>
-    <div class="content-col">
-      <div class="object-title-block view-item-title"
-          data-title="${object.title}"
-          data-icon="${icon}"
-          data-img="">
-        <div class="object-menu pull-right">
-          <div tal:replace="structure menu_body"/>
-        </div>
-        <h4 class="inline">
-          <a tal:attributes="href url">
-            <span class="icon ${icon}"></span> ${object.title}
-          </a>
-          <div class="listing-access-menu">
-            <div tal:replace="structure access_body"/>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <div class="object-title-block view-item-title"
+            data-title="${object.title}"
+            data-icon="${icon}"
+            data-img="">
+          <div class="object-menu pull-right">
+            <div tal:replace="structure menu_body"/>
           </div>
-          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
-        </h4>
-      </div>
-      <div class="object-description">
-        <small>
-          <span i18n:translate="">Amended version of</span> 
-          <a tal:attributes="href request.resource_url(object.proposal, '@@index')">
-            <span class="icon ${object.proposal.icon}"></span> ${object.proposal.title}
-          </a>
-        </small>
-      </div>  
-      <div class="object-text">${object.presentation_text(200)}</div>
-      <dl class="block-details">
-        <div tal:omit-tag=""
-          tal:condition="getattr(object, 'justification', '')"
-          tal:define="justification getattr(object, 'justification', '')">
-          <dt  class="item-title" i18n:translate="">Justification</dt>
-          <dd >
-              ${justification}
-          </dd>
-        </div> 
-        <div tal:omit-tag="" tal:condition="object.related_ideas">
-          <dt  class="item-title" i18n:translate="">Related ideas</dt>
-           <dd>
-            <tal:loop repeat="idea object.related_ideas">
-               <a data-oid="${getattr(idea, '__oid__', '')}"
-                  class="toggle-popover"
-                  tal:attributes="href request.resource_url(idea, '@@index')"><span class="${getattr(idea, 'icon', '')}"></span> ${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
+          <h4 class="inline">
+            <a tal:attributes="href url">
+              <span class="icon ${icon}"></span> ${object.title}
+            </a>
+            <div class="listing-access-menu">
+              <div tal:replace="structure access_body"/>
+            </div>
+            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+          </h4>
         </div>
-      </dl>
-    </div>
-    <div class="search-item-footer">
-      <div class="actions-block">
-        <div tal:replace="structure footer_body"/>
+        <div class="object-description">
+          <small>
+            <span i18n:translate="">Amended version of</span> 
+            <a tal:attributes="href request.resource_url(object.proposal, '@@index')">
+              <span class="icon ${object.proposal.icon}"></span> ${object.proposal.title}
+            </a>
+          </small>
+        </div>  
+        <div class="object-text">${object.presentation_text(200)}</div>
+        <dl class="block-details">
+          <div tal:omit-tag=""
+            tal:condition="getattr(object, 'justification', '')"
+            tal:define="justification getattr(object, 'justification', '')">
+            <dt  class="item-title" i18n:translate="">Justification</dt>
+            <dd >
+                ${justification}
+            </dd>
+          </div> 
+          <div tal:omit-tag="" tal:condition="object.related_ideas">
+            <dt  class="item-title" i18n:translate="">Related ideas</dt>
+             <dd>
+              <tal:loop repeat="idea object.related_ideas">
+                 <a data-oid="${getattr(idea, '__oid__', '')}"
+                    class="toggle-popover"
+                    tal:attributes="href request.resource_url(idea, '@@index')"><span class="${getattr(idea, 'icon', '')}"></span> ${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+              </tal:loop>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div class="listing-card-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
       </div>
     </div>
   </div>

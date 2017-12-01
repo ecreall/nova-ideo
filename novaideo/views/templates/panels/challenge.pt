@@ -1,6 +1,10 @@
-<div tal:omit-tag="" tal:define="challenge challenge|nothing" i18n:domain="novaideo">
+<div tal:omit-tag=""
+     tal:define="
+        challenge challenge|nothing;
+        stat stat|nothing;"
+     i18n:domain="novaideo">
 	<div data-component_type="object-header"
-	    class="home-panel-container header-panel-container" style="background: transparent url('${cover_picture}')  no-repeat scroll center center / cover ;'"
+	    class="header-panel-container" style="background: transparent url('${cover_picture}')  no-repeat scroll center center / cover ;'"
 		tal:condition="challenge"
 		tal:define="
 		  default_picture request.static_url('novaideo:static/images/background-person.png');
@@ -55,6 +59,7 @@
 								        </small>
 								    </div>
 							        <div class="header-data-addon">
+							           <div>
 									    <div class="keywords-result">
 								          <span class="glyphicon glyphicon-tags"></span> 
 								          <tal:loop repeat="k challenge.keywords">
@@ -62,6 +67,7 @@
 								          </tal:loop>
 								        </div>
 									    <div class="challenge-description">${challenge.description}</div>
+									   </div>
 								    </div>
 								 </div>
 						        </div>
@@ -71,24 +77,9 @@
 					<div class="col-md-3 col-sm-3"></div>
 				</div>
 			</div>
-			<nav class="hidden-xs novaideo-contents" tal:condition="nb_question + nb_idea + nb_proposal > 0">
-			    <div class="novaideo-contents-list">
-			            <ul>
-			                <div tal:omit-tag="" tal:condition="nb_question > 0">
-			                   <li class="counter" id="challenge-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question == 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked question</span></li>
-			                   <li class="counter" id="challenge-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question > 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked questions</span></li>
-			                </div>   
-			                <div tal:omit-tag="" tal:condition="nb_idea > 0">
-			                   <li class="counter" id="challenge-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
-			                   <li class="counter" id="challenge-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
-			                </div> 
-			                <div tal:omit-tag="" tal:condition="nb_proposal > 0">
-			                   <li class="counter" id="challenge-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
-			                   <li class="counter" id="challenge-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
-			                </div>                    
-			            </ul>
-			    </div>
-			</nav>
+			<div tal:omit-tag="" tal:condition="stat">
+			  <div tal:replace="structure stat"/>
+			</div>
 		</div>
 	</div>
 </div>

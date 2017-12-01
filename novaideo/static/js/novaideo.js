@@ -270,8 +270,8 @@ function init_channels_scroll() {
 function init_channels_top() {
   var navbar_top_h = $(".navbar.navbar-fixed-top").height()
   navbar_top_h = navbar_top_h == undefined ? 0 : navbar_top_h
-  var home_top_h = $(".home-panel-container").outerHeight()
-  home_top_h = home_top_h == undefined ? 0 : home_top_h - 20
+  var header_top_h = $(".header-panel-container").outerHeight()
+  header_top_h = header_top_h == undefined ? 0 : header_top_h -17
   var navbar_h = $("nav.navbar.navbar-bottom").height()
   navbar_h = navbar_h == undefined ? 0 : navbar_h
   var default_top = navbar_h + navbar_top_h - 3
@@ -281,9 +281,9 @@ function init_channels_top() {
   btn.addClass("notransition")
   blocks.addClass("notransition")
   blocks.css("display", "block")
-  if (scrolltop <= navbar_h + home_top_h) {
-    btn.css("top", default_top + home_top_h - scrolltop + "px")
-    blocks.css("top", default_top + home_top_h - scrolltop + "px")
+  if (scrolltop <= navbar_h + header_top_h) {
+    btn.css("top", default_top + header_top_h - scrolltop + "px")
+    blocks.css("top", default_top + header_top_h - scrolltop + "px")
   } else {
     btn.css("top", default_top - navbar_h + "px")
     blocks.css("top", default_top - navbar_h + "px")
@@ -295,7 +295,7 @@ function init_channels_top() {
 }
 
 function init_card_position() {
-  var card = $(".person-card-container:first>.search-item")
+  var card = $(".person-card-container:first>.listing-card")
   if (card.length > 0) {
     var min_top = 50
     var offset_top = card.offset().top
@@ -339,13 +339,6 @@ function initscroll(result_scrolls) {
   $.each(result_scrolls, function(index) {
     var result_scroll = $(this)
     var id = result_scroll.attr("id")
-    // if (result_scroll.hasClass("results-bloc")) {
-    //   var items = result_scroll.find(
-    //     ">.result-container>.scroll-items-container>.scroll-item"
-    //   )
-    //   var max_height = max(map(height_of, items))
-    //   items.height(max_height)
-    // }
     $(result_scroll).infinitescroll(
       {
         behavior: "local",
@@ -418,12 +411,6 @@ function initscroll(result_scrolls) {
           .find(">.scroll-item")
         var nex_url = new_content.data("nex_url")
         scroll_items_container.append(items)
-        // if ($this.hasClass("results-bloc")) {
-        //   $(current_content).find("img").last().load(function() {
-        //     var max_height = max(map(height_of, items))
-        //     items.height(max_height)
-        //   })
-        // }
         new_content.remove()
         if (nex_url) {
           current_content.data("nex_url", nex_url)
@@ -449,7 +436,7 @@ function init_morecontent_scroll() {
   var result_scrolls = $(".more-content-carousel")
   for (var i = 0; i <= result_scrolls.length; i++) {
     var result_scroll = $(result_scrolls[i])
-    var last_child = $(result_scroll.find(".search-item").last())
+    var last_child = $(result_scroll.find(".result-item").last())
     if (last_child.length > 0) {
       var top =
         last_child.offset().top -
@@ -536,10 +523,12 @@ function display_carousel() {
 }
 
 function get_comment_author_bloc(element) {
-  var comment_data = $(element.parents(".comment-data").first())
+  var comment_data = $(element.parents(".comment-card").first())
   var clone = $(comment_data.clone())
-  clone.find(".comment-content>div").not(".comment-author").remove()
-  clone.removeClass("comment-data")
+  var header = clone.find(".listing-card-header").first()
+  clone.html(header)
+  var author = clone.find(".listing-card-header .comment-author")
+  header.html(author)
   return clone
 }
 
@@ -702,7 +691,7 @@ $(document).on("dblclick", "g.node .node-shape, g.node text", open_node_url)
 
 $(document).on("click", ".btn-more-scroll", function() {
   var result_scroll = $($(this).parents(".result-scroll").first())
-  result_scroll.triggerHandler("scroll")
+  result_scroll.infinitescroll("scroll")
 })
 
 $(document).on("click", ".full-screen-btn.screen-small", function() {

@@ -1,8 +1,8 @@
-<div class="thumbnail right-caption span4 search-item result-item" 
+<div class="listing-card result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
      tal:define="support_kind getattr(object, 'support_kind', '')">
-  <div class="media-body" tal:define="subject object.subjects[0]">
+  <div tal:define="subject object.subjects[0]">
     <h4>
     	<span class="alert-token token ${object.icon}"></span> 
         <span tal:replace="layout.to_localized_time(object.modified_at)"/>

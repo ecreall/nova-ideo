@@ -14,6 +14,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.advertising_management.behaviors import (
     SeeAdvertisings)
 from novaideo.content.processes import get_states_mapping
@@ -61,16 +62,8 @@ class SeeAdvertisingsView(BasicView):
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'number': len_result})
         result_body = []
-        for obj in batch:
-            object_values = {'object': obj,
-                             'current_user': user,
-                             'state': get_states_mapping(user, obj,
-                                   getattr(obj, 'state_or_none', [None])[0])}
-            body = self.content(args=object_values,
-                                template=obj.templates.get('default'))['body']
-            result_body.append(body)
-
-        result = {}
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
         values = {
             'bodies': result_body,
             'length': len_result,

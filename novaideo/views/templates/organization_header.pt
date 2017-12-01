@@ -4,7 +4,8 @@
       organization_picture object.logo;
       profil_picture getattr(organization_picture, 'profil', organization_picture);
       default_picture request.static_url('novaideo:static/images/background-organization.jpg');
-      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);">
+      cover_picture getattr(getattr(object, 'cover_picture', None), 'url', default_picture);
+      stat stat|nothing;">
 	<div class="container-fluid">
 		<div class="max-container">
 			<div class="row">
@@ -27,6 +28,9 @@
 						                <span tal:condition="not organization_picture" class="${getattr(object, 'icon', '')}" ></span> ${object.title}
 						            </span>
 						          </h3>
+					              <div>
+					                ${object.description}
+					              </div>
 						          <div class="header-data-addon">
 						              <div>
 						                <dl tal:define="managers object.managers">
@@ -50,9 +54,6 @@
 						                  </dd>
 						                </dl>
 						              </div>
-						              <div>
-						                ${object.description}
-						              </div>
 						          </div>
 					        	</div>
 					     	</div>
@@ -61,6 +62,9 @@
 				</div>
 				<div class="col-md-3 col-sm-3"></div>
 			</div>
+		</div>
+		<div tal:omit-tag="" tal:condition="stat">
+		  <div tal:replace="structure stat"/>
 		</div>
 	</div>
 </div>

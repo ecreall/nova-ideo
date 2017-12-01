@@ -1579,6 +1579,7 @@ def get_organizations_by_evaluations(
     return result, object_ids.__len__()
 
 
+@request_memoize
 def get_all_user_contributions(user, interfaces=[IEntity]):
     novaideo_index = find_catalog('novaideo')
     object_authors_index = novaideo_index['object_authors']

@@ -3,32 +3,44 @@
   id="index_${oid}"
   data-component_type="object-view"
   tal:define="
-      oid registration.__oid__;">
+      oid registration.__oid__;
+      trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
 
-<div tal:replace="structure navbar_body"/>
-<div class="media" tal:define="
-              trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
-  <div class="media-body">
-    <h4 class="media-heading">
+  <div class="content-view-header">
+    <div tal:replace="structure navbar_body"/>
+    <div class="content-view-title-container">
+      <h4 class="content-title">
         <strong>${getattr(registration, 'title', registration.name)}</strong> 
         <small style="color: #d43f3a" tal:condition="registration.is_expired" >(<span i18n:translate="">Expired</span>)</small>
-    </h4>
-      <dl class="dl-horizontal">
-        <dt i18n:translate="">First name</dt>
-        <dd><span tal:replace="registration.first_name"/></dd>
-        <dt i18n:translate="">Last name</dt>
-        <dd><span tal:replace="registration.last_name"/></dd>
-        <dt i18n:translate="">Email</dt>
-        <dd tal:define="mail getattr(registration, 'email', '')">
-          <a href="mailto:${mail}">${mail}</a>
-          <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
-        </dd>
-        <dt i18n:translate="">Registered on</dt>
-        <dd><span tal:replace="layout.to_localized_time(registration.created_at)"/></dd>
-        <dt i18n:translate="">Expires on</dt>
-        <dd><span tal:replace="layout.to_localized_time(registration.get_deadline_date())"/></dd>
-      </dl>
+      </h4>
+    </div>
   </div>
-</div>
-<div tal:replace="structure footer_body"/>
+  <div class="content-view-container">
+    <div class="content-view-body">
+      <div class="content-view-body-container">
+        <div>
+          <dl class="dl-horizontal">
+            <dt i18n:translate="">First name</dt>
+            <dd><span tal:replace="registration.first_name"/></dd>
+            <dt i18n:translate="">Last name</dt>
+            <dd><span tal:replace="registration.last_name"/></dd>
+            <dt i18n:translate="">Email</dt>
+            <dd tal:define="mail getattr(registration, 'email', '')">
+              <a href="mailto:${mail}">${mail}</a>
+              <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
+            </dd>
+            <dt i18n:translate="">Registered on</dt>
+            <dd><span tal:replace="layout.to_localized_time(registration.created_at)"/></dd>
+            <dt i18n:translate="">Expires on</dt>
+            <dd><span tal:replace="layout.to_localized_time(registration.get_deadline_date())"/></dd>
+          </dl>
+        </div>
+        <div class="content-view-body-footer">
+          <div class="actions-block">
+              <div tal:replace="structure footer_body"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
