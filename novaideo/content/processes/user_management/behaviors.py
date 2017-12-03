@@ -392,6 +392,7 @@ def remove_expired_preregistration(root, preregistration):
 
 def remove_expired_preregistration_callback(root, preregistration):
     remove_expired_preregistration(root, preregistration)
+    oid = str(get_oid(preregistration))
     get_socket().send_pyobj(('ack', 'persistent_' + oid))
 
 
