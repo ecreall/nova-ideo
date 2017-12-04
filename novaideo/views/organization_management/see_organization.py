@@ -16,7 +16,9 @@ from pontus.view import BasicView
 from pontus.util import merge_dicts
 from pontus.view_operation import MultipleView
 
-from novaideo.utilities.util import render_listing_objs
+from novaideo.utilities.util import (
+    render_listing_objs, render_object_evaluation_stat,
+    render_object_examination_stat)
 from novaideo.content.processes.organization_management.behaviors import (
     SeeOrganization)
 from novaideo.content.organization import Organization
@@ -202,6 +204,8 @@ class DetailsView(BasicView):
 
         organization = self.context
         current_user = get_current()
+        evaluation_chart = render_object_evaluation_stat(self.context, self.request)
+        examination_chart = render_object_examination_stat(self.context, self.request)
         values = {
             'organization': organization,
             'state': get_states_mapping(
@@ -210,7 +214,9 @@ class DetailsView(BasicView):
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
-            'is_portal_manager': has_role(role=('PortalManager',))
+            'is_portal_manager': has_role(role=('PortalManager',)),
+            'evaluation_chart': evaluation_chart,
+            'examination_chart': examination_chart,
         }
         result = {}
         result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
@@ -240,6 +246,8 @@ class SeeOrganizationView(MultipleView):
     css_class = 'panel-transparent'
     views = (DetailsView, OrganizationContentsView)
     validators = [SeeOrganization.get_validator()]
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

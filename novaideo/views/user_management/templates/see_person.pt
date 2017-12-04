@@ -14,8 +14,16 @@
     <div class="content-view-container">
       <div class="content-view-body">
         <div class="content-view-body-container" >
-          <div class="user-description" tal:condition="getattr(user, 'description', '')">
-            ${user.description}
+          <div class="data-stat-container">
+            <div>
+              <div class="user-description" tal:condition="getattr(user, 'description', '')">
+                ${user.description}
+              </div>
+            </div>
+            <div tal:condition="evaluation_chart or examination_chart" class="entity-stat-container">
+              <div tal:condition="evaluation_chart" tal:replace="structure evaluation_chart"/>
+              <div tal:condition="examination_chart" tal:replace="structure examination_chart"/>
+            </div>
           </div>
           <div class="content-view-body-footer">
             <div class="actions-block">

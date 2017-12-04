@@ -48,7 +48,8 @@ from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
 from novaideo.emojis import DEFAULT_EMOJIS
-from novaideo.adapters.stat_adapter import IStat, DEFAULT_STAT_TEMPLATE
+from novaideo.adapters.stat_adapter import (
+    IStat, DEFAULT_STAT_TEMPLATE, DEFAULT_EVALUATION_STAT_TEMPLATE)
 
 
 try:
@@ -849,6 +850,7 @@ def get_object_stat(context, request, adapter=None):
 
     return result
 
+
 def render_object_stat(context, request, template=DEFAULT_STAT_TEMPLATE):
     adapter = get_current_registry().queryAdapter(
         context, IStat)
@@ -857,6 +859,53 @@ def render_object_stat(context, request, template=DEFAULT_STAT_TEMPLATE):
         return adapter.render_stat(request, data=data)
 
     return None
+
+
+@request_memoize
+def get_object_evaluation_stat(context, request, adapter=None):
+    result = {}
+    if adapter is None:
+        adapter = get_current_registry().queryAdapter(
+            context, IStat)
+
+    if adapter is not None:
+        result = adapter.get_evaluation_stat(request)
+
+    return result
+
+
+def render_object_evaluation_stat(context, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE):
+    adapter = get_current_registry().queryAdapter(
+        context, IStat)
+    if adapter is not None:
+        data = get_object_evaluation_stat(context, request, adapter)
+        return adapter.render_evaluation_stat(request, data=data)
+
+    return None
+
+
+@request_memoize
+def get_object_examination_stat(context, request, adapter=None):
+    result = {}
+    if adapter is None:
+        adapter = get_current_registry().queryAdapter(
+            context, IStat)
+
+    if adapter is not None:
+        result = adapter.get_examination_stat(request)
+
+    return result
+
+
+def render_object_examination_stat(context, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE):
+    adapter = get_current_registry().queryAdapter(
+        context, IStat)
+    if adapter is not None:
+        data = get_object_examination_stat(context, request, adapter)
+        return adapter.render_examination_stat(request, data=data)
+
+    return None
+
 
 def render_object_header(context, request, **kw):
     active_folder_id = None

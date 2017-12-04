@@ -1,0 +1,49 @@
+<div class="entity-stat-content" i18n:domain="novaideo"
+     tal:define="
+       oid object.__oid__;
+       doughnutid str(oid) + '_stat_doughnut'+id;"
+     tal:condition="items and sum>0">
+  <canvas id="${doughnutid}" ></canvas>
+  <script>
+    <div tal:omit-tag="">
+      $(document).ready(function() {
+        <div tal:omit-tag="">
+          var doughnutData = {
+              labels: [${','.join(["\""+data['translation']+' ('+str(data['value'])+')'+"\"" for _, data in items.items()])}],
+              datasets: [
+                {
+                  data: [${','.join(["\""+str(("%.2f" % (data['value']*100/sum)) if sum else 0)+"\"" for _, data in items.items()])}],
+                  backgroundColor: [${','.join(["\""+data['color']+"\"" for _, data in items.items()])}],
+                },
+              ]
+          };
+        </div>
+
+        var newcanvas = get_new_canvas("${doughnutid}");
+        $('#${doughnutid}').replaceWith(newcanvas)
+        var ctxdoughnut = document.getElementById("${doughnutid}").getContext("2d");
+        ctxdoughnut.clearRect(0, 0, 100, 100);
+        var doughnut = new Chart(ctxdoughnut, {type: 'doughnut',data: doughnutData, options:{
+            responsive: true,
+            legend: {
+               display: false
+            },
+            tooltips: {
+              titleFontSize: 9,
+              bodyFontSize: 9,
+            },
+            title: {
+              display: true,
+              position: 'bottom',
+              fontSize: 9,
+              fontFamily: 'LatoWeb',
+              fontColor: '#4b4f56',
+              fontStyle: 'bold',
+              padding: 5,
+              text: "${title + ' ('+str(sum)+')'}"
+            }
+        }});
+      })
+    </div>
+  </script>
+</div>

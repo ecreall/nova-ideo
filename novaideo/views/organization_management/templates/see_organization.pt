@@ -12,21 +12,30 @@
     <div class="content-view-container">
       <div class="content-view-body">
         <div class="content-view-body-container" >
-          <div tal:repeat="contact getattr(organization, 'contacts', [])">
-            <blockquote class="contact-container">
-                 <div class="contact-title"><span class="md md-headset-mic"></span> ${contact.get('title', '')}</div>
-                 <div class="contact-content" tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</div>
-                 <div class="contact-content" tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
-                   <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
-                   <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
-                 </div>
-                 <div class="contact-content" tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></div>
-                 <div class="contact-content" tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
-                  <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
-                  <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surcharge</span>: ${surtax})</span></div>
-                 <div class="contact-content" tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</div>
-            </blockquote>
+          <div class="data-stat-container">
+            <div>
+              <div tal:repeat="contact getattr(organization, 'contacts', [])">
+                <blockquote class="contact-container">
+                     <div class="contact-title"><span class="md md-headset-mic"></span> ${contact.get('title', '')}</div>
+                     <div class="contact-content" tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</div>
+                     <div class="contact-content" tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+                       <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+                       <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+                     </div>
+                     <div class="contact-content" tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></div>
+                     <div class="contact-content" tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+                      <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
+                      <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surcharge</span>: ${surtax})</span></div>
+                     <div class="contact-content" tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</div>
+                </blockquote>
+              </div>
+            </div>
+            <div tal:condition="evaluation_chart or examination_chart" class="entity-stat-container">
+              <div tal:condition="evaluation_chart" tal:replace="structure evaluation_chart"/>
+              <div tal:condition="examination_chart" tal:replace="structure examination_chart"/>
+            </div>
           </div>
+
           <div class="content-view-body-footer">
             <div class="actions-block">
                 <div tal:replace="structure footer_body"/>
