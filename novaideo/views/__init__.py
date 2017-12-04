@@ -244,7 +244,7 @@ class NovaideoAPI(IndexManagementJsonView):
         comment_root = self.context.root
         comment_parent = self.context.comment_parent
         channel = self.context.channel
-        subject = channel.subject
+        subject = channel.subject or self.request.root
         result = self._update_action_view('remove')
         action = result.pop('action_obj')
         result.pop('view_data')
