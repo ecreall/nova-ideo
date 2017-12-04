@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-01 15:49+0100\n"
+"POT-Creation-Date: 2017-12-04 16:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,7 +72,7 @@ msgstr ""
 
 #: ./novaideo/core_schema.py:75
 #: ./novaideo/views/templates/organization_result.pt:63
-#: ./novaideo/views/organization_management/templates/see_organization.pt:26
+#: ./novaideo/views/organization_management/templates/see_organization.pt:28
 msgid "Surcharge"
 msgstr ""
 
@@ -301,8 +301,8 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:120
 #: ./novaideo/content/processes/user_management/behaviors.py:142
 #: ./novaideo/content/processes/user_management/behaviors.py:320
-#: ./novaideo/content/processes/user_management/behaviors.py:396
-#: ./novaideo/content/processes/user_management/behaviors.py:522
+#: ./novaideo/content/processes/user_management/behaviors.py:400
+#: ./novaideo/content/processes/user_management/behaviors.py:530
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:192
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:220
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
@@ -373,7 +373,7 @@ msgstr ""
 #: ./novaideo/connectors/google/content/definition.py:58
 #: ./novaideo/connectors/twitter/content/behaviors.py:147
 #: ./novaideo/connectors/twitter/content/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:721
+#: ./novaideo/content/processes/user_management/behaviors.py:728
 #: ./novaideo/content/processes/user_management/definition.py:166
 #: ./novaideo/content/processes/proposal_management/definition.py:547
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
@@ -397,10 +397,10 @@ msgstr ""
 #: ./novaideo/connectors/google/content/behaviors.py:150
 #: ./novaideo/connectors/twitter/content/behaviors.py:148
 #: ./novaideo/content/processes/user_management/behaviors.py:226
-#: ./novaideo/content/processes/user_management/behaviors.py:471
-#: ./novaideo/content/processes/user_management/behaviors.py:494
-#: ./novaideo/content/processes/user_management/behaviors.py:623
-#: ./novaideo/content/processes/user_management/behaviors.py:930
+#: ./novaideo/content/processes/user_management/behaviors.py:475
+#: ./novaideo/content/processes/user_management/behaviors.py:500
+#: ./novaideo/content/processes/user_management/behaviors.py:630
+#: ./novaideo/content/processes/user_management/behaviors.py:937
 #: ./novaideo/content/processes/admin_process/behaviors.py:110
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
@@ -1272,6 +1272,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:56
 #: ./novaideo/content/processes/__init__.py:122
 #: ./novaideo/content/processes/__init__.py:134
+#: ./novaideo/adapters/stat_adapter.py:33
 msgid "Positive"
 msgstr ""
 
@@ -1280,6 +1281,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:57
 #: ./novaideo/content/processes/__init__.py:123
 #: ./novaideo/content/processes/__init__.py:135
+#: ./novaideo/adapters/stat_adapter.py:34
 msgid "To be re-worked upon"
 msgstr ""
 
@@ -1288,6 +1290,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:58
 #: ./novaideo/content/processes/__init__.py:124
 #: ./novaideo/content/processes/__init__.py:136
+#: ./novaideo/adapters/stat_adapter.py:35
 msgid "Negative"
 msgstr ""
 
@@ -1327,7 +1330,7 @@ msgid "Check this box if you want to remain anonymous."
 msgstr ""
 
 #: ./novaideo/content/idea.py:193
-#: ./novaideo/views/user_management/templates/see_person.pt:54
+#: ./novaideo/views/user_management/templates/see_person.pt:62
 #: ./novaideo/views/novaideo_view_manager/templates/graph_entities.pt:5
 msgid "Idea"
 msgstr ""
@@ -1448,7 +1451,7 @@ msgstr ""
 
 #: ./novaideo/content/report.py:73 ./novaideo/content/question.py:112
 #: ./novaideo/content/processes/user_management/behaviors.py:366
-#: ./novaideo/content/processes/user_management/behaviors.py:682
+#: ./novaideo/content/processes/user_management/behaviors.py:689
 #: ./novaideo/content/processes/user_management/definition.py:81
 #: ./novaideo/content/processes/user_management/definition.py:82
 #: ./novaideo/content/processes/user_management/definition.py:157
@@ -1611,7 +1614,7 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/content/question.py:83 ./novaideo/content/question.py:152
-#: ./novaideo/views/user_management/templates/see_person.pt:48
+#: ./novaideo/views/user_management/templates/see_person.pt:56
 #: ./novaideo/views/novaideo_view_manager/templates/graph_entities.pt:3
 msgid "Question"
 msgstr ""
@@ -1779,7 +1782,7 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/content/proposal.py:243
-#: ./novaideo/views/user_management/templates/see_person.pt:60
+#: ./novaideo/views/user_management/templates/see_person.pt:68
 msgid "Proposal"
 msgstr ""
 
@@ -1950,7 +1953,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/see_members.py:41
 #: ./novaideo/views/challenge_management/add_members.py:57
 #: ./novaideo/views/organization_management/remove_members.py:57
-#: ./novaideo/views/organization_management/see_organization.py:137
+#: ./novaideo/views/organization_management/see_organization.py:139
 msgid "Members"
 msgstr ""
 
@@ -2324,7 +2327,7 @@ msgstr ""
 msgid "Assign roles"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:780
+#: ./novaideo/content/processes/user_management/behaviors.py:787
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:127
 #: ./novaideo/content/processes/reports_management/behaviors.py:227
@@ -4432,32 +4435,32 @@ msgstr ""
 msgid "General discussion"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:93
+#: ./novaideo/views/user_management/see_person.py:94
 msgid "His/her questions"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:100
-#: ./novaideo/views/organization_management/see_organization.py:101
+#: ./novaideo/views/user_management/see_person.py:101
+#: ./novaideo/views/organization_management/see_organization.py:103
 msgid "No asked questions"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:105
+#: ./novaideo/views/user_management/see_person.py:106
 msgid "His/her ideas"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:112
+#: ./novaideo/views/user_management/see_person.py:113
 #: ./novaideo/views/novaideo_view_manager/home.py:144
 #: ./novaideo/views/challenge_management/see_challenge.py:207
-#: ./novaideo/views/organization_management/see_organization.py:116
+#: ./novaideo/views/organization_management/see_organization.py:118
 msgid "No registered ideas"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:123
+#: ./novaideo/views/user_management/see_person.py:124
 msgid "His/her working groups"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:130
-#: ./novaideo/views/organization_management/see_organization.py:132
+#: ./novaideo/views/user_management/see_person.py:131
+#: ./novaideo/views/organization_management/see_organization.py:134
 msgid "Belongs to no working group"
 msgstr ""
 
@@ -4537,34 +4540,34 @@ msgstr ""
 msgid "You don't have an API token yet, you can generate a token below:"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:38
+#: ./novaideo/views/user_management/templates/see_person.pt:46
 #: ./novaideo/views/templates/person_bloc.pt:55
 #: ./novaideo/views/templates/person_card.pt:55
 msgid "Contributions"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:39
+#: ./novaideo/views/user_management/templates/see_person.pt:47
 #: ./novaideo/views/templates/person_bloc.pt:56
 #: ./novaideo/views/templates/person_card.pt:56
 msgid "Contribution"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:47
+#: ./novaideo/views/user_management/templates/see_person.pt:55
 msgctxt "userstat"
 msgid "Questions"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:53
+#: ./novaideo/views/user_management/templates/see_person.pt:61
 msgctxt "userstat"
 msgid "Ideas"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:59
+#: ./novaideo/views/user_management/templates/see_person.pt:67
 msgctxt "userstat"
 msgid "Proposals"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:65
+#: ./novaideo/views/user_management/templates/see_person.pt:73
 msgid "Comments, Evaluations..."
 msgstr ""
 
@@ -4780,7 +4783,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:138
 #: ./novaideo/views/challenge_management/see_challenge.py:201
-#: ./novaideo/views/organization_management/see_organization.py:110
+#: ./novaideo/views/organization_management/see_organization.py:112
 msgid "Ideas"
 msgstr ""
 
@@ -4797,7 +4800,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:170
 #: ./novaideo/views/challenge_management/see_challenge.py:233
-#: ./novaideo/views/organization_management/see_organization.py:95
+#: ./novaideo/views/organization_management/see_organization.py:97
 msgid "Questions"
 msgstr ""
 
@@ -5063,11 +5066,15 @@ msgid "Total des soutiens classé par organizations"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:843
+#: ./novaideo/adapters/stat_adapter.py:230
+#: ./novaideo/adapters/stat_adapter.py:370
 msgctxt "analytics"
 msgid "Support"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:850
+#: ./novaideo/adapters/stat_adapter.py:235
+#: ./novaideo/adapters/stat_adapter.py:375
 msgid "Opposition"
 msgstr ""
 
@@ -5186,7 +5193,7 @@ msgstr ""
 #: ./novaideo/views/templates/small_answer_result.pt:27
 #: ./novaideo/views/templates/comment_result.pt:36
 #: ./novaideo/views/templates/amendment_result.pt:29
-#: ./novaideo/views/templates/panels/challenge.pt:57
+#: ./novaideo/views/templates/panels/challenge.pt:58
 #: ./novaideo/views/proposal_management/create_proposal.py:128
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:100
 #: ./novaideo/views/proposal_management/templates/amendments_header.pt:36
@@ -5408,7 +5415,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_bloc.pt:24
 #: ./novaideo/views/templates/answer_result.pt:22
 #: ./novaideo/views/templates/small_answer_result.pt:18
-#: ./novaideo/views/templates/panels/challenge.pt:50
+#: ./novaideo/views/templates/panels/challenge.pt:51
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:93
 #: ./novaideo/views/proposal_management/templates/amendments_header.pt:29
 #: ./novaideo/views/question_management/templates/header_question.pt:31
@@ -5931,11 +5938,11 @@ msgstr ""
 msgid "Duplicated ideas from this idea:"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/challenge.pt:39
+#: ./novaideo/views/templates/panels/challenge.pt:40
 msgid "The end of the challenge is planned on"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/challenge.pt:40
+#: ./novaideo/views/templates/panels/challenge.pt:41
 msgid "The challenge ended on the"
 msgstr ""
 
@@ -7961,7 +7968,7 @@ msgid "See members"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_members.py:69
-#: ./novaideo/views/organization_management/see_organization.py:143
+#: ./novaideo/views/organization_management/see_organization.py:145
 msgid "No members"
 msgstr ""
 
@@ -9185,7 +9192,7 @@ msgstr ""
 msgid "${number} organizations found"
 msgstr ""
 
-#: ./novaideo/views/organization_management/see_organization.py:126
+#: ./novaideo/views/organization_management/see_organization.py:128
 msgid "Working groups"
 msgstr ""
 
@@ -9429,176 +9436,176 @@ msgstr ""
 msgid "Associated by"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:62
+#: ./novaideo/utilities/util.py:63
 #, python-format
 msgid "On ${day} ${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:63
+#: ./novaideo/utilities/util.py:64
 #, python-format
 msgid "On ${day} ${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:64
+#: ./novaideo/utilities/util.py:65
 #, python-format
 msgid "In ${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:65
+#: ./novaideo/utilities/util.py:66
 #, python-format
 msgid "In ${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:66
+#: ./novaideo/utilities/util.py:67
 #, python-format
 msgid "In ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:67
+#: ./novaideo/utilities/util.py:68
 #, python-format
 msgid "On ${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:68
+#: ./novaideo/utilities/util.py:69
 #, python-format
 msgid "On ${day} ${month} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:69
+#: ./novaideo/utilities/util.py:70
 #, python-format
 msgid "On ${day} ${month} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:70
+#: ./novaideo/utilities/util.py:71
 #, python-format
 msgid "On ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:71
+#: ./novaideo/utilities/util.py:72
 #, python-format
 msgid "On ${day} ${month} ${year} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:72
+#: ./novaideo/utilities/util.py:73
 #, python-format
 msgid "On ${day} ${month} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:73
+#: ./novaideo/utilities/util.py:74
 #, python-format
 msgid "On ${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:76
+#: ./novaideo/utilities/util.py:77
 #, python-format
 msgid "${day} ${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:77
+#: ./novaideo/utilities/util.py:78
 #, python-format
 msgid "${day} ${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:78
+#: ./novaideo/utilities/util.py:79
 #, python-format
 msgid "${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:79 ./novaideo/utilities/util.py:93
+#: ./novaideo/utilities/util.py:80 ./novaideo/utilities/util.py:94
 #, python-format
 msgid "${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:80 ./novaideo/utilities/util.py:94
+#: ./novaideo/utilities/util.py:81 ./novaideo/utilities/util.py:95
 #, python-format
 msgid "${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:81 ./novaideo/utilities/util.py:95
+#: ./novaideo/utilities/util.py:82 ./novaideo/utilities/util.py:96
 #, python-format
 msgid "${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:82
+#: ./novaideo/utilities/util.py:83
 #, python-format
 msgid "${day} ${month} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:83
+#: ./novaideo/utilities/util.py:84
 #, python-format
 msgid "${day} ${month} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:84
+#: ./novaideo/utilities/util.py:85
 #, python-format
 msgid "${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:85
+#: ./novaideo/utilities/util.py:86
 #, python-format
 msgid "${day} ${month} ${year} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:86
+#: ./novaideo/utilities/util.py:87
 #, python-format
 msgid "${day} ${month} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:87
+#: ./novaideo/utilities/util.py:88
 #, python-format
 msgid "${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:90
+#: ./novaideo/utilities/util.py:91
 #, python-format
 msgid "${day}/${month}/${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:91
+#: ./novaideo/utilities/util.py:92
 #, python-format
 msgid "${day}/${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:92
+#: ./novaideo/utilities/util.py:93
 #, python-format
 msgid "${month}/${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:96
+#: ./novaideo/utilities/util.py:97
 #, python-format
 msgid "${day}/${month}/${year} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:97
+#: ./novaideo/utilities/util.py:98
 #, python-format
 msgid "${day}/${month} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:98
+#: ./novaideo/utilities/util.py:99
 #, python-format
 msgid "${day} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:99
+#: ./novaideo/utilities/util.py:100
 #, python-format
 msgid "${day}/${month}/${year} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:100
+#: ./novaideo/utilities/util.py:101
 #, python-format
 msgid "${day}/${month} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:101
+#: ./novaideo/utilities/util.py:102
 #, python-format
 msgid "${day} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:163
+#: ./novaideo/utilities/util.py:164
 msgid "1st"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:169
+#: ./novaideo/utilities/util.py:170
 #, python-format
 msgid "${name} ${day}"
 msgstr ""
@@ -9948,6 +9955,16 @@ msgstr ""
 #: ./novaideo/utilities/pseudo_react.py:2087
 #, python-format
 msgid "Ideas (${nb})"
+msgstr ""
+
+#: ./novaideo/adapters/stat_adapter.py:279
+#: ./novaideo/adapters/stat_adapter.py:419
+msgid "Evaluations"
+msgstr ""
+
+#: ./novaideo/adapters/stat_adapter.py:296
+#: ./novaideo/adapters/stat_adapter.py:435
+msgid "Examinations"
 msgstr ""
 
 #: ./novaideo/adapters/__init__.py:29
