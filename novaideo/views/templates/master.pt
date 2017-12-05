@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=34"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=35"
             rel="stylesheet"/>
     </div>
 
@@ -126,7 +126,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/little-loader.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/include.js')}?v=6"
+    <script src="${su('novaideo:static/js/include.js')}?v=7"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/ws.js')}"
           type="text/javascript"></script>
