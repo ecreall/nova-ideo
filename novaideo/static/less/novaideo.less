@@ -754,6 +754,8 @@ a.answer-btn {
 }
 
 .filter-input-container {
+  display: flex;
+  justify-content: space-between;
   color: #babbbf;
   background-color: #fff;
   border: 1px solid rgba(196, 197, 199, 0.5);
@@ -762,7 +764,6 @@ a.answer-btn {
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 3px;
-  height: 28px;
 }
 
 .filter-form .form-group.item-negation > label {
@@ -796,10 +797,10 @@ a.answer-btn {
   border: none !important;
   box-shadow: none;
   background-color: transparent !important;
-  position: relative;
   text-rendering: optimizespeed;
   border-radius: 0;
   outline: none;
+  width: 93%
 }
 
 .views-container .wg-actions-navbar li > a {
@@ -4907,13 +4908,9 @@ span.circle {
 }
 
 @media (max-width: 470px) {
-  .filter-container .filter-input-container input {
-    display: none;
-  }
-
-  .filter-activator .filter-btn {
-    border-left: transparent;
-    padding-right: 10px;
+  .filter-container .filter-activator {
+    float: none;
+    margin-top: 5px;
   }
 }
 
