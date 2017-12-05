@@ -44,7 +44,7 @@
     <div class="content-view-body">
       <div class="content-view-body-container" >
         <div>
-          <div class="content-collapsible" tal:condition="not to_hide">
+          <div tal:condition="not to_hide">
             <div tal:condition="getattr(challenge, 'is_restricted', False)" class="delayed-block alert alert-info alert-discret">
               <span class="ion-locked" style="font-size: 20px;"></span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
             </div>
