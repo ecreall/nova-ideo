@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-04 16:59+0100\n"
+"POT-Creation-Date: 2017-12-05 14:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1272,7 +1272,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:56
 #: ./novaideo/content/processes/__init__.py:122
 #: ./novaideo/content/processes/__init__.py:134
-#: ./novaideo/adapters/stat_adapter.py:33
+#: ./novaideo/adapters/stat_adapter.py:35
 msgid "Positive"
 msgstr ""
 
@@ -1281,7 +1281,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:57
 #: ./novaideo/content/processes/__init__.py:123
 #: ./novaideo/content/processes/__init__.py:135
-#: ./novaideo/adapters/stat_adapter.py:34
+#: ./novaideo/adapters/stat_adapter.py:36
 msgid "To be re-worked upon"
 msgstr ""
 
@@ -1290,7 +1290,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:58
 #: ./novaideo/content/processes/__init__.py:124
 #: ./novaideo/content/processes/__init__.py:136
-#: ./novaideo/adapters/stat_adapter.py:35
+#: ./novaideo/adapters/stat_adapter.py:37
 msgid "Negative"
 msgstr ""
 
@@ -1491,7 +1491,7 @@ msgstr ""
 #: ./novaideo/content/processes/correlation_management/behaviors.py:80
 #: ./novaideo/views/proposal_management/see_proposal.py:170
 #: ./novaideo/views/reports_management/see_reports.py:112
-#: ./novaideo/views/challenge_management/see_challenge.py:249
+#: ./novaideo/views/challenge_management/see_challenge.py:251
 #: ./novaideo/views/idea_management/see_idea.py:91
 #: ./novaideo/views/correlation_management/see_correlation.py:21
 msgid "Details"
@@ -1995,7 +1995,7 @@ msgstr ""
 #: ./novaideo/content/processes/question_management/definition.py:77
 #: ./novaideo/content/processes/question_management/definition.py:78
 #: ./novaideo/views/question_management/ask_question.py:38
-#: ./novaideo/views/challenge_management/see_challenge.py:79
+#: ./novaideo/views/challenge_management/see_challenge.py:81
 msgid "Ask a question"
 msgstr ""
 
@@ -3090,7 +3090,7 @@ msgstr ""
 #: ./novaideo/views/templates/challenge_card.pt:60
 #: ./novaideo/views/proposal_management/participate.py:25
 #: ./novaideo/views/proposal_management/participate.py:55
-#: ./novaideo/views/challenge_management/see_challenge.py:295
+#: ./novaideo/views/challenge_management/see_challenge.py:293
 msgid "Participate"
 msgstr ""
 
@@ -3967,7 +3967,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/definition.py:71
 #: ./novaideo/content/processes/idea_management/definition.py:72
 #: ./novaideo/views/templates/add_idea_widget.pt:10
-#: ./novaideo/views/challenge_management/see_challenge.py:60
+#: ./novaideo/views/challenge_management/see_challenge.py:62
 #: ./novaideo/views/idea_management/create_idea.py:41
 msgid "Create an idea"
 msgstr ""
@@ -4450,7 +4450,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/see_person.py:113
 #: ./novaideo/views/novaideo_view_manager/home.py:144
-#: ./novaideo/views/challenge_management/see_challenge.py:207
+#: ./novaideo/views/challenge_management/see_challenge.py:209
 #: ./novaideo/views/organization_management/see_organization.py:118
 msgid "No registered ideas"
 msgstr ""
@@ -4639,7 +4639,7 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/home.py:33
 #: ./novaideo/views/templates/folder_breadcrumb.pt:2
 #: ./novaideo/views/reports_management/see_reports.py:31
-#: ./novaideo/views/challenge_management/see_challenge.py:38
+#: ./novaideo/views/challenge_management/see_challenge.py:40
 msgid "No element found"
 msgstr ""
 
@@ -4647,14 +4647,14 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/home.py:34
 #: ./novaideo/views/templates/folder_breadcrumb.pt:3
 #: ./novaideo/views/reports_management/see_reports.py:32
-#: ./novaideo/views/challenge_management/see_challenge.py:39
+#: ./novaideo/views/challenge_management/see_challenge.py:41
 msgid "One element found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:43
 #: ./novaideo/views/novaideo_view_manager/home.py:35
 #: ./novaideo/views/reports_management/see_reports.py:33
-#: ./novaideo/views/challenge_management/see_challenge.py:40
+#: ./novaideo/views/challenge_management/see_challenge.py:42
 #, python-format
 msgid "${number} elements found"
 msgstr ""
@@ -4782,30 +4782,30 @@ msgid "${number} proposals found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:138
-#: ./novaideo/views/challenge_management/see_challenge.py:201
+#: ./novaideo/views/challenge_management/see_challenge.py:203
 #: ./novaideo/views/organization_management/see_organization.py:112
 msgid "Ideas"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:155
-#: ./novaideo/views/challenge_management/see_challenge.py:218
+#: ./novaideo/views/challenge_management/see_challenge.py:220
 msgid "The Working Groups"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:161
-#: ./novaideo/views/challenge_management/see_challenge.py:224
+#: ./novaideo/views/challenge_management/see_challenge.py:226
 #: ./novaideo/views/idea_management/see_workinggroups.py:94
 msgid "No working group created"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:170
-#: ./novaideo/views/challenge_management/see_challenge.py:233
+#: ./novaideo/views/challenge_management/see_challenge.py:235
 #: ./novaideo/views/organization_management/see_organization.py:97
 msgid "Questions"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:176
-#: ./novaideo/views/challenge_management/see_challenge.py:239
+#: ./novaideo/views/challenge_management/see_challenge.py:241
 msgid "No question asked"
 msgstr ""
 
@@ -5066,15 +5066,17 @@ msgid "Total des soutiens classé par organizations"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:843
-#: ./novaideo/adapters/stat_adapter.py:230
-#: ./novaideo/adapters/stat_adapter.py:370
+#: ./novaideo/adapters/stat_adapter.py:179
+#: ./novaideo/adapters/stat_adapter.py:318
+#: ./novaideo/adapters/stat_adapter.py:458
 msgctxt "analytics"
 msgid "Support"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:850
-#: ./novaideo/adapters/stat_adapter.py:235
-#: ./novaideo/adapters/stat_adapter.py:375
+#: ./novaideo/adapters/stat_adapter.py:184
+#: ./novaideo/adapters/stat_adapter.py:323
+#: ./novaideo/adapters/stat_adapter.py:463
 msgid "Opposition"
 msgstr ""
 
@@ -5425,12 +5427,12 @@ msgid "Submitted by"
 msgstr ""
 
 #: ./novaideo/views/templates/challenge_result.pt:61
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:17
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:20
 msgid "The challenge is expired"
 msgstr ""
 
 #: ./novaideo/views/templates/challenge_result.pt:64
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:20
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:23
 msgid "${days} day(s) before the end of the challenge."
 msgstr ""
 
@@ -5603,7 +5605,7 @@ msgstr ""
 #: ./novaideo/views/templates/comment_result.pt:116
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:103
 #: ./novaideo/views/question_management/templates/see_question.pt:117
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:103
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:113
 #: ./novaideo/views/idea_management/templates/comments.pt:150
 #: ./novaideo/views/idea_management/templates/see_idea.pt:109
 msgid "Attachments:"
@@ -5613,7 +5615,7 @@ msgstr ""
 #: ./novaideo/views/templates/comment_result.pt:117
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:104
 #: ./novaideo/views/question_management/templates/see_question.pt:118
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:104
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:114
 #: ./novaideo/views/idea_management/templates/comments.pt:151
 #: ./novaideo/views/idea_management/templates/see_idea.pt:110
 msgid "Attachment:"
@@ -9096,16 +9098,11 @@ msgid ""
 "berforehand, so that it be different from the original idea."
 msgstr ""
 
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:45
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:49
 msgid ""
 "This challenge is restricted and accessible only for a set of users. Only the"
 " concerned members can add contents in this challenge. The added contents can"
 " be seen only by the concerned members."
-msgstr ""
-
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:117
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:118
-msgid "More details"
 msgstr ""
 
 #: ./novaideo/views/challenge_management/templates/alert_challenge_submission.pt:3
@@ -9957,13 +9954,15 @@ msgstr ""
 msgid "Ideas (${nb})"
 msgstr ""
 
-#: ./novaideo/adapters/stat_adapter.py:279
-#: ./novaideo/adapters/stat_adapter.py:419
+#: ./novaideo/adapters/stat_adapter.py:228
+#: ./novaideo/adapters/stat_adapter.py:367
+#: ./novaideo/adapters/stat_adapter.py:507
 msgid "Evaluations"
 msgstr ""
 
-#: ./novaideo/adapters/stat_adapter.py:296
-#: ./novaideo/adapters/stat_adapter.py:435
+#: ./novaideo/adapters/stat_adapter.py:245
+#: ./novaideo/adapters/stat_adapter.py:384
+#: ./novaideo/adapters/stat_adapter.py:523
 msgid "Examinations"
 msgstr ""
 
