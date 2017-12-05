@@ -26,8 +26,8 @@ $(document).on("click", ".contextual-help-toggle-close", function(e) {
   $(".contextual-help").toggleClass("toggled")
 })
 
-$(document).on("click", ".nav-tabs>li", function() {
-  var $this = $(event.target).parents("li").first()
+$(document).on("click", ".nav-tabs>li", function(e) {
+  var $this = $(e.target).parents("li").first()
   if ($this.data("help")) {
     var help = $("." + $this.data("help"))
     if (help.length > 0) {
