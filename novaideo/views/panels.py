@@ -19,7 +19,7 @@ from dace.processinstance.core import ValidationError
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
     getSite,
-    find_catalog, getAllBusinessAction,
+    getAllBusinessAction,
     get_obj)
 from dace.objectofcollaboration.principal.util import get_current, has_role
 from daceui.interfaces import IDaceUIAPI
@@ -34,9 +34,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyParticipations,
     SeeMySupports)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
-from novaideo.content.interface import (
-    IPerson, Iidea, IProposal, ISmartFolder,
-    IQuestion)
+from novaideo.content.interface import ISmartFolder
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import SearchableEntity, can_access
 from novaideo.content.processes.user_management.behaviors import (
@@ -49,7 +47,8 @@ from novaideo.utilities.util import (
     get_debatescore_data,
     get_action_view,
     render_listing_obj,
-    render_object_header)
+    render_object_header,
+    render_object_stat)
 from novaideo.views.filter import (
     find_entities, find_more_contents, get_all_user_contributions)
 from novaideo.contextual_help_messages import render_contextual_help
@@ -67,6 +66,7 @@ from novaideo.views.challenge_management.see_challenges import (
     SeeChallengesHomeView)
 from novaideo.views.channel_management.see_channels import SeeChannels
 from novaideo.views.challenge_management.see_challenge import get_contents_forms
+
 from novaideo import _, log
 
 
@@ -216,32 +216,13 @@ class NovaideoContents(object):
         self.request = request
 
     def __call__(self):
-        if self.request.view_name != '':
-            return {'condition': False}
+        result = {'stat': ''}
+        is_homepage = self.request.view_name in ('index', '')
+        picture = getattr(self.context, 'homepage_picture', None)
+        if not is_homepage or (is_homepage and picture):
+            return result
 
-        result = {}
-        dace_catalog = find_catalog('dace')
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
-        query = object_provides_index.any((IPerson.__identifier__,)) & \
-            states_index.notany(['deactivated'])
-        result['nb_person'] = query.execute().__len__()
-        query = object_provides_index.any((Iidea.__identifier__,)) & \
-            states_index.any(['published'])
-        result['nb_idea'] = query.execute().__len__()
-        result['nb_question'] = 0
-        if 'question' in self.request.content_to_manage:
-            query = object_provides_index.any((IQuestion.__identifier__,)) & \
-                states_index.any(['published'])
-            result['nb_question'] = query.execute().__len__()
-
-        result['nb_proposal'] = 0
-        if 'proposal' in self.request.content_to_manage:
-            query = object_provides_index.any((IProposal.__identifier__,)) & \
-                states_index.notany(['archived', 'draft', 'submitted'])
-            result['nb_proposal'] = query.execute().__len__()
-
-        result['condition'] = True
+        result['stat'] = render_object_stat(self.context, self.request)
         return result
 
 
@@ -716,11 +697,17 @@ class Debates_core(object):
         self.request = request
 
     def __call__(self):
-        return {
-            'is_homepage': self.request.view_name in ('index', ''),
-            'picture': getattr(self.context, 'homepage_picture', None),
-            'text': getattr(self.context, 'homepage_text', None)
+        is_homepage = self.request.view_name in ('index', '')
+        picture = getattr(self.context, 'homepage_picture', None)
+        result = {
+            'is_homepage': is_homepage,
+            'picture': picture,
         }
+        if is_homepage and picture:
+            result['text'] = getattr(self.context, 'homepage_text', None)
+            result['stat'] = render_object_stat(self.context, self.request) 
+
+        return result
 
 
 @panel_config(
@@ -842,31 +829,8 @@ class ChallengePanel(object):
 
         result = {
             'challenge': challenge,
-            'current_user': get_current()}
-
-        novaideo_index = find_catalog('novaideo')
-        dace_catalog = find_catalog('dace')
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
-        challenges = novaideo_index['challenges']
-        query = challenges.any([challenge.__oid__]) & \
-            object_provides_index.any((Iidea.__identifier__,)) & \
-            states_index.any(['published'])
-        result['nb_idea'] = query.execute().__len__()
-        result['nb_question'] = 0
-        if 'question' in self.request.content_to_manage:
-            query = challenges.any([challenge.__oid__]) & \
-                object_provides_index.any((IQuestion.__identifier__,)) & \
-                states_index.any(['published'])
-            result['nb_question'] = query.execute().__len__()
-
-        result['nb_proposal'] = 0
-        if 'proposal' in self.request.content_to_manage:
-            query = challenges.any([challenge.__oid__]) & \
-                object_provides_index.any((IProposal.__identifier__,)) & \
-                states_index.notany(['archived', 'draft'])
-            result['nb_proposal'] = query.execute().__len__()
-
+            'current_user': get_current(),
+            'stat': render_object_stat(challenge, self.request)}
         return result
 
 
@@ -882,8 +846,10 @@ class HeaderPanel(object):
         self.request = request
 
     def __call__(self):
-        body = render_object_header(self.context, self.request)
-        return {'header': body}
+        return {
+            'header': render_object_header(
+                self.context, self.request,
+                stat=render_object_stat(self.context, self.request))}
 
 
 @panel_config(

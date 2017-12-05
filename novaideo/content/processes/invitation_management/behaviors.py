@@ -118,7 +118,6 @@ class InviteUsers(InfiniteCardinality):
         root = getSite()
         invitations = appstruct['invitations']
         user = get_current()
-        organization = getattr(user, 'organization', None)
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
         novaideo_title = root.title
@@ -133,9 +132,6 @@ class InviteUsers(InfiniteCardinality):
 
             roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
                                for r in invitation.roles]
-            if not invitation.organization:
-                invitation.setproperty('organization', organization)
-
             subject = mail_template['subject'].format(
                 novaideo_title=novaideo_title
             )

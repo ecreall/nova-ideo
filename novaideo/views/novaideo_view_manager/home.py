@@ -42,6 +42,7 @@ class ContentView(BasicView):
     content_type = 'idea'
     isactive = False
     hasparent = True
+    with_delayed = True
     filter_class = ''
     view_filter = [('metadata_filter', ['states', 'keywords', 'challenges']), 'geographic_filter',
                   'contribution_filter',

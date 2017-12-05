@@ -49,7 +49,7 @@ from novaideo.connectors.core.views.see import (
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj,
     render_index_obj, render_view_obj, render_view_comment,
-    render_object_header)
+    render_object_header, render_object_stat)
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
     IPreregistration, IInvitation, IOrganization,
@@ -143,7 +143,9 @@ def update_steps_navbar(request, context, steps_navbars):
 
 
 def update_object_header(request, context):
-    body = render_object_header(context, request)
+    body = render_object_header(
+        context, request,
+        stat=render_object_stat(context, request))
     return {
         'header.body': body,
         'has_header': body}

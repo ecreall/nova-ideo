@@ -1,22 +1,3 @@
-<nav tal:condition="condition" class="hidden-xs novaideo-contents" i18n:domain="novaideo">
-    <div class="novaideo-contents-list">
-            <ul>
-                <div tal:omit-tag="" tal:condition="nb_person > 0">
-                   <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
-                   <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
-                </div>
-                <div tal:omit-tag="" tal:condition="nb_question > 0">
-                   <li class="counter" id="novideo-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question == 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked question</span></li>
-                   <li class="counter" id="novideo-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question > 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked questions</span></li>
-                </div>   
-                <div tal:omit-tag="" tal:condition="nb_idea > 0">
-                   <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
-                   <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
-                </div> 
-                <div tal:omit-tag="" tal:condition="nb_proposal > 0">
-                   <li class="counter" id="counter-novideo-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
-                   <li class="counter" id="novideo-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
-                </div>                    
-            </ul>
-    </div>
-</nav>
+<div tal:omit-tag="" tal:condition="stat">
+  <div tal:replace="structure stat"/>
+</div>

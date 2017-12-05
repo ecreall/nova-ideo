@@ -25,7 +25,8 @@ from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 from novaideo.content.processes import get_states_mapping
 from novaideo.content.interface import Iidea, IProposal, IQuestion
 from novaideo.utilities.util import (
-    generate_navbars, ObjectRemovedException)
+    generate_navbars, ObjectRemovedException, get_object_stat,
+    render_object_evaluation_stat, render_object_examination_stat)
 from novaideo import _
 from novaideo.views.filter.sort import (
     sort_view_objects)
@@ -172,6 +173,7 @@ class DetailsView(BasicView):
     name = 'seepersondetails'
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
+    analytics_template = 'novaideo:views/templates/entity_stats_chart.pt'
     viewid = 'seepersondetails'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
@@ -185,21 +187,11 @@ class DetailsView(BasicView):
         user = self.context
         current_user = get_current()
         details = {}
-        contributions = len(get_all_user_contributions(user)) + len(user.evaluated_objs_ids())
-        ideas = contents = len(get_all_user_contributions(user, [Iidea]))
-        details['ideas'] = ideas
-        if 'proposal' in self.request.content_to_manage:
-            proposals = len(get_all_user_contributions(user, [IProposal]))
-            contents += proposals
-            details['proposals'] = proposals
-
-        if 'question' in self.request.content_to_manage:
-            questions = len(get_all_user_contributions(user, [IQuestion]))
-            contents += questions
-            details['questions'] = questions
-
-        others = contributions - contents 
-        details['others'] = others
+        stats = get_object_stat(self.context, self.request)
+        stats['nb_other'] = stats.get('nb_other', 0) + len(user.evaluated_objs_ids())
+        stas_len = sum(stats.values())
+        evaluation_chart = render_object_evaluation_stat(self.context, self.request)
+        examination_chart = render_object_examination_stat(self.context, self.request)
         values = {
             'user': user,
             'proposals': None,
@@ -210,8 +202,10 @@ class DetailsView(BasicView):
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
             'is_portal_manager': has_role(role=('PortalManager',)),
-            'contributions_len': contributions,
-            'details': details
+            'contributions_len': stas_len,
+            'details': stats,
+            'evaluation_chart': evaluation_chart,
+            'examination_chart': examination_chart,
         }
         result = {}
         result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
@@ -241,6 +235,8 @@ class SeePersonView(MultipleView):
     css_class = 'panel-transparent'
     views = (DetailsView, PersonContentsView)
     validators = [SeePerson.get_validator()]
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

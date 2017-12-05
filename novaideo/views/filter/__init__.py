@@ -1550,9 +1550,9 @@ def get_organizations_by_evaluations(
         add_query=query,
         **filter_)
 
-    index = find_catalog('novaideo')['organizations']
-    support = find_catalog('novaideo')['support']
-    oppose = find_catalog('novaideo')['oppose']
+    index = novaideo_catalog['organizations']
+    support = novaideo_catalog['support']
+    oppose = novaideo_catalog['oppose']
     intersection = index.family.IF.intersection
     object_ids = getattr(objects, 'ids', objects)
     if isinstance(object_ids, (list, types.GeneratorType)):
@@ -1565,11 +1565,13 @@ def get_organizations_by_evaluations(
             structoids = intersection(oids, object_ids)
             support_nb = 0
             for nb, supportoids in support._fwd_index.items():
-                support_nb += nb * len(intersection(supportoids, structoids))
+                if nb > 0:
+                    support_nb += nb * len(intersection(supportoids, structoids))
 
             oppose_nb = 0
             for nb, opposeoids in oppose._fwd_index.items():
-                oppose_nb += nb * len(intersection(opposeoids, structoids))
+                if nb > 0:
+                    oppose_nb += nb * len(intersection(opposeoids, structoids))
 
             result[struct_id] = {
                 'support': support_nb,
@@ -1579,6 +1581,7 @@ def get_organizations_by_evaluations(
     return result, object_ids.__len__()
 
 
+@request_memoize
 def get_all_user_contributions(user, interfaces=[IEntity]):
     novaideo_index = find_catalog('novaideo')
     object_authors_index = novaideo_index['object_authors']

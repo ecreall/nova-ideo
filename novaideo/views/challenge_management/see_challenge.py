@@ -18,7 +18,9 @@ from pontus.view import BasicView
 from pontus.util import merge_dicts
 from pontus.view_operation import MultipleView
 
-from novaideo.utilities.util import render_listing_objs
+from novaideo.utilities.util import (
+    render_listing_objs, render_object_evaluation_stat,
+    render_object_examination_stat)
 from novaideo.content.processes.challenge_management.behaviors import (
     SeeChallenge)
 from novaideo.content.challenge import Challenge
@@ -262,13 +264,8 @@ class DetailChallengeView(BasicView):
         to_hide = is_censored and not has_any_roles(
             user=user,
             roles=(('Owner', self.context), 'Moderator'))
-
-        files = getattr(self.context, 'attached_files', [])
-        files_urls = []
-        for file_ in files:
-            files_urls.append({'title': file_.title,
-                               'url': file_.url})
-
+        evaluation_chart = render_object_evaluation_stat(self.context, self.request)
+        examination_chart = render_object_examination_stat(self.context, self.request)
         result = {}
         values = {
             'challenge': self.context,
@@ -276,9 +273,10 @@ class DetailChallengeView(BasicView):
             'is_censored': is_censored,
             'text': self.context.text,
             'current_user': user,
-            'files': files_urls,
             'navbar_body': navbars['navbar_body'],
-            'footer_body': navbars['footer_body']
+            'footer_body': navbars['footer_body'],
+            'evaluation_chart': evaluation_chart,
+            'examination_chart': examination_chart
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
@@ -377,6 +375,8 @@ class ChallengeView(MultipleView):
     css_class = 'panel-transparent'
     views = (DetailChallengeView, ParticipateContentView)
     validators = [SeeChallenge.get_validator()]
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeChallenge: ChallengeView})

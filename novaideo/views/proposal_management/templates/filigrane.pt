@@ -2,8 +2,8 @@
 <script>
    $(document).ready(function(){ 
        var window_width = $(window).width();//TODO dep de la taille de l'ecran
-       var height = $(".content-text").height();
-       var width = $(".content-text").width();
+       var height = $(".content-view-body-container").height();
+       var width = $(".content-view-body-container").width();
        var font_size =  Math.floor((0.071*width)  + (0.083*height) );
        var left =  Math.floor((0.035*width)  - (0.026*height) );
        var top =  Math.floor((0.007*width)  - (0.12*height) );

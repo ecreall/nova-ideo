@@ -162,11 +162,11 @@ function update_direct_action(event) {
 function update_inline_action() {
   var $this = $(this)
   var target = $(
-    $this.parents(".search-item").find(".action-inline-container").first()
+    $this.parents(".component-obj-view").first().find(".action-inline-container").first()
   )
   if (target.length == 0) {
     target = $(
-      $this.parents(".content-view").find(".action-inline-container").first()
+      $this.parents(".content-view").first().find(".action-inline-container").first()
     )
   }
   var actions = $($this.parents(".actions-block").find(".dace-action-inline"))
@@ -239,7 +239,7 @@ function _close_slider(slider) {
 
 function update_slider_action() {
   var $this = $(this)
-  var item = $this.parents(".search-item").first()
+  var item = $this.parents(".component-obj-view").first()
   var target = $(item.find(">.action-slider-container").first())
   var is_content_view = false
   if (target.length == 0) {

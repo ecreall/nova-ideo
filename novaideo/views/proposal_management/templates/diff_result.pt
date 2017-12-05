@@ -1,25 +1,25 @@
 <div class="compare-result" i18n:domain="novaideo">
  <div tal:omit-tag="" tal:condition="version">
- <h4 class="content-title">${structure:titlediff}</h4>
-  <div class="object-well proposal-well">
-    <dl >
-      <dt  i18n:translate="">Abstract</dt>
-      <dd>${structure:descriptiondiff}</dd>
-      <dt tal:condition="keywordsdiff"  i18n:translate="">Keywords</dt>
-      <dd tal:condition="keywordsdiff">
-        <tal:loop repeat="k keywordsdiff">
-          <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>
-            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-        </tal:loop>
-      </dd>
-    </dl>
-  </div>
-  <div class="content-text collapsible-text" id="contenttext">
-    ${structure:textdiff}
-  </div>
-  <div id="legend">
-    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added to the current version</span></div>
-    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Text removed from the current version</span></div>
-  </div>
+    <h4 class="content-title">${structure:titlediff}</h4>
+    <div class="object-well proposal-well">
+      <dl >
+        <dt  i18n:translate="">Abstract</dt>
+        <dd>${structure:descriptiondiff}</dd>
+        <dt tal:condition="keywordsdiff"  i18n:translate="">Keywords</dt>
+        <dd tal:condition="keywordsdiff">
+          <tal:loop repeat="k keywordsdiff">
+            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>
+              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          </tal:loop>
+        </dd>
+      </dl>
+    </div>
+    <div class="collapsible-text" id="contenttext">
+      ${structure:textdiff}
+    </div>
+    <div id="legend">
+      <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added to the current version</span></div>
+      <div><div class="legend-carre-del"></div> : <span i18n:translate="">Text removed from the current version</span></div>
+    </div>
  </div>
 </div>

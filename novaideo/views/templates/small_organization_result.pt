@@ -1,17 +1,19 @@
-<div class="thumbnail right-caption span4 small-result" 
+<div class="listing-card listing-small-card listing-card-organization" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  ">
-  <div class="media-body media-person small-media">
-    <div class="object-title-block" >
-      <h5 class="inline">
-        <a data-oid="${getattr(object, '__oid__', '')}"
-           class="toggle-popover"
-           tal:attributes="href url">
-          <span class="icon ${icon}"></span>  ${object.title}
-        </a>
-      </h5>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div class="object-title-block" >
+        <h5 class="inline">
+          <a data-oid="${getattr(object, '__oid__', '')}"
+             class="toggle-popover"
+             tal:attributes="href url">
+            <span class="icon ${icon}"></span>  ${object.title}
+          </a>
+        </h5>
+      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+<div class="listing-card listing-card-person result-item view-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
@@ -10,14 +10,11 @@
                  default_img request.static_url('novaideo:static/images/user.png');
                  oid object.__oid__;
                  organization getattr(object, 'organization', None)">
-  <div class="media-body media-person">
-    <div class="object-title-block view-item-title"
+  <div class="listing-card-header">
+    <div class="view-item-title"
       data-title="${object.title}"
       data-icon=""
       data-img="${getattr(profil_picture, 'url', default_img)}">
-      <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
-      </div>
       <h4 class="inline">
         <img class="img-circle" tal:condition="profil_picture is not None"
              tal:attributes="src profil_picture.url"  width="50"/>
@@ -33,36 +30,43 @@
         </a>
       </h4>
     </div>
-    <div class="content-body-left"></div>
-    <div class="content-col">
-      <div class="user-function" >
-        <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
-        <span tal:condition="organization" >
-            <a i18n:attributes="title"
-               title="Organization"
-               style="color: #555C63"
-               tal:attributes="href request.resource_url(organization, '@@index')"
-               tal:define="picture getattr(organization, 'logo', None);
-                           profil_picture getattr(picture, 'profil', None)">
-                <img class="author-img img-circle" 
-                  tal:condition="profil_picture is not None"
-                   tal:attributes="src profil_picture.url"  width="25"/>
-                <span tal:condition="profil_picture is None" class="glyphicon glyphicon-home"></span>
-                ${organization.title}
-            </a>
-        </span>
-      </div>
-      <div class="object-text object-row-content">${object.presentation_text(300)}</div>
-      <div i18n:attributes="title" title="Topics of interest" tal:condition="keywords" class="keywords-result">
-        <span class="glyphicon glyphicon-tags"></span> 
-        <tal:loop repeat="k keywords">
-              <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-        </tal:loop>
-      </div>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
     </div>
-    <div class="search-item-footer">
-      <div class="actions-block">
-        <div tal:replace="structure footer_body"/>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+      <div>
+        <div class="user-function" >
+          <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
+          <span tal:condition="organization" >
+              <a i18n:attributes="title"
+                 title="Organization"
+                 style="color: #555C63"
+                 tal:attributes="href request.resource_url(organization, '@@index')"
+                 tal:define="picture getattr(organization, 'logo', None);
+                             profil_picture getattr(picture, 'profil', None)">
+                  <img class="author-img img-circle" 
+                    tal:condition="profil_picture is not None"
+                     tal:attributes="src profil_picture.url"  width="25" height="25"/>
+                  <span tal:condition="profil_picture is None" class="glyphicon glyphicon-home"></span>
+                  ${organization.title}
+              </a>
+          </span>
+        </div>
+        <div class="object-text object-row-content">${object.presentation_text(300)}</div>
+        <div i18n:attributes="title" title="Topics of interest" tal:condition="keywords" class="keywords-result">
+          <span class="glyphicon glyphicon-tags"></span> 
+          <tal:loop repeat="k keywords">
+                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          </tal:loop>
+        </div>
+      </div>
+      <div class="listing-card-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
       </div>
     </div>
   </div>

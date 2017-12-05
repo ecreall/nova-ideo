@@ -1,0 +1,102 @@
+.popover {
+  z-index: 2000;
+  border: 1px solid #ddd;
+
+  .popover-title {
+    color: #333;
+    line-height: 1.5;
+
+    a {
+      color: #333;
+    }
+  }
+
+  .actions-block a {
+    color: #797979;
+  }
+
+  .actions-block a.activated {
+    color: @novaideo-secondary-color;
+    font-weight: bold;
+  }
+
+  .actions-block a:hover {
+    color: @novaideo-secondary-color;
+  }
+}
+
+.popover:hover {
+  .listing-access-menu a {
+    color: #fff !important;
+    background-color: @novaideo-secondary-color;
+    border-radius: 50%;
+  }
+
+  .listing-access-menu .primary-actions a:hover {
+    background-color: darken(@novaideo-secondary-color, 7%);
+    color: #fff !important;
+  }
+}
+
+.action-popover-container {
+  max-width: 400px !important;
+}
+
+.popover-person .popover-title {
+  border-bottom: 3px solid #d9534f !important;
+}
+
+.popover-question .popover-title {
+  border-bottom: 3px solid @question-color !important;
+}
+
+.popover-answer .popover-title {
+  border-bottom: 3px solid @answer-color !important;
+}
+
+.popover-idea .popover-title {
+  border-bottom: 3px solid @idea-color !important;
+}
+
+.popover-proposal .popover-title {
+  border-bottom: 3px solid @proposal-color !important;
+}
+
+.popover-amendment .popover-title {
+  border-bottom: 3px solid #0a7cc8 !important;
+}
+
+.popover:not(.step-popover) {
+  position: fixed !important;
+  min-width: 300px;
+}
+
+.popover:not(.step-popover) .popover-content {
+  padding: 9px 9px 5px 12px;
+  font-size: 13px !important;
+  color: #5b5b5b;
+  overflow: hidden;
+}
+
+.popover-footer {
+  color: #8b93a3;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.popover-footer ul li a .hidden-xs {
+  display: none !important;
+}
+
+.popover-footer a {
+  font-weight: 100 !important;
+}
+
+.popover-content .proposal-support {
+  margin-bottom: 0;
+}
+
+.small-media .object-title-block .toggle-popover {
+  display: inline-block;
+}

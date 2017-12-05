@@ -246,8 +246,7 @@ class NovaideoAPI(IndexManagementJsonView):
         comment_root = self.context.root
         comment_parent = self.context.comment_parent
         channel = self.context.channel
-        subject = channel.subject
-        subject = subject if subject else getSite()
+        subject = channel.subject or self.request.root
         result = self._update_action_view('remove')
         action = result.pop('action_obj')
         result.pop('view_data')
@@ -386,7 +385,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposit_title'] = localizer.translate(_('Support'))
             result['opposition_counter'] = self.context.len_support
 
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None), self.request, self.context, self)))
@@ -409,7 +408,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_support
 
         user = get_current()
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -433,7 +432,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -457,7 +456,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -478,7 +477,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['withdraw'] = True
 
         user = get_current()
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -500,7 +499,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['withdraw'] = True
 
         user = get_current()
-        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
+        result['hastoken'] = user.get_len_free_tokens(root=root) > 0
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),

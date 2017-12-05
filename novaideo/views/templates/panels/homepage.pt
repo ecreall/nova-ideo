@@ -13,5 +13,8 @@
 		  </div>
 		  <div class="col-md-6 col-sm-3"></div>
 	    </div>
+	    <div tal:omit-tag="" tal:condition="stat">
+		  <div tal:replace="structure stat"/>
+		</div>
     </div>
 </div>

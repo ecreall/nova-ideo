@@ -58,11 +58,22 @@ class SeeRelatedWorkingGroupsView(BasicView):
             objects,
             key=lambda e: getattr(e, 'modified_at'),
             reverse=True)
-        url = self.request.resource_url(self.context, self.name)
+        is_small = True
+        current_is_small = self.params('is_small')
+        if current_is_small is not None:
+            current_is_small = current_is_small.lower()
+            is_small = current_is_small == 'true'
+        elif self.parent or self.request.view_name == self.name:
+            is_small = False
+
+        url = self.request.resource_url(
+            self.context, self.name, query={'is_small': str(is_small)})
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_idea_working_groups" + str(self.context.__oid__)
+        batch.target = "#results_idea_working_groups" + \
+            str(self.context.__oid__) + \
+            (is_small and 'is_small' or '')
         len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:
@@ -70,12 +81,11 @@ class SeeRelatedWorkingGroupsView(BasicView):
 
         self.title = _(WG_MESSAGES[index], mapping={'number': len_result})
         result = {}
-        # if included in another view
-        if self.parent or self.request.view_name == self.name:
-            result_body, result = render_listing_objs(
+        if is_small:
+            result_body = render_small_listing_objs(
                 self.request, batch, user)
         else:
-            result_body = render_small_listing_objs(
+            result_body, result = render_listing_objs(
                 self.request, batch, user)
 
         values = {

@@ -36,10 +36,9 @@
   </select>
   <div class="row" tal:condition="cstruct and cstruct in dict(values)" >
     <div class="col-md-4" tal:define="folder dict(values).get(cstruct, None)">
-      <div  class="thumbnail search-item folder-item">
-        <span class="glyphicon glyphicon-folder-open" ></span>
-        <div class="caption">
-          <h4 >${folder}</h4>
+      <div  class="listing-card folder-item">
+        <div >
+          <h4 ><span class="glyphicon glyphicon-folder-open" ></span> ${folder}</h4>
         </div>
       </div>
     </div>

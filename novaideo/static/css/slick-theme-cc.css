@@ -203,23 +203,23 @@
     color: black;
 }
 
-.more-content-carousel .search-item {
+.more-content-carousel .result-item {
    padding-right: 20px !important
 }
 
 
 
-.more-content-carousel .search-item:hover {
+.more-content-carousel .result-item:hover {
     box-shadow: none;
     border-color: transparent;
 }
 
-.more-content-carousel  .search-item .media-body {
+.more-content-carousel  .result-item .media-body {
   padding: 0px !important
 }
 
 
-.more-content-carousel .search-item a:hover{
+.more-content-carousel .result-item a:hover{
   color: #f0ad4e;
 }
 
@@ -327,11 +327,11 @@
     content: "";
 }
 
-.vertical-slick-well .more-content-carousel .search-item {
+.vertical-slick-well .more-content-carousel .result-item {
    padding-right: 0px !important
 }
 
-.vertical-slick-well .more-content-carousel .search-item {
+.vertical-slick-well .more-content-carousel .result-item {
    margin-bottom: 10px !important
 }
 

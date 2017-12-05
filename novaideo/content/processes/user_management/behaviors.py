@@ -64,6 +64,7 @@ from novaideo.adapters import EXTRACTION_ATTR
 
 
 def accept_preregistration(request, preregistration, root):
+    preregistration.init_deadline(datetime.datetime.now(tz=pytz.UTC))
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
         locale = my_locale_negotiator(request)
@@ -388,8 +389,12 @@ def remove_expired_preregistration(root, preregistration):
     if preregistration.__parent__ is not None:
         oid = str(get_oid(preregistration))
         root.delfromproperty('preregistrations', preregistration)
-        get_socket().send_pyobj(
-            ('ack', 'persistent_' + oid))
+
+
+def remove_expired_preregistration_callback(root, preregistration):
+    remove_expired_preregistration(root, preregistration)
+    oid = str(get_oid(preregistration))
+    get_socket().send_pyobj(('ack', 'persistent_' + oid))
 
 
 class Registration(InfiniteCardinality):
@@ -407,7 +412,7 @@ class Registration(InfiniteCardinality):
         deadline = DEADLINE_PREREGISTRATION * 1000
         call_id = 'persistent_' + str(get_oid(preregistration))
         push_callback_after_commit(
-            remove_expired_preregistration, deadline, call_id,
+            remove_expired_preregistration_callback, deadline, call_id,
             root=root, preregistration=preregistration)
         preregistration.state.append('pending')
         preregistration.reindex()
@@ -476,6 +481,8 @@ class AcceptRegistration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        oid = str(get_oid(context))
+        get_socket().send_pyobj(('stop', 'persistent_' + oid))
         context.state = PersistentList(['accepted'])
         accept_preregistration(request, context, root)
         request.registry.notify(ActivityExecuted(self, [context], None))
@@ -499,6 +506,8 @@ class RefuseRegistration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        oid = str(get_oid(context))
+        get_socket().send_pyobj(('stop', 'persistent_' + oid))
         remove_expired_preregistration(root, context)
         return {}
 
@@ -544,9 +553,8 @@ class ConfirmRegistration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        get_socket().send_pyobj(
-            ('stop',
-             'persistent_' + str(get_oid(context))))
+        oid = str(get_oid(context))
+        get_socket().send_pyobj(('stop', 'persistent_' + oid))
         organization = context.organization
         if organization:
             person.setproperty('organization', organization)

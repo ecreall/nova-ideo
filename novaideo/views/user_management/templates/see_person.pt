@@ -5,59 +5,74 @@
       profil_picture getattr(user_picture, 'profil', user_picture);
       default_img request.static_url('novaideo:static/images/user100.png');
       organization getattr(user, 'organization', None)">
-<div class="user-data-detail">
-  <div class="navbar-user-entity">
-    <div tal:replace="structure navbar_body"/>
-  </div>
-  <div class="user-description" tal:condition="getattr(user, 'description', '')">${user.description}
-  </div>
-
-  <div class="content-footer">
-    <div class="actions-block">
-        <div tal:replace="structure footer_body"/>
+  <div class="user-data-detail">
+    <div class="content-view-header">
+      <div class="navbar-user-entity">
+        <div tal:replace="structure navbar_body"/>
+      </div>
     </div>
-  </div>
-  <div class="actions-footer-container" style="display: none;">
+    <div class="content-view-container">
+      <div class="content-view-body">
+        <div class="content-view-body-container" >
+          <div class="data-stat-container">
+            <div>
+              <div class="user-description" tal:condition="getattr(user, 'description', '')">
+                ${user.description}
+              </div>
+            </div>
+            <div tal:condition="evaluation_chart or examination_chart" class="entity-stat-container">
+              <div tal:condition="evaluation_chart" tal:replace="structure evaluation_chart"/>
+              <div tal:condition="examination_chart" tal:replace="structure examination_chart"/>
+            </div>
+          </div>
+          <div class="content-view-body-footer">
+            <div class="actions-block">
+                <div tal:replace="structure footer_body"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions-footer-container" style="display: none;">
       <div class="container-body">
       </div>
-  </div>
-</div>
-<div class="stat-container" tal:condition="contributions_len is not None">
-  <div class="stat-body">
-    <div class="card-unit-stats card-unit-stats-person">
-      <div class="one-third">
-        <div class="stat">${contributions_len}</div>
-        <div tal:condition="contributions_len>1" class="stat-value" i18n:translate="">Contributions</div>
-        <div tal:condition="contributions_len<=1" class="stat-value" i18n:translate="">Contribution</div>
-      </div>
-    </div>
-    <div class="card-unit-stats-details card-unit-stats card-unit-stats-person clearfix"
-         tal:define="width 100/len(details)">
-
-      <div tal:condition="'questions' in details" class="one-third" style="width: ${width}%">
-        <div class="stat">${details['questions']}</div>
-        <div tal:condition="details['questions']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Questions</div>
-        <div tal:condition="details['questions']<=1" class="stat-value" i18n:translate="">Question</div>
-      </div>
-
-      <div class="one-third" style="width: ${width}%">
-        <div class="stat">${details['ideas']}</div>
-        <div tal:condition="details['ideas']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Ideas</div>
-        <div tal:condition="details['ideas']<=1" class="stat-value" i18n:translate="">Idea</div>
-      </div>
-
-      <div tal:condition="'proposals' in details" class="one-third" style="width: ${width}%">
-        <div class="stat">${details['proposals']}</div>
-        <div tal:condition="details['proposals']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Proposals</div>
-        <div tal:condition="details['proposals']<=1" class="stat-value" i18n:translate="">Proposal</div>
-      </div>
-
-      <div class="one-third" style="width: ${width}%">
-        <div class="stat">${details['others']}</div>
-        <div class="stat-value" i18n:translate="">Comments, Evaluations...</div>
-      </div>
     </div>
   </div>
-</div>
+  <div class="stat-container" tal:condition="contributions_len is not None">
+    <div class="stat-body">
+      <div class="card-unit-stats card-unit-stats-person">
+        <div class="one-third">
+          <div class="stat">${contributions_len}</div>
+          <div tal:condition="contributions_len>1" class="stat-value" i18n:translate="">Contributions</div>
+          <div tal:condition="contributions_len<=1" class="stat-value" i18n:translate="">Contribution</div>
+        </div>
+      </div>
+      <div class="card-unit-stats-details card-unit-stats card-unit-stats-person clearfix"
+           tal:define="width 100/len(details)">
 
+        <div tal:condition="'nb_question' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_question']}</div>
+          <div tal:condition="details['nb_question']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Questions</div>
+          <div tal:condition="details['nb_question']<=1" class="stat-value" i18n:translate="">Question</div>
+        </div>
+
+        <div class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_idea']}</div>
+          <div tal:condition="details['nb_idea']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Ideas</div>
+          <div tal:condition="details['nb_idea']<=1" class="stat-value" i18n:translate="">Idea</div>
+        </div>
+
+        <div tal:condition="'nb_proposal' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_proposal']}</div>
+          <div tal:condition="details['nb_proposal']>1" class="stat-value" i18n:translate="" i18n:context="userstat">Proposals</div>
+          <div tal:condition="details['nb_proposal']<=1" class="stat-value" i18n:translate="">Proposal</div>
+        </div>
+
+        <div tal:condition="'nb_other' in details" class="one-third" style="width: ${width}%">
+          <div class="stat">${details['nb_other']}</div>
+          <div class="stat-value" i18n:translate="">Comments, Evaluations...</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

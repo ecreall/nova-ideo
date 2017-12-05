@@ -17,7 +17,7 @@
              <a data-toggle="tab" tal:attributes="href '#'+item['id']+coordinates"
                 tal:define="icon getattr(item['view'], 'view_icon', None)"
                 title="${item['view'].title}">
-              <span tal:condition="icon" class="${icon}"></span> <span class="tab-title">${item['view'].title}</span></a>
+              <span tal:condition="icon" class="title-icon ${icon}"></span> <span class="tab-title">${item['view'].title}</span></a>
           </li>
       </ul>
       <div tal:attributes="id (subitem['id']+'_multipleform'+coordinates)" class="tab-content">
@@ -25,7 +25,9 @@
                tal:attributes="id item['id']+coordinates;
                               class 'tab-pane fade'+(item['isactive'] and ' in active' or '')+' '+(getattr(item['view'], 'expandable', False) and ' full' or '') ">
               <div class="max-container">
-                <span data-target=".tab-pane" tal:condition="getattr(item['view'], 'expandable', False)" class="full-screen-btn glyphicon glyphicon-resize-full pull-right screen-small"></span>
+                <div class="full-screen-btn-container">
+                  <span data-target=".tab-pane" tal:condition="getattr(item['view'], 'expandable', False)" class="full-screen-btn glyphicon glyphicon-resize-full pull-right screen-small"></span>
+                </div>
                 <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
               </div>
           </div>
