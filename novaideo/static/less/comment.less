@@ -141,6 +141,10 @@ form.answerform {
   padding-left: 50px;
 }
 
+.result-item .commentul.action-interation-container {
+  padding-left: 13px;
+}
+
 .result-item .action-interation-container {
   .replay-form-container > button {
     display: none;
@@ -161,6 +165,9 @@ form.answerform {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  display: flex;
+  justify-content: space-between;
+  height: 54px;
 }
 
 .comment-inline-form .comment-textarea-container,
@@ -181,18 +188,18 @@ form.answerform {
 }
 
 .comment-textarea-actions {
-  top: 18px;
-  right: 45px;
-  position: absolute;
+  display: flex;
+  align-items: center;
   font-size: 21px;
 }
 
 .comment-textarea-actions .comment-emoji {
-  font-size: 23px !important;
+  font-size: 25px !important;
+  margin-top: 2px;
 }
 
 .comment-textarea-actions .comment-anonymous img {
-  margin-top: -16px !important;
+  margin-top: 0 !important;
 }
 
 .commentform .emoji-container-input .emoji-groups {
@@ -210,21 +217,12 @@ form.answerform {
   z-index: 1;
 }
 
-.comment-inline-form .comment-textarea-actions {
-  top: 7px;
-  right: 4px;
-  position: absolute;
-  font-size: 21px;
-  color: gray;
-}
-
 .comment-inline-form.edit-comment-form {
   bottom: 15px;
 }
 
 .comment-textarea-container textarea {
   height: 50px;
-  width: 80%;
   border: none;
   box-shadow: none;
   resize: none;
@@ -236,57 +234,38 @@ form.answerform {
   box-shadow: none;
 }
 
-.comment-textarea-container .message-alert {
-  margin-bottom: 0;
-  position: absolute;
-  right: 30%;
-}
-
-.answer-textarea-container .comment-textarea-actions {
-  top: initial;
-  position: absolute;
-  margin-top: 7px;
-}
-
-.answer-textarea-container .message-alert {
-  right: 15% !important;
-}
-
 .comment-textarea-container .comment-textarea-actions > span {
   cursor: pointer;
   color: #9e9ea6;
   z-index: 0;
   font-size: 20px;
-  margin-top: -15px;
-  vertical-align: middle !important;
+  display: block;
+  margin-right: 4px;
 }
 
 .comment-textarea-container .comment-textarea-actions span.comment-submit {
   height: 54px;
-  vertical-align: middle;
-  margin-top: -9px;
-  margin-right: -6px;
   padding: 9px 10px 0 5px;
   font-size: 20px;
   border-radius: 0;
   box-shadow: none;
-  color: white;
-  border: 1px solid #ccc !important;
+  color: #fff;
+  margin-bottom: 3px;
+  margin-right: -1px;
 }
 
 .comment-textarea-container .comment-textarea-actions span.comment-cancel {
   height: 54px;
   vertical-align: middle;
-  margin-top: -9px;
-  margin-right: -10px;
   padding: 9px 10px 0 5px;
   font-size: 20px;
   border-radius: 0;
-  -webkit-box-shadow: none;
   box-shadow: none;
   border: 1px solid #ccc !important;
   color: @brand-danger;
   display: none;
+  margin-bottom: 2px;
+  margin-right: -1px;
 }
 
 .comment-inline-form .comment-textarea-container .comment-textarea-actions span.comment-cancel {
@@ -341,7 +320,7 @@ form.answerform {
   max-height: 320px;
   overflow: auto;
   padding: 11px;
-  position: fixed;
+  position: absolute;
   right: 40px;
   width: 35%;
   z-index: 1300;
@@ -349,7 +328,6 @@ form.answerform {
 
 .result-item .comment-form-group.active,
 .result-item .emoji-container-input.active {
-  position: absolute !important;
   min-width: 400px;
   max-height: 265px;
 }

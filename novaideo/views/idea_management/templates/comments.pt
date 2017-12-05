@@ -30,7 +30,7 @@
               is_censored 'censored' in comment.state;
               to_hide is_censored and not (view.is_moderator or current_user is comment.author);
               is_unread_comment oid in unread_comments">
-              <div class="comment-unread" tal:condition="is_unread_comment"><span i18n:translate="">new comments</span></div>
+        <div class="comment-unread" tal:condition="is_unread_comment"><span i18n:translate="">new comments</span></div>
         <div id="${id}" class="listing-card listing-card-comment comment-card ${comment.pinned and 'comment-pinned'}"
              data-title="${getattr(author, 'title', author.__name__)}"
              data-icon="${getattr(comment, 'icon', '')}"

@@ -123,7 +123,16 @@ function init_comment_scroll(element) {
       comment_scroll_to($(elem.parents(".commentli").first()), true)
     }, 1000)
   } else {
-    comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"))
+    var unread_child = $(
+      comment_scroll.find("ul.commentulorigin > .commentli.commentli-unread").first()
+    )
+    if (unread_child.length === 0){
+      comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"))
+    } else {
+      setTimeout(function() {
+            comment_scroll_to(unread_child, true)
+          }, 1000)
+    }
   }
 }
 

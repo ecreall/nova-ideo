@@ -1,22 +1,5 @@
 <div class="comment-textarea-container" i18n:domain="novaideo"
   tal:define="emoji_form emoji_form|field.widget.emoji_form;">
-  <div class="message-alert">
-    <span id="messageinfo" class="label label-info"></span>
-    <span id="messagesuccess" class="label label-success"></span>
-    <span id="messagedanger" class="label  label-danger"></span>
-  </div>
-  <div class="comment-textarea-actions">
-    <span class="comment-emoji md md-insert-emoticon" i18n:attributes="title" title="Add Emoji"></span>
-    <span class="comment-intention glyphicon glyphicon-question-sign" i18n:attributes="title" title="Intention"></span>
-    <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
-    <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
-    <span tal:condition="field.get_root().schema.get('anonymous')" class="comment-anonymous" i18n:attributes="title" title="Remain anonymous" >
-        <img class="anonymous-img img-on img-circle" src="${field.widget.request.static_url('novaideo:static/images/anonymous_box.png')}" width="35"/>
-        <img class="anonymous-img img-off img-circle " src="${field.widget.request.static_url('novaideo:static/images/anonymous_box_gray.png')}" width="35"/>
-    </span>
-    <span class="btn btn-default comment-cancel glyphicon glyphicon-remove-circle" i18n:attributes="title" title="Cancel"></span>
-    <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
-  </div>
   <textarea tal:define="rows rows|field.widget.rows;
                         cols cols|field.widget.cols;
                         css_class css_class|field.widget.css_class;
@@ -31,5 +14,17 @@
                             placeholder placeholder"
             id="${oid}"
             name="${name}">${cstruct}</textarea>
+  <div class="comment-textarea-actions">
+    <span class="comment-emoji md md-insert-emoticon" i18n:attributes="title" title="Add Emoji"></span>
+    <span class="comment-intention glyphicon glyphicon-question-sign" i18n:attributes="title" title="Intention"></span>
+    <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
+    <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
+    <span tal:condition="field.get_root().schema.get('anonymous')" class="comment-anonymous" i18n:attributes="title" title="Remain anonymous" >
+        <img class="anonymous-img img-on img-circle" src="${field.widget.request.static_url('novaideo:static/images/anonymous_box.png')}" width="35"/>
+        <img class="anonymous-img img-off img-circle " src="${field.widget.request.static_url('novaideo:static/images/anonymous_box_gray.png')}" width="35"/>
+    </span>
+    <span class="btn btn-default comment-cancel glyphicon glyphicon-remove-circle" i18n:attributes="title" title="Cancel"></span>
+    <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
+  </div>
   <div tal:replace="structure emoji_form" /> 
 </div>
