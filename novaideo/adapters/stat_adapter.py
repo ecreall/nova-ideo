@@ -5,6 +5,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+# @TODO refactoring
+
 import types
 from zope.interface import Interface, implementer
 from pyramid import renderers
@@ -92,6 +94,9 @@ class ApplicationAdapter(Adapter):
     def get_evaluation_stat(self, request):
         return None
 
+    def get_examination_stat(self, request):
+        return None
+
     def render_stat(self, request, template=DEFAULT_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_content_stat(request)
@@ -142,7 +147,65 @@ class ChallengeAdapter(Adapter):
         return result
 
     def get_evaluation_stat(self, request):
-        return None
+        novaideo_index = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        states_index = dace_catalog['object_states']
+        object_provides_index = dace_catalog['object_provides']
+        challenges_index = novaideo_index['challenges']
+        query = challenges_index.any([self.context.__oid__])
+        objects = query.execute()
+        support = novaideo_index['support']
+        oppose = novaideo_index['oppose']
+        intersection = challenges_index.family.IF.intersection
+        object_ids = getattr(objects, 'ids', objects)
+        if isinstance(object_ids, (list, types.GeneratorType)):
+            object_ids = challenges_index.family.IF.Set(object_ids)
+        # calculate sum of support / sum of opposition
+        support_nb = 0
+        for nb, supportoids in support._fwd_index.items():
+            if nb > 0:
+                support_nb += nb * len(intersection(supportoids, object_ids))
+
+        oppose_nb = 0
+        for nb, opposeoids in oppose._fwd_index.items():
+            if nb > 0:
+                oppose_nb += nb * len(intersection(opposeoids, object_ids))
+
+        localizer = request.localizer
+        items = {
+            'support': {
+                'value': support_nb,
+                'color': SUPPORT_COLOR,
+                'translation': localizer.translate(_('Support', context='analytics'))
+            },
+            'opposition': {
+                'value': oppose_nb,
+                'color': OPPOSE_COLOR,
+                'translation': localizer.translate(_('Opposition'))
+            }
+        }
+
+        return items
+
+    def get_examination_stat(self, request):
+        novaideo_index = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        states_index = dace_catalog['object_states']
+        object_provides_index = dace_catalog['object_provides']
+        challenges_index = novaideo_index['challenges']
+        object_keywords = novaideo_index['object_keywords']
+        items = {}
+        localizer = request.localizer
+        for examination, data in EXAMINATION_VALUES.items():
+            query = challenges_index.any([self.context.__oid__]) & \
+                states_index.any([examination])
+            items[examination] = {
+                'value': len(query.execute()),
+                'color': data['color'],
+                'translation': localizer.translate(data['title'])
+            }
+
+        return items
 
     def render_stat(self, request, template=DEFAULT_STAT_TEMPLATE, data=None):
         if data is None:
@@ -154,11 +217,36 @@ class ChallengeAdapter(Adapter):
 
     def render_evaluation_stat(
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
-        return None
+        if data is None:
+            data = self.get_evaluation_stat(request)
+        
+        result = {
+          'object': self.context,
+          'items': data,
+          'sum': sum([values['value'] for _, values in data.items()]),
+          'id': 'evaluation',
+          'title': request.localizer.translate(_('Evaluations'))}
+        return renderers.render(
+            template,
+            result,
+            request) if data else None
+
 
     def render_examination_stat(
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
-        return None
+        if data is None:
+            data = self.get_examination_stat(request)
+        
+        result = {
+          'object': self.context,
+          'items': data,
+          'sum': sum([values['value'] for _, values in data.items()]),
+          'id': 'examination',
+          'title': request.localizer.translate(_('Examinations'))}
+        return renderers.render(
+            template,
+            result,
+            request) if data else None
 
 
 @adapter(context=IOrganization)

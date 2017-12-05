@@ -1,6 +1,9 @@
-<div i18n:domain="novaideo" tal:omit-tag="" tal:define="deadline getattr(challenge, 'deadline', None);">
+<div i18n:domain="novaideo" tal:omit-tag="" 
+     tal:define="
+      deadline getattr(challenge, 'deadline', None);">
   <div tal:condition="deadline"
-       tal:define="expired challenge.is_expired;"
+        tal:define="
+            expired challenge.is_expired;"
        style="margin-bottom: 30px;">
     <div class="progress progress-striped"
          title="${layout.to_localized_time(deadline)}">
@@ -27,7 +30,8 @@
   id="index_${oid}"
   data-component_type="object-view"
   tal:define="
-      oid challenge.__oid__"
+      oid challenge.__oid__;
+      files challenge.attached_files"
   i18n:domain="novaideo">
   <div class="content-view-header">
     <div tal:replace="structure navbar_body"/>
@@ -45,14 +49,14 @@
               <span class="ion-locked" style="font-size: 20px;"></span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
             </div>
             <div id="contenttext"
-              tal:define="files challenge.get_attached_files_data();
-                          len_files len(files)">
-              <div tal:omit-tag="not files">
-                <div class="img-carousel-container pull-right" tal:condition="files">
+              tal:define="files_data challenge.get_attached_files_data();
+                          len_files len(files_data)">
+              <div tal:omit-tag="not files_data">
+                <div class="img-carousel-container pull-right" tal:condition="files_data">
                   <div class="file-slider">
                     <div id="filecarousel" data-ride="carousel" data-interval="3000" class="carousel slide"> 
                       <div role="listbox" class="carousel-inner">
-                        <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
+                        <div tal:repeat="(i, source) enumerate(files_data)" class="item ${i==0 and 'active'}">
                            <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
                              <div 
                               class="img-content"
@@ -84,10 +88,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-container" tal:omit-tag="not files">
+                <div class="text-container" tal:omit-tag="not files_data">
                   <div class="object-text">
-                    <div>
-                      ${structure:text}
+                    <div class="data-stat-container">
+                      <div>
+                        ${structure:text}
+                      </div>
+                      <div tal:condition="evaluation_chart or examination_chart" class="entity-stat-container">
+                        <div tal:condition="evaluation_chart" tal:replace="structure evaluation_chart"/>
+                        <div tal:condition="examination_chart" tal:replace="structure examination_chart"/>
+                      </div>
                     </div>
                     <div>
                       ${structure:getattr(challenge, 'formatted_urls', '')}
@@ -103,19 +113,13 @@
                    <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
                    <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
                    <dd>
-                      <tal:loop repeat="f layout.render_files(challenge.attached_files)">
+                      <tal:loop repeat="f layout.render_files(files)">
                         <div tal:replace="structure f"/>
                       </tal:loop>
                    </dd>
                 </dl>
                </blockquote>
               </small>
-            </div>
-          </div>
-          <div class="content-more">
-            <div class="content-more-message">
-               <span i18n:translate="">More details</span>
-               <span class="open glyphicon glyphicon-chevron-down" title="More details" i18n:attributes="title"></span>
             </div>
           </div>
         </div>  
