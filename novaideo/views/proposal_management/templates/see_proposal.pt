@@ -3,7 +3,8 @@
    tal:define="
     submitted request.support_proposals and 'submitted_support' in proposal.state;
     examined 'examined' in proposal.state;
-    oid proposal.__oid__">
+    oid proposal.__oid__;
+    files proposal.attached_files">
   <div class="content-view-body" tal:condition="not to_hide">
     <div class="content-view-body-left">
       <div tal:condition="submitted or examined"
@@ -48,15 +49,15 @@
         </div>
     </div>
     <div tal:omit-tag="" tal:define="
-        files proposal.get_attached_files_data();
-        len_files len(files);">
+        files_data proposal.get_attached_files_data();
+        len_files len(files_data);">
       <div class="content-view-body-container ${(submitted or examined) and 'row-md'}">
         <div>
-          <div class="img-carousel-container pull-right" tal:condition="files">
+          <div class="img-carousel-container pull-right" tal:condition="files_data">
             <div class="file-slider">
               <div id="filecarousel${oid}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
                 <div role="listbox" class="carousel-inner">
-                  <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
+                  <div tal:repeat="(i, source) enumerate(files_data)" class="item ${i==0 and 'active'}">
                      <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
                        <div 
                         class="img-content"
@@ -88,22 +89,21 @@
               </div>
             </div>
           </div>
-          <div class="text-container" tal:omit-tag="not files">
+          <div class="text-container" tal:omit-tag="not files_data">
             <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} collapsible-text correction-container correction-container-text">
               ${structure:text}
             </div>
           </div>
         </div>
-        <div tal:condition="proposal.attached_files" class="attached-files" i18n:domain="novaideo">
+        <div tal:condition="files" class="attached-files" i18n:domain="novaideo">
           <small>
              <blockquote class="attached-contents" tal:define="
-                  files proposal.attached_files;
                   file_len len(files)">
                <dl >
                <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
                <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
                <dd>
-                  <tal:loop repeat="f layout.render_files(proposal.attached_files)">
+                  <tal:loop repeat="f layout.render_files(files)">
                     <div tal:replace="structure f"/>
                   </tal:loop>
                </dd>
