@@ -19,6 +19,12 @@
     padding-bottom: 1px;
     border-bottom: solid 1px #80808045;
   }
+
+  @media (max-width: 767px) {
+    .menu-toggle.top {
+      min-height: 42px;
+    }
+  }
 }
 
 .all-channels-container {
@@ -145,5 +151,11 @@
 @media (max-width: 1400px) and (min-width: 768px) {
   .navbar-channel {
     width: 78%;
+  }
+}
+
+@media (max-width: 767px) {
+  .all-channels-toggle:not(.close) {
+    padding: 4px 9px 0;
   }
 }
