@@ -531,7 +531,7 @@ class Channels(object):
         self.context = context
         self.request = request
 
-    def __call__(self):
+    def __call__(self, has_admin_nav=False):
         result = {
             'condition': False
         }
@@ -544,7 +544,9 @@ class Channels(object):
                 return {'condition': False}
 
             channels = ''
-            result = {'condition': True, 'css_links': [], 'js_links': []}
+            result = {
+                'condition': True, 'css_links': [],
+                'js_links': [], 'has_admin_nav':has_admin_nav}
             if isinstance(channels_view_result, dict) and \
                'coordinates' in channels_view_result:
                 search_render = channels_view_result['coordinates'][channels_view.coordinates][0]
