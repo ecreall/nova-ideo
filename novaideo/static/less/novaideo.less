@@ -2770,6 +2770,11 @@ a.ajax-action {
   width: 100%;
 }
 
+.navbar-collapse {
+  border-top: none;
+  box-shadow: none;
+}
+
 .navbar.navbar-default.navbar-fixed-top {
   background-image: none;
   background-color: white;
@@ -2790,6 +2795,12 @@ a.ajax-action {
 
 .user-nav-top > .search-nav-top {
   display: flex !important;
+}
+
+.navbar-toggle.collapsed {
+  > img {
+    margin-top: -5px;
+  }
 }
 
 button.navbar-toggle.collapsed,
@@ -2927,8 +2938,8 @@ button.navbar-toggle {
 }
 
 .globe-logo {
-  height: 35px;
-  margin-top: -8px;
+  height: 33px;
+  margin-top: -7px;
   vertical-align: middle;
 }
 
@@ -4819,7 +4830,7 @@ span.circle {
   }
 
   .menu-toggle.top {
-    padding: 3px 9px !important;
+    padding: 7px 9px 0 !important;
   }
 
   .novaideo-alert-container .novaideo-alert-left {
@@ -4866,7 +4877,8 @@ span.circle {
   }
 
   .globe-logo {
-    margin-top: -9px;
+    margin-top: -7px;
+    height: 30px;
   }
 
   .file-item > span {
