@@ -9,13 +9,20 @@
   float: left;
   color: #565656;
   box-shadow: -2px 0 7px #000;
-  z-index: 1028;
+  z-index: 1030;
   transition: all .5s ease;
-  display: none;
+
+  .menu-toggle.top {
+    float: none;
+    height: auto;
+    background-color: white;
+    padding-bottom: 1px;
+    border-bottom: solid 1px #80808045;
+  }
 }
 
 .all-channels-container {
-  height: 80vh;
+  height: 90vh;
   position: absolute;
   width: 250px;
   margin-top: 21px;
@@ -27,33 +34,27 @@
 
 .all-channels-toggle {
   cursor: pointer;
+  padding: 8px 10px;
+  color: @novaideo-sidebar-color;
 }
 
 .all-channels-toggle:not(.close) {
-  left: 0;
-  top: 0;
-  position: fixed;
-  font-size: 25px;
-  z-index: 2;
-  padding: 0 10px 4px 3px;
-  color: #fff;
-  background-color: @novaideo-primary-color;
-  border-bottom-right-radius: 3em;
-  box-shadow: rgba(0, 0, 0, 0.7) 0 0 5px;
+  float: left;
+  font-size: 24px;
+  height: 100%;
+  padding: 5px 10px;
+  margin-right: 15px;
 }
 
-.all-channels-toggle.close {
-  color: gray;
-}
-
-.all-channels-toggle {
-  cursor: pointer;
+.all-channels-toggle.unread-comments:not(.close) {
+  color: #d51c17;
+  transition: all .1s ease-in-out;
 }
 
 .channels-container {
   padding-left: 5px;
   padding-right: 10px;
-  max-height: 35vh;
+  max-height: 40vh;
   overflow: auto;
 }
 

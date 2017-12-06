@@ -267,33 +267,6 @@ function init_channels_scroll() {
   }
 }
 
-function init_channels_top() {
-  var navbar_top_h = $(".navbar.navbar-fixed-top").height()
-  navbar_top_h = navbar_top_h == undefined ? 0 : navbar_top_h
-  var header_top_h = $(".header-panel-container").outerHeight()
-  header_top_h = header_top_h == undefined ? 0 : header_top_h -17
-  var navbar_h = $("nav.navbar.navbar-bottom").height()
-  navbar_h = navbar_h == undefined ? 0 : navbar_h
-  var default_top = navbar_h + navbar_top_h - 3
-  var scrolltop = $(window).scrollTop()
-  var btn = $(".all-channels-toggle:not(.close)")
-  var blocks = $(".all-channels")
-  btn.addClass("notransition")
-  blocks.addClass("notransition")
-  blocks.css("display", "block")
-  if (scrolltop <= navbar_h + header_top_h) {
-    btn.css("top", default_top + header_top_h - scrolltop + "px")
-    blocks.css("top", default_top + header_top_h - scrolltop + "px")
-  } else {
-    btn.css("top", default_top - navbar_h + "px")
-    blocks.css("top", default_top - navbar_h + "px")
-  }
-  setTimeout(function() {
-    btn.removeClass("notransition")
-    blocks.removeClass("notransition")
-  })
-}
-
 function init_card_position() {
   var card = $(".person-card-container:first>.listing-card")
   if (card.length > 0) {
@@ -533,12 +506,11 @@ function get_comment_author_bloc(element) {
 }
 
 function alert_user_unread_messages() {
-  var is_unread = $(".all-channels.toggled .unread-comments-len").length > 0
+  var is_unread = $(".all-channels .unread-comments-len").length > 0
   if (is_unread) {
-    var alert = $(".all-channels-toggle:not(.close) #alert-message")
-    setTimeout(function() {
-      alert.show().fadeOut(4000)
-    }, 1000)
+    $(".all-channels-toggle:not(.close)").addClass('unread-comments')
+  } else {
+    $(".all-channels-toggle:not(.close)").removeClass('unread-comments')
   }
 }
 
@@ -1033,6 +1005,7 @@ $(document).on("click", "a.channel-action", function() {
   $(channel_action.find(".unread-comments-len")).remove()
   channel_action.removeClass("unread-comments")
   update_unread_messages_alerts()
+  alert_user_unread_messages()
 })
 
 $(document).on(
@@ -1080,10 +1053,6 @@ $(window).load(function() {
 })
 
 $(window).scroll(function() {
-  init_channels_top()
-})
-
-$(window).scroll(function() {
   init_card_position()
 })
 
@@ -1125,8 +1094,6 @@ $(document).ready(function() {
   set_visited()
 
   init_morecontent_scroll()
-
-  init_channels_top()
 
   init_card_position()
 
