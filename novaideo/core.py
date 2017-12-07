@@ -318,18 +318,36 @@ class Emojiable(Entity):
 
     def __init__(self, **kwargs):
         super(Emojiable, self).__init__(**kwargs)
-        self.set_data(kwargs)
-        self.emojis = PersistentDict()
+        self.emojis = OOBTree()
+        self.users_emoji = OOBTree()
 
     def add_emoji(self, emoji, user):
-        self.emojis.setdefault(emoji, [])
-        self.emojis[emoji].append(get_oid(user))
+        user_oid = get_oid(user)
+        current_emoji = self.get_user_emoji(user)
+        if current_emoji:
+            self.remove_emoji(current_emoji, user)
+        
+        if emoji:
+            if emoji in self.emojis:
+                self.emojis[emoji].append(user_oid)
+            else:
+                self.emojis[emoji]= [user_oid]
+             
+            self.users_emoji[user_oid] = emoji
 
     def remove_emoji(self, emoji, user):
         user_oid = get_oid(user)
         if emoji in self.emojis and \
            user_oid in self.emojis[emoji]:
-            self.emojis.remove(user_oid)
+            self.emojis[emoji].remove(user_oid)
+            del self.users_emoji[user_oid]
+
+    def get_user_emoji(self, user):
+        user_oid = get_oid(user)
+        return self.users_emoji.get(user_oid, None)
+
+    def can_add_reaction(self, user, process):
+        return False
 
 
 @content(

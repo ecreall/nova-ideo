@@ -187,11 +187,11 @@ function init_emoji(nodes) {
   emoji.addAliases({
     "🤔": "1f415"
   })
-  for (var i = 0; i < nodes.length; i++) {
-    var node = $(nodes[i])
+  $.each(nodes, function(index){
+    var node = $(this)
     node.html(emoji.replace_colons(node.html()))
     node.addClass("emojified")
-  }
+  })
 }
 
 function update_notification_id(id, url) {

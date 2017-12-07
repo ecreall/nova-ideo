@@ -4,12 +4,22 @@
                   mask mask|field.widget.mask;
                   mask_placeholder mask_placeholder|field.widget.mask_placeholder;
                   style style|field.widget.style;
-                  emoji_form emoji_form|field.widget.emoji_form;
+                  emoji_form emoji_form|field.widget.get_emoji_form(cstruct);
 "
       tal:omit-tag="">
-    <input type="hidden" name="${name}" value="${cstruct}" 
+    <div id="emoji-input-container-${oid}" class="emoji-input-container">
+      <input type="hidden" name="${name}" value="${cstruct}" 
            tal:attributes="class string: form-control ${css_class or ''};
                            style style"
            id="${oid}"/>
-    <div tal:replace="structure emoji_form" />
+      <div tal:replace="structure emoji_form" />
+      <script>
+        deform.addCallback(
+           'emoji-input-container-${oid}',
+           function(oid) {
+             init_emoji($("#"+oid+" .emoji-container:not(.emojified)"))
+           }
+         );
+      </script>
+    </div>
 </span>

@@ -9,6 +9,7 @@ import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 from pontus.form import FormView
 from pontus.schema import select, Schema
@@ -17,20 +18,16 @@ from novaideo.content.processes.novaideo_abstract_process.behaviors import (
     AddReaction)
 from novaideo.core import Emojiable
 from novaideo import _
-from novaideo.utilities.util import get_emoji_form
+from novaideo.widget import EmojiInputWidget
+
+
+DEFAULT_REACTION = []#[':+1:', ':-1:']
 
 
 @colander.deferred
 def reaction_widget(node, kw):
-    request = node.bindings['request']
-    #TODO get emojis by context
-    emoji_form = get_emoji_form(
-        request, emoji_class='emoji-input-widget',
-        is_grouped=False, add_preview=False,
-        items=[':+1:', ':-1:'])
-    return deform.widget.TextInputWidget(
-        emoji_form=emoji_form,
-        template='novaideo:views/templates/emoji_input.pt')
+    return EmojiInputWidget(
+        items=DEFAULT_REACTION)
 
 
 class ReactionSchema(Schema):
@@ -38,7 +35,8 @@ class ReactionSchema(Schema):
 
     reaction = colander.SchemaNode(
         colander.String(),
-        widget=reaction_widget
+        widget=reaction_widget,
+        missing=None,
         )
 
 
@@ -55,10 +53,16 @@ class AddReactionEmojiableView(FormView):
     behaviors = [AddReaction]
     viewid = 'addreaction'
 
+    def default_data(self):
+        return {'reaction': self.context.get_user_emoji(get_current(self.request))}
+
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'add_reaction'})
-        formwidget = deform.widget.FormWidget(css_class='reactionform deform')
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': AddReaction.node_definition.id})
+        formwidget = deform.widget.FormWidget(
+            css_class='reactionform deform novaideo-ajax-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 

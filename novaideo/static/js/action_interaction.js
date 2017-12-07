@@ -535,6 +535,7 @@ function update_popover_action() {
   var action = $this.closest(".dace-action-popover")
   var url = action.data("updateurl")
   var url_attr = { tomerge: "True", coordinates: "main" }
+  popover_container.data('action_id', action.attr('id'))
   $.extend(url_attr, get_action_metadata(action))
   loading_progress()
   $.post(url, url_attr, function(data) {

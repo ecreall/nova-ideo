@@ -149,11 +149,19 @@ def addr_roles_validation(process, context):
 
 
 def addr_state_validation(process, context):
-    return False
-    if hasattr(context, 'can_add_reaction'):
-        return context.can_add_reaction(process)
-
     return 'published' in context.state
+
+
+def addr_processsecurity_validation(process, context):
+    security = global_user_processsecurity()
+    if security:
+        can_add_reaction = False
+        if hasattr(context, 'can_add_reaction'):
+            can_add_reaction = context.can_add_reaction(get_current(), process)
+
+        return can_add_reaction
+
+    return False
 
 
 class AddReaction(InfiniteCardinality):
@@ -166,8 +174,11 @@ class AddReaction(InfiniteCardinality):
     context = IEmojiable
     roles_validation = addr_roles_validation
     state_validation = addr_state_validation
+    processsecurity_validation = addr_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        reaction = appstruct.get('reaction', None)
+        context.add_emoji(reaction, get_current(request))
         return {}
 
     def redirect(self, context, request, **kw):

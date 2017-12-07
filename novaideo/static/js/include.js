@@ -1,4 +1,4 @@
-const resources_version = '9'
+const resources_version = '10'
 
 var includejs_resources = []
 

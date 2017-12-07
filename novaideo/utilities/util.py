@@ -1514,14 +1514,16 @@ def get_vote_actions_body(
 
 def get_emoji_form(
     request, template=EMOJI_TEMPLATE, emoji_class='',
-    groups=DEFAULT_EMOJIS, items=[], is_grouped=True, add_preview=True):
+    groups=DEFAULT_EMOJIS, items=[], selected_items=[],
+    is_grouped=True, add_preview=True):
     return renderers.render(
         template,
         {'is_grouped': is_grouped,
          'add_preview': add_preview,
          'emoji_class': emoji_class,
          'groups': groups,
-         'items': items},
+         'items': items,
+         'selected_items': selected_items},
         request)
 
 
