@@ -99,19 +99,12 @@ class DetailIdeaView(BasicView):
 
         user = self.get_binding('user')
         to_hide = self.get_binding('to_hide')
-        files = getattr(self.context, 'attached_files', [])
-        files_urls = []
-        for file_ in files:
-            files_urls.append({'title': file_.title,
-                               'url': file_.url})
-
         result = {}
         values = {
             'idea': self.context,
             'to_hide': to_hide,
             'text': self.context.text.replace('\n', '<br/>'),
             'current_user': user,
-            'files': files_urls,
             'footer_body': navbars['footer_body']
         }
         body = self.content(args=values, template=self.template)['body']

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-05 14:38+0100\n"
+"POT-Creation-Date: 2017-12-07 13:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -922,7 +922,7 @@ msgid "- Select -"
 msgstr ""
 
 #: ./novaideo/content/correlation.py:96 ./novaideo/content/comment.py:135
-#: ./novaideo/views/templates/textarea_comment.pt:10
+#: ./novaideo/views/templates/textarea_comment.pt:24
 #: ./novaideo/views/amendment_management/explanation_amendment.py:31
 msgid "Intention"
 msgstr ""
@@ -1316,8 +1316,8 @@ msgstr ""
 #: ./novaideo/content/idea.py:174 ./novaideo/content/comment.py:175
 #: ./novaideo/content/question.py:133 ./novaideo/content/question.py:296
 #: ./novaideo/content/challenge.py:194 ./novaideo/content/proposal.py:217
-#: ./novaideo/views/templates/textarea_comment.pt:13
-#: ./novaideo/views/templates/textarea_answer.pt:7
+#: ./novaideo/views/templates/textarea_comment.pt:27
+#: ./novaideo/views/templates/textarea_answer.pt:21
 #: ./novaideo/views/proposal_management/participate.py:41
 msgid "Remain anonymous"
 msgstr ""
@@ -3054,8 +3054,8 @@ msgstr ""
 #: ./novaideo/content/processes/proposal_management/definition.py:506
 #: ./novaideo/content/processes/amendment_management/behaviors.py:474
 #: ./novaideo/content/processes/amendment_management/definition.py:78
-#: ./novaideo/views/templates/textarea_comment.pt:18
-#: ./novaideo/views/templates/textarea_answer.pt:12
+#: ./novaideo/views/templates/textarea_comment.pt:32
+#: ./novaideo/views/templates/textarea_answer.pt:26
 #: ./novaideo/views/proposal_management/publish_proposal.py:163
 #: ./novaideo/views/amendment_management/submit.py:162
 msgid "Submit"
@@ -3220,8 +3220,8 @@ msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:412
 #: ./novaideo/content/processes/proposal_management/definition.py:413
-#: ./novaideo/views/templates/textarea_comment.pt:11
-#: ./novaideo/views/templates/textarea_answer.pt:5
+#: ./novaideo/views/templates/textarea_comment.pt:25
+#: ./novaideo/views/templates/textarea_answer.pt:19
 msgid "Attach files"
 msgstr ""
 
@@ -4273,7 +4273,7 @@ msgstr ""
 msgid "Presentation of a challenge"
 msgstr ""
 
-#: ./novaideo/views/panels.py:600
+#: ./novaideo/views/panels.py:602
 #: ./novaideo/views/templates/panels/more_contents.pt:2
 msgid "My topics of interest"
 msgstr ""
@@ -5190,7 +5190,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_bloc.pt:34
 #: ./novaideo/views/templates/question_bloc.pt:34
 #: ./novaideo/views/templates/small_question_result.pt:27
-#: ./novaideo/views/templates/answer_result.pt:32
+#: ./novaideo/views/templates/answer_result.pt:34
 #: ./novaideo/views/templates/report_result.pt:23
 #: ./novaideo/views/templates/small_answer_result.pt:27
 #: ./novaideo/views/templates/comment_result.pt:36
@@ -5203,7 +5203,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:24
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:91
 #: ./novaideo/views/question_management/templates/header_question.pt:38
-#: ./novaideo/views/question_management/templates/see_question.pt:35
+#: ./novaideo/views/question_management/templates/see_question.pt:38
 #: ./novaideo/views/challenge_management/templates/header_challenge.pt:43
 #: ./novaideo/views/idea_management/templates/header_idea.pt:43
 msgid "the"
@@ -5350,7 +5350,8 @@ msgstr ""
 #: ./novaideo/views/templates/idea_result.pt:50
 #: ./novaideo/views/templates/idea_bloc.pt:50
 #: ./novaideo/views/templates/proposal_bloc.pt:44
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:18
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:20
+#: ./novaideo/views/idea_management/templates/see_idea.pt:20
 msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr ""
 
@@ -5358,7 +5359,8 @@ msgstr ""
 #: ./novaideo/views/templates/idea_result.pt:60
 #: ./novaideo/views/templates/idea_bloc.pt:60
 #: ./novaideo/views/templates/proposal_bloc.pt:54
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:28
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:30
+#: ./novaideo/views/idea_management/templates/see_idea.pt:30
 msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
 msgstr ""
 
@@ -5389,7 +5391,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_list_element.pt:30
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:110
 #: ./novaideo/views/question_management/templates/header_question.pt:54
-#: ./novaideo/views/question_management/templates/see_question.pt:50
+#: ./novaideo/views/question_management/templates/see_question.pt:53
 #: ./novaideo/views/challenge_management/templates/header_challenge.pt:59
 #: ./novaideo/views/idea_management/templates/header_idea.pt:59
 #: ./novaideo/views/idea_management/templates/comments.pt:78
@@ -5415,7 +5417,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_result.pt:24
 #: ./novaideo/views/templates/small_idea_result.pt:18
 #: ./novaideo/views/templates/idea_bloc.pt:24
-#: ./novaideo/views/templates/answer_result.pt:22
+#: ./novaideo/views/templates/answer_result.pt:24
 #: ./novaideo/views/templates/small_answer_result.pt:18
 #: ./novaideo/views/templates/panels/challenge.pt:51
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:93
@@ -5471,7 +5473,7 @@ msgstr ""
 #: ./novaideo/views/templates/question_result.pt:24
 #: ./novaideo/views/templates/question_bloc.pt:24
 #: ./novaideo/views/templates/small_question_result.pt:18
-#: ./novaideo/views/question_management/templates/see_question.pt:28
+#: ./novaideo/views/question_management/templates/see_question.pt:31
 msgid "Asked by"
 msgstr ""
 
@@ -5479,8 +5481,8 @@ msgstr ""
 #: ./novaideo/views/templates/question_result.pt:44
 #: ./novaideo/views/templates/question_bloc.pt:43
 #: ./novaideo/views/templates/question_bloc.pt:44
-#: ./novaideo/views/question_management/templates/see_question.pt:58
-#: ./novaideo/views/question_management/templates/see_question.pt:59
+#: ./novaideo/views/question_management/templates/see_question.pt:61
+#: ./novaideo/views/question_management/templates/see_question.pt:62
 msgid "${state}"
 msgstr ""
 
@@ -5506,7 +5508,7 @@ msgstr ""
 
 #: ./novaideo/views/templates/question_result.pt:97
 #: ./novaideo/views/templates/question_bloc.pt:97
-#: ./novaideo/views/question_management/templates/see_question.pt:130
+#: ./novaideo/views/question_management/templates/see_question.pt:99
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
 "offered. You may only answer this question one time."
@@ -5516,14 +5518,14 @@ msgstr ""
 #: ./novaideo/views/templates/question_result.pt:100
 #: ./novaideo/views/templates/question_bloc.pt:97
 #: ./novaideo/views/templates/question_bloc.pt:100
-#: ./novaideo/views/question_management/templates/see_question.pt:130
-#: ./novaideo/views/question_management/templates/see_question.pt:139
+#: ./novaideo/views/question_management/templates/see_question.pt:99
+#: ./novaideo/views/question_management/templates/see_question.pt:108
 msgid "You can edit your answer as long as the question is not closed."
 msgstr ""
 
 #: ./novaideo/views/templates/question_result.pt:100
 #: ./novaideo/views/templates/question_bloc.pt:100
-#: ./novaideo/views/question_management/templates/see_question.pt:139
+#: ./novaideo/views/question_management/templates/see_question.pt:108
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
 "offered. You may only answer this question one time. You have already "
@@ -5536,18 +5538,22 @@ msgid ""
 "${dynamic}"
 msgstr ""
 
+#: ./novaideo/views/templates/master.pt:194
+msgid "My discussions"
+msgstr ""
+
 #: ./novaideo/views/templates/proposal_list_element.pt:9
 #: ./novaideo/views/templates/idea_list_element.pt:9
 msgid "modified on"
 msgstr ""
 
-#: ./novaideo/views/templates/textarea_comment.pt:9
-#: ./novaideo/views/templates/textarea_answer.pt:4
+#: ./novaideo/views/templates/textarea_comment.pt:23
+#: ./novaideo/views/templates/textarea_answer.pt:18
 msgid "Add Emoji"
 msgstr ""
 
-#: ./novaideo/views/templates/textarea_comment.pt:12
-#: ./novaideo/views/templates/textarea_answer.pt:6
+#: ./novaideo/views/templates/textarea_comment.pt:26
+#: ./novaideo/views/templates/textarea_answer.pt:20
 #: ./novaideo/views/proposal_management/associate.py:26
 #: ./novaideo/views/proposal_management/associate.py:42
 #: ./novaideo/views/amendment_management/associate.py:27
@@ -5563,8 +5569,8 @@ msgstr ""
 msgid "Associate contents"
 msgstr ""
 
-#: ./novaideo/views/templates/textarea_comment.pt:17
-#: ./novaideo/views/templates/textarea_answer.pt:11
+#: ./novaideo/views/templates/textarea_comment.pt:31
+#: ./novaideo/views/templates/textarea_answer.pt:25
 #: ./novaideo/views/amendment_management/templates/explanation_modal_item.pt:14
 msgid "Cancel"
 msgstr ""
@@ -5601,35 +5607,35 @@ msgstr ""
 msgid "Published proposals"
 msgstr ""
 
-#: ./novaideo/views/templates/answer_result.pt:107
-#: ./novaideo/views/templates/comment_result.pt:116
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:103
-#: ./novaideo/views/question_management/templates/see_question.pt:117
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:113
-#: ./novaideo/views/idea_management/templates/comments.pt:153
-#: ./novaideo/views/idea_management/templates/see_idea.pt:109
+#: ./novaideo/views/templates/answer_result.pt:77
+#: ./novaideo/views/templates/comment_result.pt:75
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:70
+#: ./novaideo/views/question_management/templates/see_question.pt:86
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:76
+#: ./novaideo/views/idea_management/templates/comments.pt:111
+#: ./novaideo/views/idea_management/templates/see_idea.pt:76
 msgid "Attachments:"
 msgstr ""
 
-#: ./novaideo/views/templates/answer_result.pt:109
-#: ./novaideo/views/templates/comment_result.pt:117
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:104
-#: ./novaideo/views/question_management/templates/see_question.pt:118
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:114
-#: ./novaideo/views/idea_management/templates/comments.pt:154
-#: ./novaideo/views/idea_management/templates/see_idea.pt:110
+#: ./novaideo/views/templates/answer_result.pt:79
+#: ./novaideo/views/templates/comment_result.pt:76
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:71
+#: ./novaideo/views/question_management/templates/see_question.pt:87
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:77
+#: ./novaideo/views/idea_management/templates/comments.pt:112
+#: ./novaideo/views/idea_management/templates/see_idea.pt:77
 msgid "Attachment:"
 msgstr ""
 
-#: ./novaideo/views/templates/answer_result.pt:121
-#: ./novaideo/views/templates/comment_result.pt:129
-#: ./novaideo/views/idea_management/templates/comments.pt:166
+#: ./novaideo/views/templates/answer_result.pt:91
+#: ./novaideo/views/templates/comment_result.pt:88
+#: ./novaideo/views/idea_management/templates/comments.pt:124
 msgid "Associated contents:"
 msgstr ""
 
-#: ./novaideo/views/templates/answer_result.pt:123
-#: ./novaideo/views/templates/comment_result.pt:130
-#: ./novaideo/views/idea_management/templates/comments.pt:167
+#: ./novaideo/views/templates/answer_result.pt:93
+#: ./novaideo/views/templates/comment_result.pt:89
+#: ./novaideo/views/idea_management/templates/comments.pt:125
 msgid "Associated content:"
 msgstr ""
 
@@ -5645,26 +5651,26 @@ msgstr ""
 
 #: ./novaideo/views/templates/comment_result.pt:38
 #: ./novaideo/views/idea_management/templates/comments.pt:64
-#: ./novaideo/views/idea_management/templates/comments.pt:246
+#: ./novaideo/views/idea_management/templates/comments.pt:203
 msgid "His/her intention:"
 msgstr ""
 
-#: ./novaideo/views/templates/comment_result.pt:57
-#: ./novaideo/views/idea_management/templates/comments.pt:91
+#: ./novaideo/views/templates/comment_result.pt:56
+#: ./novaideo/views/idea_management/templates/comments.pt:90
 msgid "(edited)"
 msgstr ""
 
-#: ./novaideo/views/templates/comment_result.pt:149
+#: ./novaideo/views/templates/comment_result.pt:108
 msgid "View in the discussion"
 msgstr ""
 
-#: ./novaideo/views/templates/comment_result.pt:158
-#: ./novaideo/views/idea_management/templates/comments.pt:211
+#: ./novaideo/views/templates/comment_result.pt:117
+#: ./novaideo/views/idea_management/templates/comments.pt:168
 msgid "${commentlen} answer"
 msgstr ""
 
-#: ./novaideo/views/templates/comment_result.pt:159
-#: ./novaideo/views/idea_management/templates/comments.pt:212
+#: ./novaideo/views/templates/comment_result.pt:118
+#: ./novaideo/views/idea_management/templates/comments.pt:169
 msgid "${commentlen} answers"
 msgstr ""
 
@@ -5731,14 +5737,6 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_footer.pt:15
 msgid "Powered by Pyramid &amp; Python"
-msgstr ""
-
-#: ./novaideo/views/templates/panels/channels.pt:2
-msgid "My discussions"
-msgstr ""
-
-#: ./novaideo/views/templates/panels/channels.pt:5
-msgid "You have unread messages!"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step3_2.pt:6
@@ -7818,11 +7816,11 @@ msgstr ""
 msgid "Alert for subscription"
 msgstr ""
 
-#: ./novaideo/views/channel_management/templates/channels.pt:9
+#: ./novaideo/views/channel_management/templates/channels.pt:6
 msgid "Channels"
 msgstr ""
 
-#: ./novaideo/views/channel_management/templates/channels.pt:19
+#: ./novaideo/views/channel_management/templates/channels.pt:16
 msgid "Private discussions"
 msgstr ""
 
@@ -8704,12 +8702,12 @@ msgid ""
 "want to close this question? This cannot be undone."
 msgstr ""
 
-#: ./novaideo/views/question_management/templates/see_question.pt:132
-#: ./novaideo/views/question_management/templates/see_question.pt:141
+#: ./novaideo/views/question_management/templates/see_question.pt:101
+#: ./novaideo/views/question_management/templates/see_question.pt:110
 msgid "The options proposed by the author are:"
 msgstr ""
 
-#: ./novaideo/views/question_management/templates/see_question.pt:156
+#: ./novaideo/views/question_management/templates/see_question.pt:125
 msgid "See the validated answer"
 msgstr ""
 
@@ -9098,7 +9096,7 @@ msgid ""
 "berforehand, so that it be different from the original idea."
 msgstr ""
 
-#: ./novaideo/views/challenge_management/templates/see_challenge.pt:49
+#: ./novaideo/views/challenge_management/templates/see_challenge.pt:50
 msgid ""
 "This challenge is restricted and accessible only for a set of users. Only the"
 " concerned members can add contents in this challenge. The added contents can"
@@ -9358,15 +9356,15 @@ msgid "For"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:64
-#: ./novaideo/views/idea_management/templates/comments.pt:246
+#: ./novaideo/views/idea_management/templates/comments.pt:203
 msgid "Now"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:204
+#: ./novaideo/views/idea_management/templates/comments.pt:161
 msgid "View all ${commentlen} answers"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:205
+#: ./novaideo/views/idea_management/templates/comments.pt:162
 msgid "Hide answers"
 msgstr ""
 
