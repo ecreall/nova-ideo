@@ -833,6 +833,8 @@ DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_acces
 
 FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
 
+FILES_SLIDER_TEMPLATE = 'novaideo:views/templates/files_slider.pt'
+
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
 
 DEFAULT_SUPPORT_TEMPLATE = 'novaideo:views/templates/support_entity_actions.pt'
@@ -1412,6 +1414,17 @@ def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
             request))
 
     return bodies
+
+
+def render_files_slider(slider_id, files, request, deferred=False, template=FILES_SLIDER_TEMPLATE):
+    return renderers.render(
+        template,
+        {
+            'files_data': get_files_data(files),
+            'id': slider_id,
+            'deferred': deferred
+        },
+        request)
 
 
 def get_vote_actions(

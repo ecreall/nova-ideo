@@ -10,7 +10,7 @@ from pyramid_layout.layout import layout_config
 
 from novaideo.utilities.util import (
     to_localized_time, get_emoji_form, EMOJI_TEMPLATE,
-    render_files)
+    render_files, render_files_slider)
 from novaideo.utilities.analytics_utility import get_colors
 from novaideo.emojis import DEFAULT_EMOJIS
 
@@ -54,6 +54,10 @@ class GlobalLayout(object):
 
     def render_files(self, files):
         return render_files(files, self.request)
+
+    def render_files_slider(self, slider_id, files_data, deferred=False):
+        return render_files_slider(
+            slider_id, files_data, self.request, deferred=deferred)
 
     def get_colors(self, nb):
         return get_colors(count=nb)
