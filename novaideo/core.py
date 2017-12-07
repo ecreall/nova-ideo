@@ -328,11 +328,8 @@ class Emojiable(Entity):
             self.remove_emoji(current_emoji, user)
         
         if emoji:
-            if emoji in self.emojis:
-                self.emojis[emoji].append(user_oid)
-            else:
-                self.emojis[emoji]= [user_oid]
-             
+            self.emojis.setdefault(emoji, PersistentList())
+            self.emojis[emoji].append(user_oid) 
             self.users_emoji[user_oid] = emoji
 
     def remove_emoji(self, emoji, user):
@@ -340,7 +337,7 @@ class Emojiable(Entity):
         if emoji in self.emojis and \
            user_oid in self.emojis[emoji]:
             self.emojis[emoji].remove(user_oid)
-            del self.users_emoji[user_oid]
+            self.users_emoji.pop(user_oid)
 
     def get_user_emoji(self, user):
         user_oid = get_oid(user)

@@ -983,10 +983,9 @@ def evolve_emojiable_data(root, registry):
         )
     len_entities = str(len(contents))
     for index, node in enumerate(contents):
-        if not hasattr(node, 'users_emoji'):
-            node.emojis = OOBTree()
-            node.users_emoji = OOBTree()
-            node.reindex()
+        node.emojis = OOBTree()
+        node.users_emoji = OOBTree()
+        node.reindex()
 
         log.info(str(index) + "/" + len_entities)
 
