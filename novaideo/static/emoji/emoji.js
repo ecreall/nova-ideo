@@ -361,6 +361,7 @@
 		var text  = self.include_text  ? wrapper+(actual || self.data[idx][3][0])+wrapper : '';
 		var px = self.data[idx][4];
 		var py = self.data[idx][5];
+		var data_actual = ' data-actual="'+text_name+'" '
 
 		// now we'll see if we can use a varition. if we can, we can override the params above and blank
 		// out `extra` so we output a sinlge glyph.
@@ -382,14 +383,14 @@
 			if (self.use_sheet && px != null && py != null){
 				var mul = 100 / (self.sheet_size - 1);
 				var style = 'background: url('+self.img_sets[img_set].sheet+');background-position:'+(mul*px)+'% '+(mul*py)+'%;background-size:'+self.sheet_size+'00%';
-				return '<span class="emoji-outer emoji-sizer"><span class="emoji-inner" style="'+style+'"'+title+'>'+text+'</span></span>'+extra;
+				return '<span class="emoji-outer emoji-sizer"><span class="emoji-inner" style="'+style+'"'+title+' '+data_actual+'>'+text+'</span></span>'+extra;
 			}else if (self.use_css_imgs){
-				return '<span class="emoji emoji-'+idx+'"'+title+'>'+text+'</span>'+extra;
+				return '<span class="emoji emoji-'+idx+'"'+title+' '+data_actual+'>'+text+'</span>'+extra;
 			}else{
-				return '<span class="emoji emoji-sizer" style="background-image:url('+img+')"'+title+'>'+text+'</span>'+extra;
+				return '<span class="emoji emoji-sizer" style="background-image:url('+img+')"'+title+' '+data_actual+'>'+text+'</span>'+extra;
 			}
 		}
-		return '<img src="'+img+'" class="emoji" '+title+'/>'+extra;
+		return '<img src="'+img+'" class="emoji" '+title+' '+data_actual+'/>'+extra;
 	};
 
 	// Initializes the text emoticon data

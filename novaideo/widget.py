@@ -14,6 +14,8 @@ from pontus.widget import (
     SequenceWidget, Select2Widget,
     TextInputWidget)
 
+from novaideo.utilities.util import get_emoji_form
+
 
 class EmailInputWidget(deform.widget.TextInputWidget):
     template = 'novaideo:views/templates/email_input.pt'
@@ -142,6 +144,20 @@ class AjaxCheckBoxWidget(deform.widget.CheckboxChoiceWidget):
     template = 'novaideo:views/templates/ajax_checkbox_choice.pt'
     requirements = (('ajax_checkbox', None),)
 
+
+class EmojiInputWidget(deform.widget.TextInputWidget):
+    template = 'novaideo:views/templates/emoji_input.pt'
+    requirements = (('emoji', None), ('jquery.maskedinput', None))
+
+    def get_emoji_form(self, cstruct=None):
+        return get_emoji_form(
+          get_current_request(), emoji_class='emoji-input-widget',
+          is_grouped=False, add_preview=False,
+          items=self.items, selected_items=[cstruct])
+
+
+default_resource_registry.set_js_resources('emoji', None,
+               'novaideo:static/js/emoji_input.js')
 
 default_resource_registry.set_js_resources('ajax_checkbox', None,
                'novaideo:static/js/ajax_checkbox_choice.js')

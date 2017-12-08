@@ -12,7 +12,7 @@
             id="emoji-${group['id']}"
             i18n:translate="">${group['title']}</div>
         <p class="emoji-container">
-          <span tal:omit-tag="" tal:repeat="item group['items']" >${item+'\n'}</span>
+          <span class="${item in selected_items and 'selected'}" tal:repeat="item group['items']" >${item}</span>
         </p>
       </div>
     </div>
@@ -28,7 +28,7 @@
      tal:condition="items">
     <div class="emoji-groups malihu-scroll">
       <p class="emoji-container">
-          <span tal:omit-tag="" tal:repeat="item items" >${item+'\n'}</span>
+          <span class="${item in selected_items and 'selected'}" tal:repeat="item items" >${item}</span>
       </p>
     </div>
     <div tal:condition="add_preview" class="emoji-preview">

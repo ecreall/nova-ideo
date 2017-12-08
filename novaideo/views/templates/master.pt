@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=37"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=38"
             rel="stylesheet"/>
     </div>
 
@@ -94,11 +94,11 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo_langs.js')}?v=3"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/action_interaction.js')}?v=16"
+    <script src="${su('novaideo:static/js/action_interaction.js')}?v=17"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}?v=5"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=25"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=26"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
@@ -118,15 +118,15 @@
         type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
         type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/pseudo_react.js')}?v=9"
+    <script src="${su('novaideo:static/js/pseudo_react.js')}?v=10"
           type="text/javascript"></script>
-    <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
+    <script src="${request.static_url('novaideo:static/emoji/emoji.js')}?v=2" type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
     <script src="${su('novaideo:static/js/jquery.animate-colors-min.js')}"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/little-loader.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/include.js')}?v=8"
+    <script src="${su('novaideo:static/js/include.js')}?v=9"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/ws.js')}"
           type="text/javascript"></script>

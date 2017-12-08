@@ -309,5 +309,5 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     def get_attached_files_data(self):
         return get_files_data(self.files)
 
-    def can_add_reaction(self, process):
+    def can_add_reaction(self, user, process):
         return True

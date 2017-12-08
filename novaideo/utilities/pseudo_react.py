@@ -1689,6 +1689,16 @@ def get_update_processes_metadata(action, request, context, api, **kwargs):
         _("The processes have been updated."),
         **kwargs)
 
+
+def get_addreaction_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        **kwargs)
+    contextoid = str(get_oid(context, None))
+    result['object_views_to_update'].append('comment_'+contextoid)
+    return result
+
 #Files
 
 def get_publish_file_metadata(action, request, context, api, **kwargs):
@@ -2152,6 +2162,7 @@ METADATA_GETTERS = {
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
+    'novaideoabstractprocess.addreaction': get_addreaction_metadata,
     'novaideoprocessmanagement.update': get_update_processes_metadata,
 
     'reportsmanagement.report': get_report_entity_metadata,

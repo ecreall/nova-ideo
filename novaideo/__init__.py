@@ -973,6 +973,25 @@ def evolve_amendmentmanagement_process(root, registry):
         pass 
 
 
+def evolve_emojiable_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IEmojiable
+    from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[IEmojiable]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.emojis = OOBTree()
+        node.users_emoji = OOBTree()
+        node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Emojiable data evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -1029,7 +1048,8 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_examined_tokens)
     config.add_evolution_step(evolve_source_data)
     config.add_evolution_step(evolve_user_masks)
-    config.add_evolution_step(evolve_amendmentmanagement_process) 
+    config.add_evolution_step(evolve_amendmentmanagement_process)
+    config.add_evolution_step(evolve_emojiable_data)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

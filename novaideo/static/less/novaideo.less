@@ -1490,16 +1490,14 @@ a.answer-btn {
   top: 3px;
 }
 
+.emoji-container > .selected > .emoji-outer,
 .assigned-emoji.my-emoji {
   background-color: rgba(21, 110, 175, 0.08);
   border: solid 1px rgba(21, 110, 175, 0.4) !important;
-  padding: 1px 3px;
   border-radius: 3px;
 }
 
 .footer-actions-bodies {
-  float: right;
-  margin-top: 10px;
   margin-right: 15px;
   font-size: 20px;
 }
@@ -1507,6 +1505,20 @@ a.answer-btn {
 .reactionform .form-group > label,
 .reactionform .form-group:last-child {
   display: none;
+}
+
+.add-reaction-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > a {
+    padding-top: 2px;
+  }
+}
+
+.action-popover-container.popover {
+  min-width: inherit !important;
 }
 
 .action-modal-container .result-container {

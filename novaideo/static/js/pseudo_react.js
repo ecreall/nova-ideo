@@ -487,6 +487,7 @@ function loading_component(data) {
     } catch (err) {}
     initscroll()
     init_delayed_blocks(parent.find(".delayed-block"))
+    init_emoji(parent.find(".emoji-container:not(.emojified)"))
     $(document).trigger("component_loaded", [component_id])
   })
 }
