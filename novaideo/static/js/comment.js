@@ -1,40 +1,43 @@
 function replays_show(element) {
   var $element = $(element)
-  var replays = $(
-    $element
-      .parents("li")
-      .first()
-      .find("ul.commentul:not(.action-interation-container)")
-      .first()
-      .children("li:not(.comment-preview)")
-  )
+  var replays = $element
+    .parents("li")
+    .first()
+    .find("ul.commentul:not(.action-interation-container)")
+    .first()
+    .children("li:not(.comment-preview)")
+
   if ($element.hasClass("closed")) {
-    replays.slideDown('fast')
-    $($element.find("span").first()).attr(
-      "class",
-      "glyphicon glyphicon-chevron-up"
-    )
+    replays.slideDown("fast")
+    $element
+      .find("span")
+      .first()
+      .attr("class", "glyphicon glyphicon-chevron-up")
     $element.addClass("opened").removeClass("closed")
-    $($element.find(".comment-replay-message-closed").first()).removeClass(
-      "hide-bloc"
-    )
-    $($element.find(".comment-replay-message-opened").first()).addClass(
-      "hide-bloc"
-    )
+    $element
+      .find(".comment-replay-message-closed")
+      .first()
+      .removeClass("hide-bloc")
+    $element
+      .find(".comment-replay-message-opened")
+      .first()
+      .addClass("hide-bloc")
   } else {
     replays.splice(-1, 1)
-    replays.slideUp('fast')
-    $($element.find("span").first()).attr(
-      "class",
-      "glyphicon glyphicon-chevron-down"
-    )
+    replays.slideUp("fast")
+    $element
+      .find("span")
+      .first()
+      .attr("class", "glyphicon glyphicon-chevron-down")
     $element.addClass("closed").removeClass("opened")
-    $($element.find(".comment-replay-message-closed").first()).addClass(
-      "hide-bloc"
-    )
-    $($element.find(".comment-replay-message-opened").first()).removeClass(
-      "hide-bloc"
-    )
+    $element
+      .find(".comment-replay-message-closed")
+      .first()
+      .addClass("hide-bloc")
+    $element
+      .find(".comment-replay-message-opened")
+      .first()
+      .removeClass("hide-bloc")
   }
 }
 
@@ -43,17 +46,17 @@ function comment_scroll_to(element, animate) {
     return false
   }
   var comment_scroll = null
-  var sidebar = $(element.parents(".sidebar-right-wrapper").first())
+  var sidebar = element.parents(".sidebar-right-wrapper").first()
   if (sidebar.length > 0) {
     comment_scroll = sidebar
   } else {
-    comment_scroll = $(element.find(".comments-scroll").first())
+    comment_scroll = element.find(".comments-scroll").first()
   }
   var top = element.position().top - (element.height() + 100)
   // comment_scroll.scrollTop(element.position().top-(element.height()+10));
   comment_scroll.animate({ scrollTop: top }, 1000)
   if (animate) {
-    var to_animate = $(element.find(".comment-card").first())
+    var to_animate = element.find(".comment-card").first()
     if (to_animate.length > 0) {
       to_animate.animate(
         {
@@ -79,15 +82,15 @@ function init_comment_scroll(element) {
   var comment_scroll = null
   var is_sidebar = false
   if (element) {
-    var sidebar = $(element.parents(".sidebar-right-wrapper").first())
+    var sidebar = element.parents(".sidebar-right-wrapper").first()
     if (sidebar.length > 0) {
       comment_scroll = sidebar
       is_sidebar = true
     } else {
-      comment_scroll = $(element.find(".comments-scroll").first())
+      comment_scroll = element.find(".comments-scroll").first()
     }
-    last_child = $(
-      comment_scroll.find("ul.commentulorigin > .commentli:last-child")
+    last_child = comment_scroll.find(
+      "ul.commentulorigin > .commentli:last-child"
     )
   } else {
     comment_scroll = $(".comments-scroll")
@@ -112,7 +115,7 @@ function init_comment_scroll(element) {
   var comment_id = "#comment-" + window.location.hash.replace("#comment-", "")
   var elem = $(comment_id)
   if (elem.length) {
-    var hide_comment = $(elem.parents(".commentli.hide-bloc"))
+    var hide_comment = elem.parents(".commentli.hide-bloc")
     $(
       hide_comment
         .parents(".commentli:not(.hide-bloc)")
@@ -120,18 +123,19 @@ function init_comment_scroll(element) {
         .find(".comment-replay-nb.closed")
     ).click()
     setTimeout(function() {
-      comment_scroll_to($(elem.parents(".commentli").first()), true)
+      comment_scroll_to(elem.parents(".commentli").first(), true)
     }, 1000)
   } else {
-    var unread_child = $(
-      comment_scroll.find("ul.commentulorigin > .commentli.commentli-unread").first()
-    )
-    if (unread_child.length === 0){
+    var unread_child = comment_scroll
+      .find("ul.commentulorigin > .commentli.commentli-unread")
+      .first()
+
+    if (unread_child.length === 0) {
       comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"))
     } else {
       setTimeout(function() {
-            comment_scroll_to(unread_child, true)
-          }, 1000)
+        comment_scroll_to(unread_child, true)
+      }, 1000)
     }
   }
 }
@@ -152,7 +156,7 @@ function update_replay(url) {
     .click()
   var toreplay = $this.closest(".comment-inline-toggle").data("toreplay")
   var target_id = $this.closest(".comment-inline-toggle").data("target")
-  var target = $($this.parents(".commentli").find(target_id).first())
+  var target = $this.parents(".commentli").find(target_id).first()
   if (Boolean(toreplay)) {
     target.parent("ul.action-interation-container").removeClass("hide-bloc")
     return false
@@ -164,21 +168,25 @@ function update_replay(url) {
     include_resources(data["resources"], function() {
       var action_body = data["body"]
       if (action_body) {
-        $(target.find(".container-body").first()).html(get_form_replay_container())
-        var container = $(target.find(".replay-form-container").first())
+        $(target.find(".container-body").first()).html(
+          get_form_replay_container()
+        )
+        var container = target.find(".replay-form-container").first()
         container.append($(action_body))
-        var replay_bloc = $(target.parents("ul.action-interation-container").first())
-        var commentdata = $(replay_bloc.find(".comment-card").first())
-        var commentli = $(replay_bloc.parents(".commentli").first())
-        replay_bloc.slideDown('fast')
+        var replay_bloc = target
+          .parents("ul.action-interation-container")
+          .first()
+        var commentdata = replay_bloc.find(".comment-card").first()
+        var commentli = replay_bloc.parents(".commentli").first()
+        replay_bloc.slideDown("fast")
         commentdata.addClass("replay-active")
         commentli.addClass("replay-active")
         container.find("form").first().data("action_id", $this.attr("id"))
-        var textareainput = $(replay_bloc.find("textarea").first())
+        var textareainput = replay_bloc.find("textarea").first()
         textareainput.val(textareainput.val()).focus()
-        init_emoji($(container.find(".emoji-container:not(.emojified)")))
+        init_emoji(container.find(".emoji-container:not(.emojified)"))
         comment_scroll_to(replay_bloc)
-        init_comment_form_changes($(replay_bloc.find(".commentform")))
+        init_comment_form_changes(replay_bloc.find(".commentform"))
         try {
           deform.processCallbacks()
         } catch (err) {}
@@ -192,32 +200,31 @@ function update_replay(url) {
 }
 
 function search_comments(input) {
-  var navchannel = $(input.parents(".navbar-channel"))
-  var text_to_search = $(navchannel.find(".comments-text-search").first()).val()
-  var filters = $(
-    navchannel.find(".comment-filter-action.active")
-  ).map(function() {
-    return $(this).data("name")
-  })
-  var commentsscroll = $(navchannel.siblings(".comments-scroll").first())
-  var commentscontainer = $(commentsscroll.find(".comments-container").first())
-  var comment_ul = $(commentscontainer.find(".commentulorigin").first())
+  var navchannel = input.parents(".navbar-channel")
+  var text_to_search = navchannel.find(".comments-text-search").first().val()
+  var filters = navchannel
+    .find(".comment-filter-action.active")
+    .map(function() {
+      return $(this).data("name")
+    })
+  var commentsscroll = navchannel.siblings(".comments-scroll").first()
+  var commentscontainer = commentsscroll.find(".comments-container").first()
+  var comment_ul = commentscontainer.find(".commentulorigin").first()
   var next_path = comment_ul.data("origin_url")
-  var loading = $(comment_ul.siblings(".comment-loading").first())
+  var loading = comment_ul.siblings(".comment-loading").first()
   loading_progress()
   $.post(
     next_path,
     { filters: filters.toArray(), text: text_to_search },
     function(data) {
-      var new_comment_ul = $(
-        $(data)
-          .find(".comments-scroll .comments-container .commentulorigin")
-          .first()
-      )
+      var new_comment_ul = $(data)
+        .find(".comments-scroll .comments-container .commentulorigin")
+        .first()
+
       commentscontainer.find(".commentulorigin").remove()
       if (new_comment_ul.length > 0) {
         loading.addClass("hide-bloc")
-        init_emoji($(new_comment_ul.find(".emoji-container:not(.emojified)")))
+        init_emoji(new_comment_ul.find(".emoji-container:not(.emojified)"))
         commentscontainer.append(new_comment_ul)
       }
       finish_progress()
@@ -227,18 +234,19 @@ function search_comments(input) {
 
 function init_comment_form_changes(form) {
   form.find(".comment-form-changes").remove()
-  var select_itention = $(form.find("select[name='intention']"))
+  var select_itention = form.find("select[name='intention']")
   var intention = select_itention.val()
   intention = select_itention.find('option[value="' + intention + '"]').text()
-  var select_related_contents = $(
-    form.find("select[name='associated_contents']").first()
-  )
+  var select_related_contents = form
+    .find("select[name='associated_contents']")
+    .first()
+
   var related_len = 0
   if (select_related_contents.val()) {
     related_len = select_related_contents.val().length
   }
-  var len_files = $(
-    form.find(".comment-files .form-group.deform-seq-item.uploaded")
+  var len_files = form.find(
+    ".comment-files .form-group.deform-seq-item.uploaded"
   ).length
 
   var result = '<div class="comment-form-changes">'
@@ -302,26 +310,27 @@ $(document).on("submit", ".commentform:not(.comment-inline-form)", function(
 ) {
   var $this = $(this)
   var button = $this.find('button[type="submit"]').last()
-  var select_itention = $($this.find("select[name='intention']"))
-  var is_anonymous = $($this.find("input[name='anonymous']")).is(":checked")
+  var select_itention = $this.find("select[name='intention']")
+  var is_anonymous = $this.find("input[name='anonymous']").is(":checked")
   var intention = select_itention.val()
-  var select_related_contents = $(
-    $this.find("select[name='associated_contents']").first()
-  )
+  var select_related_contents = $this
+    .find("select[name='associated_contents']")
+    .first()
+
   var textarea = $this.find("textarea")
   var comment = textarea.val()
-  var parent = $($this.parents(".comment-view-block").first())
+  var parent = $this.parents(".comment-view-block").first()
   var target = $(parent.find(".comments-scroll .commentulorigin"))
   var url = $(event.target).attr("action")
   if (comment != "" && intention != "") {
-    var preview = $(target.find("> .commentli.comment-preview").last())
+    var preview = target.find("> .commentli.comment-preview").last()
     $(preview.find(".comment-preview-text")).html(
       comment.replace(/\n/g, "</br>")
     )
-    init_emoji($(preview.find(".comment-preview-text")))
+    init_emoji(preview.find(".comment-preview-text"))
     preview.removeClass("hide-bloc")
     preview.removeClass("anonymous")
-    if(is_anonymous) preview.addClass("anonymous")
+    if (is_anonymous) preview.addClass("anonymous")
     init_comment_scroll(parent)
     $(button).addClass("disabled")
     var formData = new FormData($this[0])
@@ -345,7 +354,7 @@ $(document).on("submit", ".commentform:not(.comment-inline-form)", function(
       success: function(data) {
         var content = $(data.new_body).find(".commentulorigin")
         if (content) {
-          init_emoji($(content.find(".emoji-container:not(.emojified)")))
+          init_emoji(content.find(".emoji-container:not(.emojified)"))
           $($(content).find("li.commentli").first()).insertBefore(preview)
           preview.addClass("hide-bloc")
           alert_component({
@@ -353,7 +362,7 @@ $(document).on("submit", ".commentform:not(.comment-inline-form)", function(
             alert_type: "success"
           })
           select_related_contents.select2("val", [])
-          $($this.find(".comment-files .form-group.deform-seq-item  ")).remove()
+          $this.find(".comment-files .form-group.deform-seq-item  ").remove()
           select_itention.select2("val", "Remark")
           init_comment_scroll(parent)
           try {
@@ -395,26 +404,26 @@ $(document).on("submit", ".respondform", function(event) {
   var $this = $(this)
   var formid = $this.attr("id")
   var button = $this.find('button[type="submit"]').last()
-  var select_itention = $($this.find("select[name='intention']"))
-  var is_anonymous = $($this.find("input[name='anonymous']")).is(":checked")
+  var select_itention = $this.find("select[name='intention']")
+  var is_anonymous = $this.find("input[name='anonymous']").is(":checked")
   var intention = select_itention.val()
   var textarea = $this.find("textarea")
   var comment = textarea.val()
-  var select_related_contents = $(
-    $this.find("select[name='associated_contents']").first()
-  )
-  var parent = $($this.parents(".views-container").get(1))
-  var parentform = parent.find(".commentform")
+  var select_related_contents = $this
+    .find("select[name='associated_contents']")
+    .first()
 
-  var target = $(
-    $this
-      .parents(".commentli")
-      .first()
-      .find(".comments-container")
-      .first()
-      .find(".commentul")
-      .first()
-  )
+  var parent = $this.parents(".views-container").get(1)
+  var parentform = $(parent).find(".commentform")
+
+  var target = $this
+    .parents(".commentli")
+    .first()
+    .find(".comments-container")
+    .first()
+    .find(".commentul")
+    .first()
+
   var url = $(event.target).attr("action")
   if (comment != "" && intention != "") {
     var preview = $(target.find("> .commentli.comment-preview").last())
@@ -424,7 +433,7 @@ $(document).on("submit", ".respondform", function(event) {
     init_emoji($(preview.find(".comment-preview-text")))
     preview.removeClass("hide-bloc")
     preview.removeClass("anonymous")
-    if(is_anonymous) preview.addClass("anonymous")
+    if (is_anonymous) preview.addClass("anonymous")
     comment_scroll_to(preview, true)
     $(button).addClass("disabled")
     alert_component({
@@ -448,15 +457,15 @@ $(document).on("submit", ".respondform", function(event) {
       success: function(data) {
         var content = $(data.new_body).find(".commentulorigin")
         if (content) {
-          init_emoji($(content.find(".emoji-container:not(.emojified)")))
+          init_emoji(content.find(".emoji-container:not(.emojified)"))
           alert_component({
             alert_msg: novaideo_translate("Your comment is integrated"),
             alert_type: "success"
           })
-          $($(content).find("li.commentli").first()).insertBefore(preview)
+          content.find("li.commentli").first().insertBefore(preview)
           preview.addClass("hide-bloc")
           select_related_contents.select2("val", [])
-          $($this.find(".comment-files .form-group.deform-seq-item  ")).remove()
+          $this.find(".comment-files .form-group.deform-seq-item  ").remove()
           select_itention.select2("val", "Remark")
           $this
             .parents(".replay-form-container")
@@ -506,7 +515,7 @@ $(document).on("submit", ".edit-comment-form", function(event) {
   var $this = $(this)
   var formid = $this.attr("id")
   var button = $this.find('button[type="submit"]').last()
-  var select_itention = $($this.find("select[name='intention']"))
+  var select_itention = $this.find("select[name='intention']")
   var intention = select_itention.val()
   var textarea = $this.find("textarea")
   var comment = textarea.val()
@@ -573,8 +582,8 @@ $(document).on("submit", ".presentform", function(event) {
   var members = $this.find("select[name='members']")
   var subject = $this.find("input[name='subject']").val()
   var textarea = $this.find("textarea")
-  var parent = $($this.parents(".present-view-block").first())
-  var target = $(parent.find(".study-view").first())
+  var parent = $this.parents(".present-view-block").first()
+  var target = parent.find(".study-view").first()
   var url = $(event.target).attr("action")
   if (subject != "" && textarea.val() != "" && members.val() != null) {
     loading_progress()
@@ -589,7 +598,7 @@ $(document).on("submit", ".presentform", function(event) {
       if (content) {
         // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
         // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
-        $(target).html($(content).html())
+        $(target).html(content.html())
         members.select2("val", [])
         alert_component({
           alert_msg: novaideo_translate(
@@ -644,40 +653,49 @@ $(
   ".commentform .comment-textarea-actions .comment-submit",
   function(event) {
     var $this = $(this)
-    var form = $($this.parents("form").first())
+    var form = $this.parents("form").first()
     $(".comment-form-group").removeClass("active")
-    var button = $(form.find("button[type='submit']").first())
+    var button = form.find("button[type='submit']").first()
     button.click()
   }
 )
 
 $(document).on("click", ".comment-cancel", function() {
   var $this = $(this)
-  var form = $($this.parents("form").first())
+  var form = $this.parents("form").first()
   $(".comment-form-group").removeClass("active")
   $(".comment-card .comment-content.hide-bloc").removeClass("hide-bloc")
-  var commentli = form.parents('.commentli').first()
-  var commentdata = commentli.find('.comment-card').first()
+  var commentli = form.parents(".commentli").first()
+  var commentdata = commentli.find(".comment-card").first()
   commentdata.removeClass("replay-active")
   commentli.removeClass("replay-active")
-  $(form)
+  form
     .parents(".action-interation-container")
     .first()
     .find(".container-body")
     .empty()
 })
 
-$(document).on("click", ".commentform .comment-textarea-actions .comment-anonymous", function() {
-  var $this = $(this)
-  var form = $($this.parents("form").first())
-  $(".comment-form-group").removeClass("active")
-  $(".comment-card .comment-content.hide-bloc").removeClass("hide-bloc")
-  var input = $(
-      form.find(".comment-form-group.comment-anonymous-form input[name='anonymous']").first()
-    )
-    input.prop('checked', ! input.is(":checked"))
+$(
+  document
+).on(
+  "click",
+  ".commentform .comment-textarea-actions .comment-anonymous",
+  function() {
+    var $this = $(this)
+    var form = $this.parents("form").first()
+    $(".comment-form-group").removeClass("active")
+    $(".comment-card .comment-content.hide-bloc").removeClass("hide-bloc")
+    var input = form
+      .find(
+        ".comment-form-group.comment-anonymous-form input[name='anonymous']"
+      )
+      .first()
+
+    input.prop("checked", !input.is(":checked"))
     $this.toggleClass("active")
-})
+  }
+)
 
 $(
   document
@@ -686,11 +704,10 @@ $(
   ".commentform .comment-textarea-actions .comment-intention",
   function(event) {
     var $this = $(this)
-    var form = $($this.parents("form").first())
+    var form = $this.parents("form").first()
     $(".comment-form-group").removeClass("active")
-    var button = $(
-      form.find(".comment-form-group.comment-intention-form").first()
-    )
+    var button = form.find(".comment-form-group.comment-intention-form").first()
+
     button.addClass("active")
     // button.css('bottom', form.offset().top- $(window).height()+'px')
   }
@@ -703,14 +720,11 @@ $(
   ".commentform .comment-textarea-actions .comment-related",
   function(event) {
     var $this = $(this)
-    var form = $($this.parents("form").first())
+    var form = $this.parents("form").first()
     $(".comment-form-group").removeClass("active")
-    var button = $(
-      form.find(".comment-form-group.comment-related-form").first()
-    )
+    var button = form.find(".comment-form-group.comment-related-form").first()
+
     button.addClass("active")
-    // var bottom =($('.comments-scroll').offset().top + $('.comments-scroll').height() - form.offset().top)+70;
-    // button.css('bottom', bottom+'px')
   }
 )
 
@@ -721,11 +735,10 @@ $(
   ".commentform .comment-textarea-actions .comment-add-file",
   function(event) {
     var $this = $(this)
-    var form = $($this.parents("form").first())
+    var form = $this.parents("form").first()
     $(".comment-form-group").removeClass("active")
-    var button = $(form.find(".comment-form-group.comment-files").first())
+    var button = form.find(".comment-form-group.comment-files").first()
     button.addClass("active")
-    // button.css('bottom', $this.parents('form').offset().top+'px')
   }
 )
 
@@ -733,7 +746,7 @@ $(document).on("click", ".commentform .comment-textarea textarea", function(
   event
 ) {
   var $this = $(this)
-  var form = $($this.parents("form").first())
+  var form = $this.parents("form").first()
   $(".comment-form-group").removeClass("active")
 })
 
@@ -743,20 +756,22 @@ $(
   event
 ) {
   var $this = $(this)
-  var form = $($this.parents("form").first())
+  var form = $this.parents("form").first()
   $(".comment-form-group").removeClass("active")
-  var button = $(form.find(".comment-form-group.emoji-container-input").first())
+  var button = form.find(".comment-form-group.emoji-container-input").first()
   button.addClass("active")
-  // button.css('bottom', $this.parents('form').offset().top+'px')
+  // Please, don't delete this: mCustomScrollbar has a strange behavior on the first call
+  // we need to rebuild the malihu-scroll
+  button.find(".malihu-scroll").mCustomScrollbar("destroy")
+  rebuild_scrolls(button.find(".malihu-scroll"))
 })
 
 $(document).on("click", ".emoji-container-input span.emoji-sizer", function() {
   var $this = $(this)
-  var value = ":" + $($this.find(".emoji-inner").first()).attr("title") + ":"
-  var container = $($this.parents(".emoji-container-input"))
-  var text = $(container.siblings("textarea"))
+  var value = ":" + $this.find(".emoji-inner").first().attr("title") + ":"
+  var container = $this.parents(".emoji-container-input")
+  var text = container.siblings("textarea")
   text.insertAtCaret(value)
-  // text.val(text.val()+' '+value+' ')
   container.removeClass("active")
 })
 
@@ -789,23 +804,22 @@ $(document).on("submit", ".comment-un-pin-form", function(event) {
     contentType: false,
     processData: false,
     success: function(data) {
-      var navchannel = $(
-        action
-          .parents(".comments-scroll")
-          .first()
-          .siblings(".navbar-channel")
-          .first()
-      )
-      var filters = $(
-        navchannel.find(".comment-filter-action.active")
-      ).map(function() {
-        return $(this).data("name")
-      })
+      var navchannel = action
+        .parents(".comments-scroll")
+        .first()
+        .siblings(".navbar-channel")
+        .first()
+
+      var filters = navchannel
+        .find(".comment-filter-action.active")
+        .map(function() {
+          return $(this).data("name")
+        })
       filters = filters.toArray()
       if ($.inArray("pinned", filters) >= 0) {
         data["object_views_to_update"] = []
         //action is unpin with the 'pinned' filter => remove the comment
-        var item = $(action.parents("li.commentli").first())
+        var item = action.parents("li.commentli").first()
         $(item.find(".comment-card")).addClass("deletion-process")
         item.fadeOut(1000)
       }
@@ -926,52 +940,66 @@ $(document).on("hidden.bs.modal", ".modal", function() {
 })
 
 $(document).on("click", ".comment-edit-action", function() {
-  $(
-    $(this)
-      .parents(".commentli")
-      .first()
-      .find(".comment-card .comment-content")
-      .first()
-  ).addClass("hide-bloc")
+  $(this)
+    .parents(".commentli")
+    .first()
+    .find(".comment-card .comment-content")
+    .first()
+    .addClass("hide-bloc")
+})
+
+$(document).on("click", function(event) {
+  var active_comment_group = $(".comment-form-group.active")
+  if (active_comment_group.length > 0) {
+    var source_form = $(event.target).parents("form").first()
+    if (source_form.length === 0) {
+      active_comment_group.removeClass("active")
+    } else {
+      $.each(active_comment_group, function(index) {
+        var $this = $(this)
+        var group_form = $this.parents("form").first()
+        if (source_form.get(0) !== group_form.get(0)) $this.removeClass("active")
+      })
+    }
+  }
 })
 
 $(document).ready(function() {
   $(".sidebar-right-wrapper").on("scroll", function() {
     var $this = $(this)
     if (
-      $($this.find(".sidebar-container-item:not(.closed) .comments-scroll"))
+      $this.find(".sidebar-container-item:not(.closed) .comments-scroll")
         .length > 0 &&
       $this.scrollTop() <= 0
     ) {
-      var navchannel = $($this.find(".navbar-channel"))
-      var text_to_search = $(
-        navchannel.find(".comments-text-search").first()
-      ).val()
-      var filters = $(
-        navchannel.find(".comment-filter-action.active")
-      ).map(function() {
-        return $(this).data("name")
-      })
-      var commentscontainer = $(
-        $this.find(".comments-scroll .comments-container").first()
-      )
-      var comment_ul = $(commentscontainer.find(".commentulorigin").first())
+      var navchannel = $this.find(".navbar-channel")
+      var text_to_search = navchannel
+        .find(".comments-text-search")
+        .first()
+        .val()
+      var filters = navchannel
+        .find(".comment-filter-action.active")
+        .map(function() {
+          return $(this).data("name")
+        })
+      var commentscontainer = $this
+        .find(".comments-scroll .comments-container")
+        .first()
+
+      var comment_ul = commentscontainer.find(".commentulorigin").first()
       var next_path = comment_ul.data("nex_url")
-      var loading = $(comment_ul.siblings(".comment-loading").first())
+      var loading = comment_ul.siblings(".comment-loading").first()
       loading.removeClass("hide-bloc")
       $.post(
         next_path,
         { filters: filters.toArray(), text: text_to_search },
         function(data) {
-          var new_comment_ul = $(
-            $(data)
-              .find(".comments-scroll .comments-container .commentulorigin")
-              .first()
-          )
+          var new_comment_ul = $(data)
+            .find(".comments-scroll .comments-container .commentulorigin")
+            .first()
+
           if (new_comment_ul.length > 0) {
-            init_emoji(
-              $(new_comment_ul.find(".emoji-container:not(.emojified)"))
-            )
+            init_emoji(new_comment_ul.find(".emoji-container:not(.emojified)"))
             loading.addClass("hide-bloc")
             new_comment_ul.insertBefore(comment_ul)
             $this.scrollTop(new_comment_ul.height())
