@@ -1,0 +1,12 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+ <p i18n:translate="">The xls file must contain the following keys:</p>
+ <ul>
+  <li><strong>user_title</strong>: <span i18n:translate="">The title of the user. The value can be 'Mr' or 'Madam'. If not specified, the 'Mr' title will be assigned.</span></li>
+  <li><strong>first_name</strong> <small i18n:translate="">(required field)</small>: <span i18n:translate="">The first name of the user.</span></li>
+  <li><strong>last_name</strong> <small i18n:translate="">(required field)</small>: <span i18n:translate="">The last name of the user.</span></li>
+  <li><strong>email</strong> <small i18n:translate="">(required field)</small>: <span i18n:translate="">The email address of the user.</span></li>
+  <li><strong>roles</strong>: <span i18n:translate="">The list of roles to be assigned to the user. The roles must be separeted by a comma (ex: Examiner, Moderator). the available roles are: 'Examiner', 'Moderator' and 'Member'. If not specified, the 'Member' role will be assigned. </span></li>
+  <li><strong>organization</strong>: <span i18n:translate="">The title of the organization of the user.</span></li>
+  <li><strong>is_manager</strong>: <span i18n:translate="">The value must be '1' if the user is the manager of the organization.</span></li>
+ </ul>
+</div>
