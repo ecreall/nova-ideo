@@ -217,18 +217,9 @@ form.answerform {
   margin-top: 0 !important;
 }
 
-.commentform .emoji-container-input .emoji-groups {
-  padding-bottom: 106px;
-}
-
 .commentform .emoji-preview {
-  width: 111%;
-  margin-top: -11px;
-  margin-left: -11px;
-  min-height: 64px;
+  min-height: 66px;
   padding: 10px;
-  position: absolute;
-  bottom: 0;
   z-index: 1;
 }
 
@@ -332,25 +323,33 @@ form.answerform {
 
 .commentform .comment-form-group.active,
 .emoji-container-input.active {
+  display: flex;
+  flex-direction: column;
   background-color: #f7f7f7;
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   bottom: 70px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
-  display: block !important;
   max-height: 320px;
   overflow: auto;
-  padding: 11px;
   position: absolute;
   right: 40px;
   width: 35%;
   z-index: 1300;
 }
 
+.commentform .comment-form-group.active:not(.emoji-container-input) {
+  padding: 10px;
+}
+
 .result-item .comment-form-group.active,
 .result-item .emoji-container-input.active {
   min-width: 400px;
   max-height: 265px;
+}
+
+.result-item .emoji-container-input .emoji-groups {
+  max-height: 152px;
 }
 
 .emoji-container-input {

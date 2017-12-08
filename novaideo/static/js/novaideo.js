@@ -187,7 +187,7 @@ function init_emoji(nodes) {
   emoji.addAliases({
     "🤔": "1f415"
   })
-  $.each(nodes, function(index){
+  $.each(nodes, function(index) {
     var node = $(this)
     node.html(emoji.replace_colons(node.html()))
     node.addClass("emojified")
@@ -508,9 +508,9 @@ function get_comment_author_bloc(element) {
 function alert_user_unread_messages() {
   var is_unread = $(".all-channels .unread-comments-len").length > 0
   if (is_unread) {
-    $(".all-channels-toggle:not(.close)").addClass('unread-comments')
+    $(".all-channels-toggle:not(.close)").addClass("unread-comments")
   } else {
-    $(".all-channels-toggle:not(.close)").removeClass('unread-comments')
+    $(".all-channels-toggle:not(.close)").removeClass("unread-comments")
   }
 }
 

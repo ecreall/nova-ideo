@@ -152,7 +152,8 @@ class EmojiInputWidget(deform.widget.TextInputWidget):
     def get_emoji_form(self, cstruct=None):
         return get_emoji_form(
           get_current_request(), emoji_class='emoji-input-widget',
-          is_grouped=False, add_preview=False,
+          is_grouped=getattr(self, 'is_grouped', True),
+          add_preview=getattr(self, 'add_preview', False),
           items=self.items, selected_items=[cstruct])
 
 

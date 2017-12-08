@@ -126,13 +126,13 @@ function update_modal_action(event) {
           deform.processCallbacks()
         } catch (err) {}
         var result_scroll = modal_container.find(".result-scroll")
+        finish_progress()
+        init_emoji($(modal_container.find(".emoji-container:not(.emojified)")))
+        init_delayed_blocks(modal_container.find(".delayed-block"))
         initscroll(result_scroll)
         rebuild_scrolls(modal_container.find(".malihu-scroll"))
-        init_delayed_blocks(modal_container.find(".delayed-block"))
-        finish_progress()
         focus_on_form(modal_container)
         modal_container.data("action_id", action.attr("id"))
-        init_emoji($(modal_container.find(".emoji-container:not(.emojified)")))
         return false
       } else {
         location.reload()
@@ -162,11 +162,19 @@ function update_direct_action(event) {
 function update_inline_action() {
   var $this = $(this)
   var target = $(
-    $this.parents(".component-obj-view").first().find(".action-inline-container").first()
+    $this
+      .parents(".component-obj-view")
+      .first()
+      .find(".action-inline-container")
+      .first()
   )
   if (target.length == 0) {
     target = $(
-      $this.parents(".content-view").first().find(".action-inline-container").first()
+      $this
+        .parents(".content-view")
+        .first()
+        .find(".action-inline-container")
+        .first()
     )
   }
   var actions = $($this.parents(".actions-block").find(".dace-action-inline"))
@@ -208,9 +216,10 @@ function update_inline_action() {
           deform.processCallbacks()
         } catch (err) {}
         finish_progress()
+        init_emoji($(target.find(".emoji-container:not(.emojified)")))
         target.data("action_id", action.attr("id"))
         focus_on_form(target)
-        init_emoji($(target.find(".emoji-container:not(.emojified)")))
+        rebuild_scrolls(target.find(".malihu-scroll"))
       } else {
         location.reload()
         return false
@@ -302,6 +311,7 @@ function update_slider_action() {
             deform.processCallbacks()
           } catch (err) {}
           target.data("action_id", action.attr("id"))
+          finish_progress()
           init_emoji($(target.find(".emoji-container:not(.emojified)")))
           var result_scroll = target.find(".result-scroll")
           var height_scroll =
@@ -309,10 +319,9 @@ function update_slider_action() {
               ? $(window).height() - 30
               : item.outerHeight() - 30
           initscroll(result_scroll)
+          focus_on_form(target)
           rebuild_scrolls(target.find(".malihu-scroll"))
           init_delayed_blocks(target.find(".delayed-block"))
-          finish_progress()
-          focus_on_form(target)
         })
       } else {
         location.reload()
@@ -510,13 +519,13 @@ function update_sidebar_action() {
         }
         $this.addClass("activated")
         target.find(".carousel").carousel()
+        finish_progress()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
         init_collapsible(target.find(".collapsible-text"))
-        rebuild_scrolls(target.find(".malihu-scroll"))
         init_delayed_blocks(target.find(".delayed-block"))
         var result_scroll = target.find(".result-scroll")
         initscroll(result_scroll)
-        finish_progress()
+        rebuild_scrolls(target.find(".malihu-scroll"))
         focus_on_form(target)
         $(document).trigger({type: 'sidebar-opened', item: item})
       } else {
@@ -541,7 +550,7 @@ function update_popover_action() {
   var action = $this.closest(".dace-action-popover")
   var url = action.data("updateurl")
   var url_attr = { tomerge: "True", coordinates: "main" }
-  popover_container.data('action_id', action.attr('id'))
+  popover_container.data("action_id", action.attr("id"))
   $.extend(url_attr, get_action_metadata(action))
   loading_progress()
   $.post(url, url_attr, function(data) {
@@ -566,12 +575,12 @@ function update_popover_action() {
           deform.processCallbacks()
         } catch (err) {}
         target.find(".carousel").carousel()
+        finish_progress()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
-        rebuild_scrolls(target.find(".malihu-scroll"))
-        init_delayed_blocks(target.find(".delayed-block"))
         var result_scroll = target.find(".result-scroll")
         initscroll(result_scroll)
-        finish_progress()
+        rebuild_scrolls(target.find(".malihu-scroll"))
+        init_delayed_blocks(target.find(".delayed-block"))
         focus_on_form(target)
         target.data("action_id", action.attr("id"))
       } else {
