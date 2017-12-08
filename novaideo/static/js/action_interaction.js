@@ -211,6 +211,7 @@ function update_inline_action() {
         target.data("action_id", action.attr("id"))
         focus_on_form(target)
         init_emoji($(target.find(".emoji-container:not(.emojified)")))
+        rebuild_scrolls(target.find(".malihu-scroll"))
       } else {
         location.reload()
         return false

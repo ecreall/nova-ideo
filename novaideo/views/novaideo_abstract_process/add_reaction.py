@@ -21,7 +21,7 @@ from novaideo import _
 from novaideo.widget import EmojiInputWidget
 
 
-DEFAULT_REACTION = []#[':+1:', ':-1:']
+DEFAULT_REACTION = [] #[':+1:', ':-1:']
 
 
 @colander.deferred
@@ -31,7 +31,7 @@ def reaction_widget(node, kw):
 
 
 class ReactionSchema(Schema):
-    """Schema for comment"""
+    """Schema for reaction"""
 
     reaction = colander.SchemaNode(
         colander.String(),
