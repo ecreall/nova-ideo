@@ -18,7 +18,7 @@
         window.location.hostname +
         ":8080/ws?source_path=" +
         window.location.pathname
-      
+
       if ("WebSocket" in window) {
         NovaIdeoWS.sock = new WebSocket(wsuri)
       } else if ("MozWebSocket" in window) {
@@ -83,12 +83,10 @@
     $(".ws-messages").append(
       '<div class="ws-connection-state">' +
         novaideo_translate("Offline") +
-        ' <span class="ws-connection-attempt"> ('+
-        novaideo_translate(
-              "the next connection attempt is in "
-            ) +
-            NovaIdeoWS.timeout / 1000 +
-            "s)</span>"+
+        ' <span class="ws-connection-attempt"> (' +
+        novaideo_translate("the next connection attempt is in ") +
+        NovaIdeoWS.timeout / 1000 +
+        "s)</span>" +
         ' <span title="' +
         novaideo_translate("Try again") +
         '" class="refresh-ws-connection-btn glyphicon glyphicon-refresh"></span></div>'
@@ -325,10 +323,10 @@ NovaIdeoWS.on("edit_comment", function(params) {
     var comment = channel.find(
       '.commentli[data-comment_id="' + comment_oid + '"]'
     )
-    var new_comment = $($(body).find("li.commentli .comment-data").first())
-    comment.find(".comment-data").first().replaceWith(new_comment)
+    var new_comment = $($(body).find("li.commentli .comment-card").first())
+    comment.find(".comment-card").first().replaceWith(new_comment)
     init_emoji($(comment.find(".emoji-container:not(.emojified)")))
-    var to_animate = $(comment.find(".comment-data").first())
+    var to_animate = $(comment.find(".comment-card").first())
     if (to_animate.length > 0) {
       to_animate.animate(
         {
@@ -474,7 +472,7 @@ $(document).on("click", ".alert-new-content", function(argument) {
       }
       finish_progress()
     })
-  }else{
+  } else {
     $this.slideUp("slow", function() {
       $this.remove()
     })

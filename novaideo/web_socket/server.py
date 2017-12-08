@@ -259,15 +259,12 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                 hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
-                    body = ''
-                    if channel_opened:
-                        rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
-                        request.user = user
-                        result_view = rendrer(context, request)
-                        result_view.ignore_unread = channel_oid in opened
-                        result_view.comments = [comment]
-                        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-
+                    rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
+                    request.user = user
+                    result_view = rendrer(context, request)
+                    result_view.ignore_unread = channel_oid in opened
+                    result_view.comments = [comment]
+                    body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
                     events = [{
                         'event': 'edit_comment',
                         'params': {

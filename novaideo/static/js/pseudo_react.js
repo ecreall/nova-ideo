@@ -492,6 +492,18 @@ function loading_component(data) {
   })
 }
 
+
+function comment_edited_trigger(data) {
+  if(data.comment_edited) {
+    $(document).trigger({
+      type: 'comment-edited',
+      comment_oid: data.comment_oid,
+      channel_oid: data.channel_oid,
+      context_oid: data.context_oid})
+  }
+}
+
+
 var pseudo_react_components = {
   support_action: [
     nav_bar_component,
@@ -501,7 +513,8 @@ var pseudo_react_components = {
     alert_component,
     tab_component_component,
     novaideo_content_nb_component,
-    token_component
+    token_component,
+    comment_edited_trigger
   ],
   footer_action: [
     nav_bar_component,
@@ -514,7 +527,8 @@ var pseudo_react_components = {
     tab_component_component,
     contextual_help_component,
     process_steps_component,
-    header_component
+    header_component,
+    comment_edited_trigger
   ],
   redirect_action: [
     nav_bar_component,
@@ -527,7 +541,8 @@ var pseudo_react_components = {
     object_view_component,
     contextual_help_component,
     process_steps_component,
-    header_component
+    header_component,
+    comment_edited_trigger
   ],
   dropdown_action: [
     dropdown_action_component,
@@ -535,7 +550,8 @@ var pseudo_react_components = {
     alert_component,
     contextual_help_component,
     process_steps_component,
-    header_component
+    header_component,
+    comment_edited_trigger
   ],
   "loading-action": [loading_component]
 }

@@ -56,6 +56,7 @@ from novaideo.content.interface import (
     Iidea, IQuestion)
 from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
+from novaideo.content.comment import Comment
 from novaideo.content.amendment import Amendment
 from novaideo.core import can_access, ON_LOAD_VIEWS
 
@@ -1695,8 +1696,19 @@ def get_addreaction_metadata(action, request, context, api, **kwargs):
         action, request,
         context, api,
         **kwargs)
-    contextoid = str(get_oid(context, None))
-    result['object_views_to_update'].append('comment_'+contextoid)
+    if isinstance(context, Comment):
+        comment_oid = str(get_oid(context, None))
+        channel_oid = context.channel.__oid__
+        subject = context.channel.get_subject(kwargs['user'])
+        subject_oid = str(get_oid(subject, None))
+        result.update({
+            'comment_oid': comment_oid,
+            'channel_oid': str(channel_oid),
+            'context_oid': subject_oid,
+            'comment_edited': True,
+        })
+        result['object_views_to_update'].append('comment_'+comment_oid)
+
     return result
 
 #Files
