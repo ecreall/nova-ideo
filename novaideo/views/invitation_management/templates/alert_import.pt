@@ -7,6 +7,6 @@
   <li><strong>email</strong> <small i18n:translate="">(required field)</small>: <span i18n:translate="">The email address of the user.</span></li>
   <li><strong>roles</strong>: <span i18n:translate="">The list of roles to be assigned to the user. The roles must be separeted by a comma (ex: Examiner, Moderator). the available roles are: 'Examiner', 'Moderator' and 'Member'. If not specified, the 'Member' role will be assigned. </span></li>
   <li><strong>organization</strong>: <span i18n:translate="">The title of the organization of the user.</span></li>
-  <li><strong>is_manager</strong>: <span i18n:translate="">The value must be '1' if the user is the manager of the organization.</span></li>
+  <li><strong>ismanager</strong>: <span i18n:translate="">The value must be 'true' if the user is the manager of the organization.</span></li>
  </ul>
 </div>

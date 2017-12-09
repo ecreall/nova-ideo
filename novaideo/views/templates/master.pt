@@ -184,13 +184,15 @@
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
       <div tal:omit-tag="" tal:condition="not view_only">
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-          <div tal:condition="adminnavbar" class="menu-toggle top">
-            <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
-          </div>
-          <div tal:condition="channels"
-                i18n:attributes="title"
-                title="My discussions"
-                class="all-channels-toggle ion-chatbubbles">
+          <div class="navbar-left" style="margin-right: 25px;">
+            <div tal:condition="adminnavbar" class="menu-toggle top">
+              <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
+            </div>
+            <div tal:condition="channels"
+                  i18n:attributes="title"
+                  title="My discussions"
+                  class="all-channels-toggle ion-chatbubbles">
+            </div>
           </div>
           <div class="container">
             ${panel('usermenu')}
