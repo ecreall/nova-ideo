@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-08 23:58+0100\n"
+"POT-Creation-Date: 2017-12-09 23:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,20 +152,20 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ./novaideo/__init__.py:1082
+#: ./novaideo/__init__.py:1102
 #: ./novaideo/views/templates/panels/novaideo_footer.pt:12
 msgid "Legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1083
+#: ./novaideo/__init__.py:1103
 msgid "The legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1087
+#: ./novaideo/__init__.py:1107
 msgid "Terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:1088
+#: ./novaideo/__init__.py:1108
 msgid "The terms of use"
 msgstr ""
 
@@ -5551,7 +5551,7 @@ msgid ""
 "${dynamic}"
 msgstr ""
 
-#: ./novaideo/views/templates/master.pt:192
+#: ./novaideo/views/templates/master.pt:193
 msgid "My discussions"
 msgstr ""
 
@@ -8575,7 +8575,8 @@ msgid "The title of the organization of the user."
 msgstr ""
 
 #: ./novaideo/views/invitation_management/templates/alert_import.pt:10
-msgid "The value must be '1' if the user is the manager of the organization."
+msgid ""
+"The value must be 'true' if the user is the manager of the organization."
 msgstr ""
 
 #: ./novaideo/views/amendment_management/associate.py:53
@@ -9033,6 +9034,10 @@ msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:988
 msgid "You can enter the words that appear in the contents to be displayed."
+msgstr ""
+
+#: ./novaideo/views/filter/templates/sort.pt:3
+msgid "Sort by:"
 msgstr ""
 
 #: ./novaideo/views/filter/templates/sort.pt:5
