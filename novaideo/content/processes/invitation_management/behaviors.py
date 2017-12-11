@@ -9,7 +9,7 @@ import pytz
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
-from dace.util import getSite, name_chooser
+from dace.util import getSite, name_chooser, find_catalog
 from dace.objectofcollaboration.principal.util import (
     grant_roles, has_role, get_current, has_any_roles)
 from dace.processinstance.activity import (
@@ -17,8 +17,9 @@ from dace.processinstance.activity import (
     ActionType)
 from pontus.schema import select, omit
 
-from novaideo.ips.xlreader import create_object_from_xl
-from novaideo.content.interface import INovaIdeoApplication, IInvitation
+from novaideo.ips.xlreader import get_data_from_xl
+from novaideo.content.interface import (
+    INovaIdeoApplication, IInvitation, IOrganization)
 from novaideo.content.invitation import Invitation
 from novaideo import _, nothing
 from novaideo.content.processes.user_management.behaviors import (
@@ -30,10 +31,18 @@ from novaideo.content.invitation import InvitationSchema
 from novaideo.role import DEFAULT_ROLES, APPLICATION_ROLES
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
+from novaideo.views.filter import get_entities_by_title
+
+
+INVITATION_ROLES = {
+    'moderator': 'Moderator', 
+    'member': 'Member',
+    'examiner': 'Examiner'
+}
 
 
 def uploaduser_roles_validation(process, context):
-    return False#has_role(role=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def uploaduser_processsecurity_validation(process, context):
@@ -41,7 +50,11 @@ def uploaduser_processsecurity_validation(process, context):
 
 
 class UploadUsers(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-bullhorn'
+    style_order = 5.2
+    submission_title = _('Import')
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = uploaduser_roles_validation
@@ -50,49 +63,76 @@ class UploadUsers(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        xlfile = appstruct['file']['_object_data']
-        new_invitations = create_object_from_xl(
-            file=xlfile,
-            factory=Invitation,
-            properties={'first_name': ('String', False),
-                        'last_name': ('String', False),
-                        'user_title': ('String', False),
-                        'email': ('String', False)})
+        novaideo_catalog = find_catalog('novaideo')
+        identifier_index = novaideo_catalog['identifier']
+        user_titles = {str(i).lower(): str(i) for i in root.titles}
         title_template = u"""{title} {first_name} {last_name}"""
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
         novaideo_title = root.title
-        for invitation in new_invitations:
-            invitation.title = title_template.format(
-                title=invitation.title,
-                first_name=getattr(self.context,
-                                   'first_name', ''),
-                last_name=getattr(self.context,
-                                  'last_name', ''))
-            invitation.state.append('pending')
-            invitation.setproperty('manager', user)
-            invitation.__name__ = gen_random_token()
-            root.addtoproperty('invitations', invitation)
-            roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
-                               for r in getattr(invitation, 'roles', [])]
+        xlfile = appstruct['file']['_object_data']
+        invitations_data = get_data_from_xl(
+            file=xlfile,
+            properties={'first_name': ('String', False),
+                        'last_name': ('String', False),
+                        'user_title': ('String', False),
+                        'email': ('String', False),
+                        'organization': ('String', False),
+                        'ismanager': ('Boolean', False),
+                        'roles': ('String', True)})
+        for invitation_data in invitations_data:
+            email = invitation_data['email']
+            if email and invitation_data['first_name'] and invitation_data['last_name']:
+                query = identifier_index.any([email])
+                users = list(query.execute().all())
+                if not users:
+                    organization_title = invitation_data.pop('organization', None)
+                    organizations = list(get_entities_by_title(
+                        [IOrganization], organization_title).all())
+                    organization = organizations[0] if organizations else None
 
-            subject = mail_template['subject'].format(
-                novaideo_title=novaideo_title
-            )
-            email_data = get_user_data(invitation, 'recipient', request)
-            email_data.update(get_entity_data(
-                invitation, 'invitation', request))
-            message = mail_template['template'].format(
-                roles=", ".join(roles_translate),
-                novaideo_title=novaideo_title,
-                **email_data)
-            alert('email', [root.get_site_sender()], [invitation.email],
-                  subject=subject, body=message)
+                    roles = invitation_data.get('roles', [])
+                    roles = [INVITATION_ROLES.get(r.lower()) for
+                             r in roles if r.lower() in INVITATION_ROLES]
+                    roles = roles or ['Member']
+                    invitation_data['roles'] = roles
+
+                    user_title = invitation_data['user_title']
+                    invitation_data['user_title'] = user_titles.get(
+                        user_title.lower(), 'Mr') if user_title else 'Mr'
+
+                    invitation_data['title'] = title_template.format(
+                        title=invitation_data['user_title'],
+                        first_name=invitation_data['first_name'],
+                        last_name=invitation_data['last_name'])
+                    invitation = Invitation(**invitation_data)
+                    invitation.state.append('pending')
+                    invitation.setproperty('manager', user)
+                    invitation.__name__ = gen_random_token()
+                    if organization:
+                        invitation.setproperty('organization', organization)
+
+                    root.addtoproperty('invitations', invitation)
+                    roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
+                                       for r in getattr(invitation, 'roles', [])]
+
+                    subject = mail_template['subject'].format(
+                        novaideo_title=novaideo_title
+                    )
+                    email_data = get_user_data(invitation, 'recipient', request)
+                    email_data.update(get_entity_data(
+                        invitation, 'invitation', request))
+                    message = mail_template['template'].format(
+                        roles=", ".join(roles_translate),
+                        novaideo_title=novaideo_title,
+                        **email_data)
+                    alert('email', [root.get_site_sender()], [invitation.email],
+                          subject=subject, body=message)
 
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(request.root, '@@seeinvitations'))
 
 
 def inviteuser_roles_validation(process, context):
@@ -107,7 +147,7 @@ def inviteuser_processsecurity_validation(process, context):
 class InviteUsers(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
-    style_order = 8
+    style_order = 5.2
     submission_title = _('Send')
     isSequential = False
     context = INovaIdeoApplication

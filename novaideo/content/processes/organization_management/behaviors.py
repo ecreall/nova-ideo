@@ -16,7 +16,7 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted
 
-from novaideo.ips.xlreader import create_object_from_xl
+from novaideo.ips.xlreader import get_data_from_xl
 from novaideo.content.interface import (
     INovaIdeoApplication, IOrganization, IPerson)
 from novaideo.content.organization import Organization
@@ -25,10 +25,11 @@ from ..user_management.behaviors import (
     global_user_processsecurity,
     access_user_processsecurity)
 from novaideo.core import access_action, serialize_roles
+from novaideo.views.filter import get_entities_by_title
 
 
 def add_roles_validation(process, context):
-    return False#has_role(role=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def add_processsecurity_validation(process, context):
@@ -39,8 +40,8 @@ class AddOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 5
-    submission_title = _('Save')
+    style_order = 5.1
+    submission_title = _('Import')
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = add_roles_validation
@@ -49,18 +50,45 @@ class AddOrganizations(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        organizations = create_object_from_xl(
+        organizations = get_data_from_xl(
             file=xlfile,
-            factory=Organization,
-            properties={'title': ('String', False),
-                        'description': ('String', False)})
-        root.setproperty('organizations', organizations)
+            properties={
+                'title': ('String', False),
+                'description': ('String', False),
+                'address': ('String', False),
+                'phone': ('String', False),
+                'email': ('String', False),
+                'website': ('String', False),
+                'fax': ('String', False),
+            }
+        )
+        for organization_data in organizations:
+            title = organization_data.get('title', None)
+            if title:
+                current_organizations = list(get_entities_by_title(
+                    [IOrganization], title).all())
+                if not current_organizations:
+                    description = organization_data.get('description', title) or title
+                    contact = {
+                        'title': request.localizer.translate(_('Contact')),
+                        'address': organization_data.get('address', ''),
+                        'phone': organization_data.get('phone', ''),
+                        'email': organization_data.get('email', ''),
+                        'website': organization_data.get('website', ''),
+                        'fax': organization_data.get('fax', ''),
+                    }
+                    organization = Organization(
+                        title=title,
+                        description=description,
+                        contacts=[contact])
+                    root.addtoproperty('organizations', organization)
+
         request.registry.notify(ActivityExecuted(
             self, organizations, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(request.root, '@@seeorganizations'))
 
 
 def creatorg_roles_validation(process, context):

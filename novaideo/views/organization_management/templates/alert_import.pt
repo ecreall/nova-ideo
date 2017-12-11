@@ -1,0 +1,12 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+ <p i18n:translate="">The xls file must contain the following keys:</p>
+ <ul>
+  <li><strong>title</strong> <small i18n:translate="">(required field)</small>: <span i18n:translate="">The title of the organization.</span></li>
+  <li><strong>description</strong>: <span i18n:translate="">The description of the organization.</span></li>
+  <li><strong>address</strong>: <span i18n:translate="">The address of the organization.</span></li>
+  <li><strong>phone</strong>: <span i18n:translate="">The phone of the organization.</span></li>
+  <li><strong>email</strong>: <span i18n:translate="">The email address of the organization.</span></li>
+  <li><strong>website</strong>: <span i18n:translate="">The website of the organization.</span></li>
+  <li><strong>fax</strong>: <span i18n:translate="">The fax of the organization.</span></li>
+ </ul>
+</div>
