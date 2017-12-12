@@ -163,6 +163,7 @@ function get_new_emoji() {
     apple: {
       path: emoji_url,
       sheet: emoji_url,
+      sheet_size: 64,
       mask: 1
     }
   }
