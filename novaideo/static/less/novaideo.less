@@ -1488,16 +1488,26 @@ a.answer-btn {
 }
 
 .assigned-emoji .emoji-nb {
-  color: @novaideo-primary-color;
+  color: gray;
   font-size: 12px;
   padding: 0 1px 0 3px;
   position: relative;
   top: 3px;
 }
 
+.assigned-emoji.my-emoji .emoji-nb {
+  color: @novaideo-primary-color !important;
+}
+
+.assigned-emoji.updatereaction-btn {
+  background-color: rgba(78, 78, 78, 0.08);
+  border: 1px solid rgba(138, 138, 138, 0.4);
+  border-radius: 3px;
+}
+
 .emoji-container > .selected > .emoji-outer,
 .assigned-emoji.my-emoji {
-  background-color: rgba(21, 110, 175, 0.08);
+  background-color: rgba(21, 110, 175, 0.08) !important;
   border: solid 1px rgba(21, 110, 175, 0.4) !important;
   border-radius: 3px;
 }

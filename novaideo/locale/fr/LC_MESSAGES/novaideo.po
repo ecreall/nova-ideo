@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-12-11 10:14+0100\n"
+"POT-Creation-Date: 2017-12-13 14:38+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -15,31 +15,31 @@ msgstr ""
 msgid "People"
 msgstr "Personne"
 
-#: novaideo/emojis.py:195
+#: novaideo/emojis.py:293
 msgid "Nature"
 msgstr "Nature"
 
-#: novaideo/emojis.py:314
+#: novaideo/emojis.py:457
 msgid "Food & Drink"
 msgstr "Nourriture & Boisson"
 
-#: novaideo/emojis.py:379
+#: novaideo/emojis.py:561
 msgid "Activity"
 msgstr "Activité"
 
-#: novaideo/emojis.py:424
+#: novaideo/emojis.py:651
 msgid "Objects"
 msgstr "Objets"
 
-#: novaideo/emojis.py:591
+#: novaideo/emojis.py:825
 msgid "Travel & Places"
 msgstr "Voyage & Lieux"
 
-#: novaideo/emojis.py:692
+#: novaideo/emojis.py:943
 msgid "Flags"
 msgstr "Drapeaux"
 
-#: novaideo/emojis.py:709
+#: novaideo/emojis.py:1215
 msgid "Symbols"
 msgstr "Symboles"
 
@@ -91,11 +91,11 @@ msgstr "Une valeur doit être saisie."
 msgid "Surcharge field must be filled in."
 msgstr "Le champ surtaxe doit être rempli."
 
-#: novaideo/subscribers.py:42
+#: novaideo/subscribers.py:43
 msgid "The proposal"
 msgstr "La proposition"
 
-#: novaideo/subscribers.py:43
+#: novaideo/subscribers.py:44
 msgid "The idea"
 msgstr "L'idée"
 
@@ -147,20 +147,20 @@ msgstr "La vue en blocs"
 msgid "General"
 msgstr "Générale"
 
-#: novaideo/__init__.py:1102
+#: novaideo/__init__.py:1115
 #: novaideo/views/templates/panels/novaideo_footer.pt:12
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:1103
+#: novaideo/__init__.py:1116
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:1107
+#: novaideo/__init__.py:1120
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:1108
+#: novaideo/__init__.py:1121
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
@@ -298,8 +298,8 @@ msgstr "Ajouter un connecteur Facebook"
 #: novaideo/content/processes/user_management/behaviors.py:321
 #: novaideo/content/processes/user_management/behaviors.py:401
 #: novaideo/content/processes/user_management/behaviors.py:531
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:203
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:231
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:224
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:252
 #: novaideo/content/processes/admin_process/behaviors.py:42
 #: novaideo/content/processes/admin_process/behaviors.py:72
 #: novaideo/content/processes/work_mode_processes/wiki_work_mode_process/behaviors.py:59
@@ -564,7 +564,7 @@ msgid "Add connectors"
 msgstr "Ajouter des connecteurs"
 
 #: novaideo/connectors/core/content/definition.py:47
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:64
 #: novaideo/content/processes/proposal_management/definition.py:317
 #: novaideo/content/processes/newsletter_management/definition.py:55
 #: novaideo/content/processes/invitation_management/definition.py:53
@@ -2312,7 +2312,7 @@ msgstr "Se déconnecter"
 #: novaideo/content/processes/user_management/behaviors.py:142
 #: novaideo/content/processes/user_management/definition.py:65
 #: novaideo/content/processes/user_management/definition.py:66
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:63
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:68
 #: novaideo/content/processes/proposal_management/definition.py:349
 #: novaideo/content/processes/newsletter_management/definition.py:58
 #: novaideo/content/processes/invitation_management/definition.py:65
@@ -2367,8 +2367,8 @@ msgid "Assign roles"
 msgstr "Assigner des rôles"
 
 #: novaideo/content/processes/user_management/behaviors.py:788
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:127
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:61
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:128
 #: novaideo/content/processes/reports_management/behaviors.py:227
 #: novaideo/content/processes/question_management/behaviors.py:317
 #: novaideo/content/processes/idea_management/behaviors.py:818
@@ -2464,37 +2464,49 @@ msgstr "Refuser l'inscription"
 msgid "Refuse"
 msgstr "Refuser"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:37
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:206
+msgid "Remove my reaction"
+msgstr "Supprimer ma réaction"
+
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:206
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:55
+msgid "Add a reaction"
+msgstr "Ajouter une réaction"
+
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:38
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:39
 msgid "Abstract process"
 msgstr "Processus abstrait"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:45
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:46
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:47
 msgid "Follow"
 msgstr "Suivre"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:49
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:50
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:51
 msgid "Unfollow"
 msgstr "Ne plus suivre"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:53
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:54
 msgid "Add reactions"
 msgstr "Ajouter des réactions"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:54
-#: novaideo/views/novaideo_abstract_process/add_reaction.py:51
-msgid "Add reaction"
-msgstr "Ajouter une réaction"
-
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:57
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:58
+msgid "Update reactions"
+msgstr "Modifier les réactions"
+
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
+msgid "Update the reaction"
+msgstr "Modifier la réaction"
+
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:62
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:63
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:61
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:62
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:66
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:67
 #: novaideo/views/novaideo_abstract_process/edit_deadline.py:29
 msgid "Edit the current deadline"
 msgstr "Modifier l'échéance courante"
@@ -4747,6 +4759,14 @@ msgstr "Ajouter une échéance"
 msgid "Add to my favourites"
 msgstr "Ajouter à mes favoris"
 
+#: novaideo/views/novaideo_abstract_process/add_reaction.py:51
+msgid "Add reaction"
+msgstr "Ajouter une réaction"
+
+#: novaideo/views/novaideo_abstract_process/add_reaction.py:76
+msgid "Update reaction"
+msgstr "Modifier une réaction"
+
 #: novaideo/views/novaideo_view_manager/search.py:41
 #: novaideo/views/novaideo_view_manager/home.py:33
 #: novaideo/views/templates/folder_breadcrumb.pt:2
@@ -5901,6 +5921,14 @@ msgstr "Aucun élément trouvé !"
 #: novaideo/views/templates/live_search_result.pt:10
 msgid "All results"
 msgstr "Tous les résultats"
+
+#: novaideo/views/templates/actions/add_reaction_idea.pt:22
+msgid ""
+"${update_a.get_title(selected) if update_a else (selected and 'Remove my "
+"reaction' or 'Add a reaction')}"
+msgstr ""
+"${update_a.get_title(selected) if update_a else (selected and 'Supprimer ma "
+"réaction' or 'Ajouter une reaction')}"
 
 #: novaideo/views/templates/panels/novaideo_footer.pt:13
 msgid "Nova-Ideo parameters"

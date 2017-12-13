@@ -163,6 +163,7 @@ function get_new_emoji() {
     apple: {
       path: emoji_url,
       sheet: emoji_url,
+      sheet_size: 64,
       mask: 1
     }
   }
@@ -172,24 +173,15 @@ function get_new_emoji() {
 }
 
 function init_emoji(nodes) {
-  // emojify.setConfig(
-  //   {emojify_tag_type : 'span',
-  //    img_dir          : 'http://0.0.0.0:6543/novaideostatic/emoji/image/sprites/'});
-  // emojify.defaultConfig['mode'] = 'sprite'
-  // emojify.run();
-
   if (emoji == undefined) {
     emoji = get_new_emoji()
   }
   emoji.img_set = "apple"
   emoji.text_mode = false
   emoji.include_title = true
-  emoji.addAliases({
-    "🤔": "1f415"
-  })
   $.each(nodes, function(index) {
     var node = $(this)
-    node.html(emoji.replace_colons(node.html()))
+    node.html(emoji.replace_unified(emoji.replace_emoticons(node.html())))
     node.addClass("emojified")
   })
 }

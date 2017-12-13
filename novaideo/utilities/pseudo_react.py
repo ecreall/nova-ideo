@@ -2175,6 +2175,7 @@ METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
     'novaideoabstractprocess.addreaction': get_addreaction_metadata,
+    'novaideoabstractprocess.updatereaction': get_addreaction_metadata,
     'novaideoprocessmanagement.update': get_update_processes_metadata,
 
     'reportsmanagement.report': get_report_entity_metadata,

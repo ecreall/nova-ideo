@@ -1,15 +1,34 @@
-<div tal:define="a action" class="add-reaction-container">
+<div tal:define="a action" class="add-reaction-container" i18n:domain="novaideo">
 	<div tal:omit-tag="" 
 	 tal:condition="a in ajax_actions"
 	 tal:define="item ajax_actions.get(a, None);
 	             emojis getattr(item['context'], 'emojis', {});
 	             user_oid getattr(request.user, '__oid__', 'None')">
-	    <div class="assigned-emojis emoji-container">
+	    <div class="assigned-emojis emoji-container"
+	         tal:define="update_action a.get_update_action(item['context'], request)">
 	        <span tal:omit-tag="" tal:repeat="emoji emojis">
-	            <span tal:define="len_emoji len(emojis[emoji])" tal:condition="len_emoji > 0"
-	            	  class="assigned-emoji ${user_oid in emojis[emoji] and 'my-emoji'}" >
-	            	${emoji} <span class="emoji-nb">${len_emoji}</span>
-	            </span>
+	            <span tal:omit-tag=""
+	                  tal:define="len_emoji len(emojis[emoji]);
+	                              selected user_oid in emojis[emoji];
+	                              separator ':'"
+	                  tal:condition="len_emoji > 0">
+			        <a  id="${update_action['action_id']}-btn"
+		                class="updatereaction-btn ajax-action dace-action-direct assigned-emoji ${selected and 'my-emoji'}"
+		                data-toggle="direct"
+		                data-actionid ="${update_action['action_id']}"
+					    data-target="#${update_action['action_id']}"
+					    data-updateurl="${update_action['actionurl_update']}&reaction=${not selected and emoji.replace(separator, '') or ''}&separator=${separator}"
+					    i18n:attributes="title"
+		                title="${update_a.get_title(selected) if update_a else (selected and 'Remove my reaction' or 'Add a reaction')}"
+		                tal:condition="update_action"
+		                tal:define="update_a update_action['action']">
+		            	${emoji} <span class="emoji-nb">${len_emoji}</span>
+		            </a>
+		            <span class="assigned-emoji ${selected and 'my-emoji'}"
+		                  tal:condition="not update_action">
+		            	${emoji} <span class="emoji-nb">${len_emoji}</span>
+		            </span>
+		        </span>
             </span>
 	    </div>
 	    <a id="${item['action_id']}-btn" 

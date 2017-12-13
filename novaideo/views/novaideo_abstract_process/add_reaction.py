@@ -15,7 +15,7 @@ from pontus.form import FormView
 from pontus.schema import select, Schema
 
 from novaideo.content.processes.novaideo_abstract_process.behaviors import (
-    AddReaction)
+    AddReaction, UpdateReaction)
 from novaideo.core import Emojiable
 from novaideo import _
 from novaideo.widget import EmojiInputWidget
@@ -67,5 +67,30 @@ class AddReactionEmojiableView(FormView):
         self.schema.widget = formwidget
 
 
+@view_config(
+    name='updatereaction',
+    context=Emojiable,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class UpdateReactionView(BasicView):
+    title = _('Update reaction')
+    name = 'updatereaction'
+    behaviors = [UpdateReaction]
+    viewid = 'updatereaction'
+
+    def update(self):
+        separator = str(self.params('separator') or ':')
+        reaction = self.params('reaction')
+        reaction = '{separator}{reaction}{separator}'.format(
+            separator=separator, reaction=reaction) if reaction else None
+        results = self.execute(
+            {'reaction': reaction})
+        return results[0]
+
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {AddReaction: AddReactionEmojiableView})
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {UpdateReaction: UpdateReactionView})

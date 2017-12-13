@@ -23,7 +23,8 @@ from .behaviors import (
     DeselectEntity,
     AddDeadLine,
     EditDeadLine,
-    AddReaction
+    AddReaction,
+    UpdateReaction
     )
 from novaideo import _
 
@@ -51,7 +52,11 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                                     groups=[]),
                 addreaction = ActivityDefinition(contexts=[AddReaction],
                                        description=_("Add reactions"),
-                                       title=_("Add reaction"),
+                                       title=_("Add a reaction"),
+                                       groups=[]),
+                updatereaction = ActivityDefinition(contexts=[UpdateReaction],
+                                       description=_("Update reactions"),
+                                       title=_("Update the reaction"),
                                        groups=[]),
                 adddeadline = ActivityDefinition(contexts=[AddDeadLine],
                                        description=_("Add the next deadline"),
@@ -70,6 +75,8 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('select', 'eg'),
                 TransitionDefinition('pg', 'addreaction'),
                 TransitionDefinition('addreaction', 'eg'),
+                TransitionDefinition('pg', 'updatereaction'),
+                TransitionDefinition('updatereaction', 'eg'),
                 TransitionDefinition('pg', 'deselect'),
                 TransitionDefinition('deselect', 'eg'),
                 TransitionDefinition('pg', 'adddeadline'),

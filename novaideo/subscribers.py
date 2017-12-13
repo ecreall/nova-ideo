@@ -7,6 +7,7 @@
 import os
 import transaction
 from ZODB.POSException import ConflictError
+from persistent.list import PersistentList
 
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
@@ -41,6 +42,31 @@ from novaideo.mail.fr import FIRST_INVITATION, FIRST_INVITATION_SMS
 
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
+
+
+def ideation_conf(root):
+    root.content_to_manage = PersistentList(['question'])
+    root.content_to_support = PersistentList(['idea'])
+    root.content_to_examine = PersistentList(['idea'])
+
+
+def cocreation_conf(root):
+    root.content_to_manage = PersistentList(['question', 'proposal'])
+    root.content_to_support = PersistentList(['idea', 'proposal'])
+    root.content_to_examine = PersistentList(['proposal'])
+
+
+def coresolution_conf(root):
+    root.content_to_manage = PersistentList(['challenge', 'question', 'proposal'])
+    root.content_to_support = PersistentList(['idea', 'proposal'])
+    root.content_to_examine = PersistentList(['proposal'])
+
+
+CONFIGURATIONS = {
+    'ideation': ideation_conf,
+    'cocreation': cocreation_conf,
+    'coresolution': coresolution_conf,
+}
 
 
 def _invite_first_user(root, request, title, first_name, last_name, email, phone):
@@ -97,7 +123,7 @@ def _invite_first_user(root, request, title, first_name, last_name, email, phone
 
 @subscriber(RootAdded)
 def mysubscriber(event):
-    """Add the novaideo catalog when the root is added."""
+    """Add the novaideo conf when the root is added."""
     root = event.object
     registry = get_current_registry()
     settings = registry.settings
@@ -109,6 +135,9 @@ def mysubscriber(event):
     catalogs.add_catalog('novaideo')
     site_type = os.getenv('INITIAL_SITE_TYPE', 'public')
     root.only_for_members = site_type.lower() != 'public'
+    site_conf = CONFIGURATIONS.get(
+        os.getenv('INITIAL_SITE_CONF', 'ideation'), ideation_conf)
+    site_conf(root)
     #invit initial user
     root.first_invitation_to_add = True
     root.locale = settings.get('pyramid.default_locale_name')
