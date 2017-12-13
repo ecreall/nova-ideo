@@ -7,6 +7,7 @@
 import os
 import transaction
 from ZODB.POSException import ConflictError
+from persistent.list import PersistentList
 
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
