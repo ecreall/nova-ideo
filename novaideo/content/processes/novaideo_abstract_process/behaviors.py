@@ -21,6 +21,7 @@ from novaideo.content.interface import (
     INovaIdeoApplication, ISearchableEntity,
     IEmojiable)
 from novaideo import _, nothing
+from novaideo.utilities.util import update_ajax_action
 
 
 def select_roles_validation(process, context):
@@ -176,6 +177,14 @@ class AddReaction(InfiniteCardinality):
     state_validation = addr_state_validation
     processsecurity_validation = addr_processsecurity_validation
 
+    def get_update_action(self, context, request):
+        actions_data = update_ajax_action(
+            context, request, self.process_id, 'updatereaction')
+        if actions_data and actions_data[0]:
+            return actions_data[0][0]
+
+        return None
+
     def start(self, context, request, appstruct, **kw):
         reaction = appstruct.get('reaction', None)
         context.add_emoji(reaction, get_current(request))
@@ -183,6 +192,18 @@ class AddReaction(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+class UpdateReaction(AddReaction):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'controled-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
+    style_picto = 'none'
+    template = None
+
+    def get_title(self, selected):
+        return selected and _('Remove my reaction') or _('Add a reaction')
 
 
 def deadline_roles_validation(process, context):
