@@ -4,8 +4,11 @@
 # licence: AGPL
 # author: Amen Souissi
 
-from pyramid.threadlocal import get_current_request
+from pyramid.threadlocal import get_current_request, get_current_registry
 from pyramid.traversal import ResourceTreeTraverser, find_resource
+from pyramid.i18n import make_localizer
+from pyramid.interfaces import ITranslationDirectories
+
 
 from twisted.internet import reactor
 
@@ -28,6 +31,12 @@ from novaideo import (
     analytics_default_content_types,
     )
 from novaideo.layout import GlobalLayout
+
+  
+def get_localizer_for_locale_name(locale_name):
+    registry = get_current_registry()
+    tdirs = registry.queryUtility(ITranslationDirectories, default=[])
+    return make_localizer(locale_name, tdirs)
 
 
 def add_request_method(callable, request):

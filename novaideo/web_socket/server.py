@@ -27,6 +27,7 @@
 import sys
 import json
 import transaction
+from  pyramid.i18n import make_localizer
 
 from twisted.python import log
 from twisted.internet import reactor
@@ -44,7 +45,7 @@ from autobahn.twisted.websocket import WebSocketClientFactory, \
 
 from dace.util import get_obj
 
-from .util import get_request
+from .util import get_request, get_localizer_for_locale_name
 from novaideo.views.idea_management.comment_idea import (
     CommentsView)
 from novaideo.views.user_management.discuss import (
@@ -223,6 +224,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                     body = ''
                     if channel_opened:
                         rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
+                        request.localizer = get_localizer_for_locale_name(user.user_locale)
                         request.user = user
                         result_view = rendrer(context, request)
                         result_view.ignore_unread = channel_oid in opened
@@ -259,6 +261,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                 hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
+                    request.localizer = get_localizer_for_locale_name(user.user_locale)
                     rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
                     request.user = user
                     result_view = rendrer(context, request)
@@ -302,6 +305,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                     if channel_opened:
                         rendrer = DiscussCommentsView if channel.is_discuss else CommentsView
                         request.user = user
+                        request.localizer = get_localizer_for_locale_name(user.user_locale)
                         result_view = rendrer(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
