@@ -27,7 +27,6 @@
 import sys
 import json
 import transaction
-from  pyramid.i18n import make_localizer
 
 from twisted.python import log
 from twisted.internet import reactor
