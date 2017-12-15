@@ -65,7 +65,7 @@ class IdeaAdapter(Adapter):
         self.context.state_befor_censor = PersistentList(
             list(self.context.state))
         self.context.state = PersistentList(['censored'])
-        context.remove_tokens(True)
+        self.context.remove_tokens(True)
         members = [self.context.author]
         alert(
             'internal', [request.root], members,
