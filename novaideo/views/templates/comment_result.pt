@@ -50,13 +50,13 @@
     <div class="listing-card-content">
       <div class="comment-content"> 
         <div class="row object-row-content" tal:define="files_slider layout.render_files_slider(id, attached_files);">
-          <div class="col col-xs-12 ${files_slider and 'col-md-8' or 'col-md-12'}">
+          <div class="col col-xs-12 ${files_slider and 'col-md-7' or 'col-md-12'}">
             <div class="object-text">
               <div>${structure:getattr(object, 'formatted_comment', object.comment)}</div>
               <div tal:condition="getattr(object, 'edited', False)" i18n:translate="" style="color: gray">(edited)</div>
             </div>
           </div>
-          <div class="col col-xs-12 col-md-4" tal:condition="files_slider">
+          <div class="col col-xs-12 col-md-5" tal:condition="files_slider">
             <div tal:replace="structure files_slider"/>
           </div>
           <div tal:condition="object.urls" class="col-xs-12 col-md-12">

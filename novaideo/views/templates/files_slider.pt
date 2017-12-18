@@ -1,42 +1,60 @@
-<div class="file-slider" tal:condition="files_data">
-  <div id="filecarousel-${id}" data-ride="" data-interval="3000" class="carousel slide"> 
-    <div role="listbox" class="carousel-inner">
-      <div tal:repeat="(i, source) enumerate(files_data)" class="item ${i==0 and 'active'}">
-        <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
-          <div 
-            class="img-content"
-            data-holder-rendered="true"
-            style="
-              background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover">
-          </div>
-        </a>
-        <object tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
-          <param name="movie" value="${source['content']}">
-          <param name="quality" value="high">
-          <embed src="${source['content']}" quality="high" class="img-content" 
-            type="application/x-shockwave-flash" 
-                      pluginspage="http://www.macromedia.com/go/getflashplayer">
-          </embed>
-        </object>
+<div tal:condition="files_data">
+  <div class="images-container"
+       tal:define="
+                 nb_imgs 3;
+                 first_item files_data[0];
+                 other_items files_data[1:nb_imgs];
+                 other_hidden len(files_data[nb_imgs:])"
+       data-files="${json.dumps(files_data)}"
+       data-id="${id}">
+    <div class="items-container">
+      <div
+        class="first-item-container"
+        style="${not other_items and 'width: 100%'}">
+        <div class="first-item">
+          <a tal:condition="first_item['type'] == 'img'" href="${first_item['content']}" target="_blank">
+            <div 
+              class="image-item img-content"
+              data-holder-rendered="true"
+              data-index="0"
+              style="
+                background: rgba(0, 0, 0, 0) url(${first_item['content']}) no-repeat scroll center center / cover">
+            </div>
+          </a>
+          <object class="image-item" tal:condition="first_item['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+            <param name="movie" value="${first_item['content']}">
+            <param name="quality" value="high">
+            <embed src="${first_item['content']}" quality="high" class="img-content" 
+              type="application/x-shockwave-flash" 
+                        pluginspage="http://www.macromedia.com/go/getflashplayer">
+            </embed>
+          </object>
+        </div>
+      </div>
+      <div tal:condition="other_items" class="other-items-container">
+        <div tal:repeat="(index, source) enumerate(other_items)" class="other-item">
+          <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
+            <div 
+              class="image-item img-content"
+              data-holder-rendered="true"
+              data-index="${index+1}"
+              style="
+                background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover">
+            </div>
+          </a>
+          <object class="image-item" tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+            <param name="movie" value="${source['content']}">
+            <param name="quality" value="high">
+            <embed src="${source['content']}" quality="high" class="img-content" 
+              type="application/x-shockwave-flash" 
+                        pluginspage="http://www.macromedia.com/go/getflashplayer">
+            </embed>
+          </object>
+        </div>
+        <div tal:condition="other_hidden" data-index="${nb_imgs}" class="image-item plus-item-container">
+          <span class="plus-item">+${other_hidden}</span>
+        </div>
       </div>
     </div>
-    <div tal:omit-tag="" tal:condition="len(files_data)>1">
-      <a class="left carousel-control" href="#filecarousel-${id}" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#filecarousel-${id}" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
   </div>
-  <script tal:condition="deferred">
-    deform.addCallback(
-         'filecarousel-${id}',
-         function(oid) {
-           $('#' + oid).carousel();
-         }
-       );
-  </script>
 </div>
