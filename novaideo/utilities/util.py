@@ -1422,7 +1422,8 @@ def render_files_slider(slider_id, files, request, deferred=False, template=FILE
         {
             'files_data': get_files_data(files),
             'id': slider_id,
-            'deferred': deferred
+            'deferred': deferred,
+            'json': json
         },
         request)
 

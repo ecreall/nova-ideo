@@ -447,43 +447,36 @@ function rebuild_scrolls(scrolls) {
 
 function display_carousel() {
   var $this = $(this)
-  var slider = $($this.parents(".file-slider").first())
-  var clone = slider.clone()
-  $(clone.find("div.img-content")).each(function() {
-    var $this = $(this)
-    var imgurl = $($this.parents("a").first()).attr("href")
-    $this.replaceWith('<img class="img-content" src="' + imgurl + '"/>')
-  })
-
-  clone.addClass("full")
-  var car_id = $(clone.find(".carousel.slide")).attr("id")
-  var new_id = car_id + "-full"
-  var controls = clone.find('a.carousel-control[href="#' + car_id + '"]')
-  $(clone.find(".carousel.slide")).attr("id", new_id)
-  controls.attr("href", "#" + new_id)
-  var modal_container = $("#carousel-img-modal-container")
-  $(modal_container.find(".modal-body")).html(clone)
-  var title = get_comment_author_bloc($this)
-  if (title.length == 0) {
-    title = $(
-      $this
-        .parents(".view-item, .content-view")
-        .first()
-        .find(".view-item-title, .content-title")
-        .first()
-    )
-    title = get_component_title({
-      title: title.data("title"),
-      img: title.data("img"),
-      icon: title.data("icon")
+  var index = $this.data("index")
+  var container = $this.parents(".images-container").first()
+  var files = container.data("files")
+  var sliderId = container.data("id")
+  if (files.length > 0) {
+    var slider = renderFilesSlider(files, sliderId, index)
+    var modal_container = $("#carousel-img-modal-container")
+    $(modal_container.find(".modal-body")).html(slider)
+    var title = get_comment_author_bloc($this)
+    if (title.length == 0) {
+      title = $(
+        $this
+          .parents(".view-item, .content-view")
+          .first()
+          .find(".view-item-title, .content-title")
+          .first()
+      )
+      title = get_component_title({
+        title: title.data("title"),
+        img: title.data("img"),
+        icon: title.data("icon")
+      })
+    }
+    $(modal_container.find(".modal-title")).html(title)
+    modal_container.css("opacity", "1")
+    modal_container.modal("show")
+    $("#" + sliderId).carousel({
+      interval: false
     })
   }
-  $(modal_container.find(".modal-title")).html(title)
-  modal_container.css("opacity", "1")
-  modal_container.modal("show")
-  $("#" + new_id).carousel({
-    interval: false
-  })
   return false
 }
 
@@ -1000,11 +993,7 @@ $(document).on("click", "a.channel-action", function() {
   alert_user_unread_messages()
 })
 
-$(document).on(
-  "click",
-  ".file-slider:not(.full) .carousel-inner a",
-  display_carousel
-)
+$(document).on("click", ".images-container .image-item", display_carousel)
 
 $(document).on("click", ".alert-messages-scroll", scroll_to_unread_message)
 
