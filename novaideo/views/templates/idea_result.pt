@@ -121,10 +121,10 @@
           <div tal:replace="structure primary_menu_body"/>
         </div>
         <div class="row object-row-content">
-          <div class="col col-xs-12 ${files_slider and 'col-md-8' or 'col-md-12'}">
+          <div class="col col-xs-12 ${files_slider and 'col-md-7' or 'col-md-12'}">
             <div class="object-text">${structure:object.presentation_text(500)}</div>
           </div>
-          <div class="col col-xs-12 col-md-4" tal:condition="files_slider">
+          <div class="col col-xs-12 col-md-5" tal:condition="files_slider">
             <div tal:replace="structure files_slider"/>
           </div>
         </div>
