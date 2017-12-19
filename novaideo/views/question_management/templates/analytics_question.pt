@@ -1,4 +1,4 @@
-<div class="container-fluid analytics-container" style="max-width: 50%;"
+<div class="container-fluid analytics-container" style="max-width: 300px;"
      tal:define="
         oid object.__oid__;
         options getattr(object, 'options', []);">
