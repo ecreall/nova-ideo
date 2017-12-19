@@ -17,10 +17,12 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_layout',
     'pyramid_mailer',
+    'pyramid_retry',
     'pyramid_tm',
     'requests',
     'deform',
     'substanced',
+    'mock', # test dependency of substanced, needed because of venusian scan
     'waitress',
     'gunicorn',
     'plone.event',
