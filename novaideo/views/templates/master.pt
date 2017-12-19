@@ -98,7 +98,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}?v=5"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=30"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=31"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/files_slider.js')}"
           type="text/javascript"></script>
@@ -180,7 +180,7 @@
     contextual_help panel('contextual_help')"
     data-spinner="${request.static_url('novaideo:static/images/progress_bar.gif')}"
     data-api_url="${request.resource_url(request.root, 'novaideoapi')}"
-    data-emoji_url="${request.static_url('novaideo:static/emoji/images/sheet_apple_64.png')}"
+    data-emoji_url="${request.static_url('novaideo:static/emoji/images/sheet_apple_32.png')}"
     data-view_name="${request.view_name}">
     
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
