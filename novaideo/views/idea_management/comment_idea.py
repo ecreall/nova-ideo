@@ -35,7 +35,7 @@ from novaideo.views.core import ActionAnonymousView, update_anonymous_schemanode
 
 COMMENT_LEVEL = 2
 
-BATCH_DEFAULT_SIZE = 15
+BATCH_DEFAULT_SIZE = 12
 
 
 class CommentsView(BasicView):
