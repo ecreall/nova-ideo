@@ -1094,6 +1094,9 @@ def main(global_config, **settings):
     config.add_static_view('novaideostatic',
                            'novaideo:static',
                            cache_max_age=86400)
+    config.add_static_view('novaideostatic-react',
+                           'novaideo:static-react',
+                           cache_max_age=86400)
     # config.add_subscriber(start_ioloop, IDatabaseOpenedWithRoot)
     config.set_locale_negotiator(my_locale_negotiator)
     settings = config.registry.settings
