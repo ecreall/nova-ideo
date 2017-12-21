@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FontIcon from 'material-ui/FontIcon';
+import Icon from 'material-ui/Icon';
 
 const styles = {
   tokenContainer: {
@@ -16,13 +16,15 @@ const styles = {
     color: '#4eaf4e',
     textShadowColor: 'gray',
     textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2
+    textShadowRadius: 2,
+    fontSize: 30
   },
   tokenBottom: {
     color: '#ef6e18',
     textShadowColor: 'gray',
     textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2
+    textShadowRadius: 2,
+    fontSize: 30
   },
   tokenNbBottom: {
     color: '#ef6e18',
@@ -36,7 +38,7 @@ const styles = {
 
 const inactiveColor = '#a9a9a9';
 
-const Evaluation = ({ icon, text, action, onPress, onLongPress, active }) => {
+const Evaluation = ({ icon, text, action, onPress, active }) => {
   if (active) {
     return (
       <div style={styles.tokenContainer}>
@@ -44,12 +46,8 @@ const Evaluation = ({ icon, text, action, onPress, onLongPress, active }) => {
           onPress={() => {
             return onPress.top(action.top);
           }}
-          onLongPress={() => {
-            return onLongPress.top(action.top);
-          }}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         >
-          <FontIcon style={styles.tokenTop} className={icon.top} size={35} />
+          <Icon style={styles.tokenTop} className={icon.top} size={35} />
         </div>
         <span style={styles.tokenNbTop}>
           {text.top}
@@ -61,26 +59,22 @@ const Evaluation = ({ icon, text, action, onPress, onLongPress, active }) => {
           onPress={() => {
             return onPress.down(action.down);
           }}
-          onLongPress={() => {
-            return onLongPress.down(action.down);
-          }}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         >
-          <FontIcon style={styles.tokenBottom} className={icon.down} size={35} />
+          <Icon style={styles.tokenBottom} className={icon.down} />
         </div>
       </div>
     );
   }
   return (
     <div style={styles.tokenContainer}>
-      <FontIcon style={[styles.tokenTop, { color: inactiveColor }]} className={icon.top} size={30} />
-      <span style={[styles.tokenNbTop, { color: inactiveColor }]}>
+      <Icon style={Object.assign({}, styles.tokenTop, { color: inactiveColor })} className={icon.top} />
+      <span style={Object.assign({}, styles.tokenNbTop, { color: inactiveColor })}>
         {text.top}
       </span>
-      <span style={[styles.tokenNbBottom, { color: inactiveColor }]}>
+      <span style={Object.assign({}, styles.tokenNbBottom, { color: inactiveColor })}>
         {text.down}
       </span>
-      <FontIcon style={[styles.tokenBottom, { color: inactiveColor }]} className={icon.down} size={30} />
+      <Icon style={Object.assign({}, styles.tokenBottom, { color: inactiveColor })} className={icon.down} />
     </div>
   );
 };

@@ -48,3 +48,8 @@ export const ICONS_MAPPING = {
   'glyphicon glyphicon-star-empty': 'mdi-set mdi-star-outline',
   'glyphicon glyphicon-star': 'mdi-set mdi-star'
 };
+
+export const STYLE_CONST = {
+  drawerDuration: '50ms',
+  drawerChannelsWidth: 220
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
+import Icon from 'material-ui/Icon';
 
 const styles = {
   circleContainer: {
@@ -56,18 +56,18 @@ const Examination = ({ value, message }) => {
       hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
     >
       <div>
-        <FontIcon
-          style={[styles.circle, value === 'top' ? styles.circleTop : {}]}
+        <Icon
+          style={Object.assign({}, styles.circle, value === 'top' ? styles.circleTop : {})}
           className="mdi-set mdi-checkbox-blank-circle"
           size={15}
         />
-        <FontIcon
-          style={[styles.circle, value === 'middle' ? styles.circleMiddle : {}]}
+        <Icon
+          style={Object.assign({}, styles.circle, value === 'middle' ? styles.circleMiddle : {})}
           className="mdi-set mdi-checkbox-blank-circle"
           size={15}
         />
-        <FontIcon
-          style={[styles.circle, value === 'bottom' ? styles.circleBottom : {}]}
+        <Icon
+          style={Object.assign({}, styles.circle, value === 'bottom' ? styles.circleBottom : {})}
           className="mdi-set mdi-checkbox-blank-circle"
           size={15}
         />

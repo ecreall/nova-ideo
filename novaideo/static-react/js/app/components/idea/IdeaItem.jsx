@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
+import Grid from 'material-ui/Grid';
 import { Translate } from 'react-redux-i18n';
 
 import Avatar from 'material-ui/Avatar';
@@ -266,15 +267,16 @@ export class DumbIdeaItem extends React.Component {
                 <IconWithText name="mdi-set mdi-lightbulb" text={node.title} iconSize={17} />
               </div>
               <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
-              <div style={styles.textContainer}>
-                <div style={styles.contentText}>
+
+              <Grid container item>
+                <Grid item xs={12} sm={images.length > 0 ? 7 : 12}>
                   {node.presentationText}
-                </div>
+                </Grid>
                 {images.length > 0 &&
-                  <div style={styles.imagesContainer}>
+                  <Grid item xs={12} sm={5}>
                     <ImagesPreview navigation={globalProps.navigation} images={images} />
-                  </div>}
-              </div>
+                  </Grid>}
+              </Grid>
             </div>
             <div style={styles.bodyFooter}>
               {communicationActions.map((action, key) => {

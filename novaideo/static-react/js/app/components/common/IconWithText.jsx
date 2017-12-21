@@ -1,5 +1,5 @@
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
+import Icon from 'material-ui/Icon';
 
 const styles = {
   containerStyle: {
@@ -20,7 +20,7 @@ const styles = {
 const IconWithText = ({ name, text, containerStyle, styleText, styleIcon, iconSize, iconColor, numberOfLines }) => {
   return (
     <div style={containerStyle || styles.containerStyle}>
-      <FontIcon style={styleIcon || styles.styleIcon} className={name} size={iconSize} color={iconColor} />
+      <Icon style={styleIcon || styles.styleIcon} className={name} size={iconSize} color={iconColor} />
       <span style={styleText || styles.styleText} numberOfLines={numberOfLines}>
         {text}
       </span>

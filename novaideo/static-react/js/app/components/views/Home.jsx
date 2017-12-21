@@ -1,50 +1,56 @@
 import React from 'react';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
+import AppBar from 'material-ui/AppBar';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 import IdeasList from '../idea/IdeasList';
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400
-  },
-  slide: {
-    padding: 10
-  }
-};
+function TabContainer({ children }) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      slideIndex: 0
-    };
-  }
+  state = {
+    value: 1
+  };
 
-  handleChange = (value) => {
-    this.setState({
-      slideIndex: value
-    });
+  handleChange = (event, value) => {
+    this.setState({ value: value });
+  };
+
+  handleChangeIndex = (index) => {
+    this.setState({ value: index });
   };
 
   render() {
     return (
-      <div className="home">
-        <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
-          <Tab label="Ideas" value={0} />
-          <Tab label="Questions" value={1} />
-          <Tab label="Proposals" value={2} />
-        </Tabs>
-        <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange}>
-          <div>
-            <IdeasList />
-          </div>
-          <div style={styles.slide}>questions</div>
-          <div style={styles.slide}>proposals</div>
+      <div>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            fullWidth
+            centered
+          >
+            <Tab label="Questions" />
+            <Tab label="Ideas" />
+            <Tab label="Proposals" />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
+          <TabContainer>Questions</TabContainer>
+          <TabContainer>
+            {this.state.value === 1 && <IdeasList />}
+          </TabContainer>
+          <TabContainer>Proposals</TabContainer>
         </SwipeableViews>
       </div>
     );

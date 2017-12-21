@@ -9,14 +9,13 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var glob = require('glob');
 var _ = require('lodash');
 
-
 var general_entries = {
     bundle: ['./js/app/index'],
 };
 
 module.exports = {
     devtool: '#cheap-module-source-map',  // http://webpack.github.io/docs/configuration.html#devtool
-    entry: general_entries,
+    entry:general_entries,
     output: {
         path: path.join(__dirname, 'build'),
         filename: '[name].js',

@@ -1,5 +1,5 @@
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
+import Icon from 'material-ui/Icon';
 
 const styles = {
   icon: {
@@ -27,7 +27,7 @@ const Keywords = ({ keywords }) => {
 
   return (
     <div style={styles.keywordsContainer}>
-      <FontIcon style={styles.icon} name="mdi-set mdi-tag-multiple" size={12} color={'#666666ff'} />
+      <Icon style={styles.icon} name="mdi-set mdi-tag-multiple" size={12} color={'#666666ff'} />
       {keywords.map((k, index) => {
         return (
           <div
