@@ -1,21 +1,19 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import InboxIcon from 'material-ui-icons/Inbox';
+import { ListItem, ListItemText } from 'material-ui/List';
 
-import FullScreenDialog from './ChannelDialog';
+import PrivateChannels from './PrivateChannels';
+import PublicChannels from './PublicChannels';
 
-const styles = (theme) => {
-  return {
-    icon: { color: theme.palette.primary['50'] },
-    text: {
-      color: theme.palette.primary['50']
-    },
-    list: {
-      width: 220
-    }
-  };
+const styles = {
+  list: {
+    width: 220
+  },
+  channelBlokTitle: {
+    color: 'white',
+    fontSize: 14
+  }
 };
 
 class Channels extends React.Component {
@@ -23,17 +21,15 @@ class Channels extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.list}>
-        <List>
-          <ListItem button>
-            <ListItemIcon>
-              <InboxIcon className={classes.icon} />
-            </ListItemIcon>
-            <ListItemText className={{ root: classes.text }} primary="Inbox" />
-          </ListItem>
-        </List>
-        <Divider />
-        <FullScreenDialog />
-        <FullScreenDialog />
+        <ListItem>
+          <ListItemText classes={{ text: classes.channelBlokTitle }} primary="Channels" />
+        </ListItem>
+        <PublicChannels />
+        <Divider light />
+        <ListItem>
+          <ListItemText classes={{ text: classes.channelBlokTitle }} primary="Private" />
+        </ListItem>
+        <PrivateChannels />
       </div>
     );
   }

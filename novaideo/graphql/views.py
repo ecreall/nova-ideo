@@ -42,7 +42,8 @@ def auth_user(token, request):
 def graphqlview(context, request):  #pylint: disable=W0613
     token = request.headers.get('X-Api-Key', '')
     is_private = getattr(request.root, 'only_for_members', False)
-    if is_private and not auth_user(token, request):
+    auth = auth_user(token, request)
+    if is_private and not auth:
         response = HTTPUnauthorized()
         response.content_type = 'application/json'
         return response

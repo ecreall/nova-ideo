@@ -6,7 +6,11 @@ import getAllAdapters from '../components/vendor/utils';
 import getTheme from '../theme';
 import * as constants from '../constants';
 
-export const user = (state = { token: undefined, loadingState: 'completed' }, action) => {
+const initialUserTest = {
+  token: '0bfa81ae040541aeb65df6d8a710631e',
+  loadingState: 'completed'
+};
+export const user = (state = initialUserTest, action) => {
   switch (action.type) {
   case `${constants.LOGIN}_FULFILLED`: {
     if (action.payload && action.payload.status) {
@@ -274,6 +278,29 @@ export const globalProps = (state = {}, action) => {
   }
 };
 
+export const apps = (state = { chatApp: { drawer: false, open: false, channel: undefined } }, action) => {
+  switch (action.type) {
+  case constants.UPDATE_APP: {
+    const app = action.app;
+    let currentEntry = state[app];
+    if (!currentEntry) {
+      currentEntry = {
+        ...action.data
+      };
+    }
+    const newEntry = {
+      ...currentEntry,
+      ...action.data
+    };
+    const newStateEntry = {};
+    newStateEntry[app] = newEntry;
+    return update(state, { $merge: newStateEntry });
+  }
+  default:
+    return state;
+  }
+};
+
 export default combineReducers({
   i18n: i18nReducer,
   user: user,
@@ -281,5 +308,6 @@ export default combineReducers({
   network: network,
   adapters: adapters,
   globalProps: globalProps,
-  history: history
+  history: history,
+  apps: apps
 });

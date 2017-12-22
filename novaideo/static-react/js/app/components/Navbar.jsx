@@ -7,8 +7,11 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChatIcon from 'material-ui-icons/Chat';
+import SpeakerNotesOff from 'material-ui-icons/SpeakerNotesOff';
 import Drawer from 'material-ui/Drawer';
 import { connect } from 'react-redux';
+
+import { updateApp } from '../actions/actions';
 import AppMenu from './AppMenu';
 
 const styles = {
@@ -38,7 +41,7 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { classes, className, toggleChannels, channelsOpened } = this.props;
+    const { classes, className, toggleChannelsDrawer, channelsDrawer } = this.props;
     return (
       <div>
         <AppBar className={className} color="inherit">
@@ -55,9 +58,11 @@ class NavBar extends React.Component {
               className={classes.menuButton}
               color="primary"
               aria-label="Menu"
-              onClick={toggleChannels(!channelsOpened)}
+              onClick={() => {
+                return toggleChannelsDrawer('chatApp', { drawer: !channelsDrawer });
+              }}
             >
-              <ChatIcon />
+              {channelsDrawer ? <SpeakerNotesOff /> : <ChatIcon />}
             </IconButton>
             <Typography type="title" color="primary" className={classes.flex}>
               Nova-Ideo
@@ -80,8 +85,14 @@ class NavBar extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {};
+export const mapDispatchToProps = {
+  toggleChannelsDrawer: updateApp
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(NavBar));
+export const mapStateToProps = (state) => {
+  return {
+    channelsDrawer: state.apps.chatApp.drawer
+  };
+};
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));

@@ -1,95 +1,68 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
 
 import ChannelNavbar from './channels/Navbar';
-import Footer from './Footer';
-import { STYLE_CONST } from '../constants';
+import App from './common/App';
+import { commentsQuery } from '../graphql/queries';
+import EntitiesList from './common/EntitiesList';
 
-const styles = (theme) => {
-  return {
-    appBar: {
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: STYLE_CONST.drawerDuration
-      })
-    },
-    appBarShift: {
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${STYLE_CONST.drawerChannelsWidth}px)`
-      },
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: STYLE_CONST.drawerDuration
-      })
-    },
-    'appBarShift-left': {
-      [theme.breakpoints.up('md')]: {
-        marginLeft: STYLE_CONST.drawerChannelsWidth
-      }
-    },
-    main: {
-      width: '100%',
-      flexGrow: 1,
-      paddingTop: 8,
-      marginLeft: 0,
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: STYLE_CONST.drawerDuration
-      }),
-      marginTop: 56,
-      [theme.breakpoints.up('sm')]: {
-        content: {
-          marginTop: 64
-        }
-      }
-    },
-    app: {
-      width: '100%',
-      display: 'none'
-    },
-    appShift: {
-      display: 'block',
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: STYLE_CONST.drawerDuration
-      })
-    },
-    'appShift-left': {
-      [theme.breakpoints.up('md')]: {
-        marginLeft: STYLE_CONST.drawerChannelsWidth
-      }
-    }
-  };
-};
+const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
-class ChatApp extends React.Component {
+export class DumbChatApp extends React.Component {
   render() {
-    const { classes, channelsOpened, toggleChannels } = this.props;
+    const { data, active, left } = this.props;
+    const channelData = data.node ? data.node : null;
     return (
-      <div
-        className={classNames(classes.app, {
-          [classes.appShift]: channelsOpened,
-          [classes['appShift-left']]: channelsOpened
-        })}
-      >
-        <ChannelNavbar
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: channelsOpened,
-            [classes['appBarShift-left']]: channelsOpened
-          })}
-          channelsOpened={channelsOpened}
-          toggleChannels={toggleChannels}
+      <App active={active} left={left} Navbar={ChannelNavbar} data={{ channel: channelData }}>
+        <EntitiesList
+          data={data}
+          inverted
+          withoutSeparator
+          getEntities={(entities) => {
+            return entities.node ? entities.node.comments : undefined;
+          }}
+          noContentIcon="comment-outline"
+          noContentMessage={'noComment'}
+          offlineFilter={(entity, text) => {
+            return entity.node.text.toLowerCase().search(text) >= 0;
+          }}
+          ListItem={({ node }) => {
+            return (
+              <div>
+                {node.text}
+              </div>
+            );
+          }}
+          itemdata={{
+            channel: channelData
+          }}
         />
-        <main className={classes.main}>
-          <div className="app-child">
-            {this.props.children}
-          </div>
-          <Footer />
-        </main>
-      </div>
+      </App>
     );
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ChatApp);
+export const mapStateToProps = (state) => {
+  return {
+    channel: state.apps.chatApp.channel
+  };
+};
+
+export default connect(mapStateToProps)(
+  graphql(commentsQuery, {
+    options: (props) => {
+      return {
+        notifyOnNetworkStatusChange: true,
+        variables: {
+          first: 15,
+          after: '',
+          filter: '',
+          id: props.channel,
+          processId: '',
+          nodeIds: commentsActions
+        }
+      };
+    }
+  })(DumbChatApp)
+);

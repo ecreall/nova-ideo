@@ -6,7 +6,9 @@ import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
 import classNames from 'classnames';
 import Hidden from 'material-ui/Hidden';
+import { connect } from 'react-redux';
 
+import { updateApp } from '../../actions/actions';
 import { STYLE_CONST } from '../../constants';
 import Channels from './Channels';
 
@@ -40,15 +42,20 @@ const styles = (theme) => {
   };
 };
 
-function ChannelsDrawerContent({ classes, theme, toggleChannels }) {
+function ChannelsDrawerContent({ classes, theme, toggleChannelsDrawer, channelOpen }) {
   return (
     <div>
       <div className={classes.drawerHeader}>
-        <IconButton onClick={toggleChannels(false)}>
-          {theme.direction === 'rtl'
-            ? <ChevronRightIcon className={classes.icon} />
-            : <ChevronLeftIcon className={classes.icon} />}
-        </IconButton>
+        {!channelOpen &&
+          <IconButton
+            onClick={() => {
+              return toggleChannelsDrawer('chatApp', { drawer: false });
+            }}
+          >
+            {theme.direction === 'rtl'
+              ? <ChevronRightIcon className={classes.icon} />
+              : <ChevronLeftIcon className={classes.icon} />}
+          </IconButton>}
       </div>
       <Channels />
     </div>
@@ -57,22 +64,29 @@ function ChannelsDrawerContent({ classes, theme, toggleChannels }) {
 
 class ChannelsDrawer extends React.Component {
   render() {
-    const { classes, theme, toggleChannels, channelsOpened } = this.props;
+    const { classes, theme, toggleChannelsDrawer, channelsDrawer, channelOpen } = this.props;
     return [
       <Hidden mdUp>
         <Drawer
           type="temporary"
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-          open={channelsOpened}
+          open={channelsDrawer}
           classes={{
             paper: classes.temporaryDrawerPaper
           }}
-          onClose={toggleChannels(false)}
+          onClose={() => {
+            return toggleChannelsDrawer('chatApp', { drawer: false });
+          }}
           ModalProps={{
             keepMounted: true // Better open performance on mobile.
           }}
         >
-          <ChannelsDrawerContent classes={classes} theme={theme} toggleChannels={toggleChannels} />
+          <ChannelsDrawerContent
+            classes={classes}
+            theme={theme}
+            channelOpen={channelOpen}
+            toggleChannelsDrawer={toggleChannelsDrawer}
+          />
         </Drawer>
       </Hidden>,
       <Hidden mdDown implementation="css">
@@ -80,17 +94,34 @@ class ChannelsDrawer extends React.Component {
           type="persistent"
           classes={{
             paper: classNames(classes.drawerPaper, {
-              [classes.drawerPaperOpen]: channelsOpened
+              [classes.drawerPaperOpen]: channelsDrawer
             })
           }}
-          open={channelsOpened}
-          onClose={toggleChannels(false)}
+          open={channelsDrawer}
+          onClose={() => {
+            return toggleChannelsDrawer('chatApp', { drawer: false });
+          }}
         >
-          <ChannelsDrawerContent classes={classes} theme={theme} toggleChannels={toggleChannels} />
+          <ChannelsDrawerContent
+            classes={classes}
+            theme={theme}
+            channelOpen={channelOpen}
+            toggleChannelsDrawer={toggleChannelsDrawer}
+          />
         </Drawer>
       </Hidden>
     ];
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ChannelsDrawer);
+export const mapDispatchToProps = {
+  toggleChannelsDrawer: updateApp
+};
+
+export const mapStateToProps = (state) => {
+  return {
+    channelsDrawer: state.apps.chatApp.drawer,
+    channelOpen: state.apps.chatApp.open
+  };
+};
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(ChannelsDrawer));

@@ -1,6 +1,6 @@
 import React from 'react';
 import grey from 'material-ui/colors/grey';
-import teal from 'material-ui/colors/teal';
+import { teal } from 'material-ui/colors';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import App from './app';

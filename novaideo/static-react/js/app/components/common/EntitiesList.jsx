@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Loader from './Loader';
+import { setURLState } from '../../actions/actions';
 
 export class DumbEntitiesList extends React.Component {
   constructor(props) {
@@ -128,6 +129,6 @@ export const mapStateToProps = (state) => {
   return { network: state.network, filter: state.search.text };
 };
 
-export const mapDispatchToProps = {};
+export const mapDispatchToProps = { setURLState: setURLState };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DumbEntitiesList);

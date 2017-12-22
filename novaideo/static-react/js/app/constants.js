@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable import/prefer-default-export, import/no-extraneous-dependencies */
 
+export const UPDATE_APP = 'UPDATE_APP';
+
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';
 
 export const PRIVACY_POLICY_URL_EN = 'https://www.iubenda.com/privacy-policy/8216928';

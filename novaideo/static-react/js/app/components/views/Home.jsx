@@ -1,5 +1,4 @@
 import React from 'react';
-import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
@@ -29,6 +28,7 @@ class Home extends React.Component {
   };
 
   render() {
+    const value = this.state.value;
     return (
       <div>
         <AppBar position="static" color="default">
@@ -45,13 +45,12 @@ class Home extends React.Component {
             <Tab label="Proposals" />
           </Tabs>
         </AppBar>
-        <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
-          <TabContainer>Questions</TabContainer>
+        {value === 0 && <TabContainer>Questions</TabContainer>}
+        {value === 1 &&
           <TabContainer>
-            {this.state.value === 1 && <IdeasList />}
-          </TabContainer>
-          <TabContainer>Proposals</TabContainer>
-        </SwipeableViews>
+            <IdeasList />
+          </TabContainer>}
+        {value === 2 && <TabContainer>Proposals</TabContainer>}
       </div>
     );
   }

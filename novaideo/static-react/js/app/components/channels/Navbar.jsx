@@ -2,9 +2,12 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
 import { connect } from 'react-redux';
+
+import { updateApp } from '../../actions/actions';
 
 const styles = {
   root: {
@@ -21,16 +24,22 @@ const styles = {
 
 class NavBar extends React.Component {
   render() {
-    const { classes, className, toggleChannels, channelsOpened } = this.props;
+    const { data, classes, className, updateChatApp } = this.props;
+    const channel = data.channel;
     return (
       <div>
         <AppBar className={className} color="inherit">
           <Toolbar>
+            <Typography type="title" color="inherit" className={classes.flex}>
+              {channel && channel.title}
+            </Typography>
             <IconButton
               className={classes.menuButton}
               color="primary"
               aria-label="Menu"
-              onClick={toggleChannels(!channelsOpened)}
+              onClick={() => {
+                return updateChatApp('chatApp', { open: false });
+              }}
             >
               <CloseIcon />
             </IconButton>
@@ -41,8 +50,13 @@ class NavBar extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {};
+export const mapDispatchToProps = {
+  updateChatApp: updateApp
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(NavBar));
+export const mapStateToProps = (state) => {
+  return {
+    channelsDrawer: state.apps.chatApp.drawer
+  };
+};
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));
