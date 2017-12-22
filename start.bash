@@ -70,8 +70,7 @@ test -f var/tmp_uploads/CACHEDIR.TAG || echo "Signature: 8a477f597d28d172789f068
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chmod 600 var/tmp/CACHEDIR.TAG var/tmp_uploads/CACHEDIR.TAG
 chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp var/tmp/CACHEDIR.TAG var/tmp_uploads/CACHEDIR.TAG
-sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
 
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
 
-exec ./start_all.bash production-heroku.ini $TIMEOUT
+exec ./start_all.bash production-heroku.ini $TIMEOUT $WORKERS
