@@ -1,9 +1,31 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
+import 'react-virtualized/styles.css';
+import { CircularProgress } from 'material-ui/Progress';
+import Measure from 'react-measure';
+import { Scrollbars } from 'react-custom-scrollbars';
 
-import Loader from './Loader';
 import { setURLState } from '../../actions/actions';
+import { ListItem as ListEntitiesItem } from './ListItem';
+
+function emptyContainer({ children }) {
+  return children;
+}
+
+function scrollbarsContainer({ children, onEndReached, scrollStyle }) {
+  return (
+    <Scrollbars
+      renderView={(props) => {
+        return <div {...props} style={{ ...props.style, ...scrollStyle }} />;
+      }}
+      style={{ height: '100%' }}
+      onScrollStop={onEndReached}
+    >
+      {children}
+    </Scrollbars>
+  );
+}
 
 export class DumbEntitiesList extends React.Component {
   constructor(props) {
@@ -12,9 +34,13 @@ export class DumbEntitiesList extends React.Component {
       entities: undefined,
       status: false
     };
-    this.onEndReached = this.onEndReached.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
-    this.setOfflineData = this.setOfflineData.bind(this);
+    this.height = 0;
+  }
+
+  componentDidMount() {
+    if (this.props.isGlobal) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   componentWillUpdate(nextProps) {
@@ -46,7 +72,26 @@ export class DumbEntitiesList extends React.Component {
     }
   }
 
-  onEndReached() {
+  componentWillUnmount() {
+    if (this.props.isGlobal) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+  }
+
+  handleScroll = () => {
+    if (this.props.isGlobal) {
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
+      const body = document.body;
+      const html = document.documentElement;
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+      const windowBottom = windowHeight + window.pageYOffset;
+      if (windowBottom >= docHeight) {
+        this.onEndReached();
+      }
+    }
+  };
+
+  onEndReached = () => {
     // The fetchMore method is used to load new data and add it
     // to the original query we used to populate the list
     const { data, network, getEntities } = this.props;
@@ -73,9 +118,9 @@ export class DumbEntitiesList extends React.Component {
           if (!network.url.error) this.props.setURLState(true, [e.message]);
         });
     }
-  }
+  };
 
-  onRefresh() {
+  onRefresh = () => {
     const { data, network } = this.props;
     data
       .refetch()
@@ -85,17 +130,17 @@ export class DumbEntitiesList extends React.Component {
       .catch((e) => {
         if (!network.url.error) this.props.setURLState(true, [e.message]);
       });
-  }
+  };
 
-  setOfflineData(entities, status, hasError, network) {
+  setOfflineData = (entities, status, hasError, network) => {
     this.offline = { entities: entities, status: status };
     if (hasError && !network.url.error) {
       this.props.setURLState(true, []);
     }
-  }
+  };
 
   render() {
-    const { data, ListItem, itemdata, getEntities } = this.props;
+    const { data, ListItem, itemdata, getEntities, style, isGlobal, itemHeightEstimation, scrollStyle } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
       // ApolloError error when the graphql server is down
@@ -103,24 +148,36 @@ export class DumbEntitiesList extends React.Component {
     }
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
-      return (
-        <div>
-          <Loader textHidden />
-        </div>
-      );
+      return <CircularProgress size={50} />;
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
+    const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
     return (
-      <div>
-        {entities && entities.length > 0
-          ? <div>
-            {entities.map((item) => {
-              return <ListItem itemdata={itemdata} node={item.node} />;
-            })}
-          </div>
-          : null}
-      </div>
+      <Measure
+        bounds
+        onResize={(contentRect) => {
+          this.height = contentRect.bounds.height;
+        }}
+      >
+        {({ measureRef }) => {
+          return (
+            <div style={style} ref={measureRef}>
+              <ScrollContainer onEndReached={this.onEndReached} scrollStyle={scrollStyle}>
+                {entities && entities.length > 0
+                  ? entities.map((item) => {
+                    return (
+                      <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
+                        <ListItem itemdata={itemdata} node={item.node} />
+                      </ListEntitiesItem>
+                    );
+                  })
+                  : null}
+              </ScrollContainer>
+            </div>
+          );
+        }}
+      </Measure>
     );
   }
 }

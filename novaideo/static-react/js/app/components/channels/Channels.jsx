@@ -8,7 +8,8 @@ import PublicChannels from './PublicChannels';
 
 const styles = {
   list: {
-    width: 220
+    width: 220,
+    height: '100%'
   },
   channelBlokTitle: {
     color: 'white',
@@ -24,12 +25,20 @@ class Channels extends React.Component {
         <ListItem>
           <ListItemText classes={{ text: classes.channelBlokTitle }} primary="Channels" />
         </ListItem>
-        <PublicChannels />
+        <PublicChannels
+          listStyle={{
+            height: '50%'
+          }}
+        />
         <Divider light />
         <ListItem>
           <ListItemText classes={{ text: classes.channelBlokTitle }} primary="Private" />
         </ListItem>
-        <PrivateChannels />
+        <PrivateChannels
+          listStyle={{
+            height: '50%'
+          }}
+        />
       </div>
     );
   }

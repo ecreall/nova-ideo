@@ -58,5 +58,7 @@
   <body>
     <div id='root'></div>
     <script src="${su('novaideo:static-react/build/bundle.js')}"></script>
+    <link href="${su('novaideo:static-react/build/bundle.css')}"
+            rel="stylesheet"/>
   </body>
 </html>

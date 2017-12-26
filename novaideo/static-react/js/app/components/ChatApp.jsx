@@ -17,8 +17,6 @@ export class DumbChatApp extends React.Component {
       <App active={active} left={left} Navbar={ChannelNavbar} data={{ channel: channelData }}>
         <EntitiesList
           data={data}
-          inverted
-          withoutSeparator
           getEntities={(entities) => {
             return entities.node ? entities.node.comments : undefined;
           }}
@@ -29,13 +27,23 @@ export class DumbChatApp extends React.Component {
           }}
           ListItem={({ node }) => {
             return (
-              <div>
-                {node.text}
+              <div style={{ padding: 15 }}>
+                <p>
+                  {node.text}
+                </p>
               </div>
             );
           }}
           itemdata={{
             channel: channelData
+          }}
+          itemHeightEstimation={20}
+          style={{
+            height: '90vh'
+          }}
+          scrollStyle={{
+            display: 'flex',
+            flexDirection: 'column-reverse'
           }}
         />
       </App>

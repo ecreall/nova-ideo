@@ -11,7 +11,6 @@ export class DumbPublicChannels extends React.Component {
     const { data, listStyle } = this.props;
     return (
       <EntitiesList
-        withoutSeparator
         data={data}
         getEntities={(entities) => {
           return entities.account ? entities.account.channels : [];
@@ -20,6 +19,7 @@ export class DumbPublicChannels extends React.Component {
         noContentMessage={'noChannels'}
         ListItem={ChannelItem}
         style={listStyle}
+        itemHeightEstimation={30}
         activityIndicatorColor="white"
       />
     );

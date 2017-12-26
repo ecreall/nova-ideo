@@ -5,8 +5,8 @@ import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import Grid from 'material-ui/Grid';
 import { Translate } from 'react-redux-i18n';
-
 import Avatar from 'material-ui/Avatar';
+
 import ImagesPreview from '../common/ImagesPreview';
 import Keywords from '../common/Keywords';
 import IconWithText from '../common/IconWithText';

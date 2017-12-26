@@ -13,6 +13,7 @@ export class DumbIdeasList extends React.Component {
 
     return (
       <EntitiesList
+        isGlobal
         data={data}
         getEntities={(entities) => {
           return entities.ideas;
@@ -20,13 +21,6 @@ export class DumbIdeasList extends React.Component {
         noContentIcon="lightbulb"
         noContentMessage={'noIdeas'}
         noContentFoundMessage={'noIdeaFound'}
-        offlineFilter={(entity, text) => {
-          return (
-            entity.node.title.toLowerCase().search(text) >= 0 ||
-            entity.node.text.toLowerCase().search(text) >= 0 ||
-            entity.node.keywords.join(' ').toLowerCase().search(text) >= 0
-          );
-        }}
         ListItem={IdeaItem}
       />
     );
@@ -36,6 +30,7 @@ export class DumbIdeasList extends React.Component {
 const IdeasListGQL = graphql(ideasListQuery, {
   options: (props) => {
     return {
+      fetchPolicy: 'cache-and-network',
       notifyOnNetworkStatusChange: true,
       variables: { first: 15, after: '', filter: props.filter }
     };

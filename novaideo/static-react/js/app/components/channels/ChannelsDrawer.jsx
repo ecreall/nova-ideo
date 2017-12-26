@@ -14,6 +14,9 @@ import Channels from './Channels';
 
 const styles = (theme) => {
   return {
+    container: {
+      height: '100%'
+    },
     icon: { color: theme.palette.primary['50'] },
     drawerHeader: {
       display: 'flex',
@@ -25,7 +28,8 @@ const styles = (theme) => {
     drawerPaper: {
       position: 'fixed',
       height: '100%',
-      backgroundColor: theme.palette.primary['500']
+      backgroundColor: theme.palette.primary['500'],
+      overflow: 'hidden'
     },
     drawerPaperOpen: {
       zIndex: 1501
@@ -44,7 +48,7 @@ const styles = (theme) => {
 
 function ChannelsDrawerContent({ classes, theme, toggleChannelsDrawer, channelOpen }) {
   return (
-    <div>
+    <div className={classes.container}>
       <div className={classes.drawerHeader}>
         {!channelOpen &&
           <IconButton
