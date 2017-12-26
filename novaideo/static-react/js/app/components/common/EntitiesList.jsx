@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
-import 'react-virtualized/styles.css';
 import { CircularProgress } from 'material-ui/Progress';
 import Measure from 'react-measure';
 import { Scrollbars } from 'react-custom-scrollbars';
