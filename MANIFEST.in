@@ -8,7 +8,6 @@ include *.py
 include *.sh
 include *.templ
 include *.yml
-include CHECKS
 include Dockerfile
 include LICENSE
 include Procfile
