@@ -68,6 +68,5 @@ RUN buildout bootstrap -c heroku.cfg
 RUN $run_buildout && bin/buildout -c heroku.cfg || true
 
 USER root
-EXPOSE 5000
 
 CMD ["/start"]
