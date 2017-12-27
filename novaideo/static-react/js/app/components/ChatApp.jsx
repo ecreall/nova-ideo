@@ -6,6 +6,7 @@ import ChannelNavbar from './channels/Navbar';
 import App from './common/App';
 import { commentsQuery } from '../graphql/queries';
 import EntitiesList from './common/EntitiesList';
+import CommentItem from './channels/CommentItem';
 
 const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
@@ -25,23 +26,15 @@ export class DumbChatApp extends React.Component {
           offlineFilter={(entity, text) => {
             return entity.node.text.toLowerCase().search(text) >= 0;
           }}
-          ListItem={({ node }) => {
-            return (
-              <div style={{ padding: 15 }}>
-                <p>
-                  {node.text}
-                </p>
-              </div>
-            );
-          }}
+          ListItem={CommentItem}
           itemdata={{
             channel: channelData
           }}
-          itemHeightEstimation={20}
+          itemHeightEstimation={120}
           style={{
-            height: '90vh'
+            height: 'calc(95vh - 56px)'
           }}
-          scrollStyle={{
+          scrollbarStyle={{
             display: 'flex',
             flexDirection: 'column-reverse'
           }}

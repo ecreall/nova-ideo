@@ -8,7 +8,7 @@ export class ListItem extends React.Component {
     super(props);
     this.state = {
       dimensions: {
-        height: this.props.itemHeightEstimation || 30
+        height: this.props.itemHeightEstimation
       }
     };
   }

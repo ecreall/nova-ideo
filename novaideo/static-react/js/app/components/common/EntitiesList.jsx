@@ -1,24 +1,40 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
+import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
-import Measure from 'react-measure';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { setURLState } from '../../actions/actions';
 import { ListItem as ListEntitiesItem } from './ListItem';
 
+const styles = {
+  thumbVertical: {
+    zIndex: 1,
+    cursor: 'pointer',
+    borderRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)'
+  },
+  progress: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+};
+
 function emptyContainer({ children }) {
   return children;
 }
 
-function scrollbarsContainer({ children, onEndReached, scrollStyle }) {
+function scrollbarsContainer({ children, onEndReached, scrollbarStyle }) {
   return (
     <Scrollbars
       renderView={(props) => {
-        return <div {...props} style={{ ...props.style, ...scrollStyle }} />;
+        return <div {...props} style={{ ...props.style, ...scrollbarStyle }} />;
       }}
-      style={{ height: '100%' }}
+      renderThumbVertical={(props) => {
+        return <div {...props} style={{ ...props.style, ...styles.thumbVertical }} />;
+      }}
       onScrollStop={onEndReached}
     >
       {children}
@@ -27,13 +43,16 @@ function scrollbarsContainer({ children, onEndReached, scrollStyle }) {
 }
 
 export class DumbEntitiesList extends React.Component {
+  static defaultProps = {
+    progressStyle: { size: 30 }
+  };
+
   constructor(props) {
     super(props);
     this.offline = {
       entities: undefined,
       status: false
     };
-    this.height = 0;
   }
 
   componentDidMount() {
@@ -138,45 +157,46 @@ export class DumbEntitiesList extends React.Component {
     }
   };
 
+  renderProgress = () => {
+    const { progressStyle, theme, classes } = this.props;
+    const progressColor = progressStyle.color || theme.palette.primary[500];
+    return (
+      <div className={classes.progress}>
+        <CircularProgress size={progressStyle.size} style={{ color: progressColor }} />
+      </div>
+    );
+  };
+
   render() {
-    const { data, ListItem, itemdata, getEntities, style, isGlobal, itemHeightEstimation, scrollStyle } = this.props;
+    const { data, getEntities, ListItem, itemdata, itemHeightEstimation, isGlobal, style, scrollbarStyle } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
       // ApolloError error when the graphql server is down
       // Do nothing
     }
+
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
-      return <CircularProgress size={50} />;
+      return this.renderProgress();
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
     const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
     return (
-      <Measure
-        bounds
-        onResize={(contentRect) => {
-          this.height = contentRect.bounds.height;
-        }}
-      >
-        {({ measureRef }) => {
-          return (
-            <div style={style} ref={measureRef}>
-              <ScrollContainer onEndReached={this.onEndReached} scrollStyle={scrollStyle}>
-                {entities && entities.length > 0
-                  ? entities.map((item) => {
-                    return (
-                      <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
-                        <ListItem itemdata={itemdata} node={item.node} />
-                      </ListEntitiesItem>
-                    );
-                  })
-                  : null}
-              </ScrollContainer>
-            </div>
-          );
-        }}
-      </Measure>
+      <div style={style}>
+        <ScrollContainer onEndReached={this.onEndReached} scrollbarStyle={scrollbarStyle}>
+          {entities && entities.length > 0
+            ? entities.map((item) => {
+              return (
+                <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
+                  <ListItem itemdata={itemdata} node={item.node} />
+                </ListEntitiesItem>
+              );
+            })
+            : null}
+          {data.networkStatus === 3 && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
+        </ScrollContainer>
+      </div>
     );
   }
 }
@@ -187,4 +207,4 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = { setURLState: setURLState };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DumbEntitiesList);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbEntitiesList));

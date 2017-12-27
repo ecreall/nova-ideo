@@ -15,6 +15,8 @@ import Channels from './Channels';
 const styles = (theme) => {
   return {
     container: {
+      display: 'flex',
+      flexDirection: 'column',
       height: '100%'
     },
     icon: { color: theme.palette.primary['50'] },

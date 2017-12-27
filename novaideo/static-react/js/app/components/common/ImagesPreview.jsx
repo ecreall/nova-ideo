@@ -5,7 +5,7 @@ const styles = {
   imagesContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'start',
     marginTop: 10,
     paddingRight: 10
   },
@@ -22,21 +22,21 @@ const styles = {
   },
   firstItem: {
     width: '100%',
-    height: 200,
+    height: 150,
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#d6d7da'
   },
   otherItem: {
     width: '100%',
-    height: 50,
+    height: 45,
     borderRadius: 3,
-    marginTop: 2,
+    marginTop: 1,
     borderWidth: 0.5,
     borderColor: '#d6d7da'
   },
   otherItemsContainer: {
-    width: '19%'
+    width: '20%'
   },
   globalItemContainer: {
     marginRight: 3,
@@ -49,12 +49,12 @@ const styles = {
   plusItemContainer: {
     display: 'flex',
     width: '100%',
-    height: 50,
+    height: 45,
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
     backgroundColor: '#d8d8d8',
-    marginTop: 2,
+    marginTop: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },

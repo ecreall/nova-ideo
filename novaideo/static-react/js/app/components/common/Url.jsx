@@ -5,7 +5,8 @@ const styles = {
     borderLeftColor: '#e8e8e8',
     borderLeftWidth: 3,
     paddingLeft: 10,
-    marginBottom: 5
+    marginBottom: 5,
+    borderLeftStyle: 'solid'
   },
   header: {
     display: 'flex',
@@ -70,17 +71,6 @@ const styles = {
 };
 
 export default class Url extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.state = {
-      opened: false
-    };
-    this.onPress = this.onPress.bind(this);
-    this.onClose = this.onClose.bind(this);
-    this.getImageHeader = this.getImageHeader.bind(this);
-  }
-
   render() {
     const { data } = this.props;
     return (
@@ -88,7 +78,7 @@ export default class Url extends React.Component {
         {data.authorName || data.authorAvatar
           ? <div style={styles.header}>
             <img style={styles.authorAvatar} src={data.authorAvatar} />
-            <div onPress={this.handleClick}>
+            <div>
               <span numberOfLines={1} style={styles.contributionTitle}>
                 {data.title}
               </span>
@@ -104,7 +94,7 @@ export default class Url extends React.Component {
                 {data.siteName}
               </span>
             </div>
-            <div onPress={this.handleClick}>
+            <div>
               <span style={styles.url}>
                 {data.title}
               </span>
@@ -113,9 +103,10 @@ export default class Url extends React.Component {
         <span style={styles.description}>
           {data.description}
         </span>
-        <div onPress={this.onPress}>
-          <img src={data.imageUrl} style={styles.image} />
-        </div>
+        {data.imageUrl &&
+          <div>
+            <img src={data.imageUrl} style={styles.image} />
+          </div>}
         {data.authorName || data.authorAvatar
           ? <div style={styles.header}>
             <img style={styles.headerAvatar} src={data.favicon} />

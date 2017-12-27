@@ -21,6 +21,7 @@ export class DumbIdeasList extends React.Component {
         noContentIcon="lightbulb"
         noContentMessage={'noIdeas'}
         noContentFoundMessage={'noIdeaFound'}
+        itemHeightEstimation={200}
         ListItem={IdeaItem}
       />
     );

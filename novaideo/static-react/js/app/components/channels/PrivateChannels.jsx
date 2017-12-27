@@ -8,7 +8,7 @@ import { discussionsQuery } from '../../graphql/queries';
 
 export class DumbPrivateChannels extends React.Component {
   render() {
-    const { data, listStyle } = this.props;
+    const { data } = this.props;
     return (
       <EntitiesList
         data={data}
@@ -19,8 +19,11 @@ export class DumbPrivateChannels extends React.Component {
         noContentMessage={'noPrivateDiscussions'}
         ListItem={ChannelItem}
         itemdata={{ isDiscussion: true }}
-        style={listStyle}
+        style={{
+          height: '50%'
+        }}
         itemHeightEstimation={30}
+        progressStyle={{ size: 20, color: 'white' }}
         activityIndicatorColor="white"
       />
     );
