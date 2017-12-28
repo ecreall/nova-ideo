@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
 
 import { STYLE_CONST } from '../../constants';
 

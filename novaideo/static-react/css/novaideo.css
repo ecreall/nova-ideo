@@ -1,3 +1,9 @@
+
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+  display: none !important
+}
+
 body {
   font-style: normal;
   -webkit-font-smoothing: antialiased;

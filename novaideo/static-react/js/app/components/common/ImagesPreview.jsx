@@ -1,5 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
+import classNames from 'classnames';
+import { withStyles } from 'material-ui/styles';
+
+import ImagesSlider from './ImagesSlider';
 
 const styles = {
   imagesContainer: {
@@ -13,12 +17,20 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    maxWidth: 400
+    maxWidth: 300
   },
   images: {
     borderRadius: 3,
     backgroundColor: 'black',
     width: '100%'
+  },
+  imgBag: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'scroll',
+    backgroundPositionX: 'center',
+    backgroundPositionY: 'center',
+    backgroundSize: 'cover'
   },
   firstItem: {
     width: '100%',
@@ -29,7 +41,7 @@ const styles = {
   },
   otherItem: {
     width: '100%',
-    height: 45,
+    height: 49,
     borderRadius: 3,
     marginTop: 1,
     borderWidth: 0.5,
@@ -49,7 +61,7 @@ const styles = {
   plusItemContainer: {
     display: 'flex',
     width: '100%',
-    height: 45,
+    height: 49,
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
@@ -65,9 +77,24 @@ const styles = {
   }
 };
 
-export default class ImagesPreview extends React.Component {
+class ImagesPreview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sliderOpen: false,
+      current: 0
+    };
+  }
+  handleClose = () => {
+    this.setState({ sliderOpen: false, current: 0 });
+  };
+
+  onClick = (index) => {
+    this.setState({ sliderOpen: true, current: index });
+  };
+
   render() {
-    const { images } = this.props;
+    const { images, classes } = this.props;
     if (images.length === 0) return <div />;
     const firstImage = images[0];
     const otherImagesToPreview = 3;
@@ -75,23 +102,46 @@ export default class ImagesPreview extends React.Component {
     const otherImages = images.length > 1 ? images.slice(1, limit) : [];
     const nbHiddenImages = limit === otherImagesToPreview ? images.length - otherImagesToPreview : 0;
     return (
-      <div onPress={this.onPress} style={styles.imagesContainer}>
-        <div style={styles.itemsContainer}>
-          <div style={otherImages.length > 0 ? styles.firstItemContainer : styles.globalItemContainer}>
-            <img alt="" src={`${firstImage.url}/big`} style={styles.firstItem} />
+      <div className={classes.imagesContainer}>
+        <div className={classes.itemsContainer}>
+          <div className={otherImages.length > 0 ? classes.firstItemContainer : classes.globalItemContainer}>
+            <div
+              onClick={() => {
+                this.onClick(0);
+              }}
+              style={{ backgroundImage: `url("${firstImage.url}/big")` }}
+              className={classNames(classes.firstItem, classes.imgBag)}
+            />
           </div>
-          <div style={styles.otherItemsContainer}>
+          <div className={classes.otherItemsContainer}>
             {otherImages.map((image, key) => {
-              return <img alt="" key={key} src={`${image.url}/small`} style={styles.otherItem} />;
+              return (
+                <div
+                  onClick={() => {
+                    this.onClick(key + 1);
+                  }}
+                  key={key}
+                  style={{ backgroundImage: `url("${image.url}/small")` }}
+                  className={classNames(classes.otherItem, classes.imgBag)}
+                />
+              );
             })}
             {nbHiddenImages
-              ? <div style={styles.plusItemContainer}>
-                <span style={styles.plusItem}>{`+${nbHiddenImages}`}</span>
+              ? <div
+                onClick={() => {
+                  this.onClick(otherImagesToPreview + 1);
+                }}
+                className={classes.plusItemContainer}
+              >
+                <span className={classes.plusItem}>{`+${nbHiddenImages}`}</span>
               </div>
               : undefined}
           </div>
         </div>
+        <ImagesSlider onClose={this.handleClose} open={this.state.sliderOpen} images={images} current={this.state.current} />
       </div>
     );
   }
 }
+
+export default withStyles(styles)(ImagesPreview);

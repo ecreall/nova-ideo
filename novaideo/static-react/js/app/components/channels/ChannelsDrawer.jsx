@@ -33,9 +33,6 @@ const styles = (theme) => {
       backgroundColor: theme.palette.primary['500'],
       overflow: 'hidden'
     },
-    drawerPaperOpen: {
-      zIndex: 1501
-    },
     temporaryDrawerPaper: {
       width: 220,
       backgroundColor: theme.palette.primary['500'],
@@ -99,9 +96,7 @@ class ChannelsDrawer extends React.Component {
         <Drawer
           type="persistent"
           classes={{
-            paper: classNames(classes.drawerPaper, {
-              [classes.drawerPaperOpen]: channelsDrawer
-            })
+            paper: classNames(classes.drawerPaper)
           }}
           open={channelsDrawer}
           onClose={() => {
