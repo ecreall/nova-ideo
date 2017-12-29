@@ -6,6 +6,11 @@ import update from 'immutability-helper';
 import Grid from 'material-ui/Grid';
 import { Translate } from 'react-redux-i18n';
 import Avatar from 'material-ui/Avatar';
+import { CardActions } from 'material-ui/Card';
+import IconButton from 'material-ui/IconButton';
+import Icon from 'material-ui/Icon';
+import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 
 import ImagesPreview from '../common/ImagesPreview';
 import Keywords from '../common/Keywords';
@@ -14,78 +19,87 @@ import Evaluation from '../common/Evaluation';
 import * as constants from '../../constants';
 import { actionFragment } from '../../graphql/queries';
 import { getActions } from '../../utils/entities';
+import { updateApp } from '../../actions/actions';
 
-const styles = {
-  ideaItem: {
-    marginBottom: 10,
-    marginTop: 5
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5,
-    paddingLeft: 10
-  },
-  headerTitle: {
-    display: 'flex',
-    fontSize: 13,
-    color: '#999999ff',
-    justifyContent: 'space-around',
-    paddingLeft: 10
-  },
-  headerAddOn: {
-    fontSize: 10,
-    color: '#999999ff',
-    paddingLeft: 5
-  },
-  body: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: -5
-  },
-  bodyTitle: {},
-  bodyLeft: {
-    width: 60,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  bodyContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  textContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  imagesContainer: {
-    width: '30%'
-  },
-  bodyFooter: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 15
-  },
-  actionsText: {
-    fontSize: 14,
-    color: '#585858',
-    marginLeft: 8,
-    marginRight: 50
-  },
-  actionsIcon: {
-    marginTop: 1
-  },
-  sliderHeader: {
-    marginLeft: 4,
-    fontSize: 17,
-    color: 'white',
-    width: '90%'
-  }
+const styles = (theme) => {
+  return {
+    ideaItem: {
+      marginBottom: 10,
+      marginTop: 5
+    },
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 5,
+      paddingLeft: 10
+    },
+    headerTitle: {
+      display: 'flex',
+      fontSize: 13,
+      color: '#999999ff',
+      justifyContent: 'space-around',
+      paddingLeft: 10
+    },
+    headerAddOn: {
+      fontSize: 10,
+      color: '#999999ff',
+      paddingLeft: 5
+    },
+    body: {
+      display: 'flex',
+      flexDirection: 'row',
+      marginTop: -5
+    },
+    bodyTitle: {},
+    bodyLeft: {
+      width: 60,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    bodyContent: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      width: '100%'
+    },
+    textContainer: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    },
+    imagesContainer: {
+      width: '30%'
+    },
+    bodyFooter: {
+      display: 'flex',
+      flexDirection: 'row',
+      marginTop: 15
+    },
+    actionsText: {
+      fontSize: 13,
+      color: '#585858',
+      fontWeight: 'bold',
+      marginLeft: 8,
+      marginRight: 50,
+      '&:hover': {
+        color: theme.palette.primary['500']
+      }
+    },
+    actionsIcon: {
+      fontWeight: 100,
+      fontSize: 16,
+      marginRight: 5
+    },
+    sliderHeader: {
+      marginLeft: 4,
+      fontSize: 17,
+      color: 'white',
+      width: '90%'
+    }
+  };
 };
 
 const evaluationActions = {
@@ -110,21 +124,17 @@ export class DumbIdeaItem extends React.Component {
       opened: false,
       actionOpened: false
     };
-    this.getExaminationValue = this.getExaminationValue.bind(this);
-    this.evaluationPress = this.evaluationPress.bind(this);
-    this.performAction = this.performAction.bind(this);
-    this.getEvaluationActions = this.getEvaluationActions.bind(this);
   }
 
-  getExaminationValue() {
+  getExaminationValue = () => {
     const { node } = this.props;
     if (node.state.includes('favorable')) return 'bottom';
     if (node.state.includes('to_study')) return 'middle';
     if (node.state.includes('unfavorable')) return 'top';
     return undefined;
-  }
+  };
 
-  getEvaluationActions() {
+  getEvaluationActions = () => {
     const { node } = this.props;
     const withdraw = evaluationActions.withdrawToken;
     const support = node.userToken === 'support' ? withdraw : evaluationActions.support;
@@ -134,9 +144,9 @@ export class DumbIdeaItem extends React.Component {
       down: oppose
     };
     return result;
-  }
+  };
 
-  evaluationPress(action) {
+  evaluationPress = (action) => {
     const { node, network, globalProps } = this.props;
     if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
@@ -177,19 +187,14 @@ export class DumbIdeaItem extends React.Component {
         globalProps.showMessage(<Translate value="comingSoon" />);
       }
     }
-  }
+  };
 
-  performAction(action, idea, source) {
-    const { network, select, deselect, theme, globalProps } = this.props;
+  performAction = (action, idea) => {
+    const { network, select, deselect, openChannel } = this.props;
     if (action.nodeId === 'comment') {
-      if (!source.state.actionOpened) {
-        source.setState({ actionOpened: true });
-        this.props.globalProps.navigation.navigate('Comments', {
-          id: idea.channel.id,
-          title: idea.title,
-          onClose: source.onActionClose,
-          theme: theme,
-          action: action
+      if (!this.state.actionOpened) {
+        this.setState({ actionOpened: true }, () => {
+          return openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id });
         });
       }
     } else if (!network.isLogged) {
@@ -206,14 +211,14 @@ export class DumbIdeaItem extends React.Component {
         globalProps.showMessage(<Translate value="comingSoon" />);
       }
     }
-  }
+  };
 
   onActionPress = (action) => {
     this.performAction(action, this.props.node, this);
   };
 
   render() {
-    const { node, adapters, globalProps } = this.props;
+    const { node, adapters, globalProps, classes } = this.props;
     const instance = { support_ideas: true, examine_ideas: false };
     const author = node.author;
     const authorPicture = author.picture;
@@ -226,18 +231,18 @@ export class DumbIdeaItem extends React.Component {
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
     return (
-      <div style={styles.ideaItem}>
-        <div style={styles.header}>
+      <div className={classes.ideaItem}>
+        <div className={classes.header}>
           <Avatar size={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
-          <span style={styles.headerTitle}>
+          <span className={classes.headerTitle}>
             {author.title}
           </span>
-          <span style={styles.headerAddOn}>
+          <span className={classes.headerAddOn}>
             {createdAt}
           </span>
         </div>
-        <div style={styles.body}>
-          <div style={styles.bodyLeft}>
+        <div className={classes.body}>
+          <div className={classes.bodyLeft}>
             {instance.support_ideas && node.state.includes('published')
               ? <Evaluation
                 icon={{
@@ -261,9 +266,9 @@ export class DumbIdeaItem extends React.Component {
               ? <Examination message={node.opinion} value={this.getExaminationValue()} />
               : null}
           </div>
-          <div style={styles.bodyContent}>
+          <div className={classes.bodyContent}>
             <div>
-              <div style={styles.bodyTitle}>
+              <div className={classes.bodyTitle}>
                 <IconWithText name="mdi-set mdi-lightbulb" text={node.title} iconSize={17} />
               </div>
               <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
@@ -278,28 +283,24 @@ export class DumbIdeaItem extends React.Component {
                   </Grid>}
               </Grid>
             </div>
-            <div style={styles.bodyFooter}>
-              {communicationActions.map((action, key) => {
-                return (
-                  <div
-                    key={key}
-                    onPress={() => {
-                      return this.onActionPress(action);
-                    }}
-                    hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-                  >
-                    <IconWithText
-                      styleText={styles.actionsText}
-                      styleIcon={styles.actionsIcon}
-                      iconColor="#585858"
-                      name={action.stylePicto}
-                      text={action.counter}
-                      iconSize={17}
-                      numberOfLines={1}
-                    />
-                  </div>
-                );
-              })}
+            <div className={classes.bodyFooter}>
+              <CardActions disableActionSpacing>
+                {communicationActions.map((action, key) => {
+                  return (
+                    <IconButton
+                      className={classes.actionsText}
+                      key={key}
+                      onClick={() => {
+                        return this.onActionPress(action);
+                      }}
+                      aria-label="Add to favorites"
+                    >
+                      <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
+                      {action.counter}
+                    </IconButton>
+                  );
+                })}
+              </CardActions>
             </div>
           </div>
         </div>
@@ -685,6 +686,29 @@ const DumbIdeaItemActions = graphql(support, {
                         }
                       }
                     });
+                  },
+                  IdeasList: (prev, { mutationResult }) => {
+                    const idea = mutationResult.data.select.idea;
+                    const newActions = idea.actions;
+                    const currentIdea = prev.ideas.edges.filter((item) => {
+                      return item && item.node.id === idea.id;
+                    })[0];
+                    if (!currentIdea) return prev;
+                    const newIdea = update(currentIdea, {
+                      node: {
+                        actions: {
+                          $splice: [[indexAction, 1, ...newActions]]
+                        }
+                      }
+                    });
+                    const index = prev.ideas.edges.indexOf(currentIdea);
+                    return update(prev, {
+                      ideas: {
+                        edges: {
+                          $splice: [[index, 1, newIdea]]
+                        }
+                      }
+                    });
                   }
                 }
               });
@@ -774,7 +798,7 @@ const DumbIdeaItemActions = graphql(support, {
   )
 );
 
-export const mapDispatchToProps = {};
+export const mapDispatchToProps = { openChannel: updateApp };
 
 export const mapStateToProps = (state) => {
   return {
@@ -784,4 +808,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItemActions);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItemActions));

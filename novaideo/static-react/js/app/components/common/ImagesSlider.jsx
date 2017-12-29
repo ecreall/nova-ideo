@@ -11,42 +11,58 @@ import ArrowForwardIcon from 'material-ui-icons/ArrowForward';
 import Slide from 'material-ui/transitions/Slide';
 import Slider from 'react-slick';
 import Button from 'material-ui/Button';
+import classNames from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%'
-  },
-  appBar: {
-    position: 'relative',
-    backgroundColor: '#fff',
-    boxShadow: '0 1px 0 rgba(0,0,0,.1)'
-  },
-  previous: {
-    marginLeft: 10
-  },
-  next: {
-    marginRight: 10
-  },
-  sliderContainer: {
-    maxWidth: 'calc(100vh - 120px)',
-    margin: 'auto'
-  },
-  img: {
-    maxHeight: 'calc(100vh - 150px)',
-    maxWidth: '100%',
-    margin: 'auto'
-  },
-  paper: {
-    backgroundColor: '#f3f3f3'
-  },
-  flex: {
-    flex: 1
-  }
+const styles = (theme) => {
+  return {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%'
+    },
+    appBar: {
+      position: 'relative',
+      backgroundColor: '#fff',
+      boxShadow: '0 1px 0 rgba(0,0,0,.1)'
+    },
+    control: {
+      backgroundColor: 'white',
+      boxShadow: '0 1px 2px 0 rgba(0,0,0,.2)',
+      color: '#2c2d30',
+      '&:hover': {
+        backgroundColor: 'white',
+        color: theme.palette.primary['500']
+      }
+    },
+    previous: {
+      marginLeft: 10
+    },
+    next: {
+      marginRight: 10
+    },
+    sliderContainer: {
+      maxWidth: 'calc(100vh - 120px)',
+      margin: 'auto'
+    },
+    imgContainer: {
+      minWidth: '50vh !important',
+      minHeight: '50vh !important'
+    },
+    img: {
+      maxHeight: 'calc(100vh - 150px)',
+      maxWidth: '100%',
+      margin: 'auto'
+    },
+    paper: {
+      backgroundColor: '#f3f3f3'
+    },
+    flex: {
+      flex: 1
+    }
+  };
 };
 
 function Transition(props) {
@@ -116,7 +132,12 @@ class ImagesSlider extends React.Component {
           <div className={classes.container}>
             {lengthImages > 1 &&
               <div>
-                <Button onClick={this.onPreviousClick} fab aria-label="previous" className={classes.previous}>
+                <Button
+                  onClick={this.onPreviousClick}
+                  fab
+                  aria-label="previous"
+                  className={classNames(classes.previous, classes.control)}
+                >
                   <ArrowBackIcon />
                 </Button>
               </div>}
@@ -129,7 +150,7 @@ class ImagesSlider extends React.Component {
               >
                 {images.map((image, key) => {
                   return (
-                    <div style={{ minWidth: '50vh', minHeight: '50vh' }} key={key}>
+                    <div className={classes.imgContainer} key={key}>
                       <img alt={image.name} className={classes.img} src={image.url} />
                     </div>
                   );
@@ -138,7 +159,7 @@ class ImagesSlider extends React.Component {
             </div>
             {lengthImages > 1 &&
               <div>
-                <Button onClick={this.onNextClick} fab aria-label="next" className={classes.next}>
+                <Button onClick={this.onNextClick} fab aria-label="next" className={classNames(classes.next, classes.control)}>
                   <ArrowForwardIcon />
                 </Button>
               </div>}
@@ -148,4 +169,4 @@ class ImagesSlider extends React.Component {
   }
 }
 
-export default withStyles(styles)(ImagesSlider);
+export default withStyles(styles, { withTheme: true })(ImagesSlider);

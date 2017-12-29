@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import * as constants from '../constants';
-// import { asyncGetInstanceInfo, asyncLogin, asyncLogout } from './utils';
+import { asyncLogin, asyncLogout } from '../utils/user';
 
 export const loadAdapters = (instanceId) => {
   return {
@@ -22,16 +22,15 @@ export const initSelection = () => {
   };
 };
 
-// export const userLogin = (instance, login, password, token) => {
-//   return {
-//     payload: asyncLogin(instance, login, password, token),
-//     type: constants.LOGIN
-//   };
-// };
-
-export const updateUserToken = (instance, token) => {
+export const userLogin = (login, password, token) => {
   return {
-    instance: instance,
+    payload: asyncLogin(login, password, token),
+    type: constants.LOGIN
+  };
+};
+
+export const updateUserToken = (token) => {
+  return {
     token: token,
     type: constants.UPDATE_TOKEN
   };
@@ -50,12 +49,12 @@ export const searchEntities = (text) => {
   };
 };
 
-// export const logout = (instance) => {
-//   return {
-//     payload: asyncLogout(instance),
-//     type: constants.LOGOUT
-//   };
-// };
+export const logout = () => {
+  return {
+    payload: asyncLogout(),
+    type: constants.LOGOUT
+  };
+};
 
 // export const initInstance = (instance) => {
 //   return {

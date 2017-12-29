@@ -43,7 +43,7 @@ const Evaluation = ({ icon, text, action, onPress, active }) => {
     return (
       <div style={styles.tokenContainer}>
         <div
-          onPress={() => {
+          onClick={() => {
             return onPress.top(action.top);
           }}
         >
@@ -56,7 +56,7 @@ const Evaluation = ({ icon, text, action, onPress, active }) => {
           {text.down}
         </span>
         <div
-          onPress={() => {
+          onClick={() => {
             return onPress.down(action.down);
           }}
         >

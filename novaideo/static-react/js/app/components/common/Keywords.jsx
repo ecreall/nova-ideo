@@ -3,7 +3,8 @@ import Icon from 'material-ui/Icon';
 
 const styles = {
   icon: {
-    marginTop: 2
+    marginRight: 5,
+    color: '#666666ff'
   },
   keywordsContainer: {
     display: 'flex',
@@ -27,14 +28,14 @@ const Keywords = ({ keywords }) => {
 
   return (
     <div style={styles.keywordsContainer}>
-      <Icon style={styles.icon} name="mdi-set mdi-tag-multiple" size={12} color={'#666666ff'} />
+      <Icon style={styles.icon} className={'mdi-set mdi-tag-multiple'} />
       {keywords.map((k, index) => {
         return (
           <div
             hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
             key={k}
             title={k}
-            onPress={() => {
+            onClick={() => {
               return KeywordPressHandler(k);
             }}
           >
