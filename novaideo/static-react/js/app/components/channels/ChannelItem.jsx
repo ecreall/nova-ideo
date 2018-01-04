@@ -2,7 +2,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
-import WifiIcon from 'material-ui-icons/Wifi';
+import Icon from 'material-ui/Icon';
 import Badge from 'material-ui/Badge';
 import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
@@ -37,6 +37,7 @@ const styles = (theme) => {
     },
     icon: {
       width: 17,
+      height: 18,
       color: 'white',
       opacity: 0.7
     },
@@ -90,8 +91,11 @@ export class DumbChannelItem extends React.Component {
         {itemdata && itemdata.isDiscussion
           ? <Avatar className={classes.avatar} src={channelPicture ? `${channelPicture.url}/profil` : ''} />
           : <ListItemIcon>
-            <WifiIcon
-              className={classNames(classes.icon, { [classes.iconActive]: isActive, [classes.iconSelected]: isSelected })}
+            <Icon
+              className={classNames('mdi-set mdi-pound', classes.icon, {
+                [classes.iconActive]: isActive,
+                [classes.iconSelected]: isSelected
+              })}
             />
           </ListItemIcon>}
         <ListItemText classes={{ text: textClasses }} className={textClasses} primary={node.title} />

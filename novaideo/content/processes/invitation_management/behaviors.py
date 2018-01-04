@@ -21,7 +21,7 @@ from novaideo.ips.xlreader import get_data_from_xl
 from novaideo.content.interface import (
     INovaIdeoApplication, IInvitation, IOrganization)
 from novaideo.content.invitation import Invitation
-from novaideo import _, nothing
+from novaideo import _, nothing, my_locale_negotiator
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
 from novaideo.core import access_action, serialize_roles
@@ -339,6 +339,7 @@ class AcceptInvitation(InfiniteCardinality):
                                          'organization']))
         roles = datas.pop('roles')
         password = appstruct['password']
+        data['locale'] = my_locale_negotiator(request)
         person = Person(password=password, **datas)
         root = getSite(context)
         principals = find_service(root, 'principals')
