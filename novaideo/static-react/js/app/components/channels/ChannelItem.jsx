@@ -23,7 +23,10 @@ const styles = (theme) => {
       color: 'white',
       fontSize: 13,
       opacity: 0.8,
-      padding: 0
+      padding: 0,
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden'
     },
     textActive: {
       opacity: 1,
@@ -39,7 +42,8 @@ const styles = (theme) => {
       width: 17,
       height: 18,
       color: 'white',
-      opacity: 0.7
+      opacity: 0.7,
+      marginRight: 5
     },
     iconActive: {
       opacity: 1
@@ -75,7 +79,12 @@ export class DumbChannelItem extends React.Component {
   handleClickOpen = () => {
     const { openChannel, node } = this.props;
     this.setState({ open: true }, () => {
-      return openChannel('chatApp', { open: true, channel: node.id });
+      return openChannel('chatApp', {
+        open: true,
+        channel: node.id,
+        subject: node.subject.id,
+        right: { open: false, componentId: undefined }
+      });
     });
   };
   render() {

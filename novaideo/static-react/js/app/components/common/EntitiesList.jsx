@@ -13,7 +13,7 @@ const styles = {
     zIndex: 1,
     cursor: 'pointer',
     borderRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)'
+    backgroundColor: 'rgba(0, 0, 0, 0.1)'
   },
   progress: {
     width: '100%',
@@ -26,7 +26,7 @@ function emptyContainer({ children }) {
   return children;
 }
 
-function scrollbarsContainer({ children, onEndReached, scrollbarStyle }) {
+function scrollbarsContainer({ children, handleScroll, scrollbarStyle }) {
   return (
     <Scrollbars
       renderView={(props) => {
@@ -35,7 +35,7 @@ function scrollbarsContainer({ children, onEndReached, scrollbarStyle }) {
       renderThumbVertical={(props) => {
         return <div {...props} style={{ ...props.style, ...styles.thumbVertical }} />;
       }}
-      onScrollStop={onEndReached}
+      onScrollFrame={handleScroll}
     >
       {children}
     </Scrollbars>
@@ -44,6 +44,7 @@ function scrollbarsContainer({ children, onEndReached, scrollbarStyle }) {
 
 export class DumbEntitiesList extends React.Component {
   static defaultProps = {
+    onEndReachedThreshold: 0.7,
     progressStyle: { size: 30 }
   };
 
@@ -53,6 +54,7 @@ export class DumbEntitiesList extends React.Component {
       entities: undefined,
       status: false
     };
+    this.loading = false;
   }
 
   componentDidMount() {
@@ -96,15 +98,29 @@ export class DumbEntitiesList extends React.Component {
     }
   }
 
-  handleScroll = () => {
-    if (this.props.isGlobal) {
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
-      const body = document.body;
-      const html = document.documentElement;
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-      const windowBottom = windowHeight + window.pageYOffset;
-      if (windowBottom >= docHeight) {
-        this.onEndReached();
+  handleScroll = (values) => {
+    if (!this.loading) {
+      const { onEndReachedThreshold, reverted } = this.props;
+      if (this.props.isGlobal) {
+        const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
+        const body = document.body;
+        const html = document.documentElement;
+        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+        const windowBottom = windowHeight + window.pageYOffset;
+        const threshold = docHeight * onEndReachedThreshold;
+        if (windowBottom >= threshold) {
+          this.onEndReached();
+        }
+      } else {
+        const { scrollTop, scrollHeight, clientHeight } = values;
+        const pad = onEndReachedThreshold * clientHeight;
+        if (reverted) {
+          const t = (scrollTop - pad) / (scrollHeight - clientHeight);
+          if (t !== Infinity && t < 0) this.onEndReached();
+        } else {
+          const t = (scrollTop + pad) / (scrollHeight - clientHeight);
+          if (t !== Infinity && t > 1) this.onEndReached();
+        }
       }
     }
   };
@@ -115,6 +131,7 @@ export class DumbEntitiesList extends React.Component {
     const { data, network, getEntities } = this.props;
     // If no request is in flight for this query, and no errors happened. Everything is OK.
     if (data.networkStatus === 7) {
+      this.loading = true;
       data
         .fetchMore({
           variables: { after: getEntities(data).pageInfo.endCursor || '' },
@@ -131,6 +148,7 @@ export class DumbEntitiesList extends React.Component {
         })
         .then(() => {
           if (network.url.error) this.props.setURLState(false, []);
+          this.loading = false;
         })
         .catch((e) => {
           if (!network.url.error) this.props.setURLState(true, [e.message]);
@@ -168,7 +186,7 @@ export class DumbEntitiesList extends React.Component {
   };
 
   render() {
-    const { data, getEntities, ListItem, itemdata, itemHeightEstimation, isGlobal, style, scrollbarStyle } = this.props;
+    const { data, getEntities, ListItem, itemdata, itemHeightEstimation, isGlobal, style, scrollbarStyle, reverted } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
       // ApolloError error when the graphql server is down
@@ -184,7 +202,18 @@ export class DumbEntitiesList extends React.Component {
     const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
     return (
       <div style={style}>
-        <ScrollContainer onEndReached={this.onEndReached} scrollbarStyle={scrollbarStyle}>
+        <ScrollContainer
+          handleScroll={this.handleScroll}
+          scrollbarStyle={{
+            ...scrollbarStyle,
+            ...(reverted
+              ? {
+                display: 'flex',
+                flexDirection: 'column-reverse'
+              }
+              : {})
+          }}
+        >
           {entities && entities.length > 0
             ? entities.map((item) => {
               return (

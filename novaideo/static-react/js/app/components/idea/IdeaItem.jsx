@@ -31,8 +31,7 @@ const styles = (theme) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 5,
-      paddingLeft: 10
+      padding: 5
     },
     headerTitle: {
       display: 'flex',
@@ -49,7 +48,8 @@ const styles = (theme) => {
     body: {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: -5
+      marginTop: -5,
+      padding: 5
     },
     bodyTitle: {},
     bodyLeft: {
@@ -194,7 +194,7 @@ export class DumbIdeaItem extends React.Component {
     if (action.nodeId === 'comment') {
       if (!this.state.actionOpened) {
         this.setState({ actionOpened: true }, () => {
-          return openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id });
+          return openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id, subject: idea.id });
         });
       }
     } else if (!network.isLogged) {

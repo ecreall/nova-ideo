@@ -278,7 +278,20 @@ export const globalProps = (state = {}, action) => {
   }
 };
 
-export const apps = (state = { chatApp: { drawer: false, open: false, channel: undefined } }, action) => {
+const initialAppsState = {
+  chatApp: {
+    drawer: false,
+    open: false,
+    channel: undefined,
+    subject: undefined,
+    right: {
+      open: false,
+      componentId: undefined
+    }
+  }
+};
+
+export const apps = (state = initialAppsState, action) => {
   switch (action.type) {
   case constants.UPDATE_APP: {
     const app = action.app;
