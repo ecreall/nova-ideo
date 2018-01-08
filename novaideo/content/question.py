@@ -20,15 +20,14 @@ from dace.descriptors import (
     SharedUniqueProperty, CompositeMultipleProperty,
     SharedMultipleProperty)
 from pontus.core import VisualisableElementSchema
-from pontus.widget import (
-    SequenceWidget)
+from pontus.widget import SequenceWidget
 from pontus.file import ObjectData, File, Object as ObjectType
 
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.idea import challenge_choice
 from .interface import IQuestion, IAnswer
 from novaideo import _
-from novaideo.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget, FilesWidget
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
@@ -120,7 +119,7 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],

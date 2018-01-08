@@ -24,7 +24,7 @@ from dace.descriptors import (
     CompositeMultipleProperty)
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    RichTextWidget, ImageWidget, SequenceWidget,
+    RichTextWidget, ImageWidget,
     AjaxSelect2Widget)
 from pontus.file import ObjectData, File
 from pontus.form import FileUploadTempStore
@@ -42,7 +42,7 @@ from novaideo.core import (
     SignalableEntity,
     Debatable)
 from novaideo.content.correlation import CorrelationType
-from novaideo.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget, FilesWidget
 from novaideo import _, log
 from novaideo.file import Image
 from novaideo.utilities.util import (
@@ -153,7 +153,7 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],

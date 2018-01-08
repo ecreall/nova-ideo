@@ -15,13 +15,11 @@ from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
     SharedUniqueProperty,
     CompositeMultipleProperty)
-from pontus.widget import (
-    SequenceWidget)
 from pontus.file import ObjectData, File
-
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from novaideo import _
+from novaideo.widget import FilesWidget
 from .interface import IWorkspace
 from novaideo.content import get_file_widget
 
@@ -44,7 +42,7 @@ class WorkspaceSchema(VisualisableElementSchema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template=_('Attach file'),
             item_css_class='files-block'),
         missing=[],
