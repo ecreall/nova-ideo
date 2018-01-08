@@ -22,7 +22,7 @@ from dace.descriptors import (
     SharedMultipleProperty)
 from pontus.widget import (
     RichTextWidget, AjaxSelect2Widget,
-    Length, SequenceWidget, Select2Widget)
+    Length, Select2Widget)
 from pontus.file import ObjectData, File, Object as ObjectType
 from pontus.core import VisualisableElementSchema
 from pontus.schema import omit, Schema
@@ -31,7 +31,7 @@ from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
 from novaideo import _, log
 from novaideo.widget import (
-    LimitedTextAreaWidget, SimpleMappingtWidget)
+    LimitedTextAreaWidget, SimpleMappingtWidget, FilesWidget)
 from novaideo.core import (
     SearchableEntity,
     Channel,
@@ -151,7 +151,7 @@ class AddFilesSchemaSchema(Schema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template=_('Upload a new file'),
             item_css_class='files-block'),
         missing=[],

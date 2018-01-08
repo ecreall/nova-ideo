@@ -23,15 +23,13 @@ from dace.util import getSite, get_obj
 from dace.descriptors import (
     SharedUniqueProperty, CompositeMultipleProperty)
 from pontus.core import VisualisableElementSchema
-from pontus.widget import (
-    SequenceWidget,
-    AjaxSelect2Widget)
+from pontus.widget import AjaxSelect2Widget
 from pontus.file import ObjectData, File, Object as ObjectType
 
 from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
 from novaideo import _, log
-from novaideo.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget, FilesWidget
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
@@ -161,7 +159,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],

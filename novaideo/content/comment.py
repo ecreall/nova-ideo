@@ -19,8 +19,7 @@ from dace.descriptors import (
 from dace.util import getSite, get_obj
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    Select2Widget, AjaxSelect2Widget,
-    SequenceWidget)
+    Select2Widget, AjaxSelect2Widget)
 from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
@@ -35,6 +34,7 @@ from novaideo.utilities.util import (
     get_emoji_form,
     get_files_data, connect, disconnect)
 from novaideo.content.correlation import CorrelationType
+from novaideo.widget import FilesWidget
 
 
 @colander.deferred
@@ -153,7 +153,7 @@ class CommentSchema(VisualisableElementSchema):
             name=_("File"),
             widget=get_file_widget()
             ),
-        widget=SequenceWidget(
+        widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class="files-block comment-form-group comment-files"),
         missing=[],
