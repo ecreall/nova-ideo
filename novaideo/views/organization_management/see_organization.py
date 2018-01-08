@@ -104,10 +104,6 @@ class QuestionsView(ContentView):
     empty_icon = 'icon md md-live-help'
 
 
-@asyn_component_config(
-    id='organization-ideas',
-    on_demand=True,
-    delegate='organization_see_organization')
 class IdeasView(ContentView):
     title = _('Ideas')
     content_id = 'organization-ideas'
@@ -117,6 +113,7 @@ class IdeasView(ContentView):
     counter_id = 'organization-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
+    isactive = True
     display_state = False
 
 
@@ -135,6 +132,10 @@ class ProposalsView(ContentView):
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
+@asyn_component_config(
+    id='organization-members',
+    on_demand=True,
+    delegate='organization_see_organization')
 class MembersView(ContentView):
     title = _('Members')
     content_id = 'organization-members'
@@ -144,7 +145,6 @@ class MembersView(ContentView):
     counter_id = 'organization-members-counter'
     empty_message = _("No members")
     empty_icon = 'icon ion-person-stalker'
-    isactive = True
     display_state = False
 
 
@@ -158,17 +158,17 @@ class OrganizationContentsView(MultipleView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     container_css_class = 'organization-view'
     center_tabs = True
-    views = (MembersView, QuestionsView, IdeasView, ProposalsView)
+    views = (QuestionsView, IdeasView, ProposalsView, MembersView)
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
             delegated_by = kwargs.get('delegated_by', None)
-            views = [MembersView, IdeasView]
+            views = [IdeasView, MembersView]
             if 'question' in self.request.content_to_manage:
-                views = [MembersView, QuestionsView, IdeasView]
+                views = [QuestionsView, IdeasView, MembersView]
 
             if 'proposal' in self.request.content_to_manage:
-                views.append(ProposalsView)
+                views.insert(-1, ProposalsView)
 
             views = tuple(views)
             view_id = self.params('view_content_id')

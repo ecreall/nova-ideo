@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import deform
+from collections import OrderedDict
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
@@ -54,6 +55,11 @@ class CreateIdeaView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
+        if 'proposal' not in self.request.content_to_manage:
+            self.behaviors = [CrateAndPublish, CreateIdea, Cancel]
+            self.behaviors_instances = OrderedDict()
+            self._init_behaviors([])
+
         self.schema = update_anonymous_schemanode(
             self.request.root, self.schema)
         self.schema = update_challenge_schemanode(

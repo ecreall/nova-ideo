@@ -74,4 +74,4 @@ sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substan
 
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
 
-exec ./start_all.bash production-heroku.ini $TIMEOUT
+exec ./start_all.bash production-heroku.ini $TIMEOUT $WORKERS

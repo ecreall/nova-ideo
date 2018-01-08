@@ -62,6 +62,13 @@ class InLineWidget(SequenceWidget):
     item_template = 'novaideo:views/templates/inline_item.pt'
 
 
+class FilesWidget(SequenceWidget):
+
+    def deserialize(self, field, pstruct):
+        result = super(FilesWidget, self).deserialize(field, pstruct)
+        return [f for f in result if f is not null]
+
+
 class ObjectWidget(deform.widget.MappingWidget):
 
     template = 'novaideo:views/templates/object_mapping.pt'
