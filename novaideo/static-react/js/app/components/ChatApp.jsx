@@ -11,28 +11,43 @@ import { commentsQuery } from '../graphql/queries';
 import EntitiesList from './common/EntitiesList';
 import CommentItem from './channels/CommentItem';
 import ChatAppRight from './channels/ChatAppRight';
+import Comment from './forms/Comment';
 
-const styles = {
-  container: {
-    height: 'calc(100vh - 64px)'
-  },
-  comments: {
-    backgroundColor: 'white'
-  },
-  commentsWithRight: {
-    paddingRight: '0 !important'
-  },
-  right: {
-    backgroundColor: '#f9f9f9',
-    borderLeft: '1px solid #e8e8e8'
-  }
+const styles = (theme) => {
+  return {
+    container: {
+      height: 'calc(100vh - 64px)'
+    },
+    comments: {
+      backgroundColor: 'white',
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column'
+    },
+    commentsWithRight: {
+      paddingRight: '0 !important',
+      [theme.breakpoints.only('xs')]: {
+        display: 'none'
+      }
+    },
+    right: {
+      backgroundColor: '#f9f9f9',
+      borderLeft: '1px solid #e8e8e8'
+    }
+  };
 };
 
 const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
 export class DumbChatApp extends React.Component {
   render() {
-    const { data, active, left, rightOpen, classes } = this.props;
+    const { data, active, channel, left, rightOpen, classes } = this.props;
+    const commentAction = data.node
+      ? data.node.subject.actions.filter((action) => {
+        return commentsActions.includes(action.behaviorId);
+      })[0]
+      : null;
+    const contextOid = data.node ? data.node.subject.oid : '';
     const channelData = data.node ? data.node : null;
     return (
       <App active={active} left={left} Navbar={ChannelNavbar} data={{ channel: channelData }}>
@@ -43,7 +58,8 @@ export class DumbChatApp extends React.Component {
             })}
             item
             xs={12}
-            md={rightOpen ? 9 : 12}
+            md={rightOpen ? 8 : 12}
+            sm={rightOpen ? 7 : 12}
           >
             <EntitiesList
               reverted
@@ -63,12 +79,13 @@ export class DumbChatApp extends React.Component {
               }}
               itemHeightEstimation={120}
               style={{
-                height: '100%'
+                height: 'calc(100% - 86px)'
               }}
             />
+            <Comment key={channel} form={channel} action={commentAction} context={contextOid} channel={data.node} />
           </Grid>
           {rightOpen &&
-            <Grid className={classes.right} item xs={12} md={3}>
+            <Grid className={classes.right} item xs={12} md={4} sm={5}>
               <ChatAppRight />
             </Grid>}
         </Grid>
@@ -84,7 +101,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(
+export default withStyles(styles, { withTheme: true })(
   connect(mapStateToProps)(
     graphql(commentsQuery, {
       options: (props) => {

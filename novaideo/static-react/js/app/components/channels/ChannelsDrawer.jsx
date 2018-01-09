@@ -1,8 +1,5 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import ChevronRightIcon from 'material-ui-icons/ChevronRight';
-import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
 import classNames from 'classnames';
 import Hidden from 'material-ui/Hidden';
@@ -45,21 +42,10 @@ const styles = (theme) => {
   };
 };
 
-function ChannelsDrawerContent({ classes, theme, toggleChannelsDrawer, channelOpen }) {
+function ChannelsDrawerContent({ classes }) {
   return (
     <div className={classes.container}>
-      <div className={classes.drawerHeader}>
-        {!channelOpen &&
-          <IconButton
-            onClick={() => {
-              return toggleChannelsDrawer('chatApp', { drawer: false });
-            }}
-          >
-            {theme.direction === 'rtl'
-              ? <ChevronRightIcon className={classes.icon} />
-              : <ChevronLeftIcon className={classes.icon} />}
-          </IconButton>}
-      </div>
+      <div className={classes.drawerHeader} />
       <Channels />
     </div>
   );
@@ -67,7 +53,7 @@ function ChannelsDrawerContent({ classes, theme, toggleChannelsDrawer, channelOp
 
 class ChannelsDrawer extends React.Component {
   render() {
-    const { classes, theme, toggleChannelsDrawer, channelsDrawer, channelOpen } = this.props;
+    const { classes, theme, toggleChannelsDrawer, channelsDrawer } = this.props;
     return [
       <Hidden mdUp>
         <Drawer
@@ -84,12 +70,7 @@ class ChannelsDrawer extends React.Component {
             keepMounted: true // Better open performance on mobile.
           }}
         >
-          <ChannelsDrawerContent
-            classes={classes}
-            theme={theme}
-            channelOpen={channelOpen}
-            toggleChannelsDrawer={toggleChannelsDrawer}
-          />
+          <ChannelsDrawerContent classes={classes} />
         </Drawer>
       </Hidden>,
       <Hidden mdDown implementation="css">
@@ -103,12 +84,7 @@ class ChannelsDrawer extends React.Component {
             return toggleChannelsDrawer('chatApp', { drawer: false });
           }}
         >
-          <ChannelsDrawerContent
-            classes={classes}
-            theme={theme}
-            channelOpen={channelOpen}
-            toggleChannelsDrawer={toggleChannelsDrawer}
-          />
+          <ChannelsDrawerContent classes={classes} />
         </Drawer>
       </Hidden>
     ];
@@ -121,8 +97,7 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
-    channelsDrawer: state.apps.chatApp.drawer,
-    channelOpen: state.apps.chatApp.open
+    channelsDrawer: state.apps.chatApp.drawer
   };
 };
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(ChannelsDrawer));

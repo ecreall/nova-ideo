@@ -10,6 +10,8 @@ import CloseIcon from 'material-ui-icons/Close';
 import { connect } from 'react-redux';
 import { CardActions } from 'material-ui/Card';
 import VisibilityIcon from 'material-ui-icons/Visibility';
+import ChatIcon from 'material-ui-icons/Chat';
+import Hidden from 'material-ui/Hidden';
 
 import { updateApp } from '../../actions/actions';
 
@@ -24,7 +26,7 @@ const styles = {
     fontWeight: 900
   },
   title: {
-    marginBottom: 10
+    marginBottom: 15
   },
   icon: {
     color: '#2c2d30',
@@ -38,8 +40,8 @@ const styles = {
     marginRight: 20
   },
   actions: {
-    height: 0,
-    marginTop: 5,
+    height: 20,
+    marginTop: -15,
     marginLeft: -18
   },
   action: {
@@ -55,6 +57,18 @@ class NavBar extends React.Component {
     return (
       <AppBar className={classNames(className, classes.appBar)} color="inherit">
         <Toolbar>
+          <Hidden mdUp>
+            <IconButton
+              className={classes.menuButton}
+              color="primary"
+              aria-label="Menu"
+              onClick={() => {
+                return updateChatApp('chatApp', { drawer: true });
+              }}
+            >
+              <ChatIcon />
+            </IconButton>
+          </Hidden>
           <Typography type="title" color="inherit" className={classes.titleContainer}>
             <div className={classes.title}>
               <Icon className={classNames('mdi-set mdi-pound', classes.icon)} />
@@ -73,7 +87,6 @@ class NavBar extends React.Component {
             </CardActions>
           </Typography>
           <IconButton
-            className={classes.menuButton}
             color="primary"
             aria-label="Menu"
             onClick={() => {
@@ -92,9 +105,4 @@ export const mapDispatchToProps = {
   updateChatApp: updateApp
 };
 
-export const mapStateToProps = (state) => {
-  return {
-    channelsDrawer: state.apps.chatApp.drawer
-  };
-};
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));
+export default withStyles(styles)(connect(null, mapDispatchToProps)(NavBar));

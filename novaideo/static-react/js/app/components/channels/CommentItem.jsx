@@ -23,7 +23,7 @@ const styles = {
     display: 'flex',
     fontSize: 15,
     color: '#2c2d30',
-    fontWeight: 'bold',
+    fontWeight: '900',
     justifyContent: 'space-around',
     paddingLeft: 10
   },

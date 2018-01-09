@@ -4,6 +4,25 @@
   display: none !important
 }
 
+.emoji-mart-bar {
+  background-color: #f9f9f9;
+}
+
+.emoji-mart-category-label span {
+  font-weight: 700 !important;
+}
+
+.emoji-mart-search {
+  margin-top: 10px;
+  padding: 0 8px;
+  margin-bottom: 5px;
+}
+
+.emoji-mart-preview-emoji > .emoji-mart-emoji > span {
+  width: 27px !important;
+  height: 27px !important;
+}
+
 body {
   font-style: normal;
   -webkit-font-smoothing: antialiased;

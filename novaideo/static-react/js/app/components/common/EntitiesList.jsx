@@ -42,8 +42,17 @@ function scrollbarsContainer({ children, handleScroll, scrollbarStyle }) {
   );
 }
 
+function itemContainer({ itemHeightEstimation, children }) {
+  return (
+    <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
+      {children}
+    </ListEntitiesItem>
+  );
+}
+
 export class DumbEntitiesList extends React.Component {
   static defaultProps = {
+    virtualized: false,
     onEndReachedThreshold: 0.7,
     progressStyle: { size: 30 }
   };
@@ -186,7 +195,18 @@ export class DumbEntitiesList extends React.Component {
   };
 
   render() {
-    const { data, getEntities, ListItem, itemdata, itemHeightEstimation, isGlobal, style, scrollbarStyle, reverted } = this.props;
+    const {
+      data,
+      getEntities,
+      ListItem,
+      itemdata,
+      itemHeightEstimation,
+      isGlobal,
+      style,
+      scrollbarStyle,
+      reverted,
+      virtualized
+    } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
       // ApolloError error when the graphql server is down
@@ -195,11 +215,16 @@ export class DumbEntitiesList extends React.Component {
 
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
-      return this.renderProgress();
+      return (
+        <div style={style}>
+          {this.renderProgress()}
+        </div>
+      );
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
     const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
+    const ItemContainer = virtualized ? itemContainer : emptyContainer;
     return (
       <div style={style}>
         <ScrollContainer
@@ -217,9 +242,9 @@ export class DumbEntitiesList extends React.Component {
           {entities && entities.length > 0
             ? entities.map((item) => {
               return (
-                <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
+                <ItemContainer itemHeightEstimation={itemHeightEstimation}>
                   <ListItem itemdata={itemdata} node={item.node} />
-                </ListEntitiesItem>
+                </ItemContainer>
               );
             })
             : null}

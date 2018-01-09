@@ -51,7 +51,9 @@ const styles = (theme) => {
       marginTop: -5,
       padding: 5
     },
-    bodyTitle: {},
+    bodyTitle: {
+      fontWeight: 700
+    },
     bodyLeft: {
       width: 60,
       display: 'flex',
@@ -81,7 +83,7 @@ const styles = (theme) => {
     actionsText: {
       fontSize: 13,
       color: '#585858',
-      fontWeight: 'bold',
+      fontWeight: '700',
       marginLeft: 8,
       marginRight: 50,
       '&:hover': {

@@ -3,11 +3,14 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
+import CreateIcon from 'material-ui-icons/Create';
 import Badge from 'material-ui/Badge';
 import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
 import classNames from 'classnames';
 import { red } from 'material-ui/colors';
+import compose from 'recompose/compose';
+import withWidth from 'material-ui/utils/withWidth';
 
 import { updateApp } from '../../actions/actions';
 
@@ -30,7 +33,7 @@ const styles = (theme) => {
     },
     textActive: {
       opacity: 1,
-      fontWeight: 'bold'
+      fontWeight: '700'
     },
     textSelected: {
       color: theme.palette.primary['500'],
@@ -62,7 +65,7 @@ const styles = (theme) => {
     badge: {
       right: 15,
       marginTop: -15,
-      fontWeight: 'bold'
+      fontWeight: '700'
     },
     badgeColor: {
       color: 'white',
@@ -70,26 +73,55 @@ const styles = (theme) => {
     },
     unreadComment: {
       color: 'white',
-      fontWeight: 'bold'
+      fontWeight: '700'
     }
   };
 };
 
+const smallWidth = ['sm', 'xs'];
+
 export class DumbChannelItem extends React.Component {
   handleClickOpen = () => {
-    const { openChannel, node } = this.props;
+    const { openChannel, node, channelsDrawer, width } = this.props;
     this.setState({ open: true }, () => {
       return openChannel('chatApp', {
         open: true,
+        drawer: smallWidth.includes(width) ? false : channelsDrawer,
         channel: node.id,
         subject: node.subject.id,
         right: { open: false, componentId: undefined }
       });
     });
   };
-  render() {
-    const { classes, node, itemdata, activeChannel } = this.props;
+  renderIcon = (isActive, isSelected) => {
+    const { classes, node, itemdata, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
+    const hasMessage = currentMessage && currentMessage.values && currentMessage.values.comment;
+    if (!isSelected && hasMessage) {
+      return (
+        <ListItemIcon>
+          <CreateIcon
+            className={classNames(classes.icon, {
+              [classes.iconActive]: isActive,
+              [classes.iconSelected]: isSelected
+            })}
+          />
+        </ListItemIcon>
+      );
+    }
+    return itemdata && itemdata.isDiscussion
+      ? <Avatar className={classes.avatar} src={channelPicture ? `${channelPicture.url}/profil` : ''} />
+      : <ListItemIcon>
+        <Icon
+          className={classNames('mdi-set mdi-pound', classes.icon, {
+            [classes.iconActive]: isActive,
+            [classes.iconSelected]: isSelected
+          })}
+        />
+      </ListItemIcon>;
+  };
+  render() {
+    const { classes, node, activeChannel } = this.props;
     const lenUnreadComments = node.unreadComments.length;
     const hasUnread = lenUnreadComments > 0;
     const isSelected = activeChannel === node.id;
@@ -97,16 +129,7 @@ export class DumbChannelItem extends React.Component {
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
       <ListItem onClick={this.handleClickOpen} dense button classes={isSelected && { root: classes.listItemActive }}>
-        {itemdata && itemdata.isDiscussion
-          ? <Avatar className={classes.avatar} src={channelPicture ? `${channelPicture.url}/profil` : ''} />
-          : <ListItemIcon>
-            <Icon
-              className={classNames('mdi-set mdi-pound', classes.icon, {
-                [classes.iconActive]: isActive,
-                [classes.iconSelected]: isSelected
-              })}
-            />
-          </ListItemIcon>}
+        {this.renderIcon(isActive, isSelected)}
         <ListItemText classes={{ text: textClasses }} className={textClasses} primary={node.title} />
         {hasUnread &&
           <ListItemSecondaryAction className={classes.badge}>
@@ -121,10 +144,14 @@ export const mapDispatchToProps = {
   openChannel: updateApp
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, props) => {
   return {
-    activeChannel: state.apps.chatApp.channel
+    currentMessage: state.form[props.node.id],
+    activeChannel: state.apps.chatApp.channel,
+    channelsDrawer: state.apps.chatApp.drawer
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));
+export default compose(withStyles(styles, { withTheme: true }), withWidth())(
+  connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem)
+);

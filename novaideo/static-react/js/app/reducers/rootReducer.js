@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { i18nReducer } from 'react-redux-i18n';
 import update from 'immutability-helper';
+import { reducer as formReducer } from 'redux-form';
 
 import getAllAdapters from '../components/vendor/utils';
 import getTheme from '../theme';
@@ -322,5 +323,6 @@ export default combineReducers({
   adapters: adapters,
   globalProps: globalProps,
   history: history,
-  apps: apps
+  apps: apps,
+  form: formReducer
 });
