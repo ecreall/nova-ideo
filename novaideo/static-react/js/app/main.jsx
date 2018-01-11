@@ -2,21 +2,26 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import grey from 'material-ui/colors/grey';
-import { teal } from 'material-ui/colors';
+import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { withApollo } from 'react-apollo';
 
 import App from './app';
 import { userLogin, logout, updateUserToken, setConnectionState } from './actions/actions';
 
+const primaryCode = 500;
+
 function theme() {
   return createMuiTheme({
     palette: {
-      primary: teal, // Purple and green play nicely together.
-      secondary: {
-        ...grey
-      }
+      primary: {
+        ...teal,
+        [primaryCode]: '#3e313c' // test color to remove.
+      },
+      secondary: grey,
+      danger: deepOrange,
+      info: blue,
+      warning: orange
     },
     typography: {
       htmlFontSize: 15,

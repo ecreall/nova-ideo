@@ -18,9 +18,29 @@
   margin-bottom: 5px;
 }
 
+.emoji-mart-category .emoji-mart-emoji span{
+  cursor: pointer !important;
+}
+
 .emoji-mart-preview-emoji > .emoji-mart-emoji > span {
   width: 27px !important;
   height: 27px !important;
+}
+
+.DraftEditor-root{
+	font-variant-ligatures: none;
+	overflow: auto;
+	max-height: 10rem;
+	max-width: 100%;
+	margin-right: 2px;
+	position: relative;
+	box-sizing: border-box;
+	cursor: text
+	outline: 0;
+	text-align: left;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+    width: 100%;
 }
 
 body {

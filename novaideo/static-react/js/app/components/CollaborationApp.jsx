@@ -1,12 +1,13 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import { Picker } from 'emoji-mart';
+
 import 'emoji-mart/css/emoji-mart.css';
 
 import Navbar from './Navbar';
 import Footer from './Footer';
 import App from './common/App';
+import MyEditor from './forms/widgets/Editor';
 
 const styles = {
   maxContainer: {
@@ -16,7 +17,7 @@ const styles = {
   }
 };
 
-function CollaborationApp({ children, active, left, classes, theme }) {
+function CollaborationApp({ children, active, left, classes }) {
   return (
     <App active={active} left={left} Navbar={Navbar}>
       <div className={classes.maxContainer}>
@@ -27,18 +28,7 @@ function CollaborationApp({ children, active, left, classes, theme }) {
           </Grid>
           <Grid item xs={12} md={3}>
             <Footer />
-            <Picker
-              color={theme.palette.primary[500]}
-              title="Emoji"
-              emoji="slightly_smiling_face"
-              sheetSize={32}
-              style={{
-                fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
-              }}
-              onClick={(e) => {
-                console.log(e);
-              }}
-            />
+            <MyEditor />
           </Grid>
         </Grid>
       </div>
@@ -46,4 +36,4 @@ function CollaborationApp({ children, active, left, classes, theme }) {
   );
 }
 
-export default withStyles(styles, { withTheme: true })(CollaborationApp);
+export default withStyles(styles)(CollaborationApp);

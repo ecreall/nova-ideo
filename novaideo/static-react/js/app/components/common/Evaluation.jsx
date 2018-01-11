@@ -1,5 +1,5 @@
 import React from 'react';
-
+import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 
 const styles = {
@@ -26,6 +26,12 @@ const styles = {
     textShadowRadius: 2,
     fontSize: 30
   },
+  buttonTop: {
+    color: '#4eaf4e'
+  },
+  buttonBottom: {
+    color: '#ef6e18'
+  },
   tokenNbBottom: {
     color: '#ef6e18',
     fontWeight: 'bold'
@@ -42,26 +48,28 @@ const Evaluation = ({ icon, text, action, onPress, active }) => {
   if (active) {
     return (
       <div style={styles.tokenContainer}>
-        <div
+        <IconButton
+          style={styles.buttonTop}
           onClick={() => {
             return onPress.top(action.top);
           }}
         >
           <Icon style={styles.tokenTop} className={icon.top} size={35} />
-        </div>
+        </IconButton>
         <span style={styles.tokenNbTop}>
           {text.top}
         </span>
         <span style={styles.tokenNbBottom}>
           {text.down}
         </span>
-        <div
+        <IconButton
+          style={styles.buttonBottom}
           onClick={() => {
             return onPress.down(action.down);
           }}
         >
           <Icon style={styles.tokenBottom} className={icon.down} />
-        </div>
+        </IconButton>
       </div>
     );
   }

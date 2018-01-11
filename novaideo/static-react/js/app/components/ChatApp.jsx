@@ -79,10 +79,17 @@ export class DumbChatApp extends React.Component {
               }}
               itemHeightEstimation={120}
               style={{
-                height: 'calc(100% - 86px)'
+                height: 'calc(100% - 55px)'
               }}
             />
-            <Comment key={channel} form={channel} action={commentAction} context={contextOid} channel={data.node} />
+            <Comment
+              key={channel}
+              form={channel}
+              action={commentAction}
+              context={contextOid}
+              rootContext={contextOid}
+              channel={data.node}
+            />
           </Grid>
           {rightOpen &&
             <Grid className={classes.right} item xs={12} md={4} sm={5}>

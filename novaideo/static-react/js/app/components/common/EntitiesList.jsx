@@ -212,7 +212,6 @@ export class DumbEntitiesList extends React.Component {
       // ApolloError error when the graphql server is down
       // Do nothing
     }
-
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
       return (

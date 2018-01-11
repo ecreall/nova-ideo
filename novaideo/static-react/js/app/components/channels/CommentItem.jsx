@@ -110,7 +110,7 @@ export class DumbCommentItem extends React.Component {
           <div style={styles.bodyContent}>
             <div>
               <div style={styles.contentText}>
-                {node.text}
+                <div dangerouslySetInnerHTML={{ __html: node.text }} />
               </div>
               <ImagesPreview images={images} />
             </div>

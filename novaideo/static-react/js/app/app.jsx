@@ -1,10 +1,13 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
 
 import ChannelsDrawer from './components/channels/ChannelsDrawer';
 import CollaborationApp from './components/CollaborationApp';
 import ChatApp from './components/ChatApp';
+import { accountQuery } from './graphql/queries';
+import { updateGlobalProps } from './actions/actions';
 
 const styles = {
   root: {
@@ -20,18 +23,29 @@ const styles = {
   }
 };
 
-function App({ classes, children, channelOpen, channelsDrawer, channel }) {
-  return (
-    <div className={classes.root}>
-      <div className={classes.appFrame}>
-        <CollaborationApp active={!channelOpen} left={channelsDrawer || channelOpen}>
-          {children}
-        </CollaborationApp>
-        {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} />}
-        <ChannelsDrawer />
+class DumbApp extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    const { data } = nextProps;
+    this.props.updateGlobalProps({
+      account: data.account,
+      siteConf: data.root
+    });
+  }
+
+  render() {
+    const { classes, children, channelOpen, channelsDrawer, channel } = this.props;
+    return (
+      <div className={classes.root}>
+        <div className={classes.appFrame}>
+          <CollaborationApp active={!channelOpen} left={channelsDrawer || channelOpen}>
+            {children}
+          </CollaborationApp>
+          {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} />}
+          <ChannelsDrawer />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export const mapStateToProps = (state) => {
@@ -42,4 +56,18 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(App));
+export const mapDispatchToProps = {
+  updateGlobalProps: updateGlobalProps
+};
+
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(
+    graphql(accountQuery, {
+      options: () => {
+        return {
+          fetchPolicy: 'cache-first'
+        };
+      }
+    })(DumbApp)
+  )
+);

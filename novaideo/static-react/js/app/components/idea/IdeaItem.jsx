@@ -31,7 +31,8 @@ const styles = (theme) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 5
+      padding: 5,
+      paddingLeft: 10
     },
     headerTitle: {
       display: 'flex',
@@ -78,7 +79,7 @@ const styles = (theme) => {
     bodyFooter: {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: 15
+      marginTop: 5
     },
     actionsText: {
       fontSize: 13,
@@ -277,7 +278,7 @@ export class DumbIdeaItem extends React.Component {
 
               <Grid container item>
                 <Grid item xs={12} sm={images.length > 0 ? 7 : 12}>
-                  {node.presentationText}
+                  <div dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 </Grid>
                 {images.length > 0 &&
                   <Grid item xs={12} sm={5}>

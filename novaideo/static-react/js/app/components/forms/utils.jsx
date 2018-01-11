@@ -1,19 +1,30 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
+import Icon from 'material-ui/Icon';
+import classNames from 'classnames';
 
-import TextField from './widgets/TextField';
+import TextBoxField from './widgets/TextBoxField';
 
-export const renderInput = ({ input: { name, value, onChange }, placeholder, placeholderTextColor }) => {
+export const renderTextBoxField = ({ input: { name, value, onChange }, placeholder, onCtrlEnter }) => {
+  return <TextBoxField onCtrlEnter={onCtrlEnter} name={name} placeholder={placeholder} value={value} onChange={onChange} />;
+};
+
+export const renderAnonymousCheckbox = ({ input: { value, onChange }, label, classes }) => {
   return (
-    <TextField
-      name={name}
-      placeholder={placeholder}
-      placeholderTextColor={placeholderTextColor}
+    <Checkbox
+      icon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
+      checkedIcon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
+      label={label}
       value={value}
       onChange={onChange}
+      classes={{
+        default: classes.maskDefault,
+        checked: classes.maskChecked
+      }}
     />
   );
 };
+
 //
 // export const renderFilesList = ({ input: { value, onChange }, navigation }) => {
 //   return <FilesList navigation={navigation} value={value} onChange={onChange} />;
@@ -34,23 +45,3 @@ export const renderInput = ({ input: { name, value, onChange }, placeholder, pla
 //     />
 //   );
 // };
-
-export const renderCheckbox = ({ input: { value, onChange }, label }) => {
-  return (
-    <Checkbox
-      iconSize={15}
-      styleText={{
-        color: 'gray',
-        marginLeft: 4,
-        fontSize: 15
-      }}
-      styleIcon={{
-        marginTop: 2
-      }}
-      iconColor="gray"
-      label={label}
-      value={value}
-      onChange={onChange}
-    />
-  );
-};

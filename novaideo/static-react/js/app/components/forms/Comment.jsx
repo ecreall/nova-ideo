@@ -9,144 +9,143 @@ import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 
 import { commentFragment } from '../../graphql/queries';
-import { renderInput, renderCheckbox } from './utils';
+import { renderTextBoxField, renderAnonymousCheckbox } from './utils';
 
-const styles = {
-  contentContainerStyle: {
-    backgroundColor: 'white'
-  },
-  container: {
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  addon: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 'auto',
-    borderColor: '#717274',
-    outline: 0,
-    border: '2px solid #717274',
-    borderRadius: '.375rem',
-    resize: 'none',
-    color: '#2c2d30',
-    fontSize: '.9375rem',
-    lineHeight: '1.2rem',
-    maxHeight: 'none',
-    minHeight: '41px',
-    alignItems: 'center'
-  },
-  textField: {
-    paddingLeft: 10,
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    position: 'relative'
-  },
-  placeholder: {
-    color: '#000',
-    opacity: '.375',
-    filter: 'grayscale(100%)',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    fontStyle: 'normal',
-    pointerEvents: 'none',
-    position: 'absolute',
-    display: 'none',
-    top: 0,
-    left: 0,
-    right: 0,
-    maxHeight: '100%'
-  },
-  placeholderActive: {
-    display: 'block',
-    left: 10
-  },
-  submit: {
-    color: 'gray',
-    opacity: 0.7
-  },
-  submitActive: {
-    opacity: 1,
-    color: 'blue'
-  },
-  action: {
-    display: 'flex',
-    padding: 5
-  }
+const styles = (theme) => {
+  return {
+    contentContainerStyle: {
+      backgroundColor: 'white'
+    },
+    container: {
+      paddingLeft: 15,
+      paddingRight: 15
+    },
+    addon: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    inputContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: 'auto',
+      outline: 0,
+      border: '2px solid #bfbfbf',
+      borderRadius: '.375rem',
+      resize: 'none',
+      color: '#2c2d30',
+      fontSize: '.9375rem',
+      lineHeight: '1.2rem',
+      maxHeight: 'none',
+      minHeight: '41px',
+      alignItems: 'center',
+      '&:focus-within': {
+        border: '2px solid #848484'
+      }
+    },
+    inputContainerAnonymous: {
+      borderColor: theme.palette.warning[700],
+      '&:focus-within': {
+        borderColor: theme.palette.warning[700]
+      }
+    },
+    textField: {
+      paddingLeft: 10,
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      position: 'relative'
+    },
+    placeholder: {
+      color: '#000',
+      opacity: '.375',
+      filter: 'grayscale(100%)',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      fontStyle: 'normal',
+      pointerEvents: 'none',
+      position: 'absolute',
+      display: 'none',
+      top: 0,
+      left: 0,
+      right: 0,
+      maxHeight: '100%'
+    },
+    placeholderActive: {
+      display: 'block',
+      left: 10,
+      top: 3
+    },
+    submit: {
+      color: 'gray',
+      opacity: 0.7
+    },
+    submitActive: {
+      opacity: 1,
+      color: theme.palette.primary[500],
+      cursor: 'pointer'
+    },
+    action: {
+      display: 'flex',
+      padding: 5
+    },
+    maskIcon: {
+      width: 'auto !important',
+      height: 'auto !important'
+    },
+    maskDefault: {
+      height: 41,
+      width: 41,
+      color: 'gray'
+    },
+    maskChecked: {
+      color: theme.palette.warning[700]
+    }
+  };
 };
 
 export class DumbCommentForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayErrors: false,
-      sending: false
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit() {
-    const { formData, valid, form, context, action } = this.props;
+  handleSubmit = () => {
+    const { globalProps, formData, valid, form, context, action } = this.props;
     if (valid) {
-      // submit form here
-      this.setState({ sending: true });
       // we must encode the file name
       const files = [];
       const anonymous = Boolean(formData.values.anonymous);
-      const account = { id: 'userid', oid: 'useroid' };
       this.props.commentObject({
         context: context,
         comment: formData.values.comment,
         attachedFiles: files,
         anonymous: anonymous,
-        account: account,
+        account: globalProps.account,
         action: `${action.processId}.${action.nodeId}`
       });
-      this.props.dispatch(initialize(form, { anonymous: anonymous, files: [] }));
-    } else {
-      this.setState({ displayErrors: true });
+      this.props.dispatch(initialize(form, { comment: '', anonymous: anonymous, files: [] }));
     }
-  }
+  };
 
   render() {
-    const { formData, classes } = this.props;
-    const errors = formData ? formData.syncErrors : {};
+    const { formData, channel, globalProps: { siteConf }, classes } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
-    // const withAnonymous = siteConf.anonymisation && !channel.isDiscuss;
-    const withAnonymous = true;
+    const isDiscuss = channel && channel.isDiscuss;
+    const withAnonymous = siteConf.anonymisation && !isDiscuss;
+    const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     return (
-      <div style={styles.contentContainerStyle}>
-        <div style={styles.container}>
-          <div style={withAnonymous ? styles.addon : {}}>
-            {withAnonymous
-              ? <Field
-                props={{
-                  label: 'RemainAnonymous',
-                  displayErrors: this.state.displayErrors,
-                  errors: errors
-                }}
-                name="anonymous"
-                component={renderCheckbox}
-                type="boolean"
-              />
-              : null}
-          </div>
-          <div style={styles.inputContainer}>
-            <div style={styles.textField}>
+      <div className={classes.contentContainerStyle}>
+        <div className={classes.container}>
+          <div
+            className={classNames(classes.inputContainer, {
+              [classes.inputContainerAnonymous]: anonymousSelected
+            })}
+          >
+            <div className={classes.textField}>
               <Field
                 props={{
-                  placeholder: 'yourMessageHere',
-                  placeholderTextColor: 'gray'
+                  onCtrlEnter: this.handleSubmit
                 }}
                 name="comment"
-                component={renderInput}
+                component={renderTextBoxField}
                 type="text"
               />
               <div
@@ -160,15 +159,27 @@ export class DumbCommentForm extends React.Component {
                 Your text here
               </div>
             </div>
-            <div style={styles.action}>
-              <div onClick={hasComment ? this.handleSubmit : undefined}>
-                <SendIcon
-                  size={22}
-                  className={classNames(classes.submit, {
-                    [classes.submitActive]: hasComment
-                  })}
+            <div className={withAnonymous && classes.addon}>
+              {withAnonymous
+                ? <Field
+                  props={{
+                    classes: classes,
+                    label: 'RemainAnonymous'
+                  }}
+                  name="anonymous"
+                  component={renderAnonymousCheckbox}
+                  type="boolean"
                 />
-              </div>
+                : null}
+            </div>
+            <div className={classes.action}>
+              <SendIcon
+                onClick={hasComment ? this.handleSubmit : undefined}
+                size={22}
+                className={classNames(classes.submit, {
+                  [classes.submitActive]: hasComment
+                })}
+              />
             </div>
           </div>
         </div>
@@ -182,7 +193,6 @@ const CommentReduxForm = reduxForm({ destroyOnUnmount: false })(DumbCommentForm)
 
 const mapStateToProps = (state, props) => {
   return {
-    formState: state.form,
     formData: state.form[props.form],
     globalProps: state.globalProps
   };

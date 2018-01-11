@@ -10,7 +10,6 @@ import { ideasListQuery } from '../../graphql/queries';
 export class DumbIdeasList extends React.Component {
   render() {
     const { data } = this.props;
-
     return (
       <EntitiesList
         isGlobal
