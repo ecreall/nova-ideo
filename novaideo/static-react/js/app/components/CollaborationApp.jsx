@@ -1,13 +1,11 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-
 import 'emoji-mart/css/emoji-mart.css';
 
 import Navbar from './Navbar';
 import Footer from './Footer';
 import App from './common/App';
-import MyEditor from './forms/widgets/Editor';
 
 const styles = {
   maxContainer: {
@@ -28,7 +26,6 @@ function CollaborationApp({ children, active, left, classes }) {
           </Grid>
           <Grid item xs={12} md={3}>
             <Footer />
-            <MyEditor />
           </Grid>
         </Grid>
       </div>
