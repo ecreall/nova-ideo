@@ -62,6 +62,7 @@ export class DumbChatApp extends React.Component {
             sm={rightOpen ? 7 : 12}
           >
             <EntitiesList
+              listId="comments"
               reverted
               onEndReachedThreshold={0.5}
               data={data}
@@ -75,7 +76,12 @@ export class DumbChatApp extends React.Component {
               }}
               ListItem={CommentItem}
               itemdata={{
-                channel: channelData
+                channel: channelData,
+                unreadCommentsIds: channelData
+                  ? channelData.unreadComments.map((comment) => {
+                    return comment.id;
+                  })
+                  : []
               }}
               itemHeightEstimation={120}
               style={{

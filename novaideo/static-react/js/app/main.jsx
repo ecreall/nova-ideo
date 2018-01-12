@@ -19,6 +19,12 @@ function theme() {
         [primaryCode]: '#3e313c' // test color to remove.
       },
       secondary: grey,
+      tertiary: {
+        color: teal[500],
+        hover: {
+          color: 'white'
+        }
+      },
       danger: deepOrange,
       info: blue,
       warning: orange

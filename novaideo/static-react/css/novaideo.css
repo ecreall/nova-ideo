@@ -43,6 +43,10 @@
     width: 100%;
 }
 
+.comment-text p {
+	margin: 0
+}
+
 body {
   font-style: normal;
   -webkit-font-smoothing: antialiased;

@@ -17,8 +17,8 @@ const styles = (theme) => {
       backgroundColor: 'white'
     },
     container: {
-      paddingLeft: 15,
-      paddingRight: 15
+      paddingLeft: 20,
+      paddingRight: 20
     },
     addon: {
       display: 'flex',

@@ -107,7 +107,14 @@ export class DumbEntitiesList extends React.Component {
     }
   }
 
+  dispatchScroll = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent(`${this.props.listId}-scroll`, true, true);
+    document.dispatchEvent(event);
+  };
+
   handleScroll = (values) => {
+    this.dispatchScroll();
     if (!this.loading) {
       const { onEndReachedThreshold, reverted } = this.props;
       if (this.props.isGlobal) {
@@ -239,10 +246,18 @@ export class DumbEntitiesList extends React.Component {
           }}
         >
           {entities && entities.length > 0
-            ? entities.map((item) => {
+            ? entities.map((item, index) => {
+              const previous = entities[index - 1];
+              const next = entities[index + 1];
               return (
                 <ItemContainer itemHeightEstimation={itemHeightEstimation}>
-                  <ListItem itemdata={itemdata} node={item.node} />
+                  <ListItem
+                    index={index}
+                    next={next && next.node}
+                    previous={previous && previous.node}
+                    itemdata={itemdata}
+                    node={item.node}
+                  />
                 </ItemContainer>
               );
             })

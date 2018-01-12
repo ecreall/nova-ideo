@@ -1,10 +1,11 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
+import Moment from 'moment';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import Grid from 'material-ui/Grid';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import Avatar from 'material-ui/Avatar';
 import { CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -225,7 +226,7 @@ export class DumbIdeaItem extends React.Component {
     const instance = { support_ideas: true, examine_ideas: false };
     const author = node.author;
     const authorPicture = author.picture;
-    const createdAt = node.createdAt;
+    const createdAt = Moment(node.createdAt).format(I18n.t('date.format3'));
     const images = node.attachedFiles
       ? node.attachedFiles.filter((image) => {
         return image.isImage;
@@ -296,7 +297,7 @@ export class DumbIdeaItem extends React.Component {
                       onClick={() => {
                         return this.onActionPress(action);
                       }}
-                      aria-label="Add to favorites"
+                      aria-label="todo"
                     >
                       <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
                       {action.counter}

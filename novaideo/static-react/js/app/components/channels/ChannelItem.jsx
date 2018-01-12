@@ -17,9 +17,9 @@ import { updateApp } from '../../actions/actions';
 const styles = (theme) => {
   return {
     listItemActive: {
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.tertiary.color,
       '&:hover': {
-        backgroundColor: 'white'
+        backgroundColor: theme.palette.tertiary.color
       }
     },
     text: {
@@ -36,9 +36,9 @@ const styles = (theme) => {
       fontWeight: '700'
     },
     textSelected: {
-      color: theme.palette.primary['500'],
+      color: theme.palette.tertiary.hover.color,
       '&:hover': {
-        color: theme.palette.primary['500']
+        color: theme.palette.tertiary.hover.color
       }
     },
     icon: {
@@ -52,9 +52,9 @@ const styles = (theme) => {
       opacity: 1
     },
     iconSelected: {
-      color: theme.palette.primary['500'],
+      color: theme.palette.tertiary.hover.color,
       '&:hover': {
-        color: theme.palette.primary['500']
+        color: theme.palette.tertiary.hover.color
       }
     },
     avatar: {

@@ -32,6 +32,20 @@ const ChatAppRightContent = (props) => {
 };
 
 class ChatAppRight extends React.Component {
+  componentDidMount() {
+    this.dispatchResize();
+  }
+
+  componentWillUnmount() {
+    this.dispatchResize();
+  }
+
+  dispatchResize = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, true);
+    document.dispatchEvent(event);
+  };
+
   render() {
     const { classes, updateChatApp } = this.props;
     return (
