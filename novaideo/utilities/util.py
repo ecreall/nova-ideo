@@ -1575,7 +1575,7 @@ def get_home_actions_bodies(process_id, action_id, form_id, request, context):
     if add_content_view:
         add_content_view_instance = add_content_view(
             context, request, behaviors=[add_content_action])
-        add_content_view_instance.viewid = form_id
+        add_content_view_instance.setviewid(form_id)
         add_content_view_instance.is_home_form = True
         add_content_view_result = add_content_view_instance()
         add_content_body = ''
