@@ -106,7 +106,7 @@ class AskQuestionView_Json(BasicView):
             add_question_view = DEFAULTMAPPING_ACTIONS_VIEWS[add_question_action.__class__]
             add_question_view_instance = add_question_view(
                 self.context, self.request, behaviors=[add_question_action])
-            add_question_view_instance.viewid = 'formaskquestionhome'
+            add_question_view_instance.setviewid('formaskquestionhome')
             add_question_view_result = add_question_view_instance()
             if add_question_view_instance.finished_successfully:
                 result = get_components_data(
