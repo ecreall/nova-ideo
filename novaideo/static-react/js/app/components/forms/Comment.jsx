@@ -6,6 +6,14 @@ import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import SendIcon from 'material-ui-icons/Send';
+import AddIcon from 'material-ui-icons/Add';
+import IconButton from 'material-ui/IconButton';
+import { MenuItem, MenuList } from 'material-ui/Menu';
+import Grow from 'material-ui/transitions/Grow';
+import Paper from 'material-ui/Paper';
+import { Manager, Target, Popper } from 'react-popper';
+import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
+
 import { withStyles } from 'material-ui/styles';
 
 import { commentFragment } from '../../graphql/queries';
@@ -41,6 +49,7 @@ const styles = (theme) => {
       maxHeight: 'none',
       minHeight: '41px',
       alignItems: 'center',
+      position: 'relative',
       '&:focus-within': {
         border: '2px solid #848484'
       }
@@ -53,10 +62,16 @@ const styles = (theme) => {
     },
     textField: {
       paddingLeft: 10,
+      marginLeft: 48,
+      minHeight: 45,
       display: 'flex',
       alignItems: 'center',
       width: '100%',
-      position: 'relative'
+      position: 'relative',
+      borderLeft: '2px solid #bfbfbf',
+      '&:focus-within': {
+        borderLeft: '2px solid #848484'
+      }
     },
     placeholder: {
       color: '#000',
@@ -76,8 +91,8 @@ const styles = (theme) => {
     },
     placeholderActive: {
       display: 'block',
-      left: 10,
-      top: 3
+      top: 13,
+      left: 10
     },
     submit: {
       color: 'gray',
@@ -103,6 +118,31 @@ const styles = (theme) => {
     },
     maskChecked: {
       color: theme.palette.warning[700]
+    },
+    popperClose: {
+      pointerEvents: 'none'
+    },
+    menu: {
+      flex: 1,
+      display: 'flex',
+      position: 'absolute',
+      alignItems: 'center',
+      height: '100%',
+      zIndex: 1,
+      '&:hover': {
+        backgroundColor: theme.palette.tertiary.color
+      }
+    },
+    menuOpen: {
+      backgroundColor: theme.palette.tertiary.color
+    },
+    menuButton: {
+      '&:hover': {
+        color: theme.palette.tertiary.hover.color
+      }
+    },
+    buttonOpen: {
+      color: theme.palette.tertiary.hover.color
     }
   };
 };
@@ -111,13 +151,27 @@ export class DumbCommentForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.filesPicker = null;
+    this.state = {
+      menu: false
+    };
   }
+
+  openMenu = () => {
+    this.setState({ menu: true });
+  };
+
+  closeMenu = () => {
+    this.setState({ menu: false });
+  };
 
   handleSubmit = () => {
     const { globalProps, formData, valid, form, context, action } = this.props;
     if (valid) {
       // we must encode the file name
-      const files = formData.values.files || [];
+      let files = formData.values.files || [];
+      files = files.filter((file) => {
+        return file;
+      });
       const anonymous = Boolean(formData.values.anonymous);
       this.props.commentObject({
         context: context,
@@ -133,8 +187,12 @@ export class DumbCommentForm extends React.Component {
 
   render() {
     const { formData, channel, globalProps: { siteConf }, classes } = this.props;
+    const { menu } = this.state;
     const hasComment = formData && formData.values && formData.values.comment;
-    const files = formData && formData.values && formData.values.files ? formData.values.files : [];
+    let files = formData && formData.values && formData.values.files ? formData.values.files : [];
+    files = files.filter((file) => {
+      return file;
+    });
     const isDiscuss = channel && channel.isDiscuss;
     const withAnonymous = siteConf.anonymisation && !isDiscuss;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
@@ -152,6 +210,48 @@ export class DumbCommentForm extends React.Component {
               [classes.inputContainerAnonymous]: anonymousSelected
             })}
           >
+            <Manager
+              className={classNames(classes.menu, {
+                [classes.menuOpen]: menu
+              })}
+            >
+              <Target>
+                <IconButton
+                  className={classNames(classes.menuButton, {
+                    [classes.buttonOpen]: menu
+                  })}
+                  aria-owns={menu ? 'comment-menu-list' : null}
+                  aria-haspopup="true"
+                  onClick={this.openMenu}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Target>
+              <Popper placement="top-start" eventsEnabled={menu} className={classNames({ [classes.popperClose]: !menu })}>
+                <ClickAwayListener onClickAway={this.closeMenu}>
+                  <Grow in={menu} id="comment-menu-list" style={{ transformOrigin: '0 0 0' }}>
+                    <Paper elevation={6}>
+                      <MenuList role="menu">
+                        <MenuItem onClick={this.closeMenu}>
+                          <Field
+                            props={{
+                              title: 'Add files'
+                            }}
+                            withRef
+                            ref={(filesPicker) => {
+                              this.filesPicker = filesPicker;
+                            }}
+                            name="files"
+                            component={RenderFilesListField}
+                          />
+                        </MenuItem>
+                      </MenuList>
+                    </Paper>
+                  </Grow>
+                </ClickAwayListener>
+              </Popper>
+            </Manager>
+
             <div className={classes.textField}>
               <Field
                 props={{
@@ -185,14 +285,7 @@ export class DumbCommentForm extends React.Component {
                 />
                 : null}
             </div>
-            <Field
-              withRef
-              ref={(filesPicker) => {
-                this.filesPicker = filesPicker;
-              }}
-              name="files"
-              component={RenderFilesListField}
-            />
+
             <div className={classes.action}>
               <SendIcon
                 onClick={hasComment ? this.handleSubmit : undefined}
@@ -246,8 +339,9 @@ const CommentForm = graphql(commentObject, {
           attachedFiles.length > 0
             ? formData.values.files.map((file) => {
               return {
-                url: file.url,
-                isImage: file.type === 'image',
+                url: file.preview.url,
+                isImage: file.preview.type === 'image',
+                variations: [],
                 __typename: 'File'
               };
             })

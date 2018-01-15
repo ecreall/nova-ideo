@@ -109,7 +109,7 @@ class ImagesPreview extends React.Component {
               onClick={() => {
                 this.onClick(0);
               }}
-              style={{ backgroundImage: `url("${firstImage.url}/big")` }}
+              style={{ backgroundImage: `url("${firstImage.url}${firstImage.variations.includes('big') ? 'big' : ''}")` }}
               className={classNames(classes.firstItem, classes.imgBag)}
             />
           </div>
@@ -121,7 +121,7 @@ class ImagesPreview extends React.Component {
                     this.onClick(key + 1);
                   }}
                   key={key}
-                  style={{ backgroundImage: `url("${image.url}/small")` }}
+                  style={{ backgroundImage: `url("${image.url}${image.variations.includes('small') ? 'small' : ''}")` }}
                   className={classNames(classes.otherItem, classes.imgBag)}
                 />
               );

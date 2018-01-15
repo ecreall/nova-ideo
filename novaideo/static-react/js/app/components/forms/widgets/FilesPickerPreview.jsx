@@ -34,12 +34,16 @@ const styles = {
   action: {
     position: 'absolute',
     right: -10,
-    top: -10,
+    top: -6,
     color: 'gray',
-    height: 24,
+    height: 20,
     backgroundColor: 'white',
-    borderRadius: 12,
+    borderRadius: 10,
     cursor: 'pointer'
+  },
+  remove: {
+    height: 20,
+    width: 20
   },
   removeAll: {
     color: 'gray',
@@ -80,6 +84,9 @@ class FilesPickerPreview extends React.Component {
                   : <InsertDriveFileIcon />}
                 <div className={classes.action}>
                   <CancelIcon
+                    classes={{
+                      root: classes.remove
+                    }}
                     onClick={() => {
                       this.filesRemoveOne(file);
                     }}

@@ -19,7 +19,7 @@ class FilesPicker extends React.Component {
     super(props, context);
     this.id = 1;
     this.state = {
-      files: []
+      files: this.props.value || []
     };
   }
 
@@ -56,7 +56,8 @@ class FilesPicker extends React.Component {
         };
       } else {
         file.preview = {
-          type: 'file'
+          type: 'file',
+          url: window.URL.createObjectURL(file)
         };
       }
 
@@ -79,7 +80,7 @@ class FilesPicker extends React.Component {
     }
     this.setState(
       {
-        files: this.props.multiple === false ? files : [...this.state.files, ...files]
+        files: this.props.multiple === false ? files : [...this.props.value, ...files]
       },
       () => {
         this.props.onChange(this.state.files);
@@ -196,7 +197,7 @@ class FilesPicker extends React.Component {
   removeFile = (fileToRemove) => {
     this.setState(
       {
-        files: this.state.files.filter((file) => {
+        files: this.props.value.filter((file) => {
           return file.id !== fileToRemove.id;
         })
       },

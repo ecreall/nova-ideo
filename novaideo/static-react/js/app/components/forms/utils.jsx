@@ -2,6 +2,7 @@ import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Icon from 'material-ui/Icon';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import classNames from 'classnames';
 
 import TextBoxField from './widgets/TextBoxField';
@@ -34,7 +35,7 @@ export class RenderFilesListField extends React.Component {
   }
 
   render() {
-    const { input: { value, onChange } } = this.props;
+    const { input: { value, onChange }, title } = this.props;
     return (
       <FilesPicker
         ref={(picker) => {
@@ -44,12 +45,14 @@ export class RenderFilesListField extends React.Component {
         value={value}
         onChange={onChange}
         multiple
-        maxFiles={10}
-        maxFileSize={10000000}
-        minFileSize={0}
         clickable
       >
-        <InsertDriveFileIcon />
+        <ListItem>
+          <ListItemIcon>
+            <InsertDriveFileIcon />
+          </ListItemIcon>
+          {title && <ListItemText primary={title} />}
+        </ListItem>
       </FilesPicker>
     );
   }

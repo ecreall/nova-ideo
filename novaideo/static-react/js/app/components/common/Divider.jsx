@@ -113,7 +113,7 @@ class Divider extends React.Component {
             ref={(messageContainer) => {
               this.message = messageContainer;
             }}
-            style={this.state.fixed ? { left: this.state.left, zIndex: 3000 - index } : {}}
+            style={this.state.fixed ? { left: this.state.left, zIndex: 1499 - index } : {}}
             className={classNames(classes.message, {
               [classes.messageFixed]: this.state.fixed
             })}

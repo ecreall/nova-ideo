@@ -63,6 +63,7 @@ export const ideaFragment = gql`
     attachedFiles {
       url
       isImage
+      variations
     }
     tokensSupport
     tokensOpposition
@@ -252,6 +253,7 @@ export const commentFragment = gql`
     attachedFiles {
       url
       isImage
+      variations
     }
     urls {
       url
