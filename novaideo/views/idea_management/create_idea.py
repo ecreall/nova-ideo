@@ -58,7 +58,9 @@ class CreateIdeaView(FormView):
         if 'proposal' not in self.request.content_to_manage:
             self.behaviors = [CrateAndPublish, CreateIdea, Cancel]
             self.behaviors_instances = OrderedDict()
-            self._init_behaviors([])
+            specific_behaviors = [b._class_ for b in
+                                  self.specific_behaviors_instances]
+            self._init_behaviors(specific_behaviors)
 
         self.schema = update_anonymous_schemanode(
             self.request.root, self.schema)
@@ -93,6 +95,14 @@ class CreateIdeaView_Json(BasicView):
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     behaviors = [CreateIdea, CrateAndPublishAsProposal, CrateAndPublish]
 
+    def before_update(self):
+        if 'proposal' not in self.request.content_to_manage:
+            self.behaviors = [CreateIdea, CrateAndPublish]
+            self.behaviors_instances = OrderedDict()
+            specific_behaviors = [b._class_ for b in
+                                  self.specific_behaviors_instances]
+            self._init_behaviors([])
+
     def creat_home_idea(self):
         try:
             view_name = self.params('source_path')
@@ -116,7 +126,7 @@ class CreateIdeaView_Json(BasicView):
             add_idea_view = DEFAULTMAPPING_ACTIONS_VIEWS[add_idea_action.__class__]
             add_idea_view_instance = add_idea_view(
                 self.context, self.request, behaviors=[add_idea_action])
-            add_idea_view_instance.viewid = 'formcreateideahome'
+            add_idea_view_instance.setviewid('formcreateideahome')
             add_idea_view_result = add_idea_view_instance()
             if add_idea_view_instance.finished_successfully:
                 result = get_components_data(
@@ -222,6 +232,7 @@ class CreateIdeaView_Json(BasicView):
             return {}
 
     def __call__(self):
+        self.before_update()
         operation_name = self.params('op')
         if operation_name is not None:
             operation = getattr(self, operation_name, None)
