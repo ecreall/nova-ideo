@@ -1,94 +1,97 @@
 import React from 'react';
-import FilesPicker from './FilesPicker';
+import DeleteForeverIcon from 'material-ui-icons/DeleteForever';
+import CancelIcon from 'material-ui-icons/Cancel';
+import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+  container: {
+    display: 'flex',
+    padding: '10px 0px 5px 0px',
+    alignItems: 'flex-end'
+  },
+  files: {
+    display: 'flex'
+  },
+  file: {
+    display: 'flex',
+    position: 'relative',
+    marginRight: 15
+  },
+  image: {
+    width: 38,
+    height: 48,
+    borderRadius: 3,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'scroll',
+    backgroundPositionX: 'center',
+    backgroundPositionY: 'center',
+    backgroundSize: 'cover'
+  },
+  action: {
+    position: 'absolute',
+    right: -10,
+    top: -10,
+    color: 'gray',
+    height: 24,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    cursor: 'pointer'
+  },
+  removeAll: {
+    color: 'gray',
+    display: 'flex',
+    marginBottom: -4,
+    cursor: 'pointer'
+  },
+  icon: {
+    height: 41,
+    width: 41,
+    color: 'gray'
+  }
+};
 
 class FilesPickerPreview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.picker = null;
-    this.state = {
-      files: []
-    };
-  }
-
-  onFilesChange = (files) => {
-    this.setState(
-      {
-        files: files
-      },
-      () => {
-        console.log(this.state.files);
-      }
-    );
-  };
-
-  onFilesError = (error) => {
-    console.log(`error code ${error.code}: ${error.message}`);
-  };
-
   filesRemoveOne = (file) => {
-    this.picker.removeFile(file);
+    this.props.getPicker().removeFile(file);
   };
 
   filesRemoveAll = () => {
-    this.picker.removeFiles();
+    this.props.getPicker().removeFiles();
   };
 
   render() {
+    const { files, classes } = this.props;
+    if (files.length === 0) return null;
     return (
-      <div>
-        <h1>Example 1 - List</h1>
-        <FilesPicker
-          ref={(picker) => {
-            this.picker = picker;
-          }}
-          className="files-dropzone-list"
-          style={{ height: '100px' }}
-          onChange={this.onFilesChange}
-          onError={this.onFilesError}
-          multiple
-          maxFiles={10}
-          maxFileSize={10000000}
-          minFileSize={0}
-          clickable
-        >
-          Drop files here or click to upload
-        </FilesPicker>
-        <button onClick={this.filesRemoveAll}>Remove All Files</button>
-        {this.state.files.length > 0
-          ? <div className="files-list">
-            <ul>
-              {this.state.files.map((file) => {
-                return (
-                  <li className="files-list-item" key={file.id}>
-                    <div className="files-list-item-preview">
-                      {file.preview.type === 'image'
-                        ? <img className="files-list-item-preview-image" src={file.preview.url} />
-                        : <div className="files-list-item-preview-extension">
-                          {file.extension}
-                        </div>}
-                    </div>
-                    <div className="files-list-item-content">
-                      <div className="files-list-item-content-item files-list-item-content-item-1">
-                        {file.name}
-                      </div>
-                      <div className="files-list-item-content-item files-list-item-content-item-2">
-                        {file.sizeReadable}
-                      </div>
-                    </div>
-                    <div
-                      id={file.id}
-                      className="files-list-item-remove"
-                        onClick={this.filesRemoveOne.bind(this, file)} // eslint-disable-line
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          : null}
+      <div className={classes.container}>
+        <div className={classes.removeAll}>
+          <DeleteForeverIcon onClick={this.filesRemoveAll} />
+        </div>
+        <div className={classes.files}>
+          {files.map((file) => {
+            return (
+              <div className={classes.file} key={file.id}>
+                {file.preview.type === 'image'
+                  ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
+                  : <InsertDriveFileIcon />}
+                <div className={classes.action}>
+                  <CancelIcon
+                    onClick={() => {
+                      this.filesRemoveOne(file);
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
 }
 
-export default FilesPickerPreview;
+export default withStyles(styles, { withTheme: true })(FilesPickerPreview);

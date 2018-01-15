@@ -11,7 +11,7 @@ export const renderTextBoxField = ({ input: { name, value, onChange }, placehold
   return <TextBoxField onCtrlEnter={onCtrlEnter} name={name} placeholder={placeholder} value={value} onChange={onChange} />;
 };
 
-export const renderAnonymousCheckbox = ({ input: { value, onChange }, label, classes }) => {
+export const renderAnonymousCheckboxField = ({ input: { value, onChange }, label, classes }) => {
   return (
     <Checkbox
       icon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
@@ -27,24 +27,33 @@ export const renderAnonymousCheckbox = ({ input: { value, onChange }, label, cla
   );
 };
 
-export const renderFilesList = ({ input: { value, onChange } }) => {
-  return (
-    <FilesPicker
-      className="files-dropzone-list"
-      style={{ height: '100px' }}
-      value={value}
-      onChange={onChange}
-      onError={this.onFilesError}
-      multiple
-      maxFiles={10}
-      maxFileSize={10000000}
-      minFileSize={0}
-      clickable
-    >
-      <InsertDriveFileIcon />
-    </FilesPicker>
-  );
-};
+export class RenderFilesListField extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.picker = null;
+  }
+
+  render() {
+    const { input: { value, onChange } } = this.props;
+    return (
+      <FilesPicker
+        ref={(picker) => {
+          this.picker = picker;
+        }}
+        className="files-dropzone-list"
+        value={value}
+        onChange={onChange}
+        multiple
+        maxFiles={10}
+        maxFileSize={10000000}
+        minFileSize={0}
+        clickable
+      >
+        <InsertDriveFileIcon />
+      </FilesPicker>
+    );
+  }
+}
 
 // export const renderSelect = ({ input: { name, value, onChange }, options, label, canAdd, errors, displayErrors, style }) => {
 //   const hasError = displayErrors && errors && name in errors;

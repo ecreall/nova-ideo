@@ -9,7 +9,7 @@ import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 
 import { commentFragment } from '../../graphql/queries';
-import { renderTextBoxField, renderAnonymousCheckbox } from './utils';
+import { renderTextBoxField, renderAnonymousCheckboxField, RenderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 
 const styles = (theme) => {
@@ -110,17 +110,14 @@ const styles = (theme) => {
 export class DumbCommentForm extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.comment = null;
+    this.filesPicker = null;
   }
 
-  componentDidMount() {
-    console.log(this.comment.ref);
-  }
   handleSubmit = () => {
     const { globalProps, formData, valid, form, context, action } = this.props;
     if (valid) {
       // we must encode the file name
-      const files = [];
+      const files = formData.values.files || [];
       const anonymous = Boolean(formData.values.anonymous);
       this.props.commentObject({
         context: context,
@@ -137,13 +134,19 @@ export class DumbCommentForm extends React.Component {
   render() {
     const { formData, channel, globalProps: { siteConf }, classes } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
+    const files = formData && formData.values && formData.values.files ? formData.values.files : [];
     const isDiscuss = channel && channel.isDiscuss;
     const withAnonymous = siteConf.anonymisation && !isDiscuss;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     return (
       <div className={classes.contentContainerStyle}>
         <div className={classes.container}>
-          <FilesPickerPreview />
+          <FilesPickerPreview
+            files={files}
+            getPicker={() => {
+              return this.filesPicker.getRenderedComponent().picker;
+            }}
+          />
           <div
             className={classNames(classes.inputContainer, {
               [classes.inputContainerAnonymous]: anonymousSelected
@@ -151,9 +154,6 @@ export class DumbCommentForm extends React.Component {
           >
             <div className={classes.textField}>
               <Field
-                ref={(comment) => {
-                  this.comment = comment;
-                }}
                 props={{
                   onCtrlEnter: this.handleSubmit
                 }}
@@ -180,11 +180,19 @@ export class DumbCommentForm extends React.Component {
                     label: 'RemainAnonymous'
                   }}
                   name="anonymous"
-                  component={renderAnonymousCheckbox}
+                  component={renderAnonymousCheckboxField}
                   type="boolean"
                 />
                 : null}
             </div>
+            <Field
+              withRef
+              ref={(filesPicker) => {
+                this.filesPicker = filesPicker;
+              }}
+              name="files"
+              component={RenderFilesListField}
+            />
             <div className={classes.action}>
               <SendIcon
                 onClick={hasComment ? this.handleSubmit : undefined}

@@ -2,12 +2,8 @@ import React from 'react';
 
 class FilesPicker extends React.Component {
   static defaultProps = {
-    onChange: function (files) {
-      console.log(files);
-    },
-    onError: function (error, file) {
-      console.log(`error code ${error.code}: ${error.message}`);
-    },
+    onChange: function () {},
+    onError: function () {},
     className: 'files-dropzone',
     dropActiveClassName: 'files-dropzone-active',
     accepts: null,
@@ -86,7 +82,7 @@ class FilesPicker extends React.Component {
         files: this.props.multiple === false ? files : [...this.state.files, ...files]
       },
       () => {
-        this.props.onChange.call(this, this.state.files);
+        this.props.onChange(this.state.files);
       }
     );
   };
@@ -205,7 +201,7 @@ class FilesPicker extends React.Component {
         })
       },
       () => {
-        this.props.onChange.call(this, this.state.files);
+        this.props.onChange(this.state.files);
       }
     );
   };
@@ -216,7 +212,7 @@ class FilesPicker extends React.Component {
         files: []
       },
       () => {
-        this.props.onChange.call(this, this.state.files);
+        this.props.onChange(this.state.files);
       }
     );
   };
