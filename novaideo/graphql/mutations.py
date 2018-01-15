@@ -41,8 +41,7 @@ class CreateIdea(graphene.Mutation):
         uploaded_files = []
         if attached_files:
             for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(
-                    'variables.attachedFiles.'+str(index))
+                file_storage = context.POST.get(str(index))
                 fp = file_storage.file
                 fp.seek(0)
                 uploaded_files.append({
@@ -101,8 +100,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         uploaded_files = []
         if attached_files:
             for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(
-                    'variables.attachedFiles.'+str(index))
+                file_storage = context.POST.get(str(index))
                 fp = file_storage.file
                 fp.seek(0)
                 uploaded_files.append({
@@ -252,8 +250,7 @@ class CommentObject(graphene.Mutation):
         uploaded_files = []
         if attached_files:
             for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(
-                    'variables.attachedFiles.'+str(index))
+                file_storage = context.POST.get(str(index))
                 fp = file_storage.file
                 fp.seek(0)
                 uploaded_files.append({
