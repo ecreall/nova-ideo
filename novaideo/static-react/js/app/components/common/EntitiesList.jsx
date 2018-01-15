@@ -16,9 +16,9 @@ const styles = {
     backgroundColor: 'rgba(0, 0, 0, 0.1)'
   },
   progress: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center'
+    position: 'relative',
+    textAlign: 'center',
+    padding: 20
   }
 };
 
@@ -26,14 +26,14 @@ function emptyContainer({ children }) {
   return children;
 }
 
-function scrollbarsContainer({ children, handleScroll, scrollbarStyle }) {
+function scrollbarsContainer({ children, handleScroll, scrollbarStyle, thumbVerticalStyle }) {
   return (
     <Scrollbars
       renderView={(props) => {
         return <div {...props} style={{ ...props.style, ...scrollbarStyle }} />;
       }}
       renderThumbVertical={(props) => {
-        return <div {...props} style={{ ...props.style, ...styles.thumbVertical }} />;
+        return <div {...props} style={{ ...props.style, ...thumbVerticalStyle }} />;
       }}
       onScrollFrame={handleScroll}
     >
@@ -54,7 +54,8 @@ export class DumbEntitiesList extends React.Component {
   static defaultProps = {
     virtualized: false,
     onEndReachedThreshold: 0.7,
-    progressStyle: { size: 30 }
+    progressStyle: { size: 30 },
+    scrollbarStyle: {}
   };
 
   constructor(props) {
@@ -209,10 +210,11 @@ export class DumbEntitiesList extends React.Component {
       itemdata,
       itemHeightEstimation,
       isGlobal,
-      style,
+      className,
       scrollbarStyle,
       reverted,
-      virtualized
+      virtualized,
+      Divider
     } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
@@ -222,7 +224,7 @@ export class DumbEntitiesList extends React.Component {
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
       return (
-        <div style={style}>
+        <div className={className}>
           {this.renderProgress()}
         </div>
       );
@@ -232,11 +234,11 @@ export class DumbEntitiesList extends React.Component {
     const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
     const ItemContainer = virtualized ? itemContainer : emptyContainer;
     return (
-      <div style={style}>
+      <div className={className}>
         <ScrollContainer
           handleScroll={this.handleScroll}
           scrollbarStyle={{
-            ...scrollbarStyle,
+            ...scrollbarStyle.container,
             ...(reverted
               ? {
                 display: 'flex',
@@ -244,12 +246,13 @@ export class DumbEntitiesList extends React.Component {
               }
               : {})
           }}
+          thumbVerticalStyle={{ ...styles.thumbVertical, ...scrollbarStyle.thumbVertical }}
         >
           {entities && entities.length > 0
             ? entities.map((item, index) => {
               const previous = entities[index - 1];
               const next = entities[index + 1];
-              return (
+              const result = [
                 <ItemContainer itemHeightEstimation={itemHeightEstimation}>
                   <ListItem
                     index={index}
@@ -259,7 +262,19 @@ export class DumbEntitiesList extends React.Component {
                     node={item.node}
                   />
                 </ItemContainer>
-              );
+              ];
+              if (Divider) {
+                result.push(
+                  <Divider
+                    index={index}
+                    next={next && next.node}
+                    previous={previous && previous.node}
+                    node={item.node}
+                    itemdata={itemdata}
+                  />
+                );
+              }
+              return result;
             })
             : null}
           {data.networkStatus === 3 && dataEntities.pageInfo.hasNextPage && this.renderProgress()}

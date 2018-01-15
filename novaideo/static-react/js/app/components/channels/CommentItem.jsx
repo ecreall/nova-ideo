@@ -1,25 +1,26 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
-import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
 
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Url from '../common/Url';
-import Divider from './Divider';
 
 const styles = {
   container: {
-    paddingLeft: 30,
     paddingRight: 30,
     paddingTop: 1,
     paddingBottom: 2,
     display: 'flex',
     '&:hover': {
-      backgroundColor: '#f9f9f9'
+      backgroundColor: '#f9f9f9',
+      '& .creation-date': {
+        display: 'block'
+      }
     }
   },
   body: {
@@ -29,11 +30,14 @@ const styles = {
   },
   left: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'start',
     paddingRight: 10,
-    width: 45,
+    width: 75,
     margin: '8px 0'
+  },
+  leftDateOnly: {
+    margin: '5px 0'
   },
   header: {
     display: 'flex',
@@ -52,6 +56,12 @@ const styles = {
     color: '#999999ff',
     paddingLeft: 5,
     fontSize: 13
+  },
+  creationDate: {
+    display: 'none',
+    color: '#999999ff',
+    fontSize: 13,
+    height: 0
   },
 
   bodyContent: {
@@ -107,29 +117,9 @@ export class DumbCommentItem extends React.Component {
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
   };
 
-  addDateSeparator = () => {
-    const { node, next } = this.props;
-    if (!next) return true;
-    const createdAt = Moment(node.createdAt).format('D-M-YYYY');
-    const nextCreatedAt = Moment(next.createdAt).format('D-M-YYYY');
-    return nextCreatedAt !== createdAt;
-  };
-
-  addUnread = () => {
-    const { node, next, itemdata } = this.props;
-    if (!next) return false;
-    const unreadComments = itemdata.unreadCommentsIds;
-    const isUnread = unreadComments.includes(node.id);
-    const nextIsUnread = unreadComments.includes(next.id);
-    return isUnread && !nextIsUnread;
-  };
-
   render() {
-    const { node, classes, index, channelsDrawer } = this.props;
+    const { node, classes } = this.props;
     const ignoreMetaData = this.ignoreMetaData();
-    const addUnread = this.addUnread();
-    const addDateSeparator = this.addDateSeparator();
-    const dateSeparator = addDateSeparator && Moment(node.createdAt).format(I18n.t('date.format'));
     const author = node.author;
     const authorPicture = author.picture;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
@@ -140,19 +130,17 @@ export class DumbCommentItem extends React.Component {
       : [];
     return (
       <div>
-        {(dateSeparator || addUnread) &&
-          <Divider
-            index={index}
-            alert={addUnread}
-            message={dateSeparator}
-            alertMessage="Unread"
-            eventId="comments-scroll"
-            shift={channelsDrawer ? 220 : 0}
-            fixedTop={65}
-          />}
         <div className={classes.container}>
-          <div className={classes.left}>
-            {!ignoreMetaData && <Avatar size={35} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
+          <div
+            className={classNames(classes.left, {
+              [classes.leftDateOnly]: ignoreMetaData
+            })}
+          >
+            {ignoreMetaData
+              ? <div className={classNames('creation-date', classes.creationDate)}>
+                {createdAt}
+              </div>
+              : <Avatar size={35} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
           </div>
           <div className={classes.body}>
             {!ignoreMetaData &&
@@ -197,10 +185,4 @@ export class DumbCommentItem extends React.Component {
   }
 }
 
-export const mapStateToProps = (state) => {
-  return {
-    channelsDrawer: state.apps.chatApp.drawer
-  };
-};
-
-export default withStyles(styles)(connect(mapStateToProps)(DumbCommentItem));
+export default withStyles(styles)(DumbCommentItem);

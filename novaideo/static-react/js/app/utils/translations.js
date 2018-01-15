@@ -4,7 +4,8 @@ const Translations = {
     date: {
       format: "D MMMM YYYY",
       format2: "DD-MM-YYYY",
-      format3: "D MMMM YYYY h \\h mm"
+      format3: "D MMMM YYYY h \\h mm",
+      today: "Today"
     },
     time: {
       format: "h \\h mm"
@@ -14,7 +15,8 @@ const Translations = {
     date: {
       format: "MMMM Do, YYYY",
       format2: "YYYY-MM-DD",
-      format3: "MMMM Do, YYYY h \\h mm"
+      format3: "MMMM Do, YYYY h \\h mm",
+      today: "Aujourd'hui"
     },
     time: {
       format: "h \\h mm"

@@ -11,6 +11,7 @@ import { commentsQuery } from '../graphql/queries';
 import EntitiesList from './common/EntitiesList';
 import CommentItem from './channels/CommentItem';
 import ChatAppRight from './channels/ChatAppRight';
+import Divider from './channels/Divider';
 import Comment from './forms/Comment';
 
 const styles = (theme) => {
@@ -33,6 +34,9 @@ const styles = (theme) => {
     right: {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #e8e8e8'
+    },
+    list: {
+      height: 'calc(100% - 55px)'
     }
   };
 };
@@ -75,6 +79,7 @@ export class DumbChatApp extends React.Component {
                 return entity.node.text.toLowerCase().search(text) >= 0;
               }}
               ListItem={CommentItem}
+              Divider={Divider}
               itemdata={{
                 channel: channelData,
                 unreadCommentsIds: channelData
@@ -84,9 +89,7 @@ export class DumbChatApp extends React.Component {
                   : []
               }}
               itemHeightEstimation={120}
-              style={{
-                height: 'calc(100% - 55px)'
-              }}
+              className={classes.list}
             />
             <Comment
               key={channel}

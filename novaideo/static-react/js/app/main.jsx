@@ -16,11 +16,11 @@ function theme() {
     palette: {
       primary: {
         ...teal,
-        [primaryCode]: '#3e313c' // test color to remove.
+        [primaryCode]: '#4D394B' // test color to remove.
       },
       secondary: grey,
       tertiary: {
-        color: teal[500],
+        color: '#4C9689',
         hover: {
           color: 'white'
         }

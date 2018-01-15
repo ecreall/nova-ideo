@@ -10,6 +10,7 @@ import { withStyles } from 'material-ui/styles';
 
 import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckbox } from './utils';
+import FilesPickerPreview from './widgets/FilesPickerPreview';
 
 const styles = (theme) => {
   return {
@@ -107,6 +108,14 @@ const styles = (theme) => {
 };
 
 export class DumbCommentForm extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.comment = null;
+  }
+
+  componentDidMount() {
+    console.log(this.comment.ref);
+  }
   handleSubmit = () => {
     const { globalProps, formData, valid, form, context, action } = this.props;
     if (valid) {
@@ -134,6 +143,7 @@ export class DumbCommentForm extends React.Component {
     return (
       <div className={classes.contentContainerStyle}>
         <div className={classes.container}>
+          <FilesPickerPreview />
           <div
             className={classNames(classes.inputContainer, {
               [classes.inputContainerAnonymous]: anonymousSelected
@@ -141,6 +151,9 @@ export class DumbCommentForm extends React.Component {
           >
             <div className={classes.textField}>
               <Field
+                ref={(comment) => {
+                  this.comment = comment;
+                }}
                 props={{
                   onCtrlEnter: this.handleSubmit
                 }}
