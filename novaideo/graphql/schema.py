@@ -144,11 +144,15 @@ class File(Node, graphene.ObjectType):
     url = graphene.String()
     mimetype = graphene.String()
     is_image = graphene.Boolean()
+    variations = graphene.List(graphene.String)
 
     def resolve_is_image(self, args, context, info):  #pylint: disable=W0613
         return self.mimetype.startswith('image') or \
             self.mimetype.startswith(
                 'application/x-shockwave-flash')
+
+    def resolve_variations(self, args, context, info):  #pylint: disable=W0613
+        return list(self.keys())
 
 
 class Person(Node, Debatable, graphene.ObjectType):
