@@ -10,9 +10,7 @@ export class DumbCommentDivider extends React.Component {
   addDateSeparator = () => {
     const { node, next } = this.props;
     if (!next) return true;
-    const createdAt = Moment(node.createdAt).format('D-M-YYYY');
-    const nextCreatedAt = Moment(next.createdAt).format('D-M-YYYY');
-    return nextCreatedAt !== createdAt;
+    return !Moment(node.createdAt).isSame(Moment(next.createdAt), 'day');
   };
 
   addUnread = () => {
@@ -28,7 +26,7 @@ export class DumbCommentDivider extends React.Component {
     const { node, index, channelsDrawer } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
-    const isToday = Moment().diff(Moment(node.createdAt), 'days') === 0;
+    const isToday = Moment().isSame(Moment(node.createdAt), 'day');
     const dateSeparator =
       addDateSeparator && (isToday ? I18n.t('date.today') : Moment(node.createdAt).format(I18n.t('date.format')));
     return dateSeparator || addUnread

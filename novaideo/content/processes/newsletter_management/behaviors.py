@@ -52,7 +52,7 @@ def get_adapted_content(email, request, last_sending_date=None):
     if last_sending_date:
         published_at_index = novaideo_catalog['published_at']
         query = published_at_index.gt(last_sending_date)
-
+    
     entities = find_entities(
         interfaces=[IProposal, Iidea],
         metadata_filter={

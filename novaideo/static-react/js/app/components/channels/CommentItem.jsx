@@ -110,10 +110,10 @@ export class DumbCommentItem extends React.Component {
     if (!next) return false;
     const author = node.author.id;
     const nextAuthor = next.author.id;
+    const optimisticAuthorId = `${nextAuthor}comment`;
     const createdAt = new Date(node.createdAt);
     const nextCreatedAt = new Date(next.createdAt);
     const dateDiff = (createdAt - nextCreatedAt) / 3600000;
-    const optimisticAuthorId = `${nextAuthor}comment`;
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
   };
 

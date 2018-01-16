@@ -6,19 +6,14 @@ import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import SendIcon from 'material-ui-icons/Send';
-import AddIcon from 'material-ui-icons/Add';
-import IconButton from 'material-ui/IconButton';
-import { MenuItem, MenuList } from 'material-ui/Menu';
-import Grow from 'material-ui/transitions/Grow';
-import Paper from 'material-ui/Paper';
-import { Manager, Target, Popper } from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
-
 import { withStyles } from 'material-ui/styles';
+import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 
 import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckboxField, RenderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
+import CommentMenu from './CommentMenu';
 
 const styles = (theme) => {
   return {
@@ -118,51 +113,26 @@ const styles = (theme) => {
     },
     maskChecked: {
       color: theme.palette.warning[700]
-    },
-    popperClose: {
-      pointerEvents: 'none'
-    },
-    menu: {
-      flex: 1,
-      display: 'flex',
-      position: 'absolute',
-      alignItems: 'center',
-      height: '100%',
-      zIndex: 1,
-      '&:hover': {
-        backgroundColor: theme.palette.tertiary.color
-      }
-    },
-    menuOpen: {
-      backgroundColor: theme.palette.tertiary.color
-    },
-    menuButton: {
-      '&:hover': {
-        color: theme.palette.tertiary.hover.color
-      }
-    },
-    buttonOpen: {
-      color: theme.palette.tertiary.hover.color
     }
   };
 };
+
+function renderMenuItem({ Icon, title, classes }) {
+  return (
+    <ListItem>
+      <ListItemIcon>
+        <Icon />
+      </ListItemIcon>
+      <ListItemText primary={title} />
+    </ListItem>
+  );
+}
 
 export class DumbCommentForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.filesPicker = null;
-    this.state = {
-      menu: false
-    };
   }
-
-  openMenu = () => {
-    this.setState({ menu: true });
-  };
-
-  closeMenu = () => {
-    this.setState({ menu: false });
-  };
 
   handleSubmit = () => {
     const { globalProps, formData, valid, form, context, action } = this.props;
@@ -187,7 +157,6 @@ export class DumbCommentForm extends React.Component {
 
   render() {
     const { formData, channel, globalProps: { siteConf }, classes } = this.props;
-    const { menu } = this.state;
     const hasComment = formData && formData.values && formData.values.comment;
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
@@ -210,48 +179,25 @@ export class DumbCommentForm extends React.Component {
               [classes.inputContainerAnonymous]: anonymousSelected
             })}
           >
-            <Manager
-              className={classNames(classes.menu, {
-                [classes.menuOpen]: menu
-              })}
-            >
-              <Target>
-                <IconButton
-                  className={classNames(classes.menuButton, {
-                    [classes.buttonOpen]: menu
-                  })}
-                  aria-owns={menu ? 'comment-menu-list' : null}
-                  aria-haspopup="true"
-                  onClick={this.openMenu}
-                >
-                  <AddIcon />
-                </IconButton>
-              </Target>
-              <Popper placement="top-start" eventsEnabled={menu} className={classNames({ [classes.popperClose]: !menu })}>
-                <ClickAwayListener onClickAway={this.closeMenu}>
-                  <Grow in={menu} id="comment-menu-list" style={{ transformOrigin: '0 0 0' }}>
-                    <Paper elevation={6}>
-                      <MenuList role="menu">
-                        <MenuItem onClick={this.closeMenu}>
-                          <Field
-                            props={{
-                              title: 'Add files'
-                            }}
-                            withRef
-                            ref={(filesPicker) => {
-                              this.filesPicker = filesPicker;
-                            }}
-                            name="files"
-                            component={RenderFilesListField}
-                          />
-                        </MenuItem>
-                      </MenuList>
-                    </Paper>
-                  </Grow>
-                </ClickAwayListener>
-              </Popper>
-            </Manager>
-
+            <CommentMenu
+              fields={[
+                <Field
+                  props={{
+                    node: renderMenuItem({
+                      icon: InsertDriveFileIcon,
+                      title: 'Add files',
+                      classes: classes
+                    })
+                  }}
+                  withRef
+                  ref={(filesPicker) => {
+                    this.filesPicker = filesPicker;
+                  }}
+                  name="files"
+                  component={RenderFilesListField}
+                />
+              ]}
+            />
             <div className={classes.textField}>
               <Field
                 props={{
