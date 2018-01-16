@@ -41,7 +41,8 @@ from novaideo.views.filter import find_entities
 CONTENT_TEMPLATE = 'novaideo:views/templates/newsletter_content_template.pt'
 
 
-def get_adapted_content(email, request, last_sending_date=None):
+def get_adapted_content(
+    email, request, interfaces=[Iidea], content_types=['idea'], last_sending_date=None):
     body = ''
     novaideo_catalog = find_catalog('novaideo')
     identifier_index = novaideo_catalog['identifier']
@@ -54,9 +55,9 @@ def get_adapted_content(email, request, last_sending_date=None):
         query = published_at_index.gt(last_sending_date)
 
     entities = find_entities(
-        interfaces=[IProposal, Iidea],
+        interfaces=interfaces,
         metadata_filter={
-            'content_types': ['idea', 'proposal'],
+            'content_types': content_types,
             'states': ['published'],
             'keywords': getattr(member, 'keywords', [])},
         sort_on='release_date',
@@ -86,12 +87,18 @@ def send_newsletter_content(newsletter, request):
         last_sending_date = datetime.datetime.combine(
             last_sending_date,
             datetime.datetime.min.time()).replace(tzinfo=pytz.UTC)
+    
+    interfaces = [Iidea]
+    content_types = ['idea']
+    if root.manage_proposals:
+        interfaces.append(IProposal)
+        content_types.append('proposal')
 
     for (key, user_data) in newsletter.subscribed.items():
         email = user_data.get('email', None)
         if email:
             content = get_adapted_content(
-                email, request, last_sending_date) if \
+                email, request, interfaces, content_types, last_sending_date) if \
                 include_adapted_content else ''
             if include_adapted_content and not content:
                 continue
