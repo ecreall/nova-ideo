@@ -7,6 +7,7 @@ import update from 'immutability-helper';
 import Grid from 'material-ui/Grid';
 import { Translate, I18n } from 'react-redux-i18n';
 import Avatar from 'material-ui/Avatar';
+import Tooltip from 'material-ui/Tooltip';
 import { CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
@@ -21,54 +22,66 @@ import * as constants from '../../constants';
 import { actionFragment } from '../../graphql/queries';
 import { getActions } from '../../utils/entities';
 import { updateApp } from '../../actions/actions';
+import Comment from '../forms/Comment';
 
 const styles = (theme) => {
   return {
     ideaItem: {
       marginBottom: 10,
-      marginTop: 5
+      marginTop: 5,
+      display: 'flex',
+      position: 'relative',
+      '&:hover': {
+        backgroundColor: '#f9f9f9'
+      }
     },
     header: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 5,
-      paddingLeft: 10
+      margin: '10px 0'
     },
     headerTitle: {
       display: 'flex',
-      fontSize: 13,
-      color: '#999999ff',
-      justifyContent: 'space-around',
-      paddingLeft: 10
+      fontSize: 15,
+      color: '#2c2d30',
+      fontWeight: '900',
+      justifyContent: 'space-around'
     },
     headerAddOn: {
-      fontSize: 10,
       color: '#999999ff',
-      paddingLeft: 5
+      paddingLeft: 5,
+      fontSize: 13
     },
     body: {
       display: 'flex',
-      flexDirection: 'row',
-      marginTop: -5,
-      padding: 5
+      flexDirection: 'column',
+      width: '100%'
     },
     bodyTitle: {
       fontWeight: 700
     },
-    bodyLeft: {
-      width: 60,
+    left: {
       display: 'flex',
-      justifyContent: 'center',
       alignItems: 'center',
-      paddingTop: 10,
-      paddingBottom: 10
+      paddingRight: 10,
+      margin: '8px 0',
+      flexDirection: 'column'
+    },
+    leftActions: {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      paddingTop: 15
     },
     bodyContent: {
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'column',
-      width: '100%'
+      width: '100%',
+      height: '100%'
     },
     textContainer: {
       display: 'flex',
@@ -122,14 +135,6 @@ const evaluationActions = {
 };
 
 export class DumbIdeaItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opened: false,
-      actionOpened: false
-    };
-  }
-
   getExaminationValue = () => {
     const { node } = this.props;
     if (node.state.includes('favorable')) return 'bottom';
@@ -194,13 +199,9 @@ export class DumbIdeaItem extends React.Component {
   };
 
   performAction = (action, idea) => {
-    const { network, select, deselect, openChannel } = this.props;
+    const { network, select, deselect, openChannel, globalProps } = this.props;
     if (action.nodeId === 'comment') {
-      if (!this.state.actionOpened) {
-        this.setState({ actionOpened: true }, () => {
-          return openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id, subject: idea.id });
-        });
-      }
+      openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id, subject: idea.id });
     } else if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else {
@@ -222,11 +223,16 @@ export class DumbIdeaItem extends React.Component {
   };
 
   render() {
-    const { node, adapters, globalProps, classes } = this.props;
-    const instance = { support_ideas: true, examine_ideas: false };
+    const { node, adapters, globalProps: { siteConf }, classes } = this.props;
     const author = node.author;
     const authorPicture = author.picture;
-    const createdAt = Moment(node.createdAt).format(I18n.t('date.format3'));
+    const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
+    const today = Moment();
+    const isToday = today.isSame(Moment(node.createdAt), 'day');
+    const yesterday = today.subtract(1, 'days').startOf('day');
+    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
+    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
+    const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
     const images = node.attachedFiles
       ? node.attachedFiles.filter((image) => {
         return image.isImage;
@@ -234,20 +240,17 @@ export class DumbIdeaItem extends React.Component {
       : [];
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
+    // const commentAction = node
+    //   ? node.actions.filter((action) => {
+    //     return action.behaviorId === 'comment';
+    //   })[0]
+    //   : null;
     return (
       <div className={classes.ideaItem}>
-        <div className={classes.header}>
+        <div className={classes.left}>
           <Avatar size={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
-          <span className={classes.headerTitle}>
-            {author.title}
-          </span>
-          <span className={classes.headerAddOn}>
-            {createdAt}
-          </span>
-        </div>
-        <div className={classes.body}>
-          <div className={classes.bodyLeft}>
-            {instance.support_ideas && node.state.includes('published')
+          <div className={classes.leftActions}>
+            {siteConf.supportIdeas && node.state.includes('published')
               ? <Evaluation
                 icon={{
                   top:
@@ -266,9 +269,21 @@ export class DumbIdeaItem extends React.Component {
                 active={node.state.includes('submitted_support')}
               />
               : null}
-            {instance.examine_ideas && node.state.includes('examined')
-              ? <Examination message={node.opinion} value={this.getExaminationValue()} />
+            {siteConf.examineIdeas && node.state.includes('examined')
+              ? <Examination title="Examination" message={node.opinion} value={this.getExaminationValue()} />
               : null}
+          </div>
+        </div>
+        <div className={classes.body}>
+          <div className={classes.header}>
+            <span className={classes.headerTitle}>
+              {author.title}
+            </span>
+            <Tooltip id={node.id} title={createdAtF3} placement="top">
+              <span className={classes.headerAddOn}>
+                {createdAt}
+              </span>
+            </Tooltip>
           </div>
           <div className={classes.bodyContent}>
             <div>
@@ -283,7 +298,7 @@ export class DumbIdeaItem extends React.Component {
                 </Grid>
                 {images.length > 0 &&
                   <Grid item xs={12} sm={5}>
-                    <ImagesPreview navigation={globalProps.navigation} images={images} />
+                    <ImagesPreview images={images} />
                   </Grid>}
               </Grid>
             </div>
@@ -306,6 +321,14 @@ export class DumbIdeaItem extends React.Component {
                 })}
               </CardActions>
             </div>
+            {/* <Comment
+              key={node.channel.id}
+              form={node.channel.id}
+              action={commentAction}
+              context={node.oid}
+              rootContext={node.oid}
+              channel={node.channel}
+            /> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,26 @@
 /* eslint-disable import/prefer-default-export */
 import { gql } from 'react-apollo';
 
+export const siteQuery = gql`
+  query SiteConf {
+    root {
+      siteId
+      keywords
+      canAddKeywords
+      anonymisation
+      moderateProposals
+      moderateIdeas
+      examineProposals
+      examineIdeas
+      supportProposals
+      supportIdeas
+      manageChallenges
+      manageQuestions
+      manageProposals
+    }
+  }
+`;
+
 export const accountQuery = gql`
   query Account {
     account {
@@ -13,11 +33,6 @@ export const accountQuery = gql`
       picture {
         url
       }
-    }
-    root {
-      keywords
-      canAddKeywords
-      anonymisation
     }
   }
 `;

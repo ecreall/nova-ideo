@@ -20,6 +20,9 @@ const styles = (theme) => {
     contentContainerStyle: {
       backgroundColor: 'white'
     },
+    contentContainerStyleAddon: {
+      boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
+    },
     container: {
       paddingLeft: 20,
       paddingRight: 20
@@ -113,17 +116,50 @@ const styles = (theme) => {
     },
     maskChecked: {
       color: theme.palette.warning[700]
+    },
+    menuListItem: {
+      padding: 4,
+      borderRadius: 5,
+      '&:hover, &:focus, &:active': {
+        backgroundColor: theme.palette.info[500],
+        '& .menu-item-icon': {
+          color: 'white'
+        },
+        '& .menu-item-text': {
+          color: 'white',
+          textShadow: '0 1px 0 rgba(0,0,0,.1)'
+        }
+      }
+    },
+    menuListItemText: {
+      fontSize: 15,
+      color: '#2c2d30'
+    },
+    menuListItemTextRoot: {
+      padding: 0
+    },
+    menuListItemIcon: {
+      width: 20,
+      height: 20,
+      marginRight: 10,
+      color: '#a0a0a2'
     }
   };
 };
 
 function renderMenuItem({ Icon, title, classes }) {
   return (
-    <ListItem>
+    <ListItem classes={{ root: classes.menuListItem }}>
       <ListItemIcon>
-        <Icon />
+        <Icon className={classNames('menu-item-icon', classes.menuListItemIcon)} />
       </ListItemIcon>
-      <ListItemText primary={title} />
+      <ListItemText
+        classes={{
+          text: classNames('menu-item-text', classes.menuListItemText),
+          root: classes.menuListItemTextRoot
+        }}
+        primary={title}
+      />
     </ListItem>
   );
 }
@@ -166,7 +202,7 @@ export class DumbCommentForm extends React.Component {
     const withAnonymous = siteConf.anonymisation && !isDiscuss;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     return (
-      <div className={classes.contentContainerStyle}>
+      <div className={classNames(classes.contentContainerStyle, { [classes.contentContainerStyleAddon]: files.length > 0 })}>
         <div className={classes.container}>
           <FilesPickerPreview
             files={files}
@@ -184,7 +220,7 @@ export class DumbCommentForm extends React.Component {
                 <Field
                   props={{
                     node: renderMenuItem({
-                      icon: InsertDriveFileIcon,
+                      Icon: InsertDriveFileIcon,
                       title: 'Add files',
                       classes: classes
                     })

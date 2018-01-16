@@ -2,6 +2,7 @@ import React from 'react';
 import DeleteForeverIcon from 'material-ui-icons/DeleteForever';
 import CancelIcon from 'material-ui-icons/Cancel';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
@@ -73,7 +74,9 @@ class FilesPickerPreview extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.removeAll}>
-          <DeleteForeverIcon onClick={this.filesRemoveAll} />
+          <Tooltip title="Rmove all files" placement="top">
+            <DeleteForeverIcon onClick={this.filesRemoveAll} />
+          </Tooltip>
         </div>
         <div className={classes.files}>
           {files.map((file) => {
@@ -83,14 +86,16 @@ class FilesPickerPreview extends React.Component {
                   ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
                   : <InsertDriveFileIcon />}
                 <div className={classes.action}>
-                  <CancelIcon
-                    classes={{
-                      root: classes.remove
-                    }}
-                    onClick={() => {
-                      this.filesRemoveOne(file);
-                    }}
-                  />
+                  <Tooltip title="Remove" placement="top">
+                    <CancelIcon
+                      classes={{
+                        root: classes.remove
+                      }}
+                      onClick={() => {
+                        this.filesRemoveOne(file);
+                      }}
+                    />
+                  </Tooltip>
                 </div>
               </div>
             );

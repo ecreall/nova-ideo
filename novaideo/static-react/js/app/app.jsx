@@ -27,8 +27,7 @@ class DumbApp extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { data } = nextProps;
     this.props.updateGlobalProps({
-      account: data.account,
-      siteConf: data.root
+      account: data.account
     });
   }
 

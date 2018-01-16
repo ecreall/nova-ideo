@@ -26,11 +26,15 @@ export class DumbCommentDivider extends React.Component {
     const { node, index, channelsDrawer } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
-    const isToday = Moment().isSame(Moment(node.createdAt), 'day');
-    const dateSeparator =
-      addDateSeparator && (isToday ? I18n.t('date.today') : Moment(node.createdAt).format(I18n.t('date.format')));
+    const today = Moment();
+    const isToday = today.isSame(Moment(node.createdAt), 'day');
+    const yesterday = today.subtract(1, 'days').startOf('day');
+    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
+    const format = (isToday && 'date.today') || (isYesterday && 'date.yesterday');
+    const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
     return dateSeparator || addUnread
       ? <Divider
+        reverted
         index={index}
         alert={addUnread}
         message={dateSeparator}

@@ -34,6 +34,18 @@ const styles = (theme) => {
         }
       }
     },
+    paper: {
+      borderRadius: 6,
+      border: '1px solid rgba(0,0,0,.15)'
+    },
+    menuItem: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 'auto',
+      '&:hover': {
+        backgroundColor: 'transparent'
+      }
+    },
     menuOpen: {
       backgroundColor: theme.palette.tertiary.color,
       border: 'solid 1px',
@@ -85,11 +97,11 @@ class CommentMenu extends React.Component {
         <Popper placement="top-start" eventsEnabled={menu} className={classNames({ [classes.popperClose]: !menu })}>
           <ClickAwayListener onClickAway={this.closeMenu}>
             <Grow in={menu} id="comment-menu-list" style={{ transformOrigin: '0 0 0' }}>
-              <Paper elevation={6}>
+              <Paper elevation={6} className={classes.paper}>
                 <MenuList role="menu">
                   {fields.map((field) => {
                     return (
-                      <MenuItem onClick={this.closeMenu}>
+                      <MenuItem className={classes.menuItem} onClick={this.closeMenu}>
                         {field}
                       </MenuItem>
                     );

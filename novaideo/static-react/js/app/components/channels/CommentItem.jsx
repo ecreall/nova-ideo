@@ -2,6 +2,7 @@
 import React from 'react';
 import Moment from 'moment';
 import Avatar from 'material-ui/Avatar';
+import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
@@ -16,6 +17,7 @@ const styles = {
     paddingTop: 1,
     paddingBottom: 2,
     display: 'flex',
+    position: 'relative',
     '&:hover': {
       backgroundColor: '#f9f9f9',
       '& .creation-date': {
@@ -102,7 +104,7 @@ const styles = {
   }
 };
 
-const ignoreTimeInterval = 5; // 5 min
+const ignoreTimeInterval = 5; // 5 minutes
 
 export class DumbCommentItem extends React.Component {
   ignoreMetaData = () => {
@@ -113,7 +115,7 @@ export class DumbCommentItem extends React.Component {
     const optimisticAuthorId = `${nextAuthor}comment`;
     const createdAt = new Date(node.createdAt);
     const nextCreatedAt = new Date(next.createdAt);
-    const dateDiff = (createdAt - nextCreatedAt) / 3600000;
+    const dateDiff = (createdAt - nextCreatedAt) / 60000; // minutes
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
   };
 
@@ -123,6 +125,12 @@ export class DumbCommentItem extends React.Component {
     const author = node.author;
     const authorPicture = author.picture;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
+    const today = Moment();
+    const isToday = today.isSame(Moment(node.createdAt), 'day');
+    const yesterday = today.subtract(1, 'days').startOf('day');
+    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
+    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
+    const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
     const images = node.attachedFiles
       ? node.attachedFiles.filter((image) => {
         return image.isImage;
@@ -137,9 +145,11 @@ export class DumbCommentItem extends React.Component {
             })}
           >
             {ignoreMetaData
-              ? <div className={classNames('creation-date', classes.creationDate)}>
-                {createdAt}
-              </div>
+              ? <Tooltip id={node.id} title={createdAtF3} placement="top">
+                <div className={classNames('creation-date', classes.creationDate)}>
+                  {createdAt}
+                </div>
+              </Tooltip>
               : <Avatar size={35} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
           </div>
           <div className={classes.body}>
@@ -148,9 +158,11 @@ export class DumbCommentItem extends React.Component {
                 <span className={classes.headerTitle}>
                   {author.title}
                 </span>
-                <span className={classes.headerAddOn}>
-                  {createdAt}
-                </span>
+                <Tooltip id={node.id} title={createdAtF3} placement="top">
+                  <span className={classes.headerAddOn}>
+                    {createdAt}
+                  </span>
+                </Tooltip>
               </div>}
             <div className={classes.bodyContent}>
               <div>

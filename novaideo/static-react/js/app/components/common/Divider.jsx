@@ -50,6 +50,12 @@ const styles = {
 };
 
 class Divider extends React.Component {
+  static defaultProps = {
+    style: {
+      message: {},
+      messageFixed: {}
+    }
+  };
   constructor(props) {
     super(props);
     this.container = null;
@@ -74,8 +80,10 @@ class Divider extends React.Component {
   updatePosition = () => {
     if (this.container && this.message) {
       const top = this.container.getBoundingClientRect().top;
-      const { shift, fixedTop } = this.props;
-      const left = this.message.offsetLeft + shift;
+      const { shift, fixedTop, isGlobal } = this.props;
+      const messageRecLeft = this.message.getBoundingClientRect().left;
+      const messageOffsetLeft = this.message.offsetLeft;
+      const left = (isGlobal ? messageRecLeft : messageOffsetLeft) + shift;
       if (!this.state.fixed && top < fixedTop) {
         this.setState({ fixed: true, left: left });
       } else if (this.state.fixed && top >= fixedTop + 10) {
@@ -92,13 +100,20 @@ class Divider extends React.Component {
     }
   };
 
+  getZIndex = () => {
+    const { index, reverted } = this.props;
+    return reverted ? 1499 - index : 1499 + index;
+  };
+
   render() {
-    const { index, message, alert, alertMessage, classes } = this.props;
+    const { message, alert, alertMessage, classes, style } = this.props;
+    const fixedStyle = this.state.fixed ? { left: this.state.left, zIndex: this.getZIndex() } : {};
     return (
       <div
         ref={(container) => {
           this.container = container;
         }}
+        style={style.divider}
         className={classNames(classes.divider, {
           [classes.dividerAlert]: alert,
           [classes.dividerFixed]: this.state.fixed
@@ -113,7 +128,7 @@ class Divider extends React.Component {
             ref={(messageContainer) => {
               this.message = messageContainer;
             }}
-            style={this.state.fixed ? { left: this.state.left, zIndex: 1499 - index } : {}}
+            style={{ ...fixedStyle, ...style.message, ...(this.state.fixed ? style.messageFixed : {}) }}
             className={classNames(classes.message, {
               [classes.messageFixed]: this.state.fixed
             })}

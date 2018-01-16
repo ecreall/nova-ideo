@@ -34,15 +34,16 @@ const styles = {
   },
   tokenNbBottom: {
     color: '#ef6e18',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: -10
   },
   tokenNbTop: {
     color: '#4eaf4e',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+    marginTop: -10
+  },
+  inactive: { color: '#a9a9a9', margin: 0 }
 };
-
-const inactiveColor = '#a9a9a9';
 
 const Evaluation = ({ icon, text, action, onPress, active }) => {
   if (active) {
@@ -75,14 +76,14 @@ const Evaluation = ({ icon, text, action, onPress, active }) => {
   }
   return (
     <div style={styles.tokenContainer}>
-      <Icon style={Object.assign({}, styles.tokenTop, { color: inactiveColor })} className={icon.top} />
-      <span style={Object.assign({}, styles.tokenNbTop, { color: inactiveColor })}>
+      <Icon style={{ ...styles.tokenTop, ...styles.inactive }} className={icon.top} />
+      <span style={{ ...styles.tokenNbTop, ...styles.inactive }}>
         {text.top}
       </span>
-      <span style={Object.assign({}, styles.tokenNbBottom, { color: inactiveColor })}>
+      <span style={{ ...styles.tokenNbBottom, ...styles.inactive }}>
         {text.down}
       </span>
-      <Icon style={Object.assign({}, styles.tokenBottom, { color: inactiveColor })} className={icon.down} />
+      <Icon style={{ ...styles.tokenBottom, ...styles.inactive }} className={icon.down} />
     </div>
   );
 };

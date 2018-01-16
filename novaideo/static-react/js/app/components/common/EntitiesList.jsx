@@ -264,7 +264,7 @@ export class DumbEntitiesList extends React.Component {
                 </ItemContainer>
               ];
               if (Divider) {
-                result.push(
+                const divider = (
                   <Divider
                     index={index}
                     next={next && next.node}
@@ -273,6 +273,11 @@ export class DumbEntitiesList extends React.Component {
                     itemdata={itemdata}
                   />
                 );
+                if (reverted) {
+                  result.push(divider);
+                } else {
+                  result.unshift(divider);
+                }
               }
               return result;
             })

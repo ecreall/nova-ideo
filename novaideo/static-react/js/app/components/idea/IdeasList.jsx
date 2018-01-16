@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import IdeaItem from './IdeaItem';
 import EntitiesList from '../common/EntitiesList';
 import { ideasListQuery } from '../../graphql/queries';
+import Divider from './Divider';
 
 export class DumbIdeasList extends React.Component {
   render() {
     const { data } = this.props;
     return (
       <EntitiesList
+        listId="ideas"
         isGlobal
         data={data}
         getEntities={(entities) => {
@@ -22,6 +24,7 @@ export class DumbIdeasList extends React.Component {
         noContentFoundMessage={'noIdeaFound'}
         itemHeightEstimation={200}
         ListItem={IdeaItem}
+        Divider={Divider}
       />
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
+import Tooltip from 'material-ui/Tooltip';
 
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
@@ -11,18 +12,21 @@ export const renderTextBoxField = ({ input: { name, value, onChange }, placehold
 };
 
 export const renderAnonymousCheckboxField = ({ input: { value, onChange }, label, classes }) => {
+  const anonymous = Boolean(value);
   return (
-    <Checkbox
-      icon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
-      checkedIcon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
-      label={label}
-      value={value}
-      onChange={onChange}
-      classes={{
-        default: classes.maskDefault,
-        checked: classes.maskChecked
-      }}
-    />
+    <Tooltip title={anonymous ? 'Disable anonymity' : 'Remain anonymous'} placement="top">
+      <Checkbox
+        icon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
+        checkedIcon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
+        label={label}
+        value={value}
+        onChange={onChange}
+        classes={{
+          default: classes.maskDefault,
+          checked: classes.maskChecked
+        }}
+      />
+    </Tooltip>
   );
 };
 

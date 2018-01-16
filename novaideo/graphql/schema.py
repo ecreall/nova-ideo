@@ -79,6 +79,20 @@ class Root(Node, Debatable, graphene.ObjectType):
     keywords = graphene.List(graphene.String)
     can_add_keywords = graphene.Boolean()
     anonymisation = graphene.Boolean()
+    moderate_proposals = graphene.Boolean()
+    moderate_ideas = graphene.Boolean()
+    examine_proposals = graphene.Boolean()
+    examine_ideas = graphene.Boolean()
+    support_proposals = graphene.Boolean()
+    support_ideas = graphene.Boolean()
+    manage_challenges = graphene.Boolean()
+    manage_questions = graphene.Boolean()
+    manage_proposals = graphene.Boolean()
+    site_id = graphene.String()
+
+    def resolve_site_id(self, args, context, info):  # pylint: disable=W0613
+        # TODO return the site id exp: evolutions...
+        return "default"
 
 
 class Action(Node, graphene.ObjectType):

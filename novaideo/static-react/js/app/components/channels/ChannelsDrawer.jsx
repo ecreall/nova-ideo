@@ -52,6 +52,16 @@ function ChannelsDrawerContent({ classes }) {
 }
 
 class ChannelsDrawer extends React.Component {
+  componentDidUpdate() {
+    this.dispatchResize();
+  }
+
+  dispatchResize = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, true);
+    document.dispatchEvent(event);
+  };
+
   render() {
     const { classes, theme, toggleChannelsDrawer, channelsDrawer } = this.props;
     return [

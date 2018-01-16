@@ -1,79 +1,73 @@
 import React from 'react';
 import Icon from 'material-ui/Icon';
+import Dialog, { DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog';
+import Slide from 'material-ui/transitions/Slide';
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 const styles = {
   circleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5,
-    paddingTop: 7,
-    paddingBottom: 7,
-    backgroundColor: '#e7e7e7',
-    borderWidth: 0.5,
-    borderColor: '#ddd',
-    borderRadius: 3,
-    elevation: 2,
-    shadowColor: 'gray',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0
-    },
-    width: 25
+    cursor: 'pointer'
   },
   circle: {
     color: 'gray',
-    textShadowColor: 'gray',
-    textShadowRadius: 4
+    fontSize: 22
   },
-  circleTop: {
+  top: {
     color: '#f13b2d',
-    textShadowColor: '#f13b2d',
-    textShadowOffset: { width: 0.1, height: 0.1 }
+    textShadow: '0 0px 4px #f13b2d'
   },
-  circleMiddle: {
+  middle: {
     color: '#ef6e18',
-    textShadowColor: '#ef6e18',
-    textShadowOffset: { width: 0.1, height: 0.1 }
+    textShadow: '0 0px 4px #ef6e18'
   },
-  circleBottom: {
+  bottom: {
     color: '#4eaf4e',
-    textShadowColor: '#4eaf4e',
-    textShadowOffset: { width: 0.1, height: 0.1 }
+    textShadow: '0 0px 4px #4eaf4e'
   }
 };
 
-const Examination = ({ value, message }) => {
-  return (
-    <div
-      style={styles.circleContainer}
-      onPress={() => {
-        alert(message);
-      }}
-      hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-    >
-      <div>
-        <Icon
-          style={Object.assign({}, styles.circle, value === 'top' ? styles.circleTop : {})}
-          className="mdi-set mdi-checkbox-blank-circle"
-          size={15}
-        />
-        <Icon
-          style={Object.assign({}, styles.circle, value === 'middle' ? styles.circleMiddle : {})}
-          className="mdi-set mdi-checkbox-blank-circle"
-          size={15}
-        />
-        <Icon
-          style={Object.assign({}, styles.circle, value === 'bottom' ? styles.circleBottom : {})}
-          className="mdi-set mdi-checkbox-blank-circle"
-          size={15}
-        />
-      </div>
-    </div>
-  );
-};
+class Examination extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+  }
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  render() {
+    const { value, title, message } = this.props;
+    return [
+      <div style={styles.circleContainer} onClick={this.handleClickOpen}>
+        <Icon style={{ ...styles.circle, ...styles[value] }} className="mdi-set mdi-checkbox-blank-circle" />
+      </div>,
+      <Dialog
+        open={this.state.open}
+        transition={Transition}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          {title}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {message}
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    ];
+  }
+}
 
 export default Examination;

@@ -8,7 +8,14 @@ import IdeasList from '../idea/IdeasList';
 
 function TabContainer({ children }) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography
+      component="div"
+      style={{
+        backgroundColor: 'white',
+        paddingTop: 15,
+        marginTop: 10
+      }}
+    >
       {children}
     </Typography>
   );

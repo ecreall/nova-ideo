@@ -4,10 +4,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { withApollo } from 'react-apollo';
+import { withApollo, graphql } from 'react-apollo';
 
 import App from './app';
-import { userLogin, logout, updateUserToken, setConnectionState } from './actions/actions';
+import { siteQuery } from './graphql/queries';
+import { userLogin, logout, updateUserToken, setConnectionState, loadAdapters, updateGlobalProps } from './actions/actions';
 
 const primaryCode = 500;
 
@@ -48,13 +49,6 @@ class Main extends React.Component {
       requirementsLoaded: false
     };
   }
-
-  // componentWillMount() {
-  //   if (this.props.instance.id) {
-  //     // update adapters of the instance
-  //     this.props.loadAdapters(this.props.instance.id);
-  //   }
-  // }
 
   // $FlowFixMe
   async componentDidMount() {
@@ -103,6 +97,16 @@ class Main extends React.Component {
     this.handleConnectionChange(isConnected);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { data } = nextProps;
+    if (data.root) {
+      this.props.updateGlobalProps({
+        siteConf: data.root
+      });
+      this.props.loadAdapters(data.root.siteId);
+    }
+  }
+
   componentWillUnmount() {
     // NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
   }
@@ -112,6 +116,8 @@ class Main extends React.Component {
   };
 
   render() {
+    const { data } = this.props;
+    if (data.loading) return null;
     const loged = true;
     return (
       <MuiThemeProvider theme={theme}>
@@ -131,7 +137,6 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     network: state.network
-    // adapters: state.adapters,
   };
 };
 
@@ -139,9 +144,19 @@ export const mapDispatchToProps = {
   setConnectionState: setConnectionState,
   userLogin: userLogin,
   logout: logout,
-  // loadAdapters: loadAdapters,
-  updateUserToken: updateUserToken
-  // updateGlobalProps: updateGlobalProps
+  loadAdapters: loadAdapters,
+  updateUserToken: updateUserToken,
+  updateGlobalProps: updateGlobalProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withApollo(Main));
+export default withApollo(
+  connect(mapStateToProps, mapDispatchToProps)(
+    graphql(siteQuery, {
+      options: (props: any) => {
+        return {
+          fetchPolicy: 'cache-first'
+        };
+      }
+    })(Main)
+  )
+);
