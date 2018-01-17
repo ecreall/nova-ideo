@@ -3,8 +3,8 @@ import Icon from 'material-ui/Icon';
 
 const styles = {
   icon: {
-    marginRight: 5,
-    color: '#666666ff'
+    color: 'rgb(88, 88, 88)',
+    fontSize: 12
   },
   keywordsContainer: {
     display: 'flex',
@@ -15,15 +15,17 @@ const styles = {
     marginBottom: 5
   },
   keywordsText: {
-    color: '#666666ff',
+    color: 'rgb(88, 88, 88)',
     marginLeft: 4,
     fontSize: 12
   }
 };
 
-const Keywords = ({ keywords }) => {
-  const KeywordPressHandler = (k) => {
-    console.log(k);
+const Keywords = ({ keywords, onKeywordClick }) => {
+  const onClick = (k) => {
+    if (onKeywordClick) {
+      onKeywordClick(k);
+    }
   };
 
   return (
@@ -32,14 +34,13 @@ const Keywords = ({ keywords }) => {
       {keywords.map((k, index) => {
         return (
           <div
-            hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
             key={k}
             title={k}
             onClick={() => {
-              return KeywordPressHandler(k);
+              return onClick(k);
             }}
           >
-            <span style={styles.keywordsText}>
+            <span style={{ ...styles.keywordsText, ...(onKeywordClick ? { cursor: 'pointer' } : {}) }}>
               {k}
               {index + 1 !== keywords.length ? ',' : ''}
             </span>

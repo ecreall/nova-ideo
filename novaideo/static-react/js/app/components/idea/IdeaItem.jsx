@@ -22,7 +22,7 @@ import * as constants from '../../constants';
 import { actionFragment } from '../../graphql/queries';
 import { getActions } from '../../utils/entities';
 import { updateApp } from '../../actions/actions';
-import Comment from '../forms/Comment';
+// import Comment from '../forms/Comment';
 
 const styles = (theme) => {
   return {
@@ -31,6 +31,7 @@ const styles = (theme) => {
       marginTop: 5,
       display: 'flex',
       position: 'relative',
+      padding: '9px 12px',
       '&:hover': {
         backgroundColor: '#f9f9f9'
       }
@@ -59,7 +60,7 @@ const styles = (theme) => {
       width: '100%'
     },
     bodyTitle: {
-      fontWeight: 700
+      marginLeft: -3
     },
     left: {
       display: 'flex',
@@ -72,7 +73,7 @@ const styles = (theme) => {
       display: 'flex',
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       alignItems: 'center',
       paddingTop: 15
     },
@@ -115,6 +116,9 @@ const styles = (theme) => {
       fontSize: 17,
       color: 'white',
       width: '90%'
+    },
+    avatar: {
+      borderRadius: 4
     }
   };
 };
@@ -201,7 +205,13 @@ export class DumbIdeaItem extends React.Component {
   performAction = (action, idea) => {
     const { network, select, deselect, openChannel, globalProps } = this.props;
     if (action.nodeId === 'comment') {
-      openChannel('chatApp', { drawer: true, open: true, channel: idea.channel.id, subject: idea.id });
+      openChannel('chatApp', {
+        drawer: !globalProps.smallScreen,
+        open: true,
+        channel: idea.channel.id,
+        subject: idea.id,
+        right: { open: !globalProps.smallScreen, componentId: 'idea' }
+      });
     } else if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else {
@@ -248,7 +258,7 @@ export class DumbIdeaItem extends React.Component {
     return (
       <div className={classes.ideaItem}>
         <div className={classes.left}>
-          <Avatar size={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
+          <Avatar classes={{ root: classes.avatar }} ize={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
           <div className={classes.leftActions}>
             {siteConf.supportIdeas && node.state.includes('published')
               ? <Evaluation
@@ -288,7 +298,7 @@ export class DumbIdeaItem extends React.Component {
           <div className={classes.bodyContent}>
             <div>
               <div className={classes.bodyTitle}>
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} iconSize={17} />
+                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
               </div>
               <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
 

@@ -90,7 +90,16 @@ class NavBar extends React.Component {
             color="primary"
             aria-label="Menu"
             onClick={() => {
-              return updateChatApp('chatApp', { open: false });
+              return updateChatApp('chatApp', {
+                open: false,
+                drawer: false,
+                channel: undefined,
+                subject: undefined,
+                right: {
+                  open: false,
+                  componentId: undefined
+                }
+              });
             }}
           >
             <CloseIcon />

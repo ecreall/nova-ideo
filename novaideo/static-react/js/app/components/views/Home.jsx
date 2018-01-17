@@ -11,9 +11,7 @@ function TabContainer({ children }) {
     <Typography
       component="div"
       style={{
-        backgroundColor: 'white',
-        paddingTop: 15,
-        marginTop: 10
+        marginTop: 25
       }}
     >
       {children}

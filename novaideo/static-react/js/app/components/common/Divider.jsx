@@ -30,7 +30,8 @@ const styles = {
     cursor: 'default',
     textAlign: 'center',
     padding: 5,
-    width: 130
+    width: 130,
+    borderRadius: 3
   },
   dividerAlert: {
     backgroundColor: '#d72b3f99'
@@ -67,14 +68,20 @@ class Divider extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener(this.props.eventId, this.updatePosition);
-    document.addEventListener('resize', this.initializePosition);
-    this.updatePosition();
+    const { eventId } = this.props;
+    if (eventId) {
+      document.addEventListener(eventId, this.updatePosition);
+      document.addEventListener('resize', this.initializePosition);
+      this.updatePosition();
+    }
   }
 
   componentWillUnmount() {
-    document.removeEventListener(this.props.eventId, this.updatePosition);
-    document.removeEventListener('resize', this.initializePosition);
+    const { eventId } = this.props;
+    if (eventId) {
+      document.removeEventListener(this.props.eventId, this.updatePosition);
+      document.removeEventListener('resize', this.initializePosition);
+    }
   }
 
   updatePosition = () => {
@@ -120,7 +127,7 @@ class Divider extends React.Component {
         })}
       >
         {alert &&
-          <div className={classes.alert}>
+          <div style={style.alert} className={classes.alert}>
             {alertMessage}
           </div>}
         {message &&

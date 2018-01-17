@@ -2,43 +2,14 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
 import { withApollo, graphql } from 'react-apollo';
+import withWidth from 'material-ui/utils/withWidth';
 
 import App from './app';
 import { siteQuery } from './graphql/queries';
+import { SMALL_WIDTH } from './constants';
 import { userLogin, logout, updateUserToken, setConnectionState, loadAdapters, updateGlobalProps } from './actions/actions';
-
-const primaryCode = 500;
-
-function theme() {
-  return createMuiTheme({
-    palette: {
-      primary: {
-        ...teal,
-        [primaryCode]: '#4D394B' // test color to remove.
-      },
-      secondary: grey,
-      tertiary: {
-        color: '#4C9689',
-        hover: {
-          color: 'white'
-        }
-      },
-      danger: deepOrange,
-      info: blue,
-      warning: orange
-    },
-    typography: {
-      htmlFontSize: 15,
-      fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
-    },
-    body1: {
-      margin: 0
-    }
-  });
-}
 
 class Main extends React.Component {
   state: { requirementsLoaded: boolean };
@@ -98,10 +69,11 @@ class Main extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { data } = nextProps;
+    const { data, width } = nextProps;
     if (data.root) {
       this.props.updateGlobalProps({
-        siteConf: data.root
+        siteConf: data.root,
+        smallScreen: SMALL_WIDTH.includes(width)
       });
       this.props.loadAdapters(data.root.siteId);
     }
@@ -116,7 +88,8 @@ class Main extends React.Component {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, theme } = this.props;
+
     if (data.loading) return null;
     const loged = true;
     return (
@@ -136,6 +109,7 @@ class Main extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    theme: state.adapters.theme,
     network: state.network
   };
 };
@@ -149,14 +123,16 @@ export const mapDispatchToProps = {
   updateGlobalProps: updateGlobalProps
 };
 
-export default withApollo(
-  connect(mapStateToProps, mapDispatchToProps)(
-    graphql(siteQuery, {
-      options: (props: any) => {
-        return {
-          fetchPolicy: 'cache-first'
-        };
-      }
-    })(Main)
+export default withWidth()(
+  withApollo(
+    connect(mapStateToProps, mapDispatchToProps)(
+      graphql(siteQuery, {
+        options: (props: any) => {
+          return {
+            fetchPolicy: 'cache-first'
+          };
+        }
+      })(Main)
+    )
   )
 );

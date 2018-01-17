@@ -109,9 +109,12 @@ export class DumbEntitiesList extends React.Component {
   }
 
   dispatchScroll = () => {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent(`${this.props.listId}-scroll`, true, true);
-    document.dispatchEvent(event);
+    const { listId } = this.props;
+    if (listId) {
+      const event = document.createEvent('HTMLEvents');
+      event.initEvent(`${listId}-scroll`, true, true);
+      document.dispatchEvent(event);
+    }
   };
 
   handleScroll = (values) => {
@@ -214,7 +217,8 @@ export class DumbEntitiesList extends React.Component {
       scrollbarStyle,
       reverted,
       virtualized,
-      Divider
+      Divider,
+      listId
     } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
@@ -223,11 +227,7 @@ export class DumbEntitiesList extends React.Component {
     }
     const dataEntities = getEntities(data);
     if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
-      return (
-        <div className={className}>
-          {this.renderProgress()}
-        </div>
-      );
+      return this.renderProgress();
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
@@ -268,6 +268,7 @@ export class DumbEntitiesList extends React.Component {
                   <Divider
                     index={index}
                     next={next && next.node}
+                    eventId={listId && `${listId}-scroll`}
                     previous={previous && previous.node}
                     node={item.node}
                     itemdata={itemdata}

@@ -8,20 +8,20 @@ const styles = {
     alignItems: 'flex-end'
   },
   styleText: {
-    marginLeft: 4,
-    fontSize: 17
+    fontSize: 17,
+    color: 'rgb(88, 88, 88)'
   },
   styleIcon: {
-    marginTop: 2,
+    fontSize: 17,
     color: 'rgb(88, 88, 88)'
   }
 };
 
-const IconWithText = ({ name, text, containerStyle, styleText, styleIcon, iconSize, iconColor, numberOfLines }) => {
+const IconWithText = ({ name, text, containerStyle, styleText, styleIcon }) => {
   return (
-    <div style={containerStyle || styles.containerStyle}>
-      <Icon style={styleIcon || styles.styleIcon} className={name} size={iconSize} color={iconColor} />
-      <span style={styleText || styles.styleText} numberOfLines={numberOfLines}>
+    <div style={{ ...styles.containerStyle, ...containerStyle }}>
+      <Icon style={{ ...styles.styleIcon, ...styleIcon }} className={name} />
+      <span style={{ ...styles.styleText, ...styleText }}>
         {text}
       </span>
     </div>

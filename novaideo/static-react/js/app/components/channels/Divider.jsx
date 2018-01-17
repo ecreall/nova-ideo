@@ -23,7 +23,7 @@ export class DumbCommentDivider extends React.Component {
   };
 
   render() {
-    const { node, index, channelsDrawer } = this.props;
+    const { node, index, eventId, channelsDrawer } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
     const today = Moment();
@@ -39,7 +39,7 @@ export class DumbCommentDivider extends React.Component {
         alert={addUnread}
         message={dateSeparator}
         alertMessage="Unread"
-        eventId="comments-scroll"
+        eventId={eventId}
         shift={channelsDrawer ? 220 : 0}
         fixedTop={65}
       />

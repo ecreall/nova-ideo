@@ -1,22 +1,31 @@
-import { lighten } from 'polished';
+import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
+import { createMuiTheme } from 'material-ui/styles';
 
-import getPrimaryTheme from '../../../theme';
-
-const defaultColor = '#4580c5';
-
-const getTheme = (primaryColor) => {
-  const color = primaryColor || defaultColor;
-  return {
-    ...getPrimaryTheme(primaryColor),
-    primary: {
-      color: lighten(0.8, color),
-      bgColor: color,
-      appBgColor: '#fafafaff',
-      lightColor: lighten(0.5, color) // for placeholder and border
+function theme() {
+  return createMuiTheme({
+    palette: {
+      primary: {
+        ...teal
+      },
+      secondary: grey,
+      tertiary: {
+        color: blue[500],
+        hover: {
+          color: 'white'
+        }
+      },
+      danger: deepOrange,
+      info: blue,
+      warning: orange
+    },
+    typography: {
+      htmlFontSize: 15,
+      fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
+    },
+    body1: {
+      margin: 0
     }
-  };
-};
+  });
+}
 
-export const theme = getTheme();
-
-export default getTheme;
+export default theme;

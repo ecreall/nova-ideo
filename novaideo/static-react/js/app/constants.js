@@ -33,6 +33,8 @@ export const LOAD_ADAPTERS = 'LOAD_ADAPTERS';
 
 export const UPDATE_GLOBAL_PROPS = 'UPDATE_GLOBAL_PROPS';
 
+export const SMALL_WIDTH = ['sm', 'xs'];
+
 export const LOADING_STATES = {
   pending: 'pending',
   progress: 'progress',

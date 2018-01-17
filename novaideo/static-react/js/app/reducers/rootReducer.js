@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import { reducer as formReducer } from 'redux-form';
 
 import getAllAdapters from '../components/vendor/utils';
-import getTheme from '../theme';
+import theme from '../theme';
 import * as constants from '../constants';
 
 const initialUserTest = {
@@ -95,7 +95,7 @@ export const search = (state = { text: '' }, action) => {
   }
 };
 
-export const adapters = (state = { theme: getTheme }, action) => {
+export const adapters = (state = { theme: theme }, action) => {
   switch (action.type) {
   case `${constants.SET_INSTANCE}_FULFILLED`: {
     let instanceId;

@@ -14,17 +14,13 @@ const styles = {
   },
   tokenTop: {
     color: '#4eaf4e',
-    textShadowColor: 'gray',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2,
-    fontSize: 30
+    textShadow: '0 0px 2px gray',
+    fontSize: 25
   },
   tokenBottom: {
     color: '#ef6e18',
-    textShadowColor: 'gray',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2,
-    fontSize: 30
+    textShadow: '0 0px 2px gray',
+    fontSize: 25
   },
   buttonTop: {
     color: '#4eaf4e'
@@ -34,15 +30,17 @@ const styles = {
   },
   tokenNbBottom: {
     color: '#ef6e18',
+    fontSize: 13,
     fontWeight: 'bold',
     marginBottom: -10
   },
   tokenNbTop: {
     color: '#4eaf4e',
+    fontSize: 13,
     fontWeight: 'bold',
     marginTop: -10
   },
-  inactive: { color: '#a9a9a9', margin: 0 }
+  inactive: { color: '#c3c3c3', margin: 0 }
 };
 
 const Evaluation = ({ icon, text, action, onPress, active }) => {

@@ -6,6 +6,7 @@ import Tooltip from 'material-ui/Tooltip';
 
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
+import Select from './widgets/Select';
 
 export const renderTextBoxField = ({ input: { name, value, onChange }, placeholder, onCtrlEnter }) => {
   return <TextBoxField onCtrlEnter={onCtrlEnter} name={name} placeholder={placeholder} value={value} onChange={onChange} />;
@@ -55,18 +56,6 @@ export class RenderFilesListField extends React.Component {
   }
 }
 
-// export const renderSelect = ({ input: { name, value, onChange }, options, label, canAdd, errors, displayErrors, style }) => {
-//   const hasError = displayErrors && errors && name in errors;
-//   const inputStyle = style || { labelColor: '#a2a4a2ff' };
-//   const labelColor = hasError ? '#f00' : inputStyle.labelColor || '#a2a4a2ff';
-//   return (
-//     <Select
-//       options={options}
-//       label={hasError ? errors[name] : label}
-//       labelColor={labelColor}
-//       canAdd={canAdd}
-//       value={value || []}
-//       onChange={onChange}
-//     />
-//   );
-// };
+export const renderSelect = ({ input: { name, value, onChange }, options, label, canAdd }) => {
+  return <Select label={label} options={options} value={value} onChange={onChange} />;
+};

@@ -9,8 +9,6 @@ import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
 import classNames from 'classnames';
 import { red } from 'material-ui/colors';
-import compose from 'recompose/compose';
-import withWidth from 'material-ui/utils/withWidth';
 
 import { updateApp } from '../../actions/actions';
 
@@ -78,15 +76,13 @@ const styles = (theme) => {
   };
 };
 
-const smallWidth = ['sm', 'xs'];
-
 export class DumbChannelItem extends React.Component {
   handleClickOpen = () => {
-    const { openChannel, node, channelsDrawer, width } = this.props;
+    const { openChannel, node, channelsDrawer, smallScreen } = this.props;
     this.setState({ open: true }, () => {
       return openChannel('chatApp', {
         open: true,
-        drawer: smallWidth.includes(width) ? false : channelsDrawer,
+        drawer: smallScreen ? false : channelsDrawer,
         channel: node.id,
         subject: node.subject.id,
         right: { open: false, componentId: undefined }
@@ -148,10 +144,9 @@ export const mapStateToProps = (state, props) => {
   return {
     currentMessage: state.form[props.node.id],
     activeChannel: state.apps.chatApp.channel,
-    channelsDrawer: state.apps.chatApp.drawer
+    channelsDrawer: state.apps.chatApp.drawer,
+    smallScreen: state.globalProps.smallScreen
   };
 };
 
-export default compose(withStyles(styles, { withTheme: true }), withWidth())(
-  connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));

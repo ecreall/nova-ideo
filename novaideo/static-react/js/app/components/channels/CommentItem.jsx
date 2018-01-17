@@ -95,12 +95,14 @@ const styles = {
   },
   actionsText: {
     fontSize: 14,
-    color: 'gray',
     marginLeft: 8,
     marginRight: 50
   },
   actionsIcon: {
-    marginTop: 1
+    fontSize: 14
+  },
+  avatar: {
+    borderRadius: 4
   }
 };
 
@@ -150,7 +152,7 @@ export class DumbCommentItem extends React.Component {
                   {createdAt}
                 </div>
               </Tooltip>
-              : <Avatar size={35} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
+              : <Avatar classes={{ root: classes.avatar }} size={35} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
           </div>
           <div className={classes.body}>
             {!ignoreMetaData &&
@@ -183,8 +185,6 @@ export class DumbCommentItem extends React.Component {
                     styleText={styles.actionsText}
                     styleIcon={styles.actionsIcon}
                     name="comment-multiple-outline"
-                    iconSize={15}
-                    iconColor="gray"
                     text={`${node.lenComments} ${`reply${node.lenComments > 1 ? '*' : ''}`}`}
                   />
                 </div>

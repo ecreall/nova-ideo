@@ -17,7 +17,8 @@ const styles = {
     color: blue[500]
   },
   divider: {
-    margin: 0
+    margin: 0,
+    marginBottom: 10
   }
 };
 
@@ -29,7 +30,7 @@ class IdeasDivider extends React.Component {
   };
 
   render() {
-    const { node, index } = this.props;
+    const { node, index, eventId } = this.props;
     const addDateSeparator = this.addDateSeparator();
     const today = Moment();
     const isToday = today.isSame(Moment(node.createdAt), 'day');
@@ -42,9 +43,9 @@ class IdeasDivider extends React.Component {
         isGlobal
         index={index}
         message={dateSeparator}
-        eventId="ideas-scroll"
+        eventId={eventId}
         shift={0}
-        fixedTop={0}
+        fixedTop={65}
         style={{
           divider: styles.divider,
           message: styles.message,

@@ -73,8 +73,6 @@ export class DumbChatApp extends React.Component {
               getEntities={(entities) => {
                 return entities.node ? entities.node.comments : undefined;
               }}
-              noContentIcon="comment-outline"
-              noContentMessage={'noComment'}
               offlineFilter={(entity, text) => {
                 return entity.node.text.toLowerCase().search(text) >= 0;
               }}
