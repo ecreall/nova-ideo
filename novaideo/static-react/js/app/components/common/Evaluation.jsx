@@ -32,7 +32,7 @@ const styles = {
     color: '#ef6e18',
     fontSize: 13,
     fontWeight: 'bold',
-    marginBottom: -10
+    marginBottom: -15
   },
   tokenNbTop: {
     color: '#4eaf4e',

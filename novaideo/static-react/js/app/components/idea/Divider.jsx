@@ -17,8 +17,7 @@ const styles = {
     color: blue[500]
   },
   divider: {
-    margin: 0,
-    marginBottom: 10
+    margin: 0
   }
 };
 

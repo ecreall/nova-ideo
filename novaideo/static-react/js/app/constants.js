@@ -35,6 +35,17 @@ export const UPDATE_GLOBAL_PROPS = 'UPDATE_GLOBAL_PROPS';
 
 export const SMALL_WIDTH = ['sm', 'xs'];
 
+export const SIZE_MAP = {
+  large: 'lg',
+  medium: 'md',
+  small: 'sm',
+  xsmall: 'xs',
+  lg: 'lg',
+  md: 'md',
+  sm: 'sm',
+  xs: 'xs'
+};
+
 export const LOADING_STATES = {
   pending: 'pending',
   progress: 'progress',

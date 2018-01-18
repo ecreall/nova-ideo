@@ -8,11 +8,11 @@ const styles = {
     alignItems: 'flex-end'
   },
   styleText: {
-    fontSize: 17,
+    fontSize: 15,
     color: 'rgb(88, 88, 88)'
   },
   styleIcon: {
-    fontSize: 17,
+    fontSize: 15,
     color: 'rgb(88, 88, 88)'
   }
 };

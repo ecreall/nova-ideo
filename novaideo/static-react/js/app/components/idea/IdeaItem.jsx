@@ -18,17 +18,17 @@ import ImagesPreview from '../common/ImagesPreview';
 import Keywords from '../common/Keywords';
 import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
+import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import * as constants from '../../constants';
 import { actionFragment } from '../../graphql/queries';
 import { getActions } from '../../utils/entities';
 import { updateApp } from '../../actions/actions';
+
 // import Comment from '../forms/Comment';
 
 const styles = (theme) => {
   return {
     ideaItem: {
-      marginBottom: 10,
-      marginTop: 5,
       display: 'flex',
       position: 'relative',
       padding: '9px 12px',
@@ -60,7 +60,8 @@ const styles = (theme) => {
       width: '100%'
     },
     bodyTitle: {
-      marginLeft: -3
+      marginLeft: -3,
+      marginBottom: 10
     },
     left: {
       display: 'flex',
@@ -68,6 +69,12 @@ const styles = (theme) => {
       paddingRight: 10,
       margin: '8px 0',
       flexDirection: 'column'
+    },
+    right: {
+      backgroundColor: '#f5f5f5',
+      marginTop: -9,
+      marginBottom: -9,
+      marginRight: -12
     },
     leftActions: {
       display: 'flex',
@@ -111,14 +118,20 @@ const styles = (theme) => {
       fontSize: 16,
       marginRight: 5
     },
-    sliderHeader: {
-      marginLeft: 4,
-      fontSize: 17,
-      color: 'white',
-      width: '90%'
-    },
     avatar: {
       borderRadius: 4
+    },
+    tooltipSupport: {
+      position: 'absolute',
+      '& .tooltip-inner': {
+        backgroundColor: '#4eaf4e'
+      }
+    },
+    tooltipOppose: {
+      position: 'absolute',
+      '& .tooltip-inner': {
+        backgroundColor: '#ef6e18'
+      }
     }
   };
 };
@@ -248,19 +261,15 @@ export class DumbIdeaItem extends React.Component {
         return image.isImage;
       })
       : [];
+    const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
-    // const commentAction = node
-    //   ? node.actions.filter((action) => {
-    //     return action.behaviorId === 'comment';
-    //   })[0]
-    //   : null;
     return (
       <div className={classes.ideaItem}>
         <div className={classes.left}>
           <Avatar classes={{ root: classes.avatar }} ize={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
           <div className={classes.leftActions}>
-            {siteConf.supportIdeas && node.state.includes('published')
+            {hasEvaluation
               ? <Evaluation
                 icon={{
                   top:
@@ -289,6 +298,7 @@ export class DumbIdeaItem extends React.Component {
             <span className={classes.headerTitle}>
               {author.title}
             </span>
+            <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>
                 {createdAt}
@@ -300,14 +310,13 @@ export class DumbIdeaItem extends React.Component {
               <div className={classes.bodyTitle}>
                 <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
               </div>
-              <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
 
               <Grid container item>
-                <Grid item xs={12} sm={images.length > 0 ? 7 : 12}>
+                <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
                   <div dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 </Grid>
                 {images.length > 0 &&
-                  <Grid item xs={12} sm={5}>
+                  <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
                     <ImagesPreview images={images} />
                   </Grid>}
               </Grid>
@@ -331,16 +340,26 @@ export class DumbIdeaItem extends React.Component {
                 })}
               </CardActions>
             </div>
-            {/* <Comment
-              key={node.channel.id}
-              form={node.channel.id}
-              action={commentAction}
-              context={node.oid}
-              rootContext={node.oid}
-              channel={node.channel}
-            /> */}
           </div>
         </div>
+        {hasEvaluation &&
+          <div className={classes.right}>
+            <StatisticsDoughnut
+              title={I18n.t('evaluation.tokens')}
+              elements={[
+                {
+                  color: '#4eaf4e',
+                  count: node.tokensSupport,
+                  Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
+                },
+                {
+                  color: '#ef6e18',
+                  count: node.tokensOpposition,
+                  Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
+                }
+              ]}
+            />
+          </div>}
       </div>
     );
   }

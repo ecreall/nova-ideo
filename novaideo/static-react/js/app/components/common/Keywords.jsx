@@ -3,19 +3,24 @@ import Icon from 'material-ui/Icon';
 
 const styles = {
   icon: {
-    color: 'rgb(88, 88, 88)',
+    color: '#a0a0a2',
     fontSize: 12
   },
   keywordsContainer: {
     display: 'flex',
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingLeft: 15,
+    paddingLeft: 5,
     paddingRight: 5,
-    marginBottom: 5
+    marginBottom: 2,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: '#e8e8e8',
+    borderRadius: 3
   },
   keywordsText: {
-    color: 'rgb(88, 88, 88)',
+    color: '#a0a0a2',
     marginLeft: 4,
     fontSize: 12
   }

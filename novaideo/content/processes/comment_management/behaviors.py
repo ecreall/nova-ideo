@@ -126,8 +126,8 @@ class Respond(InfiniteCardinality):
                 appstruct['associated_contents'], author)
 
         if appstruct.get('alert', True):
-            author = getattr(content, 'author', None)
-            authors = getattr(content, 'authors', [author] if author else [])
+            content_author = getattr(content, 'author', None)
+            authors = getattr(content, 'authors', [content_author] if content_author else [])
             comment_author = getattr(context, 'author', None)
 
             if user in authors:

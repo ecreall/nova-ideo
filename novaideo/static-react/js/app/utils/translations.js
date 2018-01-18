@@ -1,6 +1,11 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    evaluation: {
+      tokens: "Jetons",
+      support: "Soutiens",
+      opposition: "Oppositions"
+    },
     date: {
       format: "D MMMM YYYY",
       format2: "DD-MM-YYYY",
@@ -15,6 +20,11 @@ const Translations = {
     }
   },
   en: {
+    evaluation: {
+      tokens: "Tokens",
+      support: "Supports",
+      opposition: "Oppositions"
+    },
     date: {
       format: "MMMM Do, YYYY",
       format2: "YYYY-MM-DD",
