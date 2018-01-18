@@ -31,7 +31,8 @@ const styles = {
     textAlign: 'center',
     padding: 5,
     width: 130,
-    borderRadius: 3
+    borderRadius: 3,
+    zIndex: 1
   },
   dividerAlert: {
     backgroundColor: '#d72b3f99'
