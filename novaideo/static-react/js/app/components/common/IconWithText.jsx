@@ -1,5 +1,7 @@
 import React from 'react';
 import Icon from 'material-ui/Icon';
+import classNames from 'classnames';
+import { withStyles } from 'material-ui/styles';
 
 const styles = {
   containerStyle: {
@@ -9,23 +11,23 @@ const styles = {
   },
   styleText: {
     fontSize: 15,
-    color: 'rgb(88, 88, 88)'
+    color: '#a0a0a2'
   },
   styleIcon: {
     fontSize: 15,
-    color: 'rgb(88, 88, 88)'
+    color: '#a0a0a2'
   }
 };
 
-const IconWithText = ({ name, text, containerStyle, styleText, styleIcon }) => {
+const IconWithText = ({ name, text, containerStyle, styleText, styleIcon, classes }) => {
   return (
-    <div style={{ ...styles.containerStyle, ...containerStyle }}>
-      <Icon style={{ ...styles.styleIcon, ...styleIcon }} className={name} />
-      <span style={{ ...styles.styleText, ...styleText }}>
+    <div className={classNames(classes.containerStyle, containerStyle)}>
+      <Icon className={classNames(classes.styleIcon, styleIcon, name)} />
+      <span className={classNames(classes.styleText, styleText)}>
         {text}
       </span>
     </div>
   );
 };
 
-export default IconWithText;
+export default withStyles(styles)(IconWithText);

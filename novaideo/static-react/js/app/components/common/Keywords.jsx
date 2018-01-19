@@ -1,5 +1,7 @@
 import React from 'react';
 import Icon from 'material-ui/Icon';
+import classNames from 'classnames';
+import { withStyles } from 'material-ui/styles';
 
 const styles = {
   icon: {
@@ -14,8 +16,8 @@ const styles = {
     paddingLeft: 5,
     paddingRight: 5,
     marginBottom: 2,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: 7,
+    marginRight: 3,
     backgroundColor: '#e8e8e8',
     borderRadius: 3
   },
@@ -23,10 +25,13 @@ const styles = {
     color: '#a0a0a2',
     marginLeft: 4,
     fontSize: 12
+  },
+  active: {
+    cursor: 'pointer'
   }
 };
 
-const Keywords = ({ keywords, onKeywordClick }) => {
+const Keywords = ({ keywords, onKeywordClick, classes }) => {
   const onClick = (k) => {
     if (onKeywordClick) {
       onKeywordClick(k);
@@ -34,8 +39,8 @@ const Keywords = ({ keywords, onKeywordClick }) => {
   };
 
   return (
-    <div style={styles.keywordsContainer}>
-      <Icon style={styles.icon} className={'mdi-set mdi-tag-multiple'} />
+    <div className={classes.keywordsContainer}>
+      <Icon className={classNames(classes.icon, 'mdi-set mdi-tag-multiple')} />
       {keywords.map((k, index) => {
         return (
           <div
@@ -45,7 +50,7 @@ const Keywords = ({ keywords, onKeywordClick }) => {
               return onClick(k);
             }}
           >
-            <span style={{ ...styles.keywordsText, ...(onKeywordClick ? { cursor: 'pointer' } : {}) }}>
+            <span className={classNames(classes.keywordsText, { [classes.active]: onKeywordClick })}>
               {k}
               {index + 1 !== keywords.length ? ',' : ''}
             </span>
@@ -56,4 +61,4 @@ const Keywords = ({ keywords, onKeywordClick }) => {
   );
 };
 
-export default Keywords;
+export default withStyles(styles)(Keywords);

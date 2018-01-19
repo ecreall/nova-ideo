@@ -6,7 +6,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { setURLState } from '../../actions/actions';
-import { ListItem as ListEntitiesItem } from './ListItem';
+import { VirtualizedListItem } from './VirtualizedListItem';
 
 const styles = {
   thumbVertical: {
@@ -42,11 +42,11 @@ function scrollbarsContainer({ children, handleScroll, scrollbarStyle, thumbVert
   );
 }
 
-function itemContainer({ itemHeightEstimation, children }) {
+function virtualizedItemContainer({ itemHeightEstimation, children }) {
   return (
-    <ListEntitiesItem itemHeightEstimation={itemHeightEstimation}>
+    <VirtualizedListItem itemHeightEstimation={itemHeightEstimation}>
       {children}
-    </ListEntitiesItem>
+    </VirtualizedListItem>
   );
 }
 
@@ -232,7 +232,7 @@ export class DumbEntitiesList extends React.Component {
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
     const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
-    const ItemContainer = virtualized ? itemContainer : emptyContainer;
+    const ItemContainer = virtualized ? virtualizedItemContainer : emptyContainer;
     return (
       <div className={className}>
         <ScrollContainer

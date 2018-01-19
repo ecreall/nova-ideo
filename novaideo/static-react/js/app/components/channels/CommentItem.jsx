@@ -182,8 +182,8 @@ export class DumbCommentItem extends React.Component {
               {node.lenComments > 0
                 ? <div className={classes.bodyFooter}>
                   <IconWithText
-                    styleText={styles.actionsText}
-                    styleIcon={styles.actionsIcon}
+                    styleText={classes.actionsText}
+                    styleIcon={classes.actionsIcon}
                     name="comment-multiple-outline"
                     text={`${node.lenComments} ${`reply${node.lenComments > 1 ? '*' : ''}`}`}
                   />

@@ -4,7 +4,10 @@ const Translations = {
     evaluation: {
       tokens: "Jetons",
       support: "Soutiens",
-      opposition: "Oppositions"
+      opposition: "Oppositions",
+      supportTheIdea: "Soutenir l'idée",
+      opposeTheIdea: "S'opposer à l'idée",
+      withdrawTokenIdea: "Retirer mon jeton"
     },
     date: {
       format: "D MMMM YYYY",
@@ -23,7 +26,10 @@ const Translations = {
     evaluation: {
       tokens: "Tokens",
       support: "Supports",
-      opposition: "Oppositions"
+      opposition: "Oppositions",
+      supportTheIdea: "Support the idea",
+      opposeTheIdea: "Oppose the idea",
+      withdrawTokenIdea: "Withdraw my token"
     },
     date: {
       format: "MMMM Do, YYYY",

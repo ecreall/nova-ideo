@@ -2,6 +2,8 @@ import React from 'react';
 import Icon from 'material-ui/Icon';
 import Dialog, { DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog';
 import Slide from 'material-ui/transitions/Slide';
+import classNames from 'classnames';
+import { withStyles } from 'material-ui/styles';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -45,10 +47,10 @@ class Examination extends React.Component {
   };
 
   render() {
-    const { value, title, message } = this.props;
+    const { value, title, message, classes } = this.props;
     return [
-      <div style={styles.circleContainer} onClick={this.handleClickOpen}>
-        <Icon style={{ ...styles.circle, ...styles[value] }} className="mdi-set mdi-checkbox-blank-circle" />
+      <div className={classes.circleContainer} onClick={this.handleClickOpen}>
+        <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />
       </div>,
       <Dialog
         open={this.state.open}
@@ -70,4 +72,4 @@ class Examination extends React.Component {
   }
 }
 
-export default Examination;
+export default withStyles(styles)(Examination);

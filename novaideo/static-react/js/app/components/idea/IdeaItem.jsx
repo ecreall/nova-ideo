@@ -2,10 +2,8 @@
 import React from 'react';
 import Moment from 'moment';
 import { connect } from 'react-redux';
-import { gql, graphql } from 'react-apollo';
-import update from 'immutability-helper';
 import Grid from 'material-ui/Grid';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 import Avatar from 'material-ui/Avatar';
 import Tooltip from 'material-ui/Tooltip';
 import { CardActions } from 'material-ui/Card';
@@ -20,11 +18,8 @@ import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import * as constants from '../../constants';
-import { actionFragment } from '../../graphql/queries';
 import { getActions } from '../../utils/entities';
-import { updateApp } from '../../actions/actions';
-
-// import Comment from '../forms/Comment';
+import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
 
 const styles = (theme) => {
   return {
@@ -136,732 +131,144 @@ const styles = (theme) => {
   };
 };
 
-const evaluationActions = {
-  support: {
-    nodeId: 'support',
-    description: <Translate value="supportTheIdea" />
-  },
-  oppose: {
-    nodeId: 'oppose',
-    description: <Translate value="opposeTheIdea" />
-  },
-  withdrawToken: {
-    nodeId: 'withdraw_token',
-    description: <Translate value="withdrawTokenIdea" />
-  }
-};
-
-export class DumbIdeaItem extends React.Component {
-  getExaminationValue = () => {
-    const { node } = this.props;
-    if (node.state.includes('favorable')) return 'bottom';
-    if (node.state.includes('to_study')) return 'middle';
-    if (node.state.includes('unfavorable')) return 'top';
-    return undefined;
-  };
-
-  getEvaluationActions = () => {
-    const { node } = this.props;
-    const withdraw = evaluationActions.withdrawToken;
-    const support = node.userToken === 'support' ? withdraw : evaluationActions.support;
-    const oppose = node.userToken === 'oppose' ? withdraw : evaluationActions.oppose;
-    const result = {
-      top: support,
-      down: oppose
-    };
-    return result;
-  };
-
-  evaluationPress = (action) => {
-    const { node, network, globalProps } = this.props;
-    if (!network.isLogged) {
-      globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
-    } else if (!action) {
-      globalProps.showMessage(<Translate value="AuthorizationFailed" />);
-    } else {
-      switch (action.nodeId) {
-      case 'withdraw_token':
-        this.props
-          .withdraw({
-            context: node.oid
-          })
-          .catch(globalProps.showError);
-        break;
-      case 'support':
-        if (globalProps.account.availableTokens || node.userToken === 'oppose') {
-          this.props
-            .support({
-              context: node.oid
-            })
-            .catch(globalProps.showError);
-        } else {
-          globalProps.showMessage(<Translate value="AuthorizationFailed" />);
-        }
-        break;
-      case 'oppose':
-        if (globalProps.account.availableTokens || node.userToken === 'support') {
-          this.props
-            .oppose({
-              context: node.oid
-            })
-            .catch(globalProps.showError);
-        } else {
-          globalProps.showMessage(<Translate value="AuthorizationFailed" />);
-        }
-        break;
-      default:
-        globalProps.showMessage(<Translate value="comingSoon" />);
-      }
-    }
-  };
-
-  performAction = (action, idea) => {
-    const { network, select, deselect, openChannel, globalProps } = this.props;
-    if (action.nodeId === 'comment') {
-      openChannel('chatApp', {
-        drawer: !globalProps.smallScreen,
-        open: true,
-        channel: idea.channel.id,
-        subject: idea.id,
-        right: { open: !globalProps.smallScreen, componentId: 'idea' }
-      });
-    } else if (!network.isLogged) {
-      globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
-    } else {
-      switch (action.behaviorId) {
-      case 'select':
-        select({ context: idea.oid }).catch(globalProps.showError);
-        break;
-      case 'deselect':
-        deselect({ context: idea.oid }).catch(globalProps.showError);
-        break;
-      default:
-        globalProps.showMessage(<Translate value="comingSoon" />);
-      }
-    }
-  };
-
-  onActionPress = (action) => {
-    this.performAction(action, this.props.node, this);
-  };
-
-  render() {
-    const { node, adapters, globalProps: { siteConf }, classes } = this.props;
-    const author = node.author;
-    const authorPicture = author.picture;
-    const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
-    const today = Moment();
-    const isToday = today.isSame(Moment(node.createdAt), 'day');
-    const yesterday = today.subtract(1, 'days').startOf('day');
-    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
-    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
-    const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
-    const images = node.attachedFiles
-      ? node.attachedFiles.filter((image) => {
-        return image.isImage;
-      })
-      : [];
-    const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
-    const Examination = adapters.examination;
-    const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
-    return (
-      <div className={classes.ideaItem}>
-        <div className={classes.left}>
-          <Avatar classes={{ root: classes.avatar }} ize={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
-          <div className={classes.leftActions}>
-            {hasEvaluation
-              ? <Evaluation
-                icon={{
-                  top:
-                      node.userToken === 'support'
-                        ? 'mdi-set mdi-arrow-up-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-up-drop-circle',
-                  down:
-                      node.userToken === 'oppose'
-                        ? 'mdi-set mdi-arrow-down-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-down-drop-circle'
-                }}
-                onPress={{ top: this.evaluationPress, down: this.evaluationPress }}
-                onLongPress={{ top: this.onActionLongPress, down: this.onActionLongPress }}
-                text={{ top: node.tokensSupport, down: node.tokensOpposition }}
-                action={this.getEvaluationActions()}
-                active={node.state.includes('submitted_support')}
-              />
-              : null}
-            {siteConf.examineIdeas && node.state.includes('examined')
-              ? <Examination title="Examination" message={node.opinion} value={this.getExaminationValue()} />
-              : null}
-          </div>
-        </div>
-        <div className={classes.body}>
-          <div className={classes.header}>
-            <span className={classes.headerTitle}>
-              {author.title}
-            </span>
-            <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
-            <Tooltip id={node.id} title={createdAtF3} placement="top">
-              <span className={classes.headerAddOn}>
-                {createdAt}
-              </span>
-            </Tooltip>
-          </div>
-          <div className={classes.bodyContent}>
-            <div>
-              <div className={classes.bodyTitle}>
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
-              </div>
-
-              <Grid container item>
-                <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
-                  <div dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-                </Grid>
-                {images.length > 0 &&
-                  <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
-                    <ImagesPreview images={images} />
-                  </Grid>}
-              </Grid>
-            </div>
-            <div className={classes.bodyFooter}>
-              <CardActions disableActionSpacing>
-                {communicationActions.map((action, key) => {
-                  return (
-                    <IconButton
-                      className={classes.actionsText}
-                      key={key}
-                      onClick={() => {
-                        return this.onActionPress(action);
-                      }}
-                      aria-label="todo"
-                    >
-                      <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
-                      {action.counter}
-                    </IconButton>
-                  );
-                })}
-              </CardActions>
-            </div>
-          </div>
-        </div>
-        {hasEvaluation &&
-          <div className={classes.right}>
-            <StatisticsDoughnut
-              title={I18n.t('evaluation.tokens')}
-              elements={[
-                {
-                  color: '#4eaf4e',
-                  count: node.tokensSupport,
-                  Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
+function RenderIdeaItem(props) {
+  const { node, adapters, globalProps: { siteConf }, classes } = props;
+  const author = node.author;
+  const authorPicture = author.picture;
+  const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
+  const today = Moment();
+  const isToday = today.isSame(Moment(node.createdAt), 'day');
+  const yesterday = today.subtract(1, 'days').startOf('day');
+  const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
+  const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
+  const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
+  const images = node.attachedFiles
+    ? node.attachedFiles.filter((image) => {
+      return image.isImage;
+    })
+    : [];
+  const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
+  const Examination = adapters.examination;
+  const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
+  return (
+    <div className={classes.ideaItem}>
+      <div className={classes.left}>
+        <Avatar classes={{ root: classes.avatar }} ize={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
+        <div className={classes.leftActions}>
+          {hasEvaluation
+            ? <Evaluation
+              icon={{
+                top:
+                    node.userToken === 'support'
+                      ? 'mdi-set mdi-arrow-up-drop-circle-outline'
+                      : 'mdi-set mdi-arrow-up-drop-circle',
+                down:
+                    node.userToken === 'oppose'
+                      ? 'mdi-set mdi-arrow-down-drop-circle-outline'
+                      : 'mdi-set mdi-arrow-down-drop-circle'
+              }}
+              onClick={{
+                top: (action) => {
+                  props.actionsManager.evaluationClick(action);
                 },
-                {
-                  color: '#ef6e18',
-                  count: node.tokensOpposition,
-                  Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
+                down: (action) => {
+                  props.actionsManager.evaluationClick(action);
                 }
-              ]}
+              }}
+              text={{ top: node.tokensSupport, down: node.tokensOpposition }}
+              actions={getEvaluationActions(node)}
+              active={node.state.includes('submitted_support')}
             />
-          </div>}
+            : null}
+          {siteConf.examineIdeas && node.state.includes('examined')
+            ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
+            : null}
+        </div>
       </div>
-    );
-  }
+      <div className={classes.body}>
+        <div className={classes.header}>
+          <span className={classes.headerTitle}>
+            {author.title}
+          </span>
+          <Keywords onKeywordPress={props.searchEntities} keywords={node.keywords} />
+          <Tooltip id={node.id} title={createdAtF3} placement="top">
+            <span className={classes.headerAddOn}>
+              {createdAt}
+            </span>
+          </Tooltip>
+        </div>
+        <div className={classes.bodyContent}>
+          <div>
+            <div className={classes.bodyTitle}>
+              <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
+            </div>
+
+            <Grid container item>
+              <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
+                <div dangerouslySetInnerHTML={{ __html: node.presentationText }} />
+              </Grid>
+              {images.length > 0 &&
+                <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
+                  <ImagesPreview images={images} />
+                </Grid>}
+            </Grid>
+          </div>
+          <div className={classes.bodyFooter}>
+            <CardActions disableActionSpacing>
+              {communicationActions.map((action, key) => {
+                return (
+                  <IconButton
+                    className={classes.actionsText}
+                    key={key}
+                    onClick={() => {
+                      return props.actionsManager.performAction(action);
+                    }}
+                    aria-label="todo"
+                  >
+                    <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
+                    {action.counter}
+                  </IconButton>
+                );
+              })}
+            </CardActions>
+          </div>
+        </div>
+      </div>
+      {hasEvaluation &&
+        <div className={classes.right}>
+          <StatisticsDoughnut
+            title={I18n.t('evaluation.tokens')}
+            elements={[
+              {
+                color: '#4eaf4e',
+                count: node.tokensSupport,
+                Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
+              },
+              {
+                color: '#ef6e18',
+                count: node.tokensOpposition,
+                Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
+              }
+            ]}
+          />
+        </div>}
+    </div>
+  );
 }
 
-const support = gql`
-  mutation($context: String!) {
-    supportIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const oppose = gql`
-  mutation($context: String!) {
-    opposeIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions{
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const withdraw = gql`
-  mutation($context: String!) {
-    withdrawTokenIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const select = gql`
-  mutation($context: String!, $processId: String, $nodeIds: [String!]) {
-    select(context: $context) {
-      status
-      idea {
-        id
-        oid
-        actions(processId: $processId, nodeIds: $nodeIds) {
-          ...action
-        }
-      }
-    }
-  }
-  ${actionFragment}
-`;
-
-const deselect = gql`
-  mutation($context: String!, $processId: String, $nodeIds: [String!]) {
-    deselect(context: $context) {
-      status
-      idea {
-        id
-        oid
-        actions(processId: $processId, nodeIds: $nodeIds) {
-          ...action
-        }
-      }
-    }
-  }
-  ${actionFragment}
-`;
-
-const DumbIdeaItemActions = graphql(support, {
-  props: function ({ ownProps, mutate }) {
-    return {
-      support: function ({ context }) {
-        const { tokensSupport, tokensOpposition, userToken } = ownProps.node;
-        return mutate({
-          variables: { context: context },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            supportIdea: {
-              __typename: 'SupportIdea',
-              status: true,
-              user: {
-                __typename: 'Person',
-                availableTokens: ownProps.globalProps.account.availableTokens - 1
-              },
-              idea: {
-                ...ownProps.node,
-                tokensSupport: tokensSupport + 1,
-                tokensOpposition: userToken === 'oppose' ? tokensOpposition - 1 : tokensOpposition,
-                userToken: 'support'
-              }
-            }
-          },
-          updateQueries: {
-            Account: (prev, { mutationResult }) => {
-              return update(prev, {
-                account: {
-                  availableTokens: { $set: mutationResult.data.supportIdea.user.availableTokens }
-                }
-              });
-            },
-            MySupports: (prev, { mutationResult }) => {
-              const newIdea = mutationResult.data.supportIdea.idea;
-              const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                return item && item.node.id === newIdea.id;
-              })[0];
-              if (!currentIdea) {
-                return update(prev, {
-                  account: {
-                    supportedIdeas: {
-                      edges: {
-                        $unshift: [
-                          {
-                            __typename: 'Idea',
-                            node: { ...ownProps.node, ...newIdea }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                });
-              }
-              const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-              return update(prev, {
-                account: {
-                  supportedIdeas: {
-                    edges: {
-                      $splice: [
-                        [
-                          index,
-                          1,
-                          {
-                            __typename: 'Idea',
-                            node: { ...ownProps.node, ...newIdea }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
-    };
-  }
-})(
-  graphql(oppose, {
-    props: function ({ ownProps, mutate }) {
-      return {
-        oppose: function ({ context }) {
-          const { tokensSupport, tokensOpposition, userToken } = ownProps.node;
-          return mutate({
-            variables: { context: context },
-            optimisticResponse: {
-              __typename: 'Mutation',
-              opposeIdea: {
-                __typename: 'OpposeIdea',
-                status: true,
-                user: {
-                  __typename: 'Person',
-                  availableTokens: ownProps.globalProps.account.availableTokens - 1
-                },
-                idea: {
-                  ...ownProps.node,
-                  tokensOpposition: tokensOpposition + 1,
-                  tokensSupport: userToken === 'support' ? tokensSupport - 1 : tokensSupport,
-                  userToken: 'oppose'
-                }
-              }
-            },
-            updateQueries: {
-              Account: (prev, { mutationResult }) => {
-                return update(prev, {
-                  account: {
-                    availableTokens: { $set: mutationResult.data.opposeIdea.user.availableTokens }
-                  }
-                });
-              },
-              MySupports: (prev, { mutationResult }) => {
-                const newIdea = mutationResult.data.opposeIdea.idea;
-                const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                  return item && item.node.id === newIdea.id;
-                })[0];
-                if (!currentIdea) {
-                  return update(prev, {
-                    account: {
-                      supportedIdeas: {
-                        edges: {
-                          $unshift: [
-                            {
-                              __typename: 'Idea',
-                              node: { ...ownProps.node, ...newIdea }
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  });
-                }
-                const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-                return update(prev, {
-                  account: {
-                    supportedIdeas: {
-                      edges: {
-                        $splice: [
-                          [
-                            index,
-                            1,
-                            {
-                              __typename: 'Idea',
-                              node: { ...ownProps.node, ...newIdea }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                });
-              }
-            }
-          });
-        }
-      };
-    }
-  })(
-    graphql(withdraw, {
-      props: function ({ ownProps, mutate }) {
-        return {
-          withdraw: function ({ context }) {
-            const { tokensSupport, tokensOpposition, userToken } = ownProps.node;
-            return mutate({
-              variables: { context: context },
-              optimisticResponse: {
-                __typename: 'Mutation',
-                withdrawTokenIdea: {
-                  __typename: 'OpposeIdea',
-                  status: true,
-                  user: {
-                    __typename: 'Person',
-                    availableTokens: ownProps.globalProps.account.availableTokens + 1
-                  },
-                  idea: {
-                    ...ownProps.node,
-                    tokensSupport: userToken === 'support' ? tokensSupport - 1 : tokensSupport,
-                    tokensOpposition: userToken === 'oppose' ? tokensOpposition - 1 : tokensOpposition,
-                    userToken: 'withdraw'
-                  }
-                }
-              },
-              updateQueries: {
-                Account: (prev, { mutationResult }) => {
-                  return update(prev, {
-                    account: {
-                      availableTokens: {
-                        $set: mutationResult.data.withdrawTokenIdea.user.availableTokens
-                      }
-                    }
-                  });
-                },
-                MySupports: (prev, { mutationResult }) => {
-                  const newIdea = mutationResult.data.withdrawTokenIdea.idea;
-                  const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                    return item && item.node.id === newIdea.id;
-                  })[0];
-                  const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-                  return update(prev, {
-                    account: {
-                      supportedIdeas: {
-                        edges: {
-                          $splice: [[index, 1]]
-                        }
-                      }
-                    }
-                  });
-                },
-                IdeasList: (prev, { mutationResult }) => {
-                  const newIdea = mutationResult.data.withdrawTokenIdea.idea;
-                  const currentIdea = prev.ideas.edges.filter((item) => {
-                    return item && item.node.id === newIdea.id;
-                  })[0];
-                  if (!currentIdea) return prev;
-                  const index = prev.ideas.edges.indexOf(currentIdea);
-                  return update(prev, {
-                    ideas: {
-                      edges: {
-                        $splice: [[index, 1, { __typename: 'Idea', node: { ...currentIdea.node, ...newIdea } }]]
-                      }
-                    }
-                  });
-                }
-              }
-            });
-          }
-        };
-      }
-    })(
-      graphql(select, {
-        props: function ({ ownProps, mutate }) {
-          return {
-            select: function ({ context }) {
-              const selectAction = ownProps.node.actions.filter((item) => {
-                return item && item.behaviorId === 'select';
-              })[0];
-              const indexAction = ownProps.node.actions.indexOf(selectAction);
-              const newAction = update(selectAction, {
-                counter: { $set: selectAction.counter + 1 },
-                nodeId: { $set: 'deselect' },
-                behaviorId: { $set: 'deselect' },
-                stylePicto: { $set: 'glyphicon glyphicon-star' }
-              });
-              const optimisticIdea = update(ownProps.node, {
-                actions: {
-                  $set: [newAction]
-                }
-              });
-              return mutate({
-                variables: { context: context, processId: 'novaideoabstractprocess', nodeIds: ['deselect'] },
-                optimisticResponse: {
-                  __typename: 'Mutation',
-                  select: {
-                    __typename: 'Select',
-                    status: true,
-                    idea: {
-                      ...optimisticIdea
-                    }
-                  }
-                },
-                updateQueries: {
-                  MyFollowings: (prev, { mutationResult }) => {
-                    const newActions = mutationResult.data.select.idea.actions;
-                    const newIdea = update(ownProps.node, {
-                      actions: {
-                        $splice: [[indexAction, 1, ...newActions]]
-                      }
-                    });
-                    return update(prev, {
-                      account: {
-                        followedIdeas: {
-                          edges: {
-                            $unshift: [
-                              {
-                                __typename: 'Idea',
-                                node: { ...newIdea }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    });
-                  },
-                  IdeasList: (prev, { mutationResult }) => {
-                    const idea = mutationResult.data.select.idea;
-                    const newActions = idea.actions;
-                    const currentIdea = prev.ideas.edges.filter((item) => {
-                      return item && item.node.id === idea.id;
-                    })[0];
-                    if (!currentIdea) return prev;
-                    const newIdea = update(currentIdea, {
-                      node: {
-                        actions: {
-                          $splice: [[indexAction, 1, ...newActions]]
-                        }
-                      }
-                    });
-                    const index = prev.ideas.edges.indexOf(currentIdea);
-                    return update(prev, {
-                      ideas: {
-                        edges: {
-                          $splice: [[index, 1, newIdea]]
-                        }
-                      }
-                    });
-                  }
-                }
-              });
-            }
-          };
-        }
-      })(
-        graphql(deselect, {
-          props: function ({ ownProps, mutate }) {
-            return {
-              deselect: function ({ context }) {
-                const deselectAction = ownProps.node.actions.filter((item) => {
-                  return item && item.behaviorId === 'deselect';
-                })[0];
-                const newAction = update(deselectAction, {
-                  counter: { $set: deselectAction.counter - 1 },
-                  nodeId: { $set: 'select' },
-                  behaviorId: { $set: 'select' },
-                  stylePicto: { $set: 'glyphicon glyphicon-star-empty' }
-                });
-                const optimisticIdea = update(ownProps.node, {
-                  actions: {
-                    $set: [newAction]
-                  }
-                });
-                return mutate({
-                  variables: { context: context, processId: 'novaideoabstractprocess', nodeIds: ['select'] },
-                  optimisticResponse: {
-                    __typename: 'Mutation',
-                    deselect: {
-                      __typename: 'Deselect',
-                      status: true,
-                      idea: {
-                        ...optimisticIdea
-                      }
-                    }
-                  },
-                  updateQueries: {
-                    MyFollowings: (prev, { mutationResult }) => {
-                      const newIdea = mutationResult.data.deselect.idea;
-                      const currentIdea = prev.account.followedIdeas.edges.filter((item) => {
-                        return item && item.node.id === newIdea.id;
-                      })[0];
-                      const index = prev.account.followedIdeas.edges.indexOf(currentIdea);
-                      return update(prev, {
-                        account: {
-                          followedIdeas: {
-                            edges: {
-                              $splice: [[index, 1]]
-                            }
-                          }
-                        }
-                      });
-                    },
-                    IdeasList: (prev, { mutationResult }) => {
-                      const indexAction = ownProps.node.actions.indexOf(deselectAction);
-                      const idea = mutationResult.data.deselect.idea;
-                      const newActions = idea.actions;
-                      const currentIdea = prev.ideas.edges.filter((item) => {
-                        return item && item.node.id === idea.id;
-                      })[0];
-                      if (!currentIdea) return prev;
-                      const newIdea = update(currentIdea, {
-                        node: {
-                          actions: {
-                            $splice: [[indexAction, 1, ...newActions]]
-                          }
-                        }
-                      });
-                      const index = prev.ideas.edges.indexOf(currentIdea);
-                      return update(prev, {
-                        ideas: {
-                          edges: {
-                            $splice: [[index, 1, newIdea]]
-                          }
-                        }
-                      });
-                    }
-                  }
-                });
-              }
-            };
-          }
-        })(DumbIdeaItem)
-      )
-    )
-  )
-);
-
-export const mapDispatchToProps = { openChannel: updateApp };
+function DumbIdeaItem(props) {
+  return (
+    <IdeaActionsWrapper idea={props.node}>
+      <RenderIdeaItem {...props} />
+    </IdeaActionsWrapper>
+  );
+}
 
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
-    network: state.network,
     adapters: state.adapters
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItemActions));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbIdeaItem));
