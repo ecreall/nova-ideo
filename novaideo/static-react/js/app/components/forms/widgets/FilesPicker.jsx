@@ -23,6 +23,12 @@ class FilesPicker extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.initRef) {
+      this.props.initRef(this);
+    }
+  }
+
   onDrop = (event) => {
     event.preventDefault();
     this.onDragLeave(event);

@@ -5,6 +5,7 @@ import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 import IdeasList from '../idea/IdeasList';
+import CreateIdeaForm from '../forms/CreateIdea';
 
 function TabContainer({ children }) {
   return (
@@ -53,6 +54,7 @@ class Home extends React.Component {
         {value === 0 && <TabContainer>Questions</TabContainer>}
         {value === 1 &&
           <TabContainer>
+            <CreateIdeaForm />
             <IdeasList />
           </TabContainer>}
         {value === 2 && <TabContainer>Proposals</TabContainer>}

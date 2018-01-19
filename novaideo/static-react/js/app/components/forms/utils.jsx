@@ -8,8 +8,18 @@ import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
 
-export const renderTextBoxField = ({ input: { name, value, onChange }, placeholder, onCtrlEnter }) => {
-  return <TextBoxField onCtrlEnter={onCtrlEnter} name={name} placeholder={placeholder} value={value} onChange={onChange} />;
+export const renderTextBoxField = ({ input: { name, value, onChange }, placeholder, onCtrlEnter, autoFocus, style }) => {
+  return (
+    <TextBoxField
+      autoFocus={autoFocus}
+      style={style}
+      onCtrlEnter={onCtrlEnter}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export const renderAnonymousCheckboxField = ({ input: { value, onChange }, label, classes }) => {
@@ -31,31 +41,14 @@ export const renderAnonymousCheckboxField = ({ input: { value, onChange }, label
   );
 };
 
-export class RenderFilesListField extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.picker = null;
-  }
+export const renderFilesListField = ({ input: { value, onChange }, node, initRef }) => {
+  return (
+    <FilesPicker initRef={initRef} className="files-dropzone-list" value={value} onChange={onChange} multiple clickable>
+      {node}
+    </FilesPicker>
+  );
+};
 
-  render() {
-    const { input: { value, onChange }, node } = this.props;
-    return (
-      <FilesPicker
-        ref={(picker) => {
-          this.picker = picker;
-        }}
-        className="files-dropzone-list"
-        value={value}
-        onChange={onChange}
-        multiple
-        clickable
-      >
-        {node}
-      </FilesPicker>
-    );
-  }
-}
-
-export const renderSelect = ({ input: { name, value, onChange }, options, label, canAdd }) => {
-  return <Select label={label} options={options} value={value} onChange={onChange} />;
+export const renderSelect = ({ input: { value, onChange }, options, label, canAdd, initRef }) => {
+  return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
 };

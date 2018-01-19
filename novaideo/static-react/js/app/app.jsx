@@ -32,7 +32,8 @@ class DumbApp extends React.Component {
   }
 
   render() {
-    const { classes, children, channelOpen, channelsDrawer, channel } = this.props;
+    const { data, classes, children, channelOpen, channelsDrawer, channel } = this.props;
+    if (data.loading) return null;
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>

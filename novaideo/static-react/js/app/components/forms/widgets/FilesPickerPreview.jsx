@@ -23,14 +23,15 @@ const styles = {
     width: 38,
     height: 48,
     borderRadius: 3,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128, 128, 0.5)',
+    backgroundColor: 'rgba(0,0, 0)',
     backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'scroll',
     backgroundPositionX: 'center',
     backgroundPositionY: 'center',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    borderStyle: 'solid'
   },
   action: {
     position: 'absolute',

@@ -4,18 +4,26 @@ import EmojiPicker from './EmojiPicker';
 import TextEditor from './Editor';
 
 class TextBoxField extends React.Component {
+  static defaultProps = {
+    style: {},
+    autoFocus: false
+  };
+
   constructor(props) {
     super(props);
     this.editor = null;
   }
 
   componentDidMount() {
-    this.editor.focus(this.props.value);
+    const { autoFocus } = this.props;
+    if (autoFocus) {
+      this.editor.focus(this.props.value);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
     if (!nextProps.value) {
-      this.editor.clear();
+      this.editor.clear(nextProps.autoFocus);
     }
     return !nextProps.value;
   }
@@ -31,7 +39,7 @@ class TextBoxField extends React.Component {
   };
 
   render() {
-    const { placeholder, value } = this.props;
+    const { placeholder, value, style } = this.props;
     return [
       <TextEditor
         ref={(editor) => {
@@ -42,7 +50,7 @@ class TextBoxField extends React.Component {
         onChange={this.onChange}
         onCtrlEnter={this.props.onCtrlEnter}
       />,
-      <EmojiPicker onSelect={this.onSelectEmoji} />
+      <EmojiPicker style={style || {}} onSelect={this.onSelectEmoji} />
     ];
   }
 }

@@ -29,22 +29,24 @@ class TextEditor extends React.Component {
     this.state = { editorState: this.resetEditor(props.value) };
   }
 
-  resetEditor = (text) => {
+  resetEditor = (text, focus) => {
     let editorState;
     const htmlText = text || emptyText;
     const blocksFromHTML = convertFromHTML(htmlText);
     const contentState = ContentState.createFromBlockArray(blocksFromHTML);
     editorState = EditorState.createWithContent(contentState);
-    editorState = this.endFocus(editorState);
+    if (focus) {
+      editorState = this.endFocus(editorState);
+    }
     return editorState;
   };
 
   reset = (text) => {
-    this.setState({ editorState: this.resetEditor(text) });
+    this.setState({ editorState: this.resetEditor(text, true) });
   };
 
-  clear = () => {
-    this.setState({ editorState: this.resetEditor(emptyText) });
+  clear = (focus) => {
+    this.setState({ editorState: this.resetEditor(emptyText, focus) });
   };
 
   endFocus = (editorState) => {

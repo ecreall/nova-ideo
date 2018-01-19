@@ -11,7 +11,7 @@ import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
 import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 
 import { commentFragment } from '../../graphql/queries';
-import { renderTextBoxField, renderAnonymousCheckboxField, RenderFilesListField } from './utils';
+import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
 
@@ -39,7 +39,7 @@ const styles = (theme) => {
       height: 'auto',
       outline: 0,
       border: '2px solid #bfbfbf',
-      borderRadius: '.375rem',
+      borderRadius: 4,
       resize: 'none',
       color: '#2c2d30',
       fontSize: '.9375rem',
@@ -207,7 +207,7 @@ export class DumbCommentForm extends React.Component {
           <FilesPickerPreview
             files={files}
             getPicker={() => {
-              return this.filesPicker.getRenderedComponent().picker;
+              return this.filesPicker;
             }}
           />
           <div
@@ -223,21 +223,22 @@ export class DumbCommentForm extends React.Component {
                       Icon: InsertDriveFileIcon,
                       title: 'Add files',
                       classes: classes
-                    })
+                    }),
+                    initRef: (filesPicker) => {
+                      this.filesPicker = filesPicker;
+                    }
                   }}
                   withRef
-                  ref={(filesPicker) => {
-                    this.filesPicker = filesPicker;
-                  }}
                   name="files"
-                  component={RenderFilesListField}
+                  component={renderFilesListField}
                 />
               ]}
             />
             <div className={classes.textField}>
               <Field
                 props={{
-                  onCtrlEnter: this.handleSubmit
+                  onCtrlEnter: this.handleSubmit,
+                  autoFocus: true
                 }}
                 name="comment"
                 component={renderTextBoxField}

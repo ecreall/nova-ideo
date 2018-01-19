@@ -10,7 +10,8 @@ const styles = {
     fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif',
     position: 'absolute',
     right: -35,
-    bottom: 36
+    bottom: 36,
+    zIndex: 2
   }
 };
 
@@ -28,6 +29,10 @@ const classesStyles = (theme) => {
 };
 
 class EmojiPicker extends React.Component {
+  static defaultProps = {
+    style: {}
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -64,7 +69,7 @@ class EmojiPicker extends React.Component {
   };
 
   render() {
-    const { theme, classes } = this.props;
+    const { theme, classes, style } = this.props;
     const items = [
       <div
         className={classNames(classes.button, {
@@ -89,7 +94,7 @@ class EmojiPicker extends React.Component {
             title="Emoji"
             emoji="slightly_smiling_face"
             sheetSize={32}
-            style={styles.picker}
+            style={{ ...styles.picker, ...style.picker }}
             onClick={this.onEmojiSelect}
           />
         </div>
