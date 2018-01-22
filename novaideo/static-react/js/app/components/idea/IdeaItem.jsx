@@ -26,7 +26,7 @@ const styles = (theme) => {
     ideaItem: {
       display: 'flex',
       position: 'relative',
-      padding: '9px 12px',
+      padding: '15px 12px',
       '&:hover': {
         backgroundColor: '#f9f9f9'
       }
@@ -67,8 +67,8 @@ const styles = (theme) => {
     },
     right: {
       backgroundColor: '#f5f5f5',
-      marginTop: -9,
-      marginBottom: -9,
+      marginTop: -15,
+      marginBottom: -15,
       marginRight: -12
     },
     leftActions: {
@@ -96,14 +96,16 @@ const styles = (theme) => {
     bodyFooter: {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: 5
+      marginTop: 10
+    },
+    actionsContainer: {
+      height: 12
     },
     actionsText: {
       fontSize: 13,
       color: '#585858',
       fontWeight: '700',
-      marginLeft: 8,
-      marginRight: 50,
+      marginRight: '25%',
       '&:hover': {
         color: theme.palette.primary['500']
       }
@@ -116,6 +118,11 @@ const styles = (theme) => {
     avatar: {
       borderRadius: 4
     },
+    anonymousAvatar: {
+      color: theme.palette.tertiary.hover.color,
+      backgroundColor: theme.palette.tertiary.color,
+      fontWeight: 900
+    },
     tooltipSupport: {
       position: 'absolute',
       '& .tooltip-inner': {
@@ -127,6 +134,18 @@ const styles = (theme) => {
       '& .tooltip-inner': {
         backgroundColor: '#ef6e18'
       }
+    },
+    ideaText: {
+      '& a': {
+        color: '#0576b9',
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      },
+      '& p': {
+        margin: 0
+      }
     }
   };
 };
@@ -135,6 +154,7 @@ function RenderIdeaItem(props) {
   const { node, adapters, globalProps: { siteConf }, classes } = props;
   const author = node.author;
   const authorPicture = author.picture;
+  const isAnonymous = author.isAnonymous;
   const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
   const today = Moment();
   const isToday = today.isSame(Moment(node.createdAt), 'day');
@@ -153,7 +173,14 @@ function RenderIdeaItem(props) {
   return (
     <div className={classes.ideaItem}>
       <div className={classes.left}>
-        <Avatar classes={{ root: classes.avatar }} ize={40} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
+        <Avatar
+          className={isAnonymous && classes.anonymousAvatar}
+          classes={{ root: classes.avatar }}
+          size={40}
+          src={authorPicture ? `${authorPicture.url}/profil` : ''}
+        >
+          {isAnonymous && <Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
+        </Avatar>
         <div className={classes.leftActions}>
           {hasEvaluation
             ? <Evaluation
@@ -205,7 +232,7 @@ function RenderIdeaItem(props) {
 
             <Grid container item>
               <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
-                <div dangerouslySetInnerHTML={{ __html: node.presentationText }} />
+                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
               </Grid>
               {images.length > 0 &&
                 <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
@@ -214,7 +241,7 @@ function RenderIdeaItem(props) {
             </Grid>
           </div>
           <div className={classes.bodyFooter}>
-            <CardActions disableActionSpacing>
+            <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
               {communicationActions.map((action, key) => {
                 return (
                   <IconButton

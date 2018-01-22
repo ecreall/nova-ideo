@@ -30,6 +30,11 @@ export const accountQuery = gql`
       description
       function
       availableTokens
+      mask {
+        id
+        oid
+        title
+      }
       picture {
         url
       }
@@ -246,6 +251,7 @@ export const commentFragment = gql`
     rootOid
     createdAt
     text
+    edited
     channel {
       id
       oid

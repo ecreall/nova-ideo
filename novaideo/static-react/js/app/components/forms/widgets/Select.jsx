@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 /* eslint-disable no-param-reassign */
 import React from 'react';
+import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import { MenuItem, MenuList } from 'material-ui/Menu';
@@ -11,43 +12,61 @@ import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import { ListItemText } from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
+import Input, { InputAdornment } from 'material-ui/Input';
+import SearchIcon from 'material-ui-icons/Search';
 
-const styles = {
-  popperClose: {
-    pointerEvents: 'none'
-  },
-  popper: {
-    zIndex: 3
-  },
-  paper: {
-    borderRadius: 6,
-    border: '1px solid rgba(0,0,0,.15)'
-  },
-  menuItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    height: 'auto',
-    '&:hover': {
-      backgroundColor: 'transparent'
+const styles = (theme) => {
+  return {
+    popperClose: {
+      pointerEvents: 'none'
+    },
+    popper: {
+      zIndex: 1100
+    },
+    paper: {
+      borderRadius: 10,
+      border: '1px solid rgba(0,0,0,.15)'
+    },
+    menuItem: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 'auto',
+      '&:hover': {
+        backgroundColor: 'transparent'
+      }
+    },
+    searchRoot: {
+      padding: 10,
+      backgroundColor: 'whitesmoke',
+      borderBottom: 'solid 1px rgba(191, 191, 191, 0.42)',
+      borderTopRightRadius: 10,
+      borderTopLeftRadius: 10
+    },
+    search: {
+      backgroundColor: 'white',
+      border: '1px solid #a0a0a2',
+      borderRadius: 4,
+      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
+      alignItems: 'center',
+      height: 35
+    },
+    input: {
+      padding: '10px 10px 10px',
+      fontSize: 15,
+      '&::placeholder': {
+        color: '#000',
+        fontSize: 15,
+        fontWeight: 400,
+        opacity: '.375'
+      }
+    },
+    newOptionLi: {
+      backgroundColor: theme.palette.tertiary.color
+    },
+    newOption: {
+      color: theme.palette.tertiary.hover.color
     }
-  },
-  button: {
-    width: 40,
-    height: 40,
-    color: ' #a3a3a3'
-  },
-  searchRoot: {
-    padding: '5px 15px',
-    backgroundColor: 'whitesmoke',
-    borderBottom: 'solid 1px rgba(191, 191, 191, 0.42)'
-  },
-  search: {
-    backgroundColor: 'white',
-    border: 'solid 1px #bfbfbf',
-    borderRadius: 12,
-    padding: '5px 10px'
-  }
+  };
 };
 
 class Select extends React.Component {
@@ -93,6 +112,7 @@ class Select extends React.Component {
   addOption(text) {
     this.setState(
       {
+        searchText: '',
         options: { ...{ [text]: text }, ...this.state.options },
         selected: [text, ...this.state.selected]
       },
@@ -119,20 +139,26 @@ class Select extends React.Component {
   };
 
   render() {
-    const { label, classes } = this.props;
+    const { label, canAdd, classes } = this.props;
     const { options, searchText } = this.state;
+    let exactMatch = false;
     const optionsResult = Object.keys(options).reduce((filtered, id) => {
       const title = options[id];
-      if (title.toLowerCase().search(searchText) >= 0) filtered[id] = title;
+      const titleToSearch = searchText.toLowerCase().trim();
+      const formatedTitle = title.toLowerCase().trim();
+      if (!exactMatch) {
+        exactMatch = titleToSearch === formatedTitle;
+      }
+      if (formatedTitle.search(titleToSearch) >= 0) filtered[id] = title;
       return filtered;
     }, {});
     const { menu } = this.state;
     return (
       <Manager>
         <Target>
-          <IconButton className={classes.button} aria-owns={'menu-list'} aria-haspopup="true" onClick={this.openMenu}>
+          <div onClick={this.openMenu}>
             {label}
-          </IconButton>
+          </div>
         </Target>
         <Popper
           placement="top-start"
@@ -142,22 +168,51 @@ class Select extends React.Component {
           <ClickAwayListener onClickAway={this.closeMenu}>
             <Grow in={menu} id="menu-list" style={{ transformOrigin: '0 0 0' }}>
               <Paper elevation={6} className={classes.paper}>
-                <TextField
-                  value={this.state.searchText}
-                  onChange={this.onChangeSearchText}
-                  placeholder="Search"
-                  InputProps={{
-                    disableUnderline: true,
-                    classes: {
-                      root: classes.searchRoot,
-                      input: classes.search
+                <div className={classes.searchRoot}>
+                  <Input
+                    disableUnderline
+                    value={this.state.searchText}
+                    onChange={this.onChangeSearchText}
+                    placeholder={canAdd ? I18n.t('forms.searchOrAdd') : I18n.t('forms.search')}
+                    classes={{
+                      root: classes.search,
+                      input: classes.input
+                    }}
+                    endAdornment={
+                      <InputAdornment position="start">
+                        <IconButton>
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
                     }
-                  }}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
+                  />
+                </div>
                 <MenuList role="menu">
+                  {searchText &&
+                    canAdd &&
+                    !exactMatch &&
+                    <MenuItem
+                      onClick={() => {
+                        this.addOption(searchText);
+                      }}
+                      classes={{
+                        root: classes.newOptionLi
+                      }}
+                      value={searchText}
+                    >
+                      <Checkbox
+                        classes={{
+                          default: classes.newOption,
+                          checked: classes.newOption
+                        }}
+                      />
+                      <ListItemText
+                        classes={{
+                          text: classes.newOption
+                        }}
+                        primary={searchText}
+                      />
+                    </MenuItem>}
                   {Object.keys(optionsResult).map((id) => {
                     const title = optionsResult[id];
                     return (
@@ -165,7 +220,7 @@ class Select extends React.Component {
                         onClick={() => {
                           this.toggleOption(!this.state.selected.includes(id), id);
                         }}
-                        ey={id}
+                        key={id}
                         value={id}
                       >
                         <Checkbox checked={this.state.selected.includes(id)} />

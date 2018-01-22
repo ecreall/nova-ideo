@@ -30,7 +30,8 @@ const styles = {
     backgroundAttachment: 'scroll',
     backgroundPositionX: 'center',
     backgroundPositionY: 'center',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    cursor: 'pointer'
   },
   firstItem: {
     width: '100%',
@@ -68,7 +69,8 @@ const styles = {
     backgroundColor: '#d8d8d8',
     marginTop: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    cursor: 'pointer'
   },
   plusItem: {
     fontSize: 24,

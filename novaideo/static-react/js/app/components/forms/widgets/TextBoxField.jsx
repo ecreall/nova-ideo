@@ -23,7 +23,7 @@ class TextBoxField extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (!nextProps.value) {
-      this.editor.clear(nextProps.autoFocus);
+      this.editor.clear(true);
     }
     return !nextProps.value;
   }

@@ -21,7 +21,7 @@ const styles = {
   },
   message: {
     position: 'absolute',
-    right: 'calc(50% - 65px)', // 130/2
+    right: 'calc(50% - 69px)', // 130/2
     backgroundColor: 'white',
     top: -13,
     fontSize: 13,
@@ -48,6 +48,12 @@ const styles = {
     cursor: 'default',
     textAlign: 'center',
     padding: 5
+  },
+  background: {
+    minHeight: 1,
+    backgroundColor: 'white',
+    width: 130,
+    margin: 'auto'
   }
 };
 
@@ -131,7 +137,8 @@ class Divider extends React.Component {
           <div style={style.alert} className={classes.alert}>
             {alertMessage}
           </div>}
-        {message &&
+        {message && [
+          <div className={classes.background} />,
           <div
             ref={(messageContainer) => {
               this.message = messageContainer;
@@ -142,7 +149,8 @@ class Divider extends React.Component {
             })}
           >
             {message}
-          </div>}
+          </div>
+        ]}
       </div>
     );
   }

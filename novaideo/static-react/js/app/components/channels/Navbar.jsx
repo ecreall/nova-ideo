@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
@@ -90,6 +91,10 @@ class NavBar extends React.Component {
             color="primary"
             aria-label="Menu"
             onClick={() => {
+              const current = browserHistory.getCurrentLocation().pathname;
+              if (current.startsWith('/messages')) {
+                browserHistory.replace('/');
+              }
               return updateChatApp('chatApp', {
                 open: false,
                 drawer: false,

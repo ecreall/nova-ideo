@@ -1,116 +1,125 @@
 import React from 'react';
+import { withStyles } from 'material-ui/styles';
+import Avatar from 'material-ui/Avatar';
 
-const styles = {
-  container: {
-    borderLeftColor: '#e8e8e8',
-    borderLeftWidth: 3,
-    paddingLeft: 10,
-    marginBottom: 5,
-    borderLeftStyle: 'solid'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5
-  },
-  headerAvatar: {
-    width: 15,
-    height: 15,
-    borderRadius: 3,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da'
-  },
-  authorAvatar: {
-    width: 20,
-    height: 20,
-    borderRadius: 3,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da'
-  },
-  headerTitle: {
-    display: 'flex',
-    fontSize: 13,
-    color: '#999999ff',
-    justifyContent: 'space-around',
-    paddingLeft: 5
-  },
-  contributionTitle: {
-    fontSize: 13,
-    paddingLeft: 5,
-    width: '99%'
-  },
-  image: {
-    width: 300,
-    height: 150,
-    borderRadius: 3,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    marginTop: 10,
-    marginBottom: 10
-  },
-  url: {
-    color: '#337ab7'
-  },
-  description: {
-    color: 'gray',
-    paddingLeft: 5,
-    fontSize: 12
-  },
-  sliderHeader: {
-    marginLeft: 4,
-    fontSize: 17,
-    color: 'white',
-    width: '90%'
-  },
-  authorName: {
-    color: 'gray',
-    fontSize: 11,
-    paddingLeft: 5
-  }
+import ImagesPreview from './ImagesPreview';
+
+const styles = (theme) => {
+  return {
+    container: {
+      borderLeftColor: '#e8e8e8',
+      borderLeftWidth: 3,
+      paddingLeft: 10,
+      marginBottom: 5,
+      borderLeftStyle: 'solid'
+    },
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 5
+    },
+    headerAvatar: {
+      width: 16,
+      height: 16,
+      borderRadius: 3,
+      borderWidth: 0.5,
+      borderColor: '#d6d7da'
+    },
+    avatarRoot: {
+      borderRadius: 4
+    },
+    avatar: {
+      color: theme.palette.tertiary.hover.color,
+      backgroundColor: theme.palette.tertiary.color,
+      fontWeight: 900
+    },
+    headerTitle: {
+      display: 'flex',
+      fontSize: 15,
+      color: '#717274',
+      justifyContent: 'space-around',
+      paddingLeft: 5
+    },
+    contributionTitle: {
+      color: '#337ab7',
+      fontSize: 15,
+      fontWeight: 'bold',
+      paddingLeft: 5,
+      width: '99%',
+      textDecoration: 'none'
+    },
+    image: {
+      width: 300,
+      height: 150,
+      borderRadius: 3,
+      borderWidth: 0.5,
+      borderColor: '#d6d7da',
+      marginTop: 10,
+      marginBottom: 10
+    },
+    url: {
+      color: '#337ab7',
+      fontWeight: 'bold',
+      textDecoration: 'none'
+    },
+    description: {
+      color: 'gray',
+      paddingLeft: 5,
+      fontSize: 12
+    },
+    sliderHeader: {
+      marginLeft: 4,
+      fontSize: 17,
+      color: 'white',
+      width: '90%'
+    },
+    authorName: {
+      color: 'gray',
+      fontSize: 11,
+      paddingLeft: 5
+    }
+  };
 };
 
-export default class Url extends React.Component {
+class Url extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, classes } = this.props;
     return (
-      <div style={styles.container}>
+      <div className={classes.container}>
         {data.authorName || data.authorAvatar
-          ? <div style={styles.header}>
-            <img style={styles.authorAvatar} src={data.authorAvatar} />
+          ? <div className={classes.header}>
+            <Avatar classes={{ root: classes.avatarRoot }} size={10} src={data.authorAvatar} />
             <div>
-              <span numberOfLines={1} style={styles.contributionTitle}>
+              <a target="_blank" href={data.url} className={classes.contributionTitle}>
                 {data.title}
-              </span>
-              <span numberOfLines={1} style={styles.authorName}>
+              </a>
+              <span className={classes.authorName}>
                 {data.authorName}
               </span>
             </div>
           </div>
           : <div>
-            <div style={styles.header}>
-              <img style={styles.headerAvatar} src={data.favicon} />
-              <span style={styles.headerTitle}>
+            <div className={classes.header}>
+              <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
+              <span className={classes.headerTitle}>
                 {data.siteName}
               </span>
             </div>
             <div>
-              <span style={styles.url}>
+              <a target="_blank" href={data.url} className={classes.url}>
                 {data.title}
-              </span>
+              </a>
             </div>
           </div>}
-        <span style={styles.description}>
+        <span className={classes.description}>
           {data.description}
         </span>
-        {data.imageUrl &&
-          <div>
-            <img src={data.imageUrl} style={styles.image} />
-          </div>}
+        {data.imageUrl && <ImagesPreview images={[{ url: data.imageUrl, variations: [] }]} />}
         {data.authorName || data.authorAvatar
-          ? <div style={styles.header}>
-            <img style={styles.headerAvatar} src={data.favicon} />
-            <span style={styles.headerTitle}>
+          ? <div className={classes.header}>
+            <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
+            <span className={classes.headerTitle}>
               {data.siteName}
             </span>
           </div>
@@ -119,3 +128,5 @@ export default class Url extends React.Component {
     );
   }
 }
+
+export default withStyles(styles)(Url);

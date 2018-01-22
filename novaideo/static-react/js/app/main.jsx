@@ -9,7 +9,15 @@ import withWidth from 'material-ui/utils/withWidth';
 import App from './app';
 import { siteQuery } from './graphql/queries';
 import { SMALL_WIDTH } from './constants';
-import { userLogin, logout, updateUserToken, setConnectionState, loadAdapters, updateGlobalProps } from './actions/actions';
+import {
+  userLogin,
+  logout,
+  updateUserToken,
+  setConnectionState,
+  loadAdapters,
+  updateGlobalProps,
+  updateApp
+} from './actions/actions';
 
 class Main extends React.Component {
   state: { requirementsLoaded: boolean };
@@ -77,6 +85,15 @@ class Main extends React.Component {
       });
       this.props.loadAdapters(data.root.siteId);
     }
+    const channelId = nextProps.params.channelId || null;
+    if (channelId) {
+      this.props.updateApp('chatApp', {
+        drawer: true,
+        open: true,
+        channel: channelId,
+        right: { open: false, componentId: undefined }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -92,11 +109,12 @@ class Main extends React.Component {
 
     if (data.loading) return null;
     const loged = true;
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="main">
           {loged
-            ? <App>
+            ? <App params={this.props.params}>
               {this.props.children}
             </App>
             : 'login'}
@@ -120,7 +138,8 @@ export const mapDispatchToProps = {
   logout: logout,
   loadAdapters: loadAdapters,
   updateUserToken: updateUserToken,
-  updateGlobalProps: updateGlobalProps
+  updateGlobalProps: updateGlobalProps,
+  updateApp: updateApp
 };
 
 export default withWidth()(

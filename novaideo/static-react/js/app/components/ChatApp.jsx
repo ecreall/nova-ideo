@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
@@ -44,6 +45,15 @@ const styles = (theme) => {
 const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
 export class DumbChatApp extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    const { channel } = nextProps;
+    const current = browserHistory.getCurrentLocation().pathname;
+    const newLocation = `/messages/${channel}`;
+    if (channel && current.startsWith('/messages') && newLocation !== current) {
+      browserHistory.replace(newLocation);
+    }
+  }
+
   render() {
     const { data, active, channel, left, rightOpen, classes } = this.props;
     const commentAction = data.node

@@ -12,7 +12,10 @@ function TabContainer({ children }) {
     <Typography
       component="div"
       style={{
-        marginTop: 25
+        marginTop: 25,
+        maxWidth: 588,
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }}
     >
       {children}
@@ -37,7 +40,7 @@ class Home extends React.Component {
     const value = this.state.value;
     return (
       <div>
-        <AppBar position="static" color="default">
+        {/* <AppBar position="static" color="default">
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
@@ -50,7 +53,7 @@ class Home extends React.Component {
             <Tab label="Ideas" />
             <Tab label="Proposals" />
           </Tabs>
-        </AppBar>
+        </AppBar> */}
         {value === 0 && <TabContainer>Questions</TabContainer>}
         {value === 1 &&
           <TabContainer>

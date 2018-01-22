@@ -14,7 +14,8 @@ const styles = {
     backgroundColor: blue[500]
   },
   message: {
-    color: blue[500]
+    color: blue[500],
+    backgroundColor: 'transparent'
   },
   divider: {
     margin: 0

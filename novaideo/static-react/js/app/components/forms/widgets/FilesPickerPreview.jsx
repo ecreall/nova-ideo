@@ -74,11 +74,11 @@ class FilesPickerPreview extends React.Component {
     if (files.length === 0) return null;
     return (
       <div className={classes.container}>
-        <div className={classes.removeAll}>
+        {/* <div className={classes.removeAll}>
           <Tooltip title="Rmove all files" placement="top">
             <DeleteForeverIcon onClick={this.filesRemoveAll} />
           </Tooltip>
-        </div>
+        </div> */}
         <div className={classes.files}>
           {files.map((file) => {
             return (
@@ -87,7 +87,7 @@ class FilesPickerPreview extends React.Component {
                   ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
                   : <InsertDriveFileIcon />}
                 <div className={classes.action}>
-                  <Tooltip title="Remove" placement="top">
+                  <Tooltip title="Remove" placement="right">
                     <CancelIcon
                       classes={{
                         root: classes.remove

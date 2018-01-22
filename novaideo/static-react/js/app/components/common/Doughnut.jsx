@@ -11,7 +11,7 @@ const styles = {
     height: 100,
     marginTop: 30,
     marginBottom: 30,
-    minWidth: 150,
+    minWidth: 120,
     padding: '0 0 0',
     right: 0,
     width: '20%',

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { Field, reduxForm, initialize } from 'redux-form';
+import { Translate, I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
@@ -42,7 +43,7 @@ const styles = (theme) => {
       borderRadius: 4,
       resize: 'none',
       color: '#2c2d30',
-      fontSize: '.9375rem',
+      fontSize: 15,
       lineHeight: '1.2rem',
       maxHeight: 'none',
       minHeight: '41px',
@@ -171,24 +172,34 @@ export class DumbCommentForm extends React.Component {
   }
 
   handleSubmit = () => {
-    const { globalProps, formData, valid, form, context, action } = this.props;
+    const { globalProps, formData, valid, context, action } = this.props;
     if (valid) {
-      // we must encode the file name
       let files = formData.values.files || [];
       files = files.filter((file) => {
         return file;
       });
-      const anonymous = Boolean(formData.values.anonymous);
       this.props.commentObject({
         context: context,
         comment: formData.values.comment,
         attachedFiles: files,
-        anonymous: anonymous,
+        anonymous: Boolean(formData.values.anonymous),
         account: globalProps.account,
         action: `${action.processId}.${action.nodeId}`
       });
-      this.props.dispatch(initialize(form, { comment: '', anonymous: anonymous, files: [] }));
+      this.initializeForm();
     }
+  };
+
+  initializeForm = () => {
+    const { formData, form } = this.props;
+    const anonymous = formData && formData.values && Boolean(formData.values.anonymous);
+    this.props.dispatch(
+      initialize(form, {
+        comment: '',
+        anonymous: anonymous,
+        files: []
+      })
+    );
   };
 
   render() {
@@ -221,7 +232,7 @@ export class DumbCommentForm extends React.Component {
                   props={{
                     node: renderMenuItem({
                       Icon: InsertDriveFileIcon,
-                      title: 'Add files',
+                      title: I18n.t('forms.attachFiles'),
                       classes: classes
                     }),
                     initRef: (filesPicker) => {
@@ -252,15 +263,14 @@ export class DumbCommentForm extends React.Component {
                 role="presentation"
                 tabIndex="-1"
               >
-                Your text here
+                <Translate value="forms.comment.textPlaceholder" name={channel ? channel.title : '...'} />
               </div>
             </div>
             <div className={withAnonymous && classes.addon}>
               {withAnonymous
                 ? <Field
                   props={{
-                    classes: classes,
-                    label: 'RemainAnonymous'
+                    classes: classes
                   }}
                   name="anonymous"
                   component={renderAnonymousCheckboxField}
@@ -330,6 +340,20 @@ const CommentForm = graphql(commentObject, {
             })
             : [];
         const createdAt = new Date();
+        let authorId = account.id;
+        let authorOid = account.oid;
+        let authorTitle = account.title;
+        if (anonymous) {
+          if (account.mask) {
+            authorId = account.mask.id;
+            authorOid = account.mask.oid;
+            authorTitle = account.mask.title;
+          } else {
+            authorId = 'anonymousId';
+            authorOid = 'anonymousOid';
+            authorTitle = 'Anonymous';
+          }
+        }
         return mutate({
           variables: {
             context: context,
@@ -353,14 +377,15 @@ const CommentForm = graphql(commentObject, {
                 text: comment,
                 attachedFiles: files,
                 urls: [],
+                edited: false,
                 author: {
                   __typename: 'Person',
-                  id: `${account.id}comment`,
-                  oid: `${account.oid}comment`,
+                  id: `${authorId}comment`,
+                  oid: `${authorOid}comment`,
                   isAnonymous: anonymous,
                   description: account.description,
                   function: account.function,
-                  title: !anonymous ? account.title : 'Anonymous',
+                  title: authorTitle,
                   picture:
                     !anonymous && account.picture
                       ? {

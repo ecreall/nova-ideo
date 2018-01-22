@@ -6,5 +6,6 @@ import Home from './components/views/Home';
 export default [
   <Route path="/" component={Main}>
     <IndexRoute component={Home} />
+    <Route path="/messages/:channelId" component={Home} />
   </Route>
 ];

@@ -1,6 +1,24 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    forms: {
+      optional: "(facultatif)",
+      disableAnonymity: "Désactiver l'anonymat",
+      remainAnonymous: "Activer l'anonymat",
+      attachFiles: "Attacher des fichiers",
+      searchOrAdd: "Recherche ou ajout",
+      search: "Recherche",
+      createIdea: {
+        title: "Titre de l'idée",
+        titleHelper: "Ajouter un titre à votre idée",
+        textPlaceholder: "J'ai une idée !",
+        textPlaceholderOpened: "Le texte de votre idée ici",
+        keywords: "Ajouter des mots clés"
+      },
+      comment: {
+        textPlaceholder: "Envoyer un message à #%{name}"
+      }
+    },
     evaluation: {
       tokens: "Jetons",
       support: "Soutiens",
@@ -23,6 +41,24 @@ const Translations = {
     }
   },
   en: {
+    forms: {
+      optional: "(optional)",
+      disableAnonymity: "Disable anonymity",
+      remainAnonymous: "Remain anonymous",
+      attachFiles: "Attach files",
+      searchOrAdd: "Search or add",
+      search: "Search",
+      createIdea: {
+        title: "The title of the idea",
+        titleHelper: "Add a title to your idea",
+        textPlaceholder: "I have an idea!",
+        textPlaceholderOpened: "The text of your idea here",
+        keywords: "Add keywords"
+      },
+      comment: {
+        textPlaceholder: "Submit a message to #%{name}"
+      }
+    },
     evaluation: {
       tokens: "Tokens",
       support: "Supports",

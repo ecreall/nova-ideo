@@ -1,36 +1,32 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
-import { ReactNativeFile } from 'apollo-upload-client';
+import { I18n } from 'react-redux-i18n';
 import update from 'immutability-helper';
 import classNames from 'classnames';
 import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
-import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import AttachFileIcon from 'material-ui-icons/AttachFile';
 import IconButton from 'material-ui/IconButton';
 import Avatar from 'material-ui/Avatar';
 import Icon from 'material-ui/Icon';
+import Tooltip from 'material-ui/Tooltip';
 
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import SelectChipPreview from './widgets/SelectChipPreview';
-import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderSelect } from './utils';
+import { renderTextInput, renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderSelect } from './utils';
 import { ideaFragment } from '../../graphql/queries';
 
 const styles = (theme) => {
   return {
-    contentContainerStyle: {
+    fromContainer: {
       padding: 20,
       paddingLeft: 11,
       backgroundColor: 'whitesmoke',
       border: 'solid 1px rgba(0,0,0,.1)',
-      borderBottom: 'none'
-    },
-    contentContainerStyleAddon: {
-      boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
-    },
-    container: {
+      borderBottom: 'none',
       display: 'flex'
     },
     addon: {
@@ -47,11 +43,11 @@ const styles = (theme) => {
       justifyContent: 'space-between',
       height: 'auto',
       outline: 0,
-      border: '1px solid #bfbfbf',
+      border: '1px solid #a0a0a2',
       borderRadius: 4,
       resize: 'none',
       color: '#2c2d30',
-      fontSize: '.9375rem',
+      fontSize: 15,
       lineHeight: '1.2rem',
       maxHeight: 'none',
       minHeight: 40,
@@ -60,7 +56,7 @@ const styles = (theme) => {
       flex: 1,
       flexDirection: 'column',
       '&:focus-within': {
-        border: '2px solid #848484'
+        border: '1px solid #848484'
       }
     },
     inputContainerAnonymous: {
@@ -133,9 +129,22 @@ const styles = (theme) => {
       borderRadius: 4,
       marginTop: 1
     },
+    anonymousAvatar: {
+      color: theme.palette.tertiary.hover.color,
+      backgroundColor: theme.palette.tertiary.color,
+      fontWeight: 900
+    },
     form: {
       flex: 1,
       marginLeft: 10
+    },
+    label: {
+      display: 'flex',
+      alignItems: 'center',
+      fontWeight: 700,
+      margin: '0 0 .25rem',
+      fontSize: 13,
+      cursor: 'pointer'
     },
     previews: {
       borderTop: 'solid 1px #bfbfbf',
@@ -151,11 +160,11 @@ export class DumbCreateIdeaForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened: false,
-      displayErrors: false,
-      sending: false
+      opened: false
     };
     this.container = null;
+    this.filesPicker = null;
+    this.keywordsPicker = null;
   }
 
   componentDidMount() {
@@ -179,199 +188,211 @@ export class DumbCreateIdeaForm extends React.Component {
     }
   };
 
-  handleSubmit = (action) => {
+  handleSubmit = () => {
+    const action = { nodeId: 'creatandpublish' };
     const { formData, valid, globalProps } = this.props;
     if (valid) {
-      // submit form here
-      const close = () => {
-        this.props.navigation.goBack();
-      };
-      this.setState({ sending: true });
       // we must encode the file name
-      const files = formData.values.files
-        ? ReactNativeFile.list(
-          formData.values.files.map((file) => {
-            return {
-              uri: file.url,
-              name: encodeURI(file.name),
-              type: `${file.type}/*`
-            };
-          })
-        )
-        : [];
+      let files = formData.values.files || [];
+      files = files.filter((file) => {
+        return file;
+      });
       if (action.nodeId === 'creatandpublish') {
         this.props.createAndPublish({
           text: formData.values.text,
           title: formData.values.title,
-          keywords: formData.values.keywords.map((item) => {
-            return item.title;
-          }),
+          keywords: Object.values(formData.values.keywords),
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
         });
-        close();
+        this.initializeForm();
       }
       if (action.nodeId === 'creat') {
         this.props.createIdea({
           text: formData.values.text,
           title: formData.values.title,
-          keywords: formData.values.keywords.map((item) => {
-            return item.title;
-          }),
+          keywords: Object.values(formData.values.keywords),
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
         });
-        close();
+        this.initializeForm();
       }
-    } else {
-      this.setState({ displayErrors: true });
     }
+  };
+
+  initializeForm = () => {
+    const { form } = this.props;
+    this.props.dispatch(
+      initialize(form, {
+        title: '',
+        keywords: {},
+        text: '',
+        anonymous: false,
+        files: []
+      })
+    );
+    this.setState({ opened: false });
   };
 
   render() {
     const { formData, globalProps: { siteConf, account }, classes } = this.props;
-    const hasComment = formData && formData.values && formData.values.text;
-    let files = formData && formData.values && formData.values.files ? formData.values.files : [];
-    const selectedKeywords = formData && formData.values && formData.values.keywords ? formData.values.keywords : {};
-    files = files.filter((file) => {
-      return file;
-    });
-    const withAnonymous = siteConf.anonymisation;
-    const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
-    const authorPicture = account.picture;
     const { opened } = this.state;
+    const authorPicture = account.picture;
     const keywords = {};
     siteConf.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
     });
-    siteConf.keywords.forEach((keyword) => {
-      keywords[`${keyword}z`] = keyword;
-    });
-    siteConf.keywords.forEach((keyword) => {
-      keywords[`${keyword}zF`] = keyword;
-    });
-    siteConf.keywords.forEach((keyword) => {
-      keywords[`${keyword}z2`] = keyword;
-    });
-    siteConf.keywords.forEach((keyword) => {
-      keywords[`${keyword}z4`] = keyword;
-    });
+    const withAnonymous = siteConf.anonymisation;
+    let hasText = false;
+    let files = [];
+    let selectedKeywords = {};
+    let anonymousSelected = false;
+    let canSubmit = false;
+    if (formData && formData.values) {
+      hasText = formData.values.text;
+      files = formData.values.files ? formData.values.files : [];
+      files = files.filter((file) => {
+        return file;
+      });
+      selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
+      anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
+      canSubmit = formData.values.title && Object.keys(selectedKeywords).length > 0 && hasText;
+    }
     return (
       <div
         ref={(container) => {
           this.container = container;
         }}
-        className={classes.contentContainerStyle}
+        className={classes.fromContainer}
       >
-        <div className={classes.container}>
-          <div className={classes.left}>
-            <Avatar classes={{ root: classes.avatar }} ize={30} src={authorPicture ? `${authorPicture.url}/profil` : ''} />
-          </div>
-          <div className={classes.form}>
-            <div
-              className={classNames(classes.inputContainer, {
-                [classes.inputContainerAnonymous]: anonymousSelected
-              })}
-              onClick={this.openForm}
-            >
-              <div className={classes.textField}>
-                <Field
-                  props={{
-                    onCtrlEnter: this.handleSubmit,
-                    style: {
-                      picker: {
-                        bottom: 'auto'
-                      }
+        <div className={classes.left}>
+          {anonymousSelected
+            ? <Avatar classes={{ root: classes.avatar }} className={classes.anonymousAvatar}>
+              <Icon className={'mdi-set mdi-guy-fawkes-mask'} />
+            </Avatar>
+            : <Avatar classes={{ root: classes.avatar }} ize={30} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
+        </div>
+        <div className={classes.form}>
+          {opened &&
+            <Field
+              props={{
+                label: I18n.t('forms.createIdea.title'),
+                helper: I18n.t('forms.createIdea.titleHelper')
+              }}
+              name="title"
+              component={renderTextInput}
+            />}
+          <div
+            className={classNames(classes.inputContainer, {
+              [classes.inputContainerAnonymous]: anonymousSelected
+            })}
+            onClick={this.openForm}
+          >
+            <div className={classes.textField}>
+              <Field
+                props={{
+                  onCtrlEnter: this.handleSubmit,
+                  style: {
+                    picker: {
+                      bottom: 'auto'
                     }
-                  }}
-                  name="text"
-                  component={renderTextBoxField}
-                  type="text"
-                />
-                <div
-                  className={classNames(classes.placeholder, {
-                    [classes.placeholderActive]: !hasComment
-                  })}
-                  aria-hidden="true"
-                  role="presentation"
-                  tabIndex="-1"
-                >
-                  Your text here
-                </div>
+                  }
+                }}
+                name="text"
+                component={renderTextBoxField}
+                type="text"
+              />
+              <div
+                className={classNames(classes.placeholder, {
+                  [classes.placeholderActive]: !hasText
+                })}
+                aria-hidden="true"
+                role="presentation"
+                tabIndex="-1"
+              >
+                {opened ? I18n.t('forms.createIdea.textPlaceholderOpened') : I18n.t('forms.createIdea.textPlaceholder')}
               </div>
-              {(files.length > 0 || Object.keys(selectedKeywords).length > 0) &&
-                <div className={classes.previews}>
-                  <SelectChipPreview
-                    items={selectedKeywords}
-                    onItemDelete={(id) => {
-                      this.keywordsPicker.toggleOption(false, id);
-                    }}
-                  />
-                  <FilesPickerPreview
-                    files={files}
-                    getPicker={() => {
-                      return this.filesPicker;
-                    }}
-                  />
-                </div>}
             </div>
-
-            {opened &&
-              <div className={classes.addonContainer}>
-                <div className={classes.addon}>
-                  <Field
-                    props={{
-                      label: <Icon className={'mdi-set mdi-tag-multiple'} />,
-                      options: keywords,
-                      canAdd: siteConf.canAddKeywords,
-                      initRef: (keywordsPicker) => {
-                        this.keywordsPicker = keywordsPicker;
-                      }
-                    }}
-                    withRef
-                    name="keywords"
-                    component={renderSelect}
-                  />
-                  <Field
-                    props={{
-                      node: (
-                        <IconButton className={classes.button}>
-                          <InsertDriveFileIcon />
-                        </IconButton>
-                      ),
-                      initRef: (filesPicker) => {
-                        this.filesPicker = filesPicker;
-                      }
-                    }}
-                    withRef
-                    name="files"
-                    component={renderFilesListField}
-                  />
-                  {withAnonymous
-                    ? <Field
-                      props={{
-                        classes: classes,
-                        label: 'RemainAnonymous'
-                      }}
-                      name="anonymous"
-                      component={renderAnonymousCheckboxField}
-                      type="boolean"
-                    />
-                    : null}
-                </div>
-                <div className={classes.action}>
-                  <SendIcon
-                    onClick={hasComment ? this.handleSubmit : undefined}
-                    size={22}
-                    className={classNames(classes.submit, {
-                      [classes.submitActive]: hasComment
-                    })}
-                  />
-                </div>
+            {(files.length > 0 || Object.keys(selectedKeywords).length > 0) &&
+              <div className={classes.previews}>
+                <SelectChipPreview
+                  items={selectedKeywords}
+                  onItemDelete={(id) => {
+                    this.keywordsPicker.toggleOption(false, id);
+                  }}
+                />
+                <FilesPickerPreview
+                  files={files}
+                  getPicker={() => {
+                    return this.filesPicker;
+                  }}
+                />
               </div>}
           </div>
+          {opened &&
+            <Field
+              props={{
+                label: (
+                  <label className={classes.label} htmlFor="keywords">
+                    <IconButton className={classes.button}>
+                      <Icon className={'mdi-set mdi-tag-multiple'} />
+                    </IconButton>
+                    {I18n.t('forms.createIdea.keywords')}
+                  </label>
+                ),
+                options: keywords,
+                canAdd: siteConf.canAddKeywords,
+                initRef: (keywordsPicker) => {
+                  this.keywordsPicker = keywordsPicker;
+                }
+              }}
+              withRef
+              name="keywords"
+              component={renderSelect}
+            />}
+          {opened &&
+            <div className={classes.addonContainer}>
+              <div className={classes.addon}>
+                <Field
+                  props={{
+                    node: (
+                      <Tooltip title={I18n.t('forms.attachFiles')} placement="bottom">
+                        <IconButton className={classes.button}>
+                          <AttachFileIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ),
+                    initRef: (filesPicker) => {
+                      this.filesPicker = filesPicker;
+                    }
+                  }}
+                  withRef
+                  name="files"
+                  component={renderFilesListField}
+                />
+                {withAnonymous
+                  ? <Field
+                    props={{
+                      classes: classes
+                    }}
+                    name="anonymous"
+                    component={renderAnonymousCheckboxField}
+                    type="boolean"
+                  />
+                  : null}
+              </div>
+              <div className={classes.action}>
+                <SendIcon
+                  onClick={canSubmit ? this.handleSubmit : undefined}
+                  size={22}
+                  className={classNames(classes.submit, {
+                    [classes.submitActive]: canSubmit
+                  })}
+                />
+              </div>
+            </div>}
         </div>
       </div>
     );
@@ -386,7 +407,6 @@ const CreateIdeaReduxForm = reduxForm({
 const mapStateToProps = (state) => {
   return {
     formData: state.form.createIdea,
-    instance: state.instance,
     globalProps: state.globalProps
   };
 };
@@ -429,18 +449,33 @@ const CreateIdeaForm = graphql(createPublishIdea, {
   props: function ({ ownProps, mutate }) {
     return {
       createAndPublish: function ({ text, title, keywords, attachedFiles, anonymous, account }) {
-        const { formData, instance } = ownProps;
+        const { formData, globalProps: { siteConf } } = ownProps;
         const files =
           attachedFiles.length > 0
             ? formData.values.files.map((file) => {
               return {
-                url: file.url,
-                isImage: file.type === 'image',
+                url: file.preview.url,
+                isImage: file.preview.type === 'image',
+                variations: [],
                 __typename: 'File'
               };
             })
             : [];
         const createdAt = new Date();
+        let authorId = account.id;
+        let authorOid = account.oid;
+        let authorTitle = account.title;
+        if (anonymous) {
+          if (account.mask) {
+            authorId = account.mask.id;
+            authorOid = account.mask.oid;
+            authorTitle = account.mask.title;
+          } else {
+            authorId = 'anonymousId';
+            authorOid = 'anonymousOid';
+            authorTitle = 'Anonymous';
+          }
+        }
         return mutate({
           variables: {
             text: text,
@@ -467,7 +502,7 @@ const CreateIdeaForm = graphql(createPublishIdea, {
                 tokensSupport: 0,
                 tokensOpposition: 0,
                 userToken: null,
-                state: instance.support_ideas ? ['submitted_support'] : ['published'],
+                state: siteConf.supportIdeas ? ['submitted_support', 'published'] : ['published'],
                 channel: {
                   __typename: 'Channel',
                   id: 'channel-id',
@@ -478,9 +513,9 @@ const CreateIdeaForm = graphql(createPublishIdea, {
                 author: {
                   __typename: 'Person',
                   isAnonymous: anonymous,
-                  id: `${account.id}createidea`,
-                  oid: `${account.oid}createidea`,
-                  title: !anonymous ? account.title : 'Anonymous',
+                  id: `${authorId}createidea`,
+                  oid: `${authorOid}createidea`,
+                  title: authorTitle,
                   description: account.description,
                   function: account.function,
                   picture:
@@ -545,13 +580,28 @@ const CreateIdeaForm = graphql(createPublishIdea, {
             attachedFiles.length > 0
               ? formData.values.files.map((file) => {
                 return {
-                  url: file.url,
-                  isImage: file.type === 'image',
+                  url: file.preview.url,
+                  isImage: file.preview.type === 'image',
+                  variations: [],
                   __typename: 'File'
                 };
               })
               : [];
           const createdAt = new Date();
+          let authorId = account.id;
+          let authorOid = account.oid;
+          let authorTitle = account.title;
+          if (anonymous) {
+            if (account.mask) {
+              authorId = account.mask.id;
+              authorOid = account.mask.oid;
+              authorTitle = account.mask.title;
+            } else {
+              authorId = 'anonymousId';
+              authorOid = 'anonymousOid';
+              authorTitle = 'Anonymous';
+            }
+          }
           return mutate({
             variables: {
               text: text,
@@ -589,9 +639,9 @@ const CreateIdeaForm = graphql(createPublishIdea, {
                   author: {
                     __typename: 'Person',
                     isAnonymous: anonymous,
-                    id: `${account.id}createidea`,
-                    oid: `${account.oid}createidea`,
-                    title: !anonymous ? account.title : 'Anonymous',
+                    id: `${authorId}createidea`,
+                    oid: `${authorOid}createidea`,
+                    title: authorTitle,
                     description: account.description,
                     function: account.function,
                     picture:

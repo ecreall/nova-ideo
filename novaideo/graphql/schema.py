@@ -197,6 +197,8 @@ class Person(Node, Debatable, graphene.ObjectType):
     discussions = relay.ConnectionField(lambda: Channel)
     available_tokens = graphene.Int()
     is_anonymous = graphene.Boolean()
+    mask = graphene.Field(lambda: Person)
+
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
     @classmethod
@@ -247,7 +249,6 @@ class Person(Node, Debatable, graphene.ObjectType):
         return 0
 
 
-
 class Url(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -289,6 +290,7 @@ class Comment(Node, graphene.ObjectType):
     len_comments = graphene.Int()
     root_oid = graphene.String()
     channel = graphene.Field(lambda: Channel)
+    edited = graphene.Boolean()
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -301,7 +303,7 @@ class Comment(Node, graphene.ObjectType):
         return self.created_at.isoformat()
 
     def resolve_text(self, args, context, info):
-        return self.comment
+        return getattr(self, 'formatted_comment', self.comment)
 
     def resolve_urls(self, args, context, info):  # pylint: disable=W0613
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
@@ -405,7 +407,7 @@ class Idea(Node, Debatable, graphene.ObjectType):
         return self.created_at.isoformat()
 
     def resolve_presentation_text(self, args, context, info):
-        return html_to_text(self.presentation_text(300))
+        return self.presentation_text(300)
 
     def resolve_tokens_opposition(self, args, context, info):  # pylint: disable=W0613
         return self.len_opposition
