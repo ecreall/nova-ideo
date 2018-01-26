@@ -40,7 +40,7 @@ export default withStyles(styles)(
       return {
         fetchPolicy: 'cache-and-network',
         notifyOnNetworkStatusChange: true,
-        variables: { first: 15, after: '' }
+        variables: { first: 25, after: '' }
       };
     }
   })(DumbPrivateChannels)

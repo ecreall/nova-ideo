@@ -1,6 +1,11 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    channels: {
+      jump: "Accéder à...",
+      channels: "Chaînes",
+      private: "Messages directs"
+    },
     forms: {
       optional: "(facultatif)",
       disableAnonymity: "Désactiver l'anonymat",
@@ -41,6 +46,11 @@ const Translations = {
     }
   },
   en: {
+    channels: {
+      jump: "Jump to...",
+      channels: "Channels",
+      private: "Direct messages"
+    },
     forms: {
       optional: "(optional)",
       disableAnonymity: "Disable anonymity",

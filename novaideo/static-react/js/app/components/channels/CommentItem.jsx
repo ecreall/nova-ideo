@@ -38,7 +38,7 @@ const styles = (theme) => {
       alignItems: 'start',
       paddingRight: 10,
       width: 75,
-      margin: '8px 0'
+      margin: '5px 0'
     },
     leftDateOnly: {
       margin: '5px 0'
@@ -47,7 +47,7 @@ const styles = (theme) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      margin: '10px 0'
+      margin: '5px 0'
     },
     headerTitle: {
       display: 'flex',
@@ -111,7 +111,9 @@ const styles = (theme) => {
       fontSize: 14
     },
     avatar: {
-      borderRadius: 4
+      borderRadius: 4,
+      width: 36,
+      height: 36
     },
     anonymousAvatar: {
       color: theme.palette.tertiary.hover.color,

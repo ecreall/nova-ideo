@@ -5,6 +5,7 @@ export const siteQuery = gql`
   query SiteConf {
     root {
       siteId
+      title
       keywords
       canAddKeywords
       anonymisation

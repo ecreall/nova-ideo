@@ -14,6 +14,10 @@ import { updateApp } from '../../actions/actions';
 
 const styles = (theme) => {
   return {
+    listItem: {
+      paddingTop: 4,
+      paddingBottom: 4
+    },
     listItemActive: {
       backgroundColor: theme.palette.tertiary.color,
       '&:hover': {
@@ -22,7 +26,7 @@ const styles = (theme) => {
     },
     text: {
       color: 'white',
-      fontSize: 13,
+      fontSize: 14,
       opacity: 0.8,
       padding: 0,
       whiteSpace: 'nowrap',
@@ -41,10 +45,11 @@ const styles = (theme) => {
     },
     icon: {
       width: 17,
-      height: 18,
+      height: 17,
       color: 'white',
-      opacity: 0.7,
-      marginRight: 5
+      opacity: 0.4,
+      marginRight: 0,
+      fontSize: 12
     },
     iconActive: {
       opacity: 1
@@ -58,7 +63,8 @@ const styles = (theme) => {
     avatar: {
       width: 20,
       height: 20,
-      marginRight: 10
+      marginRight: 10,
+      borderRadius: 4
     },
     badge: {
       right: 15,
@@ -124,7 +130,12 @@ export class DumbChannelItem extends React.Component {
     const isActive = isSelected || hasUnread;
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
-      <ListItem onClick={this.handleClickOpen} dense button classes={isSelected && { root: classes.listItemActive }}>
+      <ListItem
+        onClick={this.handleClickOpen}
+        dense
+        button
+        classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: isSelected }) }}
+      >
         {this.renderIcon(isActive, isSelected)}
         <ListItemText classes={{ text: textClasses }} className={textClasses} primary={node.title} />
         {hasUnread &&

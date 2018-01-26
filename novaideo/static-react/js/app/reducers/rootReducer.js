@@ -280,6 +280,9 @@ export const globalProps = (state = {}, action) => {
 };
 
 const initialAppsState = {
+  collaborationApp: {
+    context: '/'
+  },
   chatApp: {
     drawer: false,
     open: false,

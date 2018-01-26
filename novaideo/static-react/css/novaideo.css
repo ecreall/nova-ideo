@@ -101,6 +101,7 @@ opacity: 0;
 
 body {
   font-style: normal;
+  font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;   
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;

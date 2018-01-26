@@ -2,6 +2,8 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 
+import { youtubeRegexp } from '../../utils/globalFunctions';
+import YoutubeTheater from './YoutubeTheater';
 import ImagesPreview from './ImagesPreview';
 
 const styles = (theme) => {
@@ -85,6 +87,7 @@ const styles = (theme) => {
 class Url extends React.Component {
   render() {
     const { data, classes } = this.props;
+    const isYoutubeVideo = data.url.match(youtubeRegexp);
     return (
       <div className={classes.container}>
         {data.authorName || data.authorAvatar
@@ -115,7 +118,8 @@ class Url extends React.Component {
         <span className={classes.description}>
           {data.description}
         </span>
-        {data.imageUrl && <ImagesPreview images={[{ url: data.imageUrl, variations: [] }]} />}
+        {!isYoutubeVideo && data.imageUrl && <ImagesPreview images={[{ url: data.imageUrl, variations: [] }]} />}
+        {isYoutubeVideo && <YoutubeTheater videoId={isYoutubeVideo[1]} />}
         {data.authorName || data.authorAvatar
           ? <div className={classes.header}>
             <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />

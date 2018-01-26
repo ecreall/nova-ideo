@@ -22,8 +22,7 @@ import { ideaFragment } from '../../graphql/queries';
 const styles = (theme) => {
   return {
     fromContainer: {
-      padding: 20,
-      paddingLeft: 11,
+      padding: '15px 11px',
       backgroundColor: 'whitesmoke',
       border: 'solid 1px rgba(0,0,0,.1)',
       borderBottom: 'none',
@@ -54,10 +53,7 @@ const styles = (theme) => {
       position: 'relative',
       backgroundColor: 'white',
       flex: 1,
-      flexDirection: 'column',
-      '&:focus-within': {
-        border: '1px solid #848484'
-      }
+      flexDirection: 'column'
     },
     inputContainerAnonymous: {
       borderColor: theme.palette.warning[700],
@@ -106,6 +102,7 @@ const styles = (theme) => {
     },
     action: {
       display: 'flex',
+      justifyContent: 'flex-end',
       padding: 5
     },
     maskIcon: {
@@ -115,7 +112,7 @@ const styles = (theme) => {
     maskDefault: {
       height: 40,
       width: 40,
-      color: '#a3a3a3'
+      color: '#808080'
     },
     maskChecked: {
       color: theme.palette.warning[700]
@@ -123,7 +120,7 @@ const styles = (theme) => {
     button: {
       height: 40,
       width: 40,
-      color: '#a3a3a3'
+      color: '#808080'
     },
     avatar: {
       borderRadius: 4,
@@ -278,8 +275,7 @@ export class DumbCreateIdeaForm extends React.Component {
           {opened &&
             <Field
               props={{
-                label: I18n.t('forms.createIdea.title'),
-                helper: I18n.t('forms.createIdea.titleHelper')
+                placeholder: I18n.t('forms.createIdea.titleHelper')
               }}
               name="title"
               component={renderTextInput}
@@ -331,29 +327,29 @@ export class DumbCreateIdeaForm extends React.Component {
                 />
               </div>}
           </div>
-          {opened &&
-            <Field
-              props={{
-                label: (
-                  <label className={classes.label} htmlFor="keywords">
-                    <IconButton className={classes.button}>
-                      <Icon className={'mdi-set mdi-tag-multiple'} />
-                    </IconButton>
-                    {I18n.t('forms.createIdea.keywords')}
-                  </label>
-                ),
-                options: keywords,
-                canAdd: siteConf.canAddKeywords,
-                initRef: (keywordsPicker) => {
-                  this.keywordsPicker = keywordsPicker;
-                }
-              }}
-              withRef
-              name="keywords"
-              component={renderSelect}
-            />}
-          {opened &&
+
+          {opened && [
             <div className={classes.addonContainer}>
+              <Field
+                props={{
+                  label: (
+                    <label className={classes.label} htmlFor="keywords">
+                      <IconButton className={classes.button}>
+                        <Icon className={'mdi-set mdi-tag-multiple'} />
+                      </IconButton>
+                      {I18n.t('forms.createIdea.keywords')}
+                    </label>
+                  ),
+                  options: keywords,
+                  canAdd: siteConf.canAddKeywords,
+                  initRef: (keywordsPicker) => {
+                    this.keywordsPicker = keywordsPicker;
+                  }
+                }}
+                withRef
+                name="keywords"
+                component={renderSelect}
+              />
               <div className={classes.addon}>
                 <Field
                   props={{
@@ -383,16 +379,17 @@ export class DumbCreateIdeaForm extends React.Component {
                   />
                   : null}
               </div>
-              <div className={classes.action}>
-                <SendIcon
-                  onClick={canSubmit ? this.handleSubmit : undefined}
-                  size={22}
-                  className={classNames(classes.submit, {
-                    [classes.submitActive]: canSubmit
-                  })}
-                />
-              </div>
-            </div>}
+            </div>,
+            <div className={classes.action}>
+              <SendIcon
+                onClick={canSubmit ? this.handleSubmit : undefined}
+                size={22}
+                className={classNames(classes.submit, {
+                  [classes.submitActive]: canSubmit
+                })}
+              />
+            </div>
+          ]}
         </div>
       </div>
     );

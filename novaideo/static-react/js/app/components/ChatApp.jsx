@@ -14,6 +14,7 @@ import CommentItem from './channels/CommentItem';
 import ChatAppRight from './channels/ChatAppRight';
 import Divider from './channels/Divider';
 import Comment from './forms/Comment';
+import { updateApp } from '../actions/actions';
 
 const styles = (theme) => {
   return {
@@ -46,11 +47,14 @@ const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
 export class DumbChatApp extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const { channel } = nextProps;
+    const { channel, data, updateChatApp, subject } = nextProps;
     const current = browserHistory.getCurrentLocation().pathname;
     const newLocation = `/messages/${channel}`;
-    if (channel && current.startsWith('/messages') && newLocation !== current) {
+    if (channel && newLocation !== current) {
       browserHistory.replace(newLocation);
+    }
+    if (!data.loading && data.node.subject.id !== subject) {
+      updateChatApp('chatApp', { subject: data.node.subject.id });
     }
   }
 
@@ -118,15 +122,20 @@ export class DumbChatApp extends React.Component {
   }
 }
 
+export const mapDispatchToProps = {
+  updateChatApp: updateApp
+};
+
 export const mapStateToProps = (state) => {
   return {
     channel: state.apps.chatApp.channel,
-    rightOpen: state.apps.chatApp.right.open
+    rightOpen: state.apps.chatApp.right.open,
+    subject: state.apps.chatApp.subject
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps)(
+  connect(mapStateToProps, mapDispatchToProps)(
     graphql(commentsQuery, {
       options: (props) => {
         return {

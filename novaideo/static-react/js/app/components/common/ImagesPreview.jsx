@@ -95,6 +95,20 @@ class ImagesPreview extends React.Component {
     this.setState({ sliderOpen: true, current: index });
   };
 
+  renderItem = ({ image, key, width, className }) => {
+    const { classes } = this.props;
+    return (
+      <div
+        onClick={() => {
+          this.onClick(key || 0);
+        }}
+        key={key}
+        style={{ backgroundImage: `url("${image.url}${image.variations.includes(width) ? width : ''}")` }}
+        className={classNames(className, classes.imgBag)}
+      />
+    );
+  };
+
   render() {
     const { images, classes } = this.props;
     if (images.length === 0) return <div />;
@@ -107,26 +121,11 @@ class ImagesPreview extends React.Component {
       <div className={classes.imagesContainer}>
         <div className={classes.itemsContainer}>
           <div className={otherImages.length > 0 ? classes.firstItemContainer : classes.globalItemContainer}>
-            <div
-              onClick={() => {
-                this.onClick(0);
-              }}
-              style={{ backgroundImage: `url("${firstImage.url}${firstImage.variations.includes('big') ? 'big' : ''}")` }}
-              className={classNames(classes.firstItem, classes.imgBag)}
-            />
+            {this.renderItem({ image: firstImage, width: 'big', className: classes.firstItem })}
           </div>
           <div className={classes.otherItemsContainer}>
             {otherImages.map((image, key) => {
-              return (
-                <div
-                  onClick={() => {
-                    this.onClick(key + 1);
-                  }}
-                  key={key}
-                  style={{ backgroundImage: `url("${image.url}${image.variations.includes('small') ? 'small' : ''}")` }}
-                  className={classNames(classes.otherItem, classes.imgBag)}
-                />
-              );
+              return this.renderItem({ image: image, key: key + 1, width: 'small', className: classes.otherItem });
             })}
             {nbHiddenImages
               ? <div

@@ -1,6 +1,8 @@
 /* eslint-disable react/no-did-mount-set-state */
 // @flow
 import React from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { withApollo, graphql } from 'react-apollo';
@@ -18,15 +20,24 @@ import {
   updateGlobalProps,
   updateApp
 } from './actions/actions';
+import shortcutManager from './utils/shortcutManager';
 
 class Main extends React.Component {
   state: { requirementsLoaded: boolean };
+
+  static childContextTypes = {
+    shortcuts: PropTypes.object.isRequired
+  };
 
   constructor(props: any) {
     super(props);
     this.state = {
       requirementsLoaded: false
     };
+  }
+
+  getChildContext() {
+    return { shortcuts: shortcutManager };
   }
 
   // $FlowFixMe
@@ -92,6 +103,13 @@ class Main extends React.Component {
         open: true,
         channel: channelId,
         right: { open: false, componentId: undefined }
+      });
+      this.props.updateApp('collaborationApp', {
+        context: '/'
+      });
+    } else {
+      this.props.updateApp('collaborationApp', {
+        context: browserHistory.getCurrentLocation().pathname
       });
     }
   }

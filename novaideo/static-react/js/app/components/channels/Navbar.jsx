@@ -52,8 +52,38 @@ const styles = {
 };
 
 class NavBar extends React.Component {
+  componentDidMount() {
+    document.addEventListener('CHATAPP_CLOSE', this.handleClose);
+    document.addEventListener('CHATAPP_INFO', this.handleInfo);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('CHATAPP_CLOSE', this.handleClose);
+    document.removeEventListener('CHATAPP_INFO', this.handleInfo);
+  }
+
+  handleInfo = () => {
+    const { updateChatApp } = this.props;
+    updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
+  };
+
+  handleClose = () => {
+    const { updateChatApp, collaborationAppContext } = this.props;
+    browserHistory.replace(collaborationAppContext);
+    updateChatApp('chatApp', {
+      open: false,
+      drawer: false,
+      channel: undefined,
+      subject: undefined,
+      right: {
+        open: false,
+        componentId: undefined
+      }
+    });
+  };
+
   render() {
-    const { data, classes, className, updateChatApp } = this.props;
+    const { data, classes, className, updateChatApp, collaborationAppContext } = this.props;
     const channel = data.channel;
     return (
       <AppBar className={classNames(className, classes.appBar)} color="inherit">
@@ -91,11 +121,8 @@ class NavBar extends React.Component {
             color="primary"
             aria-label="Menu"
             onClick={() => {
-              const current = browserHistory.getCurrentLocation().pathname;
-              if (current.startsWith('/messages')) {
-                browserHistory.replace('/');
-              }
-              return updateChatApp('chatApp', {
+              browserHistory.replace(collaborationAppContext);
+              updateChatApp('chatApp', {
                 open: false,
                 drawer: false,
                 channel: undefined,
@@ -119,4 +146,10 @@ export const mapDispatchToProps = {
   updateChatApp: updateApp
 };
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(NavBar));
+export const mapStateToProps = (state) => {
+  return {
+    collaborationAppContext: state.apps.collaborationApp.context
+  };
+};
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));

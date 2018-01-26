@@ -5,7 +5,10 @@ function theme() {
   return createMuiTheme({
     palette: {
       primary: {
-        ...teal
+        ...teal,
+        light: teal[50],
+        dark: teal[700],
+        dark2: teal[800]
       },
       secondary: grey,
       tertiary: {

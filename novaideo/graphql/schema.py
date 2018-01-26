@@ -76,6 +76,8 @@ class Root(Node, Debatable, graphene.ObjectType):
 
         return isinstance(root, NovaIdeoApplication)
 
+    site_id = graphene.String()
+    title = graphene.String()
     keywords = graphene.List(graphene.String)
     can_add_keywords = graphene.Boolean()
     anonymisation = graphene.Boolean()
@@ -88,7 +90,6 @@ class Root(Node, Debatable, graphene.ObjectType):
     manage_challenges = graphene.Boolean()
     manage_questions = graphene.Boolean()
     manage_proposals = graphene.Boolean()
-    site_id = graphene.String()
 
     def resolve_site_id(self, args, context, info):  # pylint: disable=W0613
         # TODO return the site id exp: evolutions...

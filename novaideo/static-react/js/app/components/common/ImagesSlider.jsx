@@ -98,6 +98,15 @@ class ImagesSlider extends React.Component {
     this.slider.slickPrev();
   };
 
+  renderItem = (image, key) => {
+    const { classes } = this.props;
+    return (
+      <div className={classes.imgContainer} key={key}>
+        <img alt={image.name} className={classes.img} src={image.url} />
+      </div>
+    );
+  };
+
   render() {
     const { classes, images, open, current } = this.props;
     const settings = {
@@ -149,11 +158,7 @@ class ImagesSlider extends React.Component {
                 {...settings}
               >
                 {images.map((image, key) => {
-                  return (
-                    <div className={classes.imgContainer} key={key}>
-                      <img alt={image.name} className={classes.img} src={image.url} />
-                    </div>
-                  );
+                  return this.renderItem(image, key);
                 })}
               </Slider>
             </div>

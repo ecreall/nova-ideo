@@ -8,7 +8,10 @@ function theme() {
     palette: {
       primary: {
         ...teal,
-        [primaryCode]: '#4D394B' // test color to remove.
+        [primaryCode]: '#4D394B', // test color to remove.
+        light: '#cac4c9',
+        dark: '#342032',
+        dark2: '#2a1628'
       },
       secondary: grey,
       tertiary: {
