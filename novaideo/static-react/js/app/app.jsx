@@ -2,8 +2,6 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Shortcuts } from 'react-shortcuts';
-import keydown from 'react-keydown';
 
 import ChannelsDrawer from './components/channels/ChannelsDrawer';
 import CollaborationApp from './components/CollaborationApp';
@@ -34,20 +32,11 @@ class DumbApp extends React.Component {
     });
   }
 
-  shortcuts = (action, event) => {
-    if (action) {
-      const eventToDispatch = document.createEvent('HTMLEvents');
-      eventToDispatch.initEvent(action, true, true);
-      document.dispatchEvent(eventToDispatch);
-      event.preventDefault();
-    }
-  };
-
   render() {
     const { data, classes, children, channelOpen, channelsDrawer, channel } = this.props;
     if (data.loading) return null;
     return (
-      <Shortcuts global alwaysFireHandler name="APP" handler={this.shortcuts} className={classes.root}>
+      <div className={classes.root}>
         <div className={classes.appFrame}>
           <CollaborationApp active={!channelOpen} left={channelsDrawer || channelOpen}>
             {children}
@@ -55,7 +44,7 @@ class DumbApp extends React.Component {
           {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} params={this.props.params} />}
           <ChannelsDrawer />
         </div>
-      </Shortcuts>
+      </div>
     );
   }
 }

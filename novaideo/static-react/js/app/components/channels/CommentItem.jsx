@@ -59,12 +59,12 @@ const styles = (theme) => {
     headerAddOn: {
       color: '#999999ff',
       paddingLeft: 5,
-      fontSize: 13
+      fontSize: 12
     },
     creationDate: {
       display: 'none',
       color: '#999999ff',
-      fontSize: 13,
+      fontSize: 12,
       height: 0
     },
 
@@ -93,7 +93,6 @@ const styles = (theme) => {
     },
     urlsContainer: {
       paddingRight: 30,
-      paddingLeft: 10,
       marginTop: 15,
       maxWidth: 400
     },
@@ -119,6 +118,9 @@ const styles = (theme) => {
       color: theme.palette.tertiary.hover.color,
       backgroundColor: theme.palette.tertiary.color,
       fontWeight: 900
+    },
+    tooltip: {
+      marginBottom: 4
     }
   };
 };
@@ -185,7 +187,7 @@ export class DumbCommentItem extends React.Component {
                 <span className={classes.headerTitle}>
                   {author.title}
                 </span>
-                <Tooltip id={node.id} title={createdAtF3} placement="top">
+                <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF3} placement="top">
                   <span className={classes.headerAddOn}>
                     {createdAt}
                   </span>

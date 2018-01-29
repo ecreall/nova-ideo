@@ -26,7 +26,7 @@ const styles = (theme) => {
     },
     text: {
       color: 'white',
-      fontSize: 14,
+      fontSize: 15,
       opacity: 0.8,
       padding: 0,
       whiteSpace: 'nowrap',
@@ -49,7 +49,7 @@ const styles = (theme) => {
       color: 'white',
       opacity: 0.4,
       marginRight: 0,
-      fontSize: 12
+      fontSize: '12px !important'
     },
     iconActive: {
       opacity: 1
@@ -61,9 +61,9 @@ const styles = (theme) => {
       }
     },
     avatar: {
-      width: 20,
-      height: 20,
-      marginRight: 10,
+      width: 18,
+      height: 18,
+      marginRight: 7,
       borderRadius: 4
     },
     badge: {
@@ -137,7 +137,7 @@ export class DumbChannelItem extends React.Component {
         classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: isSelected }) }}
       >
         {this.renderIcon(isActive, isSelected)}
-        <ListItemText classes={{ text: textClasses }} className={textClasses} primary={node.title} />
+        <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
         {hasUnread &&
           <ListItemSecondaryAction className={classes.badge}>
             <Badge classes={{ colorAccent: classes.badgeColor }} badgeContent={lenUnreadComments} color="accent" />

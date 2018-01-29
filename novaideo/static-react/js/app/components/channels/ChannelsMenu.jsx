@@ -1,9 +1,11 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
 import { connect } from 'react-redux';
+import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
+import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
 
 import AccountInformation from '../AccountInformation';
+import Menu from '../common/Menu';
 
 const styles = (theme) => {
   return {
@@ -16,13 +18,25 @@ const styles = (theme) => {
         backgroundColor: 'rgba(0, 0, 0, 0.12)',
         '& .account-title-text': {
           color: 'white'
+        },
+        '& .arrow': {
+          color: 'white'
         }
+      }
+    },
+    drawerHeaderActive: {
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+      '& .account-title-text': {
+        color: 'white'
+      },
+      '& .arrow': {
+        color: 'white'
       }
     },
     siteInfo: {
       display: 'flex',
       alignItems: 'center',
-      marginTop: 9,
+      paddingTop: 9,
       marginBottom: 5
     },
     siteTitle: {
@@ -36,7 +50,7 @@ const styles = (theme) => {
       color: '#fff'
     },
     arrow: {
-      color: 'white',
+      color: theme.palette.primary.light,
       width: 17,
       height: 17
     }
@@ -44,18 +58,53 @@ const styles = (theme) => {
 };
 
 class ChannelsMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menu: false
+    };
+  }
+
+  onMenuOpen = () => {
+    this.setState({ menu: true });
+  };
+
+  onMenuClose = () => {
+    this.setState({ menu: false });
+  };
+
   render() {
     const { site, classes, theme } = this.props;
+    const { menu } = this.state;
     return (
-      <div className={classes.drawerHeader}>
-        <div className={classes.siteInfo}>
-          <div className={classes.siteTitle}>
-            {site.title}
+      <Menu
+        id="user-menu"
+        onOpen={this.onMenuOpen}
+        onClose={this.onMenuClose}
+        fields={[
+          {
+            title: 'Test'
+          },
+          {
+            title: 'Un autre test avec couleurUn autre test avec couleur',
+            color: '#d72b3f',
+            hoverColor: '#d72b3f'
+          }
+        ]}
+        classes={{
+          menu: classes.menu
+        }}
+      >
+        <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
+          <div className={classes.siteInfo}>
+            <div className={classes.siteTitle}>
+              {site.title}
+            </div>
+            <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
           </div>
-          <KeyboardArrowDownIcon className={classes.arrow} />
+          <AccountInformation color={theme.palette.primary.light} />
         </div>
-        <AccountInformation color={theme.palette.primary.light} />
-      </div>
+      </Menu>
     );
   }
 }

@@ -380,15 +380,14 @@ export class DumbCreateIdeaForm extends React.Component {
                   : null}
               </div>
             </div>,
-            <div className={classes.action}>
+            <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
               <SendIcon
-                onClick={canSubmit ? this.handleSubmit : undefined}
                 size={22}
                 className={classNames(classes.submit, {
                   [classes.submitActive]: canSubmit
                 })}
               />
-            </div>
+            </IconButton>
           ]}
         </div>
       </div>

@@ -7,6 +7,7 @@ import FormatIndentIncreaseIcon from 'material-ui-icons/FormatIndentIncrease';
 import Dialog, { DialogContent, DialogContentText } from 'material-ui/Dialog';
 
 import { updateApp } from '../../actions/actions';
+import ShortcutsManager from '../common/ShortcutsManager';
 
 const styles = (theme) => {
   return {
@@ -39,16 +40,11 @@ class Jump extends React.Component {
       open: false
     };
   }
-  componentDidMount() {
-    document.addEventListener('CHATAPP_OPEN_JUMP', this.handleOpen);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('CHATAPP_OPEN_JUMP', this.handleOpen);
-  }
 
   handleOpen = () => {
     this.setState({ open: true });
+    // preventDefault
+    return false;
   };
 
   handleClose = () => {
@@ -56,22 +52,24 @@ class Jump extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    return [
-      <Button onClick={this.handleOpen} className={classes.jump} raised dense>
-        <FormatIndentIncreaseIcon className={classes.jumpIcon} />
-        {I18n.t('channels.jump')}
-      </Button>,
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">Test</DialogContentText>
-        </DialogContent>
-      </Dialog>
-    ];
+    return (
+      <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_OPEN_JUMP: this.handleOpen }}>
+        <Button onClick={this.handleOpen} className={classes.jump} raised dense>
+          <FormatIndentIncreaseIcon className={classes.jumpIcon} />
+          {I18n.t('channels.jump')}
+        </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">Test</DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </ShortcutsManager>
+    );
   }
 }
 

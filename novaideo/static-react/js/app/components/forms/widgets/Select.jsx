@@ -208,7 +208,7 @@ class Select extends React.Component {
                       />
                       <ListItemText
                         classes={{
-                          text: classes.newOption
+                          primary: classes.newOption
                         }}
                         primary={searchText}
                       />

@@ -15,6 +15,7 @@ import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
 
 import { updateApp } from '../../actions/actions';
+import ShortcutsManager from '../common/ShortcutsManager';
 
 const styles = {
   root: {
@@ -52,24 +53,17 @@ const styles = {
 };
 
 class NavBar extends React.Component {
-  componentDidMount() {
-    document.addEventListener('CHATAPP_CLOSE', this.handleClose);
-    document.addEventListener('CHATAPP_INFO', this.handleInfo);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('CHATAPP_CLOSE', this.handleClose);
-    document.removeEventListener('CHATAPP_INFO', this.handleInfo);
-  }
-
   handleInfo = () => {
     const { updateChatApp } = this.props;
     updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
+    return false;
   };
 
   handleClose = () => {
     const { updateChatApp, collaborationAppContext } = this.props;
-    browserHistory.replace(collaborationAppContext);
+    setTimeout(() => {
+      browserHistory.replace(collaborationAppContext);
+    }, 1);
     updateChatApp('chatApp', {
       open: false,
       drawer: false,
@@ -80,64 +74,67 @@ class NavBar extends React.Component {
         componentId: undefined
       }
     });
+    return false;
   };
 
   render() {
     const { data, classes, className, updateChatApp, collaborationAppContext } = this.props;
     const channel = data.channel;
     return (
-      <AppBar className={classNames(className, classes.appBar)} color="inherit">
-        <Toolbar>
-          <Hidden mdUp>
+      <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_CLOSE: this.handleClose, CHATAPP_INFO: this.handleInfo }}>
+        <AppBar className={classNames(className, classes.appBar)} color="inherit">
+          <Toolbar>
+            <Hidden mdUp>
+              <IconButton
+                className={classes.menuButton}
+                color="primary"
+                aria-label="Menu"
+                onClick={() => {
+                  return updateChatApp('chatApp', { drawer: true });
+                }}
+              >
+                <ChatIcon />
+              </IconButton>
+            </Hidden>
+            <Typography type="title" color="inherit" className={classes.titleContainer}>
+              <div className={classes.title}>
+                <Icon className={classNames('mdi-set mdi-pound', classes.icon)} />
+                {channel && channel.title}
+              </div>
+              <CardActions className={classes.actions} disableActionSpacing>
+                <IconButton
+                  onClick={() => {
+                    return updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
+                  }}
+                  className={classes.action}
+                  aria-label="Add to favorites"
+                >
+                  <VisibilityIcon />
+                </IconButton>
+              </CardActions>
+            </Typography>
             <IconButton
-              className={classes.menuButton}
               color="primary"
               aria-label="Menu"
               onClick={() => {
-                return updateChatApp('chatApp', { drawer: true });
+                browserHistory.replace(collaborationAppContext);
+                updateChatApp('chatApp', {
+                  open: false,
+                  drawer: false,
+                  channel: undefined,
+                  subject: undefined,
+                  right: {
+                    open: false,
+                    componentId: undefined
+                  }
+                });
               }}
             >
-              <ChatIcon />
+              <CloseIcon />
             </IconButton>
-          </Hidden>
-          <Typography type="title" color="inherit" className={classes.titleContainer}>
-            <div className={classes.title}>
-              <Icon className={classNames('mdi-set mdi-pound', classes.icon)} />
-              {channel && channel.title}
-            </div>
-            <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton
-                onClick={() => {
-                  return updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
-                }}
-                className={classes.action}
-                aria-label="Add to favorites"
-              >
-                <VisibilityIcon />
-              </IconButton>
-            </CardActions>
-          </Typography>
-          <IconButton
-            color="primary"
-            aria-label="Menu"
-            onClick={() => {
-              browserHistory.replace(collaborationAppContext);
-              updateChatApp('chatApp', {
-                open: false,
-                drawer: false,
-                channel: undefined,
-                subject: undefined,
-                right: {
-                  open: false,
-                  componentId: undefined
-                }
-              });
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
+      </ShortcutsManager>
     );
   }
 }

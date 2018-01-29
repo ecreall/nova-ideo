@@ -3,18 +3,12 @@ import React from 'react';
 import classNames from 'classnames';
 import AddIcon from 'material-ui-icons/Add';
 import IconButton from 'material-ui/IconButton';
-import { MenuItem, MenuList } from 'material-ui/Menu';
-import Grow from 'material-ui/transitions/Grow';
-import Paper from 'material-ui/Paper';
-import { Manager, Target, Popper } from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import { withStyles } from 'material-ui/styles';
+
+import Menu from '../common/Menu';
 
 const styles = (theme) => {
   return {
-    popperClose: {
-      pointerEvents: 'none'
-    },
     menu: {
       flex: 1,
       display: 'flex',
@@ -29,21 +23,9 @@ const styles = (theme) => {
         backgroundColor: theme.palette.tertiary.color,
         border: 'solid 1px',
         borderColor: theme.palette.tertiary.color,
-        '& .comment-menu-button': {
+        '& .menu-button': {
           color: theme.palette.tertiary.hover.color
         }
-      }
-    },
-    paper: {
-      borderRadius: 6,
-      border: '1px solid rgba(0,0,0,.15)'
-    },
-    menuItem: {
-      paddingTop: 0,
-      paddingBottom: 0,
-      height: 'auto',
-      '&:hover': {
-        backgroundColor: 'transparent'
       }
     },
     menuOpen: {
@@ -65,53 +47,39 @@ class CommentMenu extends React.Component {
     };
   }
 
-  openMenu = () => {
+  onMenuOpen = () => {
     this.setState({ menu: true });
   };
 
-  closeMenu = () => {
+  onMenuClose = () => {
     this.setState({ menu: false });
   };
 
   render() {
     const { fields, classes } = this.props;
     const { menu } = this.state;
+    const menuId = 'comment-menu-list';
     return (
-      <Manager
-        className={classNames(classes.menu, {
-          [classes.menuOpen]: menu
-        })}
+      <Menu
+        id={menuId}
+        onOpen={this.onMenuOpen}
+        onClose={this.onMenuClose}
+        fields={fields}
+        classes={{
+          menu: classes.menu,
+          menuOpen: classes.menuOpen
+        }}
       >
-        <Target>
-          <IconButton
-            className={classNames('comment-menu-button', {
-              [classes.buttonOpen]: menu
-            })}
-            aria-owns={menu ? 'comment-menu-list' : null}
-            aria-haspopup="true"
-            onClick={this.openMenu}
-          >
-            <AddIcon />
-          </IconButton>
-        </Target>
-        <Popper placement="top-start" eventsEnabled={menu} className={classNames({ [classes.popperClose]: !menu })}>
-          <ClickAwayListener onClickAway={this.closeMenu}>
-            <Grow in={menu} id="comment-menu-list" style={{ transformOrigin: '0 0 0' }}>
-              <Paper elevation={6} className={classes.paper}>
-                <MenuList role="menu">
-                  {fields.map((field) => {
-                    return (
-                      <MenuItem className={classes.menuItem} onClick={this.closeMenu}>
-                        {field}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </Paper>
-            </Grow>
-          </ClickAwayListener>
-        </Popper>
-      </Manager>
+        <IconButton
+          className={classNames('menu-button', {
+            [classes.buttonOpen]: menu
+          })}
+          aria-owns={menuId}
+          aria-haspopup="true"
+        >
+          <AddIcon />
+        </IconButton>
+      </Menu>
     );
   }
 }

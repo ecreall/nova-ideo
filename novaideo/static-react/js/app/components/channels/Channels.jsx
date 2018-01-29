@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
-import { ListItem, ListItemText } from 'material-ui/List';
 import { I18n } from 'react-redux-i18n';
 
 import PrivateChannels from './PrivateChannels';
@@ -14,18 +13,22 @@ const styles = (theme) => {
       flexDirection: 'column',
       width: 220,
       height: '100%',
-      marginTop: 20
+      marginTop: 15
     },
-    channelBlokTitle: {
+    titleContainer: {
+      padding: '0 12px 0 15px',
+      width: '100%',
+      height: 26,
       color: theme.palette.primary.light,
-      fontSize: 16
-    },
-    publicContainer: {
+      fontSize: 16,
       marginBottom: 2
     },
-    privateContainer: {
-      marginTop: 20,
-      marginBottom: 2
+    title: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    divider: {
+      marginBottom: 20
     }
   };
 };
@@ -35,14 +38,18 @@ class Channels extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.list}>
-        <ListItem classes={{ root: classes.publicContainer }}>
-          <ListItemText classes={{ text: classes.channelBlokTitle }} primary={I18n.t('channels.channels')} />
-        </ListItem>
+        <div className={classes.titleContainer}>
+          <div className={classes.title}>
+            {I18n.t('channels.channels')}
+          </div>
+        </div>
         <PublicChannels />
-        <Divider light />
-        <ListItem classes={{ root: classes.privateContainer }}>
-          <ListItemText classes={{ text: classes.channelBlokTitle }} primary={I18n.t('channels.private')} />
-        </ListItem>
+        <Divider className={classes.divider} light />
+        <div className={classes.titleContainer}>
+          <div className={classes.title}>
+            {I18n.t('channels.private')}
+          </div>
+        </div>
         <PrivateChannels />
       </div>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import { Picker } from 'emoji-mart';
+import IconButton from 'material-ui/IconButton';
 import InsertEmoticonIcon from 'material-ui-icons/InsertEmoticon';
 
 const styles = {
@@ -20,7 +21,9 @@ const classesStyles = (theme) => {
     button: {
       display: 'flex',
       color: 'gray',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      height: 41,
+      width: 41
     },
     buttonActive: {
       color: theme.palette.primary[500]
@@ -55,7 +58,7 @@ class EmojiPicker extends React.Component {
   };
 
   closePicker = (event) => {
-    if (this.state.opened && this.picker && !this.picker.contains(event.target) && !this.button.contains(event.target)) {
+    if (this.state.opened && this.picker && !this.picker.contains(event.target)) {
       this.setState({ opened: false });
     }
   };
@@ -70,25 +73,22 @@ class EmojiPicker extends React.Component {
 
   render() {
     const { theme, classes, style } = this.props;
-    const items = [
+    return (
       <div
-        className={classNames(classes.button, {
-          [classes.buttonActive]: this.state.opened
-        })}
-        ref={(button) => {
-          this.button = button;
+        ref={(picker) => {
+          this.picker = picker;
         }}
       >
-        <InsertEmoticonIcon onClick={this.openPicker} />
-      </div>
-    ];
-    if (this.state.opened) {
-      items.push(
-        <div
-          ref={(picker) => {
-            this.picker = picker;
-          }}
+        <IconButton
+          className={classNames(classes.button, {
+            [classes.buttonActive]: this.state.opened
+          })}
+          onClick={this.openPicker}
         >
+          <InsertEmoticonIcon />
+        </IconButton>
+
+        {this.state.opened &&
           <Picker
             color={theme.palette.primary[500]}
             title="Emoji"
@@ -96,12 +96,9 @@ class EmojiPicker extends React.Component {
             sheetSize={32}
             style={{ ...styles.picker, ...style.picker }}
             onClick={this.onEmojiSelect}
-          />
-        </div>
-      );
-    }
-
-    return items;
+          />}
+      </div>
+    );
   }
 }
 

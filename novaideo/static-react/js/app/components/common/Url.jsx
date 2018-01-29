@@ -19,14 +19,15 @@ const styles = (theme) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 5
+      padding: '5px 0'
     },
     headerAvatar: {
       width: 16,
       height: 16,
       borderRadius: 3,
       borderWidth: 0.5,
-      borderColor: '#d6d7da'
+      borderColor: '#d6d7da',
+      marginBottom: 2
     },
     avatarRoot: {
       borderRadius: 4

@@ -82,6 +82,7 @@ export class DumbChatApp extends React.Component {
             <EntitiesList
               listId="comments"
               reverted
+              // virtualized
               onEndReachedThreshold={0.5}
               data={data}
               getEntities={(entities) => {
@@ -100,7 +101,7 @@ export class DumbChatApp extends React.Component {
                   })
                   : []
               }}
-              itemHeightEstimation={120}
+              itemHeightEstimation={50}
               className={classes.list}
             />
             <Comment

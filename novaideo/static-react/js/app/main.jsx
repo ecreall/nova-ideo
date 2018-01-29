@@ -4,9 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider, createGenerateClassName, jssPreset } from 'material-ui/styles';
 import { withApollo, graphql } from 'react-apollo';
 import withWidth from 'material-ui/utils/withWidth';
+import { create } from 'jss';
+import JssProvider from 'react-jss/lib/JssProvider';
 
 import App from './app';
 import { siteQuery } from './graphql/queries';
@@ -20,7 +22,16 @@ import {
   updateGlobalProps,
   updateApp
 } from './actions/actions';
-import shortcutManager from './utils/shortcutManager';
+
+const styleNode = document.createComment('insertion-point-jss');
+// $FlowFixMe
+document.head.insertBefore(styleNode, document.head.firstChild);
+
+const generateClassName = createGenerateClassName({
+  productionPrefix: 'n-i'
+});
+const jss = create(jssPreset());
+jss.options.insertionPoint = 'insertion-point-jss';
 
 class Main extends React.Component {
   state: { requirementsLoaded: boolean };
@@ -34,10 +45,6 @@ class Main extends React.Component {
     this.state = {
       requirementsLoaded: false
     };
-  }
-
-  getChildContext() {
-    return { shortcuts: shortcutManager };
   }
 
   // $FlowFixMe
@@ -101,8 +108,7 @@ class Main extends React.Component {
       this.props.updateApp('chatApp', {
         drawer: true,
         open: true,
-        channel: channelId,
-        right: { open: false, componentId: undefined }
+        channel: channelId
       });
       this.props.updateApp('collaborationApp', {
         context: '/'
@@ -129,15 +135,17 @@ class Main extends React.Component {
     const loged = true;
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className="main">
-          {loged
-            ? <App params={this.props.params}>
-              {this.props.children}
-            </App>
-            : 'login'}
-        </div>
-      </MuiThemeProvider>
+      <JssProvider jss={jss} generateClassName={generateClassName}>
+        <MuiThemeProvider theme={theme}>
+          <div className="main">
+            {loged
+              ? <App params={this.props.params}>
+                {this.props.children}
+              </App>
+              : 'login'}
+          </div>
+        </MuiThemeProvider>
+      </JssProvider>
     );
   }
 }

@@ -9,12 +9,13 @@ import update from 'immutability-helper';
 import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import IconButton from 'material-ui/IconButton';
 
 import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
+import { renderMenuItem } from '../common/Menu';
 
 const styles = (theme) => {
   return {
@@ -40,7 +41,7 @@ const styles = (theme) => {
       height: 'auto',
       outline: 0,
       border: '2px solid #bfbfbf',
-      borderRadius: 4,
+      borderRadius: 6,
       resize: 'none',
       color: '#2c2d30',
       fontSize: 15,
@@ -103,6 +104,8 @@ const styles = (theme) => {
       cursor: 'pointer'
     },
     action: {
+      height: 41,
+      width: 41,
       display: 'flex',
       padding: 5
     },
@@ -117,53 +120,9 @@ const styles = (theme) => {
     },
     maskChecked: {
       color: theme.palette.warning[700]
-    },
-    menuListItem: {
-      padding: 4,
-      borderRadius: 5,
-      '&:hover, &:focus, &:active': {
-        backgroundColor: theme.palette.info[500],
-        '& .menu-item-icon': {
-          color: 'white'
-        },
-        '& .menu-item-text': {
-          color: 'white',
-          textShadow: '0 1px 0 rgba(0,0,0,.1)'
-        }
-      }
-    },
-    menuListItemText: {
-      fontSize: 15,
-      color: '#2c2d30'
-    },
-    menuListItemTextRoot: {
-      padding: 0
-    },
-    menuListItemIcon: {
-      width: 20,
-      height: 20,
-      marginRight: 10,
-      color: '#a0a0a2'
     }
   };
 };
-
-function renderMenuItem({ Icon, title, classes }) {
-  return (
-    <ListItem classes={{ root: classes.menuListItem }}>
-      <ListItemIcon>
-        <Icon className={classNames('menu-item-icon', classes.menuListItemIcon)} />
-      </ListItemIcon>
-      <ListItemText
-        classes={{
-          text: classNames('menu-item-text', classes.menuListItemText),
-          root: classes.menuListItemTextRoot
-        }}
-        primary={title}
-      />
-    </ListItem>
-  );
-}
 
 export class DumbCommentForm extends React.Component {
   constructor(props, context) {
@@ -203,7 +162,7 @@ export class DumbCommentForm extends React.Component {
   };
 
   render() {
-    const { formData, channel, globalProps: { siteConf }, classes } = this.props;
+    const { formData, channel, globalProps: { siteConf }, classes, theme } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
@@ -228,21 +187,25 @@ export class DumbCommentForm extends React.Component {
           >
             <CommentMenu
               fields={[
-                <Field
-                  props={{
-                    node: renderMenuItem({
-                      Icon: InsertDriveFileIcon,
-                      title: I18n.t('forms.attachFiles'),
-                      classes: classes
-                    }),
-                    initRef: (filesPicker) => {
-                      this.filesPicker = filesPicker;
-                    }
-                  }}
-                  withRef
-                  name="files"
-                  component={renderFilesListField}
-                />
+                () => {
+                  return (
+                    <Field
+                      props={{
+                        node: renderMenuItem({
+                          Icon: InsertDriveFileIcon,
+                          title: I18n.t('forms.attachFiles'),
+                          hoverColor: theme.palette.info[500]
+                        }),
+                        initRef: (filesPicker) => {
+                          this.filesPicker = filesPicker;
+                        }
+                      }}
+                      withRef
+                      name="files"
+                      component={renderFilesListField}
+                    />
+                  );
+                }
               ]}
             />
             <div className={classes.textField}>
@@ -279,15 +242,14 @@ export class DumbCommentForm extends React.Component {
                 : null}
             </div>
 
-            <div className={classes.action}>
+            <IconButton onClick={hasComment ? this.handleSubmit : undefined} className={classes.action}>
               <SendIcon
-                onClick={hasComment ? this.handleSubmit : undefined}
                 size={22}
                 className={classNames(classes.submit, {
                   [classes.submitActive]: hasComment
                 })}
               />
-            </div>
+            </IconButton>
           </div>
         </div>
       </div>
