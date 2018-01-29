@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
 import { Scrollbars } from 'react-custom-scrollbars';
+import debounce from 'lodash.debounce';
 
 import { setURLState } from '../../actions/actions';
 import { VirtualizedListItem } from './VirtualizedListItem';
@@ -65,6 +66,7 @@ export class DumbEntitiesList extends React.Component {
       status: false
     };
     this.loading = false;
+    this.loadingDebounce = null;
   }
 
   componentDidMount() {
@@ -119,30 +121,41 @@ export class DumbEntitiesList extends React.Component {
 
   handleScroll = (values) => {
     this.dispatchScroll();
-    if (!this.loading) {
-      const { onEndReachedThreshold, reverted } = this.props;
-      if (this.props.isGlobal) {
-        const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
-        const body = document.body;
-        const html = document.documentElement;
-        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-        const windowBottom = windowHeight + window.pageYOffset;
-        const threshold = docHeight * onEndReachedThreshold;
-        if (windowBottom >= threshold) {
-          this.onEndReached();
-        }
-      } else {
-        const { scrollTop, scrollHeight, clientHeight } = values;
-        const pad = onEndReachedThreshold * clientHeight;
-        if (reverted) {
-          const t = (scrollTop - pad) / (scrollHeight - clientHeight);
-          if (t !== Infinity && t < 0) this.onEndReached();
+    if (this.loadingDebounce) this.loadingDebounce.cancel();
+    const loadNextData = () => {
+      if (!this.loading) {
+        const { onEndReachedThreshold, reverted } = this.props;
+        if (this.props.isGlobal) {
+          const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
+          const body = document.body;
+          const html = document.documentElement;
+          const docHeight = Math.max(
+            body.scrollHeight,
+            body.offsetHeight,
+            html.clientHeight,
+            html.scrollHeight,
+            html.offsetHeight
+          );
+          const windowBottom = windowHeight + window.pageYOffset;
+          const threshold = docHeight * onEndReachedThreshold;
+          if (windowBottom >= threshold) {
+            this.onEndReached();
+          }
         } else {
-          const t = (scrollTop + pad) / (scrollHeight - clientHeight);
-          if (t !== Infinity && t > 1) this.onEndReached();
+          const { scrollTop, scrollHeight, clientHeight } = values;
+          const pad = onEndReachedThreshold * clientHeight;
+          if (reverted) {
+            const t = (scrollTop - pad) / (scrollHeight - clientHeight);
+            if (t !== Infinity && t < 0) this.onEndReached();
+          } else {
+            const t = (scrollTop + pad) / (scrollHeight - clientHeight);
+            if (t !== Infinity && t > 1) this.onEndReached();
+          }
         }
       }
-    }
+    };
+    this.loadingDebounce = debounce(loadNextData, 20);
+    this.loadingDebounce();
   };
 
   onEndReached = () => {
