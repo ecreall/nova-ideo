@@ -6,6 +6,9 @@ export const siteQuery = gql`
     root {
       siteId
       title
+      logo {
+        url
+      }
       keywords
       canAddKeywords
       anonymisation

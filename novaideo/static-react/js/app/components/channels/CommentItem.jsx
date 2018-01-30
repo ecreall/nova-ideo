@@ -11,6 +11,7 @@ import { I18n } from 'react-redux-i18n';
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Url from '../common/Url';
+import CommentMenu from './CommentMenu';
 
 const styles = (theme) => {
   return {
@@ -128,6 +129,13 @@ const styles = (theme) => {
 const ignoreTimeInterval = 5; // 5 minutes
 
 export class DumbCommentItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: false
+    };
+  }
+
   ignoreMetaData = () => {
     const { node, next } = this.props;
     if (!next) return false;
@@ -138,6 +146,14 @@ export class DumbCommentItem extends React.Component {
     const nextCreatedAt = new Date(next.createdAt);
     const dateDiff = (createdAt - nextCreatedAt) / 60000; // minutes
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
+  };
+
+  onMouseOver = () => {
+    this.setState({ active: true });
+  };
+
+  onMouseLeave = () => {
+    this.setState({ active: false });
   };
 
   render() {
@@ -159,8 +175,9 @@ export class DumbCommentItem extends React.Component {
       })
       : [];
     return (
-      <div>
+      <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.container}>
+          {this.state.active && <CommentMenu comment={node} />}
           <div
             className={classNames(classes.left, {
               [classes.leftDateOnly]: ignoreMetaData

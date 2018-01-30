@@ -40,6 +40,8 @@ const styles = {
   },
   playButton: {
     opacity: 0.8,
+    width: 60,
+    height: 60,
     '&:hover': {
       opacity: 1
     }

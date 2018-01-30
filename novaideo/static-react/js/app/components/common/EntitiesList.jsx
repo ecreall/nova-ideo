@@ -119,13 +119,14 @@ export class DumbEntitiesList extends React.Component {
     }
   };
 
-  handleScroll = (values) => {
+  handleScroll = (event) => {
     this.dispatchScroll();
     if (this.loadingDebounce) this.loadingDebounce.cancel();
     const loadNextData = () => {
       if (!this.loading) {
         const { onEndReachedThreshold, reverted } = this.props;
-        if (this.props.isGlobal) {
+        const isCustomScroll = !this.props.isGlobal || (event && event.values);
+        if (!isCustomScroll) {
           const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
           const body = document.body;
           const html = document.documentElement;
@@ -142,6 +143,7 @@ export class DumbEntitiesList extends React.Component {
             this.onEndReached();
           }
         } else {
+          const values = event.values || event;
           const { scrollTop, scrollHeight, clientHeight } = values;
           const pad = onEndReachedThreshold * clientHeight;
           if (reverted) {

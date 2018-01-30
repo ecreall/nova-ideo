@@ -90,10 +90,14 @@ class Root(Node, Debatable, graphene.ObjectType):
     manage_challenges = graphene.Boolean()
     manage_questions = graphene.Boolean()
     manage_proposals = graphene.Boolean()
+    logo = graphene.Field(lambda: File)
 
     def resolve_site_id(self, args, context, info):  # pylint: disable=W0613
         # TODO return the site id exp: evolutions...
         return "default"
+
+    def resolve_logo(self, args, context, info):  # pylint: disable=W0613
+        return self.picture
 
 
 class Action(Node, graphene.ObjectType):

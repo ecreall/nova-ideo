@@ -5,7 +5,7 @@ import AddIcon from 'material-ui-icons/Add';
 import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
 
-import Menu from '../common/Menu';
+import { Popper, Menu } from '../common/menu';
 
 const styles = (theme) => {
   return {
@@ -60,26 +60,34 @@ class CommentMenu extends React.Component {
     const { menu } = this.state;
     const menuId = 'comment-menu-list';
     return (
-      <Menu
+      <Popper
+        classes={{
+          root: classes.menu,
+          rootOpen: classes.menuOpen
+        }}
         id={menuId}
         onOpen={this.onMenuOpen}
         onClose={this.onMenuClose}
-        fields={fields}
-        classes={{
-          menu: classes.menu,
-          menuOpen: classes.menuOpen
-        }}
+        activator={
+          <IconButton
+            className={classNames('menu-button', {
+              [classes.buttonOpen]: menu
+            })}
+            aria-owns={menuId}
+            aria-haspopup="true"
+          >
+            <AddIcon />
+          </IconButton>
+        }
       >
-        <IconButton
-          className={classNames('menu-button', {
-            [classes.buttonOpen]: menu
-          })}
-          aria-owns={menuId}
-          aria-haspopup="true"
-        >
-          <AddIcon />
-        </IconButton>
-      </Menu>
+        <Menu
+          fields={fields}
+          classes={{
+            menu: classes.menu,
+            menuOpen: classes.menuOpen
+          }}
+        />
+      </Popper>
     );
   }
 }

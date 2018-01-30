@@ -45,7 +45,7 @@ const styles = (theme) => {
     },
     icon: {
       width: 17,
-      height: 17,
+      height: 15,
       color: 'white',
       opacity: 0.4,
       marginRight: 0,

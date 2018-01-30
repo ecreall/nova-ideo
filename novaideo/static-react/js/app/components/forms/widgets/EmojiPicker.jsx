@@ -27,7 +27,8 @@ const classesStyles = (theme) => {
     },
     buttonActive: {
       color: theme.palette.primary[500]
-    }
+    },
+    icon: {}
   };
 };
 
@@ -85,7 +86,7 @@ class EmojiPicker extends React.Component {
           })}
           onClick={this.openPicker}
         >
-          <InsertEmoticonIcon />
+          <InsertEmoticonIcon className={classes.icon} />
         </IconButton>
 
         {this.state.opened &&

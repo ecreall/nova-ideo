@@ -1,6 +1,10 @@
 /* eslint-disable global-require */
 /* eslint-disable import/prefer-default-export, import/no-extraneous-dependencies */
 
+export const STATIC_URL = '/novaideostatic-react/';
+
+export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
+
 export const UPDATE_APP = 'UPDATE_APP';
 
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';

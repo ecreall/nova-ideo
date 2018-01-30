@@ -15,7 +15,7 @@ import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
-import { renderMenuItem } from '../common/Menu';
+import { renderMenuItem } from '../common/menu/Menu';
 
 const styles = (theme) => {
   return {

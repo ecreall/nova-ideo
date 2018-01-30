@@ -116,7 +116,8 @@ class Divider extends React.Component {
 
   getZIndex = () => {
     const { index, reverted } = this.props;
-    return reverted ? 1499 - index : 1499 + index;
+    const zIndex = 1100;
+    return reverted ? zIndex + 200 - index : zIndex + index;
   };
 
   render() {

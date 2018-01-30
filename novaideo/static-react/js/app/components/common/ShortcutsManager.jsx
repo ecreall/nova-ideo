@@ -4,6 +4,9 @@ import Mousetrap from 'mousetrap';
 import 'mousetrap/plugins/global-bind/mousetrap-global-bind';
 
 export const keymap = {
+  APP: {
+    OPEN_USER_MENU: 'ctrl+m'
+  },
   CHATAPP: {
     CHATAPP_OPEN_JUMP: 'ctrl+k',
     CHATAPP_CLOSE: 'ctrl+c',

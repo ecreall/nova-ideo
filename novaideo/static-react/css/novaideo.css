@@ -4,6 +4,15 @@
   display: none !important
 }
 
+.emoji-mart {
+  z-index: 1101 !important;
+  max-height: calc(100vh - 60px);
+}
+
+.emoji-mart-scroll {
+  max-height: calc(100vh - 220px);
+}
+
 .emoji-mart-bar {
   background-color: #f9f9f9;
 }

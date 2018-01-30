@@ -8,6 +8,7 @@ export const ListItem = glamorous(MuiListItem)((props) => {
     margin: '0 15px',
     width: '100%',
     minHeight: 28,
+    transition: 'none',
     '&:hover, &:focus, &:active': {
       backgroundColor: props.hoverColor,
       '& .menu-item-icon': {

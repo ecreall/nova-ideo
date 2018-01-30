@@ -8,7 +8,7 @@ import Hidden from 'material-ui/Hidden';
 import { updateApp } from '../../actions/actions';
 import { STYLE_CONST } from '../../constants';
 import Channels from './Channels';
-import ChannelsMenu from './ChannelsMenu';
+import UserMenu from '../UserMenu';
 import Jump from './Jump';
 
 const styles = (theme) => {
@@ -44,7 +44,7 @@ const styles = (theme) => {
 function ChannelsDrawerContent({ classes, addMenu }) {
   return (
     <div className={classes.container}>
-      {addMenu ? <ChannelsMenu /> : <div className={classes.drawerHeader} />}
+      {addMenu ? <UserMenu /> : <div className={classes.drawerHeader} />}
       <Jump />
       <Channels />
     </div>

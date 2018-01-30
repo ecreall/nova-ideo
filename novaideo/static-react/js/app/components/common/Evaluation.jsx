@@ -57,6 +57,7 @@ const styles = {
   },
   inactive: {
     color: '#c3c3c3',
+    fontSize: '25px !important',
     '&:hover': {
       fontSize: 25
     }
@@ -97,7 +98,7 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
             }
             placement="right"
           >
-            <Icon className={classNames(classes.tokenTop, icon.top)} size={35} />
+            <Icon className={classNames(classes.tokenTop, icon.top)} />
           </OverlayTrigger>
         </IconButton>
         <span className={classes.tokenNbTop}>

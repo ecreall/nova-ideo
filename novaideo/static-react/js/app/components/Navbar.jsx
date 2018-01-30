@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { updateApp } from '../actions/actions';
 import AppMenu from './AppMenu';
 import AccountInformation from './AccountInformation';
+import UserMenu from './UserMenu';
 
 const styles = {
   root: {
@@ -32,7 +33,8 @@ const styles = {
   accountAvatar: {
     width: 30,
     height: 30,
-    borderRadius: 4
+    borderRadius: 4,
+    cursor: 'pointer'
   }
 };
 
@@ -77,11 +79,15 @@ class NavBar extends React.Component {
               {site.title}
             </Typography>
             <div className={classes.userMenuContainer}>
-              <AccountInformation
-                onlyIcon
-                classes={{
-                  avatar: classes.accountAvatar
-                }}
+              <UserMenu
+                activator={
+                  <AccountInformation
+                    onlyIcon
+                    classes={{
+                      avatar: classes.accountAvatar
+                    }}
+                  />
+                }
               />
             </div>
           </Toolbar>

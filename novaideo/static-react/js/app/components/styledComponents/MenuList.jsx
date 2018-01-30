@@ -4,10 +4,7 @@ import { MenuList as MuiMenuList, MenuItem as MuiMenuItem } from 'material-ui/Me
 export const MenuList = glamorous(MuiMenuList)({
   paddingTop: 15,
   paddingBottom: 15,
-  minWidth: 230,
-  maxHeight: 'calc(100vh - 99px)',
-  overflowY: 'auto',
-  overflowX: 'hidden'
+  minWidth: 230
 });
 
 export const MenuItem = glamorous(MuiMenuItem)((props) => {
@@ -16,6 +13,7 @@ export const MenuItem = glamorous(MuiMenuItem)((props) => {
     padding: '0 16px 0 8px',
     margin: '0 15px',
     minHeight: 28,
+    transition: 'none',
     '&:hover, &:focus, &:active': {
       backgroundColor: props.hoverColor,
       '& .menu-item-icon': {
