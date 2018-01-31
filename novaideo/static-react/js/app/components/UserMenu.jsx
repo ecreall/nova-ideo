@@ -7,7 +7,7 @@ import Avatar from 'material-ui/Avatar';
 
 import { DEFAULT_LOGO } from '../constants';
 import AccountInformation from './AccountInformation';
-import { Menu, Popper } from './common/menu';
+import { MenuList, Menu } from './common/menu';
 import ShortcutsManager from './common/ShortcutsManager';
 
 const styles = (theme) => {
@@ -94,11 +94,12 @@ class UserMenu extends React.Component {
       menu: false
     };
     this.popper = null;
+    this.anchor = null;
   }
 
-  handleOpen = () => {
+  handleOpen = (event) => {
     if (this.popper) {
-      this.popper.openPopper();
+      this.popper.open(event, this.anchor);
     }
     return false;
   };
@@ -149,7 +150,7 @@ class UserMenu extends React.Component {
     const { menu } = this.state;
     return (
       <ShortcutsManager domain="APP" shortcuts={{ OPEN_USER_MENU: this.handleOpen }}>
-        <Popper
+        <Menu
           initRef={(popper) => {
             this.popper = popper;
           }}
@@ -157,19 +158,25 @@ class UserMenu extends React.Component {
           onOpen={this.onMenuOpen}
           onClose={this.onMenuClose}
           activator={
-            activator ||
-            <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
-              <div className={classes.siteInfo}>
-                <div className={classes.siteTitle}>
-                  {site.title}
-                </div>
-                <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
-              </div>
-              <AccountInformation color={theme.palette.primary.light} />
+            <div
+              ref={(anchor) => {
+                this.anchor = anchor;
+              }}
+            >
+              {activator ||
+                <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
+                  <div className={classes.siteInfo}>
+                    <div className={classes.siteTitle}>
+                      {site.title}
+                    </div>
+                    <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
+                  </div>
+                  <AccountInformation color={theme.palette.primary.light} />
+                </div>}
             </div>
           }
         >
-          <Menu
+          <MenuList
             header={this.userSectionHeader()}
             fields={[
               {
@@ -180,7 +187,7 @@ class UserMenu extends React.Component {
               }
             ]}
           />
-          <Menu
+          <MenuList
             header={this.siteSectionHeader()}
             fields={[
               {
@@ -191,7 +198,7 @@ class UserMenu extends React.Component {
               }
             ]}
           />
-        </Popper>
+        </Menu>
       </ShortcutsManager>
     );
   }

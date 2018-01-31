@@ -57,8 +57,7 @@
   </head>
   <body>
     <div id='root'></div>
-    <div id='menu-root'></div>
-    
+    <div id='modal-portal'></div>
     <script src="${su('novaideo:static-react/build/bundle.js')}"></script>
     <link href="${su('novaideo:static-react/build/bundle.css')}"
             rel="stylesheet"/>

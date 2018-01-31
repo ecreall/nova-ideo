@@ -5,13 +5,12 @@ import { Picker } from 'emoji-mart';
 import IconButton from 'material-ui/IconButton';
 import InsertEmoticonIcon from 'material-ui-icons/InsertEmoticon';
 
+import { Menu } from '../../common/menu';
+
 const styles = {
   picker: {
-    boxShadow: '0 5px 10px rgba(0,0,0,.12)',
     fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif',
-    position: 'absolute',
-    right: -35,
-    bottom: 36,
+    position: 'relative',
     zIndex: 2
   }
 };
@@ -23,12 +22,21 @@ const classesStyles = (theme) => {
       color: 'gray',
       cursor: 'pointer',
       height: 41,
-      width: 41
+      width: 35
     },
     buttonActive: {
       color: theme.palette.primary[500]
     },
-    icon: {}
+    icon: {},
+    menuPaper: {
+      width: 'auto',
+      maxHeight: 'inherit',
+      overflowX: 'auto',
+      borderRadius: 6,
+      '& > ul': {
+        padding: 0
+      }
+    }
   };
 };
 
@@ -43,62 +51,57 @@ class EmojiPicker extends React.Component {
       opened: false
     };
     this.picker = null;
-    this.button = null;
-  }
-
-  componentDidMount() {
-    document.addEventListener('click', this.closePicker);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.closePicker);
   }
 
   openPicker = () => {
     this.setState({ opened: true });
   };
 
-  closePicker = (event) => {
-    if (this.state.opened && this.picker && !this.picker.contains(event.target)) {
-      this.setState({ opened: false });
-    }
+  closePicker = () => {
+    this.setState({ opened: false });
   };
 
   onEmojiSelect = (emoji) => {
     const { onSelect } = this.props;
     if (onSelect) {
-      this.setState({ opened: false });
       onSelect(emoji.colons);
     }
+    this.setState({ opened: false });
+    if (this.picker) this.picker.close();
   };
 
   render() {
     const { theme, classes, style } = this.props;
     return (
-      <div
-        ref={(picker) => {
+      <Menu
+        id="emoji-picker"
+        initRef={(picker) => {
           this.picker = picker;
         }}
+        classes={{
+          menuPaper: classes.menuPaper
+        }}
+        onOpen={this.openPicker}
+        onClose={this.closePicker}
+        activator={
+          <IconButton
+            className={classNames(classes.button, {
+              [classes.buttonActive]: this.state.opened
+            })}
+          >
+            <InsertEmoticonIcon className={classes.icon} />
+          </IconButton>
+        }
       >
-        <IconButton
-          className={classNames(classes.button, {
-            [classes.buttonActive]: this.state.opened
-          })}
-          onClick={this.openPicker}
-        >
-          <InsertEmoticonIcon className={classes.icon} />
-        </IconButton>
-
-        {this.state.opened &&
-          <Picker
-            color={theme.palette.primary[500]}
-            title="Emoji"
-            emoji="slightly_smiling_face"
-            sheetSize={32}
-            style={{ ...styles.picker, ...style.picker }}
-            onClick={this.onEmojiSelect}
-          />}
-      </div>
+        <Picker
+          color={theme.palette.primary[500]}
+          title="Emoji"
+          emoji="slightly_smiling_face"
+          sheetSize={32}
+          style={{ ...styles.picker, ...style.picker }}
+          onClick={this.onEmojiSelect}
+        />
+      </Menu>
     );
   }
 }

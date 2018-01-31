@@ -15,7 +15,7 @@ import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
-import { renderMenuItem } from '../common/menu/Menu';
+import { renderMenuItem } from '../common/menu/MenuList';
 
 const styles = (theme) => {
   return {
@@ -105,7 +105,7 @@ const styles = (theme) => {
     },
     action: {
       height: 41,
-      width: 41,
+      width: 35,
       display: 'flex',
       padding: 5
     },
@@ -115,7 +115,7 @@ const styles = (theme) => {
     },
     maskDefault: {
       height: 41,
-      width: 41,
+      width: 35,
       color: 'gray'
     },
     maskChecked: {

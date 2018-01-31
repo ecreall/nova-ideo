@@ -131,9 +131,7 @@ const ignoreTimeInterval = 5; // 5 minutes
 export class DumbCommentItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: false
-    };
+    this.menu = null;
   }
 
   ignoreMetaData = () => {
@@ -149,11 +147,11 @@ export class DumbCommentItem extends React.Component {
   };
 
   onMouseOver = () => {
-    this.setState({ active: true });
+    if (this.menu) this.menu.open();
   };
 
   onMouseLeave = () => {
-    this.setState({ active: false });
+    if (this.menu) this.menu.close();
   };
 
   render() {
@@ -177,7 +175,12 @@ export class DumbCommentItem extends React.Component {
     return (
       <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.container}>
-          {this.state.active && <CommentMenu comment={node} />}
+          <CommentMenu
+            initRef={(menu) => {
+              this.menu = menu;
+            }}
+            comment={node}
+          />
           <div
             className={classNames(classes.left, {
               [classes.leftDateOnly]: ignoreMetaData

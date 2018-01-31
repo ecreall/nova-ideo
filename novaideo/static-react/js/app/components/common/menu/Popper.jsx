@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import { Manager, Target, Popper as PopperBase } from 'react-popper';
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 
-const popperRoot = document.getElementById('menu-root');
+const popperRoot = document.getElementById('modal-portal');
 
 const styles = {
   popper: {
@@ -51,7 +51,7 @@ class Popper extends React.Component {
     popperRoot.removeChild(this.popper);
   }
 
-  openPopper = () => {
+  open = () => {
     const { onOpen } = this.props;
     this.setState({ popper: true }, () => {
       if (onOpen) {
@@ -60,21 +60,21 @@ class Popper extends React.Component {
     });
   };
 
-  closePopper = (event, callback) => {
+  close = (event, callback) => {
     const { onClose } = this.props;
     this.setState({ popper: false }, () => {
-      if (callback) callback();
+      if (typeof callback === 'function') callback();
       if (onClose) onClose();
     });
   };
 
   render() {
-    const { id, activator, classes } = this.props;
+    const { id, activator, keepMounted, classes } = this.props;
     const { popper } = this.state;
     const children = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
-        open: this.openPopper,
-        close: this.closePopper
+        open: this.open,
+        close: this.close
       });
     });
     return (
@@ -83,25 +83,26 @@ class Popper extends React.Component {
           [classes.rootOpen]: popper
         })}
       >
-        <Target onClick={this.openPopper}>
+        <Target onClick={this.open}>
           {activator}
         </Target>
-        {ReactDOM.createPortal(
-          <PopperBase
-            placement="top-start"
-            eventsEnabled={popper}
-            className={classNames(classes.popper, { [classes.popperClose]: !popper })}
-          >
-            <ClickAwayListener onClickAway={this.closePopper}>
-              <Grow in={popper} id={id} style={{ transformOrigin: '0 0 0' }}>
-                <Paper elevation={6} className={classes.paper}>
-                  {children}
-                </Paper>
-              </Grow>
-            </ClickAwayListener>
-          </PopperBase>,
-          this.popper
-        )}
+        {(popper || keepMounted) &&
+          ReactDOM.createPortal(
+            <PopperBase
+              placement="top-start"
+              eventsEnabled={popper}
+              className={classNames(classes.popper, { [classes.popperClose]: !popper })}
+            >
+              <ClickAwayListener onClickAway={this.close}>
+                <Grow in={popper} id={id} style={{ transformOrigin: '0 0 0' }}>
+                  <Paper elevation={6} className={classes.paper}>
+                    {children}
+                  </Paper>
+                </Grow>
+              </ClickAwayListener>
+            </PopperBase>,
+            this.popper
+          )}
       </Manager>
     );
   }

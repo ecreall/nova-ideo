@@ -30,6 +30,7 @@ class FilesPicker extends React.Component {
   }
 
   onDrop = (event) => {
+    console.log(event);
     event.preventDefault();
     this.onDragLeave(event);
 
@@ -89,6 +90,7 @@ class FilesPicker extends React.Component {
         files: this.props.multiple === false ? files : [...this.props.value, ...files]
       },
       () => {
+        console.log(this.state.files);
         this.props.onChange(this.state.files);
       }
     );

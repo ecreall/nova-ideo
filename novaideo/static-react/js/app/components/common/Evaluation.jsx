@@ -22,6 +22,7 @@ const styles = {
     textShadow: '0 0px 2px rgba(128, 128, 128, 0.4)',
     fontSize: 25,
     transition: 'all .1s ease-in-out',
+    display: 'block',
     '&:hover': {
       fontSize: 30
     }
@@ -31,29 +32,34 @@ const styles = {
     textShadow: '0 0px 2px rgba(128, 128, 128, 0.4)',
     fontSize: 25,
     transition: 'all .1s ease-in-out',
+    display: 'block',
     '&:hover': {
       fontSize: 30
     }
   },
   buttonTop: {
-    color: '#4eaf4e'
+    color: '#4eaf4e',
+    display: 'block'
   },
   buttonBottom: {
-    color: '#ef6e18'
+    color: '#ef6e18',
+    display: 'block'
   },
   tokenNbBottom: {
     color: '#ef6e18',
     fontSize: 13,
     fontWeight: 'bold',
-    marginBottom: -13,
-    height: 17
+    marginBottom: -8,
+    height: 13,
+    lineHeight: 'normal'
   },
   tokenNbTop: {
     color: '#4eaf4e',
     fontSize: 13,
     fontWeight: 'bold',
-    marginTop: -13,
-    height: 17
+    marginTop: -12,
+    height: 13,
+    lineHeight: 'normal'
   },
   inactive: {
     color: '#c3c3c3',
@@ -77,6 +83,17 @@ const styles = {
     '& .tooltip-inner': {
       backgroundColor: '#ef6e18'
     }
+  },
+  itemContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    height: 53
+  },
+  inactiveItemContainer: {
+    height: 40
   }
 };
 
@@ -84,59 +101,67 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
   if (active) {
     return (
       <div className={classes.tokenContainer}>
-        <IconButton
-          className={classes.buttonTop}
-          onClick={() => {
-            return onClick.top(actions.top);
-          }}
-        >
-          <OverlayTrigger
-            overlay={
-              <Tooltip className={classes.buttonTopOverlay}>
-                {actions.top.description}
-              </Tooltip>
-            }
-            placement="right"
+        <div className={classes.itemContainer}>
+          <IconButton
+            className={classes.buttonTop}
+            onClick={() => {
+              return onClick.top(actions.top);
+            }}
           >
-            <Icon className={classNames(classes.tokenTop, icon.top)} />
-          </OverlayTrigger>
-        </IconButton>
-        <span className={classes.tokenNbTop}>
-          {text.top}
-        </span>
-        <span className={classes.tokenNbBottom}>
-          {text.down}
-        </span>
-        <IconButton
-          className={classes.buttonBottom}
-          onClick={() => {
-            return onClick.down(actions.down);
-          }}
-        >
-          <OverlayTrigger
-            overlay={
-              <Tooltip className={classes.buttonBottomOverlay}>
-                {actions.down.description}
-              </Tooltip>
-            }
-            placement="right"
+            <OverlayTrigger
+              overlay={
+                <Tooltip className={classes.buttonTopOverlay}>
+                  {actions.top.description}
+                </Tooltip>
+              }
+              placement="right"
+            >
+              <Icon className={classNames(classes.tokenTop, icon.top)} />
+            </OverlayTrigger>
+          </IconButton>
+          <div className={classes.tokenNbTop}>
+            {text.top}
+          </div>
+        </div>
+        <div className={classes.itemContainer}>
+          <div className={classes.tokenNbBottom}>
+            {text.down}
+          </div>
+          <IconButton
+            className={classes.buttonBottom}
+            onClick={() => {
+              return onClick.down(actions.down);
+            }}
           >
-            <Icon className={classNames(classes.tokenBottom, icon.down)} />
-          </OverlayTrigger>
-        </IconButton>
+            <OverlayTrigger
+              overlay={
+                <Tooltip className={classes.buttonBottomOverlay}>
+                  {actions.down.description}
+                </Tooltip>
+              }
+              placement="right"
+            >
+              <Icon className={classNames(classes.tokenBottom, icon.down)} />
+            </OverlayTrigger>
+          </IconButton>
+        </div>
       </div>
     );
   }
   return (
     <div className={classes.tokenContainer}>
-      <Icon className={classNames(classes.tokenTop, classes.inactive, icon.top)} />
-      <span className={classNames(classes.tokenNbTop, classes.nbInactive)}>
-        {text.top}
-      </span>
-      <span className={classNames(classes.tokenNbBottom, classes.nbInactive)}>
-        {text.down}
-      </span>
-      <Icon className={classNames(classes.tokenBottom, classes.inactive, icon.down)} />
+      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer)}>
+        <Icon className={classNames(classes.tokenTop, classes.inactive, icon.top)} />
+        <div className={classNames(classes.tokenNbTop, classes.nbInactive)}>
+          {text.top}
+        </div>
+      </div>
+      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer)}>
+        <div className={classNames(classes.tokenNbBottom, classes.nbInactive)}>
+          {text.down}
+        </div>
+        <Icon className={classNames(classes.tokenBottom, classes.inactive, icon.down)} />
+      </div>
     </div>
   );
 };

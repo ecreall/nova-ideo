@@ -29,9 +29,11 @@ class TextBoxField extends React.Component {
   }
 
   onChange = (value) => {
-    const isEmpty = this.editor.isEmptyText(value);
-    const textValue = isEmpty ? '' : value;
-    this.props.onChange(textValue);
+    if (this.editor) {
+      const isEmpty = this.editor.isEmptyText(value);
+      const textValue = isEmpty ? '' : value;
+      this.props.onChange(textValue);
+    }
   };
 
   onSelectEmoji = (emoji) => {

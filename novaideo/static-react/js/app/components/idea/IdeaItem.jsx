@@ -19,6 +19,7 @@ import Evaluation from '../common/Evaluation';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import * as constants from '../../constants';
 import { getActions } from '../../utils/entities';
+import IdeaMenu from './IdeaMenu';
 import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
 
 const styles = (theme) => {
@@ -35,7 +36,8 @@ const styles = (theme) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      margin: '10px 0'
+      margin: '10px 0',
+      position: 'relative'
     },
     headerTitle: {
       display: 'flex',
@@ -150,137 +152,156 @@ const styles = (theme) => {
   };
 };
 
-function RenderIdeaItem(props) {
-  const { node, adapters, globalProps: { siteConf }, classes } = props;
-  const author = node.author;
-  const authorPicture = author.picture;
-  const isAnonymous = author.isAnonymous;
-  const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
-  const today = Moment();
-  const isToday = today.isSame(Moment(node.createdAt), 'day');
-  const yesterday = today.subtract(1, 'days').startOf('day');
-  const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
-  const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
-  const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
-  const images = node.attachedFiles
-    ? node.attachedFiles.filter((image) => {
-      return image.isImage;
-    })
-    : [];
-  const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
-  const Examination = adapters.examination;
-  const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
-  return (
-    <div className={classes.ideaItem}>
-      <div className={classes.left}>
-        <Avatar
-          className={isAnonymous && classes.anonymousAvatar}
-          classes={{ root: classes.avatar }}
-          size={40}
-          src={authorPicture ? `${authorPicture.url}/profil` : ''}
-        >
-          {isAnonymous && <Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
-        </Avatar>
-        <div className={classes.leftActions}>
-          {hasEvaluation
-            ? <Evaluation
-              icon={{
-                top:
-                    node.userToken === 'support'
-                      ? 'mdi-set mdi-arrow-up-drop-circle-outline'
-                      : 'mdi-set mdi-arrow-up-drop-circle',
-                down:
-                    node.userToken === 'oppose'
-                      ? 'mdi-set mdi-arrow-down-drop-circle-outline'
-                      : 'mdi-set mdi-arrow-down-drop-circle'
-              }}
-              onClick={{
-                top: (action) => {
-                  props.actionsManager.evaluationClick(action);
-                },
-                down: (action) => {
-                  props.actionsManager.evaluationClick(action);
-                }
-              }}
-              text={{ top: node.tokensSupport, down: node.tokensOpposition }}
-              actions={getEvaluationActions(node)}
-              active={node.state.includes('submitted_support')}
-            />
-            : null}
-          {siteConf.examineIdeas && node.state.includes('examined')
-            ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
-            : null}
-        </div>
-      </div>
-      <div className={classes.body}>
-        <div className={classes.header}>
-          <span className={classes.headerTitle}>
-            {author.title}
-          </span>
-          <Keywords onKeywordPress={props.searchEntities} keywords={node.keywords} />
-          <Tooltip id={node.id} title={createdAtF3} placement="top">
-            <span className={classes.headerAddOn}>
-              {createdAt}
-            </span>
-          </Tooltip>
-        </div>
-        <div className={classes.bodyContent}>
-          <div>
-            <div className={classes.bodyTitle}>
-              <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
-            </div>
+export class RenderIdeaItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.menu = null;
+  }
+  onMouseOver = () => {
+    if (this.menu) this.menu.open();
+  };
 
-            <Grid container item>
-              <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
-                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-              </Grid>
-              {images.length > 0 &&
-                <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
-                  <ImagesPreview images={images} />
-                </Grid>}
-            </Grid>
-          </div>
-          <div className={classes.bodyFooter}>
-            <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
-              {communicationActions.map((action, key) => {
-                return (
-                  <IconButton
-                    className={classes.actionsText}
-                    key={key}
-                    onClick={() => {
-                      return props.actionsManager.performAction(action);
-                    }}
-                    aria-label="todo"
-                  >
-                    <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
-                    {action.counter}
-                  </IconButton>
-                );
-              })}
-            </CardActions>
+  onMouseLeave = () => {
+    if (this.menu) this.menu.close();
+  };
+  render() {
+    const { node, adapters, globalProps: { siteConf }, classes } = this.props;
+    const author = node.author;
+    const authorPicture = author.picture;
+    const isAnonymous = author.isAnonymous;
+    const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
+    const today = Moment();
+    const isToday = today.isSame(Moment(node.createdAt), 'day');
+    const yesterday = today.subtract(1, 'days').startOf('day');
+    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
+    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
+    const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
+    const images = node.attachedFiles
+      ? node.attachedFiles.filter((image) => {
+        return image.isImage;
+      })
+      : [];
+    const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
+    const Examination = adapters.examination;
+    const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
+    return (
+      <div className={classes.ideaItem} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
+        <div className={classes.left}>
+          <Avatar
+            className={isAnonymous && classes.anonymousAvatar}
+            classes={{ root: classes.avatar }}
+            size={40}
+            src={authorPicture ? `${authorPicture.url}/profil` : ''}
+          >
+            {isAnonymous && <Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
+          </Avatar>
+          <div className={classes.leftActions}>
+            {hasEvaluation
+              ? <Evaluation
+                icon={{
+                  top:
+                      node.userToken === 'support'
+                        ? 'mdi-set mdi-arrow-up-drop-circle-outline'
+                        : 'mdi-set mdi-arrow-up-drop-circle',
+                  down:
+                      node.userToken === 'oppose'
+                        ? 'mdi-set mdi-arrow-down-drop-circle-outline'
+                        : 'mdi-set mdi-arrow-down-drop-circle'
+                }}
+                onClick={{
+                  top: (action) => {
+                    this.props.actionsManager.evaluationClick(action);
+                  },
+                  down: (action) => {
+                    this.props.actionsManager.evaluationClick(action);
+                  }
+                }}
+                text={{ top: node.tokensSupport, down: node.tokensOpposition }}
+                actions={getEvaluationActions(node)}
+                active={node.state.includes('submitted_support')}
+              />
+              : null}
+            {siteConf.examineIdeas && node.state.includes('examined')
+              ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
+              : null}
           </div>
         </div>
+        <div className={classes.body}>
+          <div className={classes.header}>
+            <IdeaMenu
+              initRef={(menu) => {
+                this.menu = menu;
+              }}
+              idea={node}
+            />
+            <span className={classes.headerTitle}>
+              {author.title}
+            </span>
+            <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
+            <Tooltip id={node.id} title={createdAtF3} placement="top">
+              <span className={classes.headerAddOn}>
+                {createdAt}
+              </span>
+            </Tooltip>
+          </div>
+          <div className={classes.bodyContent}>
+            <div>
+              <div className={classes.bodyTitle}>
+                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
+              </div>
+
+              <Grid container item>
+                <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
+                  <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
+                </Grid>
+                {images.length > 0 &&
+                  <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
+                    <ImagesPreview images={images} />
+                  </Grid>}
+              </Grid>
+            </div>
+            <div className={classes.bodyFooter}>
+              <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
+                {communicationActions.map((action, key) => {
+                  return (
+                    <IconButton
+                      className={classes.actionsText}
+                      key={key}
+                      onClick={() => {
+                        return this.props.actionsManager.performAction(action);
+                      }}
+                      aria-label="todo"
+                    >
+                      <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
+                      {action.counter}
+                    </IconButton>
+                  );
+                })}
+              </CardActions>
+            </div>
+          </div>
+        </div>
+        {hasEvaluation &&
+          <div className={classes.right}>
+            <StatisticsDoughnut
+              title={I18n.t('evaluation.tokens')}
+              elements={[
+                {
+                  color: '#4eaf4e',
+                  count: node.tokensSupport,
+                  Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
+                },
+                {
+                  color: '#ef6e18',
+                  count: node.tokensOpposition,
+                  Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
+                }
+              ]}
+            />
+          </div>}
       </div>
-      {hasEvaluation &&
-        <div className={classes.right}>
-          <StatisticsDoughnut
-            title={I18n.t('evaluation.tokens')}
-            elements={[
-              {
-                color: '#4eaf4e',
-                count: node.tokensSupport,
-                Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
-              },
-              {
-                color: '#ef6e18',
-                count: node.tokensOpposition,
-                Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
-              }
-            ]}
-          />
-        </div>}
-    </div>
-  );
+    );
+  }
 }
 
 function DumbIdeaItem(props) {

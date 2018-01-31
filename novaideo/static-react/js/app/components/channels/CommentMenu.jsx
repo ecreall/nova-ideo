@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 
-import { Menu, Popper } from '../common/menu';
+import { MenuList, Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
 
 const styles = (theme) => {
@@ -43,8 +43,31 @@ const styles = (theme) => {
 };
 
 export class DumbCommentMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menu: false
+    };
+  }
+
+  componentDidMount() {
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
+    }
+  }
+
+  open = () => {
+    this.setState({ menu: true });
+  };
+
+  close = () => {
+    this.setState({ menu: false });
+  };
+
   render() {
     const { classes } = this.props;
+    if (!this.state.menu) return null;
     return (
       <div className={classes.container}>
         <div className={classes.action}>
@@ -58,15 +81,15 @@ export class DumbCommentMenu extends React.Component {
           />
         </div>
         <div>
-          <Popper
-            id="comment-menu"
+          <Menu
+            id="comment-more-menu"
             activator={
-              <IconButton className={classes.button} aria-label="More" aria-haspopup="true" onClick={this.handleClick}>
+              <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
                 <MoreHorizIcon className={classes.icon} />
               </IconButton>
             }
           >
-            <Menu
+            <MenuList
               fields={[
                 {
                   title: 'Une action importante'
@@ -79,7 +102,7 @@ export class DumbCommentMenu extends React.Component {
                 }
               ]}
             />
-          </Popper>
+          </Menu>
         </div>
       </div>
     );

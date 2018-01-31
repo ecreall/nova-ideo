@@ -1,91 +1,80 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-
-import { MenuList, MenuItem } from '../../styledComponents/MenuList';
-import { ListItemIcon, ListItemText } from '../../styledComponents/List';
-import Divider from './Divider';
+import Menu from 'material-ui/Menu';
 
 const styles = {
-  section: {
-    position: 'relative',
-    paddingTop: 16,
-    paddingBottom: 15,
-    margin: 0,
-    width: '100%',
-    clear: 'both',
-    borderBottom: '1px solid rgba(0,0,0,.15)'
+  menu: {
+    '& .menu-section:last-child': {
+      border: 'none'
+    }
   },
-  sectionHeader: {
-    height: 40,
-    margin: '6px 22px'
-  },
-  menuSection: {
-    paddingTop: '0 !important',
-    paddingBottom: '0 !important'
+  menuPaper: {
+    borderRadius: 6,
+    width: 300,
+    border: '1px solid rgba(0,0,0,.15)',
+    maxHeight: 'calc(100vh - 99px)',
+    overflowY: 'auto',
+    overflowX: 'hidden'
   }
 };
-export function renderMenuItem({ Icon, title, onClick, color, hoverColor }) {
-  return (
-    <MenuItem onClick={onClick} hoverColor={hoverColor}>
-      {Icon &&
-        <ListItemIcon>
-          <Icon className="menu-item-icon" />
-        </ListItemIcon>}
-      <ListItemText
-        color={color}
-        classes={{
-          primary: 'menu-item-text'
-        }}
-        primary={title}
-      />
-    </MenuItem>
-  );
-}
 
-class Menu extends React.Component {
-  renderItem = (field) => {
-    const { theme, close } = this.props;
-    if (typeof field === 'string') {
-      return <Divider title={field} />;
-    }
+class MenuWithActivator extends React.Component {
+  state = {
+    anchorEl: null
+  };
 
-    if (typeof field === 'function') {
-      return (
-        <div onClick={close}>
-          {field()}
-        </div>
-      );
+  componentDidMount() {
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
-    const Icon = field.Icon;
-    return renderMenuItem({
-      Icon: Icon,
-      title: field.title,
-      color: field.color,
-      hoverColor: field.hoverColor || theme.palette.info[500],
-      onClick: (event) => {
-        close(event, field.onClick);
+  }
+
+  open = (event, anchor) => {
+    const anchorEl = anchor || event.currentTarget;
+    const { onOpen } = this.props;
+    this.setState({ anchorEl: anchorEl }, () => {
+      if (onOpen) {
+        onOpen();
       }
     });
   };
 
+  close = (event, callback) => {
+    const { onClose } = this.props;
+    this.setState({ anchorEl: null }, () => {
+      if (typeof callback === 'function') callback();
+      if (onClose) onClose();
+    });
+  };
+
   render() {
-    const { header, fields, classes } = this.props;
-    return (
-      <div className={classNames({ [classes.section]: header, 'menu-section': header })}>
-        {header &&
-          <div className={classes.sectionHeader}>
-            {header}
-          </div>}
-        <MenuList className={header && classes.menuSection} role="menu">
-          {fields.map((field) => {
-            return this.renderItem(field);
-          })}
-        </MenuList>
-      </div>
-    );
+    const { id, activator, keepMounted, classes } = this.props;
+    const { anchorEl } = this.state;
+    const children = React.Children.map(this.props.children, (child) => {
+      return React.cloneElement(child, {
+        open: this.open,
+        close: this.close
+      });
+    });
+    return [
+      <div onClick={this.open}>
+        {activator}
+      </div>,
+      <Menu
+        keepMounted={keepMounted}
+        className={classes.menu}
+        classes={{ paper: classes.menuPaper }}
+        id={id}
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={this.close}
+      >
+        {children}
+      </Menu>
+    ];
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Menu);
+export default withStyles(styles, { withTheme: true })(MenuWithActivator);
