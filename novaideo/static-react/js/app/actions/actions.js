@@ -100,3 +100,11 @@ export const updateApp = (app, data) => {
     data: data
   };
 };
+
+export const updateNavigation = (location, updatePrevious) => {
+  return {
+    type: constants.UPDATE_NAVIGATION,
+    location: location,
+    updatePrevious: updatePrevious
+  };
+};

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
+import { browserHistory } from 'react-router';
 import Moment from 'moment';
 import { connect } from 'react-redux';
 import Grid from 'material-ui/Grid';
@@ -46,6 +47,11 @@ const styles = (theme) => {
       fontWeight: '900',
       justifyContent: 'space-around'
     },
+    title: {
+      '&:hover': {
+        textDecoration: 'underline'
+      }
+    },
     headerAddOn: {
       color: '#999999ff',
       paddingLeft: 5,
@@ -58,7 +64,8 @@ const styles = (theme) => {
     },
     bodyTitle: {
       marginLeft: -3,
-      marginBottom: 10
+      marginBottom: 10,
+      cursor: 'pointer'
     },
     left: {
       display: 'flex',
@@ -91,9 +98,6 @@ const styles = (theme) => {
     textContainer: {
       display: 'flex',
       justifyContent: 'space-between'
-    },
-    imagesContainer: {
-      width: '30%'
     },
     bodyFooter: {
       display: 'flex',
@@ -148,6 +152,9 @@ const styles = (theme) => {
       '& p': {
         margin: 0
       }
+    },
+    imagesContainer: {
+      padding: '0 0 0 8px !important'
     }
   };
 };
@@ -157,6 +164,7 @@ export class RenderIdeaItem extends React.Component {
     super(props);
     this.menu = null;
   }
+
   onMouseOver = () => {
     if (this.menu) this.menu.open();
   };
@@ -164,6 +172,11 @@ export class RenderIdeaItem extends React.Component {
   onMouseLeave = () => {
     if (this.menu) this.menu.close();
   };
+
+  openDetails = () => {
+    browserHistory.replace(`/ideas/${this.props.node.id}`);
+  };
+
   render() {
     const { node, adapters, globalProps: { siteConf }, classes } = this.props;
     const author = node.author;
@@ -237,7 +250,7 @@ export class RenderIdeaItem extends React.Component {
             <span className={classes.headerTitle}>
               {author.title}
             </span>
-            <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />
+            {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>
                 {createdAt}
@@ -246,8 +259,8 @@ export class RenderIdeaItem extends React.Component {
           </div>
           <div className={classes.bodyContent}>
             <div>
-              <div className={classes.bodyTitle}>
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} />
+              <div className={classes.bodyTitle} onClick={this.openDetails}>
+                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} />
               </div>
 
               <Grid container item>
@@ -255,7 +268,7 @@ export class RenderIdeaItem extends React.Component {
                   <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 </Grid>
                 {images.length > 0 &&
-                  <Grid item xs={12} sm={hasEvaluation ? 8 : 5}>
+                  <Grid className={classes.imagesContainer} item xs={12} sm={hasEvaluation ? 8 : 5}>
                     <ImagesPreview images={images} />
                   </Grid>}
               </Grid>

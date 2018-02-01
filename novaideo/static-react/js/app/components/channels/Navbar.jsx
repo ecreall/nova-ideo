@@ -60,10 +60,8 @@ class NavBar extends React.Component {
   };
 
   handleClose = () => {
-    const { updateChatApp, collaborationAppContext } = this.props;
-    setTimeout(() => {
-      browserHistory.replace(collaborationAppContext);
-    }, 1);
+    const { updateChatApp } = this.props;
+    browserHistory.replace('/');
     updateChatApp('chatApp', {
       open: false,
       drawer: false,
@@ -78,7 +76,7 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { data, classes, className, updateChatApp, collaborationAppContext } = this.props;
+    const { data, classes, className, updateChatApp } = this.props;
     const channel = data.channel;
     return (
       <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_CLOSE: this.handleClose, CHATAPP_INFO: this.handleInfo }}>
@@ -117,7 +115,7 @@ class NavBar extends React.Component {
               color="primary"
               aria-label="Menu"
               onClick={() => {
-                browserHistory.replace(collaborationAppContext);
+                browserHistory.replace('/');
                 updateChatApp('chatApp', {
                   open: false,
                   drawer: false,
@@ -145,7 +143,7 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
-    collaborationAppContext: state.apps.collaborationApp.context
+    previousLocation: state.history.navigation.previous
   };
 };
 

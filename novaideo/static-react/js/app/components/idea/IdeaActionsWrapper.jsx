@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
@@ -91,6 +92,7 @@ export class DumbIdeaActionsManager extends React.Component {
   performAction = (action) => {
     const { idea, network, select, deselect, openChannel, globalProps } = this.props;
     if (action.nodeId === 'comment') {
+      browserHistory.replace(`/messages/${idea.channel.id}`);
       openChannel('chatApp', {
         drawer: !globalProps.smallScreen,
         open: true,
@@ -119,8 +121,7 @@ export class DumbIdeaActionsManager extends React.Component {
       return React.cloneElement(child, {
         actionsManager: this
       });
-    }
-    );
+    });
     return children;
   }
 }

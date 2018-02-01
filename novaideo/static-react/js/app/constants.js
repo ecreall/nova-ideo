@@ -37,6 +37,8 @@ export const LOAD_ADAPTERS = 'LOAD_ADAPTERS';
 
 export const UPDATE_GLOBAL_PROPS = 'UPDATE_GLOBAL_PROPS';
 
+export const UPDATE_NAVIGATION = 'UPDATE_NAVIGATION';
+
 export const SMALL_WIDTH = ['sm', 'xs'];
 
 export const SIZE_MAP = {

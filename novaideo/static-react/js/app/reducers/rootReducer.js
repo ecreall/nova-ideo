@@ -192,7 +192,14 @@ export const network = (
   }
 };
 
-export const history = (state = {}, action) => {
+const initNavigationState = {
+  navigation: {
+    location: '/',
+    previous: undefined
+  }
+};
+
+export const history = (state = initNavigationState, action) => {
   switch (action.type) {
   case `${constants.SET_INSTANCE}_FULFILLED`: {
     if (action.payload) {
@@ -264,6 +271,11 @@ export const history = (state = {}, action) => {
     newStateEntry[instanceId] = newEntry;
     return update(state, { $merge: newStateEntry });
   }
+  case constants.UPDATE_NAVIGATION: {
+    const navigation = state.navigation;
+    const newPrevious = action.updatePrevious ? navigation.location : navigation.previous;
+    return { ...state, ...{ navigation: { location: action.location, previous: newPrevious } } };
+  }
   default:
     return state;
   }
@@ -280,9 +292,6 @@ export const globalProps = (state = {}, action) => {
 };
 
 const initialAppsState = {
-  collaborationApp: {
-    context: '/'
-  },
   chatApp: {
     drawer: false,
     open: false,

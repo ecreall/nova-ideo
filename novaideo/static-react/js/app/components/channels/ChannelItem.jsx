@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
@@ -86,6 +87,7 @@ export class DumbChannelItem extends React.Component {
   handleClickOpen = () => {
     const { openChannel, node, channelsDrawer, smallScreen } = this.props;
     this.setState({ open: true }, () => {
+      browserHistory.replace(`/messages/${node.id}`);
       return openChannel('chatApp', {
         open: true,
         drawer: smallScreen ? false : channelsDrawer,

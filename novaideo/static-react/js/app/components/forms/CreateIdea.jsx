@@ -194,11 +194,12 @@ export class DumbCreateIdeaForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
+      const keywords = formData.values.keywords;
       if (action.nodeId === 'creatandpublish') {
         this.props.createAndPublish({
           text: formData.values.text,
           title: formData.values.title,
-          keywords: Object.values(formData.values.keywords),
+          keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
@@ -209,7 +210,7 @@ export class DumbCreateIdeaForm extends React.Component {
         this.props.createIdea({
           text: formData.values.text,
           title: formData.values.title,
-          keywords: Object.values(formData.values.keywords),
+          keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
@@ -253,9 +254,11 @@ export class DumbCreateIdeaForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
+      const keywordsRequired = siteConf.keywordsRequired;
+      const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
-      canSubmit = formData.values.title && Object.keys(selectedKeywords).length > 0 && hasText;
+      canSubmit = formData.values.title && keywordsSatisfied && hasText;
     }
     return (
       <div
@@ -328,33 +331,32 @@ export class DumbCreateIdeaForm extends React.Component {
               </div>}
           </div>
 
-          {opened && [
+          {opened &&
             <div className={classes.addonContainer}>
-              <Field
-                props={{
-                  label: (
-                    <label className={classes.label} htmlFor="keywords">
-                      <IconButton className={classes.button}>
-                        <Icon className={'mdi-set mdi-tag-multiple'} />
-                      </IconButton>
-                      {I18n.t('forms.createIdea.keywords')}
-                    </label>
-                  ),
-                  options: keywords,
-                  canAdd: siteConf.canAddKeywords,
-                  initRef: (keywordsPicker) => {
-                    this.keywordsPicker = keywordsPicker;
-                  }
-                }}
-                withRef
-                name="keywords"
-                component={renderSelect}
-              />
               <div className={classes.addon}>
                 <Field
                   props={{
+                    label: (
+                      <Tooltip title={I18n.t('forms.createIdea.keywords')} placement="top">
+                        <IconButton className={classes.button}>
+                          <Icon className={'mdi-set mdi-tag-multiple'} />
+                        </IconButton>
+                      </Tooltip>
+                    ),
+                    options: keywords,
+                    canAdd: siteConf.canAddKeywords,
+                    initRef: (keywordsPicker) => {
+                      this.keywordsPicker = keywordsPicker;
+                    }
+                  }}
+                  withRef
+                  name="keywords"
+                  component={renderSelect}
+                />
+                <Field
+                  props={{
                     node: (
-                      <Tooltip title={I18n.t('forms.attachFiles')} placement="bottom">
+                      <Tooltip title={I18n.t('forms.attachFiles')} placement="top">
                         <IconButton className={classes.button}>
                           <AttachFileIcon />
                         </IconButton>
@@ -379,16 +381,15 @@ export class DumbCreateIdeaForm extends React.Component {
                   />
                   : null}
               </div>
-            </div>,
-            <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
-              <SendIcon
-                size={22}
-                className={classNames(classes.submit, {
-                  [classes.submitActive]: canSubmit
-                })}
-              />
-            </IconButton>
-          ]}
+              <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
+                <SendIcon
+                  size={22}
+                  className={classNames(classes.submit, {
+                    [classes.submitActive]: canSubmit
+                  })}
+                />
+              </IconButton>
+            </div>}
         </div>
       </div>
     );

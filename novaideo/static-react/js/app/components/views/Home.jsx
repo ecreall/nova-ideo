@@ -1,11 +1,11 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 import IdeasList from '../idea/IdeasList';
 import CreateIdeaForm from '../forms/CreateIdea';
+import Idea from '../idea/Idea';
+import { updateApp } from '../../actions/actions';
 
 function TabContainer({ children }) {
   return (
@@ -24,8 +24,24 @@ function TabContainer({ children }) {
 }
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openChannel(this.props.params.channelId || null);
+  }
+
   state = {
     value: 1
+  };
+
+  openChannel = (channelId) => {
+    if (channelId) {
+      const { smallScreen } = this.props;
+      this.props.updateApp('chatApp', {
+        drawer: !smallScreen,
+        open: true,
+        channel: channelId
+      });
+    }
   };
 
   handleChange = (event, value) => {
@@ -38,22 +54,10 @@ class Home extends React.Component {
 
   render() {
     const value = this.state.value;
+    const { ideaId } = this.props.params;
     return (
       <div>
-        {/* <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            fullWidth
-            centered
-          >
-            <Tab label="Questions" />
-            <Tab label="Ideas" />
-            <Tab label="Proposals" />
-          </Tabs>
-        </AppBar> */}
+        {ideaId && <Idea id={ideaId} open />}
         {value === 0 && <TabContainer>Questions</TabContainer>}
         {value === 1 &&
           <TabContainer>
@@ -66,10 +70,14 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+export const mapDispatchToProps = {
+  updateApp: updateApp
+};
+
+export const mapStateToProps = (state) => {
   return {
-    i18n: state.i18n
+    smallScreen: state.globalProps.smallScreen
   };
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

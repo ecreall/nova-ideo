@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
@@ -47,12 +46,7 @@ const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
 export class DumbChatApp extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const { channel, data, updateChatApp, subject } = nextProps;
-    const current = browserHistory.getCurrentLocation().pathname;
-    const newLocation = `/messages/${channel}`;
-    if (channel && newLocation !== current) {
-      browserHistory.replace(newLocation);
-    }
+    const { data, updateChatApp, subject } = nextProps;
     if (!data.loading && data.node.subject.id !== subject) {
       updateChatApp('chatApp', { subject: data.node.subject.id });
     }

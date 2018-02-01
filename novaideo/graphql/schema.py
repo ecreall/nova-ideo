@@ -78,6 +78,7 @@ class Root(Node, Debatable, graphene.ObjectType):
 
     site_id = graphene.String()
     title = graphene.String()
+    keywords_required = graphene.Boolean()
     keywords = graphene.List(graphene.String)
     can_add_keywords = graphene.Boolean()
     anonymisation = graphene.Boolean()
@@ -98,6 +99,9 @@ class Root(Node, Debatable, graphene.ObjectType):
 
     def resolve_logo(self, args, context, info):  # pylint: disable=W0613
         return self.picture
+
+    def resolve_keywords_required(self, args, context, info):  # pylint: disable=W0613
+        return False
 
 
 class Action(Node, graphene.ObjectType):

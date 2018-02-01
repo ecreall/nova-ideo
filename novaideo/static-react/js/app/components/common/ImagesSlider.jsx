@@ -1,33 +1,17 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import Dialog from 'material-ui/Dialog';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import CloseIcon from 'material-ui-icons/Close';
 import ArrowBackIcon from 'material-ui-icons/ArrowBack';
 import ArrowForwardIcon from 'material-ui-icons/ArrowForward';
-import Slide from 'material-ui/transitions/Slide';
 import Slider from 'react-slick';
 import Button from 'material-ui/Button';
 import classNames from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import Dialog from './Dialog';
+
 const styles = (theme) => {
   return {
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%'
-    },
-    appBar: {
-      position: 'relative',
-      backgroundColor: '#fff',
-      boxShadow: '0 1px 0 rgba(0,0,0,.1)'
-    },
     control: {
       backgroundColor: 'white',
       boxShadow: '0 1px 2px 0 rgba(0,0,0,.2)',
@@ -55,40 +39,15 @@ const styles = (theme) => {
       maxHeight: 'calc(100vh - 150px)',
       maxWidth: '100%',
       margin: 'auto'
-    },
-    paper: {
-      backgroundColor: '#f3f3f3'
-    },
-    flex: {
-      flex: 1
     }
   };
 };
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
-
 class ImagesSlider extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      entered: false
-    };
     this.slider = null;
   }
-  componentDidMount() {
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 0);
-  }
-  onEntered = () => {
-    this.setState({ entered: true });
-  };
-
-  onClose = () => {
-    this.setState({ entered: false }, this.props.onClose);
-  };
 
   onNextClick = () => {
     this.slider.slickNext();
@@ -108,7 +67,7 @@ class ImagesSlider extends React.Component {
   };
 
   render() {
-    const { classes, images, open, current } = this.props;
+    const { classes, images, open, current, onClose, onOpen } = this.props;
     const settings = {
       fade: true,
       adaptiveHeight: true,
@@ -119,55 +78,35 @@ class ImagesSlider extends React.Component {
     };
     const lengthImages = images.length;
     return (
-      <Dialog
-        classes={{ paper: classes.paper }}
-        onEntered={this.onEntered}
-        fullScreen
-        open={open}
-        onClose={this.onClose}
-        transition={Transition}
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <Typography type="title" color="primary" className={classes.flex}>
-              Sound
-            </Typography>
-            <IconButton color="primary" onClick={this.onClose} aria-label="Close">
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        {this.state.entered &&
-          <div className={classes.container}>
-            {lengthImages > 1 &&
-              <div>
-                <Button
-                  onClick={this.onPreviousClick}
-                  fab
-                  aria-label="previous"
-                  className={classNames(classes.previous, classes.control)}
-                >
-                  <ArrowBackIcon />
-                </Button>
-              </div>}
-            <div className={classes.sliderContainer}>
-              <Slider
-                ref={(slider) => {
-                  this.slider = slider;
-                }}
-                {...settings}
-              >
-                {images.map((image, key) => {
-                  return this.renderItem(image, key);
-                })}
-              </Slider>
-            </div>
-            {lengthImages > 1 &&
-              <div>
-                <Button onClick={this.onNextClick} fab aria-label="next" className={classNames(classes.next, classes.control)}>
-                  <ArrowForwardIcon />
-                </Button>
-              </div>}
+      <Dialog appBar="Images" fullScreen open={open} onClose={onClose} onOpen={onOpen}>
+        {lengthImages > 1 &&
+          <div>
+            <Button
+              onClick={this.onPreviousClick}
+              fab
+              aria-label="previous"
+              className={classNames(classes.previous, classes.control)}
+            >
+              <ArrowBackIcon />
+            </Button>
+          </div>}
+        <div className={classes.sliderContainer}>
+          <Slider
+            ref={(slider) => {
+              this.slider = slider;
+            }}
+            {...settings}
+          >
+            {images.map((image, key) => {
+              return this.renderItem(image, key);
+            })}
+          </Slider>
+        </div>
+        {lengthImages > 1 &&
+          <div>
+            <Button onClick={this.onNextClick} fab aria-label="next" className={classNames(classes.next, classes.control)}>
+              <ArrowForwardIcon />
+            </Button>
           </div>}
       </Dialog>
     );

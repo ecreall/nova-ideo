@@ -11,16 +11,12 @@ import hashLinkScroll from './utils/hashLinkScroll';
 
 require('smoothscroll-polyfill').polyfill();
 
-const history = browserHistory;
-
 const store = createAppStore();
-
-const customBrowserHistory = history;
 
 ReactDOM.render(
   <AppContainer>
     <ApolloProvider store={store} client={getApolloClient(store)}>
-      <Router history={customBrowserHistory} routes={Routes} onUpdate={hashLinkScroll} />
+      <Router history={browserHistory} routes={Routes} onUpdate={hashLinkScroll} />
     </ApolloProvider>
   </AppContainer>,
   document.getElementById('root')
@@ -33,7 +29,7 @@ if (module.hot) {
     ReactDOM.render(
       <AppContainer>
         <ApolloProvider store={store} client={getApolloClient(store)}>
-          <Router history={customBrowserHistory} routes={NewRoutes} onUpdate={hashLinkScroll} />
+          <Router history={browserHistory} routes={NewRoutes} onUpdate={hashLinkScroll} />
         </ApolloProvider>
       </AppContainer>,
       document.getElementById('root')

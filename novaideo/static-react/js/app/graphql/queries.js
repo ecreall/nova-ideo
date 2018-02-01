@@ -9,6 +9,7 @@ export const siteQuery = gql`
       logo {
         url
       }
+      keywordsRequired
       keywords
       canAddKeywords
       anonymisation

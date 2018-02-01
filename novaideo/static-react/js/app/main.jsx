@@ -20,7 +20,7 @@ import {
   setConnectionState,
   loadAdapters,
   updateGlobalProps,
-  updateApp
+  updateNavigation
 } from './actions/actions';
 
 const styleNode = document.createComment('insertion-point-jss');
@@ -103,21 +103,7 @@ class Main extends React.Component {
       });
       this.props.loadAdapters(data.root.siteId);
     }
-    const channelId = nextProps.params.channelId || null;
-    if (channelId) {
-      this.props.updateApp('chatApp', {
-        drawer: true,
-        open: true,
-        channel: channelId
-      });
-      this.props.updateApp('collaborationApp', {
-        context: '/'
-      });
-    } else {
-      this.props.updateApp('collaborationApp', {
-        context: browserHistory.getCurrentLocation().pathname
-      });
-    }
+    this.props.updateNavigation(browserHistory.getCurrentLocation().pathname, true);
   }
 
   componentWillUnmount() {
@@ -165,7 +151,7 @@ export const mapDispatchToProps = {
   loadAdapters: loadAdapters,
   updateUserToken: updateUserToken,
   updateGlobalProps: updateGlobalProps,
-  updateApp: updateApp
+  updateNavigation: updateNavigation
 };
 
 export default withWidth()(

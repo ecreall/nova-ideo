@@ -160,11 +160,7 @@ class Select extends React.Component {
             {label}
           </div>
         </Target>
-        <Popper
-          placement="top-start"
-          eventsEnabled={menu}
-          className={classNames(classes.popper, { [classes.popperClose]: !menu })}
-        >
+        <Popper placement="bottom" eventsEnabled={menu} className={classNames(classes.popper, { [classes.popperClose]: !menu })}>
           <ClickAwayListener onClickAway={this.closeMenu}>
             <Grow in={menu} id="menu-list" style={{ transformOrigin: '0 0 0' }}>
               <Paper elevation={6} className={classes.paper}>

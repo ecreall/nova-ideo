@@ -7,7 +7,7 @@ const styles = {
   containerStyle: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'baseline'
   },
   styleText: {
     fontSize: 15,

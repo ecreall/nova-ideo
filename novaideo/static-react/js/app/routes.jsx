@@ -7,5 +7,6 @@ export default [
   <Route path="/" component={Main}>
     <IndexRoute component={Home} />
     <Route path="/messages/:channelId" component={Home} />
+    <Route path="/ideas/:ideaId" component={Home} />
   </Route>
 ];

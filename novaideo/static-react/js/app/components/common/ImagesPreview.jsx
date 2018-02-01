@@ -11,7 +11,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'start',
     marginTop: 10,
-    paddingRight: 10
+    marginBottom: 10
   },
   itemsContainer: {
     display: 'flex',
@@ -123,21 +123,22 @@ class ImagesPreview extends React.Component {
           <div className={otherImages.length > 0 ? classes.firstItemContainer : classes.globalItemContainer}>
             {this.renderItem({ image: firstImage, width: 'big', className: classes.firstItem })}
           </div>
-          <div className={classes.otherItemsContainer}>
-            {otherImages.map((image, key) => {
-              return this.renderItem({ image: image, key: key + 1, width: 'small', className: classes.otherItem });
-            })}
-            {nbHiddenImages
-              ? <div
-                onClick={() => {
-                  this.onClick(otherImagesToPreview + 1);
-                }}
-                className={classes.plusItemContainer}
-              >
-                <span className={classes.plusItem}>{`+${nbHiddenImages}`}</span>
-              </div>
-              : undefined}
-          </div>
+          {otherImages.length > 0 &&
+            <div className={classes.otherItemsContainer}>
+              {otherImages.map((image, key) => {
+                return this.renderItem({ image: image, key: key + 1, width: 'small', className: classes.otherItem });
+              })}
+              {nbHiddenImages
+                ? <div
+                  onClick={() => {
+                    this.onClick(otherImagesToPreview + 1);
+                  }}
+                  className={classes.plusItemContainer}
+                >
+                  <span className={classes.plusItem}>{`+${nbHiddenImages}`}</span>
+                </div>
+                : undefined}
+            </div>}
         </div>
         <ImagesSlider onClose={this.handleClose} open={this.state.sliderOpen} images={images} current={this.state.current} />
       </div>
