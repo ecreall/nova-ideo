@@ -235,14 +235,14 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   render() {
-    const { formData, globalProps: { siteConf, account }, classes } = this.props;
+    const { formData, globalProps: { site, account }, classes } = this.props;
     const { opened } = this.state;
     const authorPicture = account.picture;
     const keywords = {};
-    siteConf.keywords.forEach((keyword) => {
+    site.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
     });
-    const withAnonymous = siteConf.anonymisation;
+    const withAnonymous = site.anonymisation;
     let hasText = false;
     let files = [];
     let selectedKeywords = {};
@@ -254,7 +254,7 @@ export class DumbCreateIdeaForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
-      const keywordsRequired = siteConf.keywordsRequired;
+      const keywordsRequired = site.keywordsRequired;
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
@@ -344,7 +344,7 @@ export class DumbCreateIdeaForm extends React.Component {
                       </Tooltip>
                     ),
                     options: keywords,
-                    canAdd: siteConf.canAddKeywords,
+                    canAdd: site.canAddKeywords,
                     initRef: (keywordsPicker) => {
                       this.keywordsPicker = keywordsPicker;
                     }
@@ -446,7 +446,7 @@ const CreateIdeaForm = graphql(createPublishIdea, {
   props: function ({ ownProps, mutate }) {
     return {
       createAndPublish: function ({ text, title, keywords, attachedFiles, anonymous, account }) {
-        const { formData, globalProps: { siteConf } } = ownProps;
+        const { formData, globalProps: { site } } = ownProps;
         const files =
           attachedFiles.length > 0
             ? formData.values.files.map((file) => {
@@ -499,7 +499,7 @@ const CreateIdeaForm = graphql(createPublishIdea, {
                 tokensSupport: 0,
                 tokensOpposition: 0,
                 userToken: null,
-                state: siteConf.supportIdeas ? ['submitted_support', 'published'] : ['published'],
+                state: site.supportIdeas ? ['submitted_support', 'published'] : ['published'],
                 channel: {
                   __typename: 'Channel',
                   id: 'channel-id',

@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
@@ -12,6 +11,7 @@ import classNames from 'classnames';
 import { red } from 'material-ui/colors';
 
 import { updateApp } from '../../actions/actions';
+import { goTo, get } from '../../utils/routeMap';
 
 const styles = (theme) => {
   return {
@@ -84,19 +84,10 @@ const styles = (theme) => {
 };
 
 export class DumbChannelItem extends React.Component {
-  handleClickOpen = () => {
-    const { openChannel, node, channelsDrawer, smallScreen } = this.props;
-    this.setState({ open: true }, () => {
-      browserHistory.replace(`/messages/${node.id}`);
-      return openChannel('chatApp', {
-        open: true,
-        drawer: smallScreen ? false : channelsDrawer,
-        channel: node.id,
-        subject: node.subject.id,
-        right: { open: false, componentId: undefined }
-      });
-    });
+  open = () => {
+    goTo(get('messages', { channelId: this.props.node.id }));
   };
+
   renderIcon = (isActive, isSelected) => {
     const { classes, node, itemdata, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
@@ -133,7 +124,7 @@ export class DumbChannelItem extends React.Component {
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
       <ListItem
-        onClick={this.handleClickOpen}
+        onClick={this.open}
         dense
         button
         classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: isSelected }) }}
@@ -150,15 +141,13 @@ export class DumbChannelItem extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  openChannel: updateApp
+  updateApp: updateApp
 };
 
 export const mapStateToProps = (state, props) => {
   return {
     currentMessage: state.form[props.node.id],
-    activeChannel: state.apps.chatApp.channel,
-    channelsDrawer: state.apps.chatApp.drawer,
-    smallScreen: state.globalProps.smallScreen
+    activeChannel: state.apps.chatApp.channel
   };
 };
 

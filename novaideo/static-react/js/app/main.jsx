@@ -2,7 +2,6 @@
 // @flow
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { MuiThemeProvider, createGenerateClassName, jssPreset } from 'material-ui/styles';
 import { withApollo, graphql } from 'react-apollo';
@@ -22,6 +21,7 @@ import {
   updateGlobalProps,
   updateNavigation
 } from './actions/actions';
+import { getCurrentLocation } from './utils/routeMap';
 
 const styleNode = document.createComment('insertion-point-jss');
 // $FlowFixMe
@@ -95,15 +95,18 @@ class Main extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { data, width } = nextProps;
+    const { data, width, navigation } = nextProps;
     if (data.root) {
       this.props.updateGlobalProps({
-        siteConf: data.root,
+        site: data.root,
         smallScreen: SMALL_WIDTH.includes(width)
       });
       this.props.loadAdapters(data.root.siteId);
+      const currentLocation = getCurrentLocation();
+      if (navigation.location !== currentLocation) {
+        this.props.updateNavigation(currentLocation, true);
+      }
     }
-    this.props.updateNavigation(browserHistory.getCurrentLocation().pathname, true);
   }
 
   componentWillUnmount() {
@@ -140,7 +143,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     theme: state.adapters.theme,
-    network: state.network
+    network: state.network,
+    navigation: state.history.navigation
   };
 };
 

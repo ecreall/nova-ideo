@@ -38,15 +38,16 @@ const styles = {
     height: 150,
     borderRadius: 3,
     borderWidth: 0.5,
-    borderColor: '#d6d7da'
+    borderColor: '#d6d7da',
+    borderStyle: 'solid'
   },
   otherItem: {
     width: '100%',
     height: 49,
     borderRadius: 3,
-    marginTop: 1,
     borderWidth: 0.5,
-    borderColor: '#d6d7da'
+    borderColor: '#d6d7da',
+    borderStyle: 'solid'
   },
   otherItemsContainer: {
     width: '20%'
@@ -70,7 +71,8 @@ const styles = {
     marginTop: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    borderStyle: 'solid'
   },
   plusItem: {
     fontSize: 24,

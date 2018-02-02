@@ -8,7 +8,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import App from './common/App';
 
-const styles = {
+export const styles = {
   root: {
     height: 'calc(100vh - 66px)',
     overflow: 'auto'

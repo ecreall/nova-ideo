@@ -7,64 +7,56 @@ import CreateIdeaForm from '../forms/CreateIdea';
 import Idea from '../idea/Idea';
 import { updateApp } from '../../actions/actions';
 
-function TabContainer({ children }) {
-  return (
-    <Typography
-      component="div"
-      style={{
-        marginTop: 25,
-        maxWidth: 588,
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }}
-    >
-      {children}
-    </Typography>
-  );
-}
+const styles = {
+  container: {
+    marginTop: 25,
+    maxWidth: 588,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  }
+};
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.openChannel(this.props.params.channelId || null);
+    this.openChannel(this.props);
   }
 
-  state = {
-    value: 1
-  };
+  componentWillReceiveProps(nextProps) {
+    this.openChannel(nextProps);
+  }
 
-  openChannel = (channelId) => {
+  openChannel = (props) => {
+    const { params: { channelId }, location: { query } } = props;
     if (channelId) {
-      const { smallScreen } = this.props;
+      const { smallScreen } = props;
+      const toOpen = query && query.right;
+      const rightOpen = toOpen
+        ? {
+          right: {
+            open: true,
+            componentId: toOpen
+          }
+        }
+        : {};
       this.props.updateApp('chatApp', {
         drawer: !smallScreen,
         open: true,
-        channel: channelId
+        channel: channelId,
+        ...rightOpen
       });
     }
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value: value });
-  };
-
-  handleChangeIndex = (index) => {
-    this.setState({ value: index });
-  };
-
   render() {
-    const value = this.state.value;
     const { ideaId } = this.props.params;
     return (
       <div>
         {ideaId && <Idea id={ideaId} open />}
-        {value === 0 && <TabContainer>Questions</TabContainer>}
-        {value === 1 &&
-          <TabContainer>
-            <CreateIdeaForm />
-            <IdeasList />
-          </TabContainer>}
-        {value === 2 && <TabContainer>Proposals</TabContainer>}
+        <Typography component="div" style={styles.container}>
+          <CreateIdeaForm />
+          <IdeasList />
+        </Typography>
       </div>
     );
   }

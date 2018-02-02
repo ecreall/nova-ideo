@@ -20,7 +20,8 @@ import { renderMenuItem } from '../common/menu/MenuList';
 const styles = (theme) => {
   return {
     contentContainerStyle: {
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      borderRadius: 6
     },
     contentContainerStyleAddon: {
       boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
@@ -162,14 +163,14 @@ export class DumbCommentForm extends React.Component {
   };
 
   render() {
-    const { formData, channel, globalProps: { siteConf }, classes, theme } = this.props;
+    const { formData, channel, globalProps: { site }, autoFocus, classes, theme } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
       return file;
     });
     const isDiscuss = channel && channel.isDiscuss;
-    const withAnonymous = siteConf.anonymisation && !isDiscuss;
+    const withAnonymous = site.anonymisation && !isDiscuss;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     return (
       <div className={classNames(classes.contentContainerStyle, { [classes.contentContainerStyleAddon]: files.length > 0 })}>
@@ -212,7 +213,7 @@ export class DumbCommentForm extends React.Component {
               <Field
                 props={{
                   onCtrlEnter: this.handleSubmit,
-                  autoFocus: true
+                  autoFocus: autoFocus
                 }}
                 name="comment"
                 component={renderTextBoxField}

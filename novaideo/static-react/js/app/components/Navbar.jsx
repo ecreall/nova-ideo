@@ -114,7 +114,7 @@ export const mapDispatchToProps = {
 export const mapStateToProps = (state) => {
   return {
     channelsDrawer: state.apps.chatApp.drawer,
-    site: state.globalProps.siteConf
+    site: state.globalProps.site
   };
 };
 

@@ -2,7 +2,7 @@
 import { gql } from 'react-apollo';
 
 export const siteQuery = gql`
-  query SiteConf {
+  query Site {
     root {
       siteId
       title
@@ -362,6 +362,26 @@ export const commentsQuery = gql`
     }
   ${commentFragment}
   ${actionFragment}
+`;
+
+export const channelQuery = gql`
+  query Channel($id: ID!) {
+    node(id: $id) {
+      ... on Channel {
+        id
+        oid
+        title
+        lenComments
+        isDiscuss
+        subject {
+          ... on IEntity {
+            id
+            oid
+          }
+        }
+      }
+    }
+  }
 `;
 
 export const channelsQuery = gql`

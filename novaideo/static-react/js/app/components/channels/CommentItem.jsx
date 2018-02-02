@@ -135,14 +135,16 @@ export class DumbCommentItem extends React.Component {
   }
 
   ignoreMetaData = () => {
-    const { node, next } = this.props;
-    if (!next) return false;
+    const { node, reverted } = this.props;
+    const item = reverted ? this.props.next : this.props.previous;
+    if (!item) return false;
     const author = node.author.id;
-    const nextAuthor = next.author.id;
+    const nextAuthor = item.author.id;
     const optimisticAuthorId = `${nextAuthor}comment`;
     const createdAt = new Date(node.createdAt);
-    const nextCreatedAt = new Date(next.createdAt);
-    const dateDiff = (createdAt - nextCreatedAt) / 60000; // minutes
+    const nextCreatedAt = new Date(item.createdAt);
+    let dateDiff = reverted ? createdAt - nextCreatedAt : nextCreatedAt - createdAt;
+    dateDiff /= 60000; // minutes
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
   };
 

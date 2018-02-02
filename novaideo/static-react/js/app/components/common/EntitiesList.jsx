@@ -275,12 +275,14 @@ export class DumbEntitiesList extends React.Component {
                     previous={previous && previous.node}
                     itemdata={itemdata}
                     node={item.node}
+                    reverted={reverted}
                   />
                 </ItemContainer>
               ];
               if (Divider) {
                 const divider = (
                   <Divider
+                    reverted={reverted}
                     index={index}
                     next={next && next.node}
                     eventId={listId && `${listId}-scroll`}

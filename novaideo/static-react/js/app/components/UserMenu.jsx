@@ -206,7 +206,7 @@ class UserMenu extends React.Component {
 
 export const mapStateToProps = (state) => {
   return {
-    site: state.globalProps.siteConf,
+    site: state.globalProps.site,
     account: state.globalProps.account
   };
 };

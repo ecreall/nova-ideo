@@ -8,22 +8,24 @@ import Divider from '../common/Divider';
 
 export class DumbCommentDivider extends React.Component {
   addDateSeparator = () => {
-    const { node, next } = this.props;
-    if (!next) return true;
-    return !Moment(node.createdAt).isSame(Moment(next.createdAt), 'day');
+    const { node, reverted } = this.props;
+    const item = reverted ? this.props.next : this.props.previous;
+    if (!item) return true;
+    return !Moment(node.createdAt).isSame(Moment(item.createdAt), 'day');
   };
 
   addUnread = () => {
-    const { node, next, itemdata } = this.props;
-    if (!next) return false;
+    const { node, reverted, itemdata } = this.props;
+    const item = reverted ? this.props.next : this.props.previous;
+    if (!item) return false;
     const unreadComments = itemdata.unreadCommentsIds;
     const isUnread = unreadComments.includes(node.id);
-    const nextIsUnread = unreadComments.includes(next.id);
+    const nextIsUnread = unreadComments.includes(item.id);
     return isUnread && !nextIsUnread;
   };
 
   render() {
-    const { node, index, eventId, channelsDrawer } = this.props;
+    const { node, index, eventId, channelsDrawer, reverted } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
     const today = Moment();
@@ -34,7 +36,7 @@ export class DumbCommentDivider extends React.Component {
     const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
     return dateSeparator || addUnread
       ? <Divider
-        reverted
+        reverted={reverted}
         index={index}
         alert={addUnread}
         message={dateSeparator}

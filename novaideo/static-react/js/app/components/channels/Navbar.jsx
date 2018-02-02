@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
@@ -16,6 +15,7 @@ import Hidden from 'material-ui/Hidden';
 
 import { updateApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
+import { goTo, get } from '../../utils/routeMap';
 
 const styles = {
   root: {
@@ -54,15 +54,13 @@ const styles = {
 
 class NavBar extends React.Component {
   handleInfo = () => {
-    const { updateChatApp } = this.props;
-    updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
+    this.props.updateApp('chatApp', { right: { open: true, componentId: 'idea' } });
     return false;
   };
 
   handleClose = () => {
-    const { updateChatApp } = this.props;
-    browserHistory.replace('/');
-    updateChatApp('chatApp', {
+    goTo(get('root'));
+    this.props.updateApp('chatApp', {
       open: false,
       drawer: false,
       channel: undefined,
@@ -76,7 +74,7 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { data, classes, className, updateChatApp } = this.props;
+    const { data, classes, className } = this.props;
     const channel = data.channel;
     return (
       <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_CLOSE: this.handleClose, CHATAPP_INFO: this.handleInfo }}>
@@ -88,7 +86,7 @@ class NavBar extends React.Component {
                 color="primary"
                 aria-label="Menu"
                 onClick={() => {
-                  return updateChatApp('chatApp', { drawer: true });
+                  this.props.updateApp('chatApp', { drawer: true });
                 }}
               >
                 <ChatIcon />
@@ -100,34 +98,12 @@ class NavBar extends React.Component {
                 {channel && channel.title}
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton
-                  onClick={() => {
-                    return updateChatApp('chatApp', { right: { open: true, componentId: 'idea' } });
-                  }}
-                  className={classes.action}
-                  aria-label="Add to favorites"
-                >
+                <IconButton onClick={this.handleInfo} className={classes.action} aria-label="Add to favorites">
                   <VisibilityIcon />
                 </IconButton>
               </CardActions>
             </Typography>
-            <IconButton
-              color="primary"
-              aria-label="Menu"
-              onClick={() => {
-                browserHistory.replace('/');
-                updateChatApp('chatApp', {
-                  open: false,
-                  drawer: false,
-                  channel: undefined,
-                  subject: undefined,
-                  right: {
-                    open: false,
-                    componentId: undefined
-                  }
-                });
-              }}
-            >
+            <IconButton color="primary" aria-label="Menu" onClick={this.handleClose}>
               <CloseIcon />
             </IconButton>
           </Toolbar>
@@ -138,7 +114,7 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateChatApp: updateApp
+  updateApp: updateApp
 };
 
 export const mapStateToProps = (state) => {

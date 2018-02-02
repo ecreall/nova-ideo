@@ -1,13 +1,12 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { gql, graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import { Translate, I18n } from 'react-redux-i18n';
 
 import { actionFragment } from '../../graphql/queries';
-import { updateApp } from '../../actions/actions';
+import { goTo, get } from '../../utils/routeMap';
 
 function evaluationActions() {
   return {
@@ -90,16 +89,9 @@ export class DumbIdeaActionsManager extends React.Component {
   };
 
   performAction = (action) => {
-    const { idea, network, select, deselect, openChannel, globalProps } = this.props;
+    const { idea, network, select, deselect, globalProps } = this.props;
     if (action.nodeId === 'comment') {
-      browserHistory.replace(`/messages/${idea.channel.id}`);
-      openChannel('chatApp', {
-        drawer: !globalProps.smallScreen,
-        open: true,
-        channel: idea.channel.id,
-        subject: idea.id,
-        right: { open: !globalProps.smallScreen, componentId: 'idea' }
-      });
+      goTo(get('messages', { channelId: idea.channel.id }, { right: 'idea' }));
     } else if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else {
@@ -615,8 +607,6 @@ const DumbIdeaItemActions = graphql(support, {
   )
 );
 
-export const mapDispatchToProps = { openChannel: updateApp };
-
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
@@ -624,4 +614,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(DumbIdeaItemActions);
+export default connect(mapStateToProps, null, null, { withRef: true })(DumbIdeaItemActions);

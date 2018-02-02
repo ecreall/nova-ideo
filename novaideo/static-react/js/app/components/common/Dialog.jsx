@@ -23,7 +23,7 @@ const styles = {
   paper: {
     backgroundColor: '#f3f3f3'
   },
-  flex: {
+  appBarContent: {
     flex: 1
   }
 };
@@ -68,7 +68,7 @@ class CommonDialog extends React.Component {
         {appBar &&
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <Typography type="title" color="primary" className={classes.flex}>
+              <Typography type="title" color="primary" className={classes.appBarContent}>
                 {appBar}
               </Typography>
               <IconButton color="primary" onClick={this.onClose} aria-label="Close">

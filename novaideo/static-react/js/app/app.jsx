@@ -41,7 +41,7 @@ class DumbApp extends React.Component {
           <CollaborationApp active={!channelOpen} left={channelsDrawer || channelOpen}>
             {children}
           </CollaborationApp>
-          {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} params={this.props.params} />}
+          {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} />}
           <ChannelsDrawer />
         </div>
       </div>

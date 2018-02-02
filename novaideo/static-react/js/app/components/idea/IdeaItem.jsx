@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
-import { browserHistory } from 'react-router';
 import Moment from 'moment';
 import { connect } from 'react-redux';
 import Grid from 'material-ui/Grid';
@@ -22,6 +21,8 @@ import * as constants from '../../constants';
 import { getActions } from '../../utils/entities';
 import IdeaMenu from './IdeaMenu';
 import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
+import { goTo, get } from '../../utils/routeMap';
+import { updateApp } from '../../actions/actions';
 
 const styles = (theme) => {
   return {
@@ -118,8 +119,9 @@ const styles = (theme) => {
     },
     actionsIcon: {
       fontWeight: 100,
-      fontSize: 16,
-      marginRight: 5
+      fontSize: '16px !important',
+      marginRight: 5,
+      marginTop: 1
     },
     avatar: {
       borderRadius: 4
@@ -174,11 +176,12 @@ export class RenderIdeaItem extends React.Component {
   };
 
   openDetails = () => {
-    browserHistory.replace(`/ideas/${this.props.node.id}`);
+    this.props.updateApp('chatApp', { open: false });
+    goTo(get('ideas', { ideaId: this.props.node.id }));
   };
 
   render() {
-    const { node, adapters, globalProps: { siteConf }, classes } = this.props;
+    const { node, adapters, globalProps: { site }, classes } = this.props;
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
@@ -194,7 +197,7 @@ export class RenderIdeaItem extends React.Component {
         return image.isImage;
       })
       : [];
-    const hasEvaluation = siteConf.supportIdeas && node.state.includes('published');
+    const hasEvaluation = site.supportIdeas && node.state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
     return (
@@ -234,7 +237,7 @@ export class RenderIdeaItem extends React.Component {
                 active={node.state.includes('submitted_support')}
               />
               : null}
-            {siteConf.examineIdeas && node.state.includes('examined')
+            {site.examineIdeas && node.state.includes('examined')
               ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
               : null}
           </div>
@@ -325,6 +328,10 @@ function DumbIdeaItem(props) {
   );
 }
 
+export const mapDispatchToProps = {
+  updateApp: updateApp
+};
+
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
@@ -332,4 +339,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbIdeaItem));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItem));
