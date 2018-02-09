@@ -22,7 +22,7 @@ from novaideo.utilities.util import html_to_text
 from novaideo import log
 from .mutations import Mutations, get_context
 from .interfaces import IEntity
-from .util import get_user_by_token, get_entities, get_all_comments, get_actions
+from .util import get_user_by_token, get_entities, get_all_comments, get_actions, connection_for_type
 
 
 class Node(object):
@@ -224,18 +224,18 @@ class Person(Node, Debatable, graphene.ObjectType):
         contents = self.get_contents(context.user) \
             if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
         user_ideas = [get_oid(o) for o in contents]
-        oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
-        return ResolverLazyList(oids, Idea)
+        total_count, oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
         user_ideas = [get_oid(o) for o in getattr(self, 'selections', [])]
-        oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
-        return ResolverLazyList(oids, Idea)
+        total_count, oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
         user_ideas = self.evaluated_objs_ids() if hasattr(self, 'evaluated_objs_ids') else []
-        oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
-        return ResolverLazyList(oids, Idea)
+        total_count, oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_channels(self, args, context, info):  # pylint: disable=W0613
         channels = sorted(
@@ -336,7 +336,9 @@ class Comment(Node, graphene.ObjectType):
 
     def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
         return get_oid(self.channel.get_subject(getattr(context, 'user', None)), None)
-        
+
+
+Comment.Connection = connection_for_type(Comment)
 
 
 class Channel(Node, graphene.ObjectType):
@@ -384,6 +386,9 @@ class Channel(Node, graphene.ObjectType):
 
     def resolve_is_discuss(self, args, context, info):  # pylint: disable=W0613
         return self.is_discuss()
+
+
+Channel.Connection = connection_for_type(Channel)
 
 
 class Idea(Node, Debatable, graphene.ObjectType):
@@ -434,6 +439,9 @@ class Idea(Node, Debatable, graphene.ObjectType):
         return getattr(self, 'opinion', {}).get('explanation', '')
 
 
+Idea.Connection = connection_for_type(Idea)
+
+
 class EntityUnion(graphene.Union):
     class Meta:
         types = (Idea, Root, Person) # TODO add Question...
@@ -454,10 +462,11 @@ class EntityUnion(graphene.Union):
 
 class ResolverLazyList(object):
 
-    def __init__(self, origin, object_type, state=None):
+    def __init__(self, origin, object_type, state=None, total_count=None):
         self._origin = origin
         self._state = state or []
         self._origin_iter = None
+        self._total_count = total_count
         self._finished = False
         objectmap = find_objectmap(get_current_request().root)
         self.resolver = objectmap.object_for
@@ -502,6 +511,10 @@ class ResolverLazyList(object):
     def __repr__(self):
         return "<{} {}>".format(self.__class__.__name__, repr(self._origin))
 
+    @property
+    def total_count(self):
+        return self._total_count
+
 
 class Query(graphene.ObjectType):
 
@@ -520,8 +533,8 @@ class Query(graphene.ObjectType):
     root = graphene.Field(Root)
 
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
-        oids = get_entities([Iidea], ['published'], args, info)
-        return ResolverLazyList(oids, Idea)
+        total_count, oids = get_entities([Iidea], ['published'], args, info)
+        return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_account(self, args, context, info):  # pylint: disable=W0613
         return context.user

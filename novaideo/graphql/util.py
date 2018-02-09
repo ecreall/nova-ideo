@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import graphene
 from pyramid.threadlocal import get_current_request
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 from hypatia.interfaces import STABLE
@@ -61,7 +62,7 @@ def get_entities(interfaces, states, args, info, user=None, intersect=None):  #p
     )
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
-    return list(release_date_index.sort(
+    return len(rs), list(release_date_index.sort(
         list(rs.ids), limit=limit, sort_type=STABLE, reverse=True))  #pylint: disable=E1101
 
 
@@ -135,3 +136,17 @@ def get_execution_data(action_id, args):
     request = get_current_request()
     action = get_action(action_id, context, request)
     return context, request, action, data
+
+
+def connection_for_type(_type):
+    class Connection(graphene.Connection):
+        total_count = graphene.Int()
+
+        class Meta:
+            name = _type._meta.name + 'Connection'
+            node = _type
+
+        def resolve_total_count(self, args, context, info):
+            return getattr(self.iterable, 'total_count', len(self.iterable))
+
+    return Connection
