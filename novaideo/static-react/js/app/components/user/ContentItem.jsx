@@ -5,6 +5,9 @@ import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
 
+import { Menu } from '../common/menu';
+import IdeaPopover from '../idea/IdeaPopover';
+
 const styles = (theme) => {
   return {
     listItem: {
@@ -52,6 +55,15 @@ const styles = (theme) => {
       '&:hover': {
         color: theme.palette.tertiary.hover.color
       }
+    },
+    menuPaper: {
+      width: 'auto',
+      maxHeight: 'inherit',
+      overflowX: 'auto',
+      borderRadius: 6,
+      '& > ul': {
+        padding: 0
+      }
     }
   };
 };
@@ -66,6 +78,8 @@ function getIcon(type) {
 }
 
 export class DumbContentItem extends React.Component {
+  menu = null;
+
   renderIcon = (isActive, isSelected) => {
     const { classes, node } = this.props;
     return (
@@ -79,13 +93,32 @@ export class DumbContentItem extends React.Component {
       </ListItemIcon>
     );
   };
+
+  closeMenu = () => {
+    if (this.menu) this.menu.close();
+  };
+
   render() {
     const { classes, node } = this.props;
     return (
-      <ListItem dense button classes={{ root: classes.listItem }}>
-        {this.renderIcon()}
-        <ListItemText classes={{ primary: classes.text }} className={classes.text} primary={node.title} />
-      </ListItem>
+      <Menu
+        id={`${node.id}-menu`}
+        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+        initRef={(menu) => {
+          this.menu = menu;
+        }}
+        classes={{
+          menuPaper: classes.menuPaper
+        }}
+        activator={
+          <ListItem dense button classes={{ root: classes.listItem }}>
+            {this.renderIcon()}
+            <ListItemText classes={{ primary: classes.text }} className={classes.text} primary={node.title} />
+          </ListItem>
+        }
+      >
+        <IdeaPopover id={node.id} onActionClick={this.closeMenu} />
+      </Menu>
     );
   }
 }

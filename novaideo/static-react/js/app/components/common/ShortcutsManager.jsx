@@ -9,7 +9,7 @@ export const keymap = {
   },
   CHATAPP: {
     CHATAPP_OPEN_JUMP: 'ctrl+k',
-    CHATAPP_CLOSE: 'ctrl+c',
+    CHATAPP_CLOSE: 'ctrl+q',
     CHATAPP_INFO: 'ctrl+i'
   }
 };

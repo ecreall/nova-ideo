@@ -401,8 +401,9 @@ export class DumbIdea extends React.Component {
 }
 
 function DumbIdeaItem(props) {
+  const { data, onActionClick } = props;
   return (
-    <IdeaActionsWrapper idea={props.data.idea}>
+    <IdeaActionsWrapper idea={data.idea} onActionClick={onActionClick}>
       <DumbIdea {...props} />
     </IdeaActionsWrapper>
   );

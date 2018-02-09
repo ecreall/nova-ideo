@@ -50,7 +50,7 @@ class MenuWithActivator extends React.Component {
   };
 
   render() {
-    const { id, activator, keepMounted, classes } = this.props;
+    const { id, activator, keepMounted, anchorOrigin, classes } = this.props;
     const { anchorEl } = this.state;
     const children = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
@@ -63,6 +63,7 @@ class MenuWithActivator extends React.Component {
         {activator}
       </div>,
       <Menu
+        transitionDuration={150}
         keepMounted={keepMounted}
         className={classes.menu}
         classes={{ paper: classes.menuPaper }}
@@ -70,6 +71,7 @@ class MenuWithActivator extends React.Component {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={this.close}
+        anchorOrigin={anchorOrigin}
       >
         {children}
       </Menu>

@@ -34,7 +34,7 @@ class Home extends React.Component {
       const rightOpen = toOpen
         ? {
           right: {
-            open: true,
+            open: !smallScreen,
             componentId: toOpen
           }
         }

@@ -45,6 +45,11 @@ export function getEvaluationActions(idea) {
 }
 
 export class DumbIdeaActionsManager extends React.Component {
+  onActionPerformed = () => {
+    const { onActionClick } = this.props;
+    if (onActionClick) onActionClick();
+  };
+
   evaluationClick = (action) => {
     const { idea, network, globalProps } = this.props;
     if (!network.isLogged) {
@@ -66,6 +71,7 @@ export class DumbIdeaActionsManager extends React.Component {
             .support({
               context: idea.oid
             })
+            .then(this.onActionPerformed)
             .catch(globalProps.showError);
         } else {
           globalProps.showMessage(<Translate value="AuthorizationFailed" />);
@@ -77,6 +83,7 @@ export class DumbIdeaActionsManager extends React.Component {
             .oppose({
               context: idea.oid
             })
+            .then(this.onActionPerformed)
             .catch(globalProps.showError);
         } else {
           globalProps.showMessage(<Translate value="AuthorizationFailed" />);
@@ -90,17 +97,21 @@ export class DumbIdeaActionsManager extends React.Component {
 
   performAction = (action) => {
     const { idea, network, select, deselect, globalProps } = this.props;
+
     if (action.nodeId === 'comment') {
-      goTo(get('messages', { channelId: idea.channel.id }, { right: 'idea' }));
+      this.onActionPerformed();
+      setTimeout(() => {
+        goTo(get('messages', { channelId: idea.channel.id }, { right: 'idea' }));
+      }, 200);
     } else if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else {
       switch (action.behaviorId) {
       case 'select':
-        select({ context: idea.oid }).catch(globalProps.showError);
+        select({ context: idea.oid }).then(this.onActionPerformed).catch(globalProps.showError);
         break;
       case 'deselect':
-        deselect({ context: idea.oid }).catch(globalProps.showError);
+        deselect({ context: idea.oid }).then(this.onActionPerformed).catch(globalProps.showError);
         break;
       default:
         globalProps.showMessage(<Translate value="comingSoon" />);

@@ -20,8 +20,7 @@ const styles = (theme) => {
     container: {
       display: 'flex',
       flexDirection: 'column',
-      height: '100%',
-      overflow: 'hidden'
+      height: '100%'
     },
     icon: { color: theme.palette.primary['50'] },
     drawerPaper: {
