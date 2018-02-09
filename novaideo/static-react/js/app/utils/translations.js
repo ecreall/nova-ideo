@@ -43,6 +43,11 @@ const Translations = {
     },
     time: {
       format: "h [h] mm"
+    },
+    user: {
+      myContents: "Mes contenus",
+      myFollowings: "Mes suivis",
+      myEvaluations: "Mes appréciations"
     }
   },
   en: {
@@ -88,6 +93,11 @@ const Translations = {
     },
     time: {
       format: "h \\h mm"
+    },
+    user: {
+      myContents: "My contents",
+      myFollowings: "My followings",
+      myEvaluations: "My evaluations"
     }
   }
 };

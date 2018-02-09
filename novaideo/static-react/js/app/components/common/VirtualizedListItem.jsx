@@ -15,7 +15,7 @@ export class VirtualizedListItem extends React.Component {
   render() {
     const { height } = this.state.dimensions;
     return (
-      <VisibilitySensor partialVisibility>
+      <VisibilitySensor partialVisibility offset={{ top: -1400, bottom: -1400 }}>
         {({ isVisible }) => {
           return (
             <Measure

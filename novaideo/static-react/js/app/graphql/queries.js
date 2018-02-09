@@ -76,6 +76,15 @@ export const authorFragment = gql`
   }
 `;
 
+export const ideaDataFragment = gql`
+  fragment ideaData on Idea {
+    id
+    oid
+    createdAt
+    title
+  }
+`;
+
 export const ideaFragment = gql`
   fragment idea on Idea {
     id
@@ -190,63 +199,66 @@ export const ideasListQuery = gql`
 `;
 
 export const mySupportsQuery = gql`
-  query MySupports($first: Int!, $after: String!, $filter: String!) {
+  query MySupports($first: Int!, $after: String!) {
     account {
       id
-      supportedIdeas(first: $first, after: $after, filter: $filter) {
+      supportedIdeas(first: $first, after: $after) {
+        totalCount
         pageInfo {
           endCursor
           hasNextPage
         }
         edges {
           node {
-            ...idea
+            ...ideaData
           }
         }
       }
     }
   }
-  ${ideaFragment}
+  ${ideaDataFragment}
 `;
 
 export const myFollowingsQuery = gql`
-  query MyFollowings($first: Int!, $after: String!, $filter: String!) {
+  query MyFollowings($first: Int!, $after: String!) {
     account {
       id
-      followedIdeas(first: $first, after: $after, filter: $filter) {
+      followedIdeas(first: $first, after: $after) {
+        totalCount
         pageInfo {
           endCursor
           hasNextPage
         }
         edges {
           node {
-            ...idea
+            ...ideaData
           }
         }
       }
     }
   }
-  ${ideaFragment}
+  ${ideaDataFragment}
 `;
 
 export const myContentsQuery = gql`
-  query MyContents($first: Int!, $after: String!, $filter: String!) {
+  query MyContents($first: Int!, $after: String!) {
     account {
       id
-      contents(first: $first, after: $after, filter: $filter) {
+      contents(first: $first, after: $after) {
+        totalCount
         pageInfo {
           endCursor
           hasNextPage
         }
         edges {
           node {
-            ...idea
+            ...ideaData
           }
         }
       }
     }
   }
-  ${ideaFragment}
+  ${ideaDataFragment}
 `;
 
 export const commentFragment = gql`

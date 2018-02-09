@@ -101,6 +101,33 @@ export const updateApp = (app, data) => {
   };
 };
 
+export const openDrawer = (app) => {
+  return {
+    type: constants.OPEN_DRAWER,
+    app: app
+  };
+};
+
+export const closeDrawer = () => {
+  return {
+    type: constants.CLOSE_DRAWER
+  };
+};
+
+export const openChatApp = (config) => {
+  return {
+    type: constants.OPEN_CHATAPP,
+    config: config
+  };
+};
+
+export const closeChatApp = (config) => {
+  return {
+    type: constants.CLOSE_CHATAPP,
+    config: config
+  };
+};
+
 export const updateNavigation = (location, updatePrevious) => {
   return {
     type: constants.UPDATE_NAVIGATION,

@@ -94,10 +94,10 @@ class Divider extends React.Component {
   updatePosition = () => {
     if (this.container && this.message) {
       const top = this.container.getBoundingClientRect().top;
-      const { shift, fixedTop, isGlobal } = this.props;
+      const { shift, fixedTop, fullScreen } = this.props;
       const messageRecLeft = this.message.getBoundingClientRect().left;
       const messageOffsetLeft = this.message.offsetLeft;
-      const left = (isGlobal ? messageRecLeft : messageOffsetLeft) + shift;
+      const left = (fullScreen ? messageRecLeft : messageOffsetLeft) + shift;
       if (!this.state.fixed && top < fixedTop) {
         this.setState({ fixed: true, left: left });
       } else if (this.state.fixed && top >= fixedTop + 10) {

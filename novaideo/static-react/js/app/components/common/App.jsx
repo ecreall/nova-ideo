@@ -14,7 +14,7 @@ const styles = (theme) => {
     },
     appBarShift: {
       [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${STYLE_CONST.drawerChannelsWidth}px)`
+        width: `calc(100% - ${STYLE_CONST.drawerWidth}px)`
       },
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
@@ -23,7 +23,7 @@ const styles = (theme) => {
     },
     'appBarShift-left': {
       [theme.breakpoints.up('md')]: {
-        marginLeft: STYLE_CONST.drawerChannelsWidth
+        marginLeft: STYLE_CONST.drawerWidth
       }
     },
     main: {
@@ -56,7 +56,7 @@ const styles = (theme) => {
     },
     'appShift-left': {
       [theme.breakpoints.up('md')]: {
-        marginLeft: STYLE_CONST.drawerChannelsWidth
+        marginLeft: STYLE_CONST.drawerWidth
       }
     }
   };

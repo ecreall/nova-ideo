@@ -547,9 +547,11 @@ const CreateIdeaForm = graphql(createPublishIdea, {
             },
             MyContents: (prev, { mutationResult }) => {
               const newIdea = mutationResult.data.createAndPublish.idea;
+              const totalCount = prev.account.contents.totalCount + 1;
               return update(prev, {
                 account: {
                   contents: {
+                    totalCount: { $set: totalCount },
                     edges: {
                       $unshift: [
                         {
@@ -656,9 +658,11 @@ const CreateIdeaForm = graphql(createPublishIdea, {
             updateQueries: {
               MyContents: (prev, { mutationResult }) => {
                 const newIdea = mutationResult.data.createIdea.idea;
+                const totalCount = prev.account.contents.totalCount + 1;
                 return update(prev, {
                   account: {
                     contents: {
+                      totalCount: { $set: totalCount },
                       edges: {
                         $unshift: [
                           {

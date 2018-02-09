@@ -73,7 +73,7 @@ export const getCurrentView = () => {
 };
 
 export const goTo = (url) => {
-  browserHistory.replace(url);
+  browserHistory.push(url);
 };
 
 export const getCurrentLocation = () => {

@@ -3,10 +3,11 @@ import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import InboxIcon from 'material-ui-icons/Inbox';
+import { STYLE_CONST } from '../constants';
 
 const styles = {
   list: {
-    width: 220
+    width: STYLE_CONST.drawerWidth
   }
 };
 

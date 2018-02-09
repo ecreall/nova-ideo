@@ -22,7 +22,7 @@ export class DumbChatApp extends React.Component {
     const channelData = data.node ? data.node : null;
     return (
       <App active={active} left={left} Navbar={ChannelNavbar} data={{ channel: channelData }}>
-        <Comments autoFocus reverted channel={channel} />
+        <Comments id="comments" customScrollbar autoFocus reverted channel={channel} />
       </App>
     );
   }

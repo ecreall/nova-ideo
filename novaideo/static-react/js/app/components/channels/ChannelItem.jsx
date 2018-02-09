@@ -10,7 +10,6 @@ import Avatar from 'material-ui/Avatar';
 import classNames from 'classnames';
 import { red } from 'material-ui/colors';
 
-import { updateApp } from '../../actions/actions';
 import { goTo, get } from '../../utils/routeMap';
 
 const styles = (theme) => {
@@ -89,7 +88,7 @@ export class DumbChannelItem extends React.Component {
   };
 
   renderIcon = (isActive, isSelected) => {
-    const { classes, node, itemdata, currentMessage } = this.props;
+    const { classes, node, itemProps, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
     const hasMessage = currentMessage && currentMessage.values && currentMessage.values.comment;
     if (!isSelected && hasMessage) {
@@ -104,7 +103,7 @@ export class DumbChannelItem extends React.Component {
         </ListItemIcon>
       );
     }
-    return itemdata && itemdata.isDiscussion
+    return itemProps && itemProps.isDiscussion
       ? <Avatar className={classes.avatar} src={channelPicture ? `${channelPicture.url}/profil` : ''} />
       : <ListItemIcon>
         <Icon
@@ -140,10 +139,6 @@ export class DumbChannelItem extends React.Component {
   }
 }
 
-export const mapDispatchToProps = {
-  updateApp: updateApp
-};
-
 export const mapStateToProps = (state, props) => {
   return {
     currentMessage: state.form[props.node.id],
@@ -151,4 +146,4 @@ export const mapStateToProps = (state, props) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbChannelItem));

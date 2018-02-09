@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import IdeasList from '../idea/IdeasList';
 import CreateIdeaForm from '../forms/CreateIdea';
 import Idea from '../idea/Idea';
-import { updateApp } from '../../actions/actions';
+import { openChatApp } from '../../actions/actions';
 
 const styles = {
   container: {
@@ -39,9 +39,8 @@ class Home extends React.Component {
           }
         }
         : {};
-      this.props.updateApp('chatApp', {
+      this.props.openChatApp({
         drawer: !smallScreen,
-        open: true,
         channel: channelId,
         ...rightOpen
       });
@@ -63,7 +62,7 @@ class Home extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateApp: updateApp
+  openChatApp: openChatApp
 };
 
 export const mapStateToProps = (state) => {

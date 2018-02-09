@@ -39,6 +39,14 @@ export const UPDATE_GLOBAL_PROPS = 'UPDATE_GLOBAL_PROPS';
 
 export const UPDATE_NAVIGATION = 'UPDATE_NAVIGATION';
 
+export const OPEN_DRAWER = 'OPEN_DRAWER';
+
+export const CLOSE_DRAWER = 'CLOSE_DRAWER';
+
+export const OPEN_CHATAPP = 'OPEN_CHATAPP';
+
+export const CLOSE_CHATAPP = 'CLOSE_CHATAPP';
+
 export const SMALL_WIDTH = ['sm', 'xs'];
 
 export const SIZE_MAP = {
@@ -72,5 +80,5 @@ export const ICONS_MAPPING = {
 
 export const STYLE_CONST = {
   drawerDuration: '50ms',
-  drawerChannelsWidth: 220
+  drawerWidth: 220
 };

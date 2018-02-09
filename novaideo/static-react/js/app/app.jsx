@@ -3,7 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 
-import ChannelsDrawer from './components/channels/ChannelsDrawer';
+import Drawer from './components/Drawer';
 import CollaborationApp from './components/CollaborationApp';
 import ChatApp from './components/ChatApp';
 import { accountQuery } from './graphql/queries';
@@ -33,16 +33,16 @@ class DumbApp extends React.Component {
   }
 
   render() {
-    const { data, classes, children, channelOpen, channelsDrawer, channel } = this.props;
+    const { data, classes, children, channelOpen, drawerOpen, channel } = this.props;
     if (data.loading) return null;
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <CollaborationApp active={!channelOpen} left={channelsDrawer || channelOpen}>
+          <CollaborationApp active={!channelOpen} left={drawerOpen || channelOpen}>
             {children}
           </CollaborationApp>
-          {channel && <ChatApp active={channelOpen} left={channelsDrawer || channelOpen} />}
-          <ChannelsDrawer />
+          {channel && <ChatApp active={channelOpen} left={drawerOpen || channelOpen} />}
+          <Drawer />
         </div>
       </div>
     );
@@ -52,7 +52,7 @@ class DumbApp extends React.Component {
 export const mapStateToProps = (state) => {
   return {
     channelOpen: state.apps.chatApp.open,
-    channelsDrawer: state.apps.chatApp.drawer,
+    drawerOpen: state.apps.drawer.open,
     channel: state.apps.chatApp.channel
   };
 };

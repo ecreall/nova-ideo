@@ -250,10 +250,12 @@ const DumbIdeaItemActions = graphql(support, {
               const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
                 return item && item.node.id === newIdea.id;
               })[0];
+              const totalCount = prev.account.supportedIdeas.totalCount + 1;
               if (!currentIdea) {
                 return update(prev, {
                   account: {
                     supportedIdeas: {
+                      totalCount: { $set: totalCount },
                       edges: {
                         $unshift: [
                           {
@@ -270,6 +272,7 @@ const DumbIdeaItemActions = graphql(support, {
               return update(prev, {
                 account: {
                   supportedIdeas: {
+                    totalCount: { $set: totalCount },
                     edges: {
                       $splice: [
                         [
@@ -329,10 +332,12 @@ const DumbIdeaItemActions = graphql(support, {
                 const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
                   return item && item.node.id === newIdea.id;
                 })[0];
+                const totalCount = prev.account.supportedIdeas.totalCount + 1;
                 if (!currentIdea) {
                   return update(prev, {
                     account: {
                       supportedIdeas: {
+                        totalCount: { $set: totalCount },
                         edges: {
                           $unshift: [
                             {
@@ -349,6 +354,7 @@ const DumbIdeaItemActions = graphql(support, {
                 return update(prev, {
                   account: {
                     supportedIdeas: {
+                      totalCount: { $set: totalCount },
                       edges: {
                         $splice: [
                           [
@@ -411,9 +417,11 @@ const DumbIdeaItemActions = graphql(support, {
                     return item && item.node.id === newIdea.id;
                   })[0];
                   const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
+                  const totalCount = prev.account.supportedIdeas.totalCount - 1;
                   return update(prev, {
                     account: {
                       supportedIdeas: {
+                        totalCount: { $set: totalCount },
                         edges: {
                           $splice: [[index, 1]]
                         }
@@ -476,6 +484,7 @@ const DumbIdeaItemActions = graphql(support, {
                 updateQueries: {
                   MyFollowings: (prev, { mutationResult }) => {
                     const newActions = mutationResult.data.select.idea.actions;
+                    const totalCount = prev.account.followedIdeas.totalCount + 1;
                     const newIdea = update(ownProps.idea, {
                       actions: {
                         $splice: [[indexAction, 1, ...newActions]]
@@ -484,6 +493,7 @@ const DumbIdeaItemActions = graphql(support, {
                     return update(prev, {
                       account: {
                         followedIdeas: {
+                          totalCount: { $set: totalCount },
                           edges: {
                             $unshift: [
                               {
@@ -562,9 +572,11 @@ const DumbIdeaItemActions = graphql(support, {
                         return item && item.node.id === newIdea.id;
                       })[0];
                       const index = prev.account.followedIdeas.edges.indexOf(currentIdea);
+                      const totalCount = prev.account.followedIdeas.totalCount - 1;
                       return update(prev, {
                         account: {
                           followedIdeas: {
+                            totalCount: { $set: totalCount },
                             edges: {
                               $splice: [[index, 1]]
                             }

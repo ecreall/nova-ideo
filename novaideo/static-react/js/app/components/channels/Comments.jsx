@@ -11,7 +11,6 @@ import CommentItem from './CommentItem';
 import ChatAppRight from './ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/Comment';
-import { updateApp } from '../../actions/actions';
 
 const styles = (theme) => {
   return {
@@ -44,7 +43,21 @@ const commentsActions = ['comment', 'general_discuss', 'discuss'];
 
 export class DumbComments extends React.Component {
   render() {
-    const { data, channel, rightOpen, classes, reverted, formTop, rightDisabled, autoFocus } = this.props;
+    const {
+      id,
+      channel,
+      data,
+      autoFocus,
+      formTop,
+      customScrollbar,
+      reverted,
+      rightDisabled,
+      rightOpen,
+      fetchMoreOnEvent,
+      classes,
+      fullScreen,
+      ignorDrawer
+    } = this.props;
     const commentAction = data.node
       ? data.node.subject.actions.filter((action) => {
         return commentsActions.includes(action.behaviorId);
@@ -78,7 +91,9 @@ export class DumbComments extends React.Component {
         >
           {formTop && commentForm}
           <EntitiesList
-            listId="comments"
+            customScrollbar={customScrollbar}
+            fetchMoreOnEvent={fetchMoreOnEvent}
+            listId={id}
             reverted={reverted}
             // virtualized
             onEndReachedThreshold={0.5}
@@ -91,7 +106,11 @@ export class DumbComments extends React.Component {
             }}
             ListItem={CommentItem}
             Divider={Divider}
-            itemdata={{
+            dividerProps={{
+              fullScreen: fullScreen,
+              ignorDrawer: ignorDrawer
+            }}
+            itemProps={{
               channel: channelData,
               unreadCommentsIds: channelData
                 ? channelData.unreadComments.map((comment) => {
@@ -114,10 +133,6 @@ export class DumbComments extends React.Component {
   }
 }
 
-export const mapDispatchToProps = {
-  updateApp: updateApp
-};
-
 export const mapStateToProps = (state) => {
   return {
     rightOpen: state.apps.chatApp.right.open
@@ -125,13 +140,13 @@ export const mapStateToProps = (state) => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, mapDispatchToProps)(
+  connect(mapStateToProps)(
     graphql(commentsQuery, {
       options: (props) => {
         return {
           notifyOnNetworkStatusChange: true,
           variables: {
-            first: 15,
+            first: 25,
             after: '',
             filter: '',
             id: props.channel,

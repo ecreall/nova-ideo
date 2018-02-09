@@ -138,13 +138,14 @@ export class DumbCommentItem extends React.Component {
     const { node, reverted } = this.props;
     const item = reverted ? this.props.next : this.props.previous;
     if (!item) return false;
-    const author = node.author.id;
-    const nextAuthor = item.author.id;
+    const currentNode = reverted ? node : item;
+    const nextNode = reverted ? item : node;
+    const author = currentNode.author.id;
+    const nextAuthor = nextNode.author.id;
     const optimisticAuthorId = `${nextAuthor}comment`;
-    const createdAt = new Date(node.createdAt);
-    const nextCreatedAt = new Date(item.createdAt);
-    let dateDiff = reverted ? createdAt - nextCreatedAt : nextCreatedAt - createdAt;
-    dateDiff /= 60000; // minutes
+    const createdAt = new Date(currentNode.createdAt);
+    const nextCreatedAt = new Date(nextNode.createdAt);
+    const dateDiff = (createdAt - nextCreatedAt) / 60000; // minutes
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
   };
 

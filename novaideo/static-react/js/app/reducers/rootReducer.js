@@ -292,8 +292,11 @@ export const globalProps = (state = {}, action) => {
 };
 
 const initialAppsState = {
+  drawer: {
+    open: true,
+    app: undefined
+  },
   chatApp: {
-    drawer: false,
     open: false,
     channel: undefined,
     subject: undefined,
@@ -321,6 +324,47 @@ export const apps = (state = initialAppsState, action) => {
     const newStateEntry = {};
     newStateEntry[app] = newEntry;
     return update(state, { $merge: newStateEntry });
+  }
+  case constants.OPEN_DRAWER: {
+    return { ...state, ...{ drawer: { open: true, app: action.app } } };
+  }
+  case constants.CLOSE_DRAWER: {
+    return { ...state, ...{ drawer: { open: false, app: undefined } } };
+  }
+  case constants.OPEN_CHATAPP: {
+    const config = action.config;
+    let drawer = true;
+    if ('drawer' in config) {
+      drawer = config.drawer;
+      delete config.drawer;
+    }
+    return {
+      ...state,
+      ...{ drawer: { open: drawer, app: 'chatApp' } },
+      ...{ chatApp: { ...state.chatApp, ...{ open: true }, ...action.config } }
+    };
+  }
+  case constants.CLOSE_CHATAPP: {
+    const defaultConfig = {
+      channel: undefined,
+      subject: undefined,
+      right: {
+        open: false,
+        componentId: undefined
+      }
+    };
+    const actionConfig = action.config || {};
+    let drawer = true;
+    if ('drawer' in actionConfig) {
+      drawer = actionConfig.drawer;
+      delete actionConfig.drawer;
+    }
+    const config = { ...defaultConfig, ...actionConfig };
+    return {
+      ...state,
+      ...{ drawer: { open: drawer, app: undefined } },
+      ...{ chatApp: { ...state.chatApp, ...{ open: false }, ...config } }
+    };
   }
   default:
     return state;

@@ -18,6 +18,7 @@ export class DumbPublicChannels extends React.Component {
     const { data, classes } = this.props;
     return (
       <EntitiesList
+        customScrollbar
         data={data}
         getEntities={(entities) => {
           return entities.account ? entities.account.channels : [];

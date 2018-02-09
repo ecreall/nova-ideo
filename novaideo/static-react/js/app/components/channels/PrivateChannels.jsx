@@ -17,6 +17,7 @@ export class DumbPrivateChannels extends React.Component {
     const { data, classes } = this.props;
     return (
       <EntitiesList
+        customScrollbar
         data={data}
         getEntities={(entities) => {
           return entities.account ? entities.account.discussions : [];
@@ -24,7 +25,7 @@ export class DumbPrivateChannels extends React.Component {
         noContentIcon="comment-outline"
         noContentMessage={'noPrivateDiscussions'}
         ListItem={ChannelItem}
-        itemdata={{ isDiscussion: true }}
+        itemProps={{ isDiscussion: true }}
         className={classes.list}
         itemHeightEstimation={30}
         progressStyle={{ size: 20, color: 'white' }}

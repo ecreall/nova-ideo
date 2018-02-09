@@ -5,13 +5,14 @@ import { I18n } from 'react-redux-i18n';
 
 import PrivateChannels from './PrivateChannels';
 import PublicChannels from './PublicChannels';
+import { STYLE_CONST } from '../../constants';
 
 const styles = (theme) => {
   return {
     list: {
       display: 'flex',
       flexDirection: 'column',
-      width: 220,
+      width: STYLE_CONST.drawerWidth,
       height: '100%',
       marginTop: 15
     },

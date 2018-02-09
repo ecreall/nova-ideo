@@ -25,6 +25,9 @@ const styles = {
   },
   appBarContent: {
     flex: 1
+  },
+  closeBtn: {
+    position: 'relative'
   }
 };
 
@@ -71,7 +74,7 @@ class CommonDialog extends React.Component {
               <Typography type="title" color="primary" className={classes.appBarContent}>
                 {appBar}
               </Typography>
-              <IconButton color="primary" onClick={this.onClose} aria-label="Close">
+              <IconButton className={classes.closeBtn} color="primary" onClick={this.onClose} aria-label="Close">
                 <CloseIcon />
               </IconButton>
             </Toolbar>

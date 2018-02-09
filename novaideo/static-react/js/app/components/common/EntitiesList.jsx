@@ -70,9 +70,24 @@ export class DumbEntitiesList extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.isGlobal) {
-      window.addEventListener('scroll', this.handleScroll);
+    const { fetchMoreOnEvent, customScrollbar } = this.props;
+    if (fetchMoreOnEvent || !customScrollbar) {
+      const event = fetchMoreOnEvent || 'scroll';
+      document.addEventListener(event, this.handleScroll);
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.data.loading) {
+      this.dispatchResize();
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { data, getEntities } = nextProps;
+    const preveData = this.props.data;
+    if (!data.node || !preveData.node) return true;
+    return getEntities(data).edges.length !== getEntities(preveData).edges.length;
   }
 
   componentWillUpdate(nextProps) {
@@ -105,8 +120,10 @@ export class DumbEntitiesList extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.props.isGlobal) {
-      window.removeEventListener('scroll', this.handleScroll);
+    const { fetchMoreOnEvent, customScrollbar } = this.props;
+    if (fetchMoreOnEvent || !customScrollbar) {
+      const event = fetchMoreOnEvent || 'scroll';
+      document.removeEventListener(event, this.handleScroll);
     }
   }
 
@@ -119,13 +136,19 @@ export class DumbEntitiesList extends React.Component {
     }
   };
 
+  dispatchResize = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, true);
+    document.dispatchEvent(event);
+  };
+
   handleScroll = (event) => {
     this.dispatchScroll();
     if (this.loadingDebounce) this.loadingDebounce.cancel();
     const loadNextData = () => {
       if (!this.loading) {
         const { onEndReachedThreshold, reverted } = this.props;
-        const isCustomScroll = !this.props.isGlobal || (event && event.values);
+        const isCustomScroll = this.props.customScrollbar || (event && event.values);
         if (!isCustomScroll) {
           const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
           const body = document.body;
@@ -225,9 +248,10 @@ export class DumbEntitiesList extends React.Component {
       data,
       getEntities,
       ListItem,
-      itemdata,
+      itemProps,
+      dividerProps,
       itemHeightEstimation,
-      isGlobal,
+      customScrollbar,
       className,
       scrollbarStyle,
       reverted,
@@ -246,7 +270,7 @@ export class DumbEntitiesList extends React.Component {
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
-    const ScrollContainer = isGlobal ? emptyContainer : scrollbarsContainer;
+    const ScrollContainer = customScrollbar ? scrollbarsContainer : emptyContainer;
     const ItemContainer = virtualized ? virtualizedItemContainer : emptyContainer;
     return (
       <div className={className}>
@@ -273,7 +297,7 @@ export class DumbEntitiesList extends React.Component {
                     index={index}
                     next={next && next.node}
                     previous={previous && previous.node}
-                    itemdata={itemdata}
+                    itemProps={itemProps}
                     node={item.node}
                     reverted={reverted}
                   />
@@ -288,7 +312,7 @@ export class DumbEntitiesList extends React.Component {
                     eventId={listId && `${listId}-scroll`}
                     previous={previous && previous.node}
                     node={item.node}
-                    itemdata={itemdata}
+                    dividerProps={{ ...dividerProps, ...itemProps }}
                   />
                 );
                 if (reverted) {

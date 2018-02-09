@@ -27,7 +27,6 @@ import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from '.
 import { goTo, get } from '../../utils/routeMap';
 import { ideaQuery } from '../../graphql/queries';
 import Dialog from '../common/Dialog';
-import { updateApp } from '../../actions/actions';
 import Comments from '../channels/Comments';
 import { styles as scrollbarStyles } from '../CollaborationApp';
 
@@ -118,19 +117,20 @@ const styles = (theme) => {
       height: 41
     },
     actionsText: {
-      fontSize: 16,
-      color: '#717171',
-      fontWeight: '700',
+      color: '#2c2d30',
       marginRight: 15,
+      fontSize: 14,
+      fontWeight: 400,
+      width: 35,
       '&:hover': {
-        color: theme.palette.primary['500']
+        color: theme.palette.info['700']
       }
     },
     actionsIcon: {
       fontWeight: 100,
-      fontSize: '19px !important',
+      fontSize: '20px !important',
       marginRight: 5,
-      marginTop: -4
+      marginTop: -2
     },
     avatar: {
       borderRadius: 4
@@ -196,7 +196,7 @@ const styles = (theme) => {
     },
     commentComntainer: {
       width: '100%',
-      maxHeight: 600,
+      height: '100%',
       margin: '20px 0',
       borderRadius: 6,
       boxShadow: '0 1px 2px rgba(128, 128, 128, 0.25)'
@@ -207,6 +207,27 @@ const styles = (theme) => {
     },
     commentFormContainer: {
       padding: 0
+    },
+    commentsList: {
+      height: '100%',
+      paddingBottom: 20,
+      paddingTop: 20
+    },
+    closeBtn: {
+      '&::after': {
+        display: 'block',
+        position: 'absolute',
+        top: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        left: -4,
+        height: 20,
+        transform: 'translateY(-50%)',
+        borderRadius: 0,
+        borderRight: '1px solid #e5e5e5',
+        content: '""',
+        color: '#2c2d30'
+      }
     }
   };
 };
@@ -253,10 +274,12 @@ export class DumbIdea extends React.Component {
     const hasEvaluation = site.supportIdeas && idea.state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(idea.actions, constants.ACTIONS.communicationAction);
+    const scrollEvent = `${idea.id}-scroll`;
     return (
       <Dialog
         classes={{
-          container: classes.ideaItem
+          container: classes.ideaItem,
+          closeBtn: classes.closeBtn
         }}
         appBar={
           <div className={classes.appBarContainer}>
@@ -315,6 +338,12 @@ export class DumbIdea extends React.Component {
             renderThumbVertical={(props) => {
               return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
             }}
+            onScrollFrame={(values) => {
+              const event = document.createEvent('HTMLEvents');
+              event.initEvent(scrollEvent, true, true);
+              event.values = values;
+              document.dispatchEvent(event);
+            }}
           >
             <div className={classes.maxContainer}>
               {hasEvaluation &&
@@ -349,14 +378,19 @@ export class DumbIdea extends React.Component {
               <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: idea.text }} />
 
               <Comments
+                id="idea-comments"
+                channel={idea.channel.id}
+                fetchMoreOnEvent={scrollEvent}
                 classes={{
                   container: classes.commentComntainer,
                   comments: classes.comments,
-                  formContainer: classes.commentFormContainer
+                  formContainer: classes.commentFormContainer,
+                  list: classes.commentsList
                 }}
                 rightDisabled
+                fullScreen
+                ignorDrawer
                 formTop
-                channel={idea.channel.id}
               />
             </div>
           </Scrollbars>
@@ -374,10 +408,6 @@ function DumbIdeaItem(props) {
   );
 }
 
-export const mapDispatchToProps = {
-  updateApp: updateApp
-};
-
 export const mapStateToProps = (state) => {
   return {
     previousLocation: state.history.navigation.previous,
@@ -387,7 +417,7 @@ export const mapStateToProps = (state) => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, mapDispatchToProps)(
+  connect(mapStateToProps)(
     graphql(ideaQuery, {
       options: (props) => {
         return {

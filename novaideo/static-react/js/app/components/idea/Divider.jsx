@@ -40,7 +40,7 @@ class IdeasDivider extends React.Component {
     const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
     return (
       <Divider
-        isGlobal
+        fullScreen
         index={index}
         message={dateSeparator}
         eventId={eventId}

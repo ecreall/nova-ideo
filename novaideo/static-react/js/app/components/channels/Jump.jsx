@@ -1,13 +1,14 @@
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
-import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import FormatIndentIncreaseIcon from 'material-ui-icons/FormatIndentIncrease';
 import Dialog, { DialogContent, DialogContentText } from 'material-ui/Dialog';
 
-import { updateApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
+import { STYLE_CONST } from '../../constants';
+
+const btnMargin = 15;
 
 const styles = (theme) => {
   return {
@@ -16,11 +17,12 @@ const styles = (theme) => {
       color: theme.palette.primary.light,
       boxShadow: 'none',
       textTransform: 'none',
-      margin: '6px 15px 0 14px',
+      margin: `6px ${btnMargin}px 0 ${btnMargin}px`,
       padding: '0 8px',
       borderRadius: 4,
       justifyContent: 'flex-start',
       fontSize: 16,
+      minWidth: STYLE_CONST.drawerWidth - btnMargin * 2,
       '&:hover': {
         backgroundColor: theme.palette.primary.dark2
       }
@@ -73,14 +75,4 @@ class Jump extends React.Component {
   }
 }
 
-export const mapDispatchToProps = {
-  toggleChannelsDrawer: updateApp
-};
-
-export const mapStateToProps = (state) => {
-  return {
-    channelsDrawer: state.apps.chatApp.drawer,
-    channelOpened: state.apps.chatApp.open
-  };
-};
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Jump));
+export default withStyles(styles, { withTheme: true })(Jump);

@@ -22,8 +22,8 @@ export class DumbIdeasList extends React.Component {
     const { data, classes } = this.props;
     return (
       <EntitiesList
+        // virtualized
         listId="ideas"
-        isGlobal
         className={classes.list}
         data={data}
         getEntities={(entities) => {

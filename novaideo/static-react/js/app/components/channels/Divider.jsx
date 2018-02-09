@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 
 import Divider from '../common/Divider';
+import { STYLE_CONST } from '../../constants';
 
 export class DumbCommentDivider extends React.Component {
   addDateSeparator = () => {
@@ -15,17 +16,17 @@ export class DumbCommentDivider extends React.Component {
   };
 
   addUnread = () => {
-    const { node, reverted, itemdata } = this.props;
+    const { node, reverted, dividerProps } = this.props;
     const item = reverted ? this.props.next : this.props.previous;
     if (!item) return false;
-    const unreadComments = itemdata.unreadCommentsIds;
+    const unreadComments = dividerProps.unreadCommentsIds;
     const isUnread = unreadComments.includes(node.id);
     const nextIsUnread = unreadComments.includes(item.id);
     return isUnread && !nextIsUnread;
   };
 
   render() {
-    const { node, index, eventId, channelsDrawer, reverted } = this.props;
+    const { node, index, eventId, drawer, reverted, dividerProps: { fullScreen, ignorDrawer } } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
     const today = Moment();
@@ -34,15 +35,20 @@ export class DumbCommentDivider extends React.Component {
     const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
     const format = (isToday && 'date.today') || (isYesterday && 'date.yesterday');
     const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
+    let dividerShift = 0;
+    if (!ignorDrawer) {
+      dividerShift = drawer ? STYLE_CONST.drawerWidth : 0;
+    }
     return dateSeparator || addUnread
       ? <Divider
+        fullScreen={fullScreen}
         reverted={reverted}
         index={index}
         alert={addUnread}
         message={dateSeparator}
         alertMessage="Unread"
         eventId={eventId}
-        shift={channelsDrawer ? 220 : 0}
+        shift={dividerShift}
         fixedTop={65}
       />
       : null;
@@ -51,7 +57,7 @@ export class DumbCommentDivider extends React.Component {
 
 export const mapStateToProps = (state) => {
   return {
-    channelsDrawer: state.apps.chatApp.drawer
+    drawer: state.apps.drawer.open
   };
 };
 

@@ -13,7 +13,7 @@ import VisibilityIcon from 'material-ui-icons/Visibility';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
 
-import { updateApp } from '../../actions/actions';
+import { updateApp, closeChatApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import { goTo, get } from '../../utils/routeMap';
 
@@ -60,16 +60,7 @@ class NavBar extends React.Component {
 
   handleClose = () => {
     goTo(get('root'));
-    this.props.updateApp('chatApp', {
-      open: false,
-      drawer: false,
-      channel: undefined,
-      subject: undefined,
-      right: {
-        open: false,
-        componentId: undefined
-      }
-    });
+    this.props.closeChatApp({ drawer: true });
     return false;
   };
 
@@ -86,7 +77,7 @@ class NavBar extends React.Component {
                 color="primary"
                 aria-label="Menu"
                 onClick={() => {
-                  this.props.updateApp('chatApp', { drawer: true });
+                  this.props.updateApp('drawer', { open: true, app: 'chatApp' });
                 }}
               >
                 <ChatIcon />
@@ -114,7 +105,8 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateApp: updateApp
+  updateApp: updateApp,
+  closeChatApp: closeChatApp
 };
 
 export const mapStateToProps = (state) => {

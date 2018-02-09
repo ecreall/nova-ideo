@@ -22,7 +22,7 @@ import { getActions } from '../../utils/entities';
 import IdeaMenu from './IdeaMenu';
 import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
 import { goTo, get } from '../../utils/routeMap';
-import { updateApp } from '../../actions/actions';
+import { closeChatApp } from '../../actions/actions';
 
 const styles = (theme) => {
   return {
@@ -114,7 +114,7 @@ const styles = (theme) => {
       fontWeight: '700',
       marginRight: '25%',
       '&:hover': {
-        color: theme.palette.primary['500']
+        color: theme.palette.info['700']
       }
     },
     actionsIcon: {
@@ -176,7 +176,7 @@ export class RenderIdeaItem extends React.Component {
   };
 
   openDetails = () => {
-    this.props.updateApp('chatApp', { open: false });
+    this.props.closeChatApp();
     goTo(get('ideas', { ideaId: this.props.node.id }));
   };
 
@@ -329,7 +329,7 @@ function DumbIdeaItem(props) {
 }
 
 export const mapDispatchToProps = {
-  updateApp: updateApp
+  closeChatApp: closeChatApp
 };
 
 export const mapStateToProps = (state) => {
