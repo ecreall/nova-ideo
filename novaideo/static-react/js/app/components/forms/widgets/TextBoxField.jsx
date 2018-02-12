@@ -21,10 +21,14 @@ class TextBoxField extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (!nextProps.value) {
-      this.editor.clear(true);
+  componentWillReceiveProps(nextProps) {
+    const { value, autoFocus } = this.props;
+    if (this.editor && !nextProps.value && nextProps.value !== value) {
+      this.editor.clear(autoFocus);
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
     return !nextProps.value;
   }
 
@@ -37,7 +41,10 @@ class TextBoxField extends React.Component {
   };
 
   onSelectEmoji = (emoji) => {
-    this.editor.insertText(emoji);
+    // when the animation is complete
+    setTimeout(() => {
+      this.editor.insertText(emoji);
+    }, 200);
   };
 
   render() {

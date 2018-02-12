@@ -44,38 +44,38 @@ const commentsActions = ['comment', 'general_discuss', 'discuss'];
 export class DumbComments extends React.Component {
   render() {
     const {
-      id,
-      channel,
+      channelId,
       data,
-      autoFocus,
-      formTop,
       customScrollbar,
       reverted,
+      ignorDrawer,
+      fullScreen,
       rightDisabled,
       rightOpen,
       fetchMoreOnEvent,
-      classes,
-      fullScreen,
-      ignorDrawer
+      formTop,
+      formProps,
+      classes
     } = this.props;
-    const commentAction = data.node
-      ? data.node.subject.actions.filter((action) => {
-        return commentsActions.includes(action.behaviorId);
-      })[0]
-      : null;
-    const contextOid = data.node ? data.node.subject.oid : '';
-    const channelData = data.node ? data.node : null;
+    const channel = data.node;
+    const commentAction =
+      !data.loading && channel
+        ? channel.subject.actions.filter((action) => {
+          return commentsActions.includes(action.behaviorId);
+        })[0]
+        : null;
+    const contextOid = channel && channel.subject ? channel.subject.oid : '';
     const displayRightBlock = !rightDisabled && rightOpen;
     const commentForm = (
       <Comment
-        classes={{ container: classes.formContainer }}
-        key={channel}
-        form={channel}
-        action={commentAction}
+        key={channelId}
+        form={channelId}
+        channel={channel}
         context={contextOid}
-        rootContext={contextOid}
-        channel={data.node}
-        autoFocus={autoFocus}
+        subject={contextOid}
+        action={commentAction}
+        {...formProps}
+        classes={{ container: classes.formContainer }}
       />
     );
     return (
@@ -93,13 +93,13 @@ export class DumbComments extends React.Component {
           <EntitiesList
             customScrollbar={customScrollbar}
             fetchMoreOnEvent={fetchMoreOnEvent}
-            listId={id}
+            listId={channelId}
             reverted={reverted}
             // virtualized
             onEndReachedThreshold={0.5}
             data={data}
             getEntities={(entities) => {
-              return entities.node ? entities.node.comments : undefined;
+              return entities.node && entities.node.comments;
             }}
             offlineFilter={(entity, text) => {
               return entity.node.text.toLowerCase().search(text) >= 0;
@@ -111,12 +111,13 @@ export class DumbComments extends React.Component {
               ignorDrawer: ignorDrawer
             }}
             itemProps={{
-              channel: channelData,
-              unreadCommentsIds: channelData
-                ? channelData.unreadComments.map((comment) => {
-                  return comment.id;
-                })
-                : []
+              channel: channel,
+              unreadCommentsIds:
+                channel && channel.unreadComments
+                  ? channel.unreadComments.map((comment) => {
+                    return comment.id;
+                  })
+                  : []
             }}
             itemHeightEstimation={50}
             className={classes.list}
@@ -124,7 +125,7 @@ export class DumbComments extends React.Component {
           {!formTop && commentForm}
         </Grid>
         {displayRightBlock &&
-          data.node &&
+          channel &&
           <Grid className={classes.right} item xs={12} md={4} sm={5}>
             <ChatAppRight />
           </Grid>}
@@ -149,7 +150,7 @@ export default withStyles(styles, { withTheme: true })(
             first: 25,
             after: '',
             filter: '',
-            id: props.channel,
+            id: props.channelId,
             processId: '',
             nodeIds: commentsActions
           }

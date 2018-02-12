@@ -20,7 +20,7 @@ export class DumbPrivateChannels extends React.Component {
         customScrollbar
         data={data}
         getEntities={(entities) => {
-          return entities.account ? entities.account.discussions : [];
+          return entities.account && entities.account.discussions;
         }}
         noContentIcon="comment-outline"
         noContentMessage={'noPrivateDiscussions'}

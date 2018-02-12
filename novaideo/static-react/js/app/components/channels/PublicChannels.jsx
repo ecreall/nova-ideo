@@ -21,7 +21,7 @@ export class DumbPublicChannels extends React.Component {
         customScrollbar
         data={data}
         getEntities={(entities) => {
-          return entities.account ? entities.account.channels : [];
+          return entities.account && entities.account.channels;
         }}
         noContentIcon="comment-outline"
         noContentMessage={'noChannels'}

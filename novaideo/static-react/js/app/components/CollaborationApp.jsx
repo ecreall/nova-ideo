@@ -30,6 +30,10 @@ export const styles = {
     borderRadius: 6,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     border: '3px solid #fff'
+  },
+  scroll: {
+    paddingLeft: 8,
+    paddingRight: 8
   }
 };
 
@@ -43,6 +47,9 @@ function CollaborationApp({ children, active, left, classes }) {
           }}
           renderThumbVertical={(props) => {
             return <div {...props} style={{ ...props.style, ...styles.thumbVertical }} />;
+          }}
+          renderView={(props) => {
+            return <div {...props} className={classes.scroll} />;
           }}
           onScrollFrame={(values) => {
             const event = document.createEvent('HTMLEvents');

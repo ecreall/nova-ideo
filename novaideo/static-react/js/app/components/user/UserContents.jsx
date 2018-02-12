@@ -47,7 +47,7 @@ export class DumbUserContents extends React.Component {
           customScrollbar
           data={data}
           getEntities={(entities) => {
-            return entities.account ? entities.account.contents : undefined;
+            return entities.account && entities.account.contents;
           }}
           className={classes.list}
           itemHeightEstimation={30}

@@ -103,16 +103,18 @@ const styles = (theme) => {
     bodyFooter: {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: 10
+      marginTop: 10,
+      marginBottom: 10
     },
     actionsContainer: {
-      height: 12
+      height: 0,
+      width: '100%'
     },
     actionsText: {
       fontSize: 13,
       color: '#585858',
       fontWeight: '700',
-      marginRight: '25%',
+      marginRight: 35,
       '&:hover': {
         color: theme.palette.info['700']
       }

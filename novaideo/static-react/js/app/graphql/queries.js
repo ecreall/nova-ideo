@@ -107,6 +107,7 @@ export const ideaFragment = gql`
     channel {
       id
       oid
+      title
     }
     urls {
       url

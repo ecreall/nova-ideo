@@ -86,7 +86,7 @@ export class DumbEntitiesList extends React.Component {
   shouldComponentUpdate(nextProps) {
     const { data, getEntities } = nextProps;
     const preveData = this.props.data;
-    if (!data.node || !preveData.node) return true;
+    if (!this.loading || data.loading || preveData.loading) return true;
     return getEntities(data).edges.length !== getEntities(preveData).edges.length;
   }
 

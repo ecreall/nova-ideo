@@ -24,6 +24,7 @@ import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from '.
 import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/actions';
 import { ideaQuery } from '../../graphql/queries';
+import Comment from '../forms/Comment';
 
 const styles = (theme) => {
   return {
@@ -107,16 +108,18 @@ const styles = (theme) => {
     bodyFooter: {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: 10
+      marginTop: 10,
+      marginBottom: 10
     },
     actionsContainer: {
-      height: 12
+      height: 0,
+      width: '100%'
     },
     actionsText: {
       fontSize: 13,
       color: '#585858',
       fontWeight: '700',
-      marginRight: '25%',
+      marginRight: 35,
       '&:hover': {
         color: theme.palette.info['700']
       }
@@ -166,6 +169,13 @@ const styles = (theme) => {
       width: '100%',
       display: 'flex',
       justifyContent: 'center'
+    },
+    formContainer: {
+      padding: 10,
+      paddingRight: 10,
+      paddingLeft: 10,
+      backgroundColor: '#ededed',
+      boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
     }
   };
 };
@@ -189,6 +199,14 @@ export class RenderIdeaItem extends React.Component {
     if (onActionClick) onActionClick();
     this.props.closeChatApp();
     goTo(get('ideas', { ideaId: this.props.data.idea.id }));
+  };
+
+  onCommentSubmit = () => {
+    const { onActionClick, data: { idea } } = this.props;
+    if (onActionClick) onActionClick();
+    setTimeout(() => {
+      goTo(get('messages', { channelId: idea.channel.id }, { right: 'idea' }));
+    }, 200);
   };
 
   render() {
@@ -219,7 +237,12 @@ export class RenderIdeaItem extends React.Component {
     const hasEvaluation = site.supportIdeas && node.state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, constants.ACTIONS.communicationAction);
-    return (
+    const commentAction = node
+      ? node.actions.filter((action) => {
+        return action.behaviorId === 'comment';
+      })[0]
+      : null;
+    return [
       <div className={classes.ideaItem} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>
           <Avatar
@@ -315,8 +338,18 @@ export class RenderIdeaItem extends React.Component {
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>,
+      <Comment
+        classes={{ container: classes.formContainer }}
+        key={node.channel.id}
+        form={node.channel.id}
+        action={commentAction}
+        context={node.oid}
+        subject={node.oid}
+        channel={node.channel}
+        onSubmit={this.onCommentSubmit}
+      />
+    ];
   }
 }
 

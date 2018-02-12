@@ -19,16 +19,13 @@ import { renderMenuItem } from '../common/menu/MenuList';
 
 const styles = (theme) => {
   return {
-    contentContainerStyle: {
-      backgroundColor: 'white',
-      borderRadius: 6
-    },
-    contentContainerStyleAddon: {
-      boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
-    },
     container: {
+      backgroundColor: 'white',
       paddingLeft: 20,
       paddingRight: 20
+    },
+    containerAddon: {
+      boxShadow: '0 -1px 0 rgba(0,0,0,.1)'
     },
     addon: {
       display: 'flex',
@@ -51,6 +48,7 @@ const styles = (theme) => {
       minHeight: '41px',
       alignItems: 'center',
       position: 'relative',
+      backgroundColor: 'white',
       '&:focus-within': {
         border: '2px solid #848484'
       }
@@ -93,7 +91,8 @@ const styles = (theme) => {
     placeholderActive: {
       display: 'block',
       top: 13,
-      left: 10
+      left: 10,
+      paddingRight: 40
     },
     submit: {
       color: 'gray',
@@ -132,7 +131,7 @@ export class DumbCommentForm extends React.Component {
   }
 
   handleSubmit = () => {
-    const { globalProps, formData, valid, context, action } = this.props;
+    const { globalProps, formData, valid, context, action, onSubmit } = this.props;
     if (valid) {
       let files = formData.values.files || [];
       files = files.filter((file) => {
@@ -147,6 +146,7 @@ export class DumbCommentForm extends React.Component {
         action: `${action.processId}.${action.nodeId}`
       });
       this.initializeForm();
+      if (onSubmit) onSubmit();
     }
   };
 
@@ -173,85 +173,82 @@ export class DumbCommentForm extends React.Component {
     const withAnonymous = site.anonymisation && !isDiscuss;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     return (
-      <div className={classNames(classes.contentContainerStyle, { [classes.contentContainerStyleAddon]: files.length > 0 })}>
-        <div className={classes.container}>
-          <FilesPickerPreview
-            files={files}
-            getPicker={() => {
-              return this.filesPicker;
-            }}
+      <div className={classNames(classes.container, { [classes.containerAddon]: files.length > 0 })}>
+        <FilesPickerPreview
+          files={files}
+          getPicker={() => {
+            return this.filesPicker;
+          }}
+        />
+        <div
+          className={classNames(classes.inputContainer, {
+            [classes.inputContainerAnonymous]: anonymousSelected
+          })}
+        >
+          <CommentMenu
+            fields={[
+              () => {
+                return (
+                  <Field
+                    props={{
+                      node: renderMenuItem({
+                        Icon: InsertDriveFileIcon,
+                        title: I18n.t('forms.attachFiles'),
+                        hoverColor: theme.palette.info[500]
+                      }),
+                      initRef: (filesPicker) => {
+                        this.filesPicker = filesPicker;
+                      }
+                    }}
+                    withRef
+                    name="files"
+                    component={renderFilesListField}
+                  />
+                );
+              }
+            ]}
           />
-          <div
-            className={classNames(classes.inputContainer, {
-              [classes.inputContainerAnonymous]: anonymousSelected
-            })}
-          >
-            <CommentMenu
-              fields={[
-                () => {
-                  return (
-                    <Field
-                      props={{
-                        node: renderMenuItem({
-                          Icon: InsertDriveFileIcon,
-                          title: I18n.t('forms.attachFiles'),
-                          hoverColor: theme.palette.info[500]
-                        }),
-                        initRef: (filesPicker) => {
-                          this.filesPicker = filesPicker;
-                        }
-                      }}
-                      withRef
-                      name="files"
-                      component={renderFilesListField}
-                    />
-                  );
-                }
-              ]}
+          <div className={classes.textField}>
+            <Field
+              props={{
+                onCtrlEnter: this.handleSubmit,
+                autoFocus: autoFocus
+              }}
+              name="comment"
+              component={renderTextBoxField}
+              type="text"
             />
-            <div className={classes.textField}>
-              <Field
-                props={{
-                  onCtrlEnter: this.handleSubmit,
-                  autoFocus: autoFocus
-                }}
-                name="comment"
-                component={renderTextBoxField}
-                type="text"
-              />
-              <div
-                className={classNames(classes.placeholder, {
-                  [classes.placeholderActive]: !hasComment
-                })}
-                aria-hidden="true"
-                role="presentation"
-                tabIndex="-1"
-              >
-                <Translate value="forms.comment.textPlaceholder" name={channel ? channel.title : '...'} />
-              </div>
+            <div
+              className={classNames(classes.placeholder, {
+                [classes.placeholderActive]: !hasComment
+              })}
+              aria-hidden="true"
+              role="presentation"
+              tabIndex="-1"
+            >
+              <Translate value="forms.comment.textPlaceholder" name={channel ? channel.title : '...'} />
             </div>
-            <div className={withAnonymous && classes.addon}>
-              {withAnonymous
-                ? <Field
-                  props={{
-                    classes: classes
-                  }}
-                  name="anonymous"
-                  component={renderAnonymousCheckboxField}
-                  type="boolean"
-                />
-                : null}
-            </div>
-
-            <IconButton onClick={hasComment ? this.handleSubmit : undefined} className={classes.action}>
-              <SendIcon
-                size={22}
-                className={classNames(classes.submit, {
-                  [classes.submitActive]: hasComment
-                })}
-              />
-            </IconButton>
           </div>
+          <div className={withAnonymous && classes.addon}>
+            {withAnonymous
+              ? <Field
+                props={{
+                  classes: classes
+                }}
+                name="anonymous"
+                component={renderAnonymousCheckboxField}
+                type="boolean"
+              />
+              : null}
+          </div>
+          <IconButton onClick={hasComment ? this.handleSubmit : undefined} className={classes.action}>
+            <SendIcon
+              size={22}
+              className={classNames(classes.submit, {
+                [classes.submitActive]: hasComment
+              })}
+            />
+          </IconButton>
         </div>
       </div>
     );
@@ -335,7 +332,7 @@ const CommentForm = graphql(commentObject, {
                 id: '0',
                 oid: '0',
                 channel: { ...ownProps.channel, unreadComments: [] },
-                rootOid: ownProps.rootContext,
+                rootOid: ownProps.subject,
                 createdAt: createdAt.toISOString(),
                 text: comment,
                 attachedFiles: files,
@@ -365,7 +362,7 @@ const CommentForm = graphql(commentObject, {
           updateQueries: {
             IdeasList: (prev) => {
               const currentIdea = prev.ideas.edges.filter((item) => {
-                return item && item.node.oid === ownProps.rootContext;
+                return item && item.node.oid === ownProps.subject;
               })[0];
               if (!currentIdea) {
                 return prev;
@@ -394,7 +391,7 @@ const CommentForm = graphql(commentObject, {
               });
             },
             Profil: (prev) => {
-              if (prev.person.oid !== ownProps.rootContext) return prev;
+              if (prev.person.oid !== ownProps.subject) return prev;
               const commentAction = prev.person.actions.filter((item) => {
                 return item && item.behaviorId === 'discuss';
               })[0];

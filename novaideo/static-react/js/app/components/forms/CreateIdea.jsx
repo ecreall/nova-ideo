@@ -503,7 +503,8 @@ const CreateIdeaForm = graphql(createPublishIdea, {
                 channel: {
                   __typename: 'Channel',
                   id: 'channel-id',
-                  oid: 'channel-oid'
+                  oid: 'channel-oid',
+                  title: title
                 },
                 opinion: '',
                 urls: [],

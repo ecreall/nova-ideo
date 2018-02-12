@@ -85,16 +85,11 @@ class TextEditor extends React.Component {
     const currentContent = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const textWithEntity = Modifier.insertText(currentContent, selection, text, null, null);
-    this.setState(
-      {
-        editorState: EditorState.push(editorState, textWithEntity, 'insert-characters')
-      },
-      () => {
-        this.focus(true);
-        const content = convertToHTML(this.state.editorState.getCurrentContent());
-        this.props.onChange(content);
-      }
-    );
+    let newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
+    newEditorState = this.endFocus(newEditorState);
+    const content = convertToHTML(newEditorState.getCurrentContent());
+    this.props.onChange(content);
+    this.setState({ editorState: newEditorState });
   };
 
   onChange = (editorState) => {

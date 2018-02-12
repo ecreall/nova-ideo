@@ -378,8 +378,7 @@ export class DumbIdea extends React.Component {
               <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: idea.text }} />
 
               <Comments
-                id="idea-comments"
-                channel={idea.channel.id}
+                channelId={idea.channel.id}
                 fetchMoreOnEvent={scrollEvent}
                 classes={{
                   container: classes.commentComntainer,
