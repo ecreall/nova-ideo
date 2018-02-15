@@ -54,7 +54,7 @@ const styles = {
 
 class NavBar extends React.Component {
   handleInfo = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: 'idea' } });
+    this.props.updateApp('chatApp', { right: { open: true, componentId: 'info' } });
     return false;
   };
 

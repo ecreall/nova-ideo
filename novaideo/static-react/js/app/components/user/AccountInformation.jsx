@@ -1,8 +1,9 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Avatar from 'material-ui/Avatar';
 import { connect } from 'react-redux';
+
+import UserAvatar from './UserAvatar';
 
 const styles = (theme) => {
   return {
@@ -35,7 +36,7 @@ class AccountInformation extends React.Component {
     return (
       <div className={classes.accountInfo}>
         <div className={classes.accountTitle}>
-          <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : ''} />
+          <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={account.title} />
           {!onlyIcon &&
             <div className={classNames('account-title-text', classes.accountTitleText)}>
               {account.title}

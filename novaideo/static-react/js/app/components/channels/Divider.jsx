@@ -2,8 +2,8 @@
 import React from 'react';
 import Moment from 'moment';
 import { connect } from 'react-redux';
-import { I18n } from 'react-redux-i18n';
 
+import { getFormattedDate } from '../../utils/globalFunctions';
 import Divider from '../common/Divider';
 import { STYLE_CONST } from '../../constants';
 
@@ -29,12 +29,8 @@ export class DumbCommentDivider extends React.Component {
     const { node, index, eventId, drawer, reverted, dividerProps: { fullScreen, ignorDrawer } } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
-    const today = Moment();
-    const isToday = today.isSame(Moment(node.createdAt), 'day');
-    const yesterday = today.subtract(1, 'days').startOf('day');
-    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
-    const format = (isToday && 'date.today') || (isYesterday && 'date.yesterday');
-    const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
+    const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
+    const dateSeparator = addDateSeparator && createdAtF;
     let dividerShift = 0;
     if (!ignorDrawer) {
       dividerShift = drawer ? STYLE_CONST.drawerWidth : 0;

@@ -2,22 +2,25 @@
 import React from 'react';
 import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { I18n } from 'react-redux-i18n';
-import update from 'immutability-helper';
 import classNames from 'classnames';
 import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 import AttachFileIcon from 'material-ui-icons/AttachFile';
 import IconButton from 'material-ui/IconButton';
-import Avatar from 'material-ui/Avatar';
 import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
 
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import SelectChipPreview from './widgets/SelectChipPreview';
 import { renderTextInput, renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderSelect } from './utils';
-import { ideaFragment } from '../../graphql/queries';
+import UserAvatar from '../user/UserAvatar';
+import { PROCESSES } from '../../constants';
+import { filterActions } from '../../utils/entities';
+import { create, createAndPublish } from '../../graphql/processes/ideaProcess';
+import { createMutation } from '../../graphql/processes/ideaProcess/create';
+import { createAndPublishMutation } from '../../graphql/processes/ideaProcess/createAndPublish';
 
 const styles = (theme) => {
   return {
@@ -105,18 +108,6 @@ const styles = (theme) => {
       justifyContent: 'flex-end',
       padding: 5
     },
-    maskIcon: {
-      width: 'auto !important',
-      height: 'auto !important'
-    },
-    maskDefault: {
-      height: 40,
-      width: 40,
-      color: '#808080'
-    },
-    maskChecked: {
-      color: theme.palette.warning[700]
-    },
     button: {
       height: 40,
       width: 40,
@@ -125,11 +116,6 @@ const styles = (theme) => {
     avatar: {
       borderRadius: 4,
       marginTop: 1
-    },
-    anonymousAvatar: {
-      color: theme.palette.tertiary.hover.color,
-      backgroundColor: theme.palette.tertiary.color,
-      fontWeight: 900
     },
     form: {
       flex: 1,
@@ -185,18 +171,17 @@ export class DumbCreateIdeaForm extends React.Component {
     }
   };
 
-  handleSubmit = () => {
-    const action = { nodeId: 'creatandpublish' };
+  handleSubmit = (action) => {
     const { formData, valid, globalProps } = this.props;
+    const processNodes = PROCESSES.ideamanagement.nodes;
     if (valid) {
-      // we must encode the file name
       let files = formData.values.files || [];
       files = files.filter((file) => {
         return file;
       });
       const keywords = formData.values.keywords;
-      if (action.nodeId === 'creatandpublish') {
-        this.props.createAndPublish({
+      if (action.nodeId === processNodes.nodes.createAndPublish.nodeId) {
+        this.props.createAndPublishIdea({
           text: formData.values.text,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
@@ -206,7 +191,7 @@ export class DumbCreateIdeaForm extends React.Component {
         });
         this.initializeForm();
       }
-      if (action.nodeId === 'creat') {
+      if (action.nodeId === processNodes.nodes.create.nodeId) {
         this.props.createIdea({
           text: formData.values.text,
           title: formData.values.title,
@@ -235,7 +220,12 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   render() {
-    const { formData, globalProps: { site, account }, classes } = this.props;
+    const { formData, globalProps: { site, account, rootActions }, classes } = this.props;
+    const ideamanagementProcess = PROCESSES.ideamanagement;
+    const creationActions = filterActions(rootActions, {
+      processId: ideamanagementProcess.id,
+      nodeId: [ideamanagementProcess.nodes.create.nodeId, ideamanagementProcess.nodes.createAndPublish.nodeId]
+    });
     const { opened } = this.state;
     const authorPicture = account.picture;
     const keywords = {};
@@ -268,11 +258,12 @@ export class DumbCreateIdeaForm extends React.Component {
         className={classes.fromContainer}
       >
         <div className={classes.left}>
-          {anonymousSelected
-            ? <Avatar classes={{ root: classes.avatar }} className={classes.anonymousAvatar}>
-              <Icon className={'mdi-set mdi-guy-fawkes-mask'} />
-            </Avatar>
-            : <Avatar classes={{ root: classes.avatar }} ize={30} src={authorPicture ? `${authorPicture.url}/profil` : ''} />}
+          <UserAvatar
+            isAnonymous={anonymousSelected}
+            picture={authorPicture}
+            title={account.title}
+            classes={{ avatar: classes.avatar }}
+          />
         </div>
         <div className={classes.form}>
           {opened &&
@@ -381,14 +372,18 @@ export class DumbCreateIdeaForm extends React.Component {
                   />
                   : null}
               </div>
-              <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
-                <SendIcon
-                  size={22}
-                  className={classNames(classes.submit, {
-                    [classes.submitActive]: canSubmit
-                  })}
-                />
-              </IconButton>
+              {creationActions.map((action, key) => {
+                return (
+                  <IconButton key={key} onClick={canSubmit ? this.handleSubmit(action) : undefined} className={classes.action}>
+                    <SendIcon
+                      size={22}
+                      className={classNames(classes.submit, {
+                        [classes.submitActive]: canSubmit
+                      })}
+                    />
+                  </IconButton>
+                );
+              })}
             </div>}
         </div>
       </div>
@@ -408,277 +403,17 @@ const mapStateToProps = (state) => {
   };
 };
 
-const createPublishIdea = gql`
-  mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean) {
-    createAndPublish(
-      title: $title
-      keywords: $keywords
-      text: $text
-      attachedFiles: $attachedFiles,
-      anonymous: $anonymous
-    ) {
-      status
-      idea {
-        ...idea
-      }
-    }
-  }
-  ${ideaFragment}
-`;
-const createIdea = gql`
-  mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean) {
-    createIdea(
-      title: $title,
-      keywords: $keywords,
-      text: $text,
-      attachedFiles: $attachedFiles,
-      anonymous: $anonymous) {
-      status
-      idea {
-        ...idea
-      }
-    }
-  }
-  ${ideaFragment}
-`;
-
-const CreateIdeaForm = graphql(createPublishIdea, {
-  props: function ({ ownProps, mutate }) {
+const CreateIdeaForm = graphql(createAndPublishMutation, {
+  props: function (props) {
     return {
-      createAndPublish: function ({ text, title, keywords, attachedFiles, anonymous, account }) {
-        const { formData, globalProps: { site } } = ownProps;
-        const files =
-          attachedFiles.length > 0
-            ? formData.values.files.map((file) => {
-              return {
-                url: file.preview.url,
-                isImage: file.preview.type === 'image',
-                variations: [],
-                __typename: 'File'
-              };
-            })
-            : [];
-        const createdAt = new Date();
-        let authorId = account.id;
-        let authorOid = account.oid;
-        let authorTitle = account.title;
-        if (anonymous) {
-          if (account.mask) {
-            authorId = account.mask.id;
-            authorOid = account.mask.oid;
-            authorTitle = account.mask.title;
-          } else {
-            authorId = 'anonymousId';
-            authorOid = 'anonymousOid';
-            authorTitle = 'Anonymous';
-          }
-        }
-        return mutate({
-          variables: {
-            text: text,
-            title: title,
-            keywords: keywords,
-            attachedFiles: attachedFiles,
-            anonymous: anonymous
-          },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            createAndPublish: {
-              __typename: 'CreateAndPublish',
-              status: true,
-              idea: {
-                __typename: 'Idea',
-                id: '0',
-                oid: '0',
-                createdAt: createdAt.toISOString(),
-                title: title,
-                keywords: keywords,
-                text: text,
-                presentationText: text,
-                attachedFiles: files,
-                tokensSupport: 0,
-                tokensOpposition: 0,
-                userToken: null,
-                state: site.supportIdeas ? ['submitted_support', 'published'] : ['published'],
-                channel: {
-                  __typename: 'Channel',
-                  id: 'channel-id',
-                  oid: 'channel-oid',
-                  title: title
-                },
-                opinion: '',
-                urls: [],
-                author: {
-                  __typename: 'Person',
-                  isAnonymous: anonymous,
-                  id: `${authorId}createidea`,
-                  oid: `${authorOid}createidea`,
-                  title: authorTitle,
-                  description: account.description,
-                  function: account.function,
-                  picture:
-                    !anonymous && account.picture
-                      ? {
-                        __typename: 'File',
-                        url: account.picture.url
-                      }
-                      : null
-                },
-                actions: []
-              }
-            }
-          },
-          updateQueries: {
-            IdeasList: (prev, { mutationResult }) => {
-              const newIdea = mutationResult.data.createAndPublish.idea;
-              // if the idea is submitted to moderation
-              if (newIdea.state.includes('submitted')) return prev;
-              return update(prev, {
-                ideas: {
-                  edges: {
-                    $unshift: [
-                      {
-                        __typename: 'Idea',
-                        node: newIdea
-                      }
-                    ]
-                  }
-                }
-              });
-            },
-            MyContents: (prev, { mutationResult }) => {
-              const newIdea = mutationResult.data.createAndPublish.idea;
-              const totalCount = prev.account.contents.totalCount + 1;
-              return update(prev, {
-                account: {
-                  contents: {
-                    totalCount: { $set: totalCount },
-                    edges: {
-                      $unshift: [
-                        {
-                          __typename: 'Idea',
-                          node: newIdea
-                        }
-                      ]
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
+      createAndPublishIdea: createAndPublish(props)
     };
   }
 })(
-  graphql(createIdea, {
-    props: function ({ ownProps, mutate }) {
+  graphql(createMutation, {
+    props: function (props) {
       return {
-        createIdea: function ({ text, title, keywords, attachedFiles, anonymous, account }) {
-          const { formData } = ownProps;
-          const files =
-            attachedFiles.length > 0
-              ? formData.values.files.map((file) => {
-                return {
-                  url: file.preview.url,
-                  isImage: file.preview.type === 'image',
-                  variations: [],
-                  __typename: 'File'
-                };
-              })
-              : [];
-          const createdAt = new Date();
-          let authorId = account.id;
-          let authorOid = account.oid;
-          let authorTitle = account.title;
-          if (anonymous) {
-            if (account.mask) {
-              authorId = account.mask.id;
-              authorOid = account.mask.oid;
-              authorTitle = account.mask.title;
-            } else {
-              authorId = 'anonymousId';
-              authorOid = 'anonymousOid';
-              authorTitle = 'Anonymous';
-            }
-          }
-          return mutate({
-            variables: {
-              text: text,
-              title: title,
-              keywords: keywords,
-              attachedFiles: attachedFiles,
-              anonymous: anonymous
-            },
-            optimisticResponse: {
-              __typename: 'Mutation',
-              createIdea: {
-                __typename: 'CreateIdea',
-                status: true,
-                idea: {
-                  __typename: 'Idea',
-                  id: '0',
-                  oid: '0',
-                  createdAt: createdAt.toISOString(),
-                  title: title,
-                  keywords: keywords,
-                  text: text,
-                  presentationText: text,
-                  attachedFiles: files,
-                  tokensSupport: 0,
-                  tokensOpposition: 0,
-                  userToken: null,
-                  state: ['to work'],
-                  channel: {
-                    __typename: 'Channel',
-                    id: 'channel-id',
-                    oid: 'channel-oid'
-                  },
-                  opinion: '',
-                  urls: [],
-                  author: {
-                    __typename: 'Person',
-                    isAnonymous: anonymous,
-                    id: `${authorId}createidea`,
-                    oid: `${authorOid}createidea`,
-                    title: authorTitle,
-                    description: account.description,
-                    function: account.function,
-                    picture:
-                      !anonymous && account.picture
-                        ? {
-                          __typename: 'File',
-                          url: account.picture.url
-                        }
-                        : null
-                  },
-                  actions: []
-                }
-              }
-            },
-            updateQueries: {
-              MyContents: (prev, { mutationResult }) => {
-                const newIdea = mutationResult.data.createIdea.idea;
-                const totalCount = prev.account.contents.totalCount + 1;
-                return update(prev, {
-                  account: {
-                    contents: {
-                      totalCount: { $set: totalCount },
-                      edges: {
-                        $unshift: [
-                          {
-                            __typename: 'Idea',
-                            node: newIdea
-                          }
-                        ]
-                      }
-                    }
-                  }
-                });
-              }
-            }
-          });
-        }
+        createIdea: create(props)
       };
     }
   })(CreateIdeaReduxForm)

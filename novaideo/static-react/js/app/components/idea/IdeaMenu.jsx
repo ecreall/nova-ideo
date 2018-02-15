@@ -6,6 +6,8 @@ import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 
 import { MenuList, Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
+import { ACTIONS } from '../../constants';
+import { getActions } from '../../utils/entities';
 
 const styles = (theme) => {
   return {
@@ -65,8 +67,18 @@ export class DumbIdeaMenu extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { idea, classes, onActionClick } = this.props;
     if (!this.state.menu) return null;
+    const actions = getActions(idea.actions, { descriminator: [ACTIONS.global, ACTIONS.text, ACTIONS.plus] });
+    const fields = actions.map((action) => {
+      return {
+        title: action.title,
+        Icon: action.icon,
+        onClick: () => {
+          if (onActionClick) onActionClick(action);
+        }
+      };
+    });
     return (
       <div className={classes.container}>
         <div className={classes.action}>
@@ -88,19 +100,7 @@ export class DumbIdeaMenu extends React.Component {
               </IconButton>
             }
           >
-            <MenuList
-              fields={[
-                {
-                  title: 'Une action importante'
-                },
-                '',
-                {
-                  title: 'Supprimer le message',
-                  color: '#d7385d',
-                  hoverColor: '#d7385d'
-                }
-              ]}
-            />
+            <MenuList fields={fields} />
           </Menu>
         </div>
       </div>

@@ -1,6 +1,21 @@
 /* eslint-disable import/prefer-default-export */
 import { gql } from 'react-apollo';
 
+export const actionFragment = gql`
+  fragment action on Action {
+    processId
+    nodeId
+    behaviorId
+    title
+    description
+    counter
+    style
+    descriminator
+    icon
+    order
+  }
+`;
+
 export const siteQuery = gql`
   query Site {
     root {
@@ -23,7 +38,15 @@ export const siteQuery = gql`
       manageQuestions
       manageProposals
     }
+    actions{
+      edges {
+        node {
+          ...action
+        }
+      }
+    }
   }
+  ${actionFragment}
 `;
 
 export const accountQuery = gql`
@@ -47,19 +70,17 @@ export const accountQuery = gql`
   }
 `;
 
-export const actionFragment = gql`
-  fragment action on Action {
-    processId
-    nodeId
-    behaviorId
-    title
-    description
-    counter
-    style
-    styleDescriminator
-    stylePicto
-    styleOrder
+export const actionsQuery = gql`
+  query Actions($processId: String, $nodeIds: [String], $context: String) {
+    actions(processId: $processId, nodeIds: $nodeIds, context: $context) {
+      edges {
+        node {
+          ...action
+        }
+      }
+    }
   }
+  ${actionFragment}
 `;
 
 export const authorFragment = gql`
@@ -108,6 +129,7 @@ export const ideaFragment = gql`
       id
       oid
       title
+      isDiscuss
     }
     urls {
       url
@@ -131,16 +153,20 @@ export const ideaFragment = gql`
   ${authorFragment}
 `;
 
-export const personFragment = gql`
+export const personInfoFragment = gql`
   fragment person on Person {
     id
     oid
     title
+    createdAt
     description
     function
+    isAnonymous
     channel {
       id
       oid
+      title
+      isDiscuss
     }
     picture {
       url
@@ -148,7 +174,40 @@ export const personFragment = gql`
     actions {
       ...action
     }
-    contents(first: $first, after: $after, filter: $filter) {
+  }
+  ${actionFragment}
+`;
+
+export const personInfoQuery = gql`
+  query PersonInfo($id: ID!) {
+    person: node(id: $id) {
+      ...person
+    }
+  }
+  ${personInfoFragment}
+`;
+
+export const personFragment = gql`
+  fragment person on Person {
+    id
+    oid
+    title
+    createdAt
+    description
+    function
+    isAnonymous
+    channel {
+      id
+      oid
+      title
+    }
+    picture {
+      url
+    }
+    actions {
+      ...action
+    }
+    contents(first: $first, after: $after) {
       pageInfo {
         endCursor
         hasNextPage
@@ -165,7 +224,7 @@ export const personFragment = gql`
 `;
 
 export const personQuery = gql`
-  query Profil($id: ID!,$first: Int!, $after: String!, $filter: String!) {
+  query Person($id: ID!,$first: Int!, $after: String!) {
     person: node(id: $id) {
       ...person
     }
@@ -306,7 +365,11 @@ export const commentFragment = gql`
       authorName
     }
     lenComments
+    actions {
+      ...action
+    }
   }
+  ${actionFragment}
   ${authorFragment}
 `;
 

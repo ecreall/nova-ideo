@@ -1,5 +1,11 @@
 /* eslint-disable global-require */
 /* eslint-disable import/prefer-default-export, import/no-extraneous-dependencies */
+import StarBorderIcon from 'material-ui-icons/StarBorder';
+import StarIcon from 'material-ui-icons/Star';
+import HistoryIcon from 'material-ui-icons/History';
+import ReportIcon from 'material-ui-icons/Report';
+
+import { iconAdapter } from './utils/globalFunctions';
 
 export const STATIC_URL = '/novaideostatic-react/';
 
@@ -68,17 +74,61 @@ export const LOADING_STATES = {
 };
 
 export const ACTIONS = {
-  communicationAction: 'communication-action'
+  communication: 'communication-action',
+  global: 'global-action',
+  text: 'text-action',
+  plus: 'plus-action'
 };
 
 export const ICONS_MAPPING = {
-  'ion-chatbubble': 'mdi-set mdi-comment-outline',
-  'glyphicon glyphicon-share-alt': 'mdi-set mdi-share',
-  'glyphicon glyphicon-star-empty': 'mdi-set mdi-star-outline',
-  'glyphicon glyphicon-star': 'mdi-set mdi-star'
+  'ion-chatbubble': iconAdapter('mdi-set mdi-comment-outline'),
+  'glyphicon glyphicon-share-alt': iconAdapter('mdi-set mdi-share'),
+  'glyphicon glyphicon-star-empty': StarBorderIcon,
+  'glyphicon glyphicon-star': StarIcon,
+  'glyphicon glyphicon-time': HistoryIcon,
+  'md md-sms-failed': ReportIcon
 };
 
 export const STYLE_CONST = {
   drawerDuration: '50ms',
   drawerWidth: 220
 };
+
+export const PROCESSES = {
+  ideamanagement: {
+    id: 'ideamanagement',
+    nodes: {
+      create: { nodeId: 'creat' },
+      createAndPublish: { nodeId: 'creatandpublish' },
+      comment: { nodeId: 'comment' },
+      support: {
+        nodeId: 'support',
+        description: 'evaluation.supportTheIdea'
+      },
+      oppose: {
+        nodeId: 'oppose',
+        description: 'evaluation.opposeTheIdea'
+      },
+      withdrawToken: {
+        nodeId: 'withdraw_token',
+        description: 'evaluation.withdrawTokenIdea'
+      }
+    }
+  },
+  usermanagement: {
+    nodes: {
+      discuss: { nodeId: 'discuss' },
+      generalDiscuss: { nodeId: 'general_discuss' }
+    }
+  },
+  novaideoabstractprocess: {
+    nodes: {
+      select: { nodeId: 'select' },
+      deselect: { nodeId: 'deselect' }
+    }
+  }
+};
+
+export const COMMENTS_ACTIONS = ['comment', 'discuss', 'general_discuss'];
+
+export const COMMENTS_TIME_INTERVAL = 5; // 5 minutes

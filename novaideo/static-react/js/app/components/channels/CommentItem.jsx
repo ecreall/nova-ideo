@@ -1,9 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
-import Avatar from 'material-ui/Avatar';
 import Tooltip from 'material-ui/Tooltip';
-import Icon from 'material-ui/Icon';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
@@ -11,122 +9,110 @@ import { I18n } from 'react-redux-i18n';
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Url from '../common/Url';
+import { getFormattedDate } from '../../utils/globalFunctions';
 import CommentMenu from './CommentMenu';
+import UserTitle from '../user/UserTitle';
+import UserAvatar from '../user/UserAvatar';
+import { COMMENTS_TIME_INTERVAL } from '../../constants';
 
-const styles = (theme) => {
-  return {
-    container: {
-      paddingRight: 30,
-      paddingTop: 1,
-      paddingBottom: 2,
-      display: 'flex',
-      position: 'relative',
-      '&:hover': {
-        backgroundColor: '#f9f9f9',
-        '& .creation-date': {
-          display: 'block'
-        }
+const styles = {
+  container: {
+    paddingRight: 30,
+    paddingTop: 1,
+    paddingBottom: 2,
+    display: 'flex',
+    position: 'relative',
+    '&:hover': {
+      backgroundColor: '#f9f9f9',
+      '& .creation-date': {
+        display: 'block'
       }
-    },
-    body: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
-    },
-    left: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'start',
-      paddingRight: 10,
-      width: 75,
-      margin: '5px 0'
-    },
-    leftDateOnly: {
-      margin: '5px 0'
-    },
-    header: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      margin: '5px 0'
-    },
-    headerTitle: {
-      display: 'flex',
-      fontSize: 15,
-      color: '#2c2d30',
-      fontWeight: '900',
-      justifyContent: 'space-around'
-    },
-    headerAddOn: {
-      color: '#999999ff',
-      paddingLeft: 5,
-      fontSize: 12
-    },
-    creationDate: {
-      display: 'none',
-      color: '#999999ff',
-      fontSize: 12,
-      height: 0
-    },
-
-    bodyContent: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-      width: '100%',
-      height: '100%'
-    },
-    contentText: {
-      color: '#2c2d30',
-      fontSize: 15,
-      lineHeight: 1.5,
-      wordWrap: 'break-word',
-      '& a': {
-        color: '#0576b9',
-        textDecoration: 'none',
-        '&:hover': {
-          textDecoration: 'underline'
-        }
-      },
-      '&p': {
-        margin: 0
-      }
-    },
-    urlsContainer: {
-      paddingRight: 30,
-      marginTop: 15,
-      maxWidth: 400
-    },
-    bodyFooter: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-end'
-    },
-    actionsText: {
-      fontSize: 14,
-      marginLeft: 8,
-      marginRight: 50
-    },
-    actionsIcon: {
-      fontSize: 14
-    },
-    avatar: {
-      borderRadius: 4,
-      width: 36,
-      height: 36
-    },
-    anonymousAvatar: {
-      color: theme.palette.tertiary.hover.color,
-      backgroundColor: theme.palette.tertiary.color,
-      fontWeight: 900
-    },
-    tooltip: {
-      marginBottom: 4
     }
-  };
-};
+  },
+  body: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%'
+  },
+  left: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'start',
+    paddingRight: 10,
+    width: 75,
+    margin: '5px 0'
+  },
+  leftDateOnly: {
+    margin: '5px 0'
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: '5px 0'
+  },
+  headerAddOn: {
+    color: '#999999ff',
+    paddingLeft: 5,
+    fontSize: 12
+  },
+  creationDate: {
+    display: 'none',
+    color: '#999999ff',
+    fontSize: 12,
+    height: 0
+  },
 
-const ignoreTimeInterval = 5; // 5 minutes
+  bodyContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%'
+  },
+  contentText: {
+    color: '#2c2d30',
+    fontSize: 15,
+    lineHeight: 1.5,
+    wordWrap: 'break-word',
+    '& a': {
+      color: '#0576b9',
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline'
+      }
+    },
+    '&p': {
+      margin: 0
+    }
+  },
+  urlsContainer: {
+    paddingRight: 30,
+    marginTop: 15,
+    maxWidth: 400
+  },
+  bodyFooter: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  actionsText: {
+    fontSize: 14,
+    marginLeft: 8,
+    marginRight: 50
+  },
+  actionsIcon: {
+    fontSize: 14
+  },
+  avatar: {
+    borderRadius: 4,
+    width: 36,
+    height: 36
+  },
+  tooltip: {
+    marginBottom: 4
+  }
+};
 
 export class DumbCommentItem extends React.Component {
   constructor(props) {
@@ -146,7 +132,7 @@ export class DumbCommentItem extends React.Component {
     const createdAt = new Date(currentNode.createdAt);
     const nextCreatedAt = new Date(nextNode.createdAt);
     const dateDiff = (createdAt - nextCreatedAt) / 60000; // minutes
-    return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < ignoreTimeInterval;
+    return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < COMMENTS_TIME_INTERVAL;
   };
 
   onMouseOver = () => {
@@ -164,12 +150,7 @@ export class DumbCommentItem extends React.Component {
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
-    const today = Moment();
-    const isToday = today.isSame(Moment(node.createdAt), 'day');
-    const yesterday = today.subtract(1, 'days').startOf('day');
-    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
-    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
-    const createdAtF3 = Moment(node.createdAt).format(I18n.t(format));
+    const createdAtF = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
       ? node.attachedFiles.filter((image) => {
         return image.isImage;
@@ -190,27 +171,23 @@ export class DumbCommentItem extends React.Component {
             })}
           >
             {ignoreMetaData
-              ? <Tooltip id={node.id} title={createdAtF3} placement="top">
+              ? <Tooltip id={node.id} title={createdAtF} placement="top">
                 <div className={classNames('creation-date', classes.creationDate)}>
                   {createdAt}
                 </div>
               </Tooltip>
-              : <Avatar
-                className={isAnonymous && classes.anonymousAvatar}
-                classes={{ root: classes.avatar }}
-                size={35}
-                src={authorPicture ? `${authorPicture.url}/profil` : ''}
-              >
-                {isAnonymous && <Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
-              </Avatar>}
+              : <UserAvatar
+                isAnonymous={isAnonymous}
+                picture={authorPicture}
+                title={author.title}
+                classes={{ avatar: classes.avatar }}
+              />}
           </div>
           <div className={classes.body}>
             {!ignoreMetaData &&
               <div className={classes.header}>
-                <span className={classes.headerTitle}>
-                  {author.title}
-                </span>
-                <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF3} placement="top">
+                <UserTitle node={author} />
+                <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF} placement="top">
                   <span className={classes.headerAddOn}>
                     {createdAt}
                   </span>

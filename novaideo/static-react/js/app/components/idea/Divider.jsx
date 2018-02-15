@@ -2,8 +2,8 @@
 import React from 'react';
 import Moment from 'moment';
 import { blue } from 'material-ui/colors';
-import { I18n } from 'react-redux-i18n';
 
+import { getFormattedDate } from '../../utils/globalFunctions';
 import Divider from '../common/Divider';
 
 const styles = {
@@ -32,12 +32,8 @@ class IdeasDivider extends React.Component {
   render() {
     const { node, index, eventId } = this.props;
     const addDateSeparator = this.addDateSeparator();
-    const today = Moment();
-    const isToday = today.isSame(Moment(node.createdAt), 'day');
-    const yesterday = today.subtract(1, 'days').startOf('day');
-    const isYesterday = yesterday.isSame(Moment(node.createdAt), 'day');
-    const format = (isToday && 'date.today') || (isYesterday && 'date.yesterday');
-    const dateSeparator = addDateSeparator && (format ? I18n.t(format) : Moment(node.createdAt).format(I18n.t('date.format')));
+    const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
+    const dateSeparator = addDateSeparator && createdAtF;
     return (
       <Divider
         fullScreen

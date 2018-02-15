@@ -9,7 +9,7 @@ import { discussionsQuery } from '../../graphql/queries';
 
 const styles = {
   list: {
-    height: '50%'
+    height: 'calc(50% - 64px)'
   }
 };
 export class DumbPrivateChannels extends React.Component {

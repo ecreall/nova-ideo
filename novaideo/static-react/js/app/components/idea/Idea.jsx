@@ -4,43 +4,32 @@ import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Moment from 'moment';
-import Grid from 'material-ui/Grid';
 import { I18n } from 'react-redux-i18n';
-import Avatar from 'material-ui/Avatar';
-import Tooltip from 'material-ui/Tooltip';
-import { CardActions } from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import { CircularProgress } from 'material-ui/Progress';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import ImagesPreview from '../common/ImagesPreview';
-import Keywords from '../common/Keywords';
-import IconWithText from '../common/IconWithText';
-import Evaluation from '../common/Evaluation';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
+import AllignedActions from '../common/AllignedActions';
+import Dialog from '../common/Dialog';
 import * as constants from '../../constants';
 import { getActions } from '../../utils/entities';
-import IdeaMenu from './IdeaMenu';
-import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
 import { goTo, get } from '../../utils/routeMap';
+import { getFormattedDate } from '../../utils/globalFunctions';
 import { ideaQuery } from '../../graphql/queries';
-import Dialog from '../common/Dialog';
+import UserAvatar from '../user/UserAvatar';
 import Comments from '../channels/Comments';
 import { styles as scrollbarStyles } from '../CollaborationApp';
+import IdeaMenu from './IdeaMenu';
+import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
 
 const styles = (theme) => {
   return {
-    ideaItem: {
+    container: {
       display: 'block',
       position: 'relative',
       height: '100%'
-    },
-    authorTitle: {
-      display: 'flex',
-      marginLeft: 4,
-      alignItems: 'center'
     },
     header: {
       display: 'flex',
@@ -69,52 +58,9 @@ const styles = (theme) => {
       fontSize: 12,
       lineHeight: 'normal'
     },
-    body: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
-    },
-    bodyTitle: {
-      marginLeft: -3,
-      marginBottom: 10,
-      cursor: 'pointer'
-    },
-    left: {
-      display: 'flex',
-      alignItems: 'center',
-      paddingRight: 10,
-      margin: '8px 0',
-      flexDirection: 'column'
-    },
-    right: {
-      float: 'right'
-    },
-    leftActions: {
-      display: 'flex',
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: 15
-    },
-    bodyContent: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-      width: '100%',
-      height: '100%'
-    },
-    textContainer: {
-      display: 'flex',
-      justifyContent: 'space-between'
-    },
-    bodyFooter: {
-      display: 'flex',
-      flexDirection: 'row',
-      marginTop: 10
-    },
     actionsContainer: {
-      height: 41
+      height: 41,
+      width: 'auto'
     },
     actionsText: {
       color: '#2c2d30',
@@ -131,14 +77,6 @@ const styles = (theme) => {
       fontSize: '20px !important',
       marginRight: 5,
       marginTop: -2
-    },
-    avatar: {
-      borderRadius: 4
-    },
-    anonymousAvatar: {
-      color: theme.palette.tertiary.hover.color,
-      backgroundColor: theme.palette.tertiary.color,
-      fontWeight: 900
     },
     tooltipSupport: {
       position: 'absolute',
@@ -177,6 +115,9 @@ const styles = (theme) => {
     root: {
       height: 'calc(100vh - 66px)',
       overflow: 'auto'
+    },
+    right: {
+      float: 'right'
     },
     maxContainer: {
       paddingLeft: 20,
@@ -232,7 +173,7 @@ const styles = (theme) => {
   };
 };
 
-export class DumbIdea extends React.Component {
+export class RunderIdea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -260,37 +201,25 @@ export class DumbIdea extends React.Component {
     const author = idea.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
-    const today = Moment();
-    const isToday = today.isSame(Moment(idea.createdAt), 'day');
-    const yesterday = today.subtract(1, 'days').startOf('day');
-    const isYesterday = yesterday.isSame(Moment(idea.createdAt), 'day');
-    const format = (isToday && 'date.todayFormat') || (isYesterday && 'date.yesterdayFormat') || 'date.format3';
-    const createdAtF3 = Moment(idea.createdAt).format(I18n.t(format));
+    const createdAtF3 = getFormattedDate(idea.createdAt, 'date.format3');
     const images = idea.attachedFiles
       ? idea.attachedFiles.filter((image) => {
         return image.isImage;
       })
       : [];
     const hasEvaluation = site.supportIdeas && idea.state.includes('published');
-    const Examination = adapters.examination;
-    const communicationActions = getActions(idea.actions, constants.ACTIONS.communicationAction);
+    const communicationActions = getActions(idea.actions, { descriminator: constants.ACTIONS.communication });
     const scrollEvent = `${idea.id}-scroll`;
     return (
       <Dialog
         classes={{
-          container: classes.ideaItem,
+          container: classes.container,
           closeBtn: classes.closeBtn
         }}
         appBar={
           <div className={classes.appBarContainer}>
             <div className={classes.titleContainer}>
-              <Avatar
-                className={isAnonymous && classes.anonymousAvatar}
-                classes={{ root: classes.avatar }}
-                src={authorPicture ? `${authorPicture.url}/profil` : ''}
-              >
-                {isAnonymous && <Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
-              </Avatar>
+              <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
               <div className={classes.header}>
                 <span className={classes.headerTitle}>
                   {author.title}
@@ -307,23 +236,15 @@ export class DumbIdea extends React.Component {
                 idea={idea}
               />
             </div>
-            <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
-              {communicationActions.map((action, key) => {
-                return (
-                  <IconButton
-                    className={classes.actionsText}
-                    key={key}
-                    onClick={() => {
-                      return this.props.actionsManager.performAction(action);
-                    }}
-                    aria-label="todo"
-                  >
-                    <Icon className={classNames(action.stylePicto, classes.actionsIcon)} />
-                    {action.counter}
-                  </IconButton>
-                );
-              })}
-            </CardActions>
+            <AllignedActions
+              actions={communicationActions}
+              onActionClick={this.props.actionsManager.performAction}
+              classes={{
+                actionsContainer: classes.actionsContainer,
+                actionsText: classes.actionsText,
+                actionsIcon: classes.actionsIcon
+              }}
+            />
           </div>
         }
         fullScreen
@@ -399,11 +320,11 @@ export class DumbIdea extends React.Component {
   }
 }
 
-function DumbIdeaItem(props) {
+function DumbIdea(props) {
   const { data, onActionClick } = props;
   return (
     <IdeaActionsWrapper idea={data.idea} onActionClick={onActionClick}>
-      <DumbIdea {...props} />
+      <RunderIdea {...props} />
     </IdeaActionsWrapper>
   );
 }
@@ -425,6 +346,6 @@ export default withStyles(styles, { withTheme: true })(
           variables: { id: props.id }
         };
       }
-    })(DumbIdeaItem)
+    })(DumbIdea)
   )
 );

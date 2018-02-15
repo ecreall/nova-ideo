@@ -1,29 +1,18 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
-import { gql, graphql } from 'react-apollo';
-import update from 'immutability-helper';
-import { Translate, I18n } from 'react-redux-i18n';
+import { graphql } from 'react-apollo';
+import { Translate } from 'react-redux-i18n';
 
-import { actionFragment } from '../../graphql/queries';
 import { goTo, get } from '../../utils/routeMap';
-
-function evaluationActions() {
-  return {
-    support: {
-      nodeId: 'support',
-      description: I18n.t('evaluation.supportTheIdea')
-    },
-    oppose: {
-      nodeId: 'oppose',
-      description: I18n.t('evaluation.opposeTheIdea')
-    },
-    withdrawToken: {
-      nodeId: 'withdraw_token',
-      description: I18n.t('evaluation.withdrawTokenIdea')
-    }
-  };
-}
+import { PROCESSES } from '../../constants';
+import { select, deselect } from '../../graphql/processes/abstractProcess';
+import { selectMutation } from '../../graphql/processes/abstractProcess/select';
+import { deselectMutation } from '../../graphql/processes/abstractProcess/deselect';
+import { support, oppose, withdraw } from '../../graphql/processes/ideaProcess';
+import { supportMutation } from '../../graphql/processes/ideaProcess/support';
+import { opposeMutation } from '../../graphql/processes/ideaProcess/oppose';
+import { withdrawMutation } from '../../graphql/processes/ideaProcess/withdraw';
 
 export function getExaminationValue(idea) {
   if (idea.state.includes('favorable')) return 'bottom';
@@ -33,13 +22,13 @@ export function getExaminationValue(idea) {
 }
 
 export function getEvaluationActions(idea) {
-  const actions = evaluationActions();
-  const withdraw = actions.withdrawToken;
-  const support = idea.userToken === 'support' ? withdraw : actions.support;
-  const oppose = idea.userToken === 'oppose' ? withdraw : actions.oppose;
+  const actions = PROCESSES.ideamanagement.nodes;
+  const withdrawAction = actions.withdrawToken;
+  const supportAction = idea.userToken === 'support' ? withdrawAction : actions.support;
+  const opposeAction = idea.userToken === 'oppose' ? withdraw : actions.oppose;
   const result = {
-    top: support,
-    down: oppose
+    top: supportAction,
+    down: opposeAction
   };
   return result;
 }
@@ -52,37 +41,38 @@ export class DumbIdeaActionsManager extends React.Component {
 
   evaluationClick = (action) => {
     const { idea, network, globalProps } = this.props;
+    const processNodes = PROCESSES.ideamanagement.nodes;
     if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else if (!action) {
       globalProps.showMessage(<Translate value="AuthorizationFailed" />);
     } else {
+      const { supportIdea, opposeIdea, withdrawIdea } = this.props;
       switch (action.nodeId) {
-      case 'withdraw_token':
-        this.props
-          .withdraw({
-            context: idea.oid
-          })
-          .catch(globalProps.showError);
+      case processNodes.withdrawToken.nodeId:
+        withdrawIdea({
+          context: idea,
+          availableTokens: globalProps.account.availableTokens
+        }).catch(globalProps.showError);
         break;
-      case 'support':
+      case processNodes.support.nodeId:
         if (globalProps.account.availableTokens || idea.userToken === 'oppose') {
-          this.props
-            .support({
-              context: idea.oid
-            })
+          supportIdea({
+            context: idea,
+            availableTokens: globalProps.account.availableTokens
+          })
             .then(this.onActionPerformed)
             .catch(globalProps.showError);
         } else {
           globalProps.showMessage(<Translate value="AuthorizationFailed" />);
         }
         break;
-      case 'oppose':
+      case processNodes.oppose.nodeId:
         if (globalProps.account.availableTokens || idea.userToken === 'support') {
-          this.props
-            .oppose({
-              context: idea.oid
-            })
+          opposeIdea({
+            context: idea,
+            availableTokens: globalProps.account.availableTokens
+          })
             .then(this.onActionPerformed)
             .catch(globalProps.showError);
         } else {
@@ -96,22 +86,25 @@ export class DumbIdeaActionsManager extends React.Component {
   };
 
   performAction = (action) => {
-    const { idea, network, select, deselect, globalProps } = this.props;
-
-    if (action.nodeId === 'comment') {
+    const { idea, network, globalProps } = this.props;
+    const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
+    if (action.nodeId === ideaProcessNodes.comment.nodeId) {
       this.onActionPerformed();
       setTimeout(() => {
-        goTo(get('messages', { channelId: idea.channel.id }, { right: 'idea' }));
+        goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
       globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
     } else {
+      const { selectIdea, deselectIdea } = this.props;
+      const processNodes = PROCESSES.novaideoabstractprocess.nodes;
+
       switch (action.behaviorId) {
-      case 'select':
-        select({ context: idea.oid }).then(this.onActionPerformed).catch(globalProps.showError);
+      case processNodes.select.nodeId:
+        selectIdea({ context: idea }).then(this.onActionPerformed).catch(globalProps.showError);
         break;
-      case 'deselect':
-        deselect({ context: idea.oid }).then(this.onActionPerformed).catch(globalProps.showError);
+      case processNodes.deselect.nodeId:
+        deselectIdea({ context: idea }).then(this.onActionPerformed).catch(globalProps.showError);
         break;
       default:
         globalProps.showMessage(<Translate value="comingSoon" />);
@@ -129,499 +122,38 @@ export class DumbIdeaActionsManager extends React.Component {
   }
 }
 
-const support = gql`
-  mutation($context: String!) {
-    supportIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const oppose = gql`
-  mutation($context: String!) {
-    opposeIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions{
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const withdraw = gql`
-  mutation($context: String!) {
-    withdrawTokenIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
-
-const select = gql`
-  mutation($context: String!, $processId: String, $nodeIds: [String!]) {
-    select(context: $context) {
-      status
-      idea {
-        id
-        oid
-        actions(processId: $processId, nodeIds: $nodeIds) {
-          ...action
-        }
-      }
-    }
-  }
-  ${actionFragment}
-`;
-
-const deselect = gql`
-  mutation($context: String!, $processId: String, $nodeIds: [String!]) {
-    deselect(context: $context) {
-      status
-      idea {
-        id
-        oid
-        actions(processId: $processId, nodeIds: $nodeIds) {
-          ...action
-        }
-      }
-    }
-  }
-  ${actionFragment}
-`;
-
-const DumbIdeaItemActions = graphql(support, {
-  props: function ({ ownProps, mutate }) {
+const DumbIdeaItemActions = graphql(supportMutation, {
+  props: function (props) {
     return {
-      support: function ({ context }) {
-        const { tokensSupport, tokensOpposition, userToken } = ownProps.idea;
-        return mutate({
-          variables: { context: context },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            supportIdea: {
-              __typename: 'SupportIdea',
-              status: true,
-              user: {
-                __typename: 'Person',
-                availableTokens: ownProps.globalProps.account.availableTokens - 1
-              },
-              idea: {
-                ...ownProps.idea,
-                tokensSupport: tokensSupport + 1,
-                tokensOpposition: userToken === 'oppose' ? tokensOpposition - 1 : tokensOpposition,
-                userToken: 'support'
-              }
-            }
-          },
-          updateQueries: {
-            Account: (prev, { mutationResult }) => {
-              return update(prev, {
-                account: {
-                  availableTokens: { $set: mutationResult.data.supportIdea.user.availableTokens }
-                }
-              });
-            },
-            MySupports: (prev, { mutationResult }) => {
-              const newIdea = mutationResult.data.supportIdea.idea;
-              const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                return item && item.node.id === newIdea.id;
-              })[0];
-              const totalCount = prev.account.supportedIdeas.totalCount + 1;
-              if (!currentIdea) {
-                return update(prev, {
-                  account: {
-                    supportedIdeas: {
-                      totalCount: { $set: totalCount },
-                      edges: {
-                        $unshift: [
-                          {
-                            __typename: 'Idea',
-                            node: { ...ownProps.idea, ...newIdea }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                });
-              }
-              const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-              return update(prev, {
-                account: {
-                  supportedIdeas: {
-                    totalCount: { $set: totalCount },
-                    edges: {
-                      $splice: [
-                        [
-                          index,
-                          1,
-                          {
-                            __typename: 'Idea',
-                            node: { ...ownProps.idea, ...newIdea }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
+      supportIdea: support(props)
     };
   }
 })(
-  graphql(oppose, {
-    props: function ({ ownProps, mutate }) {
+  graphql(opposeMutation, {
+    props: function (props) {
       return {
-        oppose: function ({ context }) {
-          const { tokensSupport, tokensOpposition, userToken } = ownProps.idea;
-          return mutate({
-            variables: { context: context },
-            optimisticResponse: {
-              __typename: 'Mutation',
-              opposeIdea: {
-                __typename: 'OpposeIdea',
-                status: true,
-                user: {
-                  __typename: 'Person',
-                  availableTokens: ownProps.globalProps.account.availableTokens - 1
-                },
-                idea: {
-                  ...ownProps.idea,
-                  tokensOpposition: tokensOpposition + 1,
-                  tokensSupport: userToken === 'support' ? tokensSupport - 1 : tokensSupport,
-                  userToken: 'oppose'
-                }
-              }
-            },
-            updateQueries: {
-              Account: (prev, { mutationResult }) => {
-                return update(prev, {
-                  account: {
-                    availableTokens: { $set: mutationResult.data.opposeIdea.user.availableTokens }
-                  }
-                });
-              },
-              MySupports: (prev, { mutationResult }) => {
-                const newIdea = mutationResult.data.opposeIdea.idea;
-                const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                  return item && item.node.id === newIdea.id;
-                })[0];
-                const totalCount = prev.account.supportedIdeas.totalCount + 1;
-                if (!currentIdea) {
-                  return update(prev, {
-                    account: {
-                      supportedIdeas: {
-                        totalCount: { $set: totalCount },
-                        edges: {
-                          $unshift: [
-                            {
-                              __typename: 'Idea',
-                              node: { ...ownProps.idea, ...newIdea }
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  });
-                }
-                const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-                return update(prev, {
-                  account: {
-                    supportedIdeas: {
-                      totalCount: { $set: totalCount },
-                      edges: {
-                        $splice: [
-                          [
-                            index,
-                            1,
-                            {
-                              __typename: 'Idea',
-                              node: { ...ownProps.idea, ...newIdea }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                });
-              }
-            }
-          });
-        }
+        opposeIdea: oppose(props)
       };
     }
   })(
-    graphql(withdraw, {
-      props: function ({ ownProps, mutate }) {
+    graphql(withdrawMutation, {
+      props: function (props) {
         return {
-          withdraw: function ({ context }) {
-            const { tokensSupport, tokensOpposition, userToken } = ownProps.idea;
-            return mutate({
-              variables: { context: context },
-              optimisticResponse: {
-                __typename: 'Mutation',
-                withdrawTokenIdea: {
-                  __typename: 'OpposeIdea',
-                  status: true,
-                  user: {
-                    __typename: 'Person',
-                    availableTokens: ownProps.globalProps.account.availableTokens + 1
-                  },
-                  idea: {
-                    ...ownProps.idea,
-                    tokensSupport: userToken === 'support' ? tokensSupport - 1 : tokensSupport,
-                    tokensOpposition: userToken === 'oppose' ? tokensOpposition - 1 : tokensOpposition,
-                    userToken: 'withdraw'
-                  }
-                }
-              },
-              updateQueries: {
-                Account: (prev, { mutationResult }) => {
-                  return update(prev, {
-                    account: {
-                      availableTokens: {
-                        $set: mutationResult.data.withdrawTokenIdea.user.availableTokens
-                      }
-                    }
-                  });
-                },
-                MySupports: (prev, { mutationResult }) => {
-                  const newIdea = mutationResult.data.withdrawTokenIdea.idea;
-                  const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {
-                    return item && item.node.id === newIdea.id;
-                  })[0];
-                  const index = prev.account.supportedIdeas.edges.indexOf(currentIdea);
-                  const totalCount = prev.account.supportedIdeas.totalCount - 1;
-                  return update(prev, {
-                    account: {
-                      supportedIdeas: {
-                        totalCount: { $set: totalCount },
-                        edges: {
-                          $splice: [[index, 1]]
-                        }
-                      }
-                    }
-                  });
-                },
-                IdeasList: (prev, { mutationResult }) => {
-                  const newIdea = mutationResult.data.withdrawTokenIdea.idea;
-                  const currentIdea = prev.ideas.edges.filter((item) => {
-                    return item && item.node.id === newIdea.id;
-                  })[0];
-                  if (!currentIdea) return prev;
-                  const index = prev.ideas.edges.indexOf(currentIdea);
-                  return update(prev, {
-                    ideas: {
-                      edges: {
-                        $splice: [[index, 1, { __typename: 'Idea', node: { ...currentIdea.node, ...newIdea } }]]
-                      }
-                    }
-                  });
-                }
-              }
-            });
-          }
+          withdrawIdea: withdraw(props)
         };
       }
     })(
-      graphql(select, {
-        props: function ({ ownProps, mutate }) {
+      graphql(selectMutation, {
+        props: function (props) {
           return {
-            select: function ({ context }) {
-              const selectAction = ownProps.idea.actions.filter((item) => {
-                return item && item.behaviorId === 'select';
-              })[0];
-              const indexAction = ownProps.idea.actions.indexOf(selectAction);
-              const newAction = update(selectAction, {
-                counter: { $set: selectAction.counter + 1 },
-                nodeId: { $set: 'deselect' },
-                behaviorId: { $set: 'deselect' },
-                stylePicto: { $set: 'glyphicon glyphicon-star' }
-              });
-              const optimisticIdea = update(ownProps.idea, {
-                actions: {
-                  $set: [newAction]
-                }
-              });
-              return mutate({
-                variables: { context: context, processId: 'novaideoabstractprocess', nodeIds: ['deselect'] },
-                optimisticResponse: {
-                  __typename: 'Mutation',
-                  select: {
-                    __typename: 'Select',
-                    status: true,
-                    idea: {
-                      ...optimisticIdea
-                    }
-                  }
-                },
-                updateQueries: {
-                  MyFollowings: (prev, { mutationResult }) => {
-                    const newActions = mutationResult.data.select.idea.actions;
-                    const totalCount = prev.account.followedIdeas.totalCount + 1;
-                    const newIdea = update(ownProps.idea, {
-                      actions: {
-                        $splice: [[indexAction, 1, ...newActions]]
-                      }
-                    });
-                    return update(prev, {
-                      account: {
-                        followedIdeas: {
-                          totalCount: { $set: totalCount },
-                          edges: {
-                            $unshift: [
-                              {
-                                __typename: 'Idea',
-                                node: { ...newIdea }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    });
-                  },
-                  IdeasList: (prev, { mutationResult }) => {
-                    const idea = mutationResult.data.select.idea;
-                    const newActions = idea.actions;
-                    const currentIdea = prev.ideas.edges.filter((item) => {
-                      return item && item.node.id === idea.id;
-                    })[0];
-                    if (!currentIdea) return prev;
-                    const newIdea = update(currentIdea, {
-                      node: {
-                        actions: {
-                          $splice: [[indexAction, 1, ...newActions]]
-                        }
-                      }
-                    });
-                    const index = prev.ideas.edges.indexOf(currentIdea);
-                    return update(prev, {
-                      ideas: {
-                        edges: {
-                          $splice: [[index, 1, newIdea]]
-                        }
-                      }
-                    });
-                  }
-                }
-              });
-            }
+            selectIdea: select(props)
           };
         }
       })(
-        graphql(deselect, {
-          props: function ({ ownProps, mutate }) {
+        graphql(deselectMutation, {
+          props: function (props) {
             return {
-              deselect: function ({ context }) {
-                const deselectAction = ownProps.idea.actions.filter((item) => {
-                  return item && item.behaviorId === 'deselect';
-                })[0];
-                const newAction = update(deselectAction, {
-                  counter: { $set: deselectAction.counter - 1 },
-                  nodeId: { $set: 'select' },
-                  behaviorId: { $set: 'select' },
-                  stylePicto: { $set: 'glyphicon glyphicon-star-empty' }
-                });
-                const optimisticIdea = update(ownProps.idea, {
-                  actions: {
-                    $set: [newAction]
-                  }
-                });
-                return mutate({
-                  variables: { context: context, processId: 'novaideoabstractprocess', nodeIds: ['select'] },
-                  optimisticResponse: {
-                    __typename: 'Mutation',
-                    deselect: {
-                      __typename: 'Deselect',
-                      status: true,
-                      idea: {
-                        ...optimisticIdea
-                      }
-                    }
-                  },
-                  updateQueries: {
-                    MyFollowings: (prev, { mutationResult }) => {
-                      const newIdea = mutationResult.data.deselect.idea;
-                      const currentIdea = prev.account.followedIdeas.edges.filter((item) => {
-                        return item && item.node.id === newIdea.id;
-                      })[0];
-                      const index = prev.account.followedIdeas.edges.indexOf(currentIdea);
-                      const totalCount = prev.account.followedIdeas.totalCount - 1;
-                      return update(prev, {
-                        account: {
-                          followedIdeas: {
-                            totalCount: { $set: totalCount },
-                            edges: {
-                              $splice: [[index, 1]]
-                            }
-                          }
-                        }
-                      });
-                    },
-                    IdeasList: (prev, { mutationResult }) => {
-                      const indexAction = ownProps.idea.actions.indexOf(deselectAction);
-                      const idea = mutationResult.data.deselect.idea;
-                      const newActions = idea.actions;
-                      const currentIdea = prev.ideas.edges.filter((item) => {
-                        return item && item.node.id === idea.id;
-                      })[0];
-                      if (!currentIdea) return prev;
-                      const newIdea = update(currentIdea, {
-                        node: {
-                          actions: {
-                            $splice: [[indexAction, 1, ...newActions]]
-                          }
-                        }
-                      });
-                      const index = prev.ideas.edges.indexOf(currentIdea);
-                      return update(prev, {
-                        ideas: {
-                          edges: {
-                            $splice: [[index, 1, newIdea]]
-                          }
-                        }
-                      });
-                    }
-                  }
-                });
-              }
+              deselectIdea: deselect(props)
             };
           }
         })(DumbIdeaActionsManager)

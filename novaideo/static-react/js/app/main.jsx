@@ -22,6 +22,7 @@ import {
   updateNavigation
 } from './actions/actions';
 import { getCurrentLocation } from './utils/routeMap';
+import { getActions } from './utils/entities';
 
 const styleNode = document.createComment('insertion-point-jss');
 // $FlowFixMe
@@ -99,6 +100,11 @@ class Main extends React.Component {
     if (data.root) {
       this.props.updateGlobalProps({
         site: data.root,
+        rootActions: getActions(
+          data.actions.edges.map((action) => {
+            return action.node;
+          })
+        ),
         smallScreen: SMALL_WIDTH.includes(width)
       });
       this.props.loadAdapters(data.root.siteId);

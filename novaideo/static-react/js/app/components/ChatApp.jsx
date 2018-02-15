@@ -11,7 +11,7 @@ import Comments from './channels/Comments';
 export class DumbChatApp extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { data: { node }, subject } = nextProps;
-    const subjectId = node && node.subject.id;
+    const subjectId = node && node.subject && node.subject.id;
     if (subjectId !== subject) {
       this.props.updateApp('chatApp', { subject: subjectId });
     }

@@ -6,11 +6,11 @@ import Icon from 'material-ui/Icon';
 import CreateIcon from 'material-ui-icons/Create';
 import Badge from 'material-ui/Badge';
 import { connect } from 'react-redux';
-import Avatar from 'material-ui/Avatar';
 import classNames from 'classnames';
 import { red } from 'material-ui/colors';
 
 import { goTo, get } from '../../utils/routeMap';
+import UserAvatar from '../user/UserAvatar';
 
 const styles = (theme) => {
   return {
@@ -66,14 +66,27 @@ const styles = (theme) => {
       marginRight: 7,
       borderRadius: 4
     },
+    avatarNoPicture: {
+      fontSize: 11,
+      backgroundColor: 'white',
+      color: theme.palette.primary['500']
+    },
     badge: {
       right: 15,
-      marginTop: -15,
+      marginTop: -11,
       fontWeight: '700'
     },
     badgeColor: {
       color: 'white',
-      backgroundColor: red['500']
+      backgroundColor: red['500'],
+      padding: '5px 9px',
+      marginLeft: 4,
+      borderRadius: '1em',
+      fontSize: 12,
+      fontWeight: 700,
+      width: 'auto',
+      height: 'auto',
+      top: -11
     },
     unreadComment: {
       color: 'white',
@@ -104,7 +117,11 @@ export class DumbChannelItem extends React.Component {
       );
     }
     return itemProps && itemProps.isDiscussion
-      ? <Avatar className={classes.avatar} src={channelPicture ? `${channelPicture.url}/profil` : ''} />
+      ? <UserAvatar
+        picture={channelPicture}
+        classes={{ avatar: classes.avatar, noPicture: classes.avatarNoPicture }}
+        title={node.title}
+      />
       : <ListItemIcon>
         <Icon
           className={classNames('mdi-set mdi-pound', classes.icon, {

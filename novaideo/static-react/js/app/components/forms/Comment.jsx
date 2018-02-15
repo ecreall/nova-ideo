@@ -4,18 +4,18 @@ import { Field, reduxForm, initialize } from 'redux-form';
 import { Translate, I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { gql, graphql } from 'react-apollo';
-import update from 'immutability-helper';
+import { graphql } from 'react-apollo';
 import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
 import IconButton from 'material-ui/IconButton';
 
-import { commentFragment } from '../../graphql/queries';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from './utils';
 import FilesPickerPreview from './widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
 import { renderMenuItem } from '../common/menu/MenuList';
+import { comment } from '../../graphql/processes/common';
+import { commentMutation } from '../../graphql/processes/common/comment';
 
 const styles = (theme) => {
   return {
@@ -137,16 +137,19 @@ export class DumbCommentForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
-      this.props.commentObject({
-        context: context,
-        comment: formData.values.comment,
-        attachedFiles: files,
-        anonymous: Boolean(formData.values.anonymous),
-        account: globalProps.account,
-        action: `${action.processId}.${action.nodeId}`
-      });
+      this.props
+        .commentObject({
+          context: context,
+          text: formData.values.comment,
+          attachedFiles: files,
+          anonymous: Boolean(formData.values.anonymous),
+          account: globalProps.account,
+          action: `${action.processId}.${action.nodeId}`
+        })
+        .then(() => {
+          if (onSubmit) onSubmit();
+        });
       this.initializeForm();
-      if (onSubmit) onSubmit();
     }
   };
 
@@ -163,15 +166,16 @@ export class DumbCommentForm extends React.Component {
   };
 
   render() {
-    const { formData, channel, globalProps: { site }, autoFocus, classes, theme } = this.props;
+    const { formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, classes, theme } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
       return file;
     });
-    const isDiscuss = channel && channel.isDiscuss;
-    const withAnonymous = site.anonymisation && !isDiscuss;
+    const isDiscussChannel = channel ? channel.isDiscuss : isDiscuss;
+    const withAnonymous = site.anonymisation && !isDiscussChannel;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
+    const channelTitle = channel ? channel.title : title;
     return (
       <div className={classNames(classes.container, { [classes.containerAddon]: files.length > 0 })}>
         <FilesPickerPreview
@@ -226,7 +230,7 @@ export class DumbCommentForm extends React.Component {
               role="presentation"
               tabIndex="-1"
             >
-              <Translate value="forms.comment.textPlaceholder" name={channel ? channel.title : '...'} />
+              <Translate value="forms.comment.textPlaceholder" name={channelTitle || '...'} />
             </div>
           </div>
           <div className={withAnonymous && classes.addon}>
@@ -265,242 +269,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const commentObject = gql`
-  mutation($context: String!, $comment: String!, $action: String!, $attachedFiles: [Upload], $anonymous: Boolean) {
-    commentObject(
-      context: $context
-      comment: $comment
-      action: $action
-      attachedFiles: $attachedFiles,
-      anonymous: $anonymous
-    ) {
-      status
-      comment {
-        ...comment
-      }
-    }
-  }
-  ${commentFragment}
-`;
-
-const CommentForm = graphql(commentObject, {
-  props: function ({ ownProps, mutate }) {
+const CommentForm = graphql(commentMutation, {
+  props: function (props) {
     return {
-      commentObject: function ({ context, comment, action, attachedFiles, anonymous, account }) {
-        const { formData } = ownProps;
-        const files =
-          attachedFiles.length > 0
-            ? formData.values.files.map((file) => {
-              return {
-                url: file.preview.url,
-                isImage: file.preview.type === 'image',
-                variations: [],
-                __typename: 'File'
-              };
-            })
-            : [];
-        const createdAt = new Date();
-        let authorId = account.id;
-        let authorOid = account.oid;
-        let authorTitle = account.title;
-        if (anonymous) {
-          if (account.mask) {
-            authorId = account.mask.id;
-            authorOid = account.mask.oid;
-            authorTitle = account.mask.title;
-          } else {
-            authorId = 'anonymousId';
-            authorOid = 'anonymousOid';
-            authorTitle = 'Anonymous';
-          }
-        }
-        return mutate({
-          variables: {
-            context: context,
-            comment: comment,
-            attachedFiles: attachedFiles,
-            anonymous: anonymous,
-            action: action
-          },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            commentObject: {
-              __typename: 'CommentObject',
-              status: true,
-              comment: {
-                __typename: 'Comment',
-                id: '0',
-                oid: '0',
-                channel: { ...ownProps.channel, unreadComments: [] },
-                rootOid: ownProps.subject,
-                createdAt: createdAt.toISOString(),
-                text: comment,
-                attachedFiles: files,
-                urls: [],
-                edited: false,
-                author: {
-                  __typename: 'Person',
-                  id: `${authorId}comment`,
-                  oid: `${authorOid}comment`,
-                  isAnonymous: anonymous,
-                  description: account.description,
-                  function: account.function,
-                  title: authorTitle,
-                  picture:
-                    !anonymous && account.picture
-                      ? {
-                        __typename: 'File',
-                        url: account.picture.url
-                      }
-                      : null
-                },
-                actions: [],
-                lenComments: 0
-              }
-            }
-          },
-          updateQueries: {
-            IdeasList: (prev) => {
-              const currentIdea = prev.ideas.edges.filter((item) => {
-                return item && item.node.oid === ownProps.subject;
-              })[0];
-              if (!currentIdea) {
-                return prev;
-              }
-              const commentAction = currentIdea.node.actions.filter((item) => {
-                return item && item.behaviorId === 'comment';
-              })[0];
-              const indexAction = currentIdea.node.actions.indexOf(commentAction);
-              const newAction = update(commentAction, {
-                counter: { $set: commentAction.counter + 1 }
-              });
-              const newIdea = update(currentIdea, {
-                node: {
-                  actions: {
-                    $splice: [[indexAction, 1, newAction]]
-                  }
-                }
-              });
-              const index = prev.ideas.edges.indexOf(currentIdea);
-              return update(prev, {
-                ideas: {
-                  edges: {
-                    $splice: [[index, 1, newIdea]]
-                  }
-                }
-              });
-            },
-            Profil: (prev) => {
-              if (prev.person.oid !== ownProps.subject) return prev;
-              const commentAction = prev.person.actions.filter((item) => {
-                return item && item.behaviorId === 'discuss';
-              })[0];
-              const indexAction = prev.person.actions.indexOf(commentAction);
-              const newAction = update(commentAction, {
-                counter: { $set: commentAction.counter + 1 }
-              });
-              return update(prev, {
-                person: {
-                  actions: {
-                    $splice: [[indexAction, 1, newAction]]
-                  }
-                }
-              });
-            },
-            Channels: (prev) => {
-              if (ownProps.channel.isDiscuss) return prev;
-              const currentChannel = prev.account.channels.edges.filter((item) => {
-                return item && item.node.id === ownProps.channel.id;
-              })[0];
-              if (currentChannel) {
-                return prev;
-              }
-              const newChannel = { ...ownProps.channel, unreadComments: [] };
-              return update(prev, {
-                account: {
-                  channels: {
-                    edges: {
-                      $unshift: [
-                        {
-                          __typename: 'Channel',
-                          node: newChannel
-                        }
-                      ]
-                    }
-                  }
-                }
-              });
-            },
-            Discussions: (prev) => {
-              if (!ownProps.channel.isDiscuss) return prev;
-              const currentChannel = prev.account.discussions.edges.filter((item) => {
-                return item && item.node.id === ownProps.channel.id;
-              })[0];
-              if (currentChannel) {
-                return prev;
-              }
-              const newChannel = { ...ownProps.channel, unreadComments: [] };
-              return update(prev, {
-                account: {
-                  discussions: {
-                    edges: {
-                      $unshift: [
-                        {
-                          __typename: 'Channel',
-                          node: newChannel
-                        }
-                      ]
-                    }
-                  }
-                }
-              });
-            },
-            Comments: (prev, { mutationResult }) => {
-              if (ownProps.context !== prev.node.subject.oid) {
-                return prev;
-              }
-
-              const newComment = mutationResult.data.commentObject.comment;
-              return update(prev, {
-                node: {
-                  lenComments: { $set: prev.node.lenComments + 1 },
-                  comments: {
-                    edges: {
-                      $unshift: [
-                        {
-                          __typename: 'Comment',
-                          node: newComment
-                        }
-                      ]
-                    }
-                  }
-                }
-              });
-            },
-            Comment: (prev, { mutationResult }) => {
-              if (ownProps.context !== prev.node.oid) {
-                return prev;
-              }
-              const newComment = mutationResult.data.commentObject.comment;
-              return update(prev, {
-                node: {
-                  lenComments: { $set: prev.node.lenComments + 1 },
-                  comments: {
-                    edges: {
-                      $unshift: [
-                        {
-                          __typename: 'Comment',
-                          node: newComment
-                        }
-                      ]
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
+      commentObject: comment(props)
     };
   }
 })(CommentReduxForm);

@@ -114,9 +114,9 @@ class Action(Node, graphene.ObjectType):
     behavior_id = graphene.String()
     counter = graphene.Int()
     style = graphene.String()
-    style_descriminator = graphene.String()
-    style_picto = graphene.String()
-    style_order = graphene.Int()
+    descriminator = graphene.String()
+    icon = graphene.String()
+    order = graphene.Int()
     submission_title = graphene.String()
     description = graphene.String()
 
@@ -131,9 +131,12 @@ class Action(Node, graphene.ObjectType):
         return context.localizer.translate(submission_title) if submission_title else submission_title
 
     def resolve_counter(self, args, context, info):  # pylint: disable=W0613
-        action = self.action
-        if hasattr(action, 'get_title'):
-            return action.get_title(self.context, context, True)
+        try:
+            action = self.action
+            if hasattr(action, 'get_title'):
+                return action.get_title(self.context, context, True)
+        except Exception as e:
+            return None
 
         return None
 
@@ -149,13 +152,13 @@ class Action(Node, graphene.ObjectType):
     def resolve_style(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style', '')
 
-    def resolve_style_descriminator(self, args, context, info):  # pylint: disable=W0613
+    def resolve_descriminator(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_descriminator', '')
 
-    def resolve_style_picto(self, args, context, info):  # pylint: disable=W0613
+    def resolve_icon(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_picto', '')
 
-    def resolve_style_order(self, args, context, info):  # pylint: disable=W0613
+    def resolve_order(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_order', 100)
 
 
@@ -282,7 +285,6 @@ class Comment(Node, graphene.ObjectType):
     class Meta(object):
         interfaces = (relay.Node, IEntity)
 
-    created_at = graphene.String()
     state = graphene.List(graphene.String)
     text = graphene.String()
     author = graphene.Field(Person)
@@ -307,9 +309,6 @@ class Comment(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, SDComment)
-
-    def resolve_created_at(self, args, context, info):
-        return self.created_at.isoformat()
 
     def resolve_text(self, args, context, info):
         return getattr(self, 'formatted_comment', self.comment)
@@ -398,7 +397,6 @@ class Idea(Node, Debatable, graphene.ObjectType):
     class Meta(object):
         interfaces = (relay.Node, IEntity)
 
-    created_at = graphene.String()
     presentation_text = graphene.String()
     text = graphene.String()
     keywords = graphene.List(graphene.String)
@@ -416,9 +414,6 @@ class Idea(Node, Debatable, graphene.ObjectType):
             return True
 
         return isinstance(root, SDIdea)
-
-    def resolve_created_at(self, args, context, info):
-        return self.created_at.isoformat()
 
     def resolve_presentation_text(self, args, context, info):
         return self.presentation_text(300)

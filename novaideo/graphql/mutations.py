@@ -308,7 +308,7 @@ class Select(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
-    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    context = graphene.Field('novaideo.graphql.schema.EntityUnion')
     action_id = 'novaideoabstractprocess.select'
 
     @staticmethod
@@ -324,7 +324,7 @@ class Select(graphene.Mutation):
             raise Exception(
                 request.localizer.translate(_("Authorization failed")))
 
-        return Select(idea=context, status=status)
+        return Select(context=context, status=status)
 
 
 class Deselect(graphene.Mutation):
@@ -333,7 +333,7 @@ class Deselect(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
-    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    context = graphene.Field('novaideo.graphql.schema.EntityUnion')
     action_id = 'novaideoabstractprocess.deselect'
 
     @staticmethod
@@ -349,7 +349,7 @@ class Deselect(graphene.Mutation):
             raise Exception(
                 request.localizer.translate(_("Authorization failed")))
 
-        return Deselect(idea=context, status=status)
+        return Deselect(context=context, status=status)
 
 
 class Mutations(graphene.ObjectType):

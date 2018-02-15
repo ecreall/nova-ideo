@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
 
 import { updateApp } from '../../actions/actions';
-import Idea from './Idea';
+import Informations from './Informations';
 
 const styles = {
   container: {
@@ -22,10 +22,8 @@ const styles = {
 
 const ChatAppRightContent = (props) => {
   switch (props.componentId) {
-  case 'idea':
-    return <Idea {...props} />;
-  case 'person':
-    return <div />;
+  case 'info':
+    return <Informations {...props} />;
   default:
     return <div />;
   }

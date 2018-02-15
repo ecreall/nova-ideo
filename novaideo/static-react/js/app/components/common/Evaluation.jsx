@@ -3,6 +3,7 @@ import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
+import { I18n } from 'react-redux-i18n';
 
 import Tooltip from './overlay/Tooltip';
 import OverlayTrigger from './overlay/OverlayTrigger';
@@ -111,7 +112,7 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
             <OverlayTrigger
               overlay={
                 <Tooltip className={classes.buttonTopOverlay}>
-                  {actions.top.description}
+                  {I18n.t(actions.top.description)}
                 </Tooltip>
               }
               placement="right"
@@ -136,7 +137,7 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
             <OverlayTrigger
               overlay={
                 <Tooltip className={classes.buttonBottomOverlay}>
-                  {actions.down.description}
+                  {I18n.t(actions.down.description)}
                 </Tooltip>
               }
               placement="right"

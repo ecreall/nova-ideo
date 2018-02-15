@@ -7,10 +7,12 @@ import classNames from 'classnames';
 
 import { commentsQuery } from '../../graphql/queries';
 import EntitiesList from '../common/EntitiesList';
+import { filterActions } from '../../utils/entities';
 import CommentItem from './CommentItem';
 import ChatAppRight from './ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/Comment';
+import { COMMENTS_ACTIONS } from '../../constants';
 
 const styles = (theme) => {
   return {
@@ -39,8 +41,6 @@ const styles = (theme) => {
   };
 };
 
-const commentsActions = ['comment', 'general_discuss', 'discuss'];
-
 export class DumbComments extends React.Component {
   render() {
     const {
@@ -58,13 +58,9 @@ export class DumbComments extends React.Component {
       classes
     } = this.props;
     const channel = data.node;
-    const commentAction =
-      !data.loading && channel
-        ? channel.subject.actions.filter((action) => {
-          return commentsActions.includes(action.behaviorId);
-        })[0]
-        : null;
-    const contextOid = channel && channel.subject ? channel.subject.oid : '';
+    const subject = channel && channel.subject;
+    const commentAction = subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
+    const contextOid = subject ? subject.oid : '';
     const displayRightBlock = !rightDisabled && rightOpen;
     const commentForm = (
       <Comment
@@ -127,7 +123,7 @@ export class DumbComments extends React.Component {
         {displayRightBlock &&
           channel &&
           <Grid className={classes.right} item xs={12} md={4} sm={5}>
-            <ChatAppRight />
+            <ChatAppRight channel={channel} />
           </Grid>}
       </Grid>
     );
@@ -145,6 +141,7 @@ export default withStyles(styles, { withTheme: true })(
     graphql(commentsQuery, {
       options: (props) => {
         return {
+          fetchPolicy: 'cache-and-network',
           notifyOnNetworkStatusChange: true,
           variables: {
             first: 25,
@@ -152,7 +149,7 @@ export default withStyles(styles, { withTheme: true })(
             filter: '',
             id: props.channelId,
             processId: '',
-            nodeIds: commentsActions
+            nodeIds: COMMENTS_ACTIONS
           }
         };
       }
