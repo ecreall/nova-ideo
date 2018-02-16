@@ -316,6 +316,7 @@ class SeeEntityHistory(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-time'
     title = _('History of processes')
     style_order = 2
+    tags = ['secondary', 'global']
     isSequential = False
     context = IEntity
     processsecurity_validation = history_processsecurity_validation

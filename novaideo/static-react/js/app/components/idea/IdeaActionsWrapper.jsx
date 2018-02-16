@@ -53,7 +53,9 @@ export class DumbIdeaActionsManager extends React.Component {
         withdrawIdea({
           context: idea,
           availableTokens: globalProps.account.availableTokens
-        }).catch(globalProps.showError);
+        })
+          .then(this.onActionPerformed)
+          .catch(globalProps.showError);
         break;
       case processNodes.support.nodeId:
         if (globalProps.account.availableTokens || idea.userToken === 'oppose') {

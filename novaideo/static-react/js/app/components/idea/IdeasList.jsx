@@ -8,6 +8,7 @@ import IdeaItem from './IdeaItem';
 import EntitiesList from '../common/EntitiesList';
 import { ideasListQuery } from '../../graphql/queries';
 import Divider from './Divider';
+import { ACTIONS } from '../../constants';
 
 const styles = {
   list: {
@@ -38,11 +39,19 @@ export class DumbIdeasList extends React.Component {
 }
 
 const IdeasListGQL = graphql(ideasListQuery, {
-  options: (props) => {
+  options: () => {
     return {
       fetchPolicy: 'cache-and-network',
       notifyOnNetworkStatusChange: true,
-      variables: { first: 15, after: '', filter: props.filter }
+      variables: {
+        first: 15,
+        after: '',
+        filter: '',
+        processIds: [],
+        nodeIds: [],
+        processTags: [],
+        actionTags: [ACTIONS.primary]
+      }
     };
   }
 })(DumbIdeasList);

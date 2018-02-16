@@ -3,10 +3,11 @@ import { gql } from 'react-apollo';
 
 import { commentFragment } from '../../queries';
 import { filterActions } from '../../../utils/entities';
-import { PROCESSES } from '../../../constants';
+import { PROCESSES, ACTIONS } from '../../../constants';
 
 export const commentMutation = gql`
-  mutation($context: String!, $comment: String!, $action: String!, $attachedFiles: [Upload], $anonymous: Boolean) {
+  mutation($context: String!, $comment: String!, $action: String!, $attachedFiles: [Upload], $anonymous: Boolean,
+           $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     commentObject(
       context: $context
       comment: $comment
@@ -66,7 +67,11 @@ export default function comment({ ownProps, mutate }) {
         comment: text,
         attachedFiles: attachedFiles,
         anonymous: anonymous,
-        action: action
+        action: action,
+        processIds: [],
+        nodeIds: [],
+        processTags: [],
+        actionTags: [ACTIONS.primary]
       },
       optimisticResponse: {
         __typename: 'Mutation',

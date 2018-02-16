@@ -13,7 +13,7 @@ import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import AllignedActions from '../common/AllignedActions';
-import * as constants from '../../constants';
+import { ACTIONS } from '../../constants';
 import { getActions } from '../../utils/entities';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
@@ -139,17 +139,17 @@ export class RenderIdeaItem extends React.Component {
 
   render() {
     const { data, adapters, globalProps: { site }, classes } = this.props;
-    if (data.loading) {
+    const node = data.idea;
+    if (data.loading || !node) {
       return (
         <div className={classes.progress}>
           <CircularProgress size={30} />
         </div>
       );
     }
-    const node = data.idea;
     const author = node.author;
-    const authorPicture = author.picture;
-    const isAnonymous = author.isAnonymous;
+    const authorPicture = author && author.picture;
+    const isAnonymous = author && author.isAnonymous;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -159,7 +159,7 @@ export class RenderIdeaItem extends React.Component {
       : [];
     const hasEvaluation = site.supportIdeas && node.state.includes('published');
     const Examination = adapters.examination;
-    const communicationActions = getActions(node.actions, { descriminator: constants.ACTIONS.communication });
+    const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>
@@ -265,7 +265,13 @@ export default withStyles(styles)(
       options: (props) => {
         return {
           fetchPolicy: 'cache-and-network',
-          variables: { id: props.id }
+          variables: {
+            id: props.id,
+            processIds: [],
+            nodeIds: [],
+            processTags: [],
+            actionTags: [ACTIONS.primary]
+          }
         };
       }
     })(DumbIdeaItem)

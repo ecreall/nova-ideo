@@ -4,6 +4,10 @@ import StarBorderIcon from 'material-ui-icons/StarBorder';
 import StarIcon from 'material-ui-icons/Star';
 import HistoryIcon from 'material-ui-icons/History';
 import ReportIcon from 'material-ui-icons/Report';
+import ReplyIcon from 'material-ui-icons/Reply';
+import ModeEditIcon from 'material-ui-icons/ModeEdit';
+import DeleteIcon from 'material-ui-icons/Delete';
+import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer';
 
 import { iconAdapter } from './utils/globalFunctions';
 
@@ -74,10 +78,14 @@ export const LOADING_STATES = {
 };
 
 export const ACTIONS = {
-  communication: 'communication-action',
-  global: 'global-action',
-  text: 'text-action',
-  plus: 'plus-action'
+  communication: 'communication',
+  primary: 'primary',
+  danger: 'danger',
+  secondary: 'secondary',
+  entity: 'entity',
+  global: 'global',
+  other: 'other',
+  menu: 'menu'
 };
 
 export const ICONS_MAPPING = {
@@ -86,7 +94,14 @@ export const ICONS_MAPPING = {
   'glyphicon glyphicon-star-empty': StarBorderIcon,
   'glyphicon glyphicon-star': StarIcon,
   'glyphicon glyphicon-time': HistoryIcon,
-  'md md-sms-failed': ReportIcon
+  'md md-sms-failed': ReportIcon,
+  'ion-chatbubbles': ReplyIcon,
+  'glyphicon glyphicon-pencil': ModeEditIcon,
+  'glyphicon glyphicon-trash': DeleteIcon,
+  'icon md md-live-help': QuestionAnswerIcon,
+  'typcn typcn-pin': iconAdapter('mdi-set mdi-pin'),
+  'typcn typcn-pin-outline': iconAdapter('mdi-set mdi-pin-off'),
+  'icon novaideo-icon icon-idea': iconAdapter('mdi-set mdi-lightbulb')
 };
 
 export const STYLE_CONST = {
@@ -116,15 +131,18 @@ export const PROCESSES = {
     }
   },
   usermanagement: {
+    id: 'usermanagement',
     nodes: {
       discuss: { nodeId: 'discuss' },
       generalDiscuss: { nodeId: 'general_discuss' }
     }
   },
   novaideoabstractprocess: {
+    id: 'novaideoabstractprocess',
     nodes: {
       select: { nodeId: 'select' },
-      deselect: { nodeId: 'deselect' }
+      deselect: { nodeId: 'deselect' },
+      addreaction: { nodeId: 'addreaction' }
     }
   }
 };

@@ -2,9 +2,11 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { ideaFragment } from '../../queries';
+import { ACTIONS } from '../../../constants';
 
 export const createAndPublishMutation = gql`
-  mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean) {
+  mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,
+           $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     createAndPublish(
       title: $title
       keywords: $keywords
@@ -56,7 +58,11 @@ export default function createAndPublish({ ownProps, mutate }) {
         title: title,
         keywords: keywords,
         attachedFiles: attachedFiles,
-        anonymous: anonymous
+        anonymous: anonymous,
+        processIds: [],
+        nodeIds: [],
+        processTags: [],
+        actionTags: [ACTIONS.primary]
       },
       optimisticResponse: {
         __typename: 'Mutation',

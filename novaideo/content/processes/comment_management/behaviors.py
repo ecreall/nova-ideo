@@ -94,6 +94,7 @@ class Respond(InfiniteCardinality):
     style_action_class = 'comment-inline-toggle'
     style_interaction_contextual = True
     style_order = 0
+    tags = ['primary', 'menu']
     title = _('Reply')
     access_controled = True
     context = IComment
@@ -212,6 +213,7 @@ class Edit(InfiniteCardinality):
     style_action_class = 'comment-edit-action comment-inline-toggle'
     style_interaction_contextual = True
     style_order = 2
+    tags = ['secondary', 'entity']
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -244,6 +246,7 @@ class Remove(InfiniteCardinality):
     style_action_class = 'comment-ajax-action comment-remove-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 5
+    tags = ['secondary', 'danger', 'entity']
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -276,6 +279,7 @@ class Pin(InfiniteCardinality):
     style_action_class = 'comment-ajax-action comment-un-pin-action'
     style_picto = 'typcn typcn-pin'
     style_order = 1
+    tags = ['secondary', 'global']
     submission_title = _('Continue')
     context = IComment
     roles_validation = pin_processsecurity_validation
@@ -301,6 +305,7 @@ class Unpin(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-un-pin-action'
     style_picto = 'typcn typcn-pin-outline'
+    tags = ['secondary', 'global']
     style_order = 2
     submission_title = _('Continue')
     context = IComment
@@ -322,6 +327,7 @@ class TransformToIdea(CreateIdea):
     style_interaction = 'ajax-action'
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 3
+    tags = ['secondary', 'global']
     title = _('Transform into an idea')
     context = IComment
     state_validation = state_validation
@@ -333,6 +339,7 @@ class TransformToQuestion(AskQuestion):
     style_interaction = 'ajax-action'
     style_picto = 'icon md md-live-help'
     style_order = 4
+    tags = ['secondary', 'global']
     title = _('Transform into a question')
     context = IComment
     state_validation = state_validation

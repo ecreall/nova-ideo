@@ -180,7 +180,7 @@ export class DumbCreateIdeaForm extends React.Component {
         return file;
       });
       const keywords = formData.values.keywords;
-      if (action.nodeId === processNodes.nodes.createAndPublish.nodeId) {
+      if (action.nodeId === processNodes.createAndPublish.nodeId) {
         this.props.createAndPublishIdea({
           text: formData.values.text,
           title: formData.values.title,
@@ -191,7 +191,7 @@ export class DumbCreateIdeaForm extends React.Component {
         });
         this.initializeForm();
       }
-      if (action.nodeId === processNodes.nodes.create.nodeId) {
+      if (action.nodeId === processNodes.create.nodeId) {
         this.props.createIdea({
           text: formData.values.text,
           title: formData.values.title,
@@ -374,7 +374,17 @@ export class DumbCreateIdeaForm extends React.Component {
               </div>
               {creationActions.map((action, key) => {
                 return (
-                  <IconButton key={key} onClick={canSubmit ? this.handleSubmit(action) : undefined} className={classes.action}>
+                  <IconButton
+                    key={key}
+                    onClick={
+                      canSubmit
+                        ? () => {
+                          this.handleSubmit(action);
+                        }
+                        : undefined
+                    }
+                    className={classes.action}
+                  >
                     <SendIcon
                       size={22}
                       className={classNames(classes.submit, {

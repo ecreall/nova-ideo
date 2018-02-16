@@ -11,6 +11,7 @@ export const actionFragment = gql`
     counter
     style
     descriminator
+    tags
     icon
     order
   }
@@ -71,8 +72,8 @@ export const accountQuery = gql`
 `;
 
 export const actionsQuery = gql`
-  query Actions($processId: String, $nodeIds: [String], $context: String) {
-    actions(processId: $processId, nodeIds: $nodeIds, context: $context) {
+  query Actions($context: String, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+    actions(context: $context, processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
       edges {
         node {
           ...action
@@ -145,7 +146,7 @@ export const ideaFragment = gql`
     author {
       ...author
     }
-    actions {
+    actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
       ...action
     }
   }
@@ -233,7 +234,7 @@ export const personQuery = gql`
 `;
 
 export const ideaQuery = gql`
-  query($id: ID!) {
+  query($id: ID!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     idea: node(id: $id) {
       ...idea
     }
@@ -242,7 +243,8 @@ export const ideaQuery = gql`
 `;
 
 export const ideasListQuery = gql`
-  query IdeasList($first: Int!, $after: String!, $filter: String!) {
+  query IdeasList($first: Int!, $after: String!, $filter: String!,
+                  $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     ideas(first: $first, after: $after, filter: $filter) {
       pageInfo {
         endCursor
@@ -365,7 +367,7 @@ export const commentFragment = gql`
       authorName
     }
     lenComments
-    actions {
+    actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags){
       ...action
     }
   }
@@ -374,7 +376,7 @@ export const commentFragment = gql`
 `;
 
 export const commentQuery = gql`
-  query Comment($first: Int!, $after: String!, $filter: String!, $id: ID!, $processId: String, $nodeIds: [String]) {
+  query Comment($first: Int!, $after: String!, $filter: String!, $id: ID!, $processIds: [String], $nodeIds: [String]) {
     node(id: $id) {
       ...comment
       ... on Comment {
@@ -389,7 +391,7 @@ export const commentQuery = gql`
             }
           }
         }
-        actions(processId: $processId, nodeIds: $nodeIds) {
+        actions(processIds: $processIds, nodeIds: $nodeIds) {
           ...action
         }
       }
@@ -400,7 +402,9 @@ export const commentQuery = gql`
 `;
 
 export const commentsQuery = gql`
-  query Comments($first: Int!, $after: String!, $filter: String!, $id: ID!, $processId: String, $nodeIds: [String]) {
+  query Comments($first: Int!, $after: String!, $filter: String!, $id: ID!,
+                 $subjectActionsNodeIds: [String], $processIds: [String], $nodeIds: [String],
+                 $processTags: [String], $actionTags: [String]) {
     node(id: $id) {
       ... on Channel{
            id
@@ -416,7 +420,7 @@ export const commentsQuery = gql`
              ... on IEntity {
                id
                oid
-               actions(processId: $processId, nodeIds: $nodeIds) {
+               actions(nodeIds: $subjectActionsNodeIds) {
                  ...action
                }
              }

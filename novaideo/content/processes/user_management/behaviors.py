@@ -761,6 +761,7 @@ class Discuss(InfiniteCardinality):
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
+    tags = ['communication']
     context = IPerson
     roles_validation = discuss_roles_validation
     processsecurity_validation = discuss_processsecurity_validation

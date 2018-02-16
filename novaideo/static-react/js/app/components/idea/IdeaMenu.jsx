@@ -4,10 +4,11 @@ import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 
-import { MenuList, Menu } from '../common/menu';
+import { Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
-import { ACTIONS } from '../../constants';
+import { ACTIONS, PROCESSES } from '../../constants';
 import { getActions } from '../../utils/entities';
+import MenuMore from '../common/MenuMore';
 
 const styles = (theme) => {
   return {
@@ -66,31 +67,51 @@ export class DumbIdeaMenu extends React.Component {
     this.setState({ menu: false });
   };
 
+  getAction = (action) => {
+    const { classes, onActionClick } = this.props;
+    const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
+    const Icon = action.icon;
+    switch (action.nodeId) {
+    case abstractProcessNodes.addreaction.nodeId:
+      return (
+        <EmojiPicker
+          classes={{
+            button: classes.button,
+            icon: classes.icon
+          }}
+          onSelect={(emoji) => {
+            if (onActionClick) onActionClick(action, { emoji: emoji });
+          }}
+          style={{ picker: { right: 1 } }}
+        />
+      );
+    default:
+      return (
+        <IconButton
+          onClick={() => {
+            if (onActionClick) onActionClick(action);
+          }}
+          className={classes.button}
+        >
+          <Icon className={classes.icon} />
+        </IconButton>
+      );
+    }
+  };
+
   render() {
     const { idea, classes, onActionClick } = this.props;
     if (!this.state.menu) return null;
-    const actions = getActions(idea.actions, { descriminator: [ACTIONS.global, ACTIONS.text, ACTIONS.plus] });
-    const fields = actions.map((action) => {
-      return {
-        title: action.title,
-        Icon: action.icon,
-        onClick: () => {
-          if (onActionClick) onActionClick(action);
-        }
-      };
-    });
+    const actions = getActions(idea.actions, { tags: ACTIONS.menu });
     return (
       <div className={classes.container}>
-        <div className={classes.action}>
-          <EmojiPicker
-            classes={{
-              button: classes.button,
-              icon: classes.icon
-            }}
-            onSelect={this.onSelectEmoji}
-            style={{ picker: { right: 1 } }}
-          />
-        </div>
+        {actions.map((action) => {
+          return (
+            <div className={classes.action}>
+              {this.getAction(action)}
+            </div>
+          );
+        })}
         <div>
           <Menu
             id="comment-more-menu"
@@ -100,7 +121,7 @@ export class DumbIdeaMenu extends React.Component {
               </IconButton>
             }
           >
-            <MenuList fields={fields} />
+            <MenuMore context={idea} onActionClick={onActionClick} />
           </Menu>
         </div>
       </div>

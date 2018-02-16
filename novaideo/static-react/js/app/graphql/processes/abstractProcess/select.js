@@ -7,14 +7,14 @@ import { filterActions } from '../../../utils/entities';
 import { PROCESSES } from '../../../constants';
 
 export const selectMutation = gql`
-  mutation($context: String!, $processId: String, $nodeIds: [String!]) {
+  mutation($context: String!, $processIds: [String], $nodeIds: [String]) {
     select(context: $context) {
       status
       context {
         ... on IEntity {
           id
           oid
-          actions(processId: $processId, nodeIds: $nodeIds) {
+          actions(processIds: $processIds, nodeIds: $nodeIds) {
             ...action
           }
         }
@@ -26,14 +26,16 @@ export const selectMutation = gql`
 
 export default function select({ mutate }) {
   return ({ context }) => {
+    const abstractProcess = PROCESSES.novaideoabstractprocess;
     const selectAction = filterActions(context.actions, {
-      behaviorId: PROCESSES.novaideoabstractprocess.nodes.select.nodeId
+      behaviorId: abstractProcess.nodes.select.nodeId
     })[0];
+    const nodeId = abstractProcess.nodes.deselect.nodeId;
     const indexAction = context.actions.indexOf(selectAction);
     const newAction = update(selectAction, {
       counter: { $set: selectAction.counter + 1 },
-      nodeId: { $set: 'deselect' },
-      behaviorId: { $set: 'deselect' },
+      nodeId: { $set: nodeId },
+      behaviorId: { $set: nodeId },
       icon: { $set: 'glyphicon glyphicon-star' }
     });
     const optimisticContext = update(context, {
@@ -42,7 +44,7 @@ export default function select({ mutate }) {
       }
     });
     return mutate({
-      variables: { context: context.oid, processId: 'novaideoabstractprocess', nodeIds: ['deselect'] },
+      variables: { context: context.oid, processIds: [abstractProcess.id], nodeIds: [nodeId] },
       optimisticResponse: {
         __typename: 'Mutation',
         select: {

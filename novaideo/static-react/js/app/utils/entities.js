@@ -4,10 +4,16 @@ import { ICONS_MAPPING } from '../constants';
 
 function equal(element, filter, defaultValue = true) {
   if (!filter) return defaultValue;
+  if (typeof filter === 'object' && typeof element === 'object') {
+    return element.some((e) => {
+      return filter.includes(e);
+    });
+  }
   if (typeof filter === 'object') return filter.includes(element);
+  if (typeof element === 'object') return element.includes(filter);
   return filter === element;
 }
-// filter = { descriminator: undefined, processId: undefined, nodeId: undefined }
+// filter = { tags: undefined, processId: undefined, nodeId: undefined }
 export function filterActions(actions, filter = {}) {
   if (!actions) return [];
   const validKeys = Object.keys(filter).filter((key) => {

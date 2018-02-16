@@ -115,6 +115,7 @@ class Action(Node, graphene.ObjectType):
     counter = graphene.Int()
     style = graphene.String()
     descriminator = graphene.String()
+    tags = graphene.List(graphene.String)
     icon = graphene.String()
     order = graphene.Int()
     submission_title = graphene.String()
@@ -125,6 +126,9 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_description(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.action.description)
+
+    def resolve_tags(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self.action, 'tags', [])
 
     def resolve_submission_title(self, args, context, info):  # pylint: disable=W0613
         submission_title = getattr(self.action, 'submission_title', '')
@@ -290,10 +294,6 @@ class Comment(Node, graphene.ObjectType):
     author = graphene.Field(Person)
     attached_files = graphene.List(File)
     urls = graphene.List(Url)
-    actions = graphene.List(
-        Action,
-        process_id=graphene.String(),
-        node_ids=graphene.List(graphene.String))
     oid = graphene.String()
     comments = relay.ConnectionField(
         lambda: Comment,
@@ -329,9 +329,6 @@ class Comment(Node, graphene.ObjectType):
 
     def resolve_len_comments(self, args, context, info):
         return self.len_comments
-
-    def resolve_actions(self, args, context, info):  # pylint: disable=W0613
-        return get_actions(self, context, args)
 
     def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
         return get_oid(self.channel.get_subject(getattr(context, 'user', None)), None)
@@ -521,7 +518,9 @@ class Query(graphene.ObjectType):
     account = graphene.Field(Person)
     actions = relay.ConnectionField(
         Action,
-        process_id=graphene.String(),
+        action_tags=graphene.List(graphene.String),
+        process_tags=graphene.List(graphene.String),
+        process_ids=graphene.List(graphene.String),
         node_ids=graphene.List(graphene.String),
         context=graphene.String()
     )

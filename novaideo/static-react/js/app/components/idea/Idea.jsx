@@ -13,7 +13,7 @@ import ImagesPreview from '../common/ImagesPreview';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import AllignedActions from '../common/AllignedActions';
 import Dialog from '../common/Dialog';
-import * as constants from '../../constants';
+import { ACTIONS } from '../../constants';
 import { getActions } from '../../utils/entities';
 import { goTo, get } from '../../utils/routeMap';
 import { getFormattedDate } from '../../utils/globalFunctions';
@@ -188,19 +188,19 @@ export class RunderIdea extends React.Component {
   };
 
   render() {
-    const { classes, data, site, adapters } = this.props;
-    if (data.loading) {
+    const { classes, data, site } = this.props;
+    const { idea } = data;
+    if (data.loading || !idea) {
       return (
         <div className={classes.progress}>
           <CircularProgress size={30} />
         </div>
       );
     }
-    const { idea } = data;
     const { open } = this.state;
     const author = idea.author;
-    const authorPicture = author.picture;
-    const isAnonymous = author.isAnonymous;
+    const authorPicture = author && author.picture;
+    const isAnonymous = author && author.isAnonymous;
     const createdAtF3 = getFormattedDate(idea.createdAt, 'date.format3');
     const images = idea.attachedFiles
       ? idea.attachedFiles.filter((image) => {
@@ -208,7 +208,7 @@ export class RunderIdea extends React.Component {
       })
       : [];
     const hasEvaluation = site.supportIdeas && idea.state.includes('published');
-    const communicationActions = getActions(idea.actions, { descriminator: constants.ACTIONS.communication });
+    const communicationActions = getActions(idea.actions, { tags: ACTIONS.communication });
     const scrollEvent = `${idea.id}-scroll`;
     return (
       <Dialog
@@ -342,8 +342,14 @@ export default withStyles(styles, { withTheme: true })(
     graphql(ideaQuery, {
       options: (props) => {
         return {
-          fetchPolicy: 'cache-first',
-          variables: { id: props.id }
+          fetchPolicy: 'cache-and-network',
+          variables: {
+            id: props.id,
+            processIds: [],
+            nodeIds: [],
+            processTags: [],
+            actionTags: [ACTIONS.primary]
+          }
         };
       }
     })(DumbIdea)

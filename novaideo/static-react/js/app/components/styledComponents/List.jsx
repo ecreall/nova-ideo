@@ -41,6 +41,6 @@ export const ListItemIcon = glamorous(MuiListItemIcon)((props) => {
     width: 20,
     height: 28,
     marginRight: 10,
-    color: props.color || '#a0a0a2'
+    color: props.iconColor || '#a0a0a2'
   };
 });

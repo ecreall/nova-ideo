@@ -272,6 +272,7 @@ class DuplicateIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-git-branch'
     style_order = 2
+    tags = ['secondary', 'global']
     submission_title = _('Save')
     context = Iidea
     processsecurity_validation = duplicate_processsecurity_validation
@@ -327,6 +328,7 @@ class DelIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 6
+    tags = ['secondary', 'danger', 'entity']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = del_roles_validation
@@ -362,6 +364,7 @@ class EditIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
+    tags = ['secondary', 'entity']
     submission_title = _('Save')
     context = Iidea
     roles_validation = edit_roles_validation
@@ -438,6 +441,7 @@ class SubmitIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
+    tags = ['secondary', 'global']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = submit_roles_validation
@@ -475,6 +479,7 @@ class ArchiveIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
+    tags = ['secondary', 'global', 'danger']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = decision_roles_validation
@@ -531,6 +536,7 @@ class ModerationArchiveIdea(ArchiveIdea):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
+    tags = ['secondary', 'global', 'danger']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = archive_roles_validation
@@ -544,6 +550,7 @@ class PublishIdeaModeration(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 5
+    tags = ['secondary', 'global']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = decision_roles_validation
@@ -637,6 +644,7 @@ class PublishIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 5
+    tags = ['secondary', 'global']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = pub_roles_validation
@@ -702,6 +710,7 @@ class AbandonIdea(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-stop'
     style_order = 4
+    tags = ['secondary', 'global', 'danger']
     context = Iidea
     roles_validation = ab_roles_validation
     processsecurity_validation = ab_processsecurity_validation
@@ -739,6 +748,7 @@ class RecuperateIdea(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
+    tags = ['secondary', 'global']
     context = Iidea
     roles_validation = re_roles_validation
     processsecurity_validation = re_processsecurity_validation
@@ -776,6 +786,7 @@ class CommentIdea(InfiniteCardinality):
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
+    tags = ['primary', 'communication']
     context = Iidea
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
@@ -907,6 +918,7 @@ class PresentIdea(InfiniteCardinality):
     style_interaction_type = 'sidebar'
     style_picto = 'glyphicon glyphicon-share-alt'
     style_order = 1
+    tags = ['primary', 'communication']
     submission_title = _('Send')
     context = Iidea
     roles_validation = present_roles_validation
@@ -1098,6 +1110,7 @@ class MakeOpinion(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-checklist'
     style_order = 10
+    tags = ['secondary', 'global']
     submission_title = _('Save')
     context = Iidea
     roles_validation = opinion_roles_validation
@@ -1177,6 +1190,7 @@ class SupportIdea(InfiniteCardinality):
     # style_descriminator = 'text-action'
     # style_picto = 'glyphicon glyphicon-thumbs-up'
     # style_order = 4
+    tags = ['primary']
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = support_processsecurity_validation
@@ -1225,6 +1239,7 @@ class OpposeIdea(InfiniteCardinality):
     # style_descriminator = 'text-action'
     # style_picto = 'glyphicon glyphicon-thumbs-down'
     # style_order = 5
+    tags = ['primary']
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = oppose_processsecurity_validation
@@ -1266,6 +1281,7 @@ class WithdrawToken(InfiniteCardinality):
     # style_descriminator = 'text-action'
     # style_picto = 'glyphicon glyphicon-share-alt'
     # style_order = 6
+    tags = ['primary']
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = withdrawt_processsecurity_validation
@@ -1308,6 +1324,7 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
     style_interaction_type = 'slider'
     style_picto = 'glyphicon glyphicon-link'
     style_order = 2
+    tags = ['secondary', 'global']
     context = Iidea
     #processsecurity_validation = seeideas_processsecurity_validation
     #roles_validation = seeideas_roles_validation

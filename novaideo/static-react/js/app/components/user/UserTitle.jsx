@@ -36,9 +36,10 @@ export class DumbUserTitle extends React.Component {
   };
 
   render() {
-    const { classes, node } = this.props;
+    const { classes, node, onOpen } = this.props;
     return (
       <Menu
+        onOpen={onOpen}
         id={`${node.id}-menu`}
         anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
         initRef={(menu) => {

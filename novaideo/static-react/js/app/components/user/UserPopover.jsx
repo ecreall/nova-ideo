@@ -158,7 +158,7 @@ export class RenderUserPopover extends React.Component {
     const authorPicture = person && person.picture;
     const isAnonymous = person && person.isAnonymous;
     const createdAtF = getFormattedDate(person.createdAt, 'date.format');
-    const communicationActions = getActions(person.actions, { descriminator: ACTIONS.communication });
+    const communicationActions = getActions(person.actions, { tags: ACTIONS.communication });
     const commentAction = filterActions(communicationActions, { behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId })[0];
     const channel = person.channel;
     const channelId = channel ? channel.id : `${person.id}-channel`;

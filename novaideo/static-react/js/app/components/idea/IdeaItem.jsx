@@ -155,7 +155,7 @@ export class RenderIdeaItem extends React.Component {
       : [];
     const hasEvaluation = site.supportIdeas && node.state.includes('published');
     const Examination = adapters.examination;
-    const communicationActions = getActions(node.actions, { descriminator: ACTIONS.communication });
+    const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>

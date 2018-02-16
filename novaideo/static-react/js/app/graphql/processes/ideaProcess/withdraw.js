@@ -2,9 +2,10 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { actionFragment } from '../../queries';
+import { ACTIONS } from '../../../constants';
 
 export const withdrawMutation = gql`
-  mutation($context: String!) {
+  mutation($context: String!, $actionTags: [String]) {
     withdrawTokenIdea(context: $context) {
       status
       user {
@@ -15,7 +16,7 @@ export const withdrawMutation = gql`
         tokensSupport
         tokensOpposition
         userToken
-        actions {
+        actions(actionTags: $actionTags) {
           ...action
         }
       }
@@ -28,7 +29,7 @@ export default function withdraw({ mutate }) {
   return ({ context, availableTokens }) => {
     const { tokensSupport, tokensOpposition, userToken } = context;
     return mutate({
-      variables: { context: context.oid },
+      variables: { context: context.oid, actionTags: [ACTIONS.primary] },
       optimisticResponse: {
         __typename: 'Mutation',
         withdrawTokenIdea: {

@@ -12,7 +12,7 @@ import CommentItem from './CommentItem';
 import ChatAppRight from './ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/Comment';
-import { COMMENTS_ACTIONS } from '../../constants';
+import { COMMENTS_ACTIONS, ACTIONS } from '../../constants';
 
 const styles = (theme) => {
   return {
@@ -62,7 +62,8 @@ export class DumbComments extends React.Component {
     const commentAction = subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
     const contextOid = subject ? subject.oid : '';
     const displayRightBlock = !rightDisabled && rightOpen;
-    const commentForm = (
+    const commentForm =
+      commentAction &&
       <Comment
         key={channelId}
         form={channelId}
@@ -72,8 +73,7 @@ export class DumbComments extends React.Component {
         action={commentAction}
         {...formProps}
         classes={{ container: classes.formContainer }}
-      />
-    );
+      />;
     return (
       <Grid className={classes.container} container>
         <Grid
@@ -144,12 +144,15 @@ export default withStyles(styles, { withTheme: true })(
           fetchPolicy: 'cache-and-network',
           notifyOnNetworkStatusChange: true,
           variables: {
+            filter: '',
             first: 25,
             after: '',
-            filter: '',
             id: props.channelId,
-            processId: '',
-            nodeIds: COMMENTS_ACTIONS
+            processIds: [],
+            nodeIds: [],
+            processTags: [],
+            actionTags: [ACTIONS.primary],
+            subjectActionsNodeIds: COMMENTS_ACTIONS
           }
         };
       }

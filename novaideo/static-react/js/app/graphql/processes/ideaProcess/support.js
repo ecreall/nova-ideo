@@ -2,9 +2,10 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { actionFragment } from '../../queries';
+import { ACTIONS } from '../../../constants';
 
 export const supportMutation = gql`
-  mutation($context: String!) {
+  mutation($context: String!, $actionTags: [String]) {
     supportIdea(context: $context) {
       status
       user {
@@ -15,7 +16,7 @@ export const supportMutation = gql`
         tokensSupport
         tokensOpposition
         userToken
-        actions {
+        actions(actionTags: $actionTags) {
           ...action
         }
       }
@@ -28,7 +29,7 @@ export default function support({ mutate }) {
   return ({ context, availableTokens }) => {
     const { tokensSupport, tokensOpposition, userToken } = context;
     return mutate({
-      variables: { context: context.oid },
+      variables: { context: context.oid, actionTags: [ACTIONS.primary] },
       optimisticResponse: {
         __typename: 'Mutation',
         supportIdea: {
@@ -51,6 +52,21 @@ export default function support({ mutate }) {
           return update(prev, {
             account: {
               availableTokens: { $set: mutationResult.data.supportIdea.user.availableTokens }
+            }
+          });
+        },
+        IdeasList: (prev, { mutationResult }) => {
+          const newIdea = mutationResult.data.supportedIdeas.idea;
+          const currentIdea = prev.ideas.edges.filter((item) => {
+            return item && item.node.id === newIdea.id;
+          })[0];
+          if (!currentIdea) return prev;
+          const index = prev.ideas.edges.indexOf(currentIdea);
+          return update(prev, {
+            ideas: {
+              edges: {
+                $splice: [[index, 1, { __typename: 'Idea', node: { ...currentIdea.node, ...newIdea } }]]
+              }
             }
           });
         },

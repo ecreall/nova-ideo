@@ -47,6 +47,7 @@ class SelectEntity(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-star-empty'
     style_order = 100
+    tags = ['primary', 'communication']
     isSequential = False
     context = ISearchableEntity
     roles_validation = select_roles_validation
@@ -114,6 +115,7 @@ class DeselectEntity(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-star'
     style_order = 101
+    tags = ['primary', 'communication']
     isSequential = False
     context = ISearchableEntity
     roles_validation = deselect_roles_validation
@@ -171,6 +173,7 @@ class AddReaction(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'popover'
     style_picto = 'novaideo-icon icon-add-emoji'
+    tags = ['primary', 'menu']
     template = 'novaideo:views/templates/actions/add_reaction_idea.pt'
     context = IEmojiable
     roles_validation = addr_roles_validation
@@ -200,6 +203,7 @@ class UpdateReaction(AddReaction):
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
     style_picto = 'none'
+    tags = []
     template = None
 
     def get_title(self, selected):

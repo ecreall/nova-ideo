@@ -89,21 +89,27 @@ def get_all_comments(container, args):
 
 
 def get_actions(context, request, args):
-    process_id = args.get('process_id', '')
-    node_ids = args.get('node_ids', '')
+    process_ids = args.get('process_id', None)
+    node_ids = args.get('node_ids', None)
+    action_tags = args.get('action_tags', None)
+    process_tags = args.get('process_tags', None)
     if not node_ids:
         return [ActionCall(a, context) for a in getAllBusinessAction(
                 context, request,
-                process_id=process_id,
-                process_discriminator='Application')]
+                process_id=process_ids,
+                process_discriminator='Application',
+                action_tags=action_tags,
+                process_tags=process_tags)]
 
     result = []
     for node_id in node_ids:
         result.extend(
             [ActionCall(a, context) for a in getAllBusinessAction(
              context, request,
-             process_id=process_id, node_id=node_id,
-             process_discriminator='Application')])
+             process_id=process_ids, node_id=node_id,
+             process_discriminator='Application',
+             action_tags=action_tags,
+             process_tags=process_tags)])
 
     return result
 
