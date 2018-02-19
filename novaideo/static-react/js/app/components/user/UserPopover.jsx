@@ -6,14 +6,14 @@ import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
 
 import AllignedActions from '../common/AllignedActions';
-import { getActions, filterActions } from '../../utils/entities';
+import { getActions, filterActions } from '../../utils/processes';
 import { goTo, get } from '../../utils/routeMap';
 import { getFormattedDate } from '../../utils/globalFunctions';
-import UserActionsWrapper from './UserActionsWrapper';
+import UserProcessManager from './UserProcessManager';
 import { closeChatApp } from '../../actions/actions';
 import { personInfoQuery } from '../../graphql/queries';
-import Comment from '../forms/Comment';
-import { PROCESSES, ACTIONS } from '../../constants';
+import Comment from '../forms/processes/common/Comment';
+import { PROCESSES, ACTIONS } from '../../processes';
 
 const imgGradient =
   'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
@@ -131,9 +131,8 @@ export class RenderUserPopover extends React.Component {
   };
 
   openDetails = () => {
-    const { onActionClick } = this.props;
-    if (onActionClick) onActionClick();
     this.props.closeChatApp();
+    this.props.processManager.onActionPerformed();
     goTo(get('users', { userId: this.props.data.person.id }));
   };
 
@@ -147,14 +146,14 @@ export class RenderUserPopover extends React.Component {
 
   render() {
     const { data, classes } = this.props;
-    if (data.loading) {
+    const person = data.person;
+    if (!person) {
       return (
         <div className={classes.progress}>
           <CircularProgress size={30} />
         </div>
       );
     }
-    const person = data.person;
     const authorPicture = person && person.picture;
     const isAnonymous = person && person.isAnonymous;
     const createdAtF = getFormattedDate(person.createdAt, 'date.format');
@@ -185,7 +184,7 @@ export class RenderUserPopover extends React.Component {
           <div className={classes.bodyContent}>
             <div className={classes.text} dangerouslySetInnerHTML={{ __html: person.description }} />
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.actionsManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
             </div>
           </div>
         </div>
@@ -214,9 +213,9 @@ export const mapDispatchToProps = {
 function DumbUserPopover(props) {
   const { data, onActionClick } = props;
   return (
-    <UserActionsWrapper person={data.person} onActionClick={onActionClick}>
+    <UserProcessManager person={data.person} onActionClick={onActionClick}>
       <RenderUserPopover {...props} />
-    </UserActionsWrapper>
+    </UserProcessManager>
   );
 }
 

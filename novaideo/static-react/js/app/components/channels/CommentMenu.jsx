@@ -6,8 +6,8 @@ import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 
 import { Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
-import { ACTIONS, PROCESSES } from '../../constants';
-import { getActions } from '../../utils/entities';
+import { ACTIONS, PROCESSES } from '../../processes';
+import { getActions } from '../../utils/processes';
 import MenuMore from '../common/MenuMore';
 
 const styles = (theme) => {

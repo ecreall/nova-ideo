@@ -8,7 +8,7 @@ import IdeaItem from './IdeaItem';
 import EntitiesList from '../common/EntitiesList';
 import { ideasListQuery } from '../../graphql/queries';
 import Divider from './Divider';
-import { ACTIONS } from '../../constants';
+import { ACTIONS } from '../../processes';
 
 const styles = {
   list: {

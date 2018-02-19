@@ -21,6 +21,7 @@ const styles = {
     backgroundPosition: 'center center',
     backgroundSize: 'contain',
     borderRadius: 4,
+    backgroundColor: 'black',
     boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1) inset',
     width: 360,
     height: 270,

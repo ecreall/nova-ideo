@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { actionFragment } from '../../queries';
-import { ACTIONS } from '../../../constants';
+import { ACTIONS } from '../../../processes';
 
 export const withdrawMutation = gql`
   mutation($context: String!, $actionTags: [String]) {

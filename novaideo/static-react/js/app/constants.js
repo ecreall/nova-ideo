@@ -1,15 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable import/prefer-default-export, import/no-extraneous-dependencies */
-import StarBorderIcon from 'material-ui-icons/StarBorder';
-import StarIcon from 'material-ui-icons/Star';
-import HistoryIcon from 'material-ui-icons/History';
-import ReportIcon from 'material-ui-icons/Report';
-import ReplyIcon from 'material-ui-icons/Reply';
-import ModeEditIcon from 'material-ui-icons/ModeEdit';
-import DeleteIcon from 'material-ui-icons/Delete';
-import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer';
-
-import { iconAdapter } from './utils/globalFunctions';
 
 export const STATIC_URL = '/novaideostatic-react/';
 
@@ -77,76 +66,41 @@ export const LOADING_STATES = {
   success: 'success'
 };
 
-export const ACTIONS = {
-  communication: 'communication',
-  primary: 'primary',
-  danger: 'danger',
-  secondary: 'secondary',
-  entity: 'entity',
-  global: 'global',
-  other: 'other',
-  menu: 'menu'
-};
-
-export const ICONS_MAPPING = {
-  'ion-chatbubble': iconAdapter('mdi-set mdi-comment-outline'),
-  'glyphicon glyphicon-share-alt': iconAdapter('mdi-set mdi-share'),
-  'glyphicon glyphicon-star-empty': StarBorderIcon,
-  'glyphicon glyphicon-star': StarIcon,
-  'glyphicon glyphicon-time': HistoryIcon,
-  'md md-sms-failed': ReportIcon,
-  'ion-chatbubbles': ReplyIcon,
-  'glyphicon glyphicon-pencil': ModeEditIcon,
-  'glyphicon glyphicon-trash': DeleteIcon,
-  'icon md md-live-help': QuestionAnswerIcon,
-  'typcn typcn-pin': iconAdapter('mdi-set mdi-pin'),
-  'typcn typcn-pin-outline': iconAdapter('mdi-set mdi-pin-off'),
-  'icon novaideo-icon icon-idea': iconAdapter('mdi-set mdi-lightbulb')
-};
-
 export const STYLE_CONST = {
   drawerDuration: '50ms',
   drawerWidth: 220
 };
 
-export const PROCESSES = {
-  ideamanagement: {
-    id: 'ideamanagement',
-    nodes: {
-      create: { nodeId: 'creat' },
-      createAndPublish: { nodeId: 'creatandpublish' },
-      comment: { nodeId: 'comment' },
-      support: {
-        nodeId: 'support',
-        description: 'evaluation.supportTheIdea'
-      },
-      oppose: {
-        nodeId: 'oppose',
-        description: 'evaluation.opposeTheIdea'
-      },
-      withdrawToken: {
-        nodeId: 'withdraw_token',
-        description: 'evaluation.withdrawTokenIdea'
-      }
-    }
-  },
-  usermanagement: {
-    id: 'usermanagement',
-    nodes: {
-      discuss: { nodeId: 'discuss' },
-      generalDiscuss: { nodeId: 'general_discuss' }
-    }
-  },
-  novaideoabstractprocess: {
-    id: 'novaideoabstractprocess',
-    nodes: {
-      select: { nodeId: 'select' },
-      deselect: { nodeId: 'deselect' },
-      addreaction: { nodeId: 'addreaction' }
-    }
-  }
-};
-
-export const COMMENTS_ACTIONS = ['comment', 'discuss', 'general_discuss'];
-
 export const COMMENTS_TIME_INTERVAL = 5; // 5 minutes
+
+export const APOLLO_NETWORK_STATUS = {
+  /**
+   * The query has never been run before and the query is now currently running. A query will still
+   * have this network status even if a partial data result was returned from the cache, but a
+   * query was dispatched anyway.
+   */
+  loading: 1,
+
+  /**
+   * If `setVariables` was called and a query was fired because of that then the network status
+   * will be `setVariables` until the result of that query comes back.
+   */
+  setVariables: 2,
+
+  /**
+   * Indicates that `fetchMore` was called on this query and that the query created is currently in
+   * flight.
+   */
+  fetchMore: 3,
+
+  /**
+   * Similar to the `setVariables` network status. It means that `refetch` was called on a query
+   * and the refetch request is currently in flight.
+   */
+  refetch: 4,
+
+  /**
+   * No request is in flight for this query, and no errors happened. Everything is OK.
+   */
+  ready: 7
+};

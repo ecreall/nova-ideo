@@ -13,11 +13,11 @@ import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import AllignedActions from '../common/AllignedActions';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
-import { ACTIONS } from '../../constants';
-import { getActions } from '../../utils/entities';
+import { ACTIONS } from '../../processes';
+import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
-import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
+import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
 import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/actions';
 import UserTitle from '../user/UserTitle';
@@ -174,12 +174,8 @@ export class RenderIdeaItem extends React.Component {
                         : 'mdi-set mdi-arrow-down-drop-circle'
                 }}
                 onClick={{
-                  top: (action) => {
-                    this.props.actionsManager.evaluationClick(action);
-                  },
-                  down: (action) => {
-                    this.props.actionsManager.evaluationClick(action);
-                  }
+                  top: this.props.processManager.evaluationClick,
+                  down: this.props.processManager.evaluationClick
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
@@ -198,9 +194,7 @@ export class RenderIdeaItem extends React.Component {
                 this.menu = menu;
               }}
               idea={node}
-              onActionClick={(action) => {
-                this.props.actionsManager.performAction(action);
-              }}
+              onActionClick={this.props.processManager.performAction}
             />
             <UserTitle node={author} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
@@ -227,7 +221,7 @@ export class RenderIdeaItem extends React.Component {
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.actionsManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
             </div>
           </div>
         </div>
@@ -257,9 +251,9 @@ export class RenderIdeaItem extends React.Component {
 function DumbIdeaItem(props) {
   const { node, onActionClick } = props;
   return (
-    <IdeaActionsWrapper idea={node} onActionClick={onActionClick}>
+    <IdeaProcessManager idea={node} onActionClick={onActionClick}>
       <RenderIdeaItem {...props} />
-    </IdeaActionsWrapper>
+    </IdeaProcessManager>
   );
 }
 

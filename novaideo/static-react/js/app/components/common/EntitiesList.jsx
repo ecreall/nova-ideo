@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce';
 
 import { setURLState } from '../../actions/actions';
 import { VirtualizedListItem } from './VirtualizedListItem';
+import { APOLLO_NETWORK_STATUS } from '../../constants';
 
 const styles = {
   thumbVertical: {
@@ -188,7 +189,7 @@ export class DumbEntitiesList extends React.Component {
     // to the original query we used to populate the list
     const { data, network, getEntities } = this.props;
     // If no request is in flight for this query, and no errors happened. Everything is OK.
-    if (data.networkStatus === 7) {
+    if (data.networkStatus === APOLLO_NETWORK_STATUS.ready) {
       this.loading = true;
       data
         .fetchMore({
@@ -265,7 +266,8 @@ export class DumbEntitiesList extends React.Component {
       // Do nothing
     }
     const dataEntities = getEntities(data);
-    if (dataEntities == null || data.networkStatus === 1 || data.networkStatus === 2) {
+    const networkStatus = data.networkStatus;
+    if (!dataEntities) {
       return this.renderProgress();
     }
     const offline = this.offline;
@@ -324,7 +326,7 @@ export class DumbEntitiesList extends React.Component {
               return result;
             })
             : null}
-          {data.networkStatus === 3 && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
+          {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
         </ScrollContainer>
       </div>
     );

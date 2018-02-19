@@ -3,8 +3,8 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { actionFragment } from '../../queries';
-import { filterActions } from '../../../utils/entities';
-import { PROCESSES } from '../../../constants';
+import { filterActions } from '../../../utils/processes';
+import { PROCESSES } from '../../../processes';
 
 export const deselectMutation = gql`
   mutation($context: String!, $processIds: [String!], $nodeIds: [String]) {

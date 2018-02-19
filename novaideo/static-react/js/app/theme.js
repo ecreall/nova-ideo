@@ -1,4 +1,4 @@
-import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
+import { teal, grey, red, orange, blue } from 'material-ui/colors';
 import { createMuiTheme } from 'material-ui/styles';
 
 const primaryCode = 500;
@@ -20,7 +20,7 @@ const primaryCode = 500;
 //           color: 'white'
 //         }
 //       },
-//       danger: deepOrange,
+//       danger: red,
 //       info: blue,
 //       warning: orange
 //     },
@@ -51,7 +51,10 @@ function theme() {
           color: 'white'
         }
       },
-      danger: deepOrange,
+      danger: {
+        ...red,
+        primary: '#d72b3f'
+      },
       info: blue,
       warning: orange
     },

@@ -22,7 +22,7 @@ import {
   updateNavigation
 } from './actions/actions';
 import { getCurrentLocation } from './utils/routeMap';
-import { getActions } from './utils/entities';
+import { getActions } from './utils/processes';
 
 const styleNode = document.createComment('insertion-point-jss');
 // $FlowFixMe

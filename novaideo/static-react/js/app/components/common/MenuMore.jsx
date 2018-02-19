@@ -6,8 +6,8 @@ import { CircularProgress } from 'material-ui/Progress';
 
 import { actionsQuery } from '../../graphql/queries';
 import { MenuList } from '../common/menu';
-import { ACTIONS } from '../../constants';
-import { getActions, filterActions } from '../../utils/entities';
+import { ACTIONS } from '../../processes';
+import { getActions, filterActions } from '../../utils/processes';
 
 const styles = {
   progress: {
@@ -19,13 +19,13 @@ const styles = {
 
 export class DumbMenuMore extends React.Component {
   getFields = (actions) => {
-    const { onActionClick } = this.props;
+    const { onActionClick, theme } = this.props;
     return actions.map((action) => {
       const isDanger = action.tags.includes(ACTIONS.danger);
       return {
         title: action.title,
-        color: isDanger && '#d72b3f',
-        hoverColor: isDanger && '#d72b3f',
+        color: isDanger && theme.palette.danger.primary,
+        hoverColor: isDanger && theme.palette.danger.primary,
         Icon: action.icon,
         onClick: () => {
           if (onActionClick) onActionClick(action);
@@ -67,7 +67,7 @@ export class DumbMenuMore extends React.Component {
   }
 }
 
-export default withStyles(styles)(
+export default withStyles(styles, { withTheme: true })(
   graphql(actionsQuery, {
     options: (props) => {
       return {

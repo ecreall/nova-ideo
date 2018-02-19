@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { ideaFragment } from '../../queries';
-import { ACTIONS } from '../../../constants';
+import { ACTIONS } from '../../../processes';
 
 export const createAndPublishMutation = gql`
   mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,

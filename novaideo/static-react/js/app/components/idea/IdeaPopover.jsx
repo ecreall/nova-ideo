@@ -13,11 +13,11 @@ import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import AllignedActions from '../common/AllignedActions';
-import { ACTIONS } from '../../constants';
-import { getActions } from '../../utils/entities';
+import { ACTIONS } from '../../processes';
+import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
-import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
+import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
 import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/actions';
 import { ideaQuery } from '../../graphql/queries';
@@ -131,16 +131,15 @@ export class RenderIdeaItem extends React.Component {
   };
 
   openDetails = () => {
-    const { onActionClick } = this.props;
-    if (onActionClick) onActionClick();
     this.props.closeChatApp();
+    this.props.processManager.onActionPerformed();
     goTo(get('ideas', { ideaId: this.props.data.idea.id }));
   };
 
   render() {
     const { data, adapters, globalProps: { site }, classes } = this.props;
     const node = data.idea;
-    if (data.loading || !node) {
+    if (!node) {
       return (
         <div className={classes.progress}>
           <CircularProgress size={30} />
@@ -178,12 +177,8 @@ export class RenderIdeaItem extends React.Component {
                         : 'mdi-set mdi-arrow-down-drop-circle'
                 }}
                 onClick={{
-                  top: (action) => {
-                    this.props.actionsManager.evaluationClick(action);
-                  },
-                  down: (action) => {
-                    this.props.actionsManager.evaluationClick(action);
-                  }
+                  top: this.props.processManager.evaluationClick,
+                  down: this.props.processManager.evaluationClick
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
@@ -202,6 +197,7 @@ export class RenderIdeaItem extends React.Component {
                 this.menu = menu;
               }}
               idea={node}
+              onActionClick={this.props.processManager.performAction}
             />
             <span className={classes.headerTitle}>
               {author.title}
@@ -229,7 +225,7 @@ export class RenderIdeaItem extends React.Component {
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.actionsManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
             </div>
           </div>
         </div>
@@ -253,9 +249,9 @@ export const mapStateToProps = (state) => {
 function DumbIdeaItem(props) {
   const { data, onActionClick } = props;
   return (
-    <IdeaActionsWrapper idea={data.idea} onActionClick={onActionClick}>
+    <IdeaProcessManager idea={data.idea} onActionClick={onActionClick}>
       <RenderIdeaItem {...props} />
-    </IdeaActionsWrapper>
+    </IdeaProcessManager>
   );
 }
 

@@ -3,7 +3,7 @@ import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 import IdeasList from '../idea/IdeasList';
-import CreateIdeaForm from '../forms/CreateIdea';
+import CreateIdeaForm from '../forms/processes/ideaProcess/CreateIdea';
 import Idea from '../idea/Idea';
 import { openChatApp } from '../../actions/actions';
 

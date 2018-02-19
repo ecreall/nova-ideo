@@ -377,9 +377,11 @@ def extract_urls_metadata(urls, save_images=False):
             url = resp.url
             page = resp.read()
             url_metadata = metadata_parser.MetadataParser(
-                html=page, requests_timeout=100)
-        except Exception:
+                html=page.decode('utf-8'), requests_timeout=100)
+        except Exception as e:
+            log.warning(e)
             continue
+        
         result = {
             'url': url,
             'title': url_metadata.get_metadata('title'),

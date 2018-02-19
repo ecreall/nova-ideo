@@ -7,12 +7,12 @@ import classNames from 'classnames';
 
 import { commentsQuery } from '../../graphql/queries';
 import EntitiesList from '../common/EntitiesList';
-import { filterActions } from '../../utils/entities';
+import { filterActions } from '../../utils/processes';
 import CommentItem from './CommentItem';
 import ChatAppRight from './ChatAppRight';
 import Divider from './Divider';
-import Comment from '../forms/Comment';
-import { COMMENTS_ACTIONS, ACTIONS } from '../../constants';
+import Comment from '../forms/processes/common/Comment';
+import { COMMENTS_ACTIONS, ACTIONS } from '../../processes';
 
 const styles = (theme) => {
   return {

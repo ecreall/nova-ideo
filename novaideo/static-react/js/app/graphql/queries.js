@@ -234,7 +234,7 @@ export const personQuery = gql`
 `;
 
 export const ideaQuery = gql`
-  query($id: ID!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  query Idea($id: ID!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     idea: node(id: $id) {
       ...idea
     }

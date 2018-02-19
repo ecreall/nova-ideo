@@ -13,8 +13,8 @@ import ImagesPreview from '../common/ImagesPreview';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import AllignedActions from '../common/AllignedActions';
 import Dialog from '../common/Dialog';
-import { ACTIONS } from '../../constants';
-import { getActions } from '../../utils/entities';
+import { ACTIONS } from '../../processes';
+import { getActions } from '../../utils/processes';
 import { goTo, get } from '../../utils/routeMap';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import { ideaQuery } from '../../graphql/queries';
@@ -22,7 +22,7 @@ import UserAvatar from '../user/UserAvatar';
 import Comments from '../channels/Comments';
 import { styles as scrollbarStyles } from '../CollaborationApp';
 import IdeaMenu from './IdeaMenu';
-import IdeaActionsWrapper, { getEvaluationActions, getExaminationValue } from './IdeaActionsWrapper';
+import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
 
 const styles = (theme) => {
   return {
@@ -238,7 +238,7 @@ export class RunderIdea extends React.Component {
             </div>
             <AllignedActions
               actions={communicationActions}
-              onActionClick={this.props.actionsManager.performAction}
+              onActionClick={this.props.processManager.performAction}
               classes={{
                 actionsContainer: classes.actionsContainer,
                 actionsText: classes.actionsText,
@@ -323,9 +323,9 @@ export class RunderIdea extends React.Component {
 function DumbIdea(props) {
   const { data, onActionClick } = props;
   return (
-    <IdeaActionsWrapper idea={data.idea} onActionClick={onActionClick}>
+    <IdeaProcessManager idea={data.idea} onActionClick={onActionClick}>
       <RunderIdea {...props} />
-    </IdeaActionsWrapper>
+    </IdeaProcessManager>
   );
 }
 

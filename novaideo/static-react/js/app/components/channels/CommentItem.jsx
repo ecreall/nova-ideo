@@ -14,6 +14,7 @@ import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
 import { COMMENTS_TIME_INTERVAL } from '../../constants';
+import CommentProcessManager from './CommentProcessManager';
 
 const styles = {
   container: {
@@ -114,7 +115,7 @@ const styles = {
   }
 };
 
-export class DumbCommentItem extends React.Component {
+export class RenderCommentItem extends React.Component {
   constructor(props) {
     super(props);
     this.menu = null;
@@ -164,6 +165,7 @@ export class DumbCommentItem extends React.Component {
               this.menu = menu;
             }}
             comment={node}
+            onActionClick={this.props.processManager.performAction}
           />
           <div
             className={classNames(classes.left, {
@@ -222,6 +224,15 @@ export class DumbCommentItem extends React.Component {
       </div>
     );
   }
+}
+
+function DumbCommentItem(props) {
+  const { node, onActionClick } = props;
+  return (
+    <CommentProcessManager comment={node} onActionClick={onActionClick}>
+      <RenderCommentItem {...props} />
+    </CommentProcessManager>
+  );
 }
 
 export default withStyles(styles, { withTheme: true })(DumbCommentItem);

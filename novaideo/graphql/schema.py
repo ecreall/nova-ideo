@@ -20,9 +20,9 @@ from novaideo.core import Channel as SDChannel
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
-from .mutations import Mutations, get_context
+from .mutations import Mutations
 from .interfaces import IEntity
-from .util import get_user_by_token, get_entities, get_all_comments, get_actions, connection_for_type
+from .util import get_user_by_token, get_entities, get_all_comments, get_actions, connection_for_type, get_context
 
 
 class Node(object):

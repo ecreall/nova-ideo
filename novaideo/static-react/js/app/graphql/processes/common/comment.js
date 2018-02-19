@@ -2,8 +2,8 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { commentFragment } from '../../queries';
-import { filterActions } from '../../../utils/entities';
-import { PROCESSES, ACTIONS } from '../../../constants';
+import { filterActions } from '../../../utils/processes';
+import { PROCESSES, ACTIONS } from '../../../processes';
 
 export const commentMutation = gql`
   mutation($context: String!, $comment: String!, $action: String!, $attachedFiles: [Upload], $anonymous: Boolean,

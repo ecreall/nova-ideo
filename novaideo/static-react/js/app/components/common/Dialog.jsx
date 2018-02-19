@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 import Dialog from 'material-ui/Dialog';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -19,6 +20,11 @@ const styles = {
     position: 'relative',
     backgroundColor: '#fff',
     boxShadow: '0 1px 0 rgba(0,0,0,.1)'
+  },
+  modal: {
+    position: 'relative',
+    backgroundColor: 'transparent',
+    boxShadow: 'none'
   },
   paper: {
     backgroundColor: '#f3f3f3'
@@ -68,17 +74,16 @@ class CommonDialog extends React.Component {
         onClose={this.onClose}
         transition={transition && Transition}
       >
-        {appBar &&
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <Typography type="title" color="primary" className={classes.appBarContent}>
-                {appBar}
-              </Typography>
-              <IconButton className={classes.closeBtn} color="primary" onClick={this.onClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>}
+        <AppBar className={classNames({ [classes.appBar]: fullScreen, [classes.modal]: !fullScreen })}>
+          <Toolbar>
+            <Typography type="title" color="primary" className={classes.appBarContent}>
+              {appBar}
+            </Typography>
+            <IconButton className={classes.closeBtn} color="primary" onClick={this.onClose} aria-label="Close">
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
         {this.state.entered &&
           <div className={classes.container}>
             {children}

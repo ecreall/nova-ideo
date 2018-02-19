@@ -13,6 +13,7 @@ const Translations = {
       attachFiles: "Attacher des fichiers",
       searchOrAdd: "Recherche ou ajout",
       search: "Recherche",
+      cancel: "Annuler",
       createIdea: {
         title: "Titre de l'idée",
         titleHelper: "Ajouter un titre à votre idée",
@@ -22,7 +23,9 @@ const Translations = {
       },
       comment: {
         textPlaceholder: "Envoyer un message à #%{name}"
-      }
+      },
+      removeComment: "Voulez-vous vraiment supprimer ce message ? Cette opération est irréversible.",
+      removeIdea: "Voulez-vous vraiment supprimer cette idée ? Cette opération est irréversible."
     },
     evaluation: {
       tokens: "Jetons",
@@ -63,6 +66,7 @@ const Translations = {
       attachFiles: "Attach files",
       searchOrAdd: "Search or add",
       search: "Search",
+      cancel: "Cancel",
       createIdea: {
         title: "The title of the idea",
         titleHelper: "Add a title to your idea",
@@ -72,7 +76,9 @@ const Translations = {
       },
       comment: {
         textPlaceholder: "Submit a message to #%{name}"
-      }
+      },
+      removeComment: "Are you sure you want to delete this message? This cannot be undone.",
+      removeIdea: "Are you sure you want to delete this idea? This cannot be undone."
     },
     evaluation: {
       tokens: "Tokens",
