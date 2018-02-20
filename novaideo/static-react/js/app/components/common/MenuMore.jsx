@@ -12,6 +12,8 @@ import { getActions, filterActions } from '../../utils/processes';
 const styles = {
   progress: {
     width: '100%',
+    minWidth: 320,
+    minHeight: 200,
     display: 'flex',
     justifyContent: 'center'
   }

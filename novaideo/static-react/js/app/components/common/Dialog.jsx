@@ -29,6 +29,21 @@ const styles = {
   paper: {
     backgroundColor: '#f3f3f3'
   },
+  paperSmall: {
+    position: 'absolute',
+    top: '11%',
+    borderRadius: 7,
+    margin: 0,
+    '@media only screen and (max-height:600px)': {
+      top: '5%'
+    },
+    '@media only screen and (max-height:550px)': {
+      top: '3%'
+    },
+    '@media only screen and (max-height:500px)': {
+      top: '1%'
+    }
+  },
   appBarContent: {
     flex: 1
   },
@@ -38,7 +53,7 @@ const styles = {
 };
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide direction="down" {...props} />;
 }
 
 class CommonDialog extends React.Component {
@@ -64,10 +79,10 @@ class CommonDialog extends React.Component {
   };
 
   render() {
-    const { appBar, children, classes, open, fullScreen, transition } = this.props;
+    const { appBar, children, classes, open, fullScreen, transition, directDisplay } = this.props;
     return (
       <Dialog
-        classes={{ paper: classes.paper }}
+        classes={{ paper: classNames(classes.paper, { [classes.paperSmall]: !fullScreen }) }}
         onEntered={this.onEntered}
         fullScreen={fullScreen}
         open={open}
@@ -84,7 +99,7 @@ class CommonDialog extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        {this.state.entered &&
+        {(directDisplay || this.state.entered) &&
           <div className={classes.container}>
             {children}
           </div>}

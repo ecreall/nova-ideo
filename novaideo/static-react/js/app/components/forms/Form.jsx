@@ -17,9 +17,22 @@ const styles = {
   fullRoot: {
     height: 'calc(100vh - 66px)'
   },
+  fullRootWithFooter: {
+    height: `calc(100vh - ${66 + 87}px)`
+  },
   root: {
-    overflow: 'auto',
-    maxHeight: 400
+    overflow: 'auto'
+  },
+  smallRoot: {
+    '@media (min-height:600px)': {
+      maxHeight: 'calc(100vh - 250px)'
+    },
+    '@media (max-height:600px)': {
+      maxHeight: 'calc(100vh - 215px)'
+    },
+    '@media (max-height:550px)': {
+      maxHeight: 'calc(100vh - 205px)'
+    }
   },
   appBarContent: {
     flex: 1,
@@ -32,6 +45,9 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-end',
     padding: '25px 20px'
+  },
+  smallPaper: {
+    backgroundColor: 'white'
   }
 };
 
@@ -65,40 +81,44 @@ export class DumbForm extends React.Component {
     const { open } = this.state;
     return (
       <Dialog
+        transition
+        directDisplay={!fullScreen}
+        fullScreen={fullScreen}
+        open={open}
+        appBar={appBar}
+        onClose={this.close}
         classes={{
           container: classes.container,
           appBarContent: classNames(classes.appBarContent, {
             [classes.fullAppBarContent]: fullScreen
-          })
+          }),
+          paper: !fullScreen && classes.smallPaper
         }}
-        appBar={appBar}
-        fullScreen={fullScreen}
-        open={open}
-        onClose={this.close}
       >
         <div
           className={classNames(classes.root, {
-            [classes.fullRoot]: fullScreen
+            [classes.fullRoot]: fullScreen && !footer,
+            [classes.fullRootWithFooter]: fullScreen && footer,
+            [classes.smallRoot]: !fullScreen
           })}
         >
-          <Scrollbars
-            renderView={(props) => {
-              return <div {...props} style={{ ...props.style, position: 'relative' }} />;
-            }}
-            renderTrackVertical={(props) => {
-              return <div {...props} style={{ ...props.style, ...scrollbarStyles.trackVertical }} />;
-            }}
-            renderThumbVertical={(props) => {
-              return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
-            }}
-          >
-            {children}
-          </Scrollbars>
-          {footer &&
-            <div className={classes.footer}>
-              {footer}
-            </div>}
+          {fullScreen
+            ? <Scrollbars
+              renderTrackVertical={(props) => {
+                return <div {...props} style={{ ...props.style, ...scrollbarStyles.trackVertical }} />;
+              }}
+              renderThumbVertical={(props) => {
+                return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
+              }}
+            >
+              {children}
+            </Scrollbars>
+            : children}
         </div>
+        {footer &&
+          <div className={classes.footer}>
+            {footer}
+          </div>}
       </Dialog>
     );
   }

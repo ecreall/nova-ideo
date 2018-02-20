@@ -114,6 +114,8 @@ const styles = {
   },
   progress: {
     width: '100%',
+    minWidth: 320,
+    minHeight: 340,
     display: 'flex',
     justifyContent: 'center'
   }

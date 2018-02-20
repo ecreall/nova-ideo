@@ -25,8 +25,10 @@ const styles = {
 };
 
 export class DumbDelete extends React.Component {
-  componentWillReceiveProps() {
-    if (this.form) this.form.open();
+  componentWillReceiveProps(nextProps) {
+    const comment = this.props.comment;
+    const nextComment = nextProps.comment;
+    if (comment.id === nextComment.id && this.form) this.form.open();
   }
 
   form = null;
