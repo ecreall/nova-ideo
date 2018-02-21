@@ -1,6 +1,52 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    processes: {
+      ideamanagement: {
+        create: {
+          title: "",
+          description: ""
+        },
+        delete: {
+          title: "Supprimer",
+          description: "Supprimer l'idée",
+          confirmation: "Voulez-vous vraiment supprimer cette idée ? Cette opération est irréversible.",
+          submission: "Oui ! Supprimer"
+        },
+        oppose: {
+          title: "S'opposer",
+          description: "S'opposer à l'idée"
+        },
+        support: {
+          title: "Soutenir",
+          description: "Soutenir l'idée"
+        },
+        withdrawToken: {
+          title: "Retirer",
+          description: "Retirer mon jeton"
+        }
+      },
+      commentmanagement: {
+        delete: {
+          title: "Supprimer",
+          description: "Supprimer le message",
+          confirmation: "Voulez-vous vraiment supprimer ce message de cette conversation ? Cette opération est irréversible.",
+          submission: "Oui ! Supprimer"
+        },
+        pin: {
+          title: "Épingler",
+          description: "Épingler le message",
+          confirmation: "Voulez-vous vraiment épingler ce message à cette conversation ?",
+          submission: "Oui ! Épingler"
+        },
+        unpin: {
+          title: "Désépingler",
+          description: "Désépingler le message",
+          confirmation: "Voulez-vous vraiment désépingler ce message de cette conversation ?",
+          submission: "Oui ! Désépingler"
+        }
+      }
+    },
     channels: {
       jump: "Accéder à...",
       channels: "Chaînes",
@@ -19,23 +65,16 @@ const Translations = {
         titleHelper: "Ajouter un titre à votre idée",
         textPlaceholder: "J'ai une idée !",
         textPlaceholderOpened: "Le texte de votre idée ici",
-        keywords: "Ajouter des mots clés",
-        remove: "Voulez-vous vraiment supprimer cette idée ? Cette opération est irréversible."
+        keywords: "Ajouter des mots clés"
       },
       comment: {
-        textPlaceholder: "Envoyer un message à #%{name}",
-        remove: "Voulez-vous vraiment supprimer ce message de cette conversation? Cette opération est irréversible.",
-        pin: "Voulez-vous vraiment épingler ce message à cette conversation ?",
-        unpin: "Voulez-vous vraiment désépingler ce message de cette conversation ?"
+        textPlaceholder: "Envoyer un message à #%{name}"
       }
     },
     evaluation: {
       tokens: "Jetons",
       support: "Soutiens",
-      opposition: "Oppositions",
-      supportTheIdea: "Soutenir l'idée",
-      opposeTheIdea: "S'opposer à l'idée",
-      withdrawTokenIdea: "Retirer mon jeton"
+      opposition: "Oppositions"
     },
     date: {
       format: "D MMMM YYYY",
@@ -56,6 +95,53 @@ const Translations = {
     }
   },
   en: {
+    processes: {
+      ideamanagement: {
+        create: {
+          title: "",
+          description: ""
+        },
+        delete: {
+          title: "Remove",
+          description: "Remove the idea",
+          confirmation: "Are you sure you want to delete this idea? This cannot be undone.",
+          submission: "Yes ! Remove"
+        },
+        oppose: {
+          title: "Oppose",
+          description: "Oppose the idea"
+        },
+        support: {
+          title: "Support",
+          description: "Support the idea"
+        },
+        withdrawToken: {
+          title: "Withdraw",
+          description: "Withdraw my token"
+        }
+      },
+      commentmanagement: {
+        delete: {
+          title: "Remove",
+          description: "Remove the message",
+          confirmation: "Are you sure you want to delete this message from this conversation? This cannot be undone.",
+          submission: "Yes ! Remove"
+        },
+        pin: {
+          title: "Pin",
+          description: "Pin the message",
+          confirmation: "Are you sure you want to pin this message to this conversation?",
+          submission: "Yes ! Pin"
+        },
+        unpin: {
+          title: "Unpin",
+          description: "Unpin the message",
+          confirmation: "Are you sure you want to unpin this message from this conversation?",
+          submission: "Yes ! Unpin"
+        }
+      }
+    },
+
     channels: {
       jump: "Jump to...",
       channels: "Channels",
@@ -74,23 +160,16 @@ const Translations = {
         titleHelper: "Add a title to your idea",
         textPlaceholder: "I have an idea!",
         textPlaceholderOpened: "The text of your idea here",
-        keywords: "Add keywords",
-        remove: "Are you sure you want to delete this idea? This cannot be undone."
+        keywords: "Add keywords"
       },
       comment: {
-        textPlaceholder: "Submit a message to #%{name}",
-        remove: "Are you sure you want to delete this message from this conversation? This cannot be undone.",
-        pin: "Are you sure you want to pin this message to this conversation?",
-        unpin: "Are you sure you want to unpin this message from this conversation?"
+        textPlaceholder: "Submit a message to #%{name}"
       }
     },
     evaluation: {
       tokens: "Tokens",
       support: "Supports",
-      opposition: "Oppositions",
-      supportTheIdea: "Support the idea",
-      opposeTheIdea: "Oppose the idea",
-      withdrawTokenIdea: "Withdraw my token"
+      opposition: "Oppositions"
     },
     date: {
       format: "MMMM Do, YYYY",

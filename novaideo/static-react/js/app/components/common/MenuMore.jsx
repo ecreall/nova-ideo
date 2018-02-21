@@ -3,6 +3,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
+import { I18n } from 'react-redux-i18n';
 
 import { actionsQuery } from '../../graphql/queries';
 import { MenuList } from '../common/menu';
@@ -25,7 +26,7 @@ export class DumbMenuMore extends React.Component {
     return actions.map((action) => {
       const isDanger = action.tags.includes(ACTIONS.danger);
       return {
-        title: action.title,
+        title: I18n.t(action.title),
         color: isDanger && theme.palette.danger.primary,
         hoverColor: isDanger && theme.palette.danger.primary,
         Icon: action.icon,

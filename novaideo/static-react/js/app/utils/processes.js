@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export, no-underscore-dangle, no-param-reassign */
 import HelpIcon from 'material-ui-icons/Help';
-import { ICONS_MAPPING } from '../processes';
+import { PROCESSES, ICONS_MAPPING } from '../processes';
 
 function equal(element, filter, defaultValue = true) {
   if (!filter) return defaultValue;
@@ -26,12 +26,27 @@ export function filterActions(actions, filter = {}) {
   });
 }
 
+export function getActionData(action) {
+  const processId = action.processId;
+  const behaviorId = action.behaviorId;
+  const processDef = PROCESSES[processId];
+  const newAction = { ...action, icon: action.icon in ICONS_MAPPING ? ICONS_MAPPING[action.icon] : HelpIcon };
+  if (!processDef) return newAction;
+  const actionDef =
+    processDef.nodes[
+      Object.keys(processDef.nodes).filter((key) => {
+        const node = processDef.nodes[key];
+        return node.nodeId === behaviorId;
+      })[0]
+    ];
+  if (!actionDef) return newAction;
+  return { ...newAction, ...actionDef };
+}
+
 export function getActions(actions, filter = {}) {
   if (!actions) return [];
   const newActions = filterActions(actions, filter).map((action) => {
-    const newAction = { ...action };
-    newAction.icon = action.icon in ICONS_MAPPING ? ICONS_MAPPING[action.icon] : HelpIcon;
-    return newAction;
+    return getActionData(action);
   });
   newActions.sort((a1, a2) => {
     return a1.order - a2.order;

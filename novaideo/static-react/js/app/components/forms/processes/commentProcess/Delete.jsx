@@ -44,25 +44,25 @@ export class DumbDelete extends React.Component {
   };
 
   render() {
-    const { comment, action, classes, theme, onFormClose } = this.props;
+    const { action, comment, classes, theme, onFormClose } = this.props;
     return (
       <Form
         initRef={(form) => {
           this.form = form;
         }}
         open
-        appBar={action.description}
+        appBar={I18n.t(action.description)}
         onClose={onFormClose}
         footer={[
           <CancelButton onClick={this.closeForm}>
             {I18n.t('forms.cancel')}
           </CancelButton>,
           <Button onClick={this.handleSubmit} background={theme.palette.danger.primary} className={classes.button}>
-            {action.title}
+            {I18n.t(action.submission)}
           </Button>
         ]}
       >
-        {I18n.t('forms.comment.remove')}
+        {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>
           <CommentItem node={comment} />
         </div>

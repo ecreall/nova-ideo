@@ -21,18 +21,25 @@ export const PROCESSES = {
       comment: { nodeId: 'comment' },
       support: {
         nodeId: 'support',
-        description: 'evaluation.supportTheIdea'
+        title: 'processes.ideamanagement.support.title',
+        description: 'processes.ideamanagement.support.description'
       },
       oppose: {
         nodeId: 'oppose',
-        description: 'evaluation.opposeTheIdea'
+        title: 'processes.ideamanagement.oppose.title',
+        description: 'processes.ideamanagement.oppose.description'
       },
       withdrawToken: {
         nodeId: 'withdraw_token',
-        description: 'evaluation.withdrawTokenIdea'
+        title: 'processes.ideamanagement.withdrawToken.title',
+        description: 'processes.ideamanagement.withdrawToken.description'
       },
       delete: {
-        nodeId: 'delidea'
+        nodeId: 'delidea',
+        title: 'processes.ideamanagement.delete.title',
+        description: 'processes.ideamanagement.delete.description',
+        submission: 'processes.ideamanagement.delete.submission',
+        confirmation: 'processes.ideamanagement.delete.confirmation'
       }
     }
   },
@@ -54,9 +61,27 @@ export const PROCESSES = {
   commentmanagement: {
     id: 'commentmanagement',
     nodes: {
-      delete: { nodeId: 'remove' },
-      pin: { nodeId: 'pin' },
-      unpin: { nodeId: 'unpin' }
+      delete: {
+        nodeId: 'remove',
+        title: 'processes.commentmanagement.delete.title',
+        description: 'processes.commentmanagement.delete.description',
+        submission: 'processes.commentmanagement.delete.submission',
+        confirmation: 'processes.commentmanagement.delete.confirmation'
+      },
+      pin: {
+        nodeId: 'pin',
+        title: 'processes.commentmanagement.pin.title',
+        description: 'processes.commentmanagement.pin.description',
+        submission: 'processes.commentmanagement.pin.submission',
+        confirmation: 'processes.commentmanagement.pin.confirmation'
+      },
+      unpin: {
+        nodeId: 'unpin',
+        title: 'processes.commentmanagement.unpin.title',
+        description: 'processes.commentmanagement.unpin.description',
+        submission: 'processes.commentmanagement.unpin.submission',
+        confirmation: 'processes.commentmanagement.unpin.confirmation'
+      }
     }
   }
 };

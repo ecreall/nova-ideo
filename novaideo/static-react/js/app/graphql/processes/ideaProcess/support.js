@@ -72,7 +72,6 @@ export default function support({ mutate }) {
         },
         Idea: (prev, { mutationResult, queryVariables }) => {
           const newIdea = mutationResult.data.supportIdea.idea;
-          console.log(queryVariables.id, context.id, newIdea);
           if (queryVariables.id !== context.id) return false;
           return update(prev, {
             idea: {
