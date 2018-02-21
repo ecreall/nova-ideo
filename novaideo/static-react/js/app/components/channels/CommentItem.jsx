@@ -16,114 +16,122 @@ import UserAvatar from '../user/UserAvatar';
 import { COMMENTS_TIME_INTERVAL } from '../../constants';
 import CommentProcessManager from './CommentProcessManager';
 
-const styles = {
-  container: {
-    paddingRight: 30,
-    paddingTop: 1,
-    paddingBottom: 2,
-    display: 'flex',
-    position: 'relative',
-    '&:hover': {
-      backgroundColor: '#f9f9f9',
-      '& .creation-date': {
-        display: 'block'
-      }
-    }
-  },
-  body: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  left: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'start',
-    paddingRight: 10,
-    width: 75,
-    margin: '5px 0'
-  },
-  leftDateOnly: {
-    margin: '5px 0'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: '5px 0'
-  },
-  headerAddOn: {
-    color: '#999999ff',
-    paddingLeft: 5,
-    fontSize: 12
-  },
-  creationDate: {
-    display: 'none',
-    color: '#999999ff',
-    fontSize: 12,
-    height: 0
-  },
-
-  bodyContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%'
-  },
-  contentText: {
-    color: '#2c2d30',
-    fontSize: 15,
-    lineHeight: 1.5,
-    wordWrap: 'break-word',
-    '& a': {
-      color: '#0576b9',
-      textDecoration: 'none',
+const styles = (theme) => {
+  return {
+    container: {
+      paddingRight: 30,
+      paddingTop: 1,
+      paddingBottom: 2,
+      display: 'flex',
+      position: 'relative',
       '&:hover': {
-        textDecoration: 'underline'
+        backgroundColor: '#f9f9f9',
+        '& .creation-date': {
+          display: 'block'
+        }
       }
     },
-    '&p': {
-      margin: 0
+    pinned: {
+      backgroundColor: theme.palette.info[50],
+      '&:hover': {
+        backgroundColor: theme.palette.info[100]
+      }
+    },
+    body: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%'
+    },
+    left: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'start',
+      paddingRight: 10,
+      width: 75,
+      margin: '5px 0'
+    },
+    leftDateOnly: {
+      margin: '5px 0'
+    },
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      margin: '5px 0'
+    },
+    headerAddOn: {
+      color: '#999999ff',
+      paddingLeft: 5,
+      fontSize: 12
+    },
+    creationDate: {
+      display: 'none',
+      color: '#999999ff',
+      fontSize: 12,
+      height: 0
+    },
+
+    bodyContent: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100%'
+    },
+    contentText: {
+      color: '#2c2d30',
+      fontSize: 15,
+      lineHeight: 1.5,
+      wordWrap: 'break-word',
+      '& a': {
+        color: '#0576b9',
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      },
+      '&p': {
+        margin: 0
+      }
+    },
+    urlsContainer: {
+      paddingRight: 30,
+      marginTop: 15,
+      maxWidth: 400
+    },
+    bodyFooter: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    },
+    actionsText: {
+      fontSize: 14,
+      marginLeft: 8,
+      marginRight: 50
+    },
+    actionsIcon: {
+      fontSize: 14
+    },
+    avatar: {
+      borderRadius: 4,
+      width: 36,
+      height: 36
+    },
+    tooltip: {
+      marginBottom: 4
     }
-  },
-  urlsContainer: {
-    paddingRight: 30,
-    marginTop: 15,
-    maxWidth: 400
-  },
-  bodyFooter: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  actionsText: {
-    fontSize: 14,
-    marginLeft: 8,
-    marginRight: 50
-  },
-  actionsIcon: {
-    fontSize: 14
-  },
-  avatar: {
-    borderRadius: 4,
-    width: 36,
-    height: 36
-  },
-  tooltip: {
-    marginBottom: 4
-  }
+  };
 };
 
-export class RenderCommentItem extends React.Component {
+class RenderCommentItem extends React.Component {
   constructor(props) {
     super(props);
     this.menu = null;
   }
 
   ignoreMetaData = () => {
-    const { node, reverted } = this.props;
-    const item = reverted ? this.props.next : this.props.previous;
+    const { node, reverted, next, previous } = this.props;
+    const item = reverted ? next : previous;
     if (!item) return false;
     const currentNode = reverted ? node : item;
     const nextNode = reverted ? item : node;
@@ -145,11 +153,13 @@ export class RenderCommentItem extends React.Component {
   };
 
   render() {
-    const { node, classes } = this.props;
+    const { node, classes, processManager } = this.props;
     const ignoreMetaData = this.ignoreMetaData();
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
+    const edited = node.edited;
+    const pinned = node.pinned;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -159,14 +169,15 @@ export class RenderCommentItem extends React.Component {
       : [];
     return (
       <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
-        <div className={classes.container}>
-          <CommentMenu
-            initRef={(menu) => {
-              this.menu = menu;
-            }}
-            comment={node}
-            onActionClick={this.props.processManager.performAction}
-          />
+        <div className={classNames(classes.container, { [classes.pinned]: pinned })}>
+          {processManager &&
+            <CommentMenu
+              initRef={(menu) => {
+                this.menu = menu;
+              }}
+              comment={node}
+              onActionClick={processManager.performAction}
+            />}
           <div
             className={classNames(classes.left, {
               [classes.leftDateOnly]: ignoreMetaData
@@ -236,3 +247,5 @@ function DumbCommentItem(props) {
 }
 
 export default withStyles(styles, { withTheme: true })(DumbCommentItem);
+
+export const CommentItem = withStyles(styles, { withTheme: true })(RenderCommentItem);

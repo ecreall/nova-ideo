@@ -54,7 +54,9 @@ export const PROCESSES = {
   commentmanagement: {
     id: 'commentmanagement',
     nodes: {
-      delete: { nodeId: 'remove' }
+      delete: { nodeId: 'remove' },
+      pin: { nodeId: 'pin' },
+      unpin: { nodeId: 'unpin' }
     }
   }
 };

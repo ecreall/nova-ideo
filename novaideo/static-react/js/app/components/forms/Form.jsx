@@ -8,11 +8,23 @@ import Dialog from '../common/Dialog';
 import { styles as scrollbarStyles } from '../CollaborationApp';
 
 const styles = {
-  container: {
+  dialogContainer: {
     display: 'block',
     position: 'relative',
     height: '100%',
-    minWidth: 560
+    minWidth: 300
+  },
+  container: {
+    padding: '15px 16px',
+    '@media (min-width: 600px)': {
+      padding: '15px 24px'
+    }
+  },
+  maxContainer: {
+    padding: '15px 16px',
+    maxWidth: 740,
+    marginRight: 'auto',
+    marginLeft: 'auto'
   },
   fullRoot: {
     height: 'calc(100vh - 66px)'
@@ -44,7 +56,10 @@ const styles = {
   footer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: '25px 20px'
+    padding: '25px 16px',
+    '@media (min-width: 600px)': {
+      padding: '25px 24px'
+    }
   },
   smallPaper: {
     backgroundColor: 'white'
@@ -79,6 +94,11 @@ export class DumbForm extends React.Component {
   render() {
     const { classes, fullScreen, appBar, footer, children } = this.props;
     const { open } = this.state;
+    const content = (
+      <div className={fullScreen ? classes.maxContainer : classes.container}>
+        {children}
+      </div>
+    );
     return (
       <Dialog
         transition
@@ -88,7 +108,7 @@ export class DumbForm extends React.Component {
         appBar={appBar}
         onClose={this.close}
         classes={{
-          container: classes.container,
+          container: classes.dialogContainer,
           appBarContent: classNames(classes.appBarContent, {
             [classes.fullAppBarContent]: fullScreen
           }),
@@ -111,9 +131,9 @@ export class DumbForm extends React.Component {
                 return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
               }}
             >
-              {children}
+              {content}
             </Scrollbars>
-            : children}
+            : content}
         </div>
         {footer &&
           <div className={classes.footer}>

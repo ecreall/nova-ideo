@@ -154,8 +154,8 @@ export class RenderUserPopover extends React.Component {
         </div>
       );
     }
-    const authorPicture = person && person.picture;
-    const isAnonymous = person && person.isAnonymous;
+    const authorPicture = person.picture;
+    const isAnonymous = person.isAnonymous;
     const createdAtF = getFormattedDate(person.createdAt, 'date.format');
     const communicationActions = getActions(person.actions, { tags: ACTIONS.communication });
     const commentAction = filterActions(communicationActions, { behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId })[0];

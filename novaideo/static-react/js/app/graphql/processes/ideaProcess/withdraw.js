@@ -89,6 +89,20 @@ export default function withdraw({ mutate }) {
               }
             }
           });
+        },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newIdea = mutationResult.data.withdrawTokenIdea.idea;
+          if (queryVariables.id !== context.id) return false;
+          return update(prev, {
+            idea: {
+              tokensSupport: { $set: newIdea.tokensSupport },
+              tokensOpposition: { $set: newIdea.tokensOpposition },
+              userToken: { $set: newIdea.userToken },
+              actions: {
+                $set: newIdea.actions
+              }
+            }
+          });
         }
       }
     });

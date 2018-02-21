@@ -146,6 +146,7 @@ export class RenderIdeaItem extends React.Component {
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
+    const authorTitle = author.title;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -159,7 +160,7 @@ export class RenderIdeaItem extends React.Component {
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>
-          <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
+          <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={authorTitle} />
           <div className={classes.leftActions}>
             {hasEvaluation
               ? <Evaluation

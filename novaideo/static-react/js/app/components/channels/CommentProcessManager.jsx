@@ -1,8 +1,9 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
 
-import Form from '../forms/Form';
 import Delete from '../forms/processes/commentProcess/Delete';
+import Pin from '../forms/processes/commentProcess/Pin';
+import Unpin from '../forms/processes/commentProcess/Unpin';
 import { PROCESSES } from '../../processes';
 
 export class DumbCommentProcessManager extends React.Component {
@@ -42,6 +43,10 @@ export class DumbCommentProcessManager extends React.Component {
     switch (action.behaviorId) {
     case commentProcessNodes.delete.nodeId:
       return <Delete comment={comment} action={action} onClose={this.onFormClose} />;
+    case commentProcessNodes.pin.nodeId:
+      return <Pin comment={comment} action={action} onClose={this.onFormClose} />;
+    case commentProcessNodes.unpin.nodeId:
+      return <Unpin comment={comment} action={action} onClose={this.onFormClose} />;
     default:
       return null;
     }

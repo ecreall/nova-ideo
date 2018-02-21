@@ -56,7 +56,7 @@ export default function support({ mutate }) {
           });
         },
         IdeasList: (prev, { mutationResult }) => {
-          const newIdea = mutationResult.data.supportedIdeas.idea;
+          const newIdea = mutationResult.data.supportIdea.idea;
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.id === newIdea.id;
           })[0];
@@ -66,6 +66,21 @@ export default function support({ mutate }) {
             ideas: {
               edges: {
                 $splice: [[index, 1, { __typename: 'Idea', node: { ...currentIdea.node, ...newIdea } }]]
+              }
+            }
+          });
+        },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newIdea = mutationResult.data.supportIdea.idea;
+          console.log(queryVariables.id, context.id, newIdea);
+          if (queryVariables.id !== context.id) return false;
+          return update(prev, {
+            idea: {
+              tokensSupport: { $set: newIdea.tokensSupport },
+              tokensOpposition: { $set: newIdea.tokensOpposition },
+              userToken: { $set: newIdea.userToken },
+              actions: {
+                $set: newIdea.actions
               }
             }
           });

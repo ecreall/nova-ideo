@@ -31,6 +31,7 @@ class CommentObject(graphene.Mutation):
         # implemented in graphql-wsgi and batched mode is enabled on apollo.
 
     status = graphene.Boolean()
+    is_new_channel = graphene.Boolean() 
     comment = graphene.Field('novaideo.graphql.schema.Comment')
 
     @staticmethod
@@ -60,7 +61,10 @@ class CommentObject(graphene.Mutation):
         context, request, action, args = get_execution_data(
             action_id, args)
         new_comment = None
+        is_new_channel = False
         if action:
+            channel = context.get_channel(request.user)
+            is_new_channel = request.user not in channel.members
             anonymous = args.get('anonymous', False)
             new_comment = CommentClass(**args)
             appstruct = {
@@ -73,7 +77,7 @@ class CommentObject(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         status = new_comment is not None
-        return CommentObject(comment=new_comment, status=status)
+        return CommentObject(comment=new_comment, is_new_channel=is_new_channel, status=status)
 
 
 class MarkCommentsAsRead(graphene.Mutation):
@@ -118,3 +122,53 @@ class DeleteComment(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return DeleteComment(status=status)
+
+
+class Pin(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    context = graphene.Field('novaideo.graphql.schema.Comment')
+    action_id = 'commentmanagement.pin'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Pin.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Pin(context=context, status=status)
+
+
+class Unpin(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    context = graphene.Field('novaideo.graphql.schema.Comment')
+    action_id = 'commentmanagement.unpin'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Unpin.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Unpin(context=context, status=status)

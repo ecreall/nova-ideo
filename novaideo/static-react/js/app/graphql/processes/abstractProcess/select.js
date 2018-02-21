@@ -82,12 +82,12 @@ export default function select({ mutate }) {
         },
         IdeasList: (prev, { mutationResult }) => {
           const newContext = mutationResult.data.select.context;
-          if (newContext.__typename !== 'Idea') return prev;
+          if (newContext.__typename !== 'Idea') return false;
           const newActions = newContext.actions;
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.id === newContext.id;
           })[0];
-          if (!currentIdea) return prev;
+          if (!currentIdea) return false;
           const newIdea = update(currentIdea, {
             node: {
               actions: {
@@ -100,6 +100,18 @@ export default function select({ mutate }) {
             ideas: {
               edges: {
                 $splice: [[index, 1, newIdea]]
+              }
+            }
+          });
+        },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newContext = mutationResult.data.select.context;
+          if (queryVariables.id !== context.id || newContext.__typename !== 'Idea') return false;
+          const newActions = newContext.actions;
+          return update(prev, {
+            idea: {
+              actions: {
+                $splice: [[indexAction, 1, ...newActions]]
               }
             }
           });

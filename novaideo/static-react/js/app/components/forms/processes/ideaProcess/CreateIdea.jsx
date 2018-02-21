@@ -275,7 +275,7 @@ export class DumbCreateIdeaForm extends React.Component {
           {opened &&
             <Field
               props={{
-                placeholder: I18n.t('forms.createIdea.titleHelper')
+                placeholder: I18n.t('forms.idea.titleHelper')
               }}
               name="title"
               component={renderTextInput}
@@ -308,7 +308,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 role="presentation"
                 tabIndex="-1"
               >
-                {opened ? I18n.t('forms.createIdea.textPlaceholderOpened') : I18n.t('forms.createIdea.textPlaceholder')}
+                {opened ? I18n.t('forms.idea.textPlaceholderOpened') : I18n.t('forms.idea.textPlaceholder')}
               </div>
             </div>
             {(files.length > 0 || Object.keys(selectedKeywords).length > 0) &&
@@ -334,7 +334,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 <Field
                   props={{
                     label: (
-                      <Tooltip title={I18n.t('forms.createIdea.keywords')} placement="top">
+                      <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
                         <IconButton className={classes.button}>
                           <Icon className={'mdi-set mdi-tag-multiple'} />
                         </IconButton>

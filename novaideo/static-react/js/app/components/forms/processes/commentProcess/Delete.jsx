@@ -8,19 +8,17 @@ import { deleteComment } from '../../../../graphql/processes/commentProcess';
 import { deleteMutation } from '../../../../graphql/processes/commentProcess/delete';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
+import { CommentItem } from '../../../channels/CommentItem';
 
 const styles = {
-  container: {
-    padding: '15px 11px',
-    borderBottom: 'none',
-    display: 'flex'
-  },
-  form: {
-    flex: 1,
-    marginLeft: 10
-  },
   button: {
     marginLeft: '5px !important'
+  },
+  contextContainer: {
+    marginTop: 10,
+    border: '1px solid #e8e8e8',
+    borderRadius: 4,
+    padding: 8
   }
 };
 
@@ -46,7 +44,7 @@ export class DumbDelete extends React.Component {
   };
 
   render() {
-    const { action, classes, theme, onFormClose } = this.props;
+    const { comment, action, classes, theme, onFormClose } = this.props;
     return (
       <Form
         initRef={(form) => {
@@ -64,10 +62,9 @@ export class DumbDelete extends React.Component {
           </Button>
         ]}
       >
-        <div className={classes.container}>
-          <div className={classes.form}>
-            {I18n.t('forms.removeComment')}
-          </div>
+        {I18n.t('forms.comment.remove')}
+        <div className={classes.contextContainer}>
+          <CommentItem node={comment} />
         </div>
       </Form>
     );

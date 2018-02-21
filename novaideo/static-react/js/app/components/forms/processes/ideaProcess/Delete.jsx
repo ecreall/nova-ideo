@@ -13,17 +13,16 @@ import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 
 const styles = {
-  container: {
-    padding: '15px 11px',
-    borderBottom: 'none',
-    display: 'flex'
-  },
-  form: {
-    flex: 1,
-    marginLeft: 10
-  },
   button: {
     marginLeft: '5px !important'
+  },
+  contextContainer: {
+    marginTop: 10,
+    border: '1px solid #e8e8e8',
+    borderRadius: 4,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingRight: 8
   }
 };
 
@@ -72,11 +71,7 @@ export class DumbDelete extends React.Component {
           </Button>
         ]}
       >
-        <div className={classes.container}>
-          <div className={classes.form}>
-            {I18n.t('forms.removeComment')}
-          </div>
-        </div>
+        {I18n.t('forms.idea.remove')}
       </Form>
     );
   }

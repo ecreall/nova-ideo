@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { Translate } from 'react-redux-i18n';
 
-import Form from '../forms/Form';
 import Delete from '../forms/processes/ideaProcess/Delete';
 import { goTo, get } from '../../utils/routeMap';
 import { PROCESSES } from '../../processes';
@@ -27,7 +26,7 @@ export function getEvaluationActions(idea) {
   const actions = PROCESSES.ideamanagement.nodes;
   const withdrawAction = actions.withdrawToken;
   const supportAction = idea.userToken === 'support' ? withdrawAction : actions.support;
-  const opposeAction = idea.userToken === 'oppose' ? withdraw : actions.oppose;
+  const opposeAction = idea.userToken === 'oppose' ? withdrawAction : actions.oppose;
   const result = {
     top: supportAction,
     down: opposeAction

@@ -48,7 +48,8 @@ const styles = {
     flex: 1
   },
   closeBtn: {
-    position: 'relative'
+    position: 'relative',
+    marginRight: -15
   }
 };
 

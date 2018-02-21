@@ -331,6 +331,7 @@ export const commentFragment = gql`
     createdAt
     text
     edited
+    pinned
     channel {
       id
       oid

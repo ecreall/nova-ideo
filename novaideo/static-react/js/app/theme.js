@@ -1,4 +1,4 @@
-import { teal, grey, red, orange, blue } from 'material-ui/colors';
+import { teal, grey, red, orange, blue, green } from 'material-ui/colors';
 import { createMuiTheme } from 'material-ui/styles';
 
 const primaryCode = 500;
@@ -56,7 +56,8 @@ function theme() {
         primary: '#d72b3f'
       },
       info: blue,
-      warning: orange
+      warning: orange,
+      success: green
     },
     typography: {
       htmlFontSize: 15,

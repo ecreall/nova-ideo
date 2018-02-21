@@ -302,6 +302,7 @@ class Comment(Node, graphene.ObjectType):
     root_oid = graphene.String()
     channel = graphene.Field(lambda: Channel)
     edited = graphene.Boolean()
+    pinned = graphene.Boolean()
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613

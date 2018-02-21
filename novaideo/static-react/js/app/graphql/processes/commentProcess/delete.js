@@ -27,7 +27,7 @@ export default function deleteComment({ mutate }) {
       },
       updateQueries: {
         Comments: (prev, { mutationResult }) => {
-          if (!mutationResult.data.deleteComment.status) return prev;
+          if (!mutationResult.data.deleteComment.status) return false;
           const currentComment = prev.node.comments.edges.filter((item) => {
             return item && item.node.id === context.id;
           })[0];
@@ -47,9 +47,7 @@ export default function deleteComment({ mutate }) {
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.oid === context.channel.subject.oid;
           })[0];
-          if (!currentIdea) {
-            return prev;
-          }
+          if (!currentIdea) return false;
           const commentAction = filterActions(currentIdea.node.actions, {
             behaviorId: PROCESSES.ideamanagement.nodes.comment.nodeId
           })[0];
@@ -74,8 +72,8 @@ export default function deleteComment({ mutate }) {
             }
           });
         },
-        Idea: (prev) => {
-          if (prev.idea.oid !== context.channel.subject.oid) return prev;
+        Idea: (prev, { queryVariables }) => {
+          if (queryVariables.id !== context.channel.subject.id) return false;
           const commentAction = filterActions(prev.idea.actions, {
             behaviorId: PROCESSES.ideamanagement.nodes.comment.nodeId
           })[0];
@@ -92,8 +90,8 @@ export default function deleteComment({ mutate }) {
             }
           });
         },
-        Person: (prev) => {
-          if (prev.person.oid !== context.channel.subject.oid) return prev;
+        Person: (prev, { queryVariables }) => {
+          if (queryVariables.id !== context.channel.subject.id) return false;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
           })[0];
@@ -109,8 +107,8 @@ export default function deleteComment({ mutate }) {
             }
           });
         },
-        PersonInfo: (prev) => {
-          if (prev.person.oid !== context.channel.subject.oid) return prev;
+        PersonInfo: (prev, { queryVariables }) => {
+          if (queryVariables.id !== context.channel.subject.id) return false;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
           })[0];

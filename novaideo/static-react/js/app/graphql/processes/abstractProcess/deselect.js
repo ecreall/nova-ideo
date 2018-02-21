@@ -31,6 +31,7 @@ export default function select({ mutate }) {
       behaviorId: abstractProcess.nodes.deselect.nodeId
     })[0];
     const nodeId = abstractProcess.nodes.select.nodeId;
+    const indexAction = context.actions.indexOf(deselectAction);
     const newAction = update(deselectAction, {
       counter: { $set: deselectAction.counter - 1 },
       nodeId: { $set: nodeId },
@@ -80,7 +81,6 @@ export default function select({ mutate }) {
         IdeasList: (prev, { mutationResult }) => {
           const newContext = mutationResult.data.deselect.context;
           if (newContext.__typename !== 'Idea') return prev;
-          const indexAction = context.actions.indexOf(deselectAction);
           const newActions = newContext.actions;
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.id === newContext.id;
@@ -98,6 +98,18 @@ export default function select({ mutate }) {
             ideas: {
               edges: {
                 $splice: [[index, 1, newIdea]]
+              }
+            }
+          });
+        },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newContext = mutationResult.data.deselect.context;
+          if (queryVariables.id !== context.id || newContext.__typename !== 'Idea') return false;
+          const newActions = newContext.actions;
+          return update(prev, {
+            idea: {
+              actions: {
+                $splice: [[indexAction, 1, ...newActions]]
               }
             }
           });

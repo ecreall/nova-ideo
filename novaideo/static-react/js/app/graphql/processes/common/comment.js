@@ -16,6 +16,7 @@ export const commentMutation = gql`
       anonymous: $anonymous
     ) {
       status
+      isNewChannel
       comment {
         ...comment
       }
@@ -78,6 +79,7 @@ export default function comment({ ownProps, mutate }) {
         commentObject: {
           __typename: 'CommentObject',
           status: true,
+          isNewChannel: false,
           comment: {
             __typename: 'Comment',
             id: '0',
@@ -92,6 +94,7 @@ export default function comment({ ownProps, mutate }) {
             attachedFiles: files,
             urls: [],
             edited: false,
+            pinned: false,
             author: {
               __typename: 'Person',
               id: `${authorId}comment`,
@@ -118,9 +121,7 @@ export default function comment({ ownProps, mutate }) {
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.oid === ownProps.subject;
           })[0];
-          if (!currentIdea) {
-            return prev;
-          }
+          if (!currentIdea) return false;
           const commentAction = filterActions(currentIdea.node.actions, {
             behaviorId: PROCESSES.ideamanagement.nodes.comment.nodeId
           })[0];
@@ -145,8 +146,25 @@ export default function comment({ ownProps, mutate }) {
             }
           });
         },
+        Idea: (prev, { queryVariables }) => {
+          if (channel.subject && queryVariables.id !== channel.subject.id) return false;
+          const commentAction = filterActions(prev.idea.actions, {
+            behaviorId: PROCESSES.ideamanagement.nodes.comment.nodeId
+          })[0];
+          const indexAction = prev.idea.actions.indexOf(commentAction);
+          const newAction = update(commentAction, {
+            counter: { $set: commentAction.counter + 1 }
+          });
+          return update(prev, {
+            idea: {
+              actions: {
+                $splice: [[indexAction, 1, newAction]]
+              }
+            }
+          });
+        },
         Person: (prev, { mutationResult }) => {
-          if (prev.person.oid !== ownProps.subject) return prev;
+          if (prev.person.oid !== ownProps.subject) return false;
           const newChannel = mutationResult.data.commentObject.comment.channel;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
@@ -168,7 +186,7 @@ export default function comment({ ownProps, mutate }) {
           });
         },
         PersonInfo: (prev, { mutationResult }) => {
-          if (prev.person.oid !== ownProps.subject) return prev;
+          if (prev.person.oid !== ownProps.subject) return false;
           const newChannel = mutationResult.data.commentObject.comment.channel;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
@@ -191,13 +209,12 @@ export default function comment({ ownProps, mutate }) {
         },
         Channels: (prev, { mutationResult }) => {
           const newChannel = mutationResult.data.commentObject.comment.channel;
-          if (newChannel.isDiscuss) return prev;
+          const isNewChannel = mutationResult.data.commentObject.isNewChannel;
+          if (newChannel.isDiscuss || !isNewChannel) return false;
           const currentChannel = prev.account.channels.edges.filter((item) => {
             return item && item.node.id === newChannel.id;
           })[0];
-          if (currentChannel) {
-            return prev;
-          }
+          if (currentChannel) return false;
           return update(prev, {
             account: {
               channels: {
@@ -215,13 +232,12 @@ export default function comment({ ownProps, mutate }) {
         },
         Discussions: (prev, { mutationResult }) => {
           const newChannel = mutationResult.data.commentObject.comment.channel;
-          if (!newChannel.isDiscuss) return prev;
+          const isNewChannel = mutationResult.data.commentObject.isNewChannel;
+          if (!newChannel.isDiscuss || !isNewChannel) return false;
           const currentChannel = prev.account.discussions.edges.filter((item) => {
             return item && item.node.id === newChannel.id;
           })[0];
-          if (currentChannel) {
-            return prev;
-          }
+          if (currentChannel) return false;
           return update(prev, {
             account: {
               discussions: {
@@ -238,9 +254,7 @@ export default function comment({ ownProps, mutate }) {
           });
         },
         Comments: (prev, { mutationResult }) => {
-          if (ownProps.context !== prev.node.subject.oid) {
-            return prev;
-          }
+          if (ownProps.context !== prev.node.subject.oid) return false;
           const newComment = mutationResult.data.commentObject.comment;
           return update(prev, {
             node: {
@@ -259,9 +273,7 @@ export default function comment({ ownProps, mutate }) {
           });
         },
         Comment: (prev, { mutationResult }) => {
-          if (ownProps.context !== prev.node.oid) {
-            return prev;
-          }
+          if (ownProps.context !== prev.node.oid) return false;
           const newComment = mutationResult.data.commentObject.comment;
           return update(prev, {
             node: {

@@ -70,6 +70,20 @@ export default function oppose({ mutate }) {
             }
           });
         },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newIdea = mutationResult.data.opposeIdea.idea;
+          if (queryVariables.id !== context.id) return false;
+          return update(prev, {
+            idea: {
+              tokensSupport: { $set: newIdea.tokensSupport },
+              tokensOpposition: { $set: newIdea.tokensOpposition },
+              userToken: { $set: newIdea.userToken },
+              actions: {
+                $set: newIdea.actions
+              }
+            }
+          });
+        },
         MySupports: (prev, { mutationResult }) => {
           const newIdea = mutationResult.data.opposeIdea.idea;
           const currentIdea = prev.account.supportedIdeas.edges.filter((item) => {

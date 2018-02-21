@@ -158,7 +158,7 @@ export class RenderIdeaItem extends React.Component {
         return image.isImage;
       })
       : [];
-    const hasEvaluation = site.supportIdeas && node.state.includes('published');
+    const hasEvaluation = site.supportIdeas && node.state && node.state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
     return (
