@@ -6,7 +6,7 @@ import StorageIcon from 'material-ui-icons/Storage';
 import { I18n } from 'react-redux-i18n';
 
 import ContentItem from './ContentItem';
-import ContentCollapse from './ContentCollapse';
+import ContentCollapse from '../common/ContentCollapse';
 import EntitiesList from '../common/EntitiesList';
 import { myContentsQuery } from '../../graphql/queries';
 

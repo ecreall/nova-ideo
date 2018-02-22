@@ -146,7 +146,7 @@ export class RenderIdeaItem extends React.Component {
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
-    const authorTitle = author.title;
+    const authorTitle = author && author.title;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles

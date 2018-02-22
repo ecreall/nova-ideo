@@ -26,7 +26,7 @@ export class DumbCommentDivider extends React.Component {
   };
 
   render() {
-    const { node, index, eventId, drawer, reverted, dividerProps: { fullScreen, ignorDrawer } } = this.props;
+    const { node, index, eventId, drawer, reverted, dividerProps: { fullScreen, ignorDrawer, dynamic } } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
     const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
@@ -37,6 +37,7 @@ export class DumbCommentDivider extends React.Component {
     }
     return dateSeparator || addUnread
       ? <Divider
+        dynamic={dynamic}
         fullScreen={fullScreen}
         reverted={reverted}
         index={index}

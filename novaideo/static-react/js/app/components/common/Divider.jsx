@@ -59,6 +59,7 @@ const styles = {
 
 class Divider extends React.Component {
   static defaultProps = {
+    dynamic: true,
     style: {
       message: {},
       messageFixed: {}
@@ -92,7 +93,8 @@ class Divider extends React.Component {
   }
 
   updatePosition = () => {
-    if (this.container && this.message) {
+    const { dynamic } = this.props;
+    if (dynamic && this.container && this.message) {
       const top = this.container.getBoundingClientRect().top;
       const { shift, fixedTop, fullScreen } = this.props;
       const messageRecLeft = this.message.getBoundingClientRect().left;
@@ -107,7 +109,8 @@ class Divider extends React.Component {
   };
 
   initializePosition = () => {
-    if (this.container && this.message) {
+    const { dynamic } = this.props;
+    if (dynamic && this.container && this.message) {
       if (this.state.fixed) {
         this.setState({ fixed: false }, this.updatePosition);
       }

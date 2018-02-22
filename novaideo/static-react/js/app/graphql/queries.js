@@ -403,7 +403,7 @@ export const commentQuery = gql`
 `;
 
 export const commentsQuery = gql`
-  query Comments($first: Int!, $after: String!, $filter: String!, $id: ID!,
+  query Comments($first: Int!, $after: String!, $filter: String!, $pinned: Boolean!, $file: Boolean!, $id: ID!,
                  $subjectActionsNodeIds: [String], $processIds: [String], $nodeIds: [String],
                  $processTags: [String], $actionTags: [String]) {
     node(id: $id) {
@@ -427,7 +427,8 @@ export const commentsQuery = gql`
              }
            }
 
-          comments(first: $first, after: $after, filter: $filter) {
+          comments(first: $first, after: $after, filter: $filter, pinned: $pinned, file: $file) {
+            totalCount
             pageInfo {
               endCursor
               hasNextPage
@@ -443,6 +444,36 @@ export const commentsQuery = gql`
     }
   ${commentFragment}
   ${actionFragment}
+`;
+
+export const channelMembersQuery = gql`
+  query Members($first: Int!, $after: String!, $filter: String!, $id: ID!) {
+    node(id: $id) {
+      ... on Channel {
+        id
+        oid
+        members(first: $first, after: $after, filter: $filter) {
+          totalCount
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+          edges {
+            node {
+              ... on Person {
+                id
+                oid
+                title
+                picture {
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
 export const channelQuery = gql`

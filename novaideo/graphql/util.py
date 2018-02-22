@@ -80,11 +80,19 @@ def get_all_comments(container, args):
         limit = None
 
     filter_ = args.get('filter', '')
+    pinned = args.get('pinned', False)
+    file = args.get('file', False)
+    filters = []
+    if pinned: filters.append('pinned')
+
+    if file: filters.append('file')
+
     comments = get_comments(
-        container, [], filter_, filter_)
+        container, filters, filter_, filter_ or pinned or file)
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
-    return list(release_date_index.sort(
+
+    return len(comments), list(release_date_index.sort(
         list(comments.ids), limit=limit, sort_type=STABLE, reverse=True))
 
 

@@ -62,12 +62,12 @@ export default function pinComment({ mutate }) {
           });
         },
         Comments: (prev, { mutationResult, queryVariables }) => {
-          if (queryVariables.id !== context.channel.id) return prev;
+          if (queryVariables.id !== context.channel.id) return false;
           const newContext = mutationResult.data.pinComment.context;
           const currentComment = prev.node.comments.edges.filter((item) => {
             return item && item.node.id === context.id;
           })[0];
-          if (!currentComment) return prev;
+          if (!currentComment) return false;
           const newComment = update(currentComment, {
             node: {
               pinned: { $set: newContext.pinned }

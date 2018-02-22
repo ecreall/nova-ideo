@@ -5,6 +5,7 @@ import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
+import Icon from 'material-ui/Icon';
 
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
@@ -31,11 +32,31 @@ const styles = (theme) => {
         }
       }
     },
-    pinned: {
-      backgroundColor: theme.palette.info[50],
+    pinnedContainer: {
       '&:hover': {
-        backgroundColor: theme.palette.info[100]
+        backgroundColor: theme.palette.warning[50]
       }
+    },
+    pinned: {
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: theme.palette.warning[50]
+    },
+    pinnedLabel: {
+      display: 'flex',
+      paddingTop: 5
+    },
+    pinnedIcon: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      width: 70,
+      paddingRight: 10,
+      color: theme.palette.warning[500]
+    },
+    pinnedText: {
+      fontFamily: 'LatoWebLight',
+      color: '#4d4e4e',
+      fontSize: 12
     },
     body: {
       display: 'flex',
@@ -144,6 +165,15 @@ class RenderCommentItem extends React.Component {
     return (author === nextAuthor || author === optimisticAuthorId) && dateDiff < COMMENTS_TIME_INTERVAL;
   };
 
+  ignorePinned = () => {
+    const { node, reverted, next, previous } = this.props;
+    const item = reverted ? next : previous;
+    if (!item) return false;
+    const currentNode = reverted ? node : item;
+    const nextNode = reverted ? item : node;
+    return currentNode.pinned && nextNode.pinned;
+  };
+
   onMouseOver = () => {
     if (this.menu) this.menu.open();
   };
@@ -169,66 +199,82 @@ class RenderCommentItem extends React.Component {
       : [];
     return (
       <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
-        <div className={classNames(classes.container, { [classes.pinned]: pinned })}>
-          {processManager &&
-            <CommentMenu
-              initRef={(menu) => {
-                this.menu = menu;
-              }}
-              comment={node}
-              onActionClick={processManager.performAction}
-            />}
+        <div className={pinned ? classes.pinned : ''}>
+          {pinned &&
+            !this.ignorePinned() &&
+            <div className={classes.pinnedLabel}>
+              <div className={classes.pinnedIcon}>
+                <Icon className="mdi-set mdi-pin" />
+              </div>
+              <div className={classes.pinnedText}>
+                {I18n.t('common.pinned')}
+              </div>
+            </div>}
           <div
-            className={classNames(classes.left, {
-              [classes.leftDateOnly]: ignoreMetaData
+            className={classNames(classes.container, {
+              [classes.pinnedContainer]: pinned
             })}
           >
-            {ignoreMetaData
-              ? <Tooltip id={node.id} title={createdAtF} placement="top">
-                <div className={classNames('creation-date', classes.creationDate)}>
-                  {createdAt}
-                </div>
-              </Tooltip>
-              : <UserAvatar
-                isAnonymous={isAnonymous}
-                picture={authorPicture}
-                title={author.title}
-                classes={{ avatar: classes.avatar }}
+            {processManager &&
+              <CommentMenu
+                initRef={(menu) => {
+                  this.menu = menu;
+                }}
+                comment={node}
+                onActionClick={processManager.performAction}
               />}
-          </div>
-          <div className={classes.body}>
-            {!ignoreMetaData &&
-              <div className={classes.header}>
-                <UserTitle node={author} />
-                <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF} placement="top">
-                  <span className={classes.headerAddOn}>
+            <div
+              className={classNames(classes.left, {
+                [classes.leftDateOnly]: ignoreMetaData
+              })}
+            >
+              {ignoreMetaData
+                ? <Tooltip id={node.id} title={createdAtF} placement="top">
+                  <div className={classNames('creation-date', classes.creationDate)}>
                     {createdAt}
-                  </span>
+                  </div>
                 </Tooltip>
-              </div>}
-            <div className={classes.bodyContent}>
-              <div>
-                <div className={classes.contentText}>
-                  <div className="comment-text" dangerouslySetInnerHTML={{ __html: node.text }} />
-                </div>
-                <ImagesPreview images={images} />
-              </div>
-              {node.urls.length > 0 &&
-                <div className={classes.urlsContainer}>
-                  {node.urls.map((url, key) => {
-                    return <Url key={key} data={url} />;
-                  })}
+                : <UserAvatar
+                  isAnonymous={isAnonymous}
+                  picture={authorPicture}
+                  title={author.title}
+                  classes={{ avatar: classes.avatar }}
+                />}
+            </div>
+            <div className={classes.body}>
+              {!ignoreMetaData &&
+                <div className={classes.header}>
+                  <UserTitle node={author} />
+                  <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF} placement="top">
+                    <span className={classes.headerAddOn}>
+                      {createdAt}
+                    </span>
+                  </Tooltip>
                 </div>}
-              {node.lenComments > 0
-                ? <div className={classes.bodyFooter}>
-                  <IconWithText
-                    styleText={classes.actionsText}
-                    styleIcon={classes.actionsIcon}
-                    name="comment-multiple-outline"
-                    text={`${node.lenComments} ${`reply${node.lenComments > 1 ? '*' : ''}`}`}
-                  />
+              <div className={classes.bodyContent}>
+                <div>
+                  <div className={classes.contentText}>
+                    <div className="comment-text" dangerouslySetInnerHTML={{ __html: node.text }} />
+                  </div>
+                  <ImagesPreview images={images} />
                 </div>
-                : null}
+                {node.urls.length > 0 &&
+                  <div className={classes.urlsContainer}>
+                    {node.urls.map((url, key) => {
+                      return <Url key={key} data={url} />;
+                    })}
+                  </div>}
+                {node.lenComments > 0
+                  ? <div className={classes.bodyFooter}>
+                    <IconWithText
+                      styleText={classes.actionsText}
+                      styleIcon={classes.actionsIcon}
+                      name="comment-multiple-outline"
+                      text={`${node.lenComments} ${`reply${node.lenComments > 1 ? '*' : ''}`}`}
+                    />
+                  </div>
+                  : null}
+              </div>
             </div>
           </div>
         </div>
@@ -236,6 +282,7 @@ class RenderCommentItem extends React.Component {
     );
   }
 }
+export const CommentItem = withStyles(styles, { withTheme: true })(RenderCommentItem);
 
 function DumbCommentItem(props) {
   const { node, onActionClick } = props;
@@ -247,5 +294,3 @@ function DumbCommentItem(props) {
 }
 
 export default withStyles(styles, { withTheme: true })(DumbCommentItem);
-
-export const CommentItem = withStyles(styles, { withTheme: true })(RenderCommentItem);

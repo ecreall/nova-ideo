@@ -1,6 +1,9 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    common: {
+      pinned: "Épinglés"
+    },
     processes: {
       ideamanagement: {
         create: {
@@ -50,7 +53,12 @@ const Translations = {
     channels: {
       jump: "Accéder à...",
       channels: "Chaînes",
-      private: "Messages directs"
+      private: "Messages directs",
+      pinnedBlockTitle: "Messages épinglés",
+      infoBlockTitle: "Informations sur la chaîne",
+      filesBlockTitle: "Fichiers partagés",
+      membersBlockTitle: "%{total} membres",
+      rightTitleAbout: "À propos de la discussion #%{name}"
     },
     forms: {
       optional: "(facultatif)",
@@ -95,6 +103,9 @@ const Translations = {
     }
   },
   en: {
+    common: {
+      pinned: "Pinned"
+    },
     processes: {
       ideamanagement: {
         create: {
@@ -145,7 +156,12 @@ const Translations = {
     channels: {
       jump: "Jump to...",
       channels: "Channels",
-      private: "Direct messages"
+      private: "Direct messages",
+      pinnedBlockTitle: "Pinned messages",
+      infoBlockTitle: "Channel information",
+      filesBlockTitle: "Shared files",
+      membersBlockTitle: "%{total} members",
+      rightTitleAbout: "About the discussion #%{name}"
     },
     forms: {
       optional: "(optional)",

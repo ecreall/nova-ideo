@@ -9,7 +9,7 @@ import { commentsQuery } from '../../graphql/queries';
 import EntitiesList from '../common/EntitiesList';
 import { filterActions } from '../../utils/processes';
 import CommentItem from './CommentItem';
-import ChatAppRight from './ChatAppRight';
+import ChatAppRight from './chatAppRight/ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/processes/common/Comment';
 import { COMMENTS_ACTIONS, ACTIONS } from '../../processes';
@@ -17,7 +17,7 @@ import { COMMENTS_ACTIONS, ACTIONS } from '../../processes';
 const styles = (theme) => {
   return {
     container: {
-      height: 'calc(100vh - 64px)'
+      height: 'calc(100vh - 56px)'
     },
     comments: {
       backgroundColor: 'white',
@@ -33,7 +33,10 @@ const styles = (theme) => {
     },
     right: {
       backgroundColor: '#f9f9f9',
-      borderLeft: '1px solid #e8e8e8'
+      borderLeft: '1px solid #e8e8e8',
+      padding: '0 !important',
+      paddingRight: '8px !important',
+      paddingTop: '8px !important'
     },
     list: {
       height: 'calc(100% - 55px)'
@@ -42,24 +45,32 @@ const styles = (theme) => {
 };
 
 export class DumbComments extends React.Component {
+  static defaultProps = {
+    displayForm: true,
+    dynamicDivider: true
+  };
+
   render() {
     const {
       channelId,
       data,
       customScrollbar,
+      dynamicDivider,
       reverted,
       ignorDrawer,
       fullScreen,
       rightDisabled,
       rightOpen,
       fetchMoreOnEvent,
+      displayForm,
       formTop,
       formProps,
       classes
     } = this.props;
     const channel = data.node;
     const subject = channel && channel.subject;
-    const commentAction = subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
+    const commentAction =
+      displayForm && subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
     const contextOid = subject ? subject.oid : '';
     const displayRightBlock = !rightDisabled && rightOpen;
     const commentForm =
@@ -104,7 +115,8 @@ export class DumbComments extends React.Component {
             Divider={Divider}
             dividerProps={{
               fullScreen: fullScreen,
-              ignorDrawer: ignorDrawer
+              ignorDrawer: ignorDrawer,
+              dynamic: dynamicDivider
             }}
             itemProps={{
               channel: channel,
@@ -120,11 +132,11 @@ export class DumbComments extends React.Component {
           />
           {!formTop && commentForm}
         </Grid>
-        {displayRightBlock &&
-          channel &&
-          <Grid className={classes.right} item xs={12} md={4} sm={5}>
+        {displayRightBlock && channel
+          ? <Grid className={classes.right} item xs={12} md={4} sm={5}>
             <ChatAppRight channel={channel} />
-          </Grid>}
+          </Grid>
+          : null}
       </Grid>
     );
   }
@@ -145,6 +157,8 @@ export default withStyles(styles, { withTheme: true })(
           notifyOnNetworkStatusChange: true,
           variables: {
             filter: '',
+            pinned: props.filter ? !!props.filter.pinned : false,
+            file: props.filter ? !!props.filter.file : false,
             first: 25,
             after: '',
             id: props.channelId,

@@ -12,10 +12,12 @@ import { CardActions } from 'material-ui/Card';
 import VisibilityIcon from 'material-ui-icons/Visibility';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
+import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
 
 import { updateApp, closeChatApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import { goTo, get } from '../../utils/routeMap';
+import { CONTENTS_IDS } from './chatAppRight/Details';
 
 const styles = {
   root: {
@@ -28,11 +30,14 @@ const styles = {
     fontWeight: 900
   },
   title: {
-    marginBottom: 15
+    marginBottom: 19
   },
   icon: {
     color: '#2c2d30',
     fontWeight: 900
+  },
+  bigIcon: {
+    fontSize: 21
   },
   appBar: {
     boxShadow: '0 1px 0 rgba(0,0,0,.1)'
@@ -49,12 +54,43 @@ const styles = {
   action: {
     fontSize: 18,
     color: '#a0a0a0'
+  },
+  actionWithSeparator: {
+    '&::after': {
+      display: 'block',
+      position: 'absolute',
+      top: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      left: -1,
+      height: 20,
+      transform: 'translateY(-50%)',
+      borderRadius: 0,
+      borderRight: '1px solid #e5e5e5',
+      content: '""',
+      color: '#2c2d30'
+    }
   }
 };
 
 class NavBar extends React.Component {
+  handlePinned = () => {
+    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.pinned } });
+    return false;
+  };
+
+  handleFiles = () => {
+    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.files } });
+    return false;
+  };
+
+  handleMembers = () => {
+    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.members } });
+    return false;
+  };
+
   handleInfo = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: 'info' } });
+    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.info } });
     return false;
   };
 
@@ -67,6 +103,7 @@ class NavBar extends React.Component {
   render() {
     const { data, classes, className } = this.props;
     const channel = data.channel;
+    const actionWithSeparator = classNames(classes.action, classes.actionWithSeparator);
     return (
       <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_CLOSE: this.handleClose, CHATAPP_INFO: this.handleInfo }}>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
@@ -91,6 +128,15 @@ class NavBar extends React.Component {
               <CardActions className={classes.actions} disableActionSpacing>
                 <IconButton onClick={this.handleInfo} className={classes.action} aria-label="Add to favorites">
                   <VisibilityIcon />
+                </IconButton>
+                <IconButton onClick={this.handleMembers} className={actionWithSeparator} aria-label="Add to favorites">
+                  <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.bigIcon)} />
+                </IconButton>
+                <IconButton onClick={this.handlePinned} className={actionWithSeparator} aria-label="Add to favorites">
+                  <Icon className="mdi-set mdi-pin" />
+                </IconButton>
+                <IconButton onClick={this.handleFiles} className={actionWithSeparator} aria-label="Add to favorites">
+                  <InsertDriveFileIcon />
                 </IconButton>
               </CardActions>
             </Typography>

@@ -52,9 +52,11 @@ class Debatable(graphene.AbstractType):
             return []
 
         channel = self.get_channel(getattr(context, 'user', None))
+        total_count, oids = get_all_comments(channel, args)
         return ResolverLazyList(
-            get_all_comments(channel, args),
-            Comment)
+            oid,
+            Comment,
+            total_count=total_count)
 
     def resolve_len_comments(self, args, context, info):
         if not hasattr(self, 'get_channel'):
@@ -265,6 +267,9 @@ class Person(Node, Debatable, graphene.ObjectType):
         return 0
 
 
+Person.Connection = connection_for_type(Person)
+
+
 class Url(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -324,9 +329,11 @@ class Comment(Node, graphene.ObjectType):
         return getattr(self, 'files', [])
 
     def resolve_comments(self, args, context, info):  # pylint: disable=W0613
+        total_count, oids = get_all_comments(self, args)
         return ResolverLazyList(
-            get_all_comments(self, args),
-            Comment)
+            oids,
+            Comment,
+            total_count=total_count)
 
     def resolve_len_comments(self, args, context, info):
         return self.len_comments
@@ -347,8 +354,12 @@ class Channel(Node, graphene.ObjectType):
 
     comments = relay.ConnectionField(
         Comment,
+        pinned=graphene.Boolean(),
+        file=graphene.Boolean(),
         filter=graphene.String())
-    
+    members = relay.ConnectionField(
+        Person,
+        filter=graphene.String())
     subject = graphene.Field(lambda: EntityUnion)
     unread_comments = graphene.List(Comment)
     len_comments = graphene.Int()
@@ -361,10 +372,17 @@ class Channel(Node, graphene.ObjectType):
 
         return isinstance(root, SDChannel)
 
+    def resolve_members(self, args, context, info):  # pylint: disable=W0613
+        oids = [get_oid(m) for m in self.members]
+        total_count = len(self.members)
+        return ResolverLazyList(oids, Person, total_count=total_count)
+
     def resolve_comments(self, args, context, info):
+        total_count, oids = get_all_comments(self, args)
         return ResolverLazyList(
-            get_all_comments(self, args),
-            Comment)
+            oids,
+            Comment,
+            total_count=total_count)
 
     def resolve_unread_comments(self, args, context, info):
         if not context.user:
