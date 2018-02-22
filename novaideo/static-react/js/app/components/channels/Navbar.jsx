@@ -75,22 +75,23 @@ const styles = {
 
 class NavBar extends React.Component {
   handlePinned = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.pinned } });
-    return false;
+    return this.openRight(CONTENTS_IDS.pinned);
   };
 
   handleFiles = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.files } });
-    return false;
+    return this.openRight(CONTENTS_IDS.files);
   };
 
   handleMembers = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.members } });
-    return false;
+    return this.openRight(CONTENTS_IDS.members);
   };
 
   handleInfo = () => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: CONTENTS_IDS.info } });
+    return this.openRight(CONTENTS_IDS.info);
+  };
+
+  openRight = (id) => {
+    this.props.updateApp('chatApp', { right: { open: true, componentId: id } });
     return false;
   };
 
@@ -126,16 +127,16 @@ class NavBar extends React.Component {
                 {channel && channel.title}
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton onClick={this.handleInfo} className={classes.action} aria-label="Add to favorites">
+                <IconButton onClick={this.handleInfo} className={classes.action}>
                   <VisibilityIcon />
                 </IconButton>
-                <IconButton onClick={this.handleMembers} className={actionWithSeparator} aria-label="Add to favorites">
+                <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
                   <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.bigIcon)} />
                 </IconButton>
-                <IconButton onClick={this.handlePinned} className={actionWithSeparator} aria-label="Add to favorites">
+                <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
                   <Icon className="mdi-set mdi-pin" />
                 </IconButton>
-                <IconButton onClick={this.handleFiles} className={actionWithSeparator} aria-label="Add to favorites">
+                <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
                   <InsertDriveFileIcon />
                 </IconButton>
               </CardActions>

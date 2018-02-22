@@ -36,23 +36,6 @@ const styles = {
   }
 };
 
-const ChatAppRightContent = (props) => {
-  switch (props.componentId) {
-  case CONTENTS_IDS.info:
-    return <Details {...props} />;
-  case CONTENTS_IDS.pinned:
-    return <Details {...props} />;
-  case CONTENTS_IDS.files:
-    return <Details {...props} />;
-  case CONTENTS_IDS.members:
-    return <Details {...props} />;
-  case CONTENTS_IDS.details:
-    return <Details {...props} />;
-  default:
-    return <div />;
-  }
-};
-
 class ChatAppRight extends React.Component {
   componentDidMount() {
     this.dispatchResize();
@@ -68,7 +51,24 @@ class ChatAppRight extends React.Component {
     document.dispatchEvent(event);
   };
 
-  getTitle = () => {
+  content = () => {
+    switch (this.props.componentId) {
+    case CONTENTS_IDS.info:
+      return <Details {...this.props} />;
+    case CONTENTS_IDS.pinned:
+      return <Details {...this.props} />;
+    case CONTENTS_IDS.files:
+      return <Details {...this.props} />;
+    case CONTENTS_IDS.members:
+      return <Details {...this.props} />;
+    case CONTENTS_IDS.details:
+      return <Details {...this.props} />;
+    default:
+      return <div />;
+    }
+  };
+
+  title = () => {
     const channelTitle = <Translate value="channels.rightTitleAbout" name={this.props.channel.title} />;
     switch (this.props.componentId) {
     case CONTENTS_IDS.details:
@@ -93,7 +93,7 @@ class ChatAppRight extends React.Component {
         <AppBar className={classes.appBar}>
           <Toolbar>
             <Typography type="title" color="primary" className={classes.appBarContent}>
-              {this.getTitle()}
+              {this.title()}
             </Typography>
             <IconButton
               className={classes.menuButton}
@@ -108,7 +108,7 @@ class ChatAppRight extends React.Component {
           </Toolbar>
         </AppBar>
 
-        {ChatAppRightContent(this.props)}
+        {this.content()}
       </div>
     );
   }
