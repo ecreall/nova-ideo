@@ -37,8 +37,8 @@ export class DumbCommentProcessManager extends React.Component {
 
   renderForm = () => {
     const { action } = this.state;
-    const { comment } = this.props;
     if (!action) return null;
+    const { comment } = this.props;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     switch (action.behaviorId) {
     case commentProcessNodes.delete.nodeId:

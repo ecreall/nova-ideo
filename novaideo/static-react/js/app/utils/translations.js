@@ -54,11 +54,17 @@ const Translations = {
       jump: "Accéder à...",
       channels: "Chaînes",
       private: "Messages directs",
-      pinnedBlockTitle: "Messages épinglés",
+      pinnedBlockTitle: "%{count} messages épinglés",
+      pinnedBlockTitle_0: "Aucun messages épinglés",
+      pinnedBlockTitle_1: "Un messages épinglé",
       infoBlockTitle: "Informations sur la chaîne",
       filesBlockTitle: "Fichiers partagés",
-      membersBlockTitle: "%{total} membres",
-      rightTitleAbout: "À propos de la discussion #%{name}"
+      filesBlockTitle_0: "Aucun fichiers partagés",
+      membersBlockTitle: "%{count} membres",
+      membersBlockTitle_0: "Aucun membres",
+      membersBlockTitle_1: "Un membre",
+      rightTitleAbout: "À propos de la discussion #%{name}",
+      searchBlockTitle: "Résultats de la recherche"
     },
     forms: {
       optional: "(facultatif)",
@@ -76,7 +82,8 @@ const Translations = {
         keywords: "Ajouter des mots clés"
       },
       comment: {
-        textPlaceholder: "Envoyer un message à #%{name}"
+        textPlaceholder: "Envoyer un message à #%{name}",
+        searchPlaceholder: "Rechercher dans #%{name}"
       }
     },
     evaluation: {
@@ -157,11 +164,17 @@ const Translations = {
       jump: "Jump to...",
       channels: "Channels",
       private: "Direct messages",
-      pinnedBlockTitle: "Pinned messages",
+      pinnedBlockTitle: "%{count} pinned messages",
+      pinnedBlockTitle_0: "No pinned messages",
+      pinnedBlockTitle_1: "One pinned message",
       infoBlockTitle: "Channel information",
       filesBlockTitle: "Shared files",
-      membersBlockTitle: "%{total} members",
-      rightTitleAbout: "About the discussion #%{name}"
+      filesBlockTitle_0: "No shared files",
+      membersBlockTitle: "%{count} members",
+      membersBlockTitle_0: "No members",
+      membersBlockTitle_1: "One member",
+      rightTitleAbout: "About the discussion #%{name}",
+      searchBlockTitle: "Search results"
     },
     forms: {
       optional: "(optional)",
@@ -179,7 +192,8 @@ const Translations = {
         keywords: "Add keywords"
       },
       comment: {
-        textPlaceholder: "Submit a message to #%{name}"
+        textPlaceholder: "Submit a message to #%{name}",
+        searchPlaceholder: "Search in #%{name}"
       }
     },
     evaluation: {

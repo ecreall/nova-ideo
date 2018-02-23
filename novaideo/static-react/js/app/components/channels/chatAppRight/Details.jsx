@@ -5,14 +5,7 @@ import Informations from './Informations';
 import Pinned from './Pinned';
 import Files from './Files';
 import Members from './Members';
-
-export const CONTENTS_IDS = {
-  info: 'info',
-  members: 'members',
-  pinned: 'pinned',
-  files: 'files',
-  details: 'details'
-};
+import { CONTENTS_IDS } from '.';
 
 const styles = {
   container: {
@@ -35,9 +28,9 @@ class Details extends React.Component {
     return (
       <div className={classes.container}>
         <Informations {...this.props} id={CONTENTS_IDS.info} open={componentId === CONTENTS_IDS.info} onOpen={this.onOpen} />
-        <Members {...this.props} id={CONTENTS_IDS.members} open={componentId === CONTENTS_IDS.members} onOpen={this.onOpen} />
         <Pinned {...this.props} id={CONTENTS_IDS.pinned} open={componentId === CONTENTS_IDS.pinned} onOpen={this.onOpen} />
         <Files {...this.props} id={CONTENTS_IDS.files} open={componentId === CONTENTS_IDS.files} onOpen={this.onOpen} />
+        <Members {...this.props} id={CONTENTS_IDS.members} open={componentId === CONTENTS_IDS.members} onOpen={this.onOpen} />
       </div>
     );
   }

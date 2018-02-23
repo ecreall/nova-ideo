@@ -19,7 +19,7 @@ export const stylesContentCollapse = (theme) => {
       maxHeight: 61,
       overflowY: 'hidden',
       '&:hover': {
-        backgroundColor: '#fff'
+        backgroundColor: '#f9f9f9'
       }
     },
     listItemActive: {
@@ -31,7 +31,7 @@ export const stylesContentCollapse = (theme) => {
     titleText: {
       color: '#2c2d30',
       fontSize: 15,
-      opacity: 0.95,
+      opacity: 0.9,
       padding: 0,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
@@ -64,7 +64,10 @@ export const stylesContentCollapse = (theme) => {
     },
     icon: {
       color: '#2c2d30',
-      opacity: 0.95
+      opacity: 0.9,
+      '&:hover': {
+        opacity: 1
+      }
     },
     iconActive: {
       opacity: 1,

@@ -1,11 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { I18n } from 'react-redux-i18n';
+import { Translate } from 'react-redux-i18n';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { graphql } from 'react-apollo';
+
+import { commentsQuery } from '../../../graphql/queries';
+import { COMMENTS_ACTIONS, ACTIONS } from '../../../processes';
 
 import DetailsSection from './DetailsSection';
-import Comments from '../Comments';
+import { RenderComments } from '../Comments';
 
 const styles = (theme) => {
   return {
@@ -28,48 +32,37 @@ const styles = (theme) => {
       '&:hover': {
         color: theme.palette.warning[500]
       }
-    },
-    listItem: {
-      borderBottom: '1px solid #e8e8e8'
-    },
-    listItemActive: {
-      borderBottom: 'none'
     }
   };
 };
 
 class Files extends React.Component {
   render() {
-    const { id, channel, classes, totalCount, onOpen, open } = this.props;
+    const { data, id, channel, classes, onOpen, open } = this.props;
+    const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
     return (
       <DetailsSection
         id={id}
         classes={{
           sectionIcon: classes.sectionIcon,
-          sectionIconActive: classes.sectionIconActive,
-          listItem: classes.listItem,
-          listItemActive: classes.listItemActive
+          sectionIconActive: classes.sectionIconActive
         }}
         onOpen={onOpen}
         open={open}
         title={
           <span>
-            <span>
-              {I18n.t('channels.filesBlockTitle')}
-            </span>
-            <span className={classes.counter}>
-              {totalCount && `(${totalCount})`}
-            </span>
+            {<Translate value="channels.filesBlockTitle" count={totalCount} />}
           </span>
         }
         Icon={InsertDriveFileIcon}
       >
         {open &&
-          <Comments
+          <RenderComments
             rightDisabled
             customScrollbar
             dynamicDivider={false}
             displayForm={false}
+            data={data}
             channelId={channel.id}
             filter={{ file: true }}
             classes={{ container: classes.container, list: classes.container }}
@@ -79,4 +72,26 @@ class Files extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Files);
+export default withStyles(styles, { withTheme: true })(
+  graphql(commentsQuery, {
+    options: (props) => {
+      return {
+        fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
+        variables: {
+          filter: '',
+          pinned: false,
+          file: true,
+          first: 25,
+          after: '',
+          id: props.channel.id,
+          processIds: [],
+          nodeIds: [],
+          processTags: [],
+          actionTags: [ACTIONS.primary],
+          subjectActionsNodeIds: COMMENTS_ACTIONS
+        }
+      };
+    }
+  })(Files)
+);

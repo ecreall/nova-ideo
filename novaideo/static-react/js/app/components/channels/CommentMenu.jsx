@@ -115,7 +115,7 @@ export class DumbCommentMenu extends React.Component {
         })}
         <div>
           <Menu
-            id="comment-more-menu"
+            id={`${comment.id}-comment-more-menu`}
             activator={
               <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
                 <MoreHorizIcon className={classes.icon} />

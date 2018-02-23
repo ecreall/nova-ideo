@@ -132,8 +132,8 @@ export class DumbIdeaProcessManager extends React.Component {
 
   renderForm = () => {
     const { action } = this.state;
-    const { idea } = this.props;
     if (!action) return null;
+    const { idea } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     switch (action.id) {
     case ideaProcessNodes.delete.nodeId:

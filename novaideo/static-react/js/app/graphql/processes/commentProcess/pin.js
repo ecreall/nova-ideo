@@ -63,6 +63,23 @@ export default function pinComment({ mutate }) {
         },
         Comments: (prev, { mutationResult, queryVariables }) => {
           if (queryVariables.id !== context.channel.id) return false;
+          if (queryVariables.pinned) {
+            return update(prev, {
+              node: {
+                comments: {
+                  totalCount: { $set: prev.node.comments.totalCount + 1 },
+                  edges: {
+                    $unshift: [
+                      {
+                        __typename: optimisticContext.__typename,
+                        node: { ...optimisticContext }
+                      }
+                    ]
+                  }
+                }
+              }
+            });
+          }
           const newContext = mutationResult.data.pinComment.context;
           const currentComment = prev.node.comments.edges.filter((item) => {
             return item && item.node.id === context.id;

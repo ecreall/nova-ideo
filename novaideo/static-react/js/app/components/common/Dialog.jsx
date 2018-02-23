@@ -80,14 +80,14 @@ class CommonDialog extends React.Component {
   };
 
   render() {
-    const { appBar, children, classes, open, fullScreen, transition, directDisplay } = this.props;
+    const { appBar, children, classes, open, fullScreen, transition, directDisplay, close } = this.props;
     return (
       <Dialog
         classes={{ paper: classNames(classes.paper, { [classes.paperSmall]: !fullScreen }) }}
         onEntered={this.onEntered}
         fullScreen={fullScreen}
         open={open}
-        onClose={this.onClose}
+        onExited={this.onClose}
         transition={transition && Transition}
       >
         <AppBar className={classNames({ [classes.appBar]: fullScreen, [classes.modal]: !fullScreen })}>
@@ -95,7 +95,7 @@ class CommonDialog extends React.Component {
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {appBar}
             </Typography>
-            <IconButton className={classes.closeBtn} color="primary" onClick={this.onClose} aria-label="Close">
+            <IconButton className={classes.closeBtn} color="primary" onClick={close || this.onClose} aria-label="Close">
               <CloseIcon />
             </IconButton>
           </Toolbar>

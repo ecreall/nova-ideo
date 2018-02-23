@@ -68,6 +68,20 @@ export default function unpinComment({ mutate }) {
             return item && item.node.id === context.id;
           })[0];
           if (!currentComment) return false;
+          if (queryVariables.pinned) {
+            const index = prev.node.comments.edges.indexOf(currentComment);
+            const totalCount = prev.node.comments.totalCount - 1;
+            return update(prev, {
+              node: {
+                comments: {
+                  totalCount: { $set: totalCount },
+                  edges: {
+                    $splice: [[index, 1]]
+                  }
+                }
+              }
+            });
+          }
           const newComment = update(currentComment, {
             node: {
               pinned: { $set: newContext.pinned }

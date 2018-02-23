@@ -23,21 +23,14 @@ const styles = {
 };
 
 export class DumbUnpin extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    const comment = this.props.comment;
-    const nextComment = nextProps.comment;
-    if (comment.id === nextComment.id && this.form) this.form.open();
-  }
-
   form = null;
 
   handleSubmit = () => {
     const { comment } = this.props;
-    this.props
-      .unpinComment({
-        context: comment
-      })
-      .then(this.closeForm);
+    this.closeForm();
+    this.props.unpinComment({
+      context: comment
+    });
   };
 
   closeForm = () => {
@@ -45,7 +38,7 @@ export class DumbUnpin extends React.Component {
   };
 
   render() {
-    const { action, comment, classes, theme, onFormClose } = this.props;
+    const { action, comment, classes, theme, onClose } = this.props;
     return (
       <Form
         initRef={(form) => {
@@ -53,7 +46,7 @@ export class DumbUnpin extends React.Component {
         }}
         open
         appBar={I18n.t(action.description)}
-        onClose={onFormClose}
+        onClose={onClose}
         footer={[
           <CancelButton onClick={this.closeForm}>
             {I18n.t('forms.cancel')}

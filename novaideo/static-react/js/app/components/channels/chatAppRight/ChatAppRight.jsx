@@ -6,10 +6,12 @@ import CloseIcon from 'material-ui-icons/Close';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 
 import { updateApp } from '../../../actions/actions';
-import Details, { CONTENTS_IDS } from './Details';
+import Details from './Details';
+import Search from './Search';
+import { CONTENTS_IDS } from '.';
 
 const styles = {
   container: {
@@ -24,7 +26,8 @@ const styles = {
   appBar: {
     position: 'relative',
     backgroundColor: 'transparent',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    paddingRight: '8px !important'
   },
   appBarContent: {
     flex: 1,
@@ -52,38 +55,15 @@ class ChatAppRight extends React.Component {
   };
 
   content = () => {
-    switch (this.props.componentId) {
-    case CONTENTS_IDS.info:
-      return <Details {...this.props} />;
-    case CONTENTS_IDS.pinned:
-      return <Details {...this.props} />;
-    case CONTENTS_IDS.files:
-      return <Details {...this.props} />;
-    case CONTENTS_IDS.members:
-      return <Details {...this.props} />;
-    case CONTENTS_IDS.details:
-      return <Details {...this.props} />;
-    default:
-      return <div />;
-    }
+    const { componentId } = this.props;
+    if (componentId === CONTENTS_IDS.search) return <Search {...this.props} />;
+    return <Details {...this.props} />;
   };
 
   title = () => {
-    const channelTitle = <Translate value="channels.rightTitleAbout" name={this.props.channel.title} />;
-    switch (this.props.componentId) {
-    case CONTENTS_IDS.details:
-      return channelTitle;
-    case CONTENTS_IDS.info:
-      return channelTitle;
-    case CONTENTS_IDS.pinned:
-      return channelTitle;
-    case CONTENTS_IDS.files:
-      return channelTitle;
-    case CONTENTS_IDS.members:
-      return channelTitle;
-    default:
-      return '';
-    }
+    const { componentId, channel } = this.props;
+    if (componentId === CONTENTS_IDS.search) return I18n.t('channels.searchBlockTitle');
+    return <Translate value="channels.rightTitleAbout" name={channel.title} />;
   };
 
   render() {

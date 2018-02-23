@@ -92,6 +92,10 @@ class TextEditor extends React.Component {
     this.setState({ editorState: newEditorState });
   };
 
+  getPlainText = () => {
+    this.state.editorState.getCurrentContent().getPlainText();
+  };
+
   onChange = (editorState) => {
     const content = convertToHTML(editorState.getCurrentContent());
     this.props.onChange(content);
@@ -99,9 +103,13 @@ class TextEditor extends React.Component {
   };
 
   handleKeyCommand = (command) => {
-    const { onCtrlEnter } = this.props;
+    const { onCtrlEnter, onEnter } = this.props;
     if (onCtrlEnter && command === 'ctrl-enter') {
       onCtrlEnter();
+      return 'handled';
+    }
+    if (onEnter && command === 'split-block') {
+      onEnter();
       return 'handled';
     }
     return 'not-handled';

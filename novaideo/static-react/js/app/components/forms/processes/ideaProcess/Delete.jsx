@@ -27,12 +27,6 @@ const styles = {
 };
 
 export class DumbDelete extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    const idea = this.props.idea;
-    const nextIdea = nextProps.idea;
-    if (idea.id === nextIdea.id && this.form) this.form.open();
-  }
-
   form = null;
 
   handleSubmit = () => {
@@ -53,7 +47,7 @@ export class DumbDelete extends React.Component {
   };
 
   render() {
-    const { action, classes, theme, onFormClose } = this.props;
+    const { action, classes, theme, onClose } = this.props;
     return (
       <Form
         initRef={(form) => {
@@ -61,7 +55,7 @@ export class DumbDelete extends React.Component {
         }}
         open
         appBar={I18n.t(action.description)}
-        onClose={onFormClose}
+        onClose={onClose}
         footer={[
           <CancelButton onClick={this.closeForm}>
             {I18n.t('forms.cancel')}

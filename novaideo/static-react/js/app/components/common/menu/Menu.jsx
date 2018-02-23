@@ -58,6 +58,7 @@ class MenuWithActivator extends React.Component {
         close: this.close
       });
     });
+    const open = Boolean(anchorEl);
     return [
       <div onClick={this.open}>
         {activator}
@@ -69,7 +70,7 @@ class MenuWithActivator extends React.Component {
         classes={{ paper: classes.menuPaper }}
         id={id}
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        open={open}
         onClose={this.close}
         anchorOrigin={anchorOrigin}
       >

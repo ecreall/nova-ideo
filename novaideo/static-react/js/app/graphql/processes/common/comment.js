@@ -261,6 +261,7 @@ export default function comment({ ownProps, mutate }) {
             node: {
               lenComments: { $set: prev.node.lenComments + 1 },
               comments: {
+                totalCount: { $set: prev.node.comments.totalCount + 1 },
                 edges: {
                   $unshift: [
                     {

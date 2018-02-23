@@ -36,6 +36,7 @@ export default function deleteComment({ mutate }) {
             node: {
               lenComments: { $set: prev.node.lenComments - 1 },
               comments: {
+                totalCount: { $set: prev.node.comments.totalCount - 1 },
                 edges: {
                   $splice: [[index, 1]]
                 }

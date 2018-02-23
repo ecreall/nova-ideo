@@ -6,7 +6,8 @@ import TextEditor from './Editor';
 class TextBoxField extends React.Component {
   static defaultProps = {
     style: {},
-    autoFocus: false
+    autoFocus: false,
+    withEmoji: true
   };
 
   constructor(props) {
@@ -47,8 +48,12 @@ class TextBoxField extends React.Component {
     }, 200);
   };
 
+  getPlainText = () => {
+    this.editor.getPlainText();
+  };
+
   render() {
-    const { placeholder, value, style } = this.props;
+    const { placeholder, value, style, withEmoji, onCtrlEnter, onEnter } = this.props;
     return [
       <TextEditor
         ref={(editor) => {
@@ -57,9 +62,10 @@ class TextBoxField extends React.Component {
         placeholder={placeholder}
         value={value}
         onChange={this.onChange}
-        onCtrlEnter={this.props.onCtrlEnter}
+        onCtrlEnter={onCtrlEnter}
+        onEnter={onEnter}
       />,
-      <EmojiPicker style={style || {}} onSelect={this.onSelectEmoji} />
+      withEmoji ? <EmojiPicker style={style || {}} onSelect={this.onSelectEmoji} /> : null
     ];
   }
 }

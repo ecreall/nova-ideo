@@ -12,11 +12,21 @@ import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
 
-export const renderTextBoxField = ({ input: { name, value, onChange }, placeholder, onCtrlEnter, autoFocus, style }) => {
+export const renderTextBoxField = ({
+  input: { name, value, onChange },
+  placeholder,
+  onCtrlEnter,
+  onEnter,
+  autoFocus,
+  style,
+  withEmoji
+}) => {
   return (
     <TextBoxField
+      withEmoji={withEmoji}
       autoFocus={autoFocus}
       style={style}
+      onEnter={onEnter}
       onCtrlEnter={onCtrlEnter}
       name={name}
       placeholder={placeholder}

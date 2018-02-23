@@ -1,11 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { I18n } from 'react-redux-i18n';
+import { Translate } from 'react-redux-i18n';
+import { graphql } from 'react-apollo';
 
+import { commentsQuery } from '../../../graphql/queries';
+import { COMMENTS_ACTIONS, ACTIONS } from '../../../processes';
 import DetailsSection from './DetailsSection';
 import { iconAdapter } from '../../../utils/globalFunctions';
-import Comments from '../Comments';
+import { RenderComments } from '../Comments';
 
 const styles = (theme) => {
   return {
@@ -14,12 +17,6 @@ const styles = (theme) => {
     },
     list: {
       height: '100%'
-    },
-    counter: {
-      fontFamily: 'LatoWebLight',
-      fontWeight: 100,
-      marginLeft: 5,
-      fontSize: 14
     },
     sectionIcon: {
       marginTop: -3,
@@ -36,7 +33,8 @@ const styles = (theme) => {
 
 class Pinned extends React.Component {
   render() {
-    const { id, channel, classes, totalCount, onOpen, open } = this.props;
+    const { id, channel, classes, onOpen, open, data } = this.props;
+    const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
     return (
       <DetailsSection
         id={id}
@@ -48,18 +46,14 @@ class Pinned extends React.Component {
         open={open}
         title={
           <span>
-            <span>
-              {I18n.t('channels.pinnedBlockTitle')}
-            </span>
-            <span className={classes.counter}>
-              {totalCount && `(${totalCount})`}
-            </span>
+            {<Translate value="channels.pinnedBlockTitle" count={totalCount} />}
           </span>
         }
         Icon={iconAdapter('mdi-set mdi-pin')}
       >
         {open &&
-          <Comments
+          <RenderComments
+            data={data}
             rightDisabled
             customScrollbar
             dynamicDivider={false}
@@ -73,4 +67,26 @@ class Pinned extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Pinned);
+export default withStyles(styles, { withTheme: true })(
+  graphql(commentsQuery, {
+    options: (props) => {
+      return {
+        fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
+        variables: {
+          filter: '',
+          pinned: true,
+          file: false,
+          first: 25,
+          after: '',
+          id: props.channel.id,
+          processIds: [],
+          nodeIds: [],
+          processTags: [],
+          actionTags: [ACTIONS.primary],
+          subjectActionsNodeIds: COMMENTS_ACTIONS
+        }
+      };
+    }
+  })(Pinned)
+);

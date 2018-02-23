@@ -44,7 +44,7 @@ const styles = (theme) => {
   };
 };
 
-export class DumbComments extends React.Component {
+export class RenderComments extends React.Component {
   static defaultProps = {
     displayForm: true,
     dynamicDivider: true
@@ -156,7 +156,7 @@ export default withStyles(styles, { withTheme: true })(
           fetchPolicy: 'cache-and-network',
           notifyOnNetworkStatusChange: true,
           variables: {
-            filter: '',
+            filter: props.filter ? props.filter.text : '',
             pinned: props.filter ? !!props.filter.pinned : false,
             file: props.filter ? !!props.filter.file : false,
             first: 25,
@@ -170,6 +170,6 @@ export default withStyles(styles, { withTheme: true })(
           }
         };
       }
-    })(DumbComments)
+    })(RenderComments)
   )
 );

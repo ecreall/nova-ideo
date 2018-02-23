@@ -81,10 +81,12 @@ export class DumbForm extends React.Component {
   }
 
   close = () => {
+    this.setState({ open: false });
+  };
+
+  onClose = () => {
     const { onClose } = this.props;
-    this.setState({ open: false }, () => {
-      if (onClose) onClose();
-    });
+    if (onClose) onClose();
   };
 
   open = () => {
@@ -106,7 +108,8 @@ export class DumbForm extends React.Component {
         fullScreen={fullScreen}
         open={open}
         appBar={appBar}
-        onClose={this.close}
+        onClose={this.onClose}
+        close={this.close}
         classes={{
           container: classes.dialogContainer,
           appBarContent: classNames(classes.appBarContent, {

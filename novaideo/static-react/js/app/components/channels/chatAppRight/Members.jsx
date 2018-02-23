@@ -28,6 +28,12 @@ const styles = (theme) => {
       '&:hover': {
         color: theme.palette.success[500]
       }
+    },
+    listItem: {
+      borderBottom: '1px solid #e8e8e8'
+    },
+    listItemActive: {
+      borderBottom: 'none'
     }
   };
 };
@@ -35,19 +41,21 @@ const styles = (theme) => {
 class DumbMembers extends React.Component {
   render() {
     const { data, id, channel, classes, onOpen, open } = this.props;
-    const totalCount = data.node && data.node.members.totalCount;
+    const totalCount = data.node && data.node.members && data.node.members.totalCount;
     return (
       <DetailsSection
         id={id}
         classes={{
           sectionIcon: classes.sectionIcon,
-          sectionIconActive: classes.sectionIconActive
+          sectionIconActive: classes.sectionIconActive,
+          listItem: classes.listItem,
+          listItemActive: classes.listItemActive
         }}
         onOpen={onOpen}
         open={open}
         title={
           <span>
-            {<Translate value="channels.membersBlockTitle" total={totalCount} />}
+            {<Translate value="channels.membersBlockTitle" count={totalCount} />}
           </span>
         }
         Icon={iconAdapter('mdi-set mdi-account-multiple-outline')}
