@@ -32,11 +32,15 @@ class TextEditor extends React.Component {
   resetEditor = (text, focus) => {
     let editorState;
     const htmlText = text || emptyText;
-    const blocksFromHTML = convertFromHTML(htmlText);
-    const contentState = ContentState.createFromBlockArray(blocksFromHTML);
-    editorState = EditorState.createWithContent(contentState);
-    if (focus) {
-      editorState = this.endFocus(editorState);
+    if (htmlText !== emptyText) {
+      const blocksFromHTML = convertFromHTML(htmlText);
+      const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+      editorState = EditorState.createWithContent(contentState);
+      if (focus) {
+        editorState = this.endFocus(editorState);
+      }
+    } else {
+      editorState = EditorState.createEmpty();
     }
     return editorState;
   };

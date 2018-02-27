@@ -31,10 +31,40 @@ const styles = {
     height: 34,
     margin: '2px 0 0',
     padding: '0 10px 0 0',
-    width: 350,
     transition: 'width .15s ease-out 0s',
+    width: 360,
     '&:focus-within': {
-      width: 400
+      width: 437
+    },
+    '@media (max-width:1440px)': {
+      width: 315,
+      '&:focus-within': {
+        width: 387
+      }
+    },
+    '@media (max-width:1366px)': {
+      width: 260,
+      '&:focus-within': {
+        width: 337
+      }
+    },
+    '@media (max-width:1279px)': {
+      width: 245,
+      '&:focus-within': {
+        width: 312
+      }
+    },
+    '@media (max-width:1070px)': {
+      width: 225,
+      '&:focus-within': {
+        width: 282
+      }
+    },
+    '@media (max-width:860px)': {
+      width: 195,
+      '&:focus-within': {
+        width: 257
+      }
     }
   },
   titleContainer: {
@@ -50,7 +80,10 @@ const styles = {
     color: '#2c2d30',
     fontWeight: 900
   },
-  bigIcon: {
+  FilesIcon: {
+    fontSize: '19px !important'
+  },
+  membersIcon: {
     fontSize: '21px !important'
   },
   appBar: {
@@ -67,7 +100,9 @@ const styles = {
   },
   action: {
     fontSize: 18,
-    color: '#a0a0a0'
+    color: '#a0a0a0',
+    width: 40,
+    height: 40
   },
   actionWithSeparator: {
     '&::after': {
@@ -156,13 +191,13 @@ class NavBar extends React.Component {
                   <InfoOutlineIcon />
                 </IconButton>
                 <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
-                  <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.bigIcon)} />
+                  <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.membersIcon)} />
                 </IconButton>
                 <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
                   <Icon className="mdi-set mdi-pin" />
                 </IconButton>
                 <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
-                  <InsertDriveFileIcon />
+                  <Icon className={classNames('mdi-set mdi-file-outline', classes.filesIcon)} />
                 </IconButton>
               </CardActions>
             </Typography>

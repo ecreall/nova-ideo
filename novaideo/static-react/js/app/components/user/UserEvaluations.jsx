@@ -19,6 +19,10 @@ const styles = {
     fontWeight: 100,
     marginLeft: 5,
     fontSize: 14
+  },
+  thumbVertical: {
+    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    border: 'none'
   }
 };
 
@@ -49,11 +53,10 @@ export class DumbUserEvaluations extends React.Component {
           getEntities={(entities) => {
             return entities.account && entities.account.supportedIdeas;
           }}
-          className={classes.list}
-          itemHeightEstimation={30}
-          progressStyle={{ size: 20, color: 'white' }}
-          scrollbarStyle={{ thumbVertical: { backgroundColor: 'rgba(255, 255, 255, 0.22)' } }}
           ListItem={ContentItem}
+          className={classes.list}
+          progressStyle={{ size: 20, color: 'white' }}
+          classes={{ thumbVertical: classes.thumbVertical }}
         />
       </ContentCollapse>
     );

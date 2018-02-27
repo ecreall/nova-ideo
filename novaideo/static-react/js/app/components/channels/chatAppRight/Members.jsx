@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import { graphql } from 'react-apollo';
 
 import { iconAdapter } from '../../../utils/globalFunctions';
@@ -40,7 +40,7 @@ const styles = (theme) => {
 
 class DumbMembers extends React.Component {
   render() {
-    const { data, id, channel, classes, onOpen, open } = this.props;
+    const { data, id, classes, onOpen, open } = this.props;
     const totalCount = data.node && data.node.members && data.node.members.totalCount;
     return (
       <DetailsSection
@@ -62,18 +62,17 @@ class DumbMembers extends React.Component {
       >
         {open &&
           <EntitiesList
-            customScrollbar
-            listId={`${channel.id}-members`}
-            // virtualized
-            onEndReachedThreshold={0.5}
             data={data}
             getEntities={(entities) => {
               return entities.node && entities.node.members;
             }}
-            offlineFilter={(entity, text) => {
-              return entity.node.title.toLowerCase().search(text) >= 0;
-            }}
             ListItem={UserSmallItem}
+            onEndReachedThreshold={0.5}
+            moreBtn={
+              <span>
+                {I18n.t('common.moreResult')}
+              </span>
+            }
             className={classes.list}
           />}
       </DetailsSection>

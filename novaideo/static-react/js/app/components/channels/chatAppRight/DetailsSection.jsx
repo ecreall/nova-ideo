@@ -7,7 +7,7 @@ import ContentCollapse from '../../common/ContentCollapse';
 export const stylesContentCollapse = (theme) => {
   return {
     entered: {
-      height: 'calc(100% - 64px) !important'
+      height: 'auto !important'
     },
     listItem: {
       background: '#fff',

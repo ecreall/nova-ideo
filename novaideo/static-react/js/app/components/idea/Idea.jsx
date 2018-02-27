@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
 import { CircularProgress } from 'material-ui/Progress';
-import { Scrollbars } from 'react-custom-scrollbars';
 
 import ImagesPreview from '../common/ImagesPreview';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
@@ -20,8 +19,8 @@ import { getFormattedDate } from '../../utils/globalFunctions';
 import { ideaQuery } from '../../graphql/queries';
 import UserAvatar from '../user/UserAvatar';
 import Comments from '../channels/Comments';
-import { styles as scrollbarStyles } from '../CollaborationApp';
 import IdeaMenu from './IdeaMenu';
+import Scrollbar from '../common/Scrollbar';
 import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
 
 const styles = (theme) => {
@@ -252,20 +251,7 @@ export class RunderIdea extends React.Component {
         onClose={this.close}
       >
         <div className={classes.root}>
-          <Scrollbars
-            renderTrackVertical={(props) => {
-              return <div {...props} style={{ ...props.style, ...scrollbarStyles.trackVertical }} />;
-            }}
-            renderThumbVertical={(props) => {
-              return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
-            }}
-            onScrollFrame={(values) => {
-              const event = document.createEvent('HTMLEvents');
-              event.initEvent(scrollEvent, true, true);
-              event.values = values;
-              document.dispatchEvent(event);
-            }}
-          >
+          <Scrollbar scrollEvent={scrollEvent}>
             <div className={classes.maxContainer}>
               {hasEvaluation &&
                 <div className={classes.right}>
@@ -313,7 +299,7 @@ export class RunderIdea extends React.Component {
                 formTop
               />
             </div>
-          </Scrollbars>
+          </Scrollbar>
         </div>
       </Dialog>
     );

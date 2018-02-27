@@ -23,16 +23,14 @@ export class DumbIdeasList extends React.Component {
     const { data, classes } = this.props;
     return (
       <EntitiesList
-        // virtualized
-        listId="ideas"
-        className={classes.list}
+        scrollEvent="ideas"
         data={data}
         getEntities={(entities) => {
           return entities.ideas;
         }}
-        itemHeightEstimation={200}
         ListItem={IdeaItem}
         Divider={Divider}
+        className={classes.list}
       />
     );
   }

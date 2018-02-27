@@ -82,7 +82,6 @@ const styles = (theme) => {
     placeholder: {
       color: '#000',
       opacity: '.375',
-      filter: 'grayscale(100%)',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',

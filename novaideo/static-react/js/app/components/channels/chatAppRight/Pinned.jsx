@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import { graphql } from 'react-apollo';
 
 import { commentsQuery } from '../../../graphql/queries';
@@ -20,7 +20,7 @@ const styles = (theme) => {
     },
     sectionIcon: {
       marginTop: -3,
-      fontSize: '24px !important',
+      fontSize: '22px !important',
       color: theme.palette.danger[500]
     },
     sectionIconActive: {
@@ -53,12 +53,16 @@ class Pinned extends React.Component {
       >
         {open &&
           <RenderComments
-            data={data}
             rightDisabled
-            customScrollbar
             dynamicDivider={false}
             displayForm={false}
+            data={data}
             channelId={channel.id}
+            moreBtn={
+              <span>
+                {I18n.t('common.moreResult')}
+              </span>
+            }
             filter={{ pinned: true }}
             classes={{ container: classes.container, list: classes.container }}
           />}

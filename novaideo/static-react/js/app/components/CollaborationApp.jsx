@@ -1,12 +1,12 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import { Scrollbars } from 'react-custom-scrollbars';
 import 'emoji-mart/css/emoji-mart.css';
 
 import Navbar from './Navbar';
 import Footer from './Footer';
 import App from './common/App';
+import Scrollbar from './common/Scrollbar';
 
 export const styles = {
   root: {
@@ -18,19 +18,6 @@ export const styles = {
     marginRight: 'auto',
     marginLeft: 'auto'
   },
-  trackVertical: {
-    width: 8,
-    height: '100%',
-    top: 0,
-    right: 6
-  },
-  thumbVertical: {
-    zIndex: 1,
-    cursor: 'pointer',
-    borderRadius: 6,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    border: '3px solid #fff'
-  },
   scroll: {
     paddingLeft: 8,
     paddingRight: 8
@@ -41,21 +28,10 @@ function CollaborationApp({ children, active, left, classes }) {
   return (
     <App active={active} left={left} Navbar={Navbar}>
       <div className={classes.root}>
-        <Scrollbars
-          renderTrackVertical={(props) => {
-            return <div {...props} style={{ ...props.style, ...styles.trackVertical }} />;
-          }}
-          renderThumbVertical={(props) => {
-            return <div {...props} style={{ ...props.style, ...styles.thumbVertical }} />;
-          }}
-          renderView={(props) => {
-            return <div {...props} className={classes.scroll} />;
-          }}
-          onScrollFrame={(values) => {
-            const event = document.createEvent('HTMLEvents');
-            event.initEvent('scroll', true, true);
-            event.values = values;
-            document.dispatchEvent(event);
+        <Scrollbar
+          scrollEvent="scroll"
+          classes={{
+            scroll: classes.scroll
           }}
         >
           <div className={classes.maxContainer}>
@@ -69,7 +45,7 @@ function CollaborationApp({ children, active, left, classes }) {
               </Grid>
             </Grid>
           </div>
-        </Scrollbars>
+        </Scrollbar>
       </div>
     </App>
   );

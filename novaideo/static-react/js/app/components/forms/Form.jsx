@@ -2,10 +2,9 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { Scrollbars } from 'react-custom-scrollbars';
 
 import Dialog from '../common/Dialog';
-import { styles as scrollbarStyles } from '../CollaborationApp';
+import Scrollbar from '../common/Scrollbar';
 
 const styles = {
   dialogContainer: {
@@ -126,16 +125,9 @@ export class DumbForm extends React.Component {
           })}
         >
           {fullScreen
-            ? <Scrollbars
-              renderTrackVertical={(props) => {
-                return <div {...props} style={{ ...props.style, ...scrollbarStyles.trackVertical }} />;
-              }}
-              renderThumbVertical={(props) => {
-                return <div {...props} style={{ ...props.style, ...scrollbarStyles.thumbVertical }} />;
-              }}
-            >
+            ? <Scrollbar>
               {content}
-            </Scrollbars>
+            </Scrollbar>
             : content}
         </div>
         {footer &&

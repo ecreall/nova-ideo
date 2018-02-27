@@ -110,6 +110,23 @@
 }
 
 
+/* scrollbar */
+.track {
+  display: none;
+
+}
+
+._scrollbar > .track {
+  display: block;
+}
+
+
+/* hide default webkit scrollbar */
+.scroller::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 body {
   font-style: normal;
   font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;   

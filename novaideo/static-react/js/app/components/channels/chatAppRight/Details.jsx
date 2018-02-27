@@ -9,8 +9,6 @@ import { CONTENTS_IDS } from '.';
 
 const styles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     height: '100%',
     backgroundColor: '#fff'
   }

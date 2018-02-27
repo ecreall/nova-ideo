@@ -2,7 +2,8 @@
 const Translations = {
   fr: {
     common: {
-      pinned: "Épinglés"
+      pinned: "Épinglés",
+      moreResult: "Afficher plus de résultats"
     },
     processes: {
       ideamanagement: {
@@ -111,7 +112,8 @@ const Translations = {
   },
   en: {
     common: {
-      pinned: "Pinned"
+      pinned: "Pinned",
+      moreResult: "See more results"
     },
     processes: {
       ideamanagement: {

@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { Translate } from 'react-redux-i18n';
-import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { Translate, I18n } from 'react-redux-i18n';
 import { graphql } from 'react-apollo';
 
+import { iconAdapter } from '../../../utils/globalFunctions';
 import { commentsQuery } from '../../../graphql/queries';
 import { COMMENTS_ACTIONS, ACTIONS } from '../../../processes';
 
@@ -54,15 +54,19 @@ class Files extends React.Component {
             {<Translate value="channels.filesBlockTitle" count={totalCount} />}
           </span>
         }
-        Icon={InsertDriveFileIcon}
+        Icon={iconAdapter('mdi-set mdi-file-outline')}
       >
         {open &&
           <RenderComments
             rightDisabled
-            customScrollbar
             dynamicDivider={false}
             displayForm={false}
             data={data}
+            moreBtn={
+              <span>
+                {I18n.t('common.moreResult')}
+              </span>
+            }
             channelId={channel.id}
             filter={{ file: true }}
             classes={{ container: classes.container, list: classes.container }}

@@ -12,10 +12,15 @@ import { updateApp } from '../../../actions/actions';
 import Details from './Details';
 import Search from './Search';
 import { CONTENTS_IDS } from '.';
+import Scrollbar from '../../common/Scrollbar';
 
 const styles = {
+  content: {
+    height: 'calc(100vh - 128px)',
+    overflow: 'auto'
+  },
   container: {
-    display: 'flex',
+    display: 'block',
     flexDirection: 'column',
     height: '100%'
   },
@@ -87,8 +92,11 @@ class ChatAppRight extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-
-        {this.content()}
+        <div className={classes.content}>
+          <Scrollbar>
+            {this.content()}
+          </Scrollbar>
+        </div>
       </div>
     );
   }

@@ -10,6 +10,10 @@ import { discussionsQuery } from '../../graphql/queries';
 const styles = {
   list: {
     height: 'calc(50% - 64px)'
+  },
+  thumbVertical: {
+    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    border: 'none'
   }
 };
 export class DumbPrivateChannels extends React.Component {
@@ -22,14 +26,11 @@ export class DumbPrivateChannels extends React.Component {
         getEntities={(entities) => {
           return entities.account && entities.account.discussions;
         }}
-        noContentIcon="comment-outline"
-        noContentMessage={'noPrivateDiscussions'}
         ListItem={ChannelItem}
         itemProps={{ isDiscussion: true }}
         className={classes.list}
-        itemHeightEstimation={30}
         progressStyle={{ size: 20, color: 'white' }}
-        scrollbarStyle={{ thumbVertical: { backgroundColor: 'rgba(255, 255, 255, 0.22)' } }}
+        classes={{ thumbVertical: classes.thumbVertical }}
       />
     );
   }

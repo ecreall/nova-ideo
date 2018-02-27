@@ -3,24 +3,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
-import { Scrollbars } from 'react-custom-scrollbars';
 import debounce from 'lodash.debounce';
 
 import { setURLState } from '../../actions/actions';
 import { VirtualizedListItem } from './VirtualizedListItem';
 import { APOLLO_NETWORK_STATUS } from '../../constants';
+import Scrollbar from './Scrollbar';
 
 const styles = {
-  thumbVertical: {
-    zIndex: 1,
-    cursor: 'pointer',
-    borderRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)'
-  },
   progress: {
     position: 'relative',
     textAlign: 'center',
     padding: 20
+  },
+  moreBtn: {
+    cursor: 'pointer',
+    fontSize: 15,
+    textAlign: 'center',
+    margin: 10,
+    lineHeight: 2.5,
+    color: '#0576b9',
+    '&:hover': {
+      color: '#005e99',
+      textDecoration: 'underline'
+    }
+  },
+  reverted: {
+    display: 'flex',
+    flexDirection: 'column-reverse'
   }
 };
 
@@ -28,19 +38,20 @@ function emptyContainer({ children }) {
   return children;
 }
 
-function scrollbarsContainer({ children, handleScroll, scrollbarStyle, thumbVerticalStyle }) {
+function scrollbarContainer({ children, handleScroll, scrollEvent, reverted, classes }) {
   return (
-    <Scrollbars
-      renderView={(props) => {
-        return <div {...props} style={{ ...props.style, ...scrollbarStyle }} />;
+    <Scrollbar
+      scrollEvent={scrollEvent}
+      reverted={reverted}
+      classes={{
+        scroll: classes.scroll,
+        thumbVertical: classes.thumbVertical,
+        trackVertical: classes.trackVertical
       }}
-      renderThumbVertical={(props) => {
-        return <div {...props} style={{ ...props.style, ...thumbVerticalStyle }} />;
-      }}
-      onScrollFrame={handleScroll}
+      onScroll={handleScroll}
     >
       {children}
-    </Scrollbars>
+    </Scrollbar>
   );
 }
 
@@ -56,8 +67,7 @@ export class DumbEntitiesList extends React.Component {
   static defaultProps = {
     virtualized: false,
     onEndReachedThreshold: 0.7,
-    progressStyle: { size: 30 },
-    scrollbarStyle: {}
+    progressStyle: { size: 30 }
   };
 
   constructor(props) {
@@ -71,8 +81,8 @@ export class DumbEntitiesList extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchMoreOnEvent, customScrollbar } = this.props;
-    if (fetchMoreOnEvent || !customScrollbar) {
+    const { fetchMoreOnEvent, customScrollbar, moreBtn } = this.props;
+    if (!moreBtn && (fetchMoreOnEvent || !customScrollbar)) {
       const event = fetchMoreOnEvent || 'scroll';
       document.addEventListener(event, this.handleScroll);
     }
@@ -121,21 +131,12 @@ export class DumbEntitiesList extends React.Component {
   }
 
   componentWillUnmount() {
-    const { fetchMoreOnEvent, customScrollbar } = this.props;
-    if (fetchMoreOnEvent || !customScrollbar) {
+    const { fetchMoreOnEvent, customScrollbar, moreBtn } = this.props;
+    if (!moreBtn && (fetchMoreOnEvent || !customScrollbar)) {
       const event = fetchMoreOnEvent || 'scroll';
       document.removeEventListener(event, this.handleScroll);
     }
   }
-
-  dispatchScroll = () => {
-    const { listId } = this.props;
-    if (listId) {
-      const event = document.createEvent('HTMLEvents');
-      event.initEvent(`${listId}-scroll`, true, true);
-      document.dispatchEvent(event);
-    }
-  };
 
   dispatchResize = () => {
     const event = document.createEvent('HTMLEvents');
@@ -143,8 +144,15 @@ export class DumbEntitiesList extends React.Component {
     document.dispatchEvent(event);
   };
 
+  dispatchEvent = () => {
+    const { scrollEvent } = this.props;
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent(scrollEvent, true, true);
+    document.dispatchEvent(event);
+  };
+
   handleScroll = (event) => {
-    this.dispatchScroll();
+    if (!this.props.customScrollbar) this.dispatchEvent();
     if (this.loadingDebounce) this.loadingDebounce.cancel();
     const loadNextData = () => {
       if (!this.loading) {
@@ -211,6 +219,7 @@ export class DumbEntitiesList extends React.Component {
         })
         .catch((e) => {
           if (!network.url.error) this.props.setURLState(true, [e.message]);
+          this.loading = false;
         });
     }
   };
@@ -249,16 +258,17 @@ export class DumbEntitiesList extends React.Component {
       data,
       getEntities,
       ListItem,
+      Divider,
       itemProps,
       dividerProps,
+      virtualized,
       itemHeightEstimation,
       customScrollbar,
-      className,
-      scrollbarStyle,
       reverted,
-      virtualized,
-      Divider,
-      listId
+      moreBtn,
+      scrollEvent,
+      className,
+      classes
     } = this.props;
     if (data.error) {
       // the fact of checking data.error remove the Unhandled (in react-apollo)
@@ -272,61 +282,62 @@ export class DumbEntitiesList extends React.Component {
     }
     const offline = this.offline;
     const entities = offline.status ? offline.entities : dataEntities.edges;
-    const ScrollContainer = customScrollbar ? scrollbarsContainer : emptyContainer;
+    const ScrollContainer = customScrollbar ? scrollbarContainer : emptyContainer;
     const ItemContainer = virtualized ? virtualizedItemContainer : emptyContainer;
     return (
       <div className={className}>
         <ScrollContainer
-          handleScroll={this.handleScroll}
-          scrollbarStyle={{
-            ...scrollbarStyle.container,
-            ...(reverted
-              ? {
-                display: 'flex',
-                flexDirection: 'column-reverse'
-              }
-              : {})
-          }}
-          thumbVerticalStyle={{ ...styles.thumbVertical, ...scrollbarStyle.thumbVertical }}
+          classes={classes}
+          handleScroll={!moreBtn && this.handleScroll}
+          reverted={reverted}
+          scrollEvent={scrollEvent}
         >
-          {entities && entities.length > 0
-            ? entities.map((item, index) => {
-              const previous = entities[index - 1];
-              const next = entities[index + 1];
-              const result = [
-                <ItemContainer itemHeightEstimation={itemHeightEstimation}>
-                  <ListItem
-                    index={index}
-                    next={next && next.node}
-                    previous={previous && previous.node}
-                    itemProps={itemProps}
-                    node={item.node}
-                    reverted={reverted}
-                  />
-                </ItemContainer>
-              ];
-              if (Divider) {
-                const divider = (
-                  <Divider
-                    reverted={reverted}
-                    index={index}
-                    next={next && next.node}
-                    eventId={listId && `${listId}-scroll`}
-                    previous={previous && previous.node}
-                    node={item.node}
-                    dividerProps={{ ...dividerProps, ...itemProps }}
-                  />
-                );
-                if (reverted) {
-                  result.push(divider);
-                } else {
-                  result.unshift(divider);
+          <div className={reverted && classes.reverted}>
+            {entities && entities.length > 0
+              ? entities.map((item, index) => {
+                const previous = entities[index - 1];
+                const next = entities[index + 1];
+                const result = [
+                  <ItemContainer itemHeightEstimation={itemHeightEstimation}>
+                    <ListItem
+                      reverted={reverted}
+                      index={index}
+                      node={item.node}
+                      next={next && next.node}
+                      previous={previous && previous.node}
+                      itemProps={itemProps}
+                    />
+                  </ItemContainer>
+                ];
+                if (Divider) {
+                  const divider = (
+                    <Divider
+                      reverted={reverted}
+                      index={index}
+                      node={item.node}
+                      eventId={scrollEvent}
+                      next={next && next.node}
+                      previous={previous && previous.node}
+                      dividerProps={{ ...dividerProps, ...itemProps }}
+                    />
+                  );
+                  if (reverted) {
+                    result.push(divider);
+                  } else {
+                    result.unshift(divider);
+                  }
                 }
-              }
-              return result;
-            })
-            : null}
-          {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
+                return result;
+              })
+              : null}
+            {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
+            {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore &&
+              dataEntities.pageInfo.hasNextPage &&
+              moreBtn &&
+              <div className={classes.moreBtn} onClick={this.onEndReached}>
+                {moreBtn}
+              </div>}
+          </div>
         </ScrollContainer>
       </div>
     );

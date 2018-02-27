@@ -23,7 +23,8 @@ const styles = (theme) => {
       backgroundColor: 'white',
       display: 'flex',
       justifyContent: 'space-between',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      height: '100%'
     },
     commentsWithRight: {
       paddingRight: '0 !important',
@@ -65,7 +66,8 @@ export class RenderComments extends React.Component {
       displayForm,
       formTop,
       formProps,
-      classes
+      classes,
+      moreBtn
     } = this.props;
     const channel = data.node;
     const subject = channel && channel.subject;
@@ -100,16 +102,12 @@ export class RenderComments extends React.Component {
           <EntitiesList
             customScrollbar={customScrollbar}
             fetchMoreOnEvent={fetchMoreOnEvent}
-            listId={channelId}
+            scrollEvent={channelId}
             reverted={reverted}
-            // virtualized
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={reverted ? 0.3 : 0.7}
             data={data}
             getEntities={(entities) => {
               return entities.node && entities.node.comments;
-            }}
-            offlineFilter={(entity, text) => {
-              return entity.node.text.toLowerCase().search(text) >= 0;
             }}
             ListItem={CommentItem}
             Divider={Divider}
@@ -127,7 +125,7 @@ export class RenderComments extends React.Component {
                   })
                   : []
             }}
-            itemHeightEstimation={50}
+            moreBtn={moreBtn}
             className={classes.list}
           />
           {!formTop && commentForm}
