@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 import { CircularProgress } from 'material-ui/Progress';
 import debounce from 'lodash.debounce';
 
@@ -27,6 +28,15 @@ const styles = {
       color: '#005e99',
       textDecoration: 'underline'
     }
+  },
+  revertedLisContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    minHeight: '100%'
+  },
+  header: {
+    justifyContent: 'space-between'
   },
   reverted: {
     display: 'flex',
@@ -266,6 +276,7 @@ export class DumbEntitiesList extends React.Component {
       customScrollbar,
       reverted,
       moreBtn,
+      header,
       scrollEvent,
       className,
       classes
@@ -292,51 +303,59 @@ export class DumbEntitiesList extends React.Component {
           reverted={reverted}
           scrollEvent={scrollEvent}
         >
-          <div className={reverted && classes.reverted}>
-            {entities && entities.length > 0
-              ? entities.map((item, index) => {
-                const previous = entities[index - 1];
-                const next = entities[index + 1];
-                const result = [
-                  <ItemContainer itemHeightEstimation={itemHeightEstimation}>
-                    <ListItem
-                      reverted={reverted}
-                      index={index}
-                      node={item.node}
-                      next={next && next.node}
-                      previous={previous && previous.node}
-                      itemProps={itemProps}
-                    />
-                  </ItemContainer>
-                ];
-                if (Divider) {
-                  const divider = (
-                    <Divider
-                      reverted={reverted}
-                      index={index}
-                      node={item.node}
-                      eventId={scrollEvent}
-                      next={next && next.node}
-                      previous={previous && previous.node}
-                      dividerProps={{ ...dividerProps, ...itemProps }}
-                    />
-                  );
-                  if (reverted) {
-                    result.push(divider);
-                  } else {
-                    result.unshift(divider);
+          <div
+            className={classNames({
+              [classes.header]: header,
+              [classes.revertedLisContainer]: reverted
+            })}
+          >
+            {!dataEntities.pageInfo.hasNextPage ? header : null}
+            <div className={reverted && classes.reverted}>
+              {entities && entities.length > 0
+                ? entities.map((item, index) => {
+                  const previous = entities[index - 1];
+                  const next = entities[index + 1];
+                  const result = [
+                    <ItemContainer itemHeightEstimation={itemHeightEstimation}>
+                      <ListItem
+                        reverted={reverted}
+                        index={index}
+                        node={item.node}
+                        next={next && next.node}
+                        previous={previous && previous.node}
+                        itemProps={itemProps}
+                      />
+                    </ItemContainer>
+                  ];
+                  if (Divider) {
+                    const divider = (
+                      <Divider
+                        reverted={reverted}
+                        index={index}
+                        node={item.node}
+                        eventId={scrollEvent}
+                        next={next && next.node}
+                        previous={previous && previous.node}
+                        dividerProps={{ ...dividerProps, ...itemProps }}
+                      />
+                    );
+                    if (reverted) {
+                      result.push(divider);
+                    } else {
+                      result.unshift(divider);
+                    }
                   }
-                }
-                return result;
-              })
-              : null}
-            {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
-            {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore &&
-              dataEntities.pageInfo.hasNextPage &&
-              moreBtn &&
-              <div className={classes.moreBtn} onClick={this.onEndReached}>
-                {moreBtn}
-              </div>}
+                  return result;
+                })
+                : null}
+              {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && dataEntities.pageInfo.hasNextPage && this.renderProgress()}
+              {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore &&
+                dataEntities.pageInfo.hasNextPage &&
+                moreBtn &&
+                <div className={classes.moreBtn} onClick={this.onEndReached}>
+                  {moreBtn}
+                </div>}
+            </div>
           </div>
         </ScrollContainer>
       </div>
