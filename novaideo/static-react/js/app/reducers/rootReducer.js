@@ -302,7 +302,8 @@ const initialAppsState = {
     subject: undefined,
     right: {
       open: false,
-      componentId: undefined
+      componentId: undefined,
+      props: {}
     }
   }
 };

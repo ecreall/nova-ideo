@@ -81,6 +81,11 @@ export const PROCESSES = {
         description: 'processes.commentmanagement.unpin.description',
         submission: 'processes.commentmanagement.unpin.submission',
         confirmation: 'processes.commentmanagement.unpin.confirmation'
+      },
+      respond: {
+        nodeId: 'respond',
+        title: 'processes.commentmanagement.respond.title',
+        description: 'processes.commentmanagement.respond.description'
       }
     }
   }

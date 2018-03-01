@@ -1,4 +1,5 @@
 import React from 'react';
+import { I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
@@ -6,9 +7,10 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 
 import { commentsQuery } from '../../graphql/queries';
-import EntitiesList from '../common/EntitiesList';
+import FlatList from '../common/FlatList';
 import { filterActions } from '../../utils/processes';
 import CommentItem from './CommentItem';
+import CommentsFooter from './CommentsFooter';
 import ChatAppRight from './chatAppRight/ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/processes/common/Comment';
@@ -41,14 +43,48 @@ const styles = (theme) => {
     },
     list: {
       height: 'calc(100% - 55px)'
+    },
+    header: {
+      margin: '48px 32px 16px 16px',
+      color: '#2c2d30',
+      fontSize: 17,
+      lineHeight: 1.5
+    },
+    noResult: {
+      paddingLeft: 25,
+      marginBottom: 15,
+      fontSize: 15,
+      color: '#717274',
+      lineHeight: '20px'
     }
+  };
+};
+
+const NoComments = ({ classes }) => {
+  return () => {
+    return (
+      <div className={classes.noResult}>
+        {I18n.t('channels.noMessage')}
+      </div>
+    );
+  };
+};
+
+const CtComment = ({ classes }) => {
+  return () => {
+    return (
+      <div className={classes.noResult}>
+        {I18n.t('channels.ctComment')}
+      </div>
+    );
   };
 };
 
 export class RenderComments extends React.Component {
   static defaultProps = {
     displayForm: true,
-    dynamicDivider: true
+    dynamicDivider: true,
+    displayFooter: true
   };
 
   render() {
@@ -67,7 +103,10 @@ export class RenderComments extends React.Component {
       formTop,
       formProps,
       classes,
-      moreBtn
+      moreBtn,
+      displayFooter,
+      Footer,
+      NoItems
     } = this.props;
     const channel = data.node;
     const subject = channel && channel.subject;
@@ -99,7 +138,9 @@ export class RenderComments extends React.Component {
           sm={displayRightBlock ? 7 : 12}
         >
           {formTop && commentForm}
-          <EntitiesList
+          <FlatList
+            Footer={displayFooter && (Footer || CommentsFooter)}
+            NoItems={NoItems || (commentAction ? NoComments({ classes: classes }) : CtComment({ classes: classes }))}
             customScrollbar={customScrollbar}
             fetchMoreOnEvent={fetchMoreOnEvent}
             scrollEvent={channelId}

@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { CardActions } from 'material-ui/Card';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
-import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
 
 import { updateApp, closeChatApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';

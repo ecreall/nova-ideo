@@ -7,7 +7,7 @@ import { I18n } from 'react-redux-i18n';
 
 import ContentItem from './ContentItem';
 import ContentCollapse from '../common/ContentCollapse';
-import EntitiesList from '../common/EntitiesList';
+import FlatList from '../common/FlatList';
 import { myContentsQuery } from '../../graphql/queries';
 
 const styles = {
@@ -47,7 +47,7 @@ export class DumbUserContents extends React.Component {
         }
         Icon={StorageIcon}
       >
-        <EntitiesList
+        <FlatList
           customScrollbar
           data={data}
           getEntities={(entities) => {

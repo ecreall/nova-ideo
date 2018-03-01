@@ -107,6 +107,19 @@ export const ideaDataFragment = gql`
   }
 `;
 
+export const ideaInfoFragment = gql`
+  fragment idea on Idea {
+    id
+    oid
+    createdAt
+    title
+    author {
+      ...author
+    }
+    }
+  ${authorFragment}
+`;
+
 export const ideaFragment = gql`
   fragment idea on Idea {
     id
@@ -377,11 +390,58 @@ export const commentFragment = gql`
 `;
 
 export const commentQuery = gql`
-  query Comment($first: Int!, $after: String!, $filter: String!, $id: ID!, $processIds: [String], $nodeIds: [String]) {
+  query Comment($first: Int!, $after: String!, $filter: String!, $id: ID!, $processIds: [String], $nodeIds: [String],
+                $subjectActionsTags: [String], $processTags: [String], $actionTags: [String]) {
     node(id: $id) {
-      ...comment
       ... on Comment {
+        id
+        oid
+        rootOid
+        createdAt
+        text
+        edited
+        pinned
+        channel {
+          id
+          oid
+          title
+          isDiscuss
+          unreadComments {
+            id
+            oid
+          }
+          subject {
+            ... on IEntity {
+              id
+              oid
+            }
+          }
+        }
+        author {
+          ...author
+        }
+        attachedFiles {
+          url
+          isImage
+          variations
+        }
+        urls {
+          url
+          title
+          description
+          imageUrl
+          siteName
+          favicon
+          domain
+          authorAvatar
+          authorName
+        }
+        lenComments
+        actions(actionTags: $subjectActionsTags){
+          ...action
+        }
         comments(first: $first, after: $after, filter: $filter) {
+          totalCount
           pageInfo {
             endCursor
             hasNextPage
@@ -391,9 +451,6 @@ export const commentQuery = gql`
               ...comment
             }
           }
-        }
-        actions(processIds: $processIds, nodeIds: $nodeIds) {
-          ...action
         }
       }
     }
@@ -421,8 +478,25 @@ export const commentsQuery = gql`
              ... on IEntity {
                id
                oid
+               title
                actions(nodeIds: $subjectActionsNodeIds) {
                  ...action
+               }
+             }
+             ... on Person {
+               picture {
+                 url
+               }
+             }
+             ... on Idea {
+               author {
+                 id
+                 oid
+                 title
+                 isAnonymous
+                 picture {
+                   url
+                 }
                }
              }
            }

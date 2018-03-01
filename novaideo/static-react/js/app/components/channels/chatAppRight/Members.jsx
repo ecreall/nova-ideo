@@ -7,7 +7,7 @@ import { graphql } from 'react-apollo';
 import { iconAdapter } from '../../../utils/globalFunctions';
 import { channelMembersQuery } from '../../../graphql/queries';
 import DetailsSection from './DetailsSection';
-import EntitiesList from '../../common/EntitiesList';
+import FlatList from '../../common/FlatList';
 import UserSmallItem from '../../user/UserSmallItem';
 
 const styles = (theme) => {
@@ -61,7 +61,7 @@ class DumbMembers extends React.Component {
         Icon={iconAdapter('mdi-set mdi-account-multiple-outline')}
       >
         {open &&
-          <EntitiesList
+          <FlatList
             data={data}
             getEntities={(entities) => {
               return entities.node && entities.node.members;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 
 import IdeaItem from './IdeaItem';
-import EntitiesList from '../common/EntitiesList';
+import FlatList from '../common/FlatList';
 import { ideasListQuery } from '../../graphql/queries';
 import Divider from './Divider';
 import { ACTIONS } from '../../processes';
@@ -22,7 +22,7 @@ export class DumbIdeasList extends React.Component {
   render() {
     const { data, classes } = this.props;
     return (
-      <EntitiesList
+      <FlatList
         scrollEvent="ideas"
         data={data}
         getEntities={(entities) => {

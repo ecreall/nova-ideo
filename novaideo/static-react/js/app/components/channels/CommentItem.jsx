@@ -4,11 +4,11 @@ import Moment from 'moment';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { I18n } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
+import ForumIcon from 'material-ui-icons/Forum';
 
 import ImagesPreview from '../common/ImagesPreview';
-import IconWithText from '../common/IconWithText';
 import Url from '../common/Url';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import CommentMenu from './CommentMenu';
@@ -16,6 +16,7 @@ import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
 import { COMMENTS_TIME_INTERVAL } from '../../constants';
 import CommentProcessManager from './CommentProcessManager';
+import { CONTENTS_IDS } from './chatAppRight';
 
 const styles = (theme) => {
   return {
@@ -120,18 +121,21 @@ const styles = (theme) => {
       marginTop: 15,
       maxWidth: 400
     },
-    bodyFooter: {
+    replyContainer: {
       display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-end'
+      alignItems: 'center',
+      cursor: 'pointer',
+      fontSize: 12,
+      marginLeft: 5,
+      color: theme.palette.info[500],
+      '&:hover': {
+        color: theme.palette.info[700]
+      }
     },
-    actionsText: {
-      fontSize: 14,
-      marginLeft: 8,
-      marginRight: 50
-    },
-    actionsIcon: {
-      fontSize: 14
+    replyIcon: {
+      width: 18,
+      height: 18,
+      marginRight: 5
     },
     avatar: {
       borderRadius: 4,
@@ -183,7 +187,7 @@ class RenderCommentItem extends React.Component {
   };
 
   render() {
-    const { node, classes, processManager } = this.props;
+    const { node, classes, processManager, disableReply } = this.props;
     const ignoreMetaData = this.ignoreMetaData();
     const author = node.author;
     const authorPicture = author.picture;
@@ -264,14 +268,17 @@ class RenderCommentItem extends React.Component {
                       return <Url key={key} data={url} />;
                     })}
                   </div>}
-                {node.lenComments > 0
-                  ? <div className={classes.bodyFooter}>
-                    <IconWithText
-                      styleText={classes.actionsText}
-                      styleIcon={classes.actionsIcon}
-                      name="comment-multiple-outline"
-                      text={`${node.lenComments} ${`reply${node.lenComments > 1 ? '*' : ''}`}`}
-                    />
+                {!disableReply && node.lenComments > 0
+                  ? <div
+                    onClick={() => {
+                      processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
+                    }}
+                    className={classes.replyContainer}
+                  >
+                    <ForumIcon className={classes.replyIcon} />
+                    <span>
+                      <Translate value="channels.replies" count={node.lenComments} />
+                    </span>
                   </div>
                   : null}
               </div>

@@ -165,7 +165,7 @@ export class DumbCommentForm extends React.Component {
   };
 
   render() {
-    const { formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, classes, theme } = this.props;
+    const { formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, placeholder, classes, theme } = this.props;
     const hasComment = formData && formData.values && formData.values.comment;
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
@@ -175,6 +175,7 @@ export class DumbCommentForm extends React.Component {
     const withAnonymous = site.anonymisation && !isDiscussChannel;
     const anonymousSelected = withAnonymous && formData && formData.values && Boolean(formData.values.anonymous);
     const channelTitle = channel ? channel.title : title;
+    const canSubmit = files.length > 0 || hasComment;
     return (
       <div className={classNames(classes.container, { [classes.containerAddon]: files.length > 0 })}>
         <FilesPickerPreview
@@ -229,7 +230,7 @@ export class DumbCommentForm extends React.Component {
               role="presentation"
               tabIndex="-1"
             >
-              <Translate value="forms.comment.textPlaceholder" name={channelTitle || '...'} />
+              {placeholder || <Translate value="forms.comment.textPlaceholder" name={channelTitle || '...'} />}
             </div>
           </div>
           <div className={withAnonymous && classes.addon}>
@@ -244,11 +245,11 @@ export class DumbCommentForm extends React.Component {
               />
               : null}
           </div>
-          <IconButton onClick={hasComment ? this.handleSubmit : undefined} className={classes.action}>
+          <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
             <SendIcon
               size={22}
               className={classNames(classes.submit, {
-                [classes.submitActive]: hasComment
+                [classes.submitActive]: canSubmit
               })}
             />
           </IconButton>

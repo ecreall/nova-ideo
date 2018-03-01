@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { withStyles } from 'material-ui/styles';
 
 import ChannelItem from './ChannelItem';
-import EntitiesList from '../common/EntitiesList';
+import FlatList from '../common/FlatList';
 import { channelsQuery } from '../../graphql/queries';
 
 const styles = {
@@ -21,7 +21,7 @@ export class DumbPublicChannels extends React.Component {
   render() {
     const { data, classes } = this.props;
     return (
-      <EntitiesList
+      <FlatList
         customScrollbar
         data={data}
         getEntities={(entities) => {

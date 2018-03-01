@@ -3,6 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
+import ForumIcon from 'material-ui-icons/Forum';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -11,6 +12,7 @@ import { Translate, I18n } from 'react-redux-i18n';
 import { updateApp } from '../../../actions/actions';
 import Details from './Details';
 import Search from './Search';
+import Reply from './Reply';
 import { CONTENTS_IDS } from '.';
 import Scrollbar from '../../common/Scrollbar';
 
@@ -41,7 +43,26 @@ const styles = {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis'
+  },
+  appTitle: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  appIcon: {
+    marginRight: 5
   }
+};
+
+const Title = (props) => {
+  const { title, Icon, classes } = props;
+  return (
+    <div className={classes.appTitle}>
+      {Icon && <Icon className={classes.appIcon} />}
+      <span>
+        {title}
+      </span>
+    </div>
+  );
 };
 
 class ChatAppRight extends React.Component {
@@ -62,13 +83,15 @@ class ChatAppRight extends React.Component {
   content = () => {
     const { componentId } = this.props;
     if (componentId === CONTENTS_IDS.search) return <Search {...this.props} />;
+    if (componentId === CONTENTS_IDS.reply) return <Reply {...this.props} reverted customScrollbar dynamicDivider={false} />;
     return <Details {...this.props} />;
   };
 
   title = () => {
-    const { componentId, channel } = this.props;
-    if (componentId === CONTENTS_IDS.search) return I18n.t('channels.searchBlockTitle');
-    return <Translate value="channels.rightTitleAbout" name={channel.title} />;
+    const { componentId, channel, classes } = this.props;
+    if (componentId === CONTENTS_IDS.search) return <Title title={I18n.t('channels.searchBlockTitle')} classes={classes} />;
+    if (componentId === CONTENTS_IDS.reply) return <Title title={I18n.t('channels.thread')} Icon={ForumIcon} classes={classes} />;
+    return <Title title={<Translate value="channels.rightTitleAbout" name={channel.title} />} classes={classes} />;
   };
 
   render() {
@@ -112,4 +135,4 @@ export const mapStateToProps = (state) => {
     subject: state.apps.chatApp.subject
   };
 };
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(ChatAppRight));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ChatAppRight));

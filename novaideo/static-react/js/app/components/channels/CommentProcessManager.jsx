@@ -1,14 +1,21 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Delete from '../forms/processes/commentProcess/Delete';
 import Pin from '../forms/processes/commentProcess/Pin';
 import Unpin from '../forms/processes/commentProcess/Unpin';
+import { updateApp } from '../../actions/actions';
 import { PROCESSES } from '../../processes';
+import { CONTENTS_IDS } from './chatAppRight';
 
 export class DumbCommentProcessManager extends React.Component {
   state = {
     action: null
+  };
+
+  openRight = (id, props) => {
+    this.props.updateApp('chatApp', { right: { open: true, componentId: id, props: props } });
   };
 
   onActionPerformed = () => {
@@ -18,7 +25,11 @@ export class DumbCommentProcessManager extends React.Component {
 
   performAction = (action) => {
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
+    const { comment } = this.props;
     switch (action.behaviorId) {
+    case commentProcessNodes.respond.nodeId:
+      this.openRight(CONTENTS_IDS.reply, { id: comment.id });
+      break;
     case commentProcessNodes.delete.nodeId:
       this.displayForm(action);
       break;
@@ -62,4 +73,8 @@ export class DumbCommentProcessManager extends React.Component {
   }
 }
 
-export default DumbCommentProcessManager;
+export const mapDispatchToProps = {
+  updateApp: updateApp
+};
+
+export default connect(null, mapDispatchToProps)(DumbCommentProcessManager);

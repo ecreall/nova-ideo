@@ -32,6 +32,13 @@ const styles = (theme) => {
       '&:hover': {
         color: theme.palette.warning[500]
       }
+    },
+    noResult: {
+      paddingLeft: 25,
+      marginBottom: 15,
+      fontSize: 15,
+      color: '#717274',
+      lineHeight: '20px'
     }
   };
 };
@@ -61,12 +68,20 @@ class Files extends React.Component {
             rightDisabled
             dynamicDivider={false}
             displayForm={false}
+            displayFooter={false}
             data={data}
             moreBtn={
               <span>
                 {I18n.t('common.moreResult')}
               </span>
             }
+            NoItems={() => {
+              return (
+                <div className={classes.noResult}>
+                  {I18n.t('channels.noFilesBlock')}
+                </div>
+              );
+            }}
             channelId={channel.id}
             filter={{ file: true }}
             classes={{ container: classes.container, list: classes.container }}

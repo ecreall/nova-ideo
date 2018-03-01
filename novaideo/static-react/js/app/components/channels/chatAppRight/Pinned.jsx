@@ -27,6 +27,13 @@ const styles = (theme) => {
       '&:hover': {
         color: theme.palette.danger[500]
       }
+    },
+    noResult: {
+      paddingLeft: 25,
+      marginBottom: 15,
+      fontSize: 15,
+      color: '#717274',
+      lineHeight: '20px'
     }
   };
 };
@@ -56,6 +63,14 @@ class Pinned extends React.Component {
             rightDisabled
             dynamicDivider={false}
             displayForm={false}
+            displayFooter={false}
+            NoItems={() => {
+              return (
+                <div className={classes.noResult}>
+                  {I18n.t('channels.noPinnedBlock')}
+                </div>
+              );
+            }}
             data={data}
             channelId={channel.id}
             moreBtn={

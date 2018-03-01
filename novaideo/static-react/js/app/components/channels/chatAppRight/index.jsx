@@ -4,5 +4,6 @@ export const CONTENTS_IDS = {
   pinned: 'pinned',
   files: 'files',
   details: 'details',
-  search: 'search'
+  search: 'search',
+  reply: 'reply'
 };
