@@ -215,6 +215,18 @@ class Commentable(VisualisableElement, Entity):
     def __init__(self, **kwargs):
         super(Commentable, self).__init__(**kwargs)
         self.len_comments = 0
+        self._comments_at = OOBTree()
+
+    def add_comment(self, comment):
+        self._comments_at[comment.created_at] = get_oid(comment)
+
+    def remove_comment(self, comment):
+        if comment.created_at in self._comments_at:
+            self._comments_at.pop(comment.created_at)
+
+    def get_comments_between(self, start, end):
+        return list(self._comments_at.values(
+            min=start, max=end))
 
     def update_len_comments(self):
         result = len(self.comments)
@@ -286,17 +298,6 @@ class Channel(Commentable):
     def __init__(self, **kwargs):
         super(Channel, self).__init__(**kwargs)
         self.set_data(kwargs)
-        self._comments_at = OOBTree()
-
-    def add_comment(self, comment):
-        self._comments_at[comment.created_at] = get_oid(comment)
-
-    def remove_comment(self, comment):
-        self._comments_at.pop(comment.created_at)
-
-    def get_comments_between(self, start, end):
-        return list(self._comments_at.values(
-            min=start, max=end))
 
     def get_subject(self, user=None):
         subject = self.subject

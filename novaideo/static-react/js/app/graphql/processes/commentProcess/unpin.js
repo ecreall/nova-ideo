@@ -20,7 +20,7 @@ export const unpinMutation = gql`
 `;
 
 export default function unpinComment({ mutate }) {
-  return ({ context }) => {
+  return ({ context, channel }) => {
     const commentProcess = PROCESSES.commentmanagement;
     const nodeId = commentProcess.nodes.pin.nodeId;
     const optimisticContext = update(context, {
@@ -62,7 +62,7 @@ export default function unpinComment({ mutate }) {
           });
         },
         Comments: (prev, { mutationResult, queryVariables }) => {
-          if (queryVariables.id !== context.channel.id) return false;
+          if (queryVariables.id !== channel.id) return false;
           const newContext = mutationResult.data.unpinComment.context;
           const currentComment = prev.node.comments.edges.filter((item) => {
             return item && item.node.id === context.id;

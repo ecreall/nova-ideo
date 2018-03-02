@@ -86,6 +86,12 @@ export const PROCESSES = {
         nodeId: 'respond',
         title: 'processes.commentmanagement.respond.title',
         description: 'processes.commentmanagement.respond.description'
+      },
+      edit: {
+        nodeId: 'edit',
+        title: 'processes.commentmanagement.edit.title',
+        description: 'processes.commentmanagement.edit.description',
+        submission: 'processes.commentmanagement.edit.submission'
       }
     }
   }

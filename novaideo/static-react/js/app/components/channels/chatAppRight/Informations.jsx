@@ -2,10 +2,17 @@
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
 import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import { withStyles } from 'material-ui/styles';
 
 import DetailsSection from './DetailsSection';
 import Idea from '../../idea/IdeaPopover';
 import User from '../../user/UserPopover';
+
+const styles = {
+  listItem: {
+    borderTop: 'none'
+  }
+};
 
 const InformationsContent = ({ id, onActionClick, kind }) => {
   switch (kind) {
@@ -20,9 +27,12 @@ const InformationsContent = ({ id, onActionClick, kind }) => {
 
 export class DumbInformations extends React.Component {
   render() {
-    const { id, subject, onActionClick, channel, onOpen, open } = this.props;
+    const { id, subject, onActionClick, channel, onOpen, open, classes } = this.props;
     return (
       <DetailsSection
+        classes={{
+          listItem: classes.listItem
+        }}
         id={id}
         onOpen={onOpen}
         open={open}
@@ -41,4 +51,4 @@ export class DumbInformations extends React.Component {
   }
 }
 
-export default DumbInformations;
+export default withStyles(styles)(DumbInformations);

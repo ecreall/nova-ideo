@@ -108,6 +108,7 @@ class Respond(InfiniteCardinality):
         anonymous = appstruct.get('anonymous', False)
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
+        context.add_comment(comment)
         comment.format(request)
         user = appstruct.get('user', get_current())
         author = user if not anonymous else user.get_mask(root)
@@ -189,7 +190,9 @@ class Respond(InfiniteCardinality):
                     alert('email', [root.get_site_sender()], [comment_author.email],
                           subject=subject, body=message)
 
-        user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
+        now = datetime.datetime.now(tz=pytz.UTC)
+        user.set_read_date(channel, now)
+        user.set_read_date(context, now)
         return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):
@@ -260,6 +263,7 @@ class Remove(InfiniteCardinality):
             disconnect(content, targets)
 
         context.channel.remove_comment(context)
+        context.__parent__.remove_comment(context)
         context.__parent__.delfromproperty('comments', context)
         return {}
 

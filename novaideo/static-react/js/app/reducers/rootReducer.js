@@ -7,6 +7,8 @@ import getAllAdapters from '../components/vendor/utils';
 import theme from '../theme';
 import * as constants from '../constants';
 
+// 4b3fc3b2e8b64e3ab95dc38122737f67
+
 const initialUserTest = {
   token: '0bfa81ae040541aeb65df6d8a710631e',
   loadingState: 'completed'

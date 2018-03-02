@@ -78,7 +78,7 @@ const styles = (theme) => {
     },
     badgeColor: {
       color: 'white',
-      backgroundColor: red['500'],
+      backgroundColor: theme.palette.danger['500'],
       padding: '5px 9px',
       marginLeft: 4,
       borderRadius: '1em',
@@ -133,7 +133,7 @@ export class DumbChannelItem extends React.Component {
   };
   render() {
     const { classes, node, activeChannel } = this.props;
-    const lenUnreadComments = node.unreadComments.length;
+    const lenUnreadComments = node.lenUnreadComments;
     const hasUnread = lenUnreadComments > 0;
     const isSelected = activeChannel === node.id;
     const isActive = isSelected || hasUnread;

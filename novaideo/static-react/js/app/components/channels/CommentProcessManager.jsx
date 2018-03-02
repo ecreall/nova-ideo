@@ -49,15 +49,15 @@ export class DumbCommentProcessManager extends React.Component {
   renderForm = () => {
     const { action } = this.state;
     if (!action) return null;
-    const { comment } = this.props;
+    const { comment, channel } = this.props;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     switch (action.behaviorId) {
     case commentProcessNodes.delete.nodeId:
-      return <Delete comment={comment} action={action} onClose={this.onFormClose} />;
+      return <Delete comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
     case commentProcessNodes.pin.nodeId:
-      return <Pin comment={comment} action={action} onClose={this.onFormClose} />;
+      return <Pin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
     case commentProcessNodes.unpin.nodeId:
-      return <Unpin comment={comment} action={action} onClose={this.onFormClose} />;
+      return <Unpin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
     default:
       return null;
     }

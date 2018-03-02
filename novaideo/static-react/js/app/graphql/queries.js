@@ -345,26 +345,12 @@ export const commentFragment = gql`
     text
     edited
     pinned
-    channel {
-      id
-      oid
-      title
-      isDiscuss
-      unreadComments {
-        id
-        oid
-      }
-      subject {
-        ... on IEntity {
-          id
-          oid
-        }
-      }
-    }
     author {
       ...author
     }
     attachedFiles {
+      id
+      oid
       url
       isImage
       variations
@@ -381,6 +367,7 @@ export const commentFragment = gql`
       authorName
     }
     lenComments
+    lenUnreadReplies
     actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags){
       ...action
     }
@@ -406,10 +393,6 @@ export const commentQuery = gql`
           oid
           title
           isDiscuss
-          unreadComments {
-            id
-            oid
-          }
           subject {
             ... on IEntity {
               id
@@ -437,8 +420,13 @@ export const commentQuery = gql`
           authorName
         }
         lenComments
+        lenUnreadReplies
         actions(actionTags: $subjectActionsTags){
           ...action
+        }
+        unreadReplies {
+          id
+          oid
         }
         comments(first: $first, after: $after, filter: $filter) {
           totalCount
@@ -584,10 +572,7 @@ export const channelsQuery = gql`
             id
             oid
             title
-            unreadComments {
-              id
-              oid
-            }
+            lenUnreadComments
             subject {
               ... on IEntity {
                 id
@@ -615,10 +600,7 @@ export const discussionsQuery = gql`
             id
             oid
             title
-            unreadComments {
-              id
-              oid
-            }
+            lenUnreadComments
             subject {
               ... on Person {
                 id

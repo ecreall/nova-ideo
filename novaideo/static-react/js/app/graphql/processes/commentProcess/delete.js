@@ -13,7 +13,7 @@ export const deleteMutation = gql`
 `;
 
 export default function deleteComment({ mutate }) {
-  return ({ context }) => {
+  return ({ context, channel }) => {
     return mutate({
       variables: {
         context: context.oid
@@ -44,9 +44,27 @@ export default function deleteComment({ mutate }) {
             }
           });
         },
+        Comment: (prev, { mutationResult }) => {
+          if (!mutationResult.data.deleteComment.status) return false;
+          const currentComment = prev.node.comments.edges.filter((item) => {
+            return item && item.node.id === context.id;
+          })[0];
+          const index = prev.node.comments.edges.indexOf(currentComment);
+          return update(prev, {
+            node: {
+              lenComments: { $set: prev.node.lenComments - 1 },
+              comments: {
+                totalCount: { $set: prev.node.comments.totalCount - 1 },
+                edges: {
+                  $splice: [[index, 1]]
+                }
+              }
+            }
+          });
+        },
         IdeasList: (prev) => {
           const currentIdea = prev.ideas.edges.filter((item) => {
-            return item && item.node.oid === context.channel.subject.oid;
+            return item && item.node.oid === channel.subject.oid;
           })[0];
           if (!currentIdea) return false;
           const commentAction = filterActions(currentIdea.node.actions, {
@@ -74,7 +92,7 @@ export default function deleteComment({ mutate }) {
           });
         },
         Idea: (prev, { queryVariables }) => {
-          if (queryVariables.id !== context.channel.subject.id) return false;
+          if (queryVariables.id !== channel.subject.id) return false;
           const commentAction = filterActions(prev.idea.actions, {
             behaviorId: PROCESSES.ideamanagement.nodes.comment.nodeId
           })[0];
@@ -92,7 +110,7 @@ export default function deleteComment({ mutate }) {
           });
         },
         Person: (prev, { queryVariables }) => {
-          if (queryVariables.id !== context.channel.subject.id) return false;
+          if (queryVariables.id !== channel.subject.id) return false;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
           })[0];
@@ -109,7 +127,7 @@ export default function deleteComment({ mutate }) {
           });
         },
         PersonInfo: (prev, { queryVariables }) => {
-          if (queryVariables.id !== context.channel.subject.id) return false;
+          if (queryVariables.id !== channel.subject.id) return false;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId
           })[0];

@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
+import debounce from 'lodash.debounce';
 
 import { commentsQuery } from '../../graphql/queries';
 import FlatList from '../common/FlatList';
@@ -15,6 +16,8 @@ import ChatAppRight from './chatAppRight/ChatAppRight';
 import Divider from './Divider';
 import Comment from '../forms/processes/common/Comment';
 import { COMMENTS_ACTIONS, ACTIONS } from '../../processes';
+import { markAsRead } from '../../graphql/processes/commentProcess';
+import { markAsReadMutation } from '../../graphql/processes/commentProcess/markAsRead';
 
 const styles = (theme) => {
   return {
@@ -86,6 +89,16 @@ export class RenderComments extends React.Component {
     dynamicDivider: true,
     displayFooter: true
   };
+
+  componentDidUpdate() {
+    const { data, markAsReadComments } = this.props;
+    const channel = data.node;
+    if (channel && channel.unreadComments && channel.unreadComments.length > 0) {
+      debounce(() => {
+        markAsReadComments({ context: channel, isDiscussion: channel.isDiscuss });
+      }, 400)();
+    }
+  }
 
   render() {
     const {
@@ -209,6 +222,14 @@ export default withStyles(styles, { withTheme: true })(
           }
         };
       }
-    })(RenderComments)
+    })(
+      graphql(markAsReadMutation, {
+        props: function (props) {
+          return {
+            markAsReadComments: markAsRead(props)
+          };
+        }
+      })(RenderComments)
+    )
   )
 );

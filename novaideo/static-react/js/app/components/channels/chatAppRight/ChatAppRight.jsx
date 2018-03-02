@@ -34,7 +34,8 @@ const styles = {
     position: 'relative',
     backgroundColor: 'transparent',
     boxShadow: 'none',
-    paddingRight: '8px !important'
+    paddingRight: '8px !important',
+    borderBottom: '1px solid #e8e8e8'
   },
   appBarContent: {
     flex: 1,

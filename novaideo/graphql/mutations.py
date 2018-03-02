@@ -2,7 +2,7 @@ import graphene
 
 from .processes.abstract_process import Select, Deselect
 from .processes.idea_management import CreateIdea, CreateAndPublishIdea, DeleteIdea, Support, Oppose, WithdrawToken
-from .processes.comment_management import CommentObject, MarkCommentsAsRead, DeleteComment, Pin, Unpin
+from .processes.comment_management import CommentObject, MarkCommentsAsRead, DeleteComment, Pin, Unpin, Edit
 
 class Mutations(graphene.ObjectType):
     # abstract process
@@ -17,7 +17,8 @@ class Mutations(graphene.ObjectType):
     withdraw_token_idea = WithdrawToken.Field()
     # comment management process
     comment_object = CommentObject.Field()
-    mark_comments_as_read = MarkCommentsAsRead.Field()
+    mark_as_read = MarkCommentsAsRead.Field()
     delete_comment = DeleteComment.Field()
     pin_comment = Pin.Field()
     unpin_comment = Unpin.Field()
+    edit_comment = Edit.Field()

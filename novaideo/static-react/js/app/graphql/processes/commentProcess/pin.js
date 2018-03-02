@@ -20,7 +20,7 @@ export const pinMutation = gql`
 `;
 
 export default function pinComment({ mutate }) {
-  return ({ context }) => {
+  return ({ context, channel }) => {
     const commentProcess = PROCESSES.commentmanagement;
     const nodeId = commentProcess.nodes.unpin.nodeId;
     const optimisticContext = update(context, {
@@ -62,7 +62,7 @@ export default function pinComment({ mutate }) {
           });
         },
         Comments: (prev, { mutationResult, queryVariables }) => {
-          if (queryVariables.id !== context.channel.id) return false;
+          if (queryVariables.id !== channel.id) return false;
           if (queryVariables.pinned) {
             return update(prev, {
               node: {

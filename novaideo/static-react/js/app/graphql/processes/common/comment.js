@@ -19,6 +19,14 @@ export const commentMutation = gql`
       isNewChannel
       comment {
         ...comment
+        ...on Comment {
+          channel {
+            id
+            oid
+            title
+            isDiscuss
+          }
+        }
       }
     }
   }
@@ -30,8 +38,10 @@ export default function comment({ ownProps, mutate }) {
     const { formData } = ownProps;
     const files =
       attachedFiles.length > 0
-        ? formData.values.files.map((file) => {
+        ? formData.values.files.map((file, index) => {
           return {
+            id: file.id || `file-id${index}`,
+            oid: file.oid || `file-oid${index}`,
             url: file.preview.url,
             isImage: file.preview.type === 'image',
             variations: [],
@@ -85,8 +95,7 @@ export default function comment({ ownProps, mutate }) {
             id: '0',
             oid: '0',
             channel: {
-              ...channel,
-              unreadComments: []
+              ...channel
             },
             rootOid: ownProps.subject,
             createdAt: createdAt.toISOString(),
@@ -112,6 +121,7 @@ export default function comment({ ownProps, mutate }) {
                   : null
             },
             actions: [],
+            lenUnreadReplies: 0,
             lenComments: 0
           }
         }

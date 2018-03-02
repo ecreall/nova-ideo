@@ -388,9 +388,10 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def set_read_date(self, channel, date):
         self._read_at[get_oid(channel)] = date
 
-    def get_read_date(self, channel):
+    def get_read_date(self, channel, default=None):
+        default_date = default if default else datetime.datetime.now(tz=pytz.UTC)
         return self._read_at.get(
-            get_oid(channel), datetime.datetime.now(tz=pytz.UTC))
+            get_oid(channel), default_date)
 
     def get_channel(self, user):
         all_channels = list(self.channels)

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
+import debounce from 'lodash.debounce';
 
 import { commentQuery } from '../../../graphql/queries';
 import FlatList from '../../common/FlatList';
@@ -12,6 +13,8 @@ import CommentItem from '../CommentItem';
 import Divider from '../Divider';
 import Comment from '../../forms/processes/common/Comment';
 import { PROCESSES, ACTIONS } from '../../../processes';
+import { markAsRead } from '../../../graphql/processes/commentProcess';
+import { markAsReadMutation } from '../../../graphql/processes/commentProcess/markAsRead';
 
 const styles = (theme) => {
   return {
@@ -107,6 +110,16 @@ export class RenderComment extends React.Component {
     displayFooter: true
   };
 
+  componentDidUpdate() {
+    const { data, markAsReadReplies } = this.props;
+    const comment = data.node;
+    if (comment && comment.unreadReplies && comment.unreadReplies.length > 0) {
+      debounce(() => {
+        markAsReadReplies({ context: comment, isDiscussion: comment.channel.isDiscuss });
+      }, 400)();
+    }
+  }
+
   render() {
     const {
       rightProps,
@@ -170,8 +183,8 @@ export class RenderComment extends React.Component {
             itemProps={{
               channel: channel,
               unreadCommentsIds:
-                channel && channel.unreadComments
-                  ? channel.unreadComments.map((comm) => {
+                comment && comment.unreadReplies
+                  ? comment.unreadReplies.map((comm) => {
                     return comm.id;
                   })
                   : []
@@ -212,6 +225,14 @@ export default withStyles(styles, { withTheme: true })(
           }
         };
       }
-    })(RenderComment)
+    })(
+      graphql(markAsReadMutation, {
+        props: function (props) {
+          return {
+            markAsReadReplies: markAsRead(props)
+          };
+        }
+      })(RenderComment)
+    )
   )
 );

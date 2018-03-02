@@ -308,6 +308,8 @@ class Comment(Node, graphene.ObjectType):
     channel = graphene.Field(lambda: Channel)
     edited = graphene.Boolean()
     pinned = graphene.Boolean()
+    unread_replies = graphene.List(lambda: Comment)
+    len_unread_replies = graphene.Int()
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -315,6 +317,23 @@ class Comment(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, SDComment)
+
+    def resolve_unread_replies(self, args, context, info):
+        if not context.user:
+            return []
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        return ResolverLazyList(
+            self.get_comments_between(
+                context.user.get_read_date(self, self.created_at), now), Comment)
+
+    def resolve_len_unread_replies(self, args, context, info):
+        if not context.user:
+            return 0
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        return len(self.get_comments_between(
+                context.user.get_read_date(self, self.created_at), now))
 
     def resolve_text(self, args, context, info):
         return getattr(self, 'formatted_comment', self.comment)
@@ -362,6 +381,7 @@ class Channel(Node, graphene.ObjectType):
         filter=graphene.String())
     subject = graphene.Field(lambda: EntityUnion)
     unread_comments = graphene.List(Comment)
+    len_unread_comments = graphene.Int()
     len_comments = graphene.Int()
     is_discuss = graphene.Boolean()
     
@@ -392,6 +412,14 @@ class Channel(Node, graphene.ObjectType):
         return ResolverLazyList(
             self.get_comments_between(
                 context.user.get_read_date(self), now), Comment)
+
+    def resolve_len_unread_comments(self, args, context, info):
+        if not context.user:
+            return 0
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        return len(self.get_comments_between(
+                context.user.get_read_date(self), now))
 
     def resolve_subject(self, args, context, info):  # pylint: disable=W0613
         return self.get_subject(getattr(context, 'user', None))

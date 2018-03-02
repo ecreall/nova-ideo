@@ -26,9 +26,10 @@ export class DumbDelete extends React.Component {
   form = null;
 
   handleSubmit = () => {
-    const { comment } = this.props;
+    const { comment, channel } = this.props;
     this.props.deleteComment({
-      context: comment
+      context: comment,
+      channel: channel
     });
     this.closeForm();
   };
@@ -58,7 +59,7 @@ export class DumbDelete extends React.Component {
       >
         {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>
-          <CommentItem node={comment} />
+          <CommentItem node={comment} disableReply />
         </div>
       </Form>
     );

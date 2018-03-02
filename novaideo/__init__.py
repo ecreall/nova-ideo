@@ -216,12 +216,16 @@ def evolve_wg(root, registry):
 def update_len_comments(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import ICommentable
+    from BTrees.OOBTree import OOBTree
     import transaction
 
     contents = find_entities(interfaces=[ICommentable])
     len_entities = str(len(contents))
     for index, content in enumerate(contents):
         content.update_len_comments()
+        if not hasattr(content, '_comments_at'):
+            content._comments_at = OOBTree()
+
         if index % 1000 == 0:
             log.info("**** Commit ****")
             transaction.commit()

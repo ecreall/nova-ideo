@@ -3,12 +3,13 @@ import pytz
 import graphene
 import urllib
 
+from dace.util import get_obj
 from pontus.schema import select
 
 from novaideo.content.comment import Comment as CommentClass, CommentSchema
 from ..util import get_context, get_action, get_execution_data
 from . import Upload
-from novaideo import _
+from novaideo import _, log
 
 
 _marker = object()
@@ -172,3 +173,70 @@ class Unpin(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return Unpin(context=context, status=status)
+
+
+
+
+class Edit(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        comment = graphene.String()
+        old_files = graphene.List(graphene.String)
+        attached_files = graphene.List(Upload)
+        # the Upload object type deserialization currently doesn't work,
+        # it fails silently, so we actually get a list of None.
+        # So if we uploaded 3 files, we get attached_files = [None, None, None]
+        # We retrieve the files with the hard coded
+        # variables.attachedFiles.{0,1,2} below.
+        # This code will not work if batched mode is
+        # implemented in graphql-wsgi and batched mode is enabled on apollo.
+
+    status = graphene.Boolean()
+    comment = graphene.Field('novaideo.graphql.schema.Comment')
+    action_id = 'commentmanagement.edit'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        comment_schema = select(
+            CommentSchema(), ['comment', 'files'])
+        args = dict(args)
+        old_files = []
+        context_oid = args.pop('context')
+        for of in args.pop('old_files'):
+            try:
+                old_files.append(get_obj(int(of)))
+            except Exception as e:
+                log.warning(e)
+                continue
+
+        attached_files = args.pop('attached_files', None)
+        uploaded_files = []
+        if attached_files:
+            for index, file_ in enumerate(attached_files):
+                file_storage = context.POST.get(str(index))
+                fp = file_storage.file
+                fp.seek(0)
+                uploaded_files.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
+        
+        old_files = [get_obj(f) for f in old_files]
+        args['files'] = uploaded_files
+        args = comment_schema.deserialize(args)
+        args['files'] = [f['_object_data']
+                                  for f in args['files']]
+        args['files'].extend(old_files)
+        args['context'] = context_oid
+        context, request, action, args = get_execution_data(
+            Edit.action_id, args)
+        if action:
+            context.comment = args['comment']
+            context.setproperty('files', args['files'])
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Edit(comment=context, status=status)

@@ -52,6 +52,11 @@ const Translations = {
         respond: {
           title: "Répondre",
           description: "Répondre à ce message"
+        },
+        edit: {
+          title: "Éditer",
+          description: "Éditer le message",
+          submission: "Enregistrer les changements"
         }
       }
     },
@@ -87,7 +92,9 @@ const Translations = {
         "Vous êtes au tout début de ce fil de discussion. Dans ce fil vous pouvez répondre à l'auteur de ce message, partager votre point de vu avec les autres utilisateurs, partagez des fichiers ou des liens...",
       reply: "Ajouter une réponse à %{name}",
       replies: "%{count} réponses",
-      replies_1: "Une réponse"
+      replies_1: "Une réponse",
+      unreadReplies: "%{count} non lus",
+      unreadReplies_1: "Un non lu"
     },
     forms: {
       optional: "(facultatif)",
@@ -184,6 +191,11 @@ const Translations = {
         respond: {
           title: "Respond",
           description: "Respond to this message"
+        },
+        edit: {
+          title: "Edit",
+          description: "Edit this message",
+          submission: "Save Changes"
         }
       }
     },
@@ -220,7 +232,9 @@ const Translations = {
         "You are at the beginning of this thread. In this thread you can respond to the author of this message, share your point of view with other users, share files or links ...",
       reply: "Add reply to %{name}",
       replies: "%{count} replies",
-      replies_1: "One reply"
+      replies_1: "One reply",
+      unreadReplies: "%{count} unread",
+      unreadReplies_1: "One unread"
     },
     forms: {
       optional: "(optional)",

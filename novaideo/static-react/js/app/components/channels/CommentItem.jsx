@@ -14,9 +14,11 @@ import { getFormattedDate } from '../../utils/globalFunctions';
 import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
-import { COMMENTS_TIME_INTERVAL } from '../../constants';
+import Edit from '../forms/processes/commentProcess/Edit';
 import CommentProcessManager from './CommentProcessManager';
+import { COMMENTS_TIME_INTERVAL } from '../../constants';
 import { CONTENTS_IDS } from './chatAppRight';
+import { PROCESSES } from '../../processes';
 
 const styles = (theme) => {
   return {
@@ -32,6 +34,9 @@ const styles = (theme) => {
           display: 'block'
         }
       }
+    },
+    editContainer: {
+      backgroundColor: `${theme.palette.warning[100]} !important`
     },
     pinnedContainer: {
       '&:hover': {
@@ -144,6 +149,15 @@ const styles = (theme) => {
     },
     tooltip: {
       marginBottom: 4
+    },
+    badgeUnread: {
+      color: 'white',
+      backgroundColor: theme.palette.danger['500'],
+      padding: '3px 6px',
+      marginLeft: 5,
+      borderRadius: '1em',
+      fontSize: 10,
+      fontWeight: 700
     }
   };
 };
@@ -151,6 +165,7 @@ const styles = (theme) => {
 class RenderCommentItem extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { edit: null };
     this.menu = null;
   }
 
@@ -186,8 +201,25 @@ class RenderCommentItem extends React.Component {
     if (this.menu) this.menu.close();
   };
 
+  onActionClick = (action) => {
+    const commentProcessNodes = PROCESSES.commentmanagement.nodes;
+    const { processManager } = this.props;
+    switch (action.behaviorId) {
+    case commentProcessNodes.edit.nodeId:
+      this.setState({ edit: action });
+      break;
+    default:
+      processManager.performAction(action);
+    }
+  };
+
+  onEdit = () => {
+    this.setState({ edit: null });
+  };
+
   render() {
     const { node, classes, processManager, disableReply } = this.props;
+    const { edit } = this.state;
     const ignoreMetaData = this.ignoreMetaData();
     const author = node.author;
     const authorPicture = author.picture;
@@ -216,16 +248,18 @@ class RenderCommentItem extends React.Component {
             </div>}
           <div
             className={classNames(classes.container, {
-              [classes.pinnedContainer]: pinned
+              [classes.pinnedContainer]: !edit && pinned,
+              [classes.editContainer]: edit
             })}
           >
-            {processManager &&
+            {!edit &&
+              processManager &&
               <CommentMenu
                 initRef={(menu) => {
                   this.menu = menu;
                 }}
                 comment={node}
-                onActionClick={processManager.performAction}
+                onActionClick={this.onActionClick}
               />}
             <div
               className={classNames(classes.left, {
@@ -255,33 +289,51 @@ class RenderCommentItem extends React.Component {
                     </span>
                   </Tooltip>
                 </div>}
-              <div className={classes.bodyContent}>
-                <div>
-                  <div className={classes.contentText}>
-                    <div className="comment-text" dangerouslySetInnerHTML={{ __html: node.text }} />
+              {edit
+                ? <Edit
+                  key={`edit-${node.id}`}
+                  form={`edit-${node.id}`}
+                  context={node}
+                  onSubmit={this.onEdit}
+                  action={edit}
+                  initialValues={{
+                    comment: node.text,
+                    files: node.attachedFiles.map((file) => {
+                      return { id: file.id, oid: file.oid, preview: { url: file.url, type: file.isImage ? 'image' : 'file' } };
+                    })
+                  }}
+                />
+                : <div className={classes.bodyContent}>
+                  <div>
+                    <div className={classes.contentText}>
+                      <div className="comment-text" dangerouslySetInnerHTML={{ __html: node.text }} />
+                    </div>
+                    <ImagesPreview images={images} />
                   </div>
-                  <ImagesPreview images={images} />
-                </div>
-                {node.urls.length > 0 &&
+                  {node.urls.length > 0 &&
                   <div className={classes.urlsContainer}>
                     {node.urls.map((url, key) => {
                       return <Url key={key} data={url} />;
                     })}
                   </div>}
-                {!disableReply && node.lenComments > 0
-                  ? <div
-                    onClick={() => {
-                      processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
-                    }}
-                    className={classes.replyContainer}
-                  >
-                    <ForumIcon className={classes.replyIcon} />
-                    <span>
-                      <Translate value="channels.replies" count={node.lenComments} />
-                    </span>
-                  </div>
-                  : null}
-              </div>
+                  {!disableReply && node.lenComments > 0
+                    ? <div
+                      onClick={() => {
+                        processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
+                      }}
+                      className={classes.replyContainer}
+                    >
+                      <ForumIcon className={classes.replyIcon} />
+                      <span>
+                        <Translate value="channels.replies" count={node.lenComments} />
+                        {node.lenUnreadReplies > 0 &&
+                        <span className={classes.badgeUnread}>
+                          <Translate value="channels.unreadReplies" count={node.lenUnreadReplies} />
+                        </span>}
+                      </span>
+                    </div>
+                    : null}
+                </div>}
             </div>
           </div>
         </div>
@@ -289,12 +341,17 @@ class RenderCommentItem extends React.Component {
     );
   }
 }
+
 export const CommentItem = withStyles(styles, { withTheme: true })(RenderCommentItem);
 
 function DumbCommentItem(props) {
-  const { node, onActionClick } = props;
+  const { node, itemProps, onActionClick } = props;
   return (
-    <CommentProcessManager comment={node} onActionClick={onActionClick}>
+    <CommentProcessManager
+      comment={node}
+      channel={(itemProps && itemProps.channel) || node.channel}
+      onActionClick={onActionClick}
+    >
       <RenderCommentItem {...props} />
     </CommentProcessManager>
   );

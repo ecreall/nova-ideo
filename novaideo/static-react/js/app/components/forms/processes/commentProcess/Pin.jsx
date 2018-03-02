@@ -26,10 +26,11 @@ export class DumbPin extends React.Component {
   form = null;
 
   handleSubmit = () => {
-    const { comment } = this.props;
+    const { comment, channel } = this.props;
     this.closeForm();
     this.props.pinComment({
-      context: comment
+      context: comment,
+      channel: channel
     });
   };
 
@@ -58,7 +59,7 @@ export class DumbPin extends React.Component {
       >
         {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>
-          <CommentItem node={comment} />
+          <CommentItem node={comment} disableReply />
         </div>
       </Form>
     );
