@@ -158,6 +158,15 @@ const styles = (theme) => {
       borderRadius: '1em',
       fontSize: 10,
       fontWeight: 700
+    },
+    commentText: {
+      display: 'inline-block'
+    },
+    edited: {
+      color: '#a0a0a2',
+      fontSize: 13,
+      whiteSpace: 'nowrap',
+      marginLeft: 5
     }
   };
 };
@@ -306,7 +315,14 @@ class RenderCommentItem extends React.Component {
                 : <div className={classes.bodyContent}>
                   <div>
                     <div className={classes.contentText}>
-                      <div className="comment-text" dangerouslySetInnerHTML={{ __html: node.text }} />
+                      <div
+                        className={classNames('comment-text', classes.commentText)}
+                        dangerouslySetInnerHTML={{ __html: node.text }}
+                      />
+                      {edited &&
+                      <span className={classes.edited}>
+                            ({I18n.t('channels.edited')})
+                      </span>}
                     </div>
                     <ImagesPreview images={images} />
                   </div>
