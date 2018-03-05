@@ -80,6 +80,7 @@
     "dom-helpers": "^3.3.1",
     "draft-convert": "^2.0.1",
     "draft-js": "^0.10.5",
+    "emoji-js": "^3.4.0",
     "emoji-mart": "^2.4.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.4",

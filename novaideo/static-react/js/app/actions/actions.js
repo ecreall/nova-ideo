@@ -128,6 +128,13 @@ export const closeChatApp = (config) => {
   };
 };
 
+export const updateChatAppRight = (config) => {
+  return {
+    type: constants.UPDATE_CHATAPP_RIGHT,
+    config: config
+  };
+};
+
 export const updateNavigation = (location, updatePrevious) => {
   return {
     type: constants.UPDATE_NAVIGATION,

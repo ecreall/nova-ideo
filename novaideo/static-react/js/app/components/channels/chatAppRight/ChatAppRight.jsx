@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
 import ForumIcon from 'material-ui-icons/Forum';
+import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import { Translate, I18n } from 'react-redux-i18n';
 
-import { updateApp } from '../../../actions/actions';
+import { updateChatAppRight } from '../../../actions/actions';
 import Details from './Details';
 import Search from './Search';
 import Reply from './Reply';
@@ -25,6 +27,10 @@ const styles = {
     display: 'block',
     flexDirection: 'column',
     height: '100%'
+  },
+  toolbar: {
+    paddingLeft: 5,
+    paddingRight: 5
   },
   menuButton: {
     color: '#717274',
@@ -81,6 +87,11 @@ class ChatAppRight extends React.Component {
     document.dispatchEvent(event);
   };
 
+  toggle = () => {
+    const { rightFull, updateRight } = this.props;
+    updateRight({ full: !rightFull });
+  };
+
   content = () => {
     const { componentId } = this.props;
     if (componentId === CONTENTS_IDS.search) return <Search {...this.props} />;
@@ -96,11 +107,14 @@ class ChatAppRight extends React.Component {
   };
 
   render() {
-    const { classes, updateChatApp } = this.props;
+    const { classes, updateRight, rightFull } = this.props;
     return (
       <div className={classes.container}>
         <AppBar className={classes.appBar}>
-          <Toolbar>
+          <Toolbar className={classes.toolbar}>
+            <IconButton onClick={this.toggle}>
+              {rightFull ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
+            </IconButton>
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {this.title()}
             </Typography>
@@ -109,7 +123,7 @@ class ChatAppRight extends React.Component {
               color="primary"
               aria-label="Menu"
               onClick={() => {
-                return updateChatApp('chatApp', { right: { open: false, componentId: undefined } });
+                return updateRight({ open: false, componentId: undefined, full: false, props: {} });
               }}
             >
               <CloseIcon />
@@ -127,12 +141,13 @@ class ChatAppRight extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateChatApp: updateApp
+  updateRight: updateChatAppRight
 };
 
 export const mapStateToProps = (state) => {
   return {
     componentId: state.apps.chatApp.right.componentId,
+    rightFull: state.apps.chatApp.right.full,
     subject: state.apps.chatApp.subject
   };
 };

@@ -16,9 +16,9 @@ const styles = {
 
 class Details extends React.Component {
   onOpen = (id) => {
-    const { componentId, updateChatApp } = this.props;
+    const { componentId, updateRight } = this.props;
     const isCurrent = componentId === id;
-    updateChatApp('chatApp', { right: { open: true, componentId: isCurrent ? CONTENTS_IDS.details : id } });
+    updateRight({ open: true, componentId: isCurrent ? CONTENTS_IDS.details : id });
   };
 
   render() {

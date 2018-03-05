@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import InsertEmoticonIcon from 'material-ui-icons/InsertEmoticon';
 
 import { Menu } from '../../common/menu';
+import { PICKER_EMOJI_SHEET_APPLE_32 } from '../../../constants';
 
 const styles = {
   picker: {
@@ -100,6 +101,9 @@ class EmojiPicker extends React.Component {
           sheetSize={32}
           style={{ ...styles.picker, ...style.picker }}
           onClick={this.onEmojiSelect}
+          backgroundImageFn={() => {
+            return PICKER_EMOJI_SHEET_APPLE_32;
+          }}
         />
       </Menu>
     );

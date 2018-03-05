@@ -283,8 +283,12 @@ export class RunderIdea extends React.Component {
                   <ImagesPreview images={images} />
                 </div>}
               <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: idea.text }} />
-
               <Comments
+                rightDisabled
+                fullScreen
+                ignorDrawer
+                formTop
+                inline
                 channelId={idea.channel.id}
                 fetchMoreOnEvent={scrollEvent}
                 classes={{
@@ -293,10 +297,6 @@ export class RunderIdea extends React.Component {
                   formContainer: classes.commentFormContainer,
                   list: classes.commentsList
                 }}
-                rightDisabled
-                fullScreen
-                ignorDrawer
-                formTop
               />
             </div>
           </Scrollbar>

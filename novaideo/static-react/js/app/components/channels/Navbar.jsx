@@ -14,7 +14,7 @@ import { CardActions } from 'material-ui/Card';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
 
-import { updateApp, closeChatApp } from '../../actions/actions';
+import { updateChatAppRight, closeChatApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import { goTo, get } from '../../utils/routeMap';
 import { CONTENTS_IDS } from './chatAppRight';
@@ -139,7 +139,7 @@ class NavBar extends React.Component {
   };
 
   openRight = (id, props) => {
-    this.props.updateApp('chatApp', { right: { open: true, componentId: id, props: props } });
+    this.props.updateChatAppRight({ open: true, componentId: id, props: props });
     return false;
   };
 
@@ -154,7 +154,7 @@ class NavBar extends React.Component {
   };
 
   handleSearchCancel = () => {
-    this.props.updateApp('chatApp', { right: { open: false, componentId: null, props: null } });
+    this.props.updateChatAppRight({ open: false, componentId: null, props: null, full: false });
     return false;
   };
 
@@ -220,7 +220,7 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateApp: updateApp,
+  updateChatAppRight: updateChatAppRight,
   closeChatApp: closeChatApp
 };
 

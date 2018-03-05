@@ -53,3 +53,28 @@ class Deselect(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return Deselect(context=context, status=status)
+
+
+class AddReaction(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        emoji = graphene.String()
+
+    status = graphene.Boolean()
+    action_id = 'novaideoabstractprocess.addreaction'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            AddReaction.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {'reaction': args['emoji']})
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return AddReaction(status=status)

@@ -305,6 +305,7 @@ const initialAppsState = {
     right: {
       open: false,
       componentId: undefined,
+      full: false,
       props: {}
     }
   }
@@ -329,10 +330,10 @@ export const apps = (state = initialAppsState, action) => {
     return update(state, { $merge: newStateEntry });
   }
   case constants.OPEN_DRAWER: {
-    return { ...state, ...{ drawer: { open: true, app: action.app } } };
+    return { ...state, drawer: { open: true, app: action.app } };
   }
   case constants.CLOSE_DRAWER: {
-    return { ...state, ...{ drawer: { open: false, app: undefined } } };
+    return { ...state, drawer: { open: false, app: undefined } };
   }
   case constants.OPEN_CHATAPP: {
     const config = action.config;
@@ -343,8 +344,8 @@ export const apps = (state = initialAppsState, action) => {
     }
     return {
       ...state,
-      ...{ drawer: { open: drawer, app: 'chatApp' } },
-      ...{ chatApp: { ...state.chatApp, ...{ open: true }, ...action.config } }
+      drawer: { open: drawer, app: 'chatApp' },
+      chatApp: { ...state.chatApp, ...{ open: true }, ...action.config }
     };
   }
   case constants.CLOSE_CHATAPP: {
@@ -365,8 +366,17 @@ export const apps = (state = initialAppsState, action) => {
     const config = { ...defaultConfig, ...actionConfig };
     return {
       ...state,
-      ...{ drawer: { open: drawer, app: undefined } },
-      ...{ chatApp: { ...state.chatApp, ...{ open: false }, ...config } }
+      drawer: { open: drawer, app: undefined },
+      chatApp: { ...state.chatApp, ...{ open: false }, ...config }
+    };
+  }
+  case constants.UPDATE_CHATAPP_RIGHT: {
+    return {
+      ...state,
+      chatApp: {
+        ...state.chatApp,
+        right: { ...state.chatApp.right, ...action.config }
+      }
     };
   }
   default:

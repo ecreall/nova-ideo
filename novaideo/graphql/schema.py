@@ -64,6 +64,33 @@ class Debatable(graphene.AbstractType):
 
         channel = self.get_channel(getattr(context, 'user', None))
         return channel.len_comments if channel else 0
+ 
+
+class Emoji(Node, graphene.ObjectType):
+    
+    class Meta(object):
+        interfaces = (relay.Node, )
+    
+    users = graphene.List(lambda: Person)
+    title = graphene.String()
+    is_user_emoji = graphene.Boolean()
+    
+    def resolve_users(self, args, context, info):
+        return ResolverLazyList(self.users, Person)
+
+
+class Emojiable(graphene.AbstractType):
+
+    emojis = graphene.List(Emoji)
+    user_emoji = graphene.String()
+
+    def resolve_emojis(self, args, context, info):
+        user_emoji = self.get_user_emoji(getattr(context, 'user', None))
+        return [Emoji(title=title, users=users, is_user_emoji=user_emoji==title)
+                for title, users in self.emojis.items()]
+
+    def resolve_user_emoji(self, args, context, info):
+        return self.get_user_emoji(getattr(context, 'user', None))
 
 
 class Root(Node, Debatable, graphene.ObjectType):
@@ -287,7 +314,7 @@ class Url(Node, graphene.ObjectType):
     author_name = graphene.String()
 
 
-class Comment(Node, graphene.ObjectType):
+class Comment(Node, Emojiable, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
 

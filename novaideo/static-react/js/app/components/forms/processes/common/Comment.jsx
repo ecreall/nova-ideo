@@ -22,7 +22,8 @@ const styles = (theme) => {
     container: {
       backgroundColor: 'white',
       paddingLeft: 20,
-      paddingRight: 20
+      paddingRight: 20,
+      borderRadius: 6
     },
     containerAddon: {
       boxShadow: '0 -1px 0 rgba(0,0,0,.1)'

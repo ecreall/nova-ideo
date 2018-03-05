@@ -13,7 +13,7 @@ export const stylesContentCollapse = (theme) => {
       background: '#fff',
       borderTop: '1px solid #e8e8e8',
       position: 'relative',
-      paddingLeft: 8,
+      paddingLeft: 16,
       paddingRight: 8,
       minHeight: 61,
       maxHeight: 61,

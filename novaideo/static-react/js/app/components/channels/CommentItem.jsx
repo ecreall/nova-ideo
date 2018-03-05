@@ -6,19 +6,26 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { Translate, I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
+import CancelIcon from 'material-ui-icons/Cancel';
 import ForumIcon from 'material-ui-icons/Forum';
+import Collapse from 'material-ui/transitions/Collapse';
+import IconButton from 'material-ui/IconButton';
 
 import ImagesPreview from '../common/ImagesPreview';
 import Url from '../common/Url';
+import EmojiEvaluation from '../common/EmojiEvaluation';
 import { getFormattedDate } from '../../utils/globalFunctions';
+import { emojiConvert } from '../../utils/emojiConvertor';
 import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
 import Edit from '../forms/processes/commentProcess/Edit';
 import CommentProcessManager from './CommentProcessManager';
+import Reply from './chatAppRight/Reply';
 import { COMMENTS_TIME_INTERVAL } from '../../constants';
 import { CONTENTS_IDS } from './chatAppRight';
 import { PROCESSES } from '../../processes';
+import { getActions } from '../../utils/processes';
 
 const styles = (theme) => {
   return {
@@ -167,16 +174,45 @@ const styles = (theme) => {
       fontSize: 13,
       whiteSpace: 'nowrap',
       marginLeft: 5
+    },
+    replyCommentsContainer: {
+      position: 'relative',
+      '&:hover': {
+        '& .close-reply': {
+          display: 'block'
+        }
+      }
+    },
+    iconStart: {
+      position: 'absolute',
+      fontSize: '25px !important',
+      color: '#bfbfbf',
+      top: -23,
+      left: 25
+    },
+    iconEnd: {
+      position: 'absolute',
+      fontSize: '25px !important',
+      color: '#bfbfbf',
+      bottom: -15,
+      left: 25
+    },
+    closeReply: {
+      display: 'none',
+      position: 'absolute',
+      top: 8,
+      left: 13,
+      fontSize: '20px !important',
+      color: theme.palette.success['500'],
+      backgroundColor: 'white'
     }
   };
 };
 
 class RenderCommentItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { edit: null };
-    this.menu = null;
-  }
+  state = { action: null };
+
+  menu = null;
 
   ignoreMetaData = () => {
     const { node, reverted, next, previous } = this.props;
@@ -210,25 +246,39 @@ class RenderCommentItem extends React.Component {
     if (this.menu) this.menu.close();
   };
 
-  onActionClick = (action) => {
+  onActionClick = (action, data) => {
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
-    const { processManager } = this.props;
-    switch (action.behaviorId) {
-    case commentProcessNodes.edit.nodeId:
-      this.setState({ edit: action });
-      break;
-    default:
-      processManager.performAction(action);
-    }
+    const { processManager, itemProps } = this.props;
+    const inline = itemProps && itemProps.inline;
+    if (action.behaviorId === commentProcessNodes.edit.nodeId) return this.setState({ action: action });
+    if (inline && action.behaviorId === commentProcessNodes.respond.nodeId) return this.setState({ action: action });
+    return processManager.performAction(action, data);
   };
 
   onEdit = () => {
-    this.setState({ edit: null });
+    this.setState({ action: null });
+  };
+
+  toggleReply = () => {
+    const commentProcessNodes = PROCESSES.commentmanagement.nodes;
+    const { node, processManager, itemProps } = this.props;
+    const inline = itemProps && itemProps.inline;
+    if (inline) {
+      const { action } = this.state;
+      const isReply = action && action.behaviorId === commentProcessNodes.respond.nodeId;
+      this.setState({ action: !isReply ? { behaviorId: commentProcessNodes.respond.nodeId } : null });
+    } else {
+      processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
+    }
   };
 
   render() {
     const { node, classes, processManager, disableReply } = this.props;
-    const { edit } = this.state;
+    const commentProcessNodes = PROCESSES.commentmanagement.nodes;
+    const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
+    const { action } = this.state;
+    const edit = action && action.behaviorId === commentProcessNodes.edit.nodeId;
+    const reply = action && action.behaviorId === commentProcessNodes.respond.nodeId;
     const ignoreMetaData = this.ignoreMetaData();
     const author = node.author;
     const authorPicture = author.picture;
@@ -242,9 +292,10 @@ class RenderCommentItem extends React.Component {
         return image.isImage;
       })
       : [];
+    const addReactionAction = getActions(node.actions, { behaviorId: abstractProcessNodes.addreaction.nodeId })[0];
     return (
-      <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
-        <div className={pinned ? classes.pinned : ''}>
+      <div>
+        <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
           {pinned &&
             !this.ignorePinned() &&
             <div className={classes.pinnedLabel}>
@@ -317,7 +368,7 @@ class RenderCommentItem extends React.Component {
                     <div className={classes.contentText}>
                       <div
                         className={classNames('comment-text', classes.commentText)}
-                        dangerouslySetInnerHTML={{ __html: node.text }}
+                        dangerouslySetInnerHTML={{ __html: emojiConvert(node.text) }}
                       />
                       {edited &&
                       <span className={classes.edited}>
@@ -332,13 +383,15 @@ class RenderCommentItem extends React.Component {
                       return <Url key={key} data={url} />;
                     })}
                   </div>}
+                  {node.emojis &&
+                  <EmojiEvaluation
+                    emojis={node.emojis}
+                    onEmojiClick={(emoji) => {
+                      if (addReactionAction) this.onActionClick(addReactionAction, { emoji: emoji });
+                    }}
+                  />}
                   {!disableReply && node.lenComments > 0
-                    ? <div
-                      onClick={() => {
-                        processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
-                      }}
-                      className={classes.replyContainer}
-                    >
+                    ? <div onClick={this.toggleReply} className={classes.replyContainer}>
                       <ForumIcon className={classes.replyIcon} />
                       <span>
                         <Translate value="channels.replies" count={node.lenComments} />
@@ -352,6 +405,28 @@ class RenderCommentItem extends React.Component {
                 </div>}
             </div>
           </div>
+        </div>
+        <div className={classes.replyCommentsContainer}>
+          {reply && <Icon className={classNames('mdi-set mdi-source-commit-start-next-local', classes.iconStart)} />}
+          {reply &&
+            <IconButton onClick={this.toggleReply} className={classNames('close-reply', classes.closeReply)}>
+              <CancelIcon />
+            </IconButton>}
+          <Collapse in={reply}>
+            {reply &&
+              <Reply
+                inline
+                formTop
+                dynamicDivider={false}
+                id={node.id}
+                moreBtn={
+                  <span>
+                    {I18n.t('common.moreResult')}
+                  </span>
+                }
+              />}
+          </Collapse>
+          {reply && <Icon className={classNames('mdi-set mdi-source-commit-end-local', classes.iconEnd)} />}
         </div>
       </div>
     );

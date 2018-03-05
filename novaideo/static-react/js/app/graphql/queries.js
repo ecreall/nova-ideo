@@ -355,6 +355,14 @@ export const commentFragment = gql`
       isImage
       variations
     }
+    emojis{
+      title
+      isUserEmoji
+      users {
+        id
+        title
+      }
+    }
     urls {
       url
       title
@@ -418,6 +426,14 @@ export const commentQuery = gql`
           domain
           authorAvatar
           authorName
+        }
+        emojis{
+          title
+          isUserEmoji
+          users {
+            id
+            title
+          }
         }
         lenComments
         lenUnreadReplies

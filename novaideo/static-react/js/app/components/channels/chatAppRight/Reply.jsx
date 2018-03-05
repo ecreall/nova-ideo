@@ -5,6 +5,8 @@ import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import debounce from 'lodash.debounce';
+import classNames from 'classnames';
+import Icon from 'material-ui/Icon';
 
 import { commentQuery } from '../../../graphql/queries';
 import FlatList from '../../common/FlatList';
@@ -21,12 +23,25 @@ const styles = (theme) => {
     container: {
       height: 'calc(100vh - 56px)'
     },
+    containerInline: {
+      height: 'auto',
+      paddingRight: 0,
+      margin: 0,
+      width: '100%',
+      paddingLeft: 36
+    },
     comments: {
       backgroundColor: 'white',
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'column',
       height: '100%'
+    },
+    commentsInline: {
+      width: '100%',
+      paddingLeft: '0 !important',
+      paddingRight: '0 !important',
+      borderLeft: 'solid 1px #e6e6e6'
     },
     commentsWithRight: {
       paddingRight: '0 !important',
@@ -65,16 +80,38 @@ const styles = (theme) => {
     },
     commentsFooterMessage: {
       marginTop: 10
+    },
+    inlineFormContainer: {
+      paddingLeft: 29
+    },
+    inlineContainerAddon: {
+      boxShadow: 'none'
+    },
+    iconStart: {
+      marginLeft: -12,
+      marginTop: -16,
+      fontSize: '25px !important',
+      color: '#bfbfbf',
+      marginBottom: -9,
+      backgroundColor: 'white'
+    },
+    iconEnd: {
+      marginLeft: -12,
+      marginTop: -9,
+      fontSize: '25px !important',
+      color: '#bfbfbf',
+      marginBottom: -16,
+      backgroundColor: 'white'
     }
   };
 };
 
-const ReplyFooter = (classes) => {
+const ReplyFooter = (classes, inline) => {
   return (props) => {
     const { data } = props;
     return (
       <div className={classes.commentsFooter}>
-        <CommentItem disableReply node={data.node} />
+        {!inline && <CommentItem disableReply node={data.node} />}
         <div className={classes.commentsFooterMessage}>
           {I18n.t('channels.replyCommentFooter')}
         </div>
@@ -122,11 +159,13 @@ export class RenderComment extends React.Component {
 
   render() {
     const {
+      id,
       rightProps,
       data,
       customScrollbar,
       dynamicDivider,
       reverted,
+      inline,
       ignorDrawer,
       fullScreen,
       fetchMoreOnEvent,
@@ -148,25 +187,28 @@ export class RenderComment extends React.Component {
       commentAction &&
       <Comment
         placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
-        key={rightProps.id}
-        form={rightProps.id}
+        key={id || rightProps.id}
+        form={id || rightProps.id}
         channel={channel}
         context={comment && comment.oid}
         subject={comment && comment.rootOid}
         action={commentAction}
         {...formProps}
-        classes={{ container: classes.formContainer }}
+        classes={{
+          container: inline && classes.inlineFormContainer,
+          containerAddon: inline && classes.inlineContainerAddon
+        }}
       />;
     return (
-      <Grid className={classes.container} container>
-        <Grid className={classes.comments} item>
+      <Grid className={classNames(classes.container, { [classes.containerInline]: inline })} container>
+        <Grid className={classNames(classes.comments, { [classes.commentsInline]: inline })} item>
           {formTop && commentForm}
           <FlatList
-            Footer={ReplyFooter(classes)}
+            Footer={ReplyFooter(classes, inline)}
             NoItems={NoItems || (commentAction ? NoComments(classes) : CtComment(classes))}
             customScrollbar={customScrollbar}
             fetchMoreOnEvent={fetchMoreOnEvent}
-            scrollEvent={rightProps.id}
+            scrollEvent={id || rightProps.id}
             reverted={reverted}
             onEndReachedThreshold={reverted ? 0.3 : 0.7}
             data={data}
@@ -182,6 +224,7 @@ export class RenderComment extends React.Component {
             }}
             itemProps={{
               channel: channel,
+              inline: inline,
               unreadCommentsIds:
                 comment && comment.unreadReplies
                   ? comment.unreadReplies.map((comm) => {
@@ -216,7 +259,7 @@ export default withStyles(styles, { withTheme: true })(
             filter: props.filter ? props.filter.text : '',
             first: 25,
             after: '',
-            id: props.rightProps.id,
+            id: props.id || props.rightProps.id,
             processIds: [],
             nodeIds: [],
             processTags: [],

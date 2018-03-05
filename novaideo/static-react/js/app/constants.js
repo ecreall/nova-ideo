@@ -4,6 +4,10 @@ export const STATIC_URL = '/novaideostatic-react/';
 
 export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
 
+export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
+
+export const CONVERTOR_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/convertor_apple_32.png');
+
 export const UPDATE_APP = 'UPDATE_APP';
 
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';
@@ -45,6 +49,8 @@ export const CLOSE_DRAWER = 'CLOSE_DRAWER';
 export const OPEN_CHATAPP = 'OPEN_CHATAPP';
 
 export const CLOSE_CHATAPP = 'CLOSE_CHATAPP';
+
+export const UPDATE_CHATAPP_RIGHT = 'UPDATE_CHATAPP_RIGHT';
 
 export const SMALL_WIDTH = ['sm', 'xs'];
 

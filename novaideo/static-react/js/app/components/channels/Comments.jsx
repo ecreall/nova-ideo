@@ -37,6 +37,9 @@ const styles = (theme) => {
         display: 'none'
       }
     },
+    commentsWithRightFull: {
+      display: 'none'
+    },
     right: {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #e8e8e8',
@@ -107,10 +110,12 @@ export class RenderComments extends React.Component {
       customScrollbar,
       dynamicDivider,
       reverted,
+      inline,
       ignorDrawer,
       fullScreen,
       rightDisabled,
       rightOpen,
+      rightFull,
       fetchMoreOnEvent,
       displayForm,
       formTop,
@@ -143,7 +148,8 @@ export class RenderComments extends React.Component {
       <Grid className={classes.container} container>
         <Grid
           className={classNames(classes.comments, {
-            [classes.commentsWithRight]: displayRightBlock
+            [classes.commentsWithRight]: displayRightBlock,
+            [classes.commentsWithRightFull]: displayRightBlock && rightFull
           })}
           item
           xs={12}
@@ -172,6 +178,7 @@ export class RenderComments extends React.Component {
             }}
             itemProps={{
               channel: channel,
+              inline: inline,
               unreadCommentsIds:
                 channel && channel.unreadComments
                   ? channel.unreadComments.map((comment) => {
@@ -185,7 +192,7 @@ export class RenderComments extends React.Component {
           {!formTop && commentForm}
         </Grid>
         {displayRightBlock && channel
-          ? <Grid className={classes.right} item xs={12} md={4} sm={5}>
+          ? <Grid className={classes.right} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
             <ChatAppRight channel={channel} />
           </Grid>
           : null}
@@ -196,7 +203,8 @@ export class RenderComments extends React.Component {
 
 export const mapStateToProps = (state) => {
   return {
-    rightOpen: state.apps.chatApp.right.open
+    rightOpen: state.apps.chatApp.right.open,
+    rightFull: state.apps.chatApp.right.full
   };
 };
 
