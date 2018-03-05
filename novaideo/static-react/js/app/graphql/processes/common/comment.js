@@ -101,6 +101,7 @@ export default function comment({ ownProps, mutate }) {
             createdAt: createdAt.toISOString(),
             text: text,
             attachedFiles: files,
+            emojis: [],
             urls: [],
             edited: false,
             pinned: false,
