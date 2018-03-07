@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -16,6 +16,7 @@ import Hidden from 'material-ui/Hidden';
 
 import { updateChatAppRight, closeChatApp } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
+import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
 import { CONTENTS_IDS } from './chatAppRight';
 import Search from '../forms/Search';
@@ -75,15 +76,22 @@ const styles = {
   title: {
     marginBottom: 19
   },
+  titleBackground: {
+    color: '#afafaf !important'
+  },
   icon: {
     color: '#2c2d30',
     fontWeight: 900
   },
-  FilesIcon: {
+  infoIcon: {
+    height: 20,
+    width: 20
+  },
+  filesIcon: {
     fontSize: '19px !important'
   },
   membersIcon: {
-    fontSize: '21px !important'
+    fontSize: '22px !important'
   },
   appBar: {
     boxShadow: '0 1px 0 rgba(0,0,0,.1)'
@@ -159,7 +167,8 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { data, classes, className } = this.props;
+    const { data, classes, rightOpen, rightFull, rightComponentId, className } = this.props;
+    const isBackground = rightOpen && rightFull && rightComponentId === CONTENTS_IDS.reply;
     const channel = data.channel;
     const actionWithSeparator = classNames(classes.action, classes.actionWithSeparator);
     const searchFormId = 'channel-search-form';
@@ -181,22 +190,30 @@ class NavBar extends React.Component {
               </IconButton>
             </Hidden>
             <Typography type="title" color="inherit" className={classes.titleContainer}>
-              <div className={classes.title}>
-                <Icon className={classNames('mdi-set mdi-pound', classes.icon)} />
+              <div className={classNames(classes.title, { [classes.titleBackground]: isBackground })}>
+                <Icon className={classNames('mdi-set mdi-pound', classes.icon, { [classes.titleBackground]: isBackground })} />
                 {channelTitle}
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
                 <IconButton onClick={this.handleInfo} className={classes.action}>
-                  <InfoOutlineIcon />
-                </IconButton>
-                <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
-                  <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.membersIcon)} />
+                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
+                    <InfoOutlineIcon className={classes.infoIcon} />
+                  </OverlaidTooltip>
                 </IconButton>
                 <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
-                  <Icon className="mdi-set mdi-pin" />
+                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.pinned')} placement="bottom">
+                    <Icon className="mdi-set mdi-pin" />
+                  </OverlaidTooltip>
                 </IconButton>
                 <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
-                  <Icon className={classNames('mdi-set mdi-file-outline', classes.filesIcon)} />
+                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.files')} placement="bottom">
+                    <Icon className={classNames('mdi-set mdi-file-outline', classes.filesIcon)} />
+                  </OverlaidTooltip>
+                </IconButton>
+                <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
+                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.members')} placement="bottom">
+                    <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.membersIcon)} />
+                  </OverlaidTooltip>
                 </IconButton>
               </CardActions>
             </Typography>
@@ -226,7 +243,10 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
-    previousLocation: state.history.navigation.previous
+    previousLocation: state.history.navigation.previous,
+    rightComponentId: state.apps.chatApp.right.componentId,
+    rightFull: state.apps.chatApp.right.full,
+    rightOpen: state.apps.chatApp.right.open
   };
 };
 

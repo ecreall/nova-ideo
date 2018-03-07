@@ -3,9 +3,26 @@ const Translations = {
   fr: {
     common: {
       pinned: "Épinglés",
-      moreResult: "Afficher plus de résultats"
+      moreResult: "Afficher plus de résultats",
+      emojis: {
+        currentUserTooltip: "Vous (cliquez pour supprimer)",
+        currentTooltipTitle: "avez réagi avec %{emoji}",
+        tooltipTitle: "ont réagi avec %{emoji}",
+        tooltipTitle_1: "a réagi avec %{emoji}"
+      }
     },
     processes: {
+      novaideoabstractprocess: {
+        select: {
+          title: "Suivre"
+        },
+        deselect: {
+          title: "Retirer de mes suivis"
+        },
+        addreaction: {
+          title: "Ajouter une réaction"
+        }
+      },
       ideamanagement: {
         create: {
           title: "",
@@ -28,6 +45,9 @@ const Translations = {
         withdrawToken: {
           title: "Retirer",
           description: "Retirer mon jeton"
+        },
+        comment: {
+          title: "Commenter la proposition"
         }
       },
       commentmanagement: {
@@ -58,9 +78,16 @@ const Translations = {
           description: "Éditer le message",
           submission: "Enregistrer les changements"
         }
+      },
+      usermanagement: {
+        discuss: {
+          title: "Discuter"
+        }
       }
     },
     channels: {
+      switchChat: "Accéder à mes discussions",
+      switchApp: "Accéder à mes contenus",
       jump: "Accéder à...",
       channels: "Chaînes",
       thread: "Fil de discussion",
@@ -69,16 +96,16 @@ const Translations = {
       ctComment: "Actuellement, la discussion est bloquée et aucun message ne peut être posté.",
       private: "Messages directs",
       pinnedBlockTitle: "%{count} messages épinglés",
-      pinnedBlockTitle_0: "Aucun messages épinglés",
-      pinnedBlockTitle_1: "Un messages épinglé",
+      pinnedBlockTitle_0: "Aucun message épinglé",
+      pinnedBlockTitle_1: "Un message épinglé",
       noPinnedBlock:
         "Il n'y a pas encore de messages épinglés ! Ouvrez le menu contextuel des messages importants et choisissez Épingler pour les conserver ici.",
       infoBlockTitle: "Informations sur la chaîne",
       filesBlockTitle: "Fichiers partagés",
-      filesBlockTitle_0: "Aucun fichiers partagés",
+      filesBlockTitle_0: "Aucun fichier partagé",
       noFilesBlock: "Il n'y a pas encore de messages avec des fichiers attachées !",
       membersBlockTitle: "%{count} membres",
-      membersBlockTitle_0: "Aucun membres",
+      membersBlockTitle_0: "Aucun membre",
       membersBlockTitle_1: "Un membre",
       rightTitleAbout: "À propos de la discussion #%{name}",
       searchBlockTitle: "Résultats de la recherche",
@@ -95,7 +122,13 @@ const Translations = {
       replies: "%{count} réponses",
       replies_1: "Une réponse",
       unreadReplies: "%{count} non lus",
-      unreadReplies_1: "Un non lu"
+      unreadReplies_1: "Un non lu",
+      navbar: {
+        info: "Informations sur la discussion",
+        pinned: "Les messages épinglés",
+        members: "Les membres abonnés à la discussion",
+        files: "Les messages avec des fichiers attachés"
+      }
     },
     forms: {
       optional: "(facultatif)",
@@ -143,9 +176,26 @@ const Translations = {
   en: {
     common: {
       pinned: "Pinned",
-      moreResult: "See more results"
+      moreResult: "See more results",
+      emojis: {
+        currentUserTooltip: "You (click to remove)",
+        currentTooltipTitle: "reacted with %{emoji}",
+        tooltipTitle: "reacted with %{emoji}",
+        tooltipTitle_1: "reacted with %{emoji}"
+      }
     },
     processes: {
+      novaideoabstractprocess: {
+        select: {
+          title: "Follow"
+        },
+        deselect: {
+          title: "Unfollow"
+        },
+        addreaction: {
+          title: "Ass a reaction"
+        }
+      },
       ideamanagement: {
         create: {
           title: "",
@@ -168,6 +218,9 @@ const Translations = {
         withdrawToken: {
           title: "Withdraw",
           description: "Withdraw my token"
+        },
+        comment: {
+          title: "Comment the proposal"
         }
       },
       commentmanagement: {
@@ -198,10 +251,17 @@ const Translations = {
           description: "Edit this message",
           submission: "Save Changes"
         }
+      },
+      usermanagement: {
+        discuss: {
+          title: "Discuss"
+        }
       }
     },
 
     channels: {
+      switchChat: "Access my discussions",
+      switchApp: "Access my contents",
       jump: "Jump to...",
       channels: "Channels",
       thread: "Thread",
@@ -236,7 +296,13 @@ const Translations = {
       replies: "%{count} replies",
       replies_1: "One reply",
       unreadReplies: "%{count} unread",
-      unreadReplies_1: "One unread"
+      unreadReplies_1: "One unread",
+      navbar: {
+        info: "Channel information",
+        pinned: "Pinned messages",
+        members: "Members",
+        files: "Files"
+      }
     },
     forms: {
       optional: "(optional)",

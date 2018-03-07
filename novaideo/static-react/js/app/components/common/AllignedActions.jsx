@@ -2,6 +2,9 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
+import { I18n } from 'react-redux-i18n';
+
+import OverlaidTooltip from './OverlaidTooltip';
 
 const styles = (theme) => {
   return {
@@ -22,14 +25,16 @@ const styles = (theme) => {
       fontWeight: 100,
       fontSize: '16px !important',
       marginRight: 5,
-      marginTop: 1
+      marginTop: 1,
+      height: 16,
+      width: 16
     }
   };
 };
 
 class AllignedActions extends React.Component {
   render() {
-    const { actions, onActionClick, classes } = this.props;
+    const { actions, onActionClick, overlayPosition, classes } = this.props;
     return (
       <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
         {actions.map((action, key) => {
@@ -43,7 +48,9 @@ class AllignedActions extends React.Component {
               }}
               aria-label="todo"
             >
-              <Icon className={classes.actionsIcon} />
+              <OverlaidTooltip tooltip={I18n.t(action.title)} placement={overlayPosition}>
+                <Icon className={classes.actionsIcon} />
+              </OverlaidTooltip>
               {action.counter}
             </IconButton>
           );

@@ -10,6 +10,7 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import { Translate, I18n } from 'react-redux-i18n';
+import MIcon from 'material-ui/Icon';
 
 import { updateChatAppRight } from '../../../actions/actions';
 import Details from './Details';
@@ -17,6 +18,7 @@ import Search from './Search';
 import Reply from './Reply';
 import { CONTENTS_IDS } from '.';
 import Scrollbar from '../../common/Scrollbar';
+import { goTo, get } from '../../../utils/routeMap';
 
 const styles = {
   content: {
@@ -57,6 +59,15 @@ const styles = {
   },
   appIcon: {
     marginRight: 5
+  },
+  replyTitleContainer: {
+    cursor: 'pointer'
+  },
+  replyTitle: {
+    fontSize: 13,
+    color: '#585858',
+    fontWeight: 100,
+    marginLeft: 30
   }
 };
 
@@ -100,9 +111,25 @@ class ChatAppRight extends React.Component {
   };
 
   title = () => {
-    const { componentId, channel, classes } = this.props;
+    const { componentId, channel, rightProps, updateRight, classes } = this.props;
     if (componentId === CONTENTS_IDS.search) return <Title title={I18n.t('channels.searchBlockTitle')} classes={classes} />;
-    if (componentId === CONTENTS_IDS.reply) return <Title title={I18n.t('channels.thread')} Icon={ForumIcon} classes={classes} />;
+    if (componentId === CONTENTS_IDS.reply) {
+      return (
+        <div
+          className={classes.replyTitleContainer}
+          onClick={() => {
+            updateRight({ full: false });
+            goTo(get('messages', { channelId: rightProps.channelId }));
+          }}
+        >
+          <Title title={I18n.t('channels.thread')} Icon={ForumIcon} classes={classes} />
+          <div className={classes.replyTitle}>
+            <MIcon className="mdi-set mdi-pound" />
+            {rightProps.channelTitle}
+          </div>
+        </div>
+      );
+    }
     return <Title title={<Translate value="channels.rightTitleAbout" name={channel.title} />} classes={classes} />;
   };
 
@@ -148,6 +175,7 @@ export const mapStateToProps = (state) => {
   return {
     componentId: state.apps.chatApp.right.componentId,
     rightFull: state.apps.chatApp.right.full,
+    rightProps: state.apps.chatApp.right.props,
     subject: state.apps.chatApp.subject
   };
 };

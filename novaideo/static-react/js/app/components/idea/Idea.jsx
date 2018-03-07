@@ -75,7 +75,9 @@ const styles = (theme) => {
       fontWeight: 100,
       fontSize: '20px !important',
       marginRight: 5,
-      marginTop: -2
+      marginTop: -2,
+      height: 20,
+      width: 20
     },
     tooltipSupport: {
       position: 'absolute',
@@ -238,6 +240,7 @@ export class RunderIdea extends React.Component {
             <AllignedActions
               actions={communicationActions}
               onActionClick={this.props.processManager.performAction}
+              overlayPosition="bottom"
               classes={{
                 actionsContainer: classes.actionsContainer,
                 actionsText: classes.actionsText,

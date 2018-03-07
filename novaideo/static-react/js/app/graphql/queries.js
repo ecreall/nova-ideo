@@ -358,9 +358,14 @@ export const commentFragment = gql`
     emojis{
       title
       isUserEmoji
-      users {
-        id
-        title
+      users(first: 5){
+        totalCount
+        edges {
+          node {
+            id
+            title
+          }
+        }
       }
     }
     urls {
@@ -430,9 +435,14 @@ export const commentQuery = gql`
         emojis{
           title
           isUserEmoji
-          users {
-            id
-            title
+          users(first: 5){
+            totalCount
+            edges {
+              node {
+                id
+                title
+              }
+            }
           }
         }
         lenComments

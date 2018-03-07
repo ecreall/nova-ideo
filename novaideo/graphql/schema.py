@@ -71,12 +71,12 @@ class Emoji(Node, graphene.ObjectType):
     class Meta(object):
         interfaces = (relay.Node, )
     
-    users = graphene.List(lambda: Person)
+    users = relay.ConnectionField(lambda: Person)
     title = graphene.String()
     is_user_emoji = graphene.Boolean()
     
     def resolve_users(self, args, context, info):
-        return ResolverLazyList(self.users, Person)
+        return ResolverLazyList(self.users, Person, total_count=len(self.users))
 
 
 class Emojiable(graphene.AbstractType):

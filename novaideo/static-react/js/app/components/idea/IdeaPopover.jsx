@@ -141,7 +141,7 @@ export class RenderIdeaItem extends React.Component {
   render() {
     const { data, adapters, globalProps: { site }, classes } = this.props;
     const node = data.idea;
-    if (!node) {
+    if (!node || !node.author) {
       return (
         <div className={classes.progress}>
           <CircularProgress size={30} />
@@ -149,8 +149,8 @@ export class RenderIdeaItem extends React.Component {
       );
     }
     const author = node.author;
-    const authorPicture = author && author.picture;
-    const isAnonymous = author && author.isAnonymous;
+    const authorPicture = author.picture;
+    const isAnonymous = author.isAnonymous;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -158,7 +158,8 @@ export class RenderIdeaItem extends React.Component {
         return image.isImage;
       })
       : [];
-    const hasEvaluation = site.supportIdeas && node.state && node.state.includes('published');
+    const state = node.state || [];
+    const hasEvaluation = site.supportIdeas && state.includes('published');
     const Examination = adapters.examination;
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
     return (
@@ -184,10 +185,10 @@ export class RenderIdeaItem extends React.Component {
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
-                active={node.state.includes('submitted_support')}
+                active={state.includes('submitted_support')}
               />
               : null}
-            {site.examineIdeas && node.state.includes('examined')
+            {site.examineIdeas && state.includes('examined')
               ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
               : null}
           </div>
@@ -202,7 +203,7 @@ export class RenderIdeaItem extends React.Component {
               onActionClick={this.props.processManager.performAction}
             />
             <span className={classes.headerTitle}>
-              {author.title}
+              {author && author.title}
             </span>
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>

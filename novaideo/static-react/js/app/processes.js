@@ -18,7 +18,10 @@ export const PROCESSES = {
         nodeId: 'creat'
       },
       createAndPublish: { nodeId: 'creatandpublish' },
-      comment: { nodeId: 'comment' },
+      comment: {
+        nodeId: 'comment',
+        title: 'processes.ideamanagement.comment.title'
+      },
       support: {
         nodeId: 'support',
         title: 'processes.ideamanagement.support.title',
@@ -46,16 +49,31 @@ export const PROCESSES = {
   usermanagement: {
     id: 'usermanagement',
     nodes: {
-      discuss: { nodeId: 'discuss' },
-      generalDiscuss: { nodeId: 'general_discuss' }
+      discuss: {
+        nodeId: 'discuss',
+        title: 'processes.usermanagement.discuss.title'
+      },
+      generalDiscuss: {
+        nodeId: 'general_discuss',
+        title: 'processes.usermanagement.generalDiscuss.title'
+      }
     }
   },
   novaideoabstractprocess: {
     id: 'novaideoabstractprocess',
     nodes: {
-      select: { nodeId: 'select' },
-      deselect: { nodeId: 'deselect' },
-      addreaction: { nodeId: 'addreaction' }
+      select: {
+        nodeId: 'select',
+        title: 'processes.novaideoabstractprocess.select.title'
+      },
+      deselect: {
+        nodeId: 'deselect',
+        title: 'processes.novaideoabstractprocess.deselect.title'
+      },
+      addreaction: {
+        nodeId: 'addreaction',
+        title: 'processes.novaideoabstractprocess.addreaction.title'
+      }
     }
   },
   commentmanagement: {

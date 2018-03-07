@@ -7,7 +7,6 @@ import CreateIcon from 'material-ui-icons/Create';
 import Badge from 'material-ui/Badge';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { red } from 'material-ui/colors';
 
 import { goTo, get } from '../../utils/routeMap';
 import UserAvatar from '../user/UserAvatar';

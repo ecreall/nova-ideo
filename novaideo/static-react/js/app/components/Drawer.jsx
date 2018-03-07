@@ -6,14 +6,16 @@ import classNames from 'classnames';
 import Hidden from 'material-ui/Hidden';
 import IconButton from 'material-ui/IconButton';
 import ChatIcon from 'material-ui-icons/Chat';
-import SpeakerNotesOff from 'material-ui-icons/SpeakerNotesOff';
+import ExitToAppIcon from 'material-ui-icons/ExitToApp';
 import { Slide } from 'material-ui/transitions';
+import { I18n } from 'react-redux-i18n';
 
 import { STYLE_CONST } from '../constants';
 import ChannelsDrawer from './channels/ChannelsDrawer';
 import UserMenu from './user/UserMenu';
 import UserDrawer from './user/UserDrawer';
 import { updateApp, closeDrawer } from '../actions/actions';
+import OverlaidTooltip from './common/OverlaidTooltip';
 
 const styles = (theme) => {
   return {
@@ -78,7 +80,9 @@ function DrawerContent({ drawerApp, switchDrawer, classes }) {
           return switchDrawer('drawer', { app: isChatApp ? undefined : 'chatApp' });
         }}
       >
-        {isChatApp ? <SpeakerNotesOff /> : <ChatIcon />}
+        <OverlaidTooltip tooltip={isChatApp ? I18n.t('channels.switchApp') : I18n.t('channels.switchChat')} placement="bottom">
+          {isChatApp ? <ExitToAppIcon /> : <ChatIcon />}
+        </OverlaidTooltip>
       </IconButton>
       <UserMenu />
       <div className={classes.drawersContainer}>

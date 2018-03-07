@@ -29,10 +29,10 @@ export class DumbCommentProcessManager extends React.Component {
   performAction = (action, data) => {
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
-    const { comment, account, addReactionComment } = this.props;
+    const { comment, account, addReactionComment, channel } = this.props;
     switch (action.behaviorId) {
     case commentProcessNodes.respond.nodeId:
-      this.openRight(CONTENTS_IDS.reply, { id: comment.id });
+      this.openRight(CONTENTS_IDS.reply, { id: comment.id, channelTitle: channel.title, channelId: channel.id });
       break;
     case commentProcessNodes.delete.nodeId:
       this.displayForm(action);

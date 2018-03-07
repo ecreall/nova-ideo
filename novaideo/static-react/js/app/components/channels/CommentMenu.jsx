@@ -3,12 +3,14 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
+import { I18n } from 'react-redux-i18n';
 
 import { Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
 import { ACTIONS, PROCESSES } from '../../processes';
 import { getActions } from '../../utils/processes';
 import MenuMore from '../common/MenuMore';
+import OverlaidTooltip from '../common/OverlaidTooltip';
 
 const styles = (theme) => {
   return {
@@ -108,9 +110,11 @@ export class DumbCommentMenu extends React.Component {
       <div className={classes.container}>
         {actions.map((action) => {
           return (
-            <div className={classes.action}>
-              {this.getAction(action)}
-            </div>
+            <OverlaidTooltip tooltip={I18n.t(action.title)} placement="top">
+              <div className={classes.action}>
+                {this.getAction(action)}
+              </div>
+            </OverlaidTooltip>
           );
         })}
         <div>

@@ -22,24 +22,27 @@ const updateCommentQueries = (prev, emoji, context, user) => {
     return emojiData.isUserEmoji;
   })[0];
   if (currentUserEmoji) {
-    const currentUser = currentUserEmoji.users.filter((userData) => {
-      return userData.id === user.id;
+    const currentUser = currentUserEmoji.users.edges.filter((userData) => {
+      return userData.node.id === user.id;
     })[0];
-    const indexCurrentUser = currentUserEmoji.users.indexOf(currentUser);
+    const indexCurrentUser = currentUserEmoji.users.edges.indexOf(currentUser);
     const newCurrentUserEmoji = update(currentUserEmoji, {
       isUserEmoji: { $set: false },
       users: {
-        $splice: [[indexCurrentUser, 1]]
+        totalCount: { $set: currentUserEmoji.users.totalCount - 1 },
+        edges: {
+          $splice: [[indexCurrentUser, 1]]
+        }
       }
     });
     const indexCurrentUserEmoji = currentComment.node.emojis.indexOf(currentUserEmoji);
     updateUserEmoji = { $splice: [[indexCurrentUserEmoji, 1, newCurrentUserEmoji]] };
   }
 
-  const newUser = { id: user.id, title: user.title, __typename: 'Person' };
+  const newUser = { node: { id: user.id, title: user.title, __typename: 'Person' }, __typename: 'PersonEdge' };
   let newEmojis = {
     title: emoji,
-    users: [newUser],
+    users: { totalCount: 1, edges: [newUser], __typename: 'PersonConnection' },
     isUserEmoji: true,
     __typename: 'Emoji'
   };
@@ -49,14 +52,17 @@ const updateCommentQueries = (prev, emoji, context, user) => {
   let newComment = null;
   if (currentEmoji) {
     const indexEmoji = currentComment.node.emojis.indexOf(currentEmoji);
-    const currentUser = currentEmoji.users.filter((userData) => {
-      return userData.id === user.id;
+    const currentUser = currentEmoji.users.edges.filter((userData) => {
+      return userData.node.id === user.id;
     })[0];
     if (!currentUser) {
       newEmojis = update(currentEmoji, {
         isUserEmoji: { $set: true },
         users: {
-          $push: [newUser]
+          totalCount: { $set: currentEmoji.users.totalCount + 1 },
+          edges: {
+            $push: [newUser]
+          }
         }
       });
       newComment = update(currentComment, {

@@ -263,12 +263,13 @@ class RenderCommentItem extends React.Component {
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     const { node, processManager, itemProps } = this.props;
     const inline = itemProps && itemProps.inline;
+    const channel = (itemProps && itemProps.channel) || node.channel;
     if (inline) {
       const { action } = this.state;
       const isReply = action && action.behaviorId === commentProcessNodes.respond.nodeId;
       this.setState({ action: !isReply ? { behaviorId: commentProcessNodes.respond.nodeId } : null });
     } else {
-      processManager.openRight(CONTENTS_IDS.reply, { id: node.id });
+      processManager.openRight(CONTENTS_IDS.reply, { id: node.id, channelTitle: channel.title, channelId: channel.id });
     }
   };
 
@@ -355,7 +356,7 @@ class RenderCommentItem extends React.Component {
                   form={`edit-${node.id}`}
                   context={node}
                   onSubmit={this.onEdit}
-                  action={edit}
+                  action={action}
                   initialValues={{
                     comment: node.text,
                     files: node.attachedFiles.map((file) => {

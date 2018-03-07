@@ -13,7 +13,7 @@ const styles = (theme) => {
       flex: 1,
       display: 'flex',
       position: 'absolute',
-      top: 0,
+      top: -1,
       alignItems: 'center',
       height: '100%',
       zIndex: 1,
