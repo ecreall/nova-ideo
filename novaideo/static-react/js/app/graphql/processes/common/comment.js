@@ -232,7 +232,6 @@ export default function comment({ ownProps, mutate }) {
             return item && item.node.id === newChannel.id;
           })[0];
           if (currentChannel) return false;
-          console.log(newChannel, prev.account.channels.edges);
           return update(prev, {
             account: {
               channels: {
