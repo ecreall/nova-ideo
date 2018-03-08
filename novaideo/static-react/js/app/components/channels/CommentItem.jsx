@@ -15,6 +15,7 @@ import ImagesPreview from '../common/ImagesPreview';
 import Url from '../common/Url';
 import EmojiEvaluation from '../common/EmojiEvaluation';
 import { getFormattedDate } from '../../utils/globalFunctions';
+import { formatText } from '../../utils/textFormatter';
 import { emojiConvert } from '../../utils/emojiConvertor';
 import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
@@ -167,6 +168,7 @@ const styles = (theme) => {
       fontWeight: 700
     },
     commentText: {
+      width: '100%',
       display: 'inline-block'
     },
     edited: {
@@ -369,8 +371,11 @@ class RenderCommentItem extends React.Component {
                     <div className={classes.contentText}>
                       <div
                         className={classNames('comment-text', classes.commentText)}
-                        dangerouslySetInnerHTML={{ __html: emojiConvert(node.text) }}
+                        dangerouslySetInnerHTML={{
+                          __html: emojiConvert(formatText(node.text))
+                        }}
                       />
+
                       {edited &&
                       <span className={classes.edited}>
                             ({I18n.t('channels.edited')})

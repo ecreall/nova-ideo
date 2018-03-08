@@ -21,112 +21,117 @@ import { goTo, get } from '../../utils/routeMap';
 import { CONTENTS_IDS } from './chatAppRight';
 import Search from '../forms/Search';
 
-const styles = {
-  root: {
-    width: '100%'
-  },
-  menuContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: 34,
-    margin: '2px 0 0',
-    padding: '0 10px 0 0',
-    transition: 'width .15s ease-out 0s',
-    width: 360,
-    '&:focus-within': {
-      width: 437
+const styles = (theme) => {
+  return {
+    root: {
+      width: '100%'
     },
-    '@media (max-width:1440px)': {
-      width: 315,
+    menuContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      height: 34,
+      margin: '2px 0 0',
+      padding: '0 10px 0 0',
+      transition: 'width .15s ease-out 0s',
+      width: 360,
       '&:focus-within': {
-        width: 387
+        width: 437
+      },
+      '@media (max-width:1440px)': {
+        width: 315,
+        '&:focus-within': {
+          width: 387
+        }
+      },
+      '@media (max-width:1366px)': {
+        width: 260,
+        '&:focus-within': {
+          width: 337
+        }
+      },
+      '@media (max-width:1279px)': {
+        width: 245,
+        '&:focus-within': {
+          width: 312
+        }
+      },
+      '@media (max-width:1070px)': {
+        width: 225,
+        '&:focus-within': {
+          width: 282
+        }
+      },
+      '@media (max-width:860px)': {
+        width: 195,
+        '&:focus-within': {
+          width: 257
+        }
       }
     },
-    '@media (max-width:1366px)': {
-      width: 260,
-      '&:focus-within': {
-        width: 337
-      }
+    titleContainer: {
+      flex: 1,
+      color: '#2c2d30',
+      fontSize: 18,
+      fontWeight: 900
     },
-    '@media (max-width:1279px)': {
-      width: 245,
-      '&:focus-within': {
-        width: 312
-      }
+    title: {
+      marginBottom: 19
     },
-    '@media (max-width:1070px)': {
-      width: 225,
-      '&:focus-within': {
-        width: 282
-      }
+    titleBackground: {
+      color: '#afafaf !important'
     },
-    '@media (max-width:860px)': {
-      width: 195,
-      '&:focus-within': {
-        width: 257
-      }
-    }
-  },
-  titleContainer: {
-    flex: 1,
-    color: '#2c2d30',
-    fontSize: 18,
-    fontWeight: 900
-  },
-  title: {
-    marginBottom: 19
-  },
-  titleBackground: {
-    color: '#afafaf !important'
-  },
-  icon: {
-    color: '#2c2d30',
-    fontWeight: 900
-  },
-  infoIcon: {
-    height: 20,
-    width: 20
-  },
-  filesIcon: {
-    fontSize: '19px !important'
-  },
-  membersIcon: {
-    fontSize: '22px !important'
-  },
-  appBar: {
-    boxShadow: '0 1px 0 rgba(0,0,0,.1)'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  },
-  actions: {
-    height: 20,
-    marginTop: -15,
-    marginLeft: -18
-  },
-  action: {
-    fontSize: 18,
-    color: '#a0a0a0',
-    width: 40,
-    height: 40
-  },
-  actionWithSeparator: {
-    '&::after': {
-      display: 'block',
-      position: 'absolute',
-      top: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      left: -1,
+    icon: {
+      color: '#2c2d30',
+      fontWeight: 900
+    },
+    infoIcon: {
       height: 20,
-      transform: 'translateY(-50%)',
-      borderRadius: 0,
-      borderRight: '1px solid #e5e5e5',
-      content: '""',
-      color: '#2c2d30'
+      width: 20
+    },
+    filesIcon: {
+      fontSize: '19px !important'
+    },
+    membersIcon: {
+      fontSize: '22px !important'
+    },
+    appBar: {
+      boxShadow: '0 1px 0 rgba(0,0,0,.1)'
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20
+    },
+    actions: {
+      height: 20,
+      marginTop: -15,
+      marginLeft: -18
+    },
+    action: {
+      fontSize: 18,
+      color: '#a0a0a0',
+      width: 40,
+      height: 40,
+      '&:hover': {
+        color: theme.palette.info[500]
+      }
+    },
+    actionWithSeparator: {
+      '&::after': {
+        display: 'block',
+        position: 'absolute',
+        top: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        left: -1,
+        height: 20,
+        transform: 'translateY(-50%)',
+        borderRadius: 0,
+        borderRight: '1px solid #e5e5e5',
+        content: '""',
+        color: '#2c2d30'
+      }
     }
-  }
+  };
 };
 
 class NavBar extends React.Component {
@@ -250,4 +255,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(NavBar));

@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { updateApp } from '../actions/actions';
 import AccountInformation from './user/AccountInformation';
 import UserMenu from './user/UserMenu';
+import Search from './forms/Search';
 
 const styles = {
   flex: {
@@ -33,6 +34,48 @@ const styles = {
     height: 30,
     borderRadius: 4,
     cursor: 'pointer'
+  },
+  menuContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 34,
+    margin: '2px 0 0',
+    padding: '0 10px 0 0',
+    transition: 'width .15s ease-out 0s',
+    width: 360,
+    '&:focus-within': {
+      width: 437
+    },
+    '@media (max-width:1440px)': {
+      width: 315,
+      '&:focus-within': {
+        width: 387
+      }
+    },
+    '@media (max-width:1366px)': {
+      width: 260,
+      '&:focus-within': {
+        width: 337
+      }
+    },
+    '@media (max-width:1279px)': {
+      width: 245,
+      '&:focus-within': {
+        width: 312
+      }
+    },
+    '@media (max-width:1070px)': {
+      width: 225,
+      '&:focus-within': {
+        width: 282
+      }
+    },
+    '@media (max-width:860px)': {
+      width: 195,
+      '&:focus-within': {
+        width: 257
+      }
+    }
   }
 };
 
@@ -56,6 +99,15 @@ class NavBar extends React.Component {
             <Typography type="title" color="primary" className={classes.flex}>
               {!drawer && site.title}
             </Typography>
+            <div className={classes.menuContainer}>
+              <Search
+                form={'globalSearch'}
+                key={'globalSearch'}
+                onSearch={this.handelSearch}
+                onCancel={this.handleSearchCancel}
+                title={'Search'}
+              />
+            </div>
             {!drawer &&
               <div className={classes.userMenuContainer}>
                 <UserMenu

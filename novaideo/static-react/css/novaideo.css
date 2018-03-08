@@ -241,6 +241,74 @@ img.emoji {
 }
 
 
+pre.format-mrkdwn-pre{
+  margin: .5rem 0 .2rem;
+  font-size: .75rem;
+  line-height: 1.15rem;
+  background: #f9f9f9;
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace !important;
+  padding: .5rem;
+  font-variant-ligatures: none;
+  word-break: normal;
+  display: block;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+}
+
+code.format-code-var {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace !important;
+  font-size: .75rem;
+  line-height: .75rem;
+  white-space: normal;
+  color: #d72b3f;
+  padding: 2px 3px 1px;
+  font-variant-ligatures: none;
+  tab-size: 4;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  border-radius: 3px;
+}
+
+div.format-blockquote {
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-left: 4px solid gray;
+}
+
+div.format-blockquote.danger{
+  border-left: 4px solid rgb(163, 2, 0);
+}
+
+div.format-blockquote.success{
+  border-left: 4px solid rgb(46, 184, 134);
+}
+
+div.format-blockquote.warning{
+  border-left: 4px solid rgb(218, 160, 56);
+}
+
+div.format-blockquote.info{
+  border-left: 4px solid rgb(65, 131, 196);
+}
+
+span.format-text-italic{
+  font-style: italic
+}
+
+span.format-text-bold{
+  font-weight: bold
+}
+
+
+span.format-text-underline{
+  text-decoration: underline;
+}
+
 body {
   font-style: normal;
   font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;   

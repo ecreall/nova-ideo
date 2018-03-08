@@ -60,14 +60,15 @@ const styles = {
   appIcon: {
     marginRight: 5
   },
-  replyTitleContainer: {
-    cursor: 'pointer'
-  },
   replyTitle: {
+    cursor: 'pointer',
     fontSize: 13,
     color: '#585858',
     fontWeight: 100,
-    marginLeft: 30
+    marginLeft: 30,
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 };
 
@@ -115,15 +116,15 @@ class ChatAppRight extends React.Component {
     if (componentId === CONTENTS_IDS.search) return <Title title={I18n.t('channels.searchBlockTitle')} classes={classes} />;
     if (componentId === CONTENTS_IDS.reply) {
       return (
-        <div
-          className={classes.replyTitleContainer}
-          onClick={() => {
-            updateRight({ full: false });
-            goTo(get('messages', { channelId: rightProps.channelId }));
-          }}
-        >
+        <div>
           <Title title={I18n.t('channels.thread')} Icon={ForumIcon} classes={classes} />
-          <div className={classes.replyTitle}>
+          <div
+            onClick={() => {
+              updateRight({ full: false });
+              goTo(get('messages', { channelId: rightProps.channelId }));
+            }}
+            className={classes.replyTitle}
+          >
             <MIcon className="mdi-set mdi-pound" />
             {rightProps.channelTitle}
           </div>

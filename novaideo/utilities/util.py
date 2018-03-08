@@ -709,7 +709,7 @@ def text_urls_format(text, request=None, is_html=False):
                     data_url, request)
                 url_results.append(value)
 
-    text_urls = '<p>' + ''.join(url_results) + '</p>'
+    text_urls = '<div>' + ''.join(url_results) + '</div>'
     urls = extract_urls(html_to_text(text_urls))
     for url in urls:
         text_urls = text_urls.replace(
@@ -719,7 +719,7 @@ def text_urls_format(text, request=None, is_html=False):
         text = truncate_text(text, len(text))
         text = text.replace('\n', '<br/>')
 
-    formatted_text = '<p class="emoji-container">' + text + '</p>'
+    formatted_text = '<div class="emoji-container">' + text + '</div>'
     return all_urls, url_files, text_urls, formatted_text
 
 
