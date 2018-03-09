@@ -1,13 +1,15 @@
+import linkifyHtml from 'linkifyjs/html';
+
 const FORMAT = {
   block: {
-    prefix: '&#x60;&#x60;&#x60;',
-    suffix: '&#x60;&#x60;&#x60;',
+    prefix: '```',
+    suffix: '```',
     className: 'format-mrkdwn-pre',
     tag: 'pre'
   },
   code: {
-    prefix: '&#x60;',
-    suffix: '&#x60;',
+    prefix: '`',
+    suffix: '`',
     className: 'format-code-var',
     tag: 'code'
   },
@@ -69,12 +71,11 @@ const regexWrapperText = (list, className, tag) => {
 };
 
 export const formatText = (text) => {
-  let result = text;
+  let result = text.replace(new RegExp('\\n', 'g'), '</br>');
   Object.keys(FORMAT).forEach((key) => {
     const format = FORMAT[key];
     const regex = new RegExp(`${format.prefix}(.*?)${format.suffix}`);
     result = regexWrapperText(result.split(regex), format.className, format.tag);
   });
-
-  return result;
+  return linkifyHtml(result);
 };

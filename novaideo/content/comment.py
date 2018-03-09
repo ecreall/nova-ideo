@@ -31,6 +31,7 @@ from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     text_urls_format,
+    get_urls_metadata,
     get_emoji_form,
     get_files_data, connect, disconnect)
 from novaideo.content.correlation import CorrelationType
@@ -163,7 +164,7 @@ class CommentSchema(VisualisableElementSchema):
 
     comment = colander.SchemaNode(
         colander.String(),
-        validator=colander.Length(max=2000),
+        # validator=colander.Length(max=2000),
         widget=comment_textarea,
         title=_("Message")
         )
@@ -302,12 +303,26 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
 
     def format(self, request, is_html=False):
         comment = getattr(self, 'comment', '')
-        all_urls, url_files, text_urls, formatted_text = text_urls_format(
+        urls_metadata, url_files, formatted_urls, formatted_text = text_urls_format(
             comment, request, is_html)
-        self.urls = PersistentDict(all_urls)
+        self.urls = PersistentDict(urls_metadata)
         self.setproperty('url_files', url_files)
         self.formatted_comment = formatted_text
-        self.formatted_urls = text_urls
+        self.formatted_urls = formatted_urls
+
+    def add_urls(self, urls, request):
+        urls_metadata, url_files = get_urls_metadata(
+            urls, request)
+
+        self.urls.update(urls_metadata)
+        for url_file in url_files:
+            self.addtoproperty('url_files', url_file)
+
+    def set_urls(self, urls, request):
+        urls_metadata, url_files = get_urls_metadata(
+            urls, request)
+        self.urls = PersistentDict(urls_metadata)
+        self.setproperty('url_files', url_files)
 
     def get_attached_files_data(self):
         return get_files_data(self.files)

@@ -19,10 +19,12 @@ export const renderTextBoxField = ({
   onEnter,
   autoFocus,
   style,
-  withEmoji
+  withEmoji,
+  initRef
 }) => {
   return (
     <TextBoxField
+      initRef={initRef}
       withEmoji={withEmoji}
       autoFocus={autoFocus}
       style={style}

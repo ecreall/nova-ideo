@@ -9,7 +9,9 @@ import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
 import IconButton from 'material-ui/IconButton';
+import { find as findUrls } from 'linkifyjs';
 
+import { formatText } from '../../../../utils/textFormatter';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
@@ -128,6 +130,7 @@ export class DumbCommentForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.filesPicker = null;
+    this.editor = null;
   }
 
   handleSubmit = () => {
@@ -137,10 +140,20 @@ export class DumbCommentForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
+      const plainComment = this.editor.getPlainText();
+      const formattedComment = formatText(plainComment);
       this.props
         .commentObject({
           context: context,
-          text: formData.values.comment,
+          text: plainComment,
+          formattedText: formattedComment,
+          urls: findUrls(plainComment)
+            .filter((link) => {
+              return link.type === 'url';
+            })
+            .map((link) => {
+              return link.href;
+            }),
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account,
@@ -217,8 +230,12 @@ export class DumbCommentForm extends React.Component {
             <Field
               props={{
                 onCtrlEnter: this.handleSubmit,
-                autoFocus: autoFocus
+                autoFocus: autoFocus,
+                initRef: (editor) => {
+                  this.editor = editor;
+                }
               }}
+              withRef
               name="comment"
               component={renderTextBoxField}
               type="text"

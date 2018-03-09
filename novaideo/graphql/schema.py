@@ -204,6 +204,7 @@ class File(Node, graphene.ObjectType):
     mimetype = graphene.String()
     is_image = graphene.Boolean()
     variations = graphene.List(graphene.String)
+    size = graphene.Int()
 
     def resolve_is_image(self, args, context, info):  #pylint: disable=W0613
         return self.mimetype.startswith('image') or \
@@ -212,6 +213,9 @@ class File(Node, graphene.ObjectType):
 
     def resolve_variations(self, args, context, info):  #pylint: disable=W0613
         return list(self.keys())
+
+    def resolve_size(self, args, context, info):  #pylint: disable=W0613
+        return self.get_size()
 
 
 class Person(Node, Debatable, graphene.ObjectType):
@@ -323,6 +327,7 @@ class Comment(Node, Emojiable, graphene.ObjectType):
 
     state = graphene.List(graphene.String)
     text = graphene.String()
+    formatted_text = graphene.String()
     author = graphene.Field(Person)
     attached_files = graphene.List(File)
     urls = graphene.List(Url)
@@ -363,6 +368,9 @@ class Comment(Node, Emojiable, graphene.ObjectType):
                 context.user.get_read_date(self, self.created_at), now))
 
     def resolve_text(self, args, context, info):
+        return self.comment
+
+    def resolve_formatted_text(self, args, context, info):
         return getattr(self, 'formatted_comment', self.comment)
 
     def resolve_urls(self, args, context, info):  # pylint: disable=W0613

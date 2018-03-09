@@ -9,7 +9,8 @@ const Translations = {
         currentTooltipTitle: "avez réagi avec %{emoji}",
         tooltipTitle: "ont réagi avec %{emoji}",
         tooltipTitle_1: "a réagi avec %{emoji}"
-      }
+      },
+      clickDownload: "Cliquer pour télécharger"
     },
     processes: {
       novaideoabstractprocess: {
@@ -182,7 +183,8 @@ const Translations = {
         currentTooltipTitle: "reacted with %{emoji}",
         tooltipTitle: "reacted with %{emoji}",
         tooltipTitle_1: "reacted with %{emoji}"
-      }
+      },
+      clickDownload: "Click to download"
     },
     processes: {
       novaideoabstractprocess: {

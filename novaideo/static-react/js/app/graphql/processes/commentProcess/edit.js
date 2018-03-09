@@ -5,11 +5,14 @@ import { commentFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
 
 export const editMutation = gql`
-  mutation($context: String!, $comment: String!, $attachedFiles: [Upload], $oldFiles: [String],
+  mutation($context: String!, $comment: String!, $formattedComment: String!, $urls: [String],
+           $attachedFiles: [Upload], $oldFiles: [String],
            $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     editComment(
       context: $context
       comment: $comment
+      formattedComment: $formattedComment
+      urls: $urls
       attachedFiles: $attachedFiles
       oldFiles: $oldFiles
     ) {
@@ -31,16 +34,19 @@ export const editMutation = gql`
 `;
 
 export default function edit({ ownProps, mutate }) {
-  return ({ context, text, attachedFiles, oldFiles }) => {
+  return ({ context, text, formattedText, urls, attachedFiles, oldFiles }) => {
     const { formData } = ownProps;
     const files = formData.values.files
       ? formData.values.files.map((file, index) => {
         return {
           id: file.id || `file-id${index}`,
           oid: file.oid || `file-oid${index}`,
+          title: file.name,
           url: file.preview.url,
           isImage: file.preview.type === 'image',
           variations: [],
+          size: file.size || 0,
+          mimetype: file.preview.type,
           __typename: 'File'
         };
       })
@@ -50,6 +56,8 @@ export default function edit({ ownProps, mutate }) {
       variables: {
         context: context.oid,
         comment: text,
+        formattedComment: formattedText,
+        urls: urls,
         attachedFiles: attachedFiles,
         oldFiles: oldFiles,
         processIds: [],
@@ -66,6 +74,7 @@ export default function edit({ ownProps, mutate }) {
           comment: {
             ...context,
             text: text,
+            formattedText: formattedText,
             attachedFiles: files,
             edited: true,
             urls: []
@@ -84,6 +93,7 @@ export default function edit({ ownProps, mutate }) {
           const newComment = update(currentComment, {
             node: {
               text: { $set: newContext.text },
+              formattedText: { $set: newContext.formattedText },
               edited: { $set: newContext.edited },
               pinned: { $set: newContext.pinned },
               attachedFiles: { $set: newContext.attachedFiles },

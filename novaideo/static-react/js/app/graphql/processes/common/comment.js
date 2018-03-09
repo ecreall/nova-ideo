@@ -6,11 +6,14 @@ import { filterActions } from '../../../utils/processes';
 import { PROCESSES, ACTIONS } from '../../../processes';
 
 export const commentMutation = gql`
-  mutation($context: String!, $comment: String!, $action: String!, $attachedFiles: [Upload], $anonymous: Boolean,
+  mutation($context: String!, $comment: String!, $formattedComment: String!, $urls: [String],
+           $action: String!, $attachedFiles: [Upload], $anonymous: Boolean,
            $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     commentObject(
       context: $context
       comment: $comment
+      formattedComment: $formattedComment
+      urls: $urls
       action: $action
       attachedFiles: $attachedFiles,
       anonymous: $anonymous
@@ -40,7 +43,7 @@ export const commentMutation = gql`
 `;
 
 export default function comment({ ownProps, mutate }) {
-  return ({ context, text, action, attachedFiles, anonymous, account }) => {
+  return ({ context, text, formattedText, urls, action, attachedFiles, anonymous, account }) => {
     const { formData } = ownProps;
     const files =
       attachedFiles.length > 0
@@ -48,9 +51,12 @@ export default function comment({ ownProps, mutate }) {
           return {
             id: file.id || `file-id${index}`,
             oid: file.oid || `file-oid${index}`,
+            title: file.name,
             url: file.preview.url,
             isImage: file.preview.type === 'image',
             variations: [],
+            size: file.size || 0,
+            mimetype: file.preview.type,
             __typename: 'File'
           };
         })
@@ -82,6 +88,8 @@ export default function comment({ ownProps, mutate }) {
       variables: {
         context: context,
         comment: text,
+        formattedComment: formattedText,
+        urls: urls,
         attachedFiles: attachedFiles,
         anonymous: anonymous,
         action: action,
@@ -106,6 +114,7 @@ export default function comment({ ownProps, mutate }) {
             rootOid: ownProps.subject,
             createdAt: createdAt.toISOString(),
             text: text,
+            formattedText: formattedText,
             attachedFiles: files,
             emojis: [],
             urls: [],

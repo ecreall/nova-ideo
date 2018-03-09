@@ -1,13 +1,15 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { Field, reduxForm, initialize } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Translate, I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withStyles } from 'material-ui/styles';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import { find as findUrls } from 'linkifyjs';
 
+import { formatText } from '../../../../utils/textFormatter';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import { renderTextBoxField, renderFilesListField } from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
@@ -89,6 +91,7 @@ export class DumbEditCommentForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.filesPicker = null;
+    this.editor = null;
   }
 
   handleSubmit = () => {
@@ -98,6 +101,7 @@ export class DumbEditCommentForm extends React.Component {
       const newFiles = files.filter((file) => {
         return file && !file.oid;
       });
+
       const oldFiles = files
         .filter((file) => {
           return file && file.oid;
@@ -105,9 +109,19 @@ export class DumbEditCommentForm extends React.Component {
         .map((file) => {
           return file.oid;
         });
+      const plainComment = this.editor.getPlainText();
+      const formattedComment = formatText(plainComment);
       this.props.editComment({
         context: context,
-        text: formData.values.comment,
+        text: plainComment,
+        formattedText: formattedComment,
+        urls: findUrls(plainComment)
+          .filter((link) => {
+            return link.type === 'url';
+          })
+          .map((link) => {
+            return link.href;
+          }),
         attachedFiles: newFiles,
         oldFiles: oldFiles
       });
@@ -158,7 +172,10 @@ export class DumbEditCommentForm extends React.Component {
           <div className={classes.textField}>
             <Field
               props={{
-                onCtrlEnter: this.handleSubmit
+                onCtrlEnter: this.handleSubmit,
+                initRef: (editor) => {
+                  this.editor = editor;
+                }
               }}
               name="comment"
               component={renderTextBoxField}

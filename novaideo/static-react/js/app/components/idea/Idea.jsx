@@ -9,6 +9,7 @@ import Icon from 'material-ui/Icon';
 import { CircularProgress } from 'material-ui/Progress';
 
 import ImagesPreview from '../common/ImagesPreview';
+import FilesPreview from '../common/FilesPreview';
 import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
 import AllignedActions from '../common/AllignedActions';
 import Dialog from '../common/Dialog';
@@ -204,8 +205,13 @@ export class RunderIdea extends React.Component {
     const isAnonymous = author && author.isAnonymous;
     const createdAtF3 = getFormattedDate(idea.createdAt, 'date.format3');
     const images = idea.attachedFiles
-      ? idea.attachedFiles.filter((image) => {
-        return image.isImage;
+      ? idea.attachedFiles.filter((file) => {
+        return file.isImage;
+      })
+      : [];
+    const files = idea.attachedFiles
+      ? idea.attachedFiles.filter((file) => {
+        return !file.isImage;
       })
       : [];
     const hasEvaluation = site.supportIdeas && idea.state.includes('published');
@@ -286,6 +292,7 @@ export class RunderIdea extends React.Component {
                   <ImagesPreview images={images} />
                 </div>}
               <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: idea.text }} />
+              <FilesPreview files={files} />
               <Comments
                 rightDisabled
                 fullScreen

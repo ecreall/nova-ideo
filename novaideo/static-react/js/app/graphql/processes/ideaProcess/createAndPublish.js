@@ -28,11 +28,16 @@ export default function createAndPublish({ ownProps, mutate }) {
     const { formData, globalProps: { site } } = ownProps;
     const files =
       attachedFiles.length > 0
-        ? formData.values.files.map((file) => {
+        ? formData.values.files.map((file, index) => {
           return {
+            id: file.id || `file-id${index}`,
+            oid: file.oid || `file-oid${index}`,
+            title: file.name,
             url: file.preview.url,
             isImage: file.preview.type === 'image',
             variations: [],
+            size: file.size || 0,
+            mimetype: file.preview.type,
             __typename: 'File'
           };
         })

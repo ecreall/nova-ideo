@@ -12,10 +12,10 @@ import Collapse from 'material-ui/transitions/Collapse';
 import IconButton from 'material-ui/IconButton';
 
 import ImagesPreview from '../common/ImagesPreview';
+import FilesPreview from '../common/FilesPreview';
 import Url from '../common/Url';
 import EmojiEvaluation from '../common/EmojiEvaluation';
 import { getFormattedDate } from '../../utils/globalFunctions';
-import { formatText } from '../../utils/textFormatter';
 import { emojiConvert } from '../../utils/emojiConvertor';
 import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
@@ -291,8 +291,13 @@ class RenderCommentItem extends React.Component {
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
-      ? node.attachedFiles.filter((image) => {
-        return image.isImage;
+      ? node.attachedFiles.filter((file) => {
+        return file.isImage;
+      })
+      : [];
+    const files = node.attachedFiles
+      ? node.attachedFiles.filter((file) => {
+        return !file.isImage;
       })
       : [];
     const addReactionAction = getActions(node.actions, { behaviorId: abstractProcessNodes.addreaction.nodeId })[0];
@@ -362,7 +367,14 @@ class RenderCommentItem extends React.Component {
                   initialValues={{
                     comment: node.text,
                     files: node.attachedFiles.map((file) => {
-                      return { id: file.id, oid: file.oid, preview: { url: file.url, type: file.isImage ? 'image' : 'file' } };
+                      return {
+                        id: file.id,
+                        oid: file.oid,
+                        name: file.title,
+                        size: file.size || 0,
+                        mimetype: file.mimetype,
+                        preview: { url: file.url, type: file.isImage ? 'image' : 'file' }
+                      };
                     })
                   }}
                 />
@@ -372,7 +384,7 @@ class RenderCommentItem extends React.Component {
                       <div
                         className={classNames('comment-text', classes.commentText)}
                         dangerouslySetInnerHTML={{
-                          __html: emojiConvert(formatText(node.text))
+                          __html: emojiConvert(node.formattedText)
                         }}
                       />
 
@@ -382,6 +394,7 @@ class RenderCommentItem extends React.Component {
                       </span>}
                     </div>
                     <ImagesPreview images={images} />
+                    <FilesPreview files={files} />
                   </div>
                   {node.urls.length > 0 &&
                   <div className={classes.urlsContainer}>

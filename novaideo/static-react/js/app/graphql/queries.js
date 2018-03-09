@@ -1,6 +1,19 @@
 /* eslint-disable import/prefer-default-export */
 import { gql } from 'react-apollo';
 
+export const fileFragment = gql`
+  fragment file on File {
+    id
+    oid
+    title
+    url
+    isImage
+    variations
+    size
+    mimetype
+  }
+`;
+
 export const actionFragment = gql`
   fragment action on Action {
     processId
@@ -130,9 +143,7 @@ export const ideaFragment = gql`
     text
     presentationText
     attachedFiles {
-      url
-      isImage
-      variations
+      ...file
     }
     tokensSupport
     tokensOpposition
@@ -165,6 +176,7 @@ export const ideaFragment = gql`
   }
   ${actionFragment}
   ${authorFragment}
+  ${fileFragment}
 `;
 
 export const personInfoFragment = gql`
@@ -343,17 +355,14 @@ export const commentFragment = gql`
     rootOid
     createdAt
     text
+    formattedText
     edited
     pinned
     author {
       ...author
     }
     attachedFiles {
-      id
-      oid
-      url
-      isImage
-      variations
+      ...file
     }
     emojis{
       title
@@ -387,6 +396,7 @@ export const commentFragment = gql`
   }
   ${actionFragment}
   ${authorFragment}
+  ${fileFragment}
 `;
 
 export const commentQuery = gql`
@@ -399,6 +409,7 @@ export const commentQuery = gql`
         rootOid
         createdAt
         text
+        formattedText
         edited
         pinned
         channel {
@@ -417,9 +428,7 @@ export const commentQuery = gql`
           ...author
         }
         attachedFiles {
-          url
-          isImage
-          variations
+          ...file
         }
         urls {
           url
@@ -471,6 +480,7 @@ export const commentQuery = gql`
   }
   ${commentFragment}
   ${actionFragment}
+  ${fileFragment}
 `;
 
 export const commentsQuery = gql`

@@ -21,6 +21,8 @@ class CommentObject(graphene.Mutation):
         context = graphene.String()
         action = graphene.String()
         comment = graphene.String()
+        formatted_comment = graphene.String()
+        urls = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
         anonymous = graphene.Boolean()
         # the Upload object type deserialization currently doesn't work,
@@ -40,6 +42,8 @@ class CommentObject(graphene.Mutation):
         comment_schema = select(
             CommentSchema(), ['comment', 'files', 'anonymous'])
         args = dict(args)
+        formatted_comment = args.pop('formatted_comment')
+        urls = args.pop('urls')
         action_id = args.pop('action')
         context_oid = args.pop('context')
         attached_files = args.pop('attached_files', None)
@@ -70,7 +74,9 @@ class CommentObject(graphene.Mutation):
             new_comment = CommentClass(**args)
             appstruct = {
                 '_object_data': new_comment,
-                'anonymous': anonymous
+                'anonymous': anonymous,
+                'urls': urls,
+                'formatted_comment': formatted_comment
             }
             action.execute(context, request, appstruct)
         else:
@@ -182,6 +188,8 @@ class Edit(graphene.Mutation):
     class Input:
         context = graphene.String()
         comment = graphene.String()
+        formatted_comment = graphene.String()
+        urls = graphene.List(graphene.String)
         old_files = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
         # the Upload object type deserialization currently doesn't work,
@@ -201,6 +209,8 @@ class Edit(graphene.Mutation):
         comment_schema = select(
             CommentSchema(), ['comment', 'files'])
         args = dict(args)
+        formatted_comment = args.pop('formatted_comment')
+        urls = args.pop('urls')
         old_files = []
         context_oid = args.pop('context')
         for of in args.pop('old_files'):
@@ -233,7 +243,7 @@ class Edit(graphene.Mutation):
         if action:
             context.comment = args['comment']
             context.setproperty('files', args['files'])
-            action.execute(context, request, {})
+            action.execute(context, request, {'urls': urls, 'formatted_comment': formatted_comment})
             status = True
         else:
             raise Exception(

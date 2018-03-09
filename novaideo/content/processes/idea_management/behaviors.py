@@ -850,11 +850,20 @@ class CommentIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
+        formatted_comment = appstruct.get('formatted_comment', None)
+        urls = appstruct.get('urls', None)
         channel = context.channel
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
-            comment.format(request)
+            if not formatted_comment:
+                comment.format(request)
+            else:
+                comment.formatted_comment = formatted_comment
+
+            if urls:
+                comment.add_urls(urls, request)
+
             comment.state = PersistentList(['published'])
             comment.reindex()
             user = appstruct.get('user', get_current())

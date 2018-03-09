@@ -686,41 +686,62 @@ def html_article_to_text(html):
     return ''
 
 
-def text_urls_format(text, request=None, is_html=False):
+def render_urls(urls, request):
+    url_results = []
+    for url, url_metadata in urls.items():
+        value = renderers.render(
+            'novaideo:views/templates/text_url.pt',
+            url_metadata, request)
+        url_results.append(value)
+
+    formatted_urls = '<div>' + ''.join(url_results) + '</div>'
+    urls = extract_urls(html_to_text(formatted_urls))
+    for url in urls:
+        formatted_urls = formatted_urls.replace(
+            url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
+
+    return formatted_urls
+
+
+def get_urls_metadata(urls, request=None):
     if not request:
         request = get_current_request()
 
     url_results = []
     url_files = []
-    all_urls = {}
+    urls_metadata = {}
+    for url_metadata in extract_urls_metadata(urls):
+        if url_metadata['url'] not in urls_metadata and \
+           (url_metadata['image'] or url_metadata['description']):
+            if url_metadata['image']:
+                new_image = url_metadata.pop('image')
+                url_files.append(new_image)
+                url_metadata['image_url'] = new_image.url
+
+            urls_metadata[url_metadata['url']] = url_metadata
+
+    return urls_metadata, url_files
+
+
+def text_urls_format(text, request=None, is_html=False):
+    if not request:
+        request = get_current_request()
+
+    formatted_urls = ''
+    formatted_text = ''
+    url_files = []
+    urls_metadata = {}
     if text:
         urls = extract_urls(text)
-        for data_url in extract_urls_metadata(urls):
-            if data_url['url'] not in all_urls and \
-               (data_url['image'] or data_url['description']):
-                if data_url['image']:
-                    new_image = data_url.pop('image')
-                    url_files.append(new_image)
-                    data_url['image_url'] = new_image.url
+        urls_metadata, url_files = get_urls_metadata(urls, request)
+        if not is_html:
+            text = truncate_text(text, len(text))
+            text = text.replace('\n', '<br/>')
 
-                all_urls[data_url['url']] = data_url
-                value = renderers.render(
-                    'novaideo:views/templates/text_url.pt',
-                    data_url, request)
-                url_results.append(value)
+        formatted_text = '<div class="emoji-container">' + text + '</div>'
+        formatted_urls = render_urls(urls_metadata, request)
 
-    text_urls = '<div>' + ''.join(url_results) + '</div>'
-    urls = extract_urls(html_to_text(text_urls))
-    for url in urls:
-        text_urls = text_urls.replace(
-            url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
-
-    if not is_html:
-        text = truncate_text(text, len(text))
-        text = text.replace('\n', '<br/>')
-
-    formatted_text = '<div class="emoji-container">' + text + '</div>'
-    return all_urls, url_files, text_urls, formatted_text
+    return urls_metadata, url_files, formatted_urls, formatted_text
 
 
 def truncate_text(text, nb, ellipsis='...'):

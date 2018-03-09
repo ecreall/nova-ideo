@@ -16,10 +16,9 @@ class TextBoxField extends React.Component {
   }
 
   componentDidMount() {
-    const { autoFocus } = this.props;
-    if (autoFocus) {
-      this.editor.focus(this.props.value);
-    }
+    const { autoFocus, initRef } = this.props;
+    if (autoFocus) this.editor.focus(this.props.value);
+    if (initRef) initRef(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,7 +48,7 @@ class TextBoxField extends React.Component {
   };
 
   getPlainText = () => {
-    this.editor.getPlainText();
+    return this.editor.getPlainText();
   };
 
   render() {

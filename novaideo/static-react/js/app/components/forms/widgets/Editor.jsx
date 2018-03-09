@@ -97,7 +97,7 @@ class TextEditor extends React.Component {
   };
 
   getPlainText = () => {
-    this.state.editorState.getCurrentContent().getPlainText();
+    return this.state.editorState.getCurrentContent().getPlainText();
   };
 
   onChange = (editorState) => {

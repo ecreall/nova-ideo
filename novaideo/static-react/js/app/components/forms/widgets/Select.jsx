@@ -145,11 +145,11 @@ class Select extends React.Component {
     const optionsResult = Object.keys(options).reduce((filtered, id) => {
       const title = options[id];
       const titleToSearch = searchText.toLowerCase().trim();
-      const formatedTitle = title.toLowerCase().trim();
+      const formattedTitle = title.toLowerCase().trim();
       if (!exactMatch) {
-        exactMatch = titleToSearch === formatedTitle;
+        exactMatch = titleToSearch === formattedTitle;
       }
-      if (formatedTitle.search(titleToSearch) >= 0) filtered[id] = title;
+      if (formattedTitle.search(titleToSearch) >= 0) filtered[id] = title;
       return filtered;
     }, {});
     const { menu } = this.state;
