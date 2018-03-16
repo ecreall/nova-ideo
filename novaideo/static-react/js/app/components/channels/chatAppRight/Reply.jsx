@@ -6,7 +6,6 @@ import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
 
 import { commentQuery } from '../../../graphql/queries';
 import FlatList from '../../common/FlatList';
@@ -21,7 +20,7 @@ import { markAsReadMutation } from '../../../graphql/processes/commentProcess/ma
 const styles = (theme) => {
   return {
     container: {
-      height: 'calc(100vh - 56px)'
+      height: 'calc(100vh - 122px)'
     },
     containerInline: {
       height: 'auto',
@@ -35,13 +34,15 @@ const styles = (theme) => {
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'column',
-      height: '100%'
+      height: '100%',
+      width: '100%',
+      position: 'relative'
     },
     commentsInline: {
-      width: '100%',
       paddingLeft: '0 !important',
       paddingRight: '0 !important',
-      borderLeft: 'solid 1px #e6e6e6'
+      borderLeft: 'solid 1px #e6e6e6',
+      position: 'inherit'
     },
     commentsWithRight: {
       paddingRight: '0 !important',
@@ -102,6 +103,11 @@ const styles = (theme) => {
       color: '#bfbfbf',
       marginBottom: -16,
       backgroundColor: 'white'
+    },
+    blockComments: {
+      position: 'absolute',
+      bottom: 15,
+      width: 'calc(100% - 49px)'
     }
   };
 };
@@ -195,7 +201,7 @@ export class RenderComment extends React.Component {
         action={commentAction}
         {...formProps}
         classes={{
-          container: inline && classes.inlineFormContainer,
+          container: inline ? classes.inlineFormContainer : classes.blockComments,
           containerAddon: inline && classes.inlineContainerAddon
         }}
       />;

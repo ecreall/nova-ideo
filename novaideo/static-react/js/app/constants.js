@@ -110,3 +110,26 @@ export const APOLLO_NETWORK_STATUS = {
    */
   ready: 7
 };
+
+export const FILES_ICONS = {
+  PDF: {
+    icon: 'pdf-icon mdi-set mdi-file-pdf',
+    id: 'pdf-icon'
+  },
+  SPREADSHEET: {
+    icon: 'excel-icon mdi-set mdi-file-excel',
+    id: 'excel-icon'
+  },
+  PRESENTATION: {
+    icon: 'presentation-icon mdi-set mdi-file-powerpoint',
+    id: 'presentation-icon'
+  },
+  TEXT: {
+    icon: 'document-icon mdi-set mdi-file-document',
+    id: 'document-icon'
+  },
+  PLAIN: {
+    icon: 'document-icon mdi-set mdi-file-document',
+    id: 'document-icon'
+  }
+};

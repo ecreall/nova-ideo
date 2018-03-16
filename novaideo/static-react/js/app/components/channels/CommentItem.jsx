@@ -179,6 +179,7 @@ const styles = (theme) => {
     },
     replyCommentsContainer: {
       position: 'relative',
+      marginBottom: 10,
       '&:hover': {
         '& .close-reply': {
           display: 'block'
@@ -373,6 +374,7 @@ class RenderCommentItem extends React.Component {
                         name: file.title,
                         size: file.size || 0,
                         mimetype: file.mimetype,
+                        type: file.mimetype,
                         preview: { url: file.url, type: file.isImage ? 'image' : 'file' }
                       };
                     })
@@ -425,7 +427,7 @@ class RenderCommentItem extends React.Component {
             </div>
           </div>
         </div>
-        <div className={classes.replyCommentsContainer}>
+        <div className={reply && classes.replyCommentsContainer}>
           {reply && <Icon className={classNames('mdi-set mdi-source-commit-start-next-local', classes.iconStart)} />}
           {reply &&
             <IconButton onClick={this.toggleReply} className={classNames('close-reply', classes.closeReply)}>

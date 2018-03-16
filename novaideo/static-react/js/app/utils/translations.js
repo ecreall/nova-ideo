@@ -10,7 +10,16 @@ const Translations = {
         tooltipTitle: "ont réagi avec %{emoji}",
         tooltipTitle_1: "a réagi avec %{emoji}"
       },
-      clickDownload: "Cliquer pour télécharger"
+      clickDownload: "Cliquer pour télécharger",
+      remove: "Supprimer"
+    },
+    editor: {
+      addEmbed: "Integrer le contenu d'une URL (une video, un article ....)",
+      addImage: "Ajouter une image",
+      addSeparator: "Ajouter un séparateur",
+      addEmbedForm: "Integrer le contenu d'une URL",
+      addEmbedFormPlaceholder: "Entrer une url",
+      addEmbedFormSubmission: "Integrer"
     },
     processes: {
       novaideoabstractprocess: {
@@ -184,7 +193,16 @@ const Translations = {
         tooltipTitle: "reacted with %{emoji}",
         tooltipTitle_1: "reacted with %{emoji}"
       },
-      clickDownload: "Click to download"
+      clickDownload: "Click to download",
+      remove: "Remove"
+    },
+    editor: {
+      addEmbed: "Embed the content of an URL (a video, an article ....)",
+      addImage: "Add an image",
+      addSeparator: "Add a separator",
+      addEmbedForm: "Embed the content of an URL",
+      addEmbedFormPlaceholder: "Enter an URL",
+      addEmbedFormSubmission: "Embed"
     },
     processes: {
       novaideoabstractprocess: {

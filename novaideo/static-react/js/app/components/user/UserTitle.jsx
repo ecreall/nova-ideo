@@ -20,7 +20,6 @@ const styles = {
     fontSize: 15,
     color: '#2c2d30',
     fontWeight: '900',
-    justifyContent: 'space-around',
     cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline'

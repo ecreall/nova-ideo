@@ -67,7 +67,7 @@ export const createTooltip = (title, count, className) => {
   );
 };
 
-const StatisticsDoughnut = ({ elements, placement, title, classes }) => {
+const StatisticsDoughnut = ({ elements, placement, title, disableTotalCount, classes }) => {
   const totalCount = elements.reduce((result, element) => {
     return result + element.count;
   }, 0);
@@ -78,15 +78,16 @@ const StatisticsDoughnut = ({ elements, placement, title, classes }) => {
         <div className={!placeAfter && classes.superpose}>
           <Doughnut elements={elements} />
         </div>
-        <div className={placeAfter ? classes.after : classes.labelSuperpose}>
-          <div className={classes.doughnutLabelCount}>
-            {totalCount}
-          </div>
-          {placeAfter ? ' ' : ''}
-          <div className={classes.doughnutLabelText}>
-            {title}
-          </div>
-        </div>
+        {!disableTotalCount &&
+          <div className={placeAfter ? classes.after : classes.labelSuperpose}>
+            <div className={classes.doughnutLabelCount}>
+              {totalCount}
+            </div>
+            {placeAfter ? ' ' : ''}
+            <div className={classes.doughnutLabelText}>
+              {title}
+            </div>
+          </div>}
       </div>
     </div>
   );

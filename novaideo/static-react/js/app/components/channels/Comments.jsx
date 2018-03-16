@@ -22,14 +22,16 @@ import { markAsReadMutation } from '../../graphql/processes/commentProcess/markA
 const styles = (theme) => {
   return {
     container: {
-      height: 'calc(100vh - 56px)'
+      height: 'calc(100vh - 56px)',
+      position: 'relative'
     },
     comments: {
       backgroundColor: 'white',
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'column',
-      height: '100%'
+      height: '100%',
+      position: 'relative'
     },
     commentsWithRight: {
       paddingRight: '0 !important',
@@ -62,6 +64,11 @@ const styles = (theme) => {
       fontSize: 15,
       color: '#717274',
       lineHeight: '20px'
+    },
+    blockComments: {
+      position: 'absolute',
+      bottom: 15,
+      width: 'calc(100% - 49px)'
     }
   };
 };
@@ -142,7 +149,7 @@ export class RenderComments extends React.Component {
         subject={contextOid}
         action={commentAction}
         {...formProps}
-        classes={{ container: classes.formContainer }}
+        classes={{ container: classNames(classes.formContainer, { [classes.blockComments]: !inline }) }}
       />;
     return (
       <Grid className={classes.container} container>

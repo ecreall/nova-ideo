@@ -129,3 +129,11 @@ export const iconAdapter = (name) => {
     return <Icon className={classNames(name, className)} {...iconProps} />;
   };
 };
+
+export const getFileType = (type) => {
+  if (!type) return undefined;
+  const mimetypeParts = type ? type.split('/') : [];
+  const mimetype = mimetypeParts.length > 1 ? mimetypeParts[1] : mimetypeParts[0];
+  const documentTypeParts = mimetype.split('.');
+  return documentTypeParts[documentTypeParts.length - 1].toUpperCase();
+};

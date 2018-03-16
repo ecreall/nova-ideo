@@ -50,7 +50,7 @@ export class DumbIdeaMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      menu: false
+      menu: props.open
     };
   }
 

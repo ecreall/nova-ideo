@@ -285,7 +285,7 @@ export class DumbCreateIdeaForm extends React.Component {
             })}
             onClick={this.openForm}
           >
-            <div className={classes.textField}>
+            <div className={classNames('inline-editor', classes.textField)}>
               <Field
                 props={{
                   onCtrlEnter: this.handleSubmit,

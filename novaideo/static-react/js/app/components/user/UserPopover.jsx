@@ -137,11 +137,12 @@ export class RenderUserPopover extends React.Component {
   };
 
   onCommentSubmit = () => {
-    const { onActionClick, data: { person } } = this.props;
+    // const { onActionClick, data: { person } } = this.props;
+    const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
-    setTimeout(() => {
-      goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
-    }, 200);
+    // setTimeout(() => {
+    //   goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
+    // }, 200);
   };
 
   render() {

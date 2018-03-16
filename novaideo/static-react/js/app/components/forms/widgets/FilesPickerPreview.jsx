@@ -1,14 +1,19 @@
 import React from 'react';
-import DeleteForeverIcon from 'material-ui-icons/DeleteForever';
+// import DeleteForeverIcon from 'material-ui-icons/DeleteForever';
 import CancelIcon from 'material-ui-icons/Cancel';
-import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import classNames from 'classnames';
+import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
+import { I18n } from 'react-redux-i18n';
+
+import { FILES_ICONS } from '../../../constants';
+import { getFileType } from '../../../utils/globalFunctions';
 
 const styles = {
   container: {
     display: 'flex',
-    padding: '10px 0px 5px 0px',
+    padding: '10px 0px 5px 5px',
     alignItems: 'flex-end'
   },
   files: {
@@ -18,6 +23,12 @@ const styles = {
     display: 'flex',
     position: 'relative',
     marginRight: 15
+  },
+  fileContainer: {
+    marginRight: 10,
+    border: 'solid 1px #cccccc',
+    borderRadius: 4,
+    background: 'white'
   },
   image: {
     width: 38,
@@ -35,17 +46,30 @@ const styles = {
   },
   action: {
     position: 'absolute',
-    right: -10,
-    top: -6,
+    right: -6,
+    bottom: 2,
     color: 'gray',
     height: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     cursor: 'pointer'
   },
+  fileAction: {
+    right: 1
+  },
   remove: {
     height: 20,
-    width: 20
+    width: 20,
+    color: '#3aa3e3',
+    '&.pdf-icon': {
+      color: '#db4437'
+    },
+    '&.excel-icon': {
+      color: '#238441'
+    },
+    '&.presentation-icon': {
+      color: '#d24625'
+    }
   },
   removeAll: {
     color: 'gray',
@@ -53,10 +77,18 @@ const styles = {
     marginBottom: -4,
     cursor: 'pointer'
   },
-  icon: {
-    height: 41,
-    width: 41,
-    color: 'gray'
+  fileIcon: {
+    fontSize: '44px !important',
+    color: '#3aa3e3',
+    '&.pdf-icon': {
+      color: '#db4437'
+    },
+    '&.excel-icon': {
+      color: '#238441'
+    },
+    '&.presentation-icon': {
+      color: '#d24625'
+    }
   }
 };
 
@@ -67,6 +99,10 @@ class FilesPickerPreview extends React.Component {
 
   filesRemoveAll = () => {
     this.props.getPicker().removeFiles();
+  };
+
+  getDocumentType = (file) => {
+    return getFileType(file.type);
   };
 
   render() {
@@ -81,24 +117,31 @@ class FilesPickerPreview extends React.Component {
         </div> */}
         <div className={classes.files}>
           {files.map((file) => {
+            const documentType = this.getDocumentType(file);
+            const icons = FILES_ICONS[documentType];
+            const iconClass = (icons && icons.icon) || 'mdi-set mdi-file-outline';
+            const isImage = file.preview.type === 'image';
+            const closeIconClass = icons && icons.id;
             return (
-              <div className={classes.file} key={file.id}>
-                {file.preview.type === 'image'
-                  ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
-                  : <InsertDriveFileIcon />}
-                <div className={classes.action}>
-                  <Tooltip title="Remove" placement="right">
-                    <CancelIcon
-                      classes={{
-                        root: classes.remove
-                      }}
-                      onClick={() => {
-                        this.filesRemoveOne(file);
-                      }}
-                    />
-                  </Tooltip>
+              <Tooltip title={file.name} placement="top">
+                <div className={classNames(classes.file, { [classes.fileContainer]: !isImage })} key={file.id}>
+                  {isImage
+                    ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
+                    : <Icon className={classNames(iconClass, classes.fileIcon)} />}
+                  <div className={classNames(classes.action, { [classes.fileAction]: !isImage })}>
+                    <Tooltip title={I18n.t('common.remove')} placement="right">
+                      <CancelIcon
+                        classes={{
+                          root: classNames(closeIconClass, classes.remove)
+                        }}
+                        onClick={() => {
+                          this.filesRemoveOne(file);
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
                 </div>
-              </div>
+              </Tooltip>
             );
           })}
         </div>

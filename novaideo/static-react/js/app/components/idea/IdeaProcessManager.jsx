@@ -15,25 +15,6 @@ import { supportMutation } from '../../graphql/processes/ideaProcess/support';
 import { opposeMutation } from '../../graphql/processes/ideaProcess/oppose';
 import { withdrawMutation } from '../../graphql/processes/ideaProcess/withdraw';
 
-export function getExaminationValue(idea) {
-  if (idea.state.includes('favorable')) return 'bottom';
-  if (idea.state.includes('to_study')) return 'middle';
-  if (idea.state.includes('unfavorable')) return 'top';
-  return undefined;
-}
-
-export function getEvaluationActions(idea) {
-  const actions = PROCESSES.ideamanagement.nodes;
-  const withdrawAction = actions.withdrawToken;
-  const supportAction = idea.userToken === 'support' ? withdrawAction : actions.support;
-  const opposeAction = idea.userToken === 'oppose' ? withdrawAction : actions.oppose;
-  const result = {
-    top: supportAction,
-    down: opposeAction
-  };
-  return result;
-}
-
 export class DumbIdeaProcessManager extends React.Component {
   state = {
     action: null

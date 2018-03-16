@@ -7,6 +7,9 @@ import Zoom from 'material-ui/transitions/Zoom';
 import { I18n } from 'react-redux-i18n';
 import filesize from 'filesize';
 
+import { FILES_ICONS } from '../../constants';
+import { getFileType } from '../../utils/globalFunctions';
+
 const styles = {
   container: {
     display: 'flex',
@@ -89,25 +92,6 @@ const styles = {
   }
 };
 
-const fileIcons = {
-  PDF: {
-    icon: 'pdf-icon mdi-set mdi-file-pdf',
-    downIcon: 'pdf-icon mdi-set mdi-arrow-down-bold-circle'
-  },
-  SPREADSHEET: {
-    icon: 'excel-icon mdi-set mdi-file-excel',
-    downIcon: 'excel-icon mdi-set mdi-arrow-down-bold-circle'
-  },
-  PRESENTATION: {
-    icon: 'presentation-icon mdi-set mdi-file-powerpoint',
-    downIcon: 'presentation-icon mdi-set mdi-arrow-down-bold-circle'
-  },
-  TEXT: {
-    icon: 'document-icon mdi-set mdi-file-document',
-    downIcon: 'document-icon mdi-set mdi-arrow-down-bold-circle'
-  }
-};
-
 class FilePrevie extends React.Component {
   state = {
     hover: false
@@ -123,19 +107,16 @@ class FilePrevie extends React.Component {
 
   getDocumentType = () => {
     const { file } = this.props;
-    const mimetypeParts = file.mimetype ? file.mimetype.split('/') : [];
-    const mimetype = mimetypeParts.length > 1 ? mimetypeParts[1] : mimetypeParts[0];
-    const documentTypeParts = mimetype.split('.');
-    return documentTypeParts[documentTypeParts.length - 1].toUpperCase();
+    return getFileType(file.mimetype);
   };
 
   render() {
     const { file, classes } = this.props;
     const { hover } = this.state;
     const documentType = this.getDocumentType();
-    const icons = fileIcons[documentType];
+    const icons = FILES_ICONS[documentType];
     const iconClass = (icons && icons.icon) || 'mdi-set mdi-file-outline';
-    const downIconClass = (icons && icons.downIcon) || 'mdi-set mdi-arrow-down-bold-circle';
+    const downIconClass = classNames(icons && icons.id, 'mdi-set mdi-arrow-down-bold-circle');
     return (
       <a target="_blank" href={file.url} className={classes.fileContainer} onMouseEnter={this.enter} onMouseLeave={this.leave}>
         <Icon className={classNames(iconClass, classes.fileIcon)} />

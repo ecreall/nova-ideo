@@ -18,25 +18,30 @@ const styles = {
     paddingBottom: 5,
     marginBottom: 10
   },
-  tokenTop: {
-    color: '#4eaf4e',
+  tokenContainerBig: {
+    marginBottom: 25
+  },
+  token: {
     textShadow: '0 0px 2px rgba(128, 128, 128, 0.4)',
-    fontSize: 25,
+    fontSize: '25px !important',
     transition: 'all .1s ease-in-out',
     display: 'block',
     '&:hover': {
-      fontSize: 30
+      fontSize: '30px !important'
     }
   },
-  tokenBottom: {
-    color: '#ef6e18',
-    textShadow: '0 0px 2px rgba(128, 128, 128, 0.4)',
-    fontSize: 25,
-    transition: 'all .1s ease-in-out',
+  tokenBig: {
+    fontSize: '35px !important',
     display: 'block',
     '&:hover': {
-      fontSize: 30
+      fontSize: '40px !important'
     }
+  },
+  tokenTop: {
+    color: '#4eaf4e'
+  },
+  tokenBottom: {
+    color: '#ef6e18'
   },
   buttonTop: {
     color: '#4eaf4e',
@@ -54,6 +59,10 @@ const styles = {
     height: 13,
     lineHeight: 'normal'
   },
+  tokenNbBottomBig: {
+    fontSize: 14,
+    marginBottom: -5
+  },
   tokenNbTop: {
     color: '#4eaf4e',
     fontSize: 13,
@@ -62,11 +71,22 @@ const styles = {
     height: 13,
     lineHeight: 'normal'
   },
+  tokenNbTopBig: {
+    fontSize: 14,
+    marginTop: -3
+  },
   inactive: {
     color: '#c3c3c3',
     fontSize: '25px !important',
     '&:hover': {
       fontSize: 25
+    }
+  },
+  inactiveBig: {
+    color: '#c3c3c3',
+    fontSize: '35px !important',
+    '&:hover': {
+      fontSize: '35px !important'
     }
   },
   nbInactive: {
@@ -93,16 +113,21 @@ const styles = {
     marginTop: 5,
     height: 53
   },
+  itemContainerBig: {
+    marginTop: 15
+  },
   inactiveItemContainer: {
     height: 40
   }
 };
 
-const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
+const Evaluation = ({ icon, text, actions, onClick, active, big, classes }) => {
+  const IconTop = icon.top;
+  const IconDown = icon.down;
   if (active) {
     return (
-      <div className={classes.tokenContainer}>
-        <div className={classes.itemContainer}>
+      <div className={classNames(classes.tokenContainer, { [classes.tokenContainerBig]: big })}>
+        <div className={classNames(classes.itemContainer, { [classes.itemContainerBig]: big })}>
           <IconButton
             className={classes.buttonTop}
             onClick={() => {
@@ -117,15 +142,15 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
               }
               placement="right"
             >
-              <Icon className={classNames(classes.tokenTop, icon.top)} />
+              <IconTop className={classNames(classes.token, classes.tokenTop, { [classes.tokenBig]: big })} />
             </OverlayTrigger>
           </IconButton>
-          <div className={classes.tokenNbTop}>
+          <div className={classNames(classes.tokenNbTop, { [classes.tokenNbTopBig]: big })}>
             {text.top}
           </div>
         </div>
-        <div className={classes.itemContainer}>
-          <div className={classes.tokenNbBottom}>
+        <div className={classNames(classes.itemContainer, { [classes.itemContainerBig]: big })}>
+          <div className={classNames(classes.tokenNbBottom, { [classes.tokenNbBottomBig]: big })}>
             {text.down}
           </div>
           <IconButton
@@ -142,7 +167,7 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
               }
               placement="right"
             >
-              <Icon className={classNames(classes.tokenBottom, icon.down)} />
+              <IconDown className={classNames(classes.token, classes.tokenBottom, { [classes.tokenBig]: big })} />
             </OverlayTrigger>
           </IconButton>
         </div>
@@ -150,18 +175,28 @@ const Evaluation = ({ icon, text, actions, onClick, active, classes }) => {
     );
   }
   return (
-    <div className={classes.tokenContainer}>
-      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer)}>
-        <Icon className={classNames(classes.tokenTop, classes.inactive, icon.top)} />
-        <div className={classNames(classes.tokenNbTop, classes.nbInactive)}>
+    <div className={classNames(classes.tokenContainer, { [classes.tokenContainerBig]: big })}>
+      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer, { [classes.itemContainerBig]: big })}>
+        <IconTop
+          className={classNames(classes.token, classes.tokenTop, classes.inactive, {
+            [classes.tokenBig]: big,
+            [classes.inactiveBig]: big
+          })}
+        />
+        <div className={classNames(classes.tokenNbTop, classes.nbInactive, { [classes.tokenNbBottomBig]: big })}>
           {text.top}
         </div>
       </div>
-      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer)}>
-        <div className={classNames(classes.tokenNbBottom, classes.nbInactive)}>
+      <div className={classNames(classes.itemContainer, classes.inactiveItemContainer, { [classes.itemContainerBig]: big })}>
+        <div className={classNames(classes.tokenNbBottom, classes.nbInactive, { [classes.tokenNbBottomBig]: big })}>
           {text.down}
         </div>
-        <Icon className={classNames(classes.tokenBottom, classes.inactive, icon.down)} />
+        <IconDown
+          className={classNames(classes.token, classes.tokenBottom, classes.inactive, {
+            [classes.tokenBig]: big,
+            [classes.inactiveBig]: big
+          })}
+        />
       </div>
     </div>
   );

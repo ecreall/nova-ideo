@@ -17,11 +17,12 @@ import { ACTIONS } from '../../processes';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
-import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
+import IdeaProcessManager from './IdeaProcessManager';
 import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/actions';
 import { ideaQuery } from '../../graphql/queries';
 import UserAvatar from '../user/UserAvatar';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue } from '.';
 
 const styles = {
   container: {
@@ -139,7 +140,7 @@ export class RenderIdeaItem extends React.Component {
   };
 
   render() {
-    const { data, adapters, globalProps: { site }, classes } = this.props;
+    const { data, processManager, adapters, globalProps: { site }, classes } = this.props;
     const node = data.idea;
     if (!node || !node.author) {
       return (
@@ -169,19 +170,10 @@ export class RenderIdeaItem extends React.Component {
           <div className={classes.leftActions}>
             {hasEvaluation
               ? <Evaluation
-                icon={{
-                  top:
-                      node.userToken === 'support'
-                        ? 'mdi-set mdi-arrow-up-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-up-drop-circle',
-                  down:
-                      node.userToken === 'oppose'
-                        ? 'mdi-set mdi-arrow-down-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-down-drop-circle'
-                }}
+                icon={getEvaluationIcons(node.userToken)}
                 onClick={{
-                  top: this.props.processManager.evaluationClick,
-                  down: this.props.processManager.evaluationClick
+                  top: processManager.evaluationClick,
+                  down: processManager.evaluationClick
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
@@ -200,7 +192,7 @@ export class RenderIdeaItem extends React.Component {
                 this.menu = menu;
               }}
               idea={node}
-              onActionClick={this.props.processManager.performAction}
+              onActionClick={processManager.performAction}
             />
             <span className={classes.headerTitle}>
               {author && author.title}
@@ -228,7 +220,7 @@ export class RenderIdeaItem extends React.Component {
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />
             </div>
           </div>
         </div>

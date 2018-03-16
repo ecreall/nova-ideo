@@ -37,21 +37,124 @@
   height: 27px !important;
 }
 
-.DraftEditor-root{
-	font-variant-ligatures: none;
-	overflow: auto;
-	max-height: 10rem;
-	max-width: 100%;
-	margin-right: 2px;
-	position: relative;
-	box-sizing: border-box;
-	cursor: text
-	outline: 0;
-	text-align: left;
-	white-space: pre-wrap;
-	word-wrap: break-word;
+.inline-editor .DraftEditor-root{
+  font-variant-ligatures: none;
+  overflow: auto;
+  max-height: 10rem;
+  max-width: 100%;
+  margin-right: 2px;
+  position: relative;
+  box-sizing: border-box;
+  cursor: text
+  outline: 0;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   width: 100%;
 }
+
+/* -- MediumEditor */
+
+.md-RichEditor-root{
+  background-color: transparent !important;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: -.003em;
+  padding: 0 !important;
+}
+
+figure.md-block-image {
+  background: transparent !important;
+  text-align: center;
+}
+
+
+.md-RichEditor-root .DraftEditor-root {
+  overflow: inherit !important;
+}
+
+.md-sb-button.md-sb-img-button {
+  font-size: 17px;
+  margin-left: 5px;
+}
+
+.text-node-separator {
+  border: none;
+  font: normal normal normal 24px/1 "Material Design Icons";
+  text-rendering: auto;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  font-size: 40px;
+  color: #b5b5b5;
+  text-align: center;
+  text-shadow: 0 2px 1px rgba(128, 128, 128, 0.8);
+}
+
+.text-node-separator::before {
+  content: "\F6BD"; 
+}
+
+.md-RichEditor-controls {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.md-editor-toolbar {
+  background-image: linear-gradient(to bottom,rgba(49,49,47,.99),#262625) !important;
+  background-repeat: repeat-x !important;
+}
+
+.md-editor-toolbar .md-url-input {
+  background-color: transparent !important;
+}
+
+.md-RichEditor-activeButton,
+.md-RichEditor-styleButton:hover {
+  color: #4da6ff !important;
+  background-color: transparent !important;
+}
+
+.md-RichEditor-editor .md-RichEditor-blockquote {
+  border-left: 3px solid rgba(43, 43, 43, 0.8) !important;
+  color: #555 !important;
+  font-size: 15px !important;
+  padding: 10px 0 10px 15px !important;
+  background-color: transparent !important;
+  font-family: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+.md-RichEditor-editor h3 {
+  font-size: 34px !important;
+  line-height: 1.15 ;
+  font-weight: 900;
+  margin: 0 !important;
+  color: #2c2d30;
+  margin-top: 15px !important;
+}
+
+.card .brd {
+  display: none
+}
+
+.embedly-card-url-container {
+  text-align: center;
+}
+
+.embedly-card-url {
+  color: gray;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  border: solid 1px darkgrey;
+}
+
+
+/* MediumEditor --*/
 
 .comment-text p {
 	margin: 0

@@ -7,22 +7,23 @@ import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
 import { CircularProgress } from 'material-ui/Progress';
+import Button from 'material-ui/Button';
 
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
-import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
-import AllignedActions from '../common/AllignedActions';
+import Anchor from '../common/Anchor';
+import StatisticsDoughnut from '../common/Doughnut';
 import Dialog from '../common/Dialog';
 import { ACTIONS } from '../../processes';
-import { getActions } from '../../utils/processes';
 import { goTo, get } from '../../utils/routeMap';
-import { getFormattedDate } from '../../utils/globalFunctions';
 import { ideaQuery } from '../../graphql/queries';
-import UserAvatar from '../user/UserAvatar';
 import Comments from '../channels/Comments';
-import IdeaMenu from './IdeaMenu';
 import Scrollbar from '../common/Scrollbar';
-import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
+import Evaluation from '../common/Evaluation';
+import IdeaProcessManager from './IdeaProcessManager';
+import IdeaAppBar from './IdeaAppBar';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats } from '.';
+import { MediumEditor } from '../forms/widgets/mediumEditor';
 
 const styles = (theme) => {
   return {
@@ -31,54 +32,12 @@ const styles = (theme) => {
       position: 'relative',
       height: '100%'
     },
-    header: {
-      display: 'flex',
-      flexDirection: 'column',
-      margin: '0 10px',
-      position: 'relative'
-    },
-    headerTitle: {
-      fontSize: 15,
-      color: '#2c2d30',
-      fontWeight: 900,
-      lineHeight: 'normal'
-    },
-    titleContainer: {
-      display: 'flex'
-    },
     title: {
       fontSize: 42,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
       lineHeight: 'normal'
-    },
-    headerAddOn: {
-      color: '#999999ff',
-      fontSize: 12,
-      lineHeight: 'normal'
-    },
-    actionsContainer: {
-      height: 41,
-      width: 'auto'
-    },
-    actionsText: {
-      color: '#2c2d30',
-      marginRight: 15,
-      fontSize: 14,
-      fontWeight: 400,
-      width: 35,
-      '&:hover': {
-        color: theme.palette.info['700']
-      }
-    },
-    actionsIcon: {
-      fontWeight: 100,
-      fontSize: '20px !important',
-      marginRight: 5,
-      marginTop: -2,
-      height: 20,
-      width: 20
     },
     tooltipSupport: {
       position: 'absolute',
@@ -133,10 +92,6 @@ const styles = (theme) => {
       marginTop: 0,
       marginBottom: 0
     },
-    appBarContainer: {
-      display: 'flex',
-      justifyContent: 'space-between'
-    },
     commentComntainer: {
       width: '100%',
       height: '100%',
@@ -171,6 +126,53 @@ const styles = (theme) => {
         content: '""',
         color: '#2c2d30'
       }
+    },
+    leftActions: {
+      position: 'fixed',
+      marginLeft: -120,
+      top: '0 !important',
+      transform: 'translateY(170px)',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    goToComments: {
+      width: 50,
+      height: 50,
+      fontSize: 24,
+      backgroundColor: 'white',
+      color: theme.palette.primary[500],
+      marginTop: 13,
+      boxShadow: 'none',
+      border: 'solid 1px rgba(128, 128, 128, 0.5)',
+      '&:hover': {
+        backgroundColor: 'white'
+      }
+    },
+    goToCommentsIcon: {
+      marginTop: 3,
+      marginLeft: 2
+    },
+    goToTop: {
+      position: 'fixed',
+      bottom: 20,
+      right: 20
+    },
+    goToTopBtn: {
+      width: 50,
+      height: 50,
+      fontSize: 24,
+      backgroundColor: theme.palette.tertiary.color,
+      color: theme.palette.tertiary.hover.color,
+      marginTop: 13,
+      '&:hover': {
+        backgroundColor: theme.palette.tertiary.color
+      }
+    },
+    goToTopIcon: {
+      marginTop: 3,
+      marginLeft: 2
     }
   };
 };
@@ -181,6 +183,8 @@ export class RunderIdea extends React.Component {
     this.state = {
       open: this.props.open
     };
+    this.comments = null;
+    this.title = null;
   }
 
   close = () => {
@@ -190,7 +194,7 @@ export class RunderIdea extends React.Component {
   };
 
   render() {
-    const { classes, data, site } = this.props;
+    const { classes, data, site, processManager, adapters } = this.props;
     const { idea } = data;
     if (data.loading || !idea) {
       return (
@@ -200,10 +204,6 @@ export class RunderIdea extends React.Component {
       );
     }
     const { open } = this.state;
-    const author = idea.author;
-    const authorPicture = author && author.picture;
-    const isAnonymous = author && author.isAnonymous;
-    const createdAtF3 = getFormattedDate(idea.createdAt, 'date.format3');
     const images = idea.attachedFiles
       ? idea.attachedFiles.filter((file) => {
         return file.isImage;
@@ -215,46 +215,16 @@ export class RunderIdea extends React.Component {
       })
       : [];
     const hasEvaluation = site.supportIdeas && idea.state.includes('published');
-    const communicationActions = getActions(idea.actions, { tags: ACTIONS.communication });
     const scrollEvent = `${idea.id}-scroll`;
+    const Examination = adapters.examination;
+    const stats = getIdeaSupportStats(idea, classes);
     return (
       <Dialog
         classes={{
           container: classes.container,
           closeBtn: classes.closeBtn
         }}
-        appBar={
-          <div className={classes.appBarContainer}>
-            <div className={classes.titleContainer}>
-              <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
-              <div className={classes.header}>
-                <span className={classes.headerTitle}>
-                  {author.title}
-                </span>
-                <span className={classes.headerAddOn}>
-                  {createdAtF3}
-                </span>
-              </div>
-
-              <IdeaMenu
-                initRef={(menu) => {
-                  this.menu = menu;
-                }}
-                idea={idea}
-              />
-            </div>
-            <AllignedActions
-              actions={communicationActions}
-              onActionClick={this.props.processManager.performAction}
-              overlayPosition="bottom"
-              classes={{
-                actionsContainer: classes.actionsContainer,
-                actionsText: classes.actionsText,
-                actionsIcon: classes.actionsIcon
-              }}
-            />
-          </div>
-        }
+        appBar={<IdeaAppBar idea={idea} processManager={processManager} hasEvaluation={hasEvaluation} stats={stats} />}
         fullScreen
         open={open}
         onClose={this.close}
@@ -262,6 +232,34 @@ export class RunderIdea extends React.Component {
         <div className={classes.root}>
           <Scrollbar scrollEvent={scrollEvent}>
             <div className={classes.maxContainer}>
+              <div className={classes.leftActions}>
+                {hasEvaluation
+                  ? <Evaluation
+                    big
+                    icon={getEvaluationIcons(idea.userToken)}
+                    onClick={{
+                      top: processManager.evaluationClick,
+                      down: processManager.evaluationClick
+                    }}
+                    text={{ top: idea.tokensSupport, down: idea.tokensOpposition }}
+                    actions={getEvaluationActions(idea)}
+                    active={idea.state.includes('submitted_support')}
+                  />
+                  : null}
+                {site.examineIdeas && idea.state.includes('examined')
+                  ? <Examination title="Examination" message={idea.opinion} value={getExaminationValue(idea)} />
+                  : null}
+                <Anchor
+                  scrollEvent={scrollEvent}
+                  getAnchor={() => {
+                    return this.comments;
+                  }}
+                >
+                  <Button fab color="primary" aria-label="comment" className={classes.goToComments}>
+                    <Icon className={classNames(classes.goToCommentsIcon, 'mdi-set mdi-comment-outline')} />
+                  </Button>
+                </Anchor>
+              </div>
               {hasEvaluation &&
                 <div className={classes.right}>
                   <StatisticsDoughnut
@@ -269,21 +267,15 @@ export class RunderIdea extends React.Component {
                       statisticsDoughnut: classes.statisticsDoughnut
                     }}
                     title={I18n.t('evaluation.tokens')}
-                    elements={[
-                      {
-                        color: '#4eaf4e',
-                        count: idea.tokensSupport,
-                        Tooltip: createTooltip(I18n.t('evaluation.support'), idea.tokensSupport, classes.tooltipSupport)
-                      },
-                      {
-                        color: '#ef6e18',
-                        count: idea.tokensOpposition,
-                        Tooltip: createTooltip(I18n.t('evaluation.opposition'), idea.tokensOpposition, classes.tooltipOppose)
-                      }
-                    ]}
+                    elements={stats}
                   />
                 </div>}
-              <h1 className={classes.title}>
+              <h1
+                ref={(title) => {
+                  this.title = title;
+                }}
+                className={classes.title}
+              >
                 <Icon className={classNames('mdi-set mdi-lightbulb', classes.icon)} />
                 {idea && idea.title}
               </h1>
@@ -291,25 +283,48 @@ export class RunderIdea extends React.Component {
                 <div className={classes.imagesContainer}>
                   <ImagesPreview images={images} />
                 </div>}
-              <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: idea.text }} />
-              <FilesPreview files={files} />
-              <Comments
-                rightDisabled
-                fullScreen
-                ignorDrawer
-                formTop
-                inline
-                channelId={idea.channel.id}
-                fetchMoreOnEvent={scrollEvent}
-                classes={{
-                  container: classes.commentComntainer,
-                  comments: classes.comments,
-                  formContainer: classes.commentFormContainer,
-                  list: classes.commentsList
+              <MediumEditor
+                readOnly
+                value={idea.text}
+                onChange={(value) => {
+                  console.log(value);
                 }}
               />
+              <FilesPreview files={files} />
+              <div
+                ref={(comments) => {
+                  this.comments = comments;
+                }}
+              >
+                <Comments
+                  rightDisabled
+                  fullScreen
+                  ignorDrawer
+                  formTop
+                  inline
+                  channelId={idea.channel.id}
+                  fetchMoreOnEvent={scrollEvent}
+                  classes={{
+                    container: classes.commentComntainer,
+                    comments: classes.comments,
+                    formContainer: classes.commentFormContainer,
+                    list: classes.commentsList
+                  }}
+                />
+              </div>
             </div>
           </Scrollbar>
+          <Anchor
+            scrollEvent={scrollEvent}
+            getAnchor={() => {
+              return this.title;
+            }}
+            classes={{ container: classes.goToTop }}
+          >
+            <Button fab color="primary" aria-label="comment" className={classes.goToTopBtn}>
+              <Icon className={classNames(classes.goToTopIcon, 'mdi-set mdi-chevron-double-up')} />
+            </Button>
+          </Anchor>
         </div>
       </Dialog>
     );

@@ -12,16 +12,18 @@ import Keywords from '../common/Keywords';
 import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import AllignedActions from '../common/AllignedActions';
-import StatisticsDoughnut, { createTooltip } from '../common/Doughnut';
-import { ACTIONS } from '../../processes';
+import StatisticsDoughnut from '../common/Doughnut';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
-import IdeaMenu from './IdeaMenu';
-import IdeaProcessManager, { getEvaluationActions, getExaminationValue } from './IdeaProcessManager';
+
 import { goTo, get } from '../../utils/routeMap';
+import { ACTIONS } from '../../processes';
+import IdeaMenu from './IdeaMenu';
+import IdeaProcessManager from './IdeaProcessManager';
 import { closeChatApp } from '../../actions/actions';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats } from '.';
 
 const styles = {
   container: {
@@ -142,7 +144,7 @@ export class RenderIdeaItem extends React.Component {
   };
 
   render() {
-    const { node, adapters, globalProps: { site }, classes } = this.props;
+    const { node, processManager, adapters, globalProps: { site }, classes } = this.props;
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
@@ -164,19 +166,10 @@ export class RenderIdeaItem extends React.Component {
           <div className={classes.leftActions}>
             {hasEvaluation
               ? <Evaluation
-                icon={{
-                  top:
-                      node.userToken === 'support'
-                        ? 'mdi-set mdi-arrow-up-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-up-drop-circle',
-                  down:
-                      node.userToken === 'oppose'
-                        ? 'mdi-set mdi-arrow-down-drop-circle-outline'
-                        : 'mdi-set mdi-arrow-down-drop-circle'
-                }}
+                icon={getEvaluationIcons(node.userToken)}
                 onClick={{
-                  top: this.props.processManager.evaluationClick,
-                  down: this.props.processManager.evaluationClick
+                  top: processManager.evaluationClick,
+                  down: processManager.evaluationClick
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
@@ -195,7 +188,7 @@ export class RenderIdeaItem extends React.Component {
                 this.menu = menu;
               }}
               idea={node}
-              onActionClick={this.props.processManager.performAction}
+              onActionClick={processManager.performAction}
             />
             <UserTitle node={author} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
@@ -222,27 +215,13 @@ export class RenderIdeaItem extends React.Component {
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />
             </div>
           </div>
         </div>
         {hasEvaluation &&
           <div className={classes.right}>
-            <StatisticsDoughnut
-              title={I18n.t('evaluation.tokens')}
-              elements={[
-                {
-                  color: '#4eaf4e',
-                  count: node.tokensSupport,
-                  Tooltip: createTooltip(I18n.t('evaluation.support'), node.tokensSupport, classes.tooltipSupport)
-                },
-                {
-                  color: '#ef6e18',
-                  count: node.tokensOpposition,
-                  Tooltip: createTooltip(I18n.t('evaluation.opposition'), node.tokensOpposition, classes.tooltipOppose)
-                }
-              ]}
-            />
+            <StatisticsDoughnut title={I18n.t('evaluation.tokens')} elements={getIdeaSupportStats(node, classes)} />
           </div>}
       </div>
     );
