@@ -363,8 +363,8 @@ class EditIdea(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-pencil'
-    style_order = 1
-    tags = ['secondary', 'entity']
+    style_order = 2
+    tags = ['primary', 'menu']
     submission_title = _('Save')
     context = Iidea
     roles_validation = edit_roles_validation
@@ -549,8 +549,8 @@ class PublishIdeaModeration(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
-    style_order = 5
-    tags = ['secondary', 'global']
+    style_order = 1
+    tags = ['primary', 'menu']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = decision_roles_validation
@@ -643,8 +643,8 @@ class PublishIdea(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
-    style_order = 5
-    tags = ['secondary', 'global']
+    style_order = 1
+    tags = ['primary', 'menu']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = pub_roles_validation
@@ -652,6 +652,7 @@ class PublishIdea(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current(request)
         root = request.root
         if root.support_ideas:
             context.state = PersistentList(['submitted_support', 'published'])
@@ -684,7 +685,7 @@ class PublishIdea(InfiniteCardinality):
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
-            self, [context], appstruct.get('user', context.author)))
+            self, [context], appstruct.get('user', user)))
         return {}
 
     def redirect(self, context, request, **kw):

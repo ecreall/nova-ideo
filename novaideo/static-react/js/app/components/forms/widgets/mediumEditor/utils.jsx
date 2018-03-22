@@ -1,16 +1,17 @@
 import React from 'react';
 import { EditorState, Modifier } from 'draft-js';
-import { StringToTypeMap, Block, beforeInput, getCurrentBlock, HANDLED } from 'medium-draft';
+import { StringToTypeMap, Block, Entity as EntityConstants, beforeInput, getCurrentBlock, HANDLED } from 'medium-draft';
 import { blockToHTML, entityToHTML } from 'medium-draft/lib/exporter';
-import { htmlToBlock } from 'medium-draft/lib/importer';
+import { htmlToBlock, htmlToEntity } from 'medium-draft/lib/importer';
+import Icon from 'material-ui/Icon';
+import { I18n } from 'react-redux-i18n';
+
+import { DQUOTE_START, DQUOTE_END, SQUOTE_START, SQUOTE_END } from './constants';
+
+import { getEmbedDataFromNode, extractEmbedData } from './BlockDataManager';
 
 const newTypeMap = StringToTypeMap;
 newTypeMap['2.'] = Block.OL;
-
-const DQUOTE_START = '“';
-const DQUOTE_END = '”';
-const SQUOTE_START = '‘';
-const SQUOTE_END = '’';
 
 export const newHTMLtoBlock = (nodeName, node) => {
   if (nodeName === 'figure') {
@@ -19,7 +20,8 @@ export const newHTMLtoBlock = (nodeName, node) => {
       return {
         type: Block.IMAGE,
         data: {
-          src: imageNode && imageNode.src
+          src: imageNode && imageNode.src,
+          ...getEmbedDataFromNode(imageNode)
         }
       };
     } else if (node.className.match(/md-block-atomic/)) {
@@ -28,7 +30,8 @@ export const newHTMLtoBlock = (nodeName, node) => {
         type: Block.ATOMIC,
         data: {
           url: aNode && aNode.href,
-          type: aNode && 'embed'
+          type: aNode && 'embed',
+          ...getEmbedDataFromNode(aNode)
         }
       };
     }
@@ -44,9 +47,34 @@ export const newHTMLtoBlock = (nodeName, node) => {
   return htmlToBlock(nodeName, node);
 };
 
+export const newHtmlToEntity = (nodeName, node, createEntity) => {
+  const embedData = getEmbedDataFromNode(node, {});
+  if (nodeName === 'a' && embedData.position) {
+    return createEntity(EntityConstants.LINK, 'MUTABLE', { url: node.href, ...embedData });
+  }
+  return htmlToEntity(nodeName, node, createEntity);
+};
+
 export const newBlockToHTML = (block) => {
   if (block.type === Block.ATOMIC) {
-    if (block.text === 'E') {
+    const data = block.data || {};
+    const type = data.type;
+    if (type === 'embed' || block.text === 'E') {
+      if (data.url) {
+        return (
+          <figure className={'md-block-atomic md-block-atomic-embed'}>
+            <a
+              href={data.url}
+              className="md-inline-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              {...extractEmbedData(data, 'data-')}
+            >
+              {data.url}
+            </a>
+          </figure>
+        );
+      }
       return {
         start: '<figure class="md-block-atomic md-block-atomic-embed">',
         end: '</figure>'
@@ -58,18 +86,35 @@ export const newBlockToHTML = (block) => {
         </div>
       );
     }
+  } else if (block.type === Block.IMAGE) {
+    const imgData = block.data;
+    const text = block.text;
+    const extraClass = text.length > 0 ? ' md-block-image-has-caption' : '';
+    return (
+      <figure className={`md-block-image${extraClass}`}>
+        <img src={imgData.src} alt={text} {...extractEmbedData(imgData, 'data-')} />
+        <figcaption className="md-block-image-caption">
+          {text}
+        </figcaption>
+      </figure>
+    );
   }
   return blockToHTML(block);
 };
 
 export const newEntityToHTML = (entity, originalText) => {
-  if (entity.type === 'embed') {
+  const { data, type } = entity;
+  if (type === 'embed' || data.position) {
     return (
-      <div className="embedly-card-url-container">
-        <a className="embedly-card-url embedly-card" href={entity.data.url} data-card-controls="0">
-          {entity.data.url}
-        </a>
-      </div>
+      <a
+        href={data.url}
+        className="md-inline-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        {...extractEmbedData(data, 'data-')}
+      >
+        {data.url}
+      </a>
     );
   }
   return entityToHTML(entity, originalText);
@@ -116,80 +161,88 @@ export const handleBeforeInput = (editorState, str, onChange) => {
   return beforeInput(editorState, str, onChange, newTypeMap);
 };
 
-export class AtomicEmbedComponent extends React.Component {
-  state = {
-    showIframe: false
-  };
-
-  componentDidMount() {
-    this.renderEmbedly();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.showIframe !== this.state.showIframe && this.state.showIframe === true) {
-      this.renderEmbedly();
+export const BLOCK_BUTTONS = () => {
+  return [
+    {
+      label: 'H1',
+      style: 'header-one',
+      icon: 'header',
+      description: I18n.t('editor.heading1')
+    },
+    {
+      label: 'H2',
+      style: 'header-two',
+      icon: 'header',
+      description: I18n.t('editor.heading2')
+    },
+    {
+      label: 'H3',
+      style: 'header-three',
+      icon: 'header',
+      description: I18n.t('editor.heading3')
+    },
+    {
+      label: 'Code',
+      style: 'code-bloc',
+      icon: 'header',
+      description: I18n.t('editor.heading3')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-format-quote-open" />,
+      style: 'blockquote',
+      icon: 'quote-right',
+      description: I18n.t('editor.blockquote')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-format-list-bulleted" />,
+      style: 'unordered-list-item',
+      icon: 'list-ul',
+      description: I18n.t('editor.unorderedL')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-format-list-numbers" />,
+      style: 'ordered-list-item',
+      icon: 'list-ol',
+      description: I18n.t('editor.orderedL')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-format-list-checks" />,
+      style: 'todo',
+      description: I18n.t('editor.todoL')
     }
-  }
-
-  getScript = () => {
-    const script = document.createElement('script');
-    script.async = 1;
-    script.src = '//cdn.embedly.com/widgets/platform.js';
-    script.onload = () => {
-      window.embedly();
-    };
-    document.body.appendChild(script);
-  };
-
-  renderEmbedly = () => {
-    if (window.embedly) {
-      // window.embedly();
-    } else {
-      this.getScript();
-    }
-  };
-
-  render() {
-    const { url } = this.props.data;
-    return (
-      <div lassName="md-block-atomic-embed">
-        <div className="embedly-card-url-container">
-          <a className="embedly-card-url embedly-card" href={url} data-card-controls="0">
-            {url}
-          </a>
-        </div>
-      </div>
-    );
-  }
-}
-
-export const AtomicSeparatorComponent = () => {
-  return (
-    <div className="md-block-atomic md-block-atomic-break">
-      <hr className="text-node-separator" />
-    </div>
-  );
+  ];
 };
 
-export const AtomicBlock = (props) => {
-  const { blockProps, block, contentState } = props;
-  const index = block.getEntityAt(0);
-  let entitydata = null;
-  let entityType = null;
-  if (index !== null) {
-    const entity = contentState.getEntity(block.getEntityAt(0));
-    entitydata = entity.getData();
-    entityType = entity.getType();
-  }
-  const data = block.getData();
-  const type = data.get('type') || entityType;
-  if (blockProps.components[type]) {
-    const AtComponent = blockProps.components[type];
-    return (
-      <div className={`md-block-atomic-wrapper md-block-atomic-wrapper-${type}`}>
-        <AtComponent data={entitydata} />
-      </div>
-    );
-  }
-  return null;
+export const INLINE_BUTTONS = () => {
+  return [
+    {
+      label: 'B',
+      style: 'BOLD',
+      icon: 'bold',
+      description: I18n.t('editor.bold')
+    },
+    {
+      label: 'I',
+      style: 'ITALIC',
+      icon: 'italic',
+      description: I18n.t('editor.italic')
+    },
+    {
+      label: 'U',
+      style: 'UNDERLINE',
+      icon: 'underline',
+      description: I18n.t('editor.underline')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-marker" />,
+      style: 'HIGHLIGHT',
+      description: I18n.t('editor.highlight')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-link-variant" />,
+      style: 'hyperlink',
+      icon: 'link',
+      description: I18n.t('editor.addLink')
+    }
+  ];
 };

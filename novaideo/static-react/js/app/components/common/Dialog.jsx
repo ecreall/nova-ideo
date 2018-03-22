@@ -34,14 +34,18 @@ const styles = {
     top: '11%',
     borderRadius: 7,
     margin: 0,
-    '@media only screen and (max-height:600px)': {
+    minWidth: 600,
+    '@media  (max-height:600px)': {
       top: '5%'
     },
-    '@media only screen and (max-height:550px)': {
+    '@media (max-height:550px)': {
       top: '3%'
     },
-    '@media only screen and (max-height:500px)': {
+    '@media(max-height:500px)': {
       top: '1%'
+    },
+    '@media (max-width:600px)': {
+      minWidth: '95%'
     }
   },
   appBarContent: {

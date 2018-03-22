@@ -11,6 +11,7 @@ import { FormHelperText } from 'material-ui/Form';
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
+import MediumEditor from './widgets/mediumEditor/MediumEditor';
 
 export const renderTextBoxField = ({
   input: { name, value, onChange },
@@ -30,6 +31,19 @@ export const renderTextBoxField = ({
       style={style}
       onEnter={onEnter}
       onCtrlEnter={onCtrlEnter}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  );
+};
+
+export const renderRichTextField = ({ input: { name, value, onChange }, placeholder, autoFocus, initRef }) => {
+  return (
+    <MediumEditor
+      initRef={initRef}
+      autoFocus={autoFocus}
       name={name}
       placeholder={placeholder}
       value={value}

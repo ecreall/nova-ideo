@@ -1,15 +1,25 @@
 import React from 'react';
 import Icon from 'material-ui/Icon';
-import Dialog, { DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog';
-import Slide from 'material-ui/transitions/Slide';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
+import { Translate } from 'react-redux-i18n';
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
+import Dialog from './Dialog';
+import OverlaidTooltip from './OverlaidTooltip';
 
 const styles = {
+  container: {
+    padding: '20px 25px',
+    width: '100%',
+    fontSize: 17,
+    lineHeight: 1.5
+  },
+  titleContainer: {
+    fontWeight: 900
+  },
+  title: {
+    marginLeft: 5
+  },
   circleContainer: {
     cursor: 'pointer'
   },
@@ -48,25 +58,29 @@ class Examination extends React.Component {
 
   render() {
     const { value, title, message, classes } = this.props;
+    const icon = <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />;
     return [
       <div className={classes.circleContainer} onClick={this.handleClickOpen}>
-        <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />
+        <OverlaidTooltip tooltip={<Translate value="common.examinationClick" name={title} />} placement="top">
+          {icon}
+        </OverlaidTooltip>
       </div>,
       <Dialog
+        directDisplay
+        appBar={
+          <div className={classes.titleContainer}>
+            {icon}
+            <span className={classes.title}>
+              {title}
+            </span>
+          </div>
+        }
         open={this.state.open}
-        transition={Transition}
         onClose={this.handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {message}
-          </DialogContentText>
-        </DialogContent>
+        <div className={classes.container}>
+          {message}
+        </div>
       </Dialog>
     ];
   }

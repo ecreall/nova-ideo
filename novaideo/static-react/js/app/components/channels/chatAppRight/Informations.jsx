@@ -11,13 +11,16 @@ import User from '../../user/UserPopover';
 const styles = {
   listItem: {
     borderTop: 'none'
+  },
+  ideaContainer: {
+    maxWidth: 'inherit'
   }
 };
 
-const InformationsContent = ({ id, onActionClick, kind }) => {
+const InformationsContent = ({ id, onActionClick, kind, classes }) => {
   switch (kind) {
   case 'Idea':
-    return <Idea id={id} onActionClick={onActionClick} />;
+    return <Idea id={id} onActionClick={onActionClick} classes={{ container: classes.ideaContainer }} />;
   case 'Person':
     return <User id={id} onActionClick={onActionClick} />;
   default:
@@ -45,7 +48,8 @@ export class DumbInformations extends React.Component {
         }
         Icon={InfoOutlineIcon}
       >
-        {open && <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} />}
+        {open &&
+          <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />}
       </DetailsSection>
     );
   }

@@ -6,6 +6,7 @@ import Input from 'material-ui/Input';
 
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
+import { DEFAULT_EMBED_DATA } from './constants';
 
 const styles = {
   button: {
@@ -34,7 +35,7 @@ const styles = {
 class EmbedButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ur: '' };
+    this.state = { url: '' };
     this.form = null;
   }
   handleClickOpen = () => {
@@ -47,7 +48,7 @@ class EmbedButton extends React.Component {
   };
 
   addEmbedURL = (url) => {
-    const entityKey = Entity.create('embed', 'IMMUTABLE', { url: url });
+    const entityKey = Entity.create('embed', 'MUTABLE', { url: url, type: 'embed', ...DEFAULT_EMBED_DATA });
     this.props.setEditorState(AtomicBlockUtils.insertAtomicBlock(this.props.getEditorState(), entityKey, 'E'));
   };
 

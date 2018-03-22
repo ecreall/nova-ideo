@@ -609,7 +609,7 @@ class Query(graphene.ObjectType):
     root = graphene.Field(Root)
 
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
-        total_count, oids = get_entities([Iidea], ['published'], args, info)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_account(self, args, context, info):  # pylint: disable=W0613

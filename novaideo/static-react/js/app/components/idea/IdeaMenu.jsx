@@ -4,7 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 import { I18n } from 'react-redux-i18n';
+import classNames from 'classnames';
 
+import Button from '../styledComponents/Button';
 import { Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
 import { ACTIONS, PROCESSES } from '../../processes';
@@ -38,7 +40,14 @@ const styles = (theme) => {
     },
     icon: {
       height: 20,
-      width: 20
+      width: 20,
+      fontSize: '20px !important'
+    },
+    iconButton: {
+      marginRight: 5,
+      height: 17,
+      width: 17,
+      fontSize: '17px !important'
     },
     action: {
       borderRight: '1px solid rgba(0, 0, 0, 0.15)'
@@ -47,6 +56,10 @@ const styles = (theme) => {
 };
 
 export class DumbIdeaMenu extends React.Component {
+  static defaultProps = {
+    overlayPosition: 'top'
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -70,15 +83,17 @@ export class DumbIdeaMenu extends React.Component {
   };
 
   getAction = (action) => {
-    const { classes, onActionClick } = this.props;
+    const { classes, onActionClick, actionsProps } = this.props;
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const Icon = action.icon;
+    const actionProps = (actionsProps && actionsProps[action.behaviorId]) || {};
+    const actionClassName = actionProps.className || classes.button;
     switch (action.nodeId) {
     case abstractProcessNodes.addreaction.nodeId:
       return (
         <EmojiPicker
           classes={{
-            button: classes.button,
+            button: actionClassName,
             icon: classes.icon
           }}
           onSelect={(emoji) => {
@@ -88,28 +103,37 @@ export class DumbIdeaMenu extends React.Component {
         />
       );
     default:
-      return (
-        <IconButton
+      return actionProps.type === 'button'
+        ? <Button
           onClick={() => {
             if (onActionClick) onActionClick(action);
           }}
-          className={classes.button}
+          {...actionProps.props}
+          className={actionClassName}
+        >
+          <Icon className={classes.iconButton} />
+          {I18n.t(action.title)}
+        </Button>
+        : <IconButton
+          onClick={() => {
+            if (onActionClick) onActionClick(action);
+          }}
+          className={actionClassName}
         >
           <Icon className={classes.icon} />
-        </IconButton>
-      );
+        </IconButton>;
     }
   };
 
   render() {
-    const { idea, classes, onActionClick } = this.props;
+    const { idea, classes, onActionClick, overlayPosition } = this.props;
     if (!this.state.menu) return null;
     const actions = getActions(idea.actions, { tags: ACTIONS.menu });
     return (
       <div className={classes.container}>
         {actions.map((action) => {
           return (
-            <OverlaidTooltip tooltip={I18n.t(action.title)} placement="top">
+            <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
               <div className={classes.action}>
                 {this.getAction(action)}
               </div>

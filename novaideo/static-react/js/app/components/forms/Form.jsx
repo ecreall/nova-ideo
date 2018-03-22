@@ -47,7 +47,9 @@ const styles = {
   },
   appBarContent: {
     flex: 1,
-    fontWeight: 900
+    fontWeight: 900,
+    display: 'flex',
+    alignItems: 'center'
   },
   fullAppBarContent: {
     textAlign: 'center'

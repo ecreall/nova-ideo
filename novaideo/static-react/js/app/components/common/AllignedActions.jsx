@@ -48,7 +48,7 @@ class AllignedActions extends React.Component {
               }}
               aria-label="todo"
             >
-              <OverlaidTooltip tooltip={I18n.t(action.title)} placement={overlayPosition}>
+              <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
                 <Icon className={classes.actionsIcon} />
               </OverlaidTooltip>
               {action.counter}

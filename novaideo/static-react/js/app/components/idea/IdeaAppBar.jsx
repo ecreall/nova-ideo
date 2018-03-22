@@ -72,12 +72,21 @@ const styles = (theme) => {
     },
     menuButton: {
       color: '#2c2d30'
+    },
+    menuAction: {
+      borderRight: 'none'
+    },
+    publishAction: {
+      marginRight: '20px !important',
+      minWidth: 'auto',
+      minHeight: 'auto',
+      padding: '5px 10px'
     }
   };
 };
 
 const IdeaAppBar = (props) => {
-  const { idea, hasEvaluation, stats, processManager, classes } = props;
+  const { idea, hasEvaluation, stats, processManager, classes, theme } = props;
   const author = idea.author;
   const authorPicture = author && author.picture;
   const isAnonymous = author && author.isAnonymous;
@@ -106,7 +115,16 @@ const IdeaAppBar = (props) => {
             actionsIcon: classes.actionsIcon
           }}
         />
-        <IdeaMenu open idea={idea} classes={{ container: classes.menu, button: classes.menuButton }} />
+        <IdeaMenu
+          open
+          overlayPosition="bottom"
+          idea={idea}
+          onActionClick={processManager.performAction}
+          classes={{ container: classes.menu, button: classes.menuButton, action: classes.menuAction }}
+          actionsProps={{
+            publish: { className: classes.publishAction, type: 'button', props: { background: theme.palette.success[500] } }
+          }}
+        />
       </div>
     </div>
   );

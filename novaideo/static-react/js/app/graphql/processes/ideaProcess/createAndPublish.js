@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { gql } from 'react-apollo';
 
 import { ideaFragment } from '../../queries';
-import { ACTIONS } from '../../../processes';
+import { ACTIONS, STATE } from '../../../processes';
 
 export const createAndPublishMutation = gql`
   mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,
@@ -121,7 +121,7 @@ export default function createAndPublish({ ownProps, mutate }) {
         IdeasList: (prev, { mutationResult }) => {
           const newIdea = mutationResult.data.createAndPublish.idea;
           // if the idea is submitted to moderation
-          if (newIdea.state.includes('submitted')) return prev;
+          if (newIdea.state.includes(STATE.idea.submitted)) return prev;
           return update(prev, {
             ideas: {
               edges: {

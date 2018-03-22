@@ -2,19 +2,22 @@ import React from 'react';
 import { EditorState, Modifier, convertToRaw, SelectionState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
 import { Editor, Block, createEditorState, addNewBlockAt, rendererFn, HANDLED, NOT_HANDLED } from 'medium-draft';
-import { setImportOptions, htmlToStyle, htmlToEntity } from 'medium-draft/lib/importer';
+import { setImportOptions, htmlToStyle } from 'medium-draft/lib/importer';
 import { setRenderOptions, styleToHTML } from 'medium-draft/lib/exporter';
 import 'medium-draft/lib/index.css';
+import filesize from 'filesize';
 
 import {
   newBlockToHTML,
   newEntityToHTML,
   newHTMLtoBlock,
+  newHtmlToEntity,
   handleBeforeInput,
-  AtomicEmbedComponent,
-  AtomicSeparatorComponent,
-  AtomicBlock
+  BLOCK_BUTTONS,
+  INLINE_BUTTONS
 } from './utils';
+import { AtomicEmbedComponent, AtomicSeparatorComponent, AtomicBlock } from './blocks/Atomic';
+import ImageBlock from './blocks/ImageBlock';
 import SeparatorButton from './SeparatorButton';
 import EmbedButton from './EmbedButton';
 import ImageButton from './ImageButton';
@@ -24,20 +27,25 @@ export const emptyText = '<p></p>';
 class MediumEditor extends React.Component {
   constructor(props) {
     super(props);
+
     this.importer = setImportOptions({
       htmlToStyle: htmlToStyle,
-      htmlToEntity: htmlToEntity,
+      htmlToEntity: newHtmlToEntity,
       htmlToBlock: newHTMLtoBlock
     });
-    this.state = {
-      editorState: this.resetEditor(props.value),
-      editorEnabled: !props.readOnly
-    };
-    this.editor = null;
+
+    this.exporter = setRenderOptions({
+      styleToHTML: styleToHTML,
+      blockToHTML: newBlockToHTML,
+      entityToHTML: newEntityToHTML
+    });
+
     this.sideButtons = [
       {
         title: 'Image',
-        component: ImageButton
+        component: (btnProps) => {
+          return <ImageButton {...btnProps} addFile={this.addFile} />;
+        }
       },
       {
         title: 'Embed',
@@ -48,18 +56,76 @@ class MediumEditor extends React.Component {
         component: SeparatorButton
       }
     ];
-    this.exporter = setRenderOptions({
-      styleToHTML: styleToHTML,
-      blockToHTML: newBlockToHTML,
-      entityToHTML: newEntityToHTML
-    });
+
+    this.blockButtons = BLOCK_BUTTONS();
+
+    this.inlineButtons = INLINE_BUTTONS();
+
+    this.state = {
+      editorState: this.resetEditor(props.value),
+      editorEnabled: !props.readOnly
+    };
+    this.editor = null;
+    this.files = [];
   }
+
+  componentDidMount() {
+    const { autoFocus, initRef } = this.props;
+    if (autoFocus) this.focus(true);
+    if (initRef) initRef(this);
+  }
+
+  addFile = (file) => {
+    const fileData = file;
+    fileData.id = `files-${file.name}`;
+
+    // Tell file it's own extension
+    fileData.extension = this.fileExtension(file);
+
+    // Tell file it's own readable size
+    fileData.sizeReadable = this.fileSizeReadable(file.size);
+
+    // Add preview, either image or file extension
+    if (file.type && this.mimeTypeLeft(file.type) === 'image') {
+      fileData.preview = {
+        type: 'image',
+        url: window.URL.createObjectURL(file)
+      };
+    } else {
+      fileData.preview = {
+        type: 'file',
+        url: window.URL.createObjectURL(file)
+      };
+    }
+    this.files.push(fileData);
+  };
+
+  mimeTypeLeft = (mime) => {
+    return mime.split('/')[0];
+  };
+
+  fileExtension = (file) => {
+    const extensionSplit = file.name.split('.');
+    if (extensionSplit.length > 1) {
+      return extensionSplit[extensionSplit.length - 1];
+    }
+    return 'none';
+  };
+
+  fileSizeReadable = (size) => {
+    filesize(size);
+  };
 
   getEditorState = () => {
     return this.state.editorState;
   };
 
+  setEditorState = (editorState) => {
+    this.setState({ editorState: editorState });
+  };
+
   rendererFn = (setEditorState, getEditorState) => {
+    const { readOnly } = this.props;
     const atomicRenderers = {
       embed: AtomicEmbedComponent,
       separator: AtomicSeparatorComponent
@@ -73,7 +139,20 @@ class MediumEditor extends React.Component {
           component: AtomicBlock,
           editable: false,
           props: {
-            components: atomicRenderers
+            setEditorState: setEditorState,
+            getEditorState: getEditorState,
+            components: atomicRenderers,
+            readOnly: readOnly
+          }
+        };
+      case Block.IMAGE:
+        return {
+          component: ImageBlock,
+          editable: true,
+          props: {
+            setEditorState: setEditorState,
+            getEditorState: getEditorState,
+            readOnly: readOnly
           }
         };
       default:
@@ -206,6 +285,8 @@ class MediumEditor extends React.Component {
         beforeInput={handleBeforeInput}
         handleReturn={this.handleReturn}
         sideButtons={this.sideButtons}
+        inlineButtons={this.inlineButtons}
+        blockButtons={this.blockButtons}
         rendererFn={this.rendererFn}
       />
     );

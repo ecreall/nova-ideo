@@ -1,4 +1,5 @@
 import React from 'react';
+import filesize from 'filesize';
 
 class FilesPicker extends React.Component {
   static defaultProps = {
@@ -186,14 +187,7 @@ class FilesPicker extends React.Component {
   };
 
   fileSizeReadable = (size) => {
-    if (size >= 1000000000) {
-      return `${Math.ceil(size / 1000000000)}GB`;
-    } else if (size >= 1000000) {
-      return `${Math.ceil(size / 1000000)}MB`;
-    } else if (size >= 1000) {
-      return `${Math.ceil(size / 1000)}kB`;
-    }
-    return `${Math.ceil(size)}B`;
+    return filesize(size);
   };
 
   onError = (error, file) => {

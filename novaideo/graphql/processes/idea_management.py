@@ -235,3 +235,29 @@ class DeleteIdea(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return DeleteIdea(status=status)
+
+
+class Publish(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.publish'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Publish.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Publish(idea=context, status=status)

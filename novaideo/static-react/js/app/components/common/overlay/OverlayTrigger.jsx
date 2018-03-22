@@ -177,7 +177,6 @@ class OverlayTrigger extends React.Component {
 
     // FIXME: The logic here for passing through handlers on this component is
     // inconsistent. We shouldn't be passing any of these props through.
-
     triggerProps.onClick = createChainedFunction(childProps.onClick, onClick);
 
     if (isOneOf('click', trigger)) {

@@ -5,6 +5,8 @@ import { graphql } from 'react-apollo';
 import { Translate } from 'react-redux-i18n';
 
 import Delete from '../forms/processes/ideaProcess/Delete';
+import Edit from '../forms/processes/ideaProcess/Edit';
+import Publish from '../forms/processes/ideaProcess/Publish';
 import { goTo, get } from '../../utils/routeMap';
 import { PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
@@ -94,6 +96,9 @@ export class DumbIdeaProcessManager extends React.Component {
       case processNodes.deselect.nodeId:
         deselectIdea({ context: idea }).then(this.onActionPerformed).catch(globalProps.showError);
         break;
+      case ideaProcessNodes.edit.nodeId:
+        this.displayForm(action);
+        break;
       case ideaProcessNodes.delete.nodeId:
         this.displayForm(action);
         break;
@@ -116,9 +121,13 @@ export class DumbIdeaProcessManager extends React.Component {
     if (!action) return null;
     const { idea } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
-    switch (action.id) {
+    switch (action.behaviorId) {
     case ideaProcessNodes.delete.nodeId:
       return <Delete idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.edit.nodeId:
+      return <Edit idea={idea} action={action} onClose={this.onFormClose} key={`${idea.id}-edit`} form={`${idea.id}-edit`} />;
+    case ideaProcessNodes.publish.nodeId:
+      return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
     default:
       return null;
     }

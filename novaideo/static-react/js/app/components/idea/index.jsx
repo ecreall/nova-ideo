@@ -1,7 +1,7 @@
 import { I18n } from 'react-redux-i18n';
 
 import { iconAdapter } from '../../utils/globalFunctions';
-import { PROCESSES } from '../../processes';
+import { PROCESSES, STATE } from '../../processes';
 import { createTooltip } from '../common/Doughnut';
 
 export function getEvaluationIcons(userToken) {
@@ -18,9 +18,16 @@ export function getEvaluationIcons(userToken) {
 }
 
 export function getExaminationValue(idea) {
-  if (idea.state.includes('favorable')) return 'bottom';
-  if (idea.state.includes('to_study')) return 'middle';
-  if (idea.state.includes('unfavorable')) return 'top';
+  if (idea.state.includes(STATE.idea.favorable)) return 'bottom';
+  if (idea.state.includes(STATE.idea.toStudy)) return 'middle';
+  if (idea.state.includes(STATE.idea.unfavorable)) return 'top';
+  return undefined;
+}
+
+export function getExaminationTtile(idea) {
+  if (idea.state.includes(STATE.idea.favorable)) return I18n.t('idea.favorable');
+  if (idea.state.includes(STATE.idea.toStudy)) return I18n.t('idea.toStudy');
+  if (idea.state.includes(STATE.idea.unfavorable)) return I18n.t('idea.unfavorable');
   return undefined;
 }
 

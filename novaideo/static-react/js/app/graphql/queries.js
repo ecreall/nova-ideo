@@ -117,6 +117,7 @@ export const ideaDataFragment = gql`
     oid
     createdAt
     title
+    state
   }
 `;
 

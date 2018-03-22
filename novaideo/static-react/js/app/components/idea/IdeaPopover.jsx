@@ -8,12 +8,15 @@ import { I18n } from 'react-redux-i18n';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
+import Icon from 'material-ui/Icon';
+import classNames from 'classnames';
 
+import OverlaidTooltip from '../common/OverlaidTooltip';
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
 import Evaluation from '../common/Evaluation';
 import AllignedActions from '../common/AllignedActions';
-import { ACTIONS } from '../../processes';
+import { ACTIONS, PROCESSES, STATE } from '../../processes';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
@@ -22,7 +25,7 @@ import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/actions';
 import { ideaQuery } from '../../graphql/queries';
 import UserAvatar from '../user/UserAvatar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue } from '.';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getExaminationTtile } from '.';
 
 const styles = {
   container: {
@@ -51,9 +54,17 @@ const styles = {
     justifyContent: 'space-around'
   },
   title: {
+    color: '#2d2d2d',
+    fontSize: 17,
+    fontWeight: 900,
     '&:hover': {
       textDecoration: 'underline'
     }
+  },
+  icon: {
+    color: '#2d2d2d',
+    fontSize: '16px !important',
+    marginRight: 3
   },
   headerAddOn: {
     color: '#999999ff',
@@ -90,13 +101,14 @@ const styles = {
     justifyContent: 'space-between',
     flexDirection: 'column',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    marginTop: 15
   },
   bodyFooter: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 10
+    marginTop: 15,
+    marginBottom: 5
   },
   ideaText: {
     '& a': {
@@ -118,6 +130,20 @@ const styles = {
     minWidth: 320,
     minHeight: 340,
     display: 'flex',
+    justifyContent: 'center'
+  },
+  iconPrivate: {
+    fontSize: '30px !important',
+    color: '#607D8B',
+    textShadow: '0 1px 3px rgba(128, 128, 128, 0.7)'
+  },
+  iconActive: {
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#3c525d'
+    }
+  },
+  actionsContainer: {
     justifyContent: 'center'
   }
 };
@@ -152,7 +178,7 @@ export class RenderIdeaItem extends React.Component {
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
-    const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
+    const createdAt = Moment(node.createdAt).format(I18n.t('date.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
       ? node.attachedFiles.filter((image) => {
@@ -160,9 +186,12 @@ export class RenderIdeaItem extends React.Component {
       })
       : [];
     const state = node.state || [];
-    const hasEvaluation = site.supportIdeas && state.includes('published');
-    const Examination = adapters.examination;
+    const hasEvaluation = site.supportIdeas && state.includes(STATE.idea.published);
+    const isPrevate = state.includes(STATE.idea.private);
+    const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
+    const publishAction = isPrevate && getActions(node.actions, { nodeId: ideaProcessNodes.publish.nodeId })[0];
+    const Examination = adapters.examination;
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>
@@ -177,23 +206,33 @@ export class RenderIdeaItem extends React.Component {
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
-                active={state.includes('submitted_support')}
+                active={state.includes(STATE.idea.submittedSupport)}
               />
               : null}
-            {site.examineIdeas && state.includes('examined')
-              ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
+            {site.examineIdeas && state.includes(STATE.idea.examined)
+              ? <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
               : null}
+            {isPrevate &&
+              <OverlaidTooltip
+                tooltip={publishAction ? I18n.t('idea.privatePublishAction') : I18n.t('idea.private')}
+                placement="top"
+              >
+                <Icon
+                  className={classNames('mdi-set mdi-lock', classes.iconPrivate, { [classes.iconActive]: publishAction })}
+                  onClick={
+                    publishAction
+                      ? () => {
+                        processManager.performAction(publishAction);
+                      }
+                      : null
+                  }
+                />
+              </OverlaidTooltip>}
           </div>
         </div>
         <div className={classes.body}>
           <div className={classes.header}>
-            <IdeaMenu
-              initRef={(menu) => {
-                this.menu = menu;
-              }}
-              idea={node}
-              onActionClick={processManager.performAction}
-            />
+            <IdeaMenu open idea={node} onActionClick={processManager.performAction} />
             <span className={classes.headerTitle}>
               {author && author.title}
             </span>
@@ -206,21 +245,25 @@ export class RenderIdeaItem extends React.Component {
           <div className={classes.bodyContent}>
             <div>
               <div className={classes.bodyTitle} onClick={this.openDetails}>
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} />
+                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} styleIcon={classes.icon} />
               </div>
 
               <Grid container item>
-                <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
+                <Grid item sm={12}>
                   <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 </Grid>
                 {images.length > 0 &&
-                  <Grid className={classes.imagesContainer} item xs={12} sm={hasEvaluation ? 8 : 5}>
+                  <Grid className={classes.imagesContainer} item sm={12}>
                     <ImagesPreview images={images} />
                   </Grid>}
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />
+              <AllignedActions
+                actions={communicationActions}
+                onActionClick={processManager.performAction}
+                classes={{ actionsContainer: classes.actionsContainer }}
+              />
             </div>
           </div>
         </div>
@@ -236,7 +279,6 @@ export const mapDispatchToProps = {
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
-    site: state.globalProps.site,
     adapters: state.adapters
   };
 };

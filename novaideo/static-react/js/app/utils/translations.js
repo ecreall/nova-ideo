@@ -11,7 +11,15 @@ const Translations = {
         tooltipTitle_1: "a réagi avec %{emoji}"
       },
       clickDownload: "Cliquer pour télécharger",
-      remove: "Supprimer"
+      remove: "Supprimer",
+      examinationClick: "%{name} (Cliquer pour voir l'avis des examinateurs)"
+    },
+    idea: {
+      private: "Privée",
+      privatePublishAction: "Privée (Cliquer pour publier)",
+      favorable: "Favorable",
+      unfavorable: "Défavorable",
+      toStudy: "À retravailler"
     },
     editor: {
       addEmbed: "Integrer le contenu d'une URL (une video, un article ....)",
@@ -19,24 +27,50 @@ const Translations = {
       addSeparator: "Ajouter un séparateur",
       addEmbedForm: "Integrer le contenu d'une URL",
       addEmbedFormPlaceholder: "Entrer une url",
-      addEmbedFormSubmission: "Integrer"
+      addEmbedFormSubmission: "Integrer",
+      heading1: "Titre 1",
+      heading2: "Titre 2",
+      heading3: "Titre 3",
+      blockquote: "Blockquote",
+      unorderedL: "Liste non ordonnée",
+      orderedL: "Liste ordonnée",
+      todoL: "Liste de choses à faire",
+      bold: "Gras",
+      italic: "Italioque",
+      underline: "Souligné",
+      highlight: "Accentué",
+      addLink: "Ajouter un lien"
     },
     processes: {
       novaideoabstractprocess: {
         select: {
-          title: "Suivre"
+          title: "Suivre",
+          description: "Suivre"
         },
         deselect: {
-          title: "Retirer de mes suivis"
+          title: "Retirer de mes suivis",
+          description: "Retirer de mes suivis"
         },
         addreaction: {
-          title: "Ajouter une réaction"
+          title: "Ajouter une réaction",
+          description: "Ajouter une réaction"
         }
       },
       ideamanagement: {
         create: {
           title: "",
           description: ""
+        },
+        edit: {
+          title: "Editer",
+          description: "Editer la proposition",
+          submission: "Enregistrer"
+        },
+        publish: {
+          title: "Publier",
+          description: "Publier la proposition",
+          confirmation: "Voulez-vous vraiment publier cette proposition ? Cette opération est irréversible.",
+          submission: "Oui ! Publier"
         },
         delete: {
           title: "Supprimer",
@@ -57,7 +91,8 @@ const Translations = {
           description: "Retirer mon jeton"
         },
         comment: {
-          title: "Commenter la proposition"
+          title: "Commenter la proposition",
+          description: "Commenter la proposition"
         }
       },
       commentmanagement: {
@@ -91,7 +126,8 @@ const Translations = {
       },
       usermanagement: {
         discuss: {
-          title: "Discuter"
+          title: "Discuter",
+          description: "Discuter"
         }
       }
     },
@@ -194,7 +230,15 @@ const Translations = {
         tooltipTitle_1: "reacted with %{emoji}"
       },
       clickDownload: "Click to download",
-      remove: "Remove"
+      remove: "Remove",
+      examinationClick: "%{name} (Click to see the reviewers' opinion)"
+    },
+    idea: {
+      private: "Private",
+      privatePublishAction: "Private (Click to publish)",
+      favorable: "Positive",
+      unfavorable: "Negative",
+      toStudy: "To be re-worked upon"
     },
     editor: {
       addEmbed: "Embed the content of an URL (a video, an article ....)",
@@ -202,24 +246,50 @@ const Translations = {
       addSeparator: "Add a separator",
       addEmbedForm: "Embed the content of an URL",
       addEmbedFormPlaceholder: "Enter an URL",
-      addEmbedFormSubmission: "Embed"
+      addEmbedFormSubmission: "Embed",
+      heading1: "Heading 1",
+      heading2: "Heading 2",
+      heading3: "Heading 3",
+      blockquote: "Blockquote",
+      unorderedL: "Unordered list",
+      orderedL: "Ordered list",
+      todoL: "To do list",
+      bold: "Bold",
+      italic: "Italic",
+      underline: "Underline",
+      highlight: "Highlight selection",
+      addLink: "Add a link"
     },
     processes: {
       novaideoabstractprocess: {
         select: {
-          title: "Follow"
+          title: "Follow",
+          description: "Follow"
         },
         deselect: {
-          title: "Unfollow"
+          title: "Unfollow",
+          description: "Unfollow"
         },
         addreaction: {
-          title: "Ass a reaction"
+          title: "Ass a reaction",
+          description: "Ass a reaction"
         }
       },
       ideamanagement: {
         create: {
           title: "",
           description: ""
+        },
+        edit: {
+          title: "Edit",
+          description: "Edit the proposal",
+          submission: "Save"
+        },
+        publish: {
+          title: "Publish",
+          description: "Publish the proposal",
+          confirmation: "Are you sure you want to publish this proposal? This cannot be undone.",
+          submission: "Yes ! Publish"
         },
         delete: {
           title: "Remove",
@@ -240,7 +310,8 @@ const Translations = {
           description: "Withdraw my token"
         },
         comment: {
-          title: "Comment the proposal"
+          title: "Comment the proposal",
+          description: "Comment the proposal"
         }
       },
       commentmanagement: {
@@ -274,7 +345,8 @@ const Translations = {
       },
       usermanagement: {
         discuss: {
-          title: "Discuss"
+          title: "Discuss",
+          description: "Discuss"
         }
       }
     },

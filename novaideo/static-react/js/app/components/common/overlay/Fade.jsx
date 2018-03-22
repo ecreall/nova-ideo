@@ -4,7 +4,7 @@ import Transition, { ENTERED, ENTERING } from 'react-transition-group/Transition
 
 const defaultProps = {
   in: false,
-  timeout: 300,
+  timeout: 150,
   mountOnEnter: false,
   unmountOnExit: false,
   appear: false

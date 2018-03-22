@@ -45,7 +45,8 @@ const styles = (theme) => {
       backgroundColor: 'white',
       flex: 1,
       '& .DraftEditor-root': {
-        maxHeight: '100%'
+        maxHeight: '100% !important',
+        height: 'auto'
       },
       '&:focus-within': {
         border: '1px solid #848484'
@@ -135,7 +136,7 @@ export class DumbSearchForm extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.inputContainer}>
-          <div className={classes.textField}>
+          <div className={classNames('inline-editor', classes.textField)}>
             <SearchIcon className={classes.icon} />
             <Field
               props={{

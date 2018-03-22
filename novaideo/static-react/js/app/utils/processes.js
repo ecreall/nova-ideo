@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export, no-underscore-dangle, no-param-reassign */
 import HelpIcon from 'material-ui-icons/Help';
-import { PROCESSES, ICONS_MAPPING } from '../processes';
+import { PROCESSES, ICONS_MAPPING, ENTITIES_ICONS, STATE } from '../processes';
 
 function equal(element, filter, defaultValue = true) {
   if (!filter) return defaultValue;
@@ -56,4 +56,17 @@ export function getActions(actions, filter = {}) {
 
 export function getAction(actions, filter = {}) {
   return getActions(actions, filter)[0];
+}
+
+export function getEntityIcon(type) {
+  return ENTITIES_ICONS[type] || ENTITIES_ICONS.default;
+}
+
+export function isPrivate(type, state) {
+  switch (type) {
+  case 'Idea':
+    return state.includes(STATE.idea.private);
+  default:
+    return false;
+  }
 }

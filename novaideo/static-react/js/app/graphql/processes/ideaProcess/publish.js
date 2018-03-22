@@ -1,0 +1,83 @@
+import update from 'immutability-helper';
+import { gql } from 'react-apollo';
+
+import { ideaFragment } from '../../queries';
+import { ACTIONS } from '../../../processes';
+
+export const publishMutation = gql`
+  mutation($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+    publishIdea(context: $context) {
+      status
+      idea {
+        ...idea
+      }
+    }
+  }
+  ${ideaFragment}
+`;
+
+export default function publish({ mutate }) {
+  return ({ context }) => {
+    return mutate({
+      variables: {
+        context: context.oid,
+        actionTags: [ACTIONS.primary],
+        processIds: [],
+        nodeIds: [],
+        processTags: []
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        publishIdea: {
+          __typename: 'PublishIdea',
+          status: true,
+          idea: {
+            ...context,
+            state: ['published', 'submitted_support'],
+            actions: []
+          }
+        }
+      },
+      updateQueries: {
+        IdeasList: (prev, { mutationResult }) => {
+          const newIdea = mutationResult.data.publishIdea.idea;
+          const currentIdea = prev.ideas.edges.filter((item) => {
+            return item && item.node.id === newIdea.id;
+          })[0];
+          if (!currentIdea) {
+            return update(prev, {
+              ideas: {
+                edges: {
+                  $unshift: [
+                    {
+                      __typename: 'Idea',
+                      node: newIdea
+                    }
+                  ]
+                }
+              }
+            });
+          }
+          const index = prev.ideas.edges.indexOf(currentIdea);
+          return update(prev, {
+            ideas: {
+              edges: {
+                $splice: [[index, 1, { __typename: 'Idea', node: newIdea }]]
+              }
+            }
+          });
+        },
+        Idea: (prev, { mutationResult, queryVariables }) => {
+          const newIdea = mutationResult.data.publishIdea.idea;
+          if (queryVariables.id !== context.id) return false;
+          return update(prev, {
+            idea: {
+              actions: { $set: newIdea.actions },
+              state: { $set: newIdea.state }
+            }
+          });
+        }
+      }
+    });
+  };
+}

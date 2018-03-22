@@ -3,8 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
-import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
+import Icon from 'material-ui/Icon';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -74,7 +73,9 @@ class RightContent extends React.Component {
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton onClick={this.toggleWidth}>
-              {rightFull ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
+              {rightFull
+                ? <Icon className="mdi-set mdi-arrow-collapse-right" />
+                : <Icon className="mdi-set mdi-arrow-collapse-left" />}
             </IconButton>
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {title}

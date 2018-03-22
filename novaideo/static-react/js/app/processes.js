@@ -20,7 +20,8 @@ export const PROCESSES = {
       createAndPublish: { nodeId: 'creatandpublish' },
       comment: {
         nodeId: 'comment',
-        title: 'processes.ideamanagement.comment.title'
+        title: 'processes.ideamanagement.comment.title',
+        description: 'processes.ideamanagement.comment.description'
       },
       support: {
         nodeId: 'support',
@@ -43,6 +44,20 @@ export const PROCESSES = {
         description: 'processes.ideamanagement.delete.description',
         submission: 'processes.ideamanagement.delete.submission',
         confirmation: 'processes.ideamanagement.delete.confirmation'
+      },
+      edit: {
+        nodeId: 'edit',
+        title: 'processes.ideamanagement.edit.title',
+        description: 'processes.ideamanagement.edit.description',
+        submission: 'processes.ideamanagement.edit.submission',
+        confirmation: 'processes.ideamanagement.edit.confirmation'
+      },
+      publish: {
+        nodeId: 'publish',
+        title: 'processes.ideamanagement.publish.title',
+        description: 'processes.ideamanagement.publish.description',
+        submission: 'processes.ideamanagement.publish.submission',
+        confirmation: 'processes.ideamanagement.publish.confirmation'
       }
     }
   },
@@ -51,7 +66,8 @@ export const PROCESSES = {
     nodes: {
       discuss: {
         nodeId: 'discuss',
-        title: 'processes.usermanagement.discuss.title'
+        title: 'processes.usermanagement.discuss.title',
+        description: 'processes.usermanagement.discuss.description'
       },
       generalDiscuss: {
         nodeId: 'general_discuss',
@@ -64,15 +80,18 @@ export const PROCESSES = {
     nodes: {
       select: {
         nodeId: 'select',
-        title: 'processes.novaideoabstractprocess.select.title'
+        title: 'processes.novaideoabstractprocess.select.title',
+        description: 'processes.novaideoabstractprocess.select.title'
       },
       deselect: {
         nodeId: 'deselect',
-        title: 'processes.novaideoabstractprocess.deselect.title'
+        title: 'processes.novaideoabstractprocess.deselect.title',
+        description: 'processes.novaideoabstractprocess.deselect.title'
       },
       addreaction: {
         nodeId: 'addreaction',
-        title: 'processes.novaideoabstractprocess.addreaction.title'
+        title: 'processes.novaideoabstractprocess.addreaction.title',
+        description: 'processes.novaideoabstractprocess.addreaction.title'
       }
     }
   },
@@ -126,6 +145,19 @@ export const ACTIONS = {
   menu: 'menu'
 };
 
+export const STATE = {
+  idea: {
+    private: 'to work',
+    published: 'published',
+    submittedSupport: 'submitted_support',
+    toStudy: 'to_study',
+    favorable: 'favorable',
+    unfavorable: 'unfavorable',
+    examined: 'examined',
+    submitted: 'submitted'
+  }
+};
+
 export const COMMENTS_ACTIONS = ['comment', 'discuss', 'general_discuss'];
 
 export const ICONS_MAPPING = {
@@ -141,5 +173,11 @@ export const ICONS_MAPPING = {
   'icon md md-live-help': QuestionAnswerIcon,
   'typcn typcn-pin': iconAdapter('mdi-set mdi-pin'),
   'typcn typcn-pin-outline': iconAdapter('mdi-set mdi-pin-off'),
-  'icon novaideo-icon icon-idea': iconAdapter('mdi-set mdi-lightbulb')
+  'icon novaideo-icon icon-idea': iconAdapter('mdi-set mdi-lightbulb'),
+  'glyphicon glyphicon-share': iconAdapter('mdi-set mdi-earth')
+};
+
+export const ENTITIES_ICONS = {
+  Idea: iconAdapter('mdi-set mdi-lightbulb'),
+  default: iconAdapter('mdi-set mdi-pound')
 };

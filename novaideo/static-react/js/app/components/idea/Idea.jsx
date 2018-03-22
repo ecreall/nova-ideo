@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-array-index-key, no-underscore-dangle */
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
@@ -14,15 +14,16 @@ import FilesPreview from '../common/FilesPreview';
 import Anchor from '../common/Anchor';
 import StatisticsDoughnut from '../common/Doughnut';
 import Dialog from '../common/Dialog';
-import { ACTIONS } from '../../processes';
+import { ACTIONS, STATE } from '../../processes';
 import { goTo, get } from '../../utils/routeMap';
+import { getEntityIcon } from '../../utils/processes';
 import { ideaQuery } from '../../graphql/queries';
 import Comments from '../channels/Comments';
 import Scrollbar from '../common/Scrollbar';
 import Evaluation from '../common/Evaluation';
 import IdeaProcessManager from './IdeaProcessManager';
 import IdeaAppBar from './IdeaAppBar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats } from '.';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
 import { MediumEditor } from '../forms/widgets/mediumEditor';
 
 const styles = (theme) => {
@@ -71,7 +72,9 @@ const styles = (theme) => {
     imagesContainer: {
       minWidth: 300,
       float: 'right',
-      padding: '0 0 0 8px !important'
+      padding: '0 0 0 8px !important',
+      zIndex: 1000,
+      position: 'relative'
     },
     root: {
       height: 'calc(100vh - 66px)',
@@ -214,10 +217,11 @@ export class RunderIdea extends React.Component {
         return !file.isImage;
       })
       : [];
-    const hasEvaluation = site.supportIdeas && idea.state.includes('published');
+    const hasEvaluation = site.supportIdeas && idea.state.includes(STATE.idea.published);
     const scrollEvent = `${idea.id}-scroll`;
     const Examination = adapters.examination;
     const stats = getIdeaSupportStats(idea, classes);
+    const IdeaIcon = getEntityIcon(idea.__typename);
     return (
       <Dialog
         classes={{
@@ -243,11 +247,11 @@ export class RunderIdea extends React.Component {
                     }}
                     text={{ top: idea.tokensSupport, down: idea.tokensOpposition }}
                     actions={getEvaluationActions(idea)}
-                    active={idea.state.includes('submitted_support')}
+                    active={idea.state.includes(STATE.idea.submittedSupport)}
                   />
                   : null}
-                {site.examineIdeas && idea.state.includes('examined')
-                  ? <Examination title="Examination" message={idea.opinion} value={getExaminationValue(idea)} />
+                {site.examineIdeas && idea.state.includes(STATE.idea.examined)
+                  ? <Examination message={idea.opinion} title={getExaminationTtile(idea)} value={getExaminationValue(idea)} />
                   : null}
                 <Anchor
                   scrollEvent={scrollEvent}
@@ -276,7 +280,7 @@ export class RunderIdea extends React.Component {
                 }}
                 className={classes.title}
               >
-                <Icon className={classNames('mdi-set mdi-lightbulb', classes.icon)} />
+                <IdeaIcon className={classNames(classes.icon)} />
                 {idea && idea.title}
               </h1>
               {images.length > 0 &&

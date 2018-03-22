@@ -1,12 +1,11 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-array-index-key, no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
 import { I18n } from 'react-redux-i18n';
-import Icon from 'material-ui/Icon';
 import Grow from 'material-ui/transitions/Grow';
 
 import StatisticsDoughnut from '../common/Doughnut';
+import { getEntityIcon } from '../../utils/processes';
 
 const styles = {
   statisticsDoughnut: {
@@ -59,11 +58,12 @@ class IdeaAppBarTitle extends React.Component {
   render() {
     const { idea, hasEvaluation, stats, classes } = this.props;
     const { titleVisible } = this.state;
+    const IdeaIcon = getEntityIcon(idea.__typename);
     return (
       <Grow in={!titleVisible} timeout={100}>
         <div className={classes.titleContainer}>
           <h1 className={classes.title}>
-            <Icon className={classNames('mdi-set mdi-lightbulb', classes.icon)} />
+            <IdeaIcon className={classes.icon} />
             {idea && idea.title}
           </h1>
           {hasEvaluation &&

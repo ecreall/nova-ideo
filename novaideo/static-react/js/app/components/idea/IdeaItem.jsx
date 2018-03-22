@@ -6,6 +6,8 @@ import Grid from 'material-ui/Grid';
 import { I18n } from 'react-redux-i18n';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
+import Icon from 'material-ui/Icon';
+import classNames from 'classnames';
 
 import ImagesPreview from '../common/ImagesPreview';
 import Keywords from '../common/Keywords';
@@ -16,14 +18,15 @@ import StatisticsDoughnut from '../common/Doughnut';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 
+import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
-import { ACTIONS } from '../../processes';
+import { ACTIONS, PROCESSES, STATE } from '../../processes';
 import IdeaMenu from './IdeaMenu';
 import IdeaProcessManager from './IdeaProcessManager';
 import { closeChatApp } from '../../actions/actions';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats } from '.';
+import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
 
 const styles = {
   container: {
@@ -33,6 +36,9 @@ const styles = {
     '&:hover': {
       backgroundColor: '#f9f9f9'
     }
+  },
+  privateContainer: {
+    backgroundColor: '#e3f0f7'
   },
   header: {
     display: 'flex',
@@ -60,6 +66,9 @@ const styles = {
     marginLeft: -3,
     marginBottom: 10,
     cursor: 'pointer'
+  },
+  disableBodyTitle: {
+    cursor: 'inherit'
   },
   left: {
     display: 'flex',
@@ -121,10 +130,25 @@ const styles = {
   },
   imagesContainer: {
     padding: '0 0 0 8px !important'
+  },
+  iconPrivate: {
+    fontSize: '30px !important',
+    color: '#607D8B',
+    textShadow: '0 1px 3px rgba(128, 128, 128, 0.7)'
+  },
+  iconActive: {
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#3c525d'
+    }
   }
 };
 
 export class RenderIdeaItem extends React.Component {
+  static defaultProps = {
+    passive: false
+  };
+
   constructor(props) {
     super(props);
     this.menu = null;
@@ -144,7 +168,7 @@ export class RenderIdeaItem extends React.Component {
   };
 
   render() {
-    const { node, processManager, adapters, globalProps: { site }, classes } = this.props;
+    const { node, processManager, passive, adapters, globalProps: { site }, classes } = this.props;
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
@@ -156,11 +180,19 @@ export class RenderIdeaItem extends React.Component {
         return image.isImage;
       })
       : [];
-    const hasEvaluation = site.supportIdeas && node.state.includes('published');
-    const Examination = adapters.examination;
+    const state = node.state || [];
+    const hasEvaluation = site.supportIdeas && state.includes(STATE.idea.published);
+    const isPrevate = state.includes(STATE.idea.private);
+    const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
+    const publishAction = !passive && isPrevate && getActions(node.actions, { nodeId: ideaProcessNodes.publish.nodeId })[0];
+    const Examination = adapters.examination;
     return (
-      <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
+      <div
+        className={classNames(classes.container, { [classes.privateContainer]: isPrevate })}
+        onMouseOver={this.onMouseOver}
+        onMouseLeave={this.onMouseLeave}
+      >
         <div className={classes.left}>
           <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={authorTitle} />
           <div className={classes.leftActions}>
@@ -173,23 +205,40 @@ export class RenderIdeaItem extends React.Component {
                 }}
                 text={{ top: node.tokensSupport, down: node.tokensOpposition }}
                 actions={getEvaluationActions(node)}
-                active={node.state.includes('submitted_support')}
+                active={node.state.includes(STATE.idea.submittedSupport)}
               />
               : null}
-            {site.examineIdeas && node.state.includes('examined')
-              ? <Examination title="Examination" message={node.opinion} value={getExaminationValue(node)} />
+            {site.examineIdeas && node.state.includes(STATE.idea.examined)
+              ? <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
               : null}
+            {isPrevate &&
+              <OverlaidTooltip
+                tooltip={publishAction ? I18n.t('idea.privatePublishAction') : I18n.t('idea.private')}
+                placement="top"
+              >
+                <Icon
+                  className={classNames('mdi-set mdi-lock', classes.iconPrivate, { [classes.iconActive]: publishAction })}
+                  onClick={
+                    publishAction
+                      ? () => {
+                        processManager.performAction(publishAction);
+                      }
+                      : null
+                  }
+                />
+              </OverlaidTooltip>}
           </div>
         </div>
         <div className={classes.body}>
           <div className={classes.header}>
-            <IdeaMenu
-              initRef={(menu) => {
-                this.menu = menu;
-              }}
-              idea={node}
-              onActionClick={processManager.performAction}
-            />
+            {!passive &&
+              <IdeaMenu
+                initRef={(menu) => {
+                  this.menu = menu;
+                }}
+                idea={node}
+                onActionClick={processManager.performAction}
+              />}
             <UserTitle node={author} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
             <Tooltip id={node.id} title={createdAtF3} placement="top">
@@ -200,22 +249,25 @@ export class RenderIdeaItem extends React.Component {
           </div>
           <div className={classes.bodyContent}>
             <div>
-              <div className={classes.bodyTitle} onClick={this.openDetails}>
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} />
+              <div
+                className={classNames(classes.bodyTitle, { [classes.disableBodyTitle]: passive })}
+                onClick={!passive && this.openDetails}
+              >
+                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={!passive && classes.title} />
               </div>
 
               <Grid container item>
-                <Grid item xs={12} sm={!hasEvaluation && images.length > 0 ? 7 : 12}>
+                <Grid item sm={12}>
                   <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 </Grid>
                 {images.length > 0 &&
-                  <Grid className={classes.imagesContainer} item xs={12} sm={hasEvaluation ? 8 : 5}>
+                  <Grid className={classes.imagesContainer} item sm={12}>
                     <ImagesPreview images={images} />
                   </Grid>}
               </Grid>
             </div>
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />
+              {!passive && <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />}
             </div>
           </div>
         </div>

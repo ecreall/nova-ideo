@@ -48,12 +48,30 @@
             var current_ids = []
           </tal:block>
           if($.inArray(ids.userId, current_ids) < 0){
-             update_notification_id(ids.userId,
-                                    '${request.resource_url(request.root, 'novaideoapi', query={'op': 'update_notification_id'})}')
+            update_notification_id(
+              ids.userId,
+              '${request.resource_url(request.root, 'novaideoapi', query={'op': 'update_notification_id'})}')
           }
         });
     </script>
     <link rel="stylesheet" href="http://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css">
+    <style class="embedly-css">
+      body#cards {
+        padding: 15px;
+      }
+      .card.article {
+        font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        box-shadow: 0 0px 2px rgba(128, 128, 128, 0.4);
+        background: white;
+      }
+      .card .txt-bd {
+        padding: 6px 10px 6px 10px;
+      }
+      .card .brd,
+      .hdr {
+        display:none;
+      }
+    </style>
   </head>
   <body>
     <div id='root'></div>
