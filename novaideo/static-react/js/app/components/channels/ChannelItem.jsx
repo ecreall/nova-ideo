@@ -15,7 +15,12 @@ const styles = (theme) => {
   return {
     listItem: {
       paddingTop: 4,
-      paddingBottom: 4
+      paddingBottom: 4,
+      paddingLeft: 16,
+      paddingRight: 10
+    },
+    listItemWithBadge: {
+      paddingRight: 32
     },
     listItemActive: {
       backgroundColor: theme.palette.tertiary.color,
@@ -85,7 +90,7 @@ const styles = (theme) => {
       fontWeight: 700,
       width: 'auto',
       height: 'auto',
-      top: -11
+      top: -3
     },
     unreadComment: {
       color: 'white',
@@ -142,7 +147,10 @@ export class DumbChannelItem extends React.Component {
         onClick={this.open}
         dense
         button
-        classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: isSelected }) }}
+        ContainerComponent="div"
+        classes={{
+          root: classNames(classes.listItem, { [classes.listItemActive]: isSelected, [classes.listItemWithBadge]: hasUnread })
+        }}
       >
         {this.renderIcon(isActive, isSelected)}
         <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />

@@ -72,18 +72,18 @@ function DrawerContent({ drawerApp, switchDrawer, classes }) {
   const isChatApp = drawerApp === 'chatApp';
   return (
     <div className={classes.container}>
-      <IconButton
-        className={classes.switchButton}
-        color="primary"
-        aria-label="Menu"
-        onClick={() => {
-          return switchDrawer('drawer', { app: isChatApp ? undefined : 'chatApp' });
-        }}
-      >
-        <OverlaidTooltip tooltip={isChatApp ? I18n.t('channels.switchApp') : I18n.t('channels.switchChat')} placement="bottom">
+      <OverlaidTooltip tooltip={isChatApp ? I18n.t('channels.switchApp') : I18n.t('channels.switchChat')} placement="bottom">
+        <IconButton
+          className={classes.switchButton}
+          color="primary"
+          aria-label="Menu"
+          onClick={() => {
+            return switchDrawer('drawer', { app: isChatApp ? undefined : 'chatApp' });
+          }}
+        >
           {isChatApp ? <ExitToAppIcon /> : <ChatIcon />}
-        </OverlaidTooltip>
-      </IconButton>
+        </IconButton>
+      </OverlaidTooltip>
       <UserMenu />
       <div className={classes.drawersContainer}>
         <Slide in={isChatApp} direction="right">
@@ -117,7 +117,7 @@ class AppDrawer extends React.Component {
     return [
       <Hidden mdUp>
         <Drawer
-          type="temporary"
+          variant="temporary"
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={drawerOpen}
           classes={{
@@ -135,7 +135,7 @@ class AppDrawer extends React.Component {
       </Hidden>,
       <Hidden mdDown implementation="css">
         <Drawer
-          type="persistent"
+          variant="persistent"
           classes={{
             paper: classNames(classes.drawerPaper)
           }}

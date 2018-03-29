@@ -59,17 +59,21 @@ module.exports = {
               path.join(__dirname, 'js'),
             ]
         },
-        {
+         {
             test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader']
+            use: [
+              { loader: "style-loader" },
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } }
+            ]
         },
         {
             test: /\.css$/,
-            use: ['style-loader', 'css-loader', 'sass-loader']
+            use: ['style-loader', 'css-loader']
         },
         {
             test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
-            use: 'file-loader?name=[name].[ext]',
+            use: 'url-loader?limit=100000&name=[name].[ext]'
         },
         {
           test: /\.(graphql|gql)$/,
@@ -80,7 +84,7 @@ module.exports = {
           test: /\.json$/,
           use: 'json-loader'
         },
-        ]
+]
     },
     resolve:{
         extensions:['.js', '.jsx']

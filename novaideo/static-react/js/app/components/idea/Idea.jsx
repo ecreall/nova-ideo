@@ -44,12 +44,18 @@ const styles = (theme) => {
       position: 'absolute',
       '& .tooltip-inner': {
         backgroundColor: '#4eaf4e'
+      },
+      '& .tooltip-arrow': {
+        borderBottomColor: '#4eaf4e !important'
       }
     },
     tooltipOppose: {
       position: 'absolute',
       '& .tooltip-inner': {
         backgroundColor: '#ef6e18'
+      },
+      '& .tooltip-arrow': {
+        borderBottomColor: '#ef6e18 !important'
       }
     },
     ideaText: {
@@ -259,7 +265,7 @@ export class RunderIdea extends React.Component {
                     return this.comments;
                   }}
                 >
-                  <Button fab color="primary" aria-label="comment" className={classes.goToComments}>
+                  <Button variant="fab" color="primary" aria-label="comment" className={classes.goToComments}>
                     <Icon className={classNames(classes.goToCommentsIcon, 'mdi-set mdi-comment-outline')} />
                   </Button>
                 </Anchor>
@@ -285,7 +291,14 @@ export class RunderIdea extends React.Component {
               </h1>
               {images.length > 0 &&
                 <div className={classes.imagesContainer}>
-                  <ImagesPreview images={images} />
+                  <ImagesPreview
+                    images={images}
+                    context={{
+                      title: idea.title,
+                      author: idea.author,
+                      date: idea.createdAt
+                    }}
+                  />
                 </div>}
               <MediumEditor
                 readOnly
@@ -325,7 +338,7 @@ export class RunderIdea extends React.Component {
             }}
             classes={{ container: classes.goToTop }}
           >
-            <Button fab color="primary" aria-label="comment" className={classes.goToTopBtn}>
+            <Button variant="fab" color="primary" aria-label="comment" className={classes.goToTopBtn}>
               <Icon className={classNames(classes.goToTopIcon, 'mdi-set mdi-chevron-double-up')} />
             </Button>
           </Anchor>

@@ -113,7 +113,7 @@ class MediumEditor extends React.Component {
   };
 
   fileSizeReadable = (size) => {
-    filesize(size);
+    return filesize(size);
   };
 
   getEditorState = () => {

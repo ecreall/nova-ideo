@@ -23,7 +23,9 @@ const styles = (theme) => {
     },
     listItem: {
       paddingTop: 4,
-      paddingBottom: 4
+      paddingBottom: 4,
+      paddingLeft: 14,
+      paddingRight: 10
     },
     listItemActive: {
       backgroundColor: theme.palette.tertiary.color,

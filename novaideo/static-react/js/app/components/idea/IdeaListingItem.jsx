@@ -17,7 +17,9 @@ const styles = (theme) => {
   return {
     listItem: {
       paddingTop: 4,
-      paddingBottom: 4
+      paddingBottom: 4,
+      paddingLeft: 16,
+      paddingRight: 10
     },
     listItemSelected: {
       backgroundColor: theme.palette.tertiary.color,
@@ -74,16 +76,14 @@ const styles = (theme) => {
     badgeColor: {
       color: theme.palette.primary['500'],
       backgroundColor: 'white',
-      padding: '3px 4px',
       marginLeft: 4,
-      borderRadius: '1em',
       fontSize: 12,
       fontWeight: 700,
-      width: 'auto',
-      height: 'auto',
-      top: -10,
+      top: 0,
       right: -10,
-      opacity: 0.6
+      opacity: 0.6,
+      height: 20,
+      width: 20
     },
     badgeColorSelected: {
       opacity: 1
@@ -185,7 +185,12 @@ export class DumbIdeaListingItem extends React.Component {
           menuPaper: classes.menuPaper
         }}
         activator={
-          <ListItem dense button classes={{ root: classNames(classes.listItem, { [classes.listItemSelected]: open }) }}>
+          <ListItem
+            dense
+            button
+            ContainerComponent="div"
+            classes={{ root: classNames(classes.listItem, { [classes.listItemSelected]: open }) }}
+          >
             {this.renderIcon()}
             <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
             {isPrevate &&

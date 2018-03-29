@@ -7,6 +7,7 @@ import Icon from 'material-ui/Icon';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import classNames from 'classnames';
 
 import { updateChatAppRight } from '../../../actions/actions';
 import Scrollbar from '../../common/Scrollbar';
@@ -25,9 +26,9 @@ const styles = {
     paddingLeft: 5,
     paddingRight: 5
   },
-  menuButton: {
+  menuIcon: {
     color: '#717274',
-    fontSize: 18
+    fontSize: '18px !important'
   },
   appBar: {
     position: 'relative',
@@ -74,21 +75,20 @@ class RightContent extends React.Component {
           <Toolbar className={classes.toolbar}>
             <IconButton onClick={this.toggleWidth}>
               {rightFull
-                ? <Icon className="mdi-set mdi-arrow-collapse-right" />
-                : <Icon className="mdi-set mdi-arrow-collapse-left" />}
+                ? <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-right')} />
+                : <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />}
             </IconButton>
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {title}
             </Typography>
             <IconButton
-              className={classes.menuButton}
               color="primary"
               aria-label="Menu"
               onClick={() => {
                 return updateRight({ open: false, componentId: undefined, full: false, props: {} });
               }}
             >
-              <CloseIcon />
+              <CloseIcon className={classes.menuIcon} />
             </IconButton>
           </Toolbar>
         </AppBar>

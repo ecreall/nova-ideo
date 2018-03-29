@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { ideaFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
@@ -44,20 +44,7 @@ export default function publish({ mutate }) {
           const currentIdea = prev.ideas.edges.filter((item) => {
             return item && item.node.id === newIdea.id;
           })[0];
-          if (!currentIdea) {
-            return update(prev, {
-              ideas: {
-                edges: {
-                  $unshift: [
-                    {
-                      __typename: 'Idea',
-                      node: newIdea
-                    }
-                  ]
-                }
-              }
-            });
-          }
+          if (!currentIdea) return false;
           const index = prev.ideas.edges.indexOf(currentIdea);
           return update(prev, {
             ideas: {

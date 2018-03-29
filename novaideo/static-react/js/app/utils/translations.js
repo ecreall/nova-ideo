@@ -12,7 +12,11 @@ const Translations = {
       },
       clickDownload: "Cliquer pour télécharger",
       remove: "Supprimer",
-      examinationClick: "%{name} (Cliquer pour voir l'avis des examinateurs)"
+      examinationClick: "%{name} (Cliquer pour voir l'avis des examinateurs)",
+      imageSlider: {
+        downLoadImage: "Cliquer pour télécharger",
+        downLoadImageSize: "Cliquer pour télécharger (%{size})"
+      }
     },
     idea: {
       private: "Privée",
@@ -231,7 +235,11 @@ const Translations = {
       },
       clickDownload: "Click to download",
       remove: "Remove",
-      examinationClick: "%{name} (Click to see the reviewers' opinion)"
+      examinationClick: "%{name} (Click to see the reviewers' opinion)",
+      imageSlider: {
+        downLoadImage: "Click to download",
+        downLoadImageSize: "Click to download (%{size})"
+      }
     },
     idea: {
       private: "Private",

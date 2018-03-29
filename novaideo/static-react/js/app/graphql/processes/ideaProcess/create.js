@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { ideaFragment } from '../../queries';
-import { ACTIONS } from '../../../processes';
+import { ACTIONS, STATE } from '../../../processes';
 
 export const createMutation = gql`
   mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,
@@ -86,7 +86,7 @@ export default function create({ ownProps, mutate }) {
             tokensSupport: 0,
             tokensOpposition: 0,
             userToken: null,
-            state: ['to work'],
+            state: [STATE.idea.private],
             channel: {
               __typename: 'Channel',
               id: 'channel-id',
@@ -116,6 +116,21 @@ export default function create({ ownProps, mutate }) {
         }
       },
       updateQueries: {
+        IdeasList: (prev, { mutationResult }) => {
+          const newIdea = mutationResult.data.createIdea.idea;
+          return update(prev, {
+            ideas: {
+              edges: {
+                $unshift: [
+                  {
+                    __typename: 'Idea',
+                    node: newIdea
+                  }
+                ]
+              }
+            }
+          });
+        },
         MyContents: (prev, { mutationResult }) => {
           const newIdea = mutationResult.data.createIdea.idea;
           const totalCount = prev.account.contents.totalCount + 1;

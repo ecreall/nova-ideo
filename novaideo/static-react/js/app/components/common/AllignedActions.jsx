@@ -27,7 +27,8 @@ const styles = (theme) => {
       marginRight: 5,
       marginTop: 1,
       height: 16,
-      width: 16
+      width: 16,
+      overflow: 'inherit'
     }
   };
 };
@@ -40,19 +41,19 @@ class AllignedActions extends React.Component {
         {actions.map((action, key) => {
           const Icon = action.icon;
           return (
-            <IconButton
-              className={classes.actionsText}
-              key={key}
-              onClick={() => {
-                if (onActionClick) onActionClick(action);
-              }}
-              aria-label="todo"
-            >
-              <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
+            <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
+              <IconButton
+                className={classes.actionsText}
+                key={key}
+                onClick={() => {
+                  if (onActionClick) onActionClick(action);
+                }}
+                aria-label="todo"
+              >
                 <Icon className={classes.actionsIcon} />
-              </OverlaidTooltip>
-              {action.counter}
-            </IconButton>
+                {action.counter}
+              </IconButton>
+            </OverlaidTooltip>
           );
         })}
       </CardActions>

@@ -254,7 +254,14 @@ export class RenderIdeaItem extends React.Component {
                 </Grid>
                 {images.length > 0 &&
                   <Grid className={classes.imagesContainer} item sm={12}>
-                    <ImagesPreview images={images} />
+                    <ImagesPreview
+                      images={images}
+                      context={{
+                        title: node.title,
+                        author: author,
+                        date: node.createdAt
+                      }}
+                    />
                   </Grid>}
               </Grid>
             </div>

@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { commentFragment } from '../../queries';
 import { filterActions } from '../../../utils/processes';

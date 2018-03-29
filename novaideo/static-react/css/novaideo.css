@@ -537,6 +537,11 @@ span.format-text-underline{
   text-decoration: underline;
 }
 
+.mdi-set {
+  overflow: inherit !important;
+  height: initial !important;
+}
+
 body {
   font-style: normal;
   font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;   

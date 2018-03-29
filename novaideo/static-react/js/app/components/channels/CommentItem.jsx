@@ -277,7 +277,7 @@ class RenderCommentItem extends React.Component {
   };
 
   render() {
-    const { node, classes, processManager, disableReply } = this.props;
+    const { node, classes, processManager, disableReply, itemProps } = this.props;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const { action } = this.state;
@@ -302,6 +302,7 @@ class RenderCommentItem extends React.Component {
       })
       : [];
     const addReactionAction = getActions(node.actions, { behaviorId: abstractProcessNodes.addreaction.nodeId })[0];
+    const channel = (itemProps && itemProps.channel) || node.channel;
     return (
       <div>
         <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
@@ -395,7 +396,14 @@ class RenderCommentItem extends React.Component {
                             ({I18n.t('channels.edited')})
                       </span>}
                     </div>
-                    <ImagesPreview images={images} />
+                    <ImagesPreview
+                      images={images}
+                      context={{
+                        title: channel && channel.title,
+                        author: author,
+                        date: node.createdAt
+                      }}
+                    />
                     <FilesPreview files={files} />
                   </div>
                   {node.urls.length > 0 &&

@@ -232,7 +232,7 @@ export class DumbCreateIdeaForm extends React.Component {
       nodeId: [ideamanagementProcess.nodes.create.nodeId, ideamanagementProcess.nodes.createAndPublish.nodeId]
     });
     const { opened } = this.state;
-    const authorPicture = account.picture;
+    const authorPicture = account && account.picture;
     const keywords = {};
     site.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
@@ -266,7 +266,7 @@ export class DumbCreateIdeaForm extends React.Component {
           <UserAvatar
             isAnonymous={anonymousSelected}
             picture={authorPicture}
-            title={account.title}
+            title={account && account.title}
             classes={{ avatar: classes.avatar }}
           />
         </div>

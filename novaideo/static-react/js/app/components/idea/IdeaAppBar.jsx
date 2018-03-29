@@ -34,8 +34,9 @@ const styles = (theme) => {
       lineHeight: 'normal'
     },
     actionsContainer: {
-      height: 41,
-      width: 'auto'
+      height: 45,
+      width: 'auto',
+      paddingRight: 0
     },
     actionsText: {
       color: '#2c2d30',

@@ -3,6 +3,7 @@ import Moment from 'moment';
 import { I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
+import * as Vibrant from 'node-vibrant';
 
 export const calculatePercentage = (value1, value2) => {
   return Math.round(value1 * 100 / value2 * 100) / 100;
@@ -137,3 +138,17 @@ export const getFileType = (type) => {
   const documentTypeParts = mimetype.split('.');
   return documentTypeParts[documentTypeParts.length - 1].toUpperCase();
 };
+
+export function getImagePalette(url) {
+  return Vibrant.from(url).getPalette().then((response) => {
+    const keys = Object.keys(response);
+    const addPalette = (acc, paletteName) => {
+      return {
+        ...acc,
+        [paletteName]: response[paletteName] && response[paletteName].getHex()
+      };
+    };
+    const colorPallete = keys.reduce(addPalette, {});
+    return colorPallete;
+  });
+}

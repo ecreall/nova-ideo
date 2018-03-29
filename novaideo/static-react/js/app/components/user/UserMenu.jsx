@@ -114,13 +114,13 @@ class UserMenu extends React.Component {
 
   userSectionHeader = () => {
     const { classes, account } = this.props;
-    const picture = account.picture;
+    const picture = account && account.picture;
     return (
       <div className={classes.sectionHeaderTitle}>
         <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : ''} />
         <div className={classes.sectionHeaderTitleContainer}>
           <div className={classes.sectionHeaderTitleText}>
-            {account.title}
+            {account && account.title}
           </div>
         </div>
       </div>

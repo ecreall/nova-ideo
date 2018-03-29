@@ -49,7 +49,9 @@ const styles = {
     }
   },
   appBarContent: {
-    flex: 1
+    flex: 1,
+    fontSize: 22,
+    fontWeight: 900
   },
   closeBtn: {
     position: 'relative',
@@ -84,9 +86,10 @@ class CommonDialog extends React.Component {
   };
 
   render() {
-    const { appBar, children, classes, open, fullScreen, transition, directDisplay, close } = this.props;
+    const { appBar, children, classes, open, fullScreen, transition, directDisplay, close, PaperProps } = this.props;
     return (
       <Dialog
+        PaperProps={PaperProps}
         classes={{ paper: classNames(classes.paper, { [classes.paperSmall]: !fullScreen }) }}
         onEntered={this.onEntered}
         fullScreen={fullScreen}

@@ -75,7 +75,7 @@ const styles = (theme) => {
       fontWeight: 900
     },
     title: {
-      marginBottom: 19
+      marginBottom: 14
     },
     titleBackground: {
       color: '#afafaf !important'
@@ -200,26 +200,26 @@ class NavBar extends React.Component {
                 {channelTitle}
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton onClick={this.handleInfo} className={classes.action}>
-                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
+                <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
+                  <IconButton onClick={this.handleInfo} className={classes.action}>
                     <InfoOutlineIcon className={classes.infoIcon} />
-                  </OverlaidTooltip>
-                </IconButton>
-                <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
-                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.pinned')} placement="bottom">
+                  </IconButton>
+                </OverlaidTooltip>
+                <OverlaidTooltip tooltip={I18n.t('channels.navbar.pinned')} placement="bottom">
+                  <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
                     <Icon className="mdi-set mdi-pin" />
-                  </OverlaidTooltip>
-                </IconButton>
-                <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
-                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.files')} placement="bottom">
+                  </IconButton>
+                </OverlaidTooltip>
+                <OverlaidTooltip tooltip={I18n.t('channels.navbar.files')} placement="bottom">
+                  <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
                     <Icon className={classNames('mdi-set mdi-file-outline', classes.filesIcon)} />
-                  </OverlaidTooltip>
-                </IconButton>
-                <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
-                  <OverlaidTooltip tooltip={I18n.t('channels.navbar.members')} placement="bottom">
+                  </IconButton>
+                </OverlaidTooltip>
+                <OverlaidTooltip tooltip={I18n.t('channels.navbar.members')} placement="bottom">
+                  <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
                     <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.membersIcon)} />
-                  </OverlaidTooltip>
-                </IconButton>
+                  </IconButton>
+                </OverlaidTooltip>
               </CardActions>
             </Typography>
             <div className={classes.menuContainer}>

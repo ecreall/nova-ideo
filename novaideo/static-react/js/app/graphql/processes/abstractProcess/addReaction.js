@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 export const addReactionMutation = gql`
   mutation($context: String!, $emoji: String!) {

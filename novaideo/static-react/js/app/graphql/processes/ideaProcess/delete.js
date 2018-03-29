@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 export const deleteMutation = gql`
   mutation($context: String) {

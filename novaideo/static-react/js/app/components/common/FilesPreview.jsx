@@ -56,12 +56,12 @@ const styles = {
   fileDown: {
     position: 'absolute',
     left: 31,
-    top: 38,
+    top: 33,
     color: '#3aa3e3',
     padding: 1,
     backgroundColor: '#fff',
     transform: 'scale(0)',
-    borderRadius: 6,
+    borderRadius: 8,
     height: 15,
     lineHeight: 'normal !important',
     '&.pdf-icon': {

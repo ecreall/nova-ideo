@@ -10,7 +10,8 @@ import { initalsGenerator } from '../../utils/globalFunctions';
 const styles = (theme) => {
   return {
     avatar: {
-      borderRadius: 4
+      borderRadius: 4,
+      background: 'white'
     },
     anonymousAvatar: {
       color: theme.palette.tertiary.hover.color,
@@ -27,13 +28,14 @@ const styles = (theme) => {
 
 class UserAvatar extends React.Component {
   render() {
-    const { classes, picture, isAnonymous, title } = this.props;
+    const { classes, picture, isAnonymous, title, strictUrl } = this.props;
     let content = null;
     if (isAnonymous) {
       content = <Icon className={'mdi-set mdi-guy-fawkes-mask'} />;
     } else if (title && !picture) {
       content = initalsGenerator(title);
     }
+    const urlAddon = !strictUrl ? '/profil' : '';
     return (
       <Avatar
         className={classNames({
@@ -41,9 +43,9 @@ class UserAvatar extends React.Component {
           [classes.noPicture]: !isAnonymous && !picture
         })}
         classes={{ root: classes.avatar }}
-        src={picture ? `${picture.url}/profil` : ''}
+        src={picture ? `${picture.url}${urlAddon}` : ''}
       >
-        {content}
+        {/* {content} */}
       </Avatar>
     );
   }

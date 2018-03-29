@@ -108,12 +108,18 @@ const styles = {
     position: 'absolute',
     '& .tooltip-inner': {
       backgroundColor: '#4eaf4e'
+    },
+    '& .tooltip-arrow': {
+      borderBottomColor: '#4eaf4e !important'
     }
   },
   tooltipOppose: {
     position: 'absolute',
     '& .tooltip-inner': {
       backgroundColor: '#ef6e18'
+    },
+    '& .tooltip-arrow': {
+      borderBottomColor: '#ef6e18 !important'
     }
   },
   ideaText: {
@@ -262,7 +268,14 @@ export class RenderIdeaItem extends React.Component {
                 </Grid>
                 {images.length > 0 &&
                   <Grid className={classes.imagesContainer} item sm={12}>
-                    <ImagesPreview images={images} />
+                    <ImagesPreview
+                      images={images}
+                      context={{
+                        title: node.title,
+                        author: author,
+                        date: node.createdAt
+                      }}
+                    />
                   </Grid>}
               </Grid>
             </div>

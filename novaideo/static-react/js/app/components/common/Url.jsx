@@ -119,7 +119,18 @@ class Url extends React.Component {
         <span className={classes.description}>
           {data.description}
         </span>
-        {!isYoutubeVideo && data.imageUrl && <ImagesPreview images={[{ url: data.imageUrl, variations: [] }]} />}
+        {!isYoutubeVideo &&
+          data.imageUrl &&
+          <ImagesPreview
+            images={[{ url: data.imageUrl, variations: [] }]}
+            context={{
+              title: data.title,
+              author: {
+                title: data.authorName || data.siteName,
+                picture: { url: data.authorAvatar || data.favicon, strictUrl: true }
+              }
+            }}
+          />}
         {isYoutubeVideo && <YoutubeTheater videoId={isYoutubeVideo[1]} />}
         {data.authorName || data.authorAvatar
           ? <div className={classes.header}>

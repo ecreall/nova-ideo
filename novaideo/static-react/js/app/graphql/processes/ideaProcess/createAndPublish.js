@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { ideaFragment } from '../../queries';
 import { ACTIONS, STATE } from '../../../processes';
@@ -87,7 +87,7 @@ export default function createAndPublish({ ownProps, mutate }) {
             tokensSupport: 0,
             tokensOpposition: 0,
             userToken: null,
-            state: site.supportIdeas ? ['submitted_support', 'published'] : ['published'],
+            state: site.supportIdeas ? [STATE.idea.submittedSupport, STATE.idea.published] : [STATE.idea.published],
             channel: {
               __typename: 'Channel',
               id: 'channel-id',
@@ -120,8 +120,6 @@ export default function createAndPublish({ ownProps, mutate }) {
       updateQueries: {
         IdeasList: (prev, { mutationResult }) => {
           const newIdea = mutationResult.data.createAndPublish.idea;
-          // if the idea is submitted to moderation
-          if (newIdea.state.includes(STATE.idea.submitted)) return prev;
           return update(prev, {
             ideas: {
               edges: {

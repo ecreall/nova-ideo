@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 export const fileFragment = gql`
   fragment file on File {

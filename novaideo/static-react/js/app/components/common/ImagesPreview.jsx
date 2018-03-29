@@ -112,7 +112,7 @@ class ImagesPreview extends React.Component {
   };
 
   render() {
-    const { images, classes } = this.props;
+    const { images, context, classes } = this.props;
     if (images.length === 0) return <div />;
     const firstImage = images[0];
     const otherImagesToPreview = 3;
@@ -142,7 +142,14 @@ class ImagesPreview extends React.Component {
                 : undefined}
             </div>}
         </div>
-        <ImagesSlider onClose={this.handleClose} open={this.state.sliderOpen} images={images} current={this.state.current} />
+        {this.state.sliderOpen &&
+          <ImagesSlider
+            context={context}
+            onClose={this.handleClose}
+            open={this.state.sliderOpen}
+            images={images}
+            current={this.state.current}
+          />}
       </div>
     );
   }
