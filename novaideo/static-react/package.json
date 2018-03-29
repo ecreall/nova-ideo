@@ -11,7 +11,7 @@
     "test:watch": "npm test -- --watch",
     "build": "rm -rf node_modules/react-i18nify/node_modules;webpack --progress --colors",
     "coverage": "jest --coverage",
-    "dev": "webpack -d --hot --watch",
+    "dev": "webpack -d --watch",
     "eslint": "eslint . --ext .js --ext .jsx --cache",
     "eslint:fix": "eslint . --ext .js --ext .jsx --fix",
     "eslint:table": "eslint . --ext .js --ext .jsx --cache --format table",
