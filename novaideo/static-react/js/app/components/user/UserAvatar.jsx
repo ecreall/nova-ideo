@@ -45,7 +45,7 @@ class UserAvatar extends React.Component {
         classes={{ root: classes.avatar }}
         src={picture ? `${picture.url}${urlAddon}` : ''}
       >
-        {/* {content} */}
+        {content}
       </Avatar>
     );
   }
