@@ -6,7 +6,6 @@ import { Field, reduxForm, initialize } from 'redux-form';
 import SearchIcon from 'material-ui-icons/Search';
 import IconButton from 'material-ui/IconButton';
 import classNames from 'classnames';
-import { convertFromHTML } from 'draft-convert';
 
 import { iconAdapter } from '../../utils/globalFunctions';
 import { renderTextBoxField } from './utils';
@@ -105,13 +104,15 @@ const styles = (theme) => {
 };
 
 export class DumbSearchForm extends React.Component {
+  editor = null;
+
   getFilters = (query) => {
-    return { text: convertFromHTML(query).getPlainText() };
+    return { text: query };
   };
 
   search = () => {
-    const { onSearch, formData } = this.props;
-    if (onSearch) onSearch(this.getFilters(formData.values.query));
+    const { onSearch } = this.props;
+    if (onSearch) onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
   };
 
   cancel = () => {
@@ -122,6 +123,7 @@ export class DumbSearchForm extends React.Component {
 
   initializeForm = () => {
     const { form } = this.props;
+    this.editor.clear();
     this.props.dispatch(
       initialize(form, {
         query: ''
@@ -130,8 +132,8 @@ export class DumbSearchForm extends React.Component {
   };
 
   render() {
-    const { classes, formData, title } = this.props;
-    const hasQuery = formData && formData.values && formData.values.query;
+    const { classes, title } = this.props;
+    const hasQuery = this.editor && this.editor.getPlainText();
     const CancelIcon = iconAdapter('mdi-set mdi-close-circle-outline');
     return (
       <div className={classes.container}>
@@ -141,7 +143,10 @@ export class DumbSearchForm extends React.Component {
             <Field
               props={{
                 onEnter: this.search,
-                withEmoji: false
+                withEmoji: false,
+                initRef: (editor) => {
+                  this.editor = editor;
+                }
               }}
               name="query"
               component={renderTextBoxField}

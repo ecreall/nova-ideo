@@ -169,6 +169,7 @@ export class DumbCommentForm extends React.Component {
   initializeForm = () => {
     const { formData, form } = this.props;
     const anonymous = formData && formData.values && Boolean(formData.values.anonymous);
+    this.editor.clear();
     this.props.dispatch(
       initialize(form, {
         comment: '',
@@ -180,7 +181,7 @@ export class DumbCommentForm extends React.Component {
 
   render() {
     const { formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, placeholder, classes, theme } = this.props;
-    const hasComment = formData && formData.values && formData.values.comment;
+    const hasComment = this.editor && this.editor.getPlainText();
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
       return file;

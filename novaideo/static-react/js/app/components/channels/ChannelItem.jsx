@@ -107,7 +107,8 @@ export class DumbChannelItem extends React.Component {
   renderIcon = (isActive, isSelected) => {
     const { classes, node, itemProps, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
-    const hasMessage = currentMessage && currentMessage.values && currentMessage.values.comment;
+    const editor = currentMessage && currentMessage.values && currentMessage.values.comment;
+    const hasMessage = editor && editor.getCurrentContent().getPlainText();
     if (!isSelected && hasMessage) {
       return (
         <ListItemIcon>

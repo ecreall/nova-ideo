@@ -131,7 +131,7 @@ export class DumbEditCommentForm extends React.Component {
 
   render() {
     const { action, formData, placeholder, onSubmit, classes, theme } = this.props;
-    const hasComment = formData && formData.values && formData.values.comment;
+    const hasComment = this.editor && this.editor.getPlainText();
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
       return file;

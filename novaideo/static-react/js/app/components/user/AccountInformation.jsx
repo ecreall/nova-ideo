@@ -32,14 +32,15 @@ const styles = (theme) => {
 class AccountInformation extends React.Component {
   render() {
     const { account, classes, onlyIcon } = this.props;
-    const picture = account.picture;
+    const picture = account && account.picture;
+    const title = account && account.title;
     return (
       <div className={classes.accountInfo}>
         <div className={classes.accountTitle}>
-          <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={account.title} />
+          <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={title} />
           {!onlyIcon &&
             <div className={classNames('account-title-text', classes.accountTitleText)}>
-              {account.title}
+              {title}
             </div>}
         </div>
       </div>

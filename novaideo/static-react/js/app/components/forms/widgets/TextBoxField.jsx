@@ -21,22 +21,19 @@ class TextBoxField extends React.Component {
     if (initRef) initRef(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { value, autoFocus } = this.props;
-    if (this.editor && !nextProps.value && nextProps.value !== value) {
-      this.editor.clear(autoFocus);
-    }
+  shouldComponentUpdate() {
+    return false;
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !nextProps.value;
-  }
+  clear = () => {
+    if (this.editor) {
+      this.editor.clear(true);
+    }
+  };
 
   onChange = (value) => {
     if (this.editor) {
-      const isEmpty = this.editor.isEmptyText(value);
-      const textValue = isEmpty ? '' : value;
-      this.props.onChange(textValue);
+      this.props.onChange(value);
     }
   };
 
@@ -49,6 +46,10 @@ class TextBoxField extends React.Component {
 
   getPlainText = () => {
     return this.editor.getPlainText();
+  };
+
+  getHTMLText = () => {
+    return this.editor.getHTMLText();
   };
 
   render() {

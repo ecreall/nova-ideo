@@ -153,6 +153,7 @@ export class DumbCreateIdeaForm extends React.Component {
     this.container = null;
     this.filesPicker = null;
     this.keywordsPicker = null;
+    this.editor = null;
   }
 
   componentDidMount() {
@@ -185,9 +186,10 @@ export class DumbCreateIdeaForm extends React.Component {
         return file;
       });
       const keywords = formData.values.keywords;
+      const text = this.editor.getHTMLText();
       if (action.nodeId === processNodes.createAndPublish.nodeId) {
         this.props.createAndPublishIdea({
-          text: formData.values.text,
+          text: text,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,
@@ -198,7 +200,7 @@ export class DumbCreateIdeaForm extends React.Component {
       }
       if (action.nodeId === processNodes.create.nodeId) {
         this.props.createIdea({
-          text: formData.values.text,
+          text: text,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,
@@ -212,6 +214,7 @@ export class DumbCreateIdeaForm extends React.Component {
 
   initializeForm = () => {
     const { form } = this.props;
+    this.editor.clear();
     this.props.dispatch(
       initialize(form, {
         title: '',
@@ -244,7 +247,7 @@ export class DumbCreateIdeaForm extends React.Component {
     let anonymousSelected = false;
     let canSubmit = false;
     if (formData && formData.values) {
-      hasText = formData.values.text;
+      hasText = this.editor && this.editor.getHTMLText();
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
@@ -289,6 +292,9 @@ export class DumbCreateIdeaForm extends React.Component {
               <Field
                 props={{
                   onCtrlEnter: this.handleSubmit,
+                  initRef: (editor) => {
+                    this.editor = editor;
+                  },
                   style: {
                     picker: {
                       bottom: 'auto'

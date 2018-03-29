@@ -26,7 +26,9 @@ class TextEditor extends React.Component {
   constructor(props) {
     super(props);
     this.editor = null;
-    this.state = { editorState: this.resetEditor(props.value) };
+    let editorstate = props.value && typeof props.value === 'string' && this.resetEditor(props.value);
+    editorstate = editorstate || props.value;
+    this.state = { editorState: editorstate || EditorState.createEmpty() };
   }
 
   resetEditor = (text, focus) => {
@@ -50,7 +52,9 @@ class TextEditor extends React.Component {
   };
 
   clear = (focus) => {
-    this.setState({ editorState: this.resetEditor(emptyText, focus) });
+    this.setState({ editorState: this.resetEditor(emptyText) }, () => {
+      if (focus) this.focus();
+    });
   };
 
   endFocus = (editorState) => {
@@ -100,9 +104,12 @@ class TextEditor extends React.Component {
     return this.state.editorState.getCurrentContent().getPlainText();
   };
 
+  getHTMLText = () => {
+    return convertToHTML(this.state.editorState.getCurrentContent());
+  };
+
   onChange = (editorState) => {
-    const content = convertToHTML(editorState.getCurrentContent());
-    this.props.onChange(content);
+    this.props.onChange(editorState);
     return this.setState({ editorState: editorState });
   };
 
