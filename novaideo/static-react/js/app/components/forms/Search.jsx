@@ -111,8 +111,8 @@ export class DumbSearchForm extends React.Component {
   };
 
   search = () => {
-    // const { onSearch } = this.props;
-    // if (onSearch) onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
+    const { onSearch } = this.props;
+    if (onSearch) onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
   };
 
   cancel = () => {
