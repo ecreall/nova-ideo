@@ -112,7 +112,18 @@ const styles = (theme) => {
       width: 40,
       height: 40,
       '&:hover': {
-        color: theme.palette.info[500]
+        [`&.${CONTENTS_IDS.info}`]: {
+          color: theme.palette.info[500]
+        },
+        [`&.${CONTENTS_IDS.pinned}`]: {
+          color: theme.palette.danger[500]
+        },
+        [`&.${CONTENTS_IDS.files}`]: {
+          color: theme.palette.warning[500]
+        },
+        [`&.${CONTENTS_IDS.members}`]: {
+          color: theme.palette.success[500]
+        }
       }
     },
     actionWithSeparator: {
@@ -129,6 +140,20 @@ const styles = (theme) => {
         borderRight: '1px solid #e5e5e5',
         content: '""',
         color: '#2c2d30'
+      }
+    },
+    actionActive: {
+      [`&.${CONTENTS_IDS.info}`]: {
+        color: theme.palette.info[500]
+      },
+      [`&.${CONTENTS_IDS.pinned}`]: {
+        color: theme.palette.danger[500]
+      },
+      [`&.${CONTENTS_IDS.files}`]: {
+        color: theme.palette.warning[500]
+      },
+      [`&.${CONTENTS_IDS.members}`]: {
+        color: theme.palette.success[500]
       }
     }
   };
@@ -201,22 +226,42 @@ class NavBar extends React.Component {
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
                 <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
-                  <IconButton onClick={this.handleInfo} className={classes.action}>
+                  <IconButton
+                    onClick={this.handleInfo}
+                    className={classNames(CONTENTS_IDS.info, classes.action, {
+                      [classes.actionActive]: rightComponentId === CONTENTS_IDS.info
+                    })}
+                  >
                     <InfoOutlineIcon className={classes.infoIcon} />
                   </IconButton>
                 </OverlaidTooltip>
                 <OverlaidTooltip tooltip={I18n.t('channels.navbar.pinned')} placement="bottom">
-                  <IconButton onClick={this.handlePinned} className={actionWithSeparator}>
+                  <IconButton
+                    onClick={this.handlePinned}
+                    className={classNames(CONTENTS_IDS.pinned, actionWithSeparator, {
+                      [classes.actionActive]: rightComponentId === CONTENTS_IDS.pinned
+                    })}
+                  >
                     <Icon className="mdi-set mdi-pin" />
                   </IconButton>
                 </OverlaidTooltip>
                 <OverlaidTooltip tooltip={I18n.t('channels.navbar.files')} placement="bottom">
-                  <IconButton onClick={this.handleFiles} className={actionWithSeparator}>
+                  <IconButton
+                    onClick={this.handleFiles}
+                    className={classNames(CONTENTS_IDS.files, actionWithSeparator, {
+                      [classes.actionActive]: rightComponentId === CONTENTS_IDS.files
+                    })}
+                  >
                     <Icon className={classNames('mdi-set mdi-file-outline', classes.filesIcon)} />
                   </IconButton>
                 </OverlaidTooltip>
                 <OverlaidTooltip tooltip={I18n.t('channels.navbar.members')} placement="bottom">
-                  <IconButton onClick={this.handleMembers} className={actionWithSeparator}>
+                  <IconButton
+                    onClick={this.handleMembers}
+                    className={classNames(CONTENTS_IDS.members, actionWithSeparator, {
+                      [classes.actionActive]: rightComponentId === CONTENTS_IDS.members
+                    })}
+                  >
                     <Icon className={classNames('mdi-set mdi-account-multiple-outline', classes.membersIcon)} />
                   </IconButton>
                 </OverlaidTooltip>

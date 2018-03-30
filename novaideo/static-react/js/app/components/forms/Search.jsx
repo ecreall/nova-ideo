@@ -111,8 +111,8 @@ export class DumbSearchForm extends React.Component {
   };
 
   search = () => {
-    const { onSearch } = this.props;
-    if (onSearch) onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
+    // const { onSearch } = this.props;
+    // if (onSearch) onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
   };
 
   cancel = () => {
@@ -163,10 +163,11 @@ export class DumbSearchForm extends React.Component {
               {title}
             </div>
           </div>
-          {hasQuery &&
-            <IconButton onClick={this.cancel}>
+          {hasQuery
+            ? <IconButton onClick={this.cancel}>
               <CancelIcon className={classes.icon} />
-            </IconButton>}
+            </IconButton>
+            : null}
         </div>
       </div>
     );

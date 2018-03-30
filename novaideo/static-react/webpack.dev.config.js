@@ -20,7 +20,7 @@ module.exports = {
         host: webpackHost,
         proxy: {
           '/static-react': {
-            target: "http://0.0.0.0:6543/"
+            target: process.env.WEBPACK_URL
           }
         }
     },

@@ -3,6 +3,7 @@
 export const STATIC_URL = '/novaideostatic-react/';
 
 export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
+export const STICKER_MAN_1 = STATIC_URL + require('./assets/sticker-women-1.svg');
 
 export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
 

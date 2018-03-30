@@ -95,9 +95,9 @@ class TextEditor extends React.Component {
     const textWithEntity = Modifier.insertText(currentContent, selection, text, null, null);
     let newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
     newEditorState = this.endFocus(newEditorState);
-    const content = convertToHTML(newEditorState.getCurrentContent());
-    this.props.onChange(content);
-    this.setState({ editorState: newEditorState });
+    this.setState({ editorState: newEditorState }, () => {
+      this.props.onChange(this.state.editorState);
+    });
   };
 
   getPlainText = () => {
@@ -109,8 +109,9 @@ class TextEditor extends React.Component {
   };
 
   onChange = (editorState) => {
-    this.props.onChange(editorState);
-    return this.setState({ editorState: editorState });
+    this.setState({ editorState: editorState }, () => {
+      this.props.onChange(this.state.editorState);
+    });
   };
 
   handleKeyCommand = (command) => {
