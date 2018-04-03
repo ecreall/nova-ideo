@@ -8,6 +8,7 @@ import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
 import { goTo, get } from '../../utils/routeMap';
+import { arrayToDict } from '../../utils/globalFunctions';
 import { PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import { selectMutation } from '../../graphql/processes/abstractProcess/select';
@@ -125,7 +126,31 @@ export class DumbIdeaProcessManager extends React.Component {
     case ideaProcessNodes.delete.nodeId:
       return <Delete idea={idea} action={action} onClose={this.onFormClose} />;
     case ideaProcessNodes.edit.nodeId:
-      return <Edit idea={idea} action={action} onClose={this.onFormClose} key={`${idea.id}-edit`} form={`${idea.id}-edit`} />;
+      return (
+        <Edit
+          idea={idea}
+          action={action}
+          onClose={this.onFormClose}
+          key={`${idea.id}-edit`}
+          form={`${idea.id}-edit`}
+          initialValues={{
+            title: idea.title,
+            text: idea.text,
+            keywords: arrayToDict(idea.keywords),
+            files: idea.attachedFiles.map((file) => {
+              return {
+                id: file.id,
+                oid: file.oid,
+                name: file.title,
+                size: file.size || 0,
+                mimetype: file.mimetype,
+                type: file.mimetype,
+                preview: { url: file.url, type: file.isImage ? 'image' : 'file' }
+              };
+            })
+          }}
+        />
+      );
     case ideaProcessNodes.publish.nodeId:
       return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
     default:

@@ -14,7 +14,7 @@ import { CardActions } from 'material-ui/Card';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
 
-import { updateChatAppRight, closeChatApp } from '../../actions/actions';
+import { updateChatAppRight, closeChatApp, openDrawer } from '../../actions/actions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
@@ -75,7 +75,7 @@ const styles = (theme) => {
       fontWeight: 900
     },
     title: {
-      marginBottom: 14
+      marginBottom: 15
     },
     titleBackground: {
       color: '#afafaf !important'
@@ -85,14 +85,14 @@ const styles = (theme) => {
       fontWeight: 900
     },
     infoIcon: {
-      height: 20,
-      width: 20
+      height: 17,
+      width: 17
     },
     filesIcon: {
-      fontSize: '19px !important'
+      fontSize: '17px !important'
     },
     membersIcon: {
-      fontSize: '22px !important'
+      fontSize: '20px !important'
     },
     appBar: {
       boxShadow: '0 1px 0 rgba(0,0,0,.1)'
@@ -107,10 +107,10 @@ const styles = (theme) => {
       marginLeft: -18
     },
     action: {
-      fontSize: 18,
+      fontSize: 17,
       color: '#a0a0a0',
-      width: 40,
-      height: 40,
+      width: 37,
+      height: 30,
       '&:hover': {
         [`&.${CONTENTS_IDS.info}`]: {
           color: theme.palette.info[500]
@@ -134,7 +134,7 @@ const styles = (theme) => {
         right: 'auto',
         bottom: 'auto',
         left: -1,
-        height: 20,
+        height: 17,
         transform: 'translateY(-50%)',
         borderRadius: 0,
         borderRight: '1px solid #e5e5e5',
@@ -213,7 +213,7 @@ class NavBar extends React.Component {
                 color="primary"
                 aria-label="Menu"
                 onClick={() => {
-                  this.props.updateApp('drawer', { open: true, app: 'chatApp' });
+                  this.props.openDrawer('chatApp');
                 }}
               >
                 <ChatIcon />
@@ -288,7 +288,8 @@ class NavBar extends React.Component {
 
 export const mapDispatchToProps = {
   updateChatAppRight: updateChatAppRight,
-  closeChatApp: closeChatApp
+  closeChatApp: closeChatApp,
+  openDrawer: openDrawer
 };
 
 export const mapStateToProps = (state) => {

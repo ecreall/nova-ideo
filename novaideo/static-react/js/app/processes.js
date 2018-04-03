@@ -15,9 +15,13 @@ export const PROCESSES = {
     id: 'ideamanagement',
     nodes: {
       create: {
-        nodeId: 'creat'
+        nodeId: 'creat',
+        submission: 'processes.ideamanagement.create.submission'
       },
-      createAndPublish: { nodeId: 'creatandpublish' },
+      createAndPublish: {
+        nodeId: 'creatandpublish',
+        submission: 'processes.ideamanagement.createAndPublish.submission'
+      },
       comment: {
         nodeId: 'comment',
         title: 'processes.ideamanagement.comment.title',

@@ -3,7 +3,7 @@ import graphene
 from .processes.abstract_process import Select, Deselect, AddReaction
 from .processes.idea_management import (
     CreateIdea, CreateAndPublishIdea, DeleteIdea,
-    Support, Oppose, WithdrawToken, Publish)
+    Support, Oppose, WithdrawToken, Publish, EditIdea)
 from .processes.comment_management import (
     CommentObject, MarkCommentsAsRead, DeleteComment,
     Pin, Unpin, Edit)
@@ -15,6 +15,7 @@ class Mutations(graphene.ObjectType):
     add_reaction = AddReaction.Field()
     # idea management process
     create_idea = CreateIdea.Field()
+    edit_idea = EditIdea.Field()
     create_and_publish = CreateAndPublishIdea.Field()
     publish_idea = Publish.Field()
     delete_idea = DeleteIdea.Field()

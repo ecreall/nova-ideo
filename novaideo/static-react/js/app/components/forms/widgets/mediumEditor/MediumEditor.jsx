@@ -1,6 +1,5 @@
 import React from 'react';
 import { EditorState, Modifier, convertToRaw, SelectionState } from 'draft-js';
-import { convertToHTML } from 'draft-convert';
 import { Editor, Block, createEditorState, addNewBlockAt, rendererFn, HANDLED, NOT_HANDLED } from 'medium-draft';
 import { setImportOptions, htmlToStyle } from 'medium-draft/lib/importer';
 import { setRenderOptions, styleToHTML } from 'medium-draft/lib/exporter';
@@ -61,10 +60,13 @@ class MediumEditor extends React.Component {
 
     this.inlineButtons = INLINE_BUTTONS();
 
+    let editorstate = props.value && typeof props.value === 'string' && this.resetEditor(props.value);
+    editorstate = editorstate || props.value;
     this.state = {
-      editorState: this.resetEditor(props.value),
+      editorState: editorstate || EditorState.createEmpty(),
       editorEnabled: !props.readOnly
     };
+
     this.editor = null;
     this.files = [];
   }
@@ -73,6 +75,17 @@ class MediumEditor extends React.Component {
     const { autoFocus, initRef } = this.props;
     if (autoFocus) this.focus(true);
     if (initRef) initRef(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { readOnly, value } = this.props;
+    if (readOnly && nextProps.value !== value) {
+      let editorstate = nextProps.value && typeof nextProps.value === 'string' && this.resetEditor(nextProps.value);
+      editorstate = editorstate || nextProps.value;
+      this.setState({
+        editorState: editorstate || EditorState.createEmpty()
+      });
+    }
   }
 
   addFile = (file) => {
@@ -238,22 +251,25 @@ class MediumEditor extends React.Component {
     const textWithEntity = Modifier.insertText(currentContent, selection, text, null, null);
     let newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
     newEditorState = this.endFocus(newEditorState);
-    const content = convertToHTML(newEditorState.getCurrentContent());
-    this.props.onChange(content);
-    this.setState({ editorState: newEditorState });
+    const { onChange } = this.props;
+    this.setState({ editorState: newEditorState }, () => {
+      if (onChange) onChange(this.state.editorState);
+    });
   };
 
   getPlainText = () => {
     return this.state.editorState.getCurrentContent().getPlainText();
   };
 
+  getHTMLText = () => {
+    return this.exporter(this.state.editorState.getCurrentContent());
+  };
+
   onChange = (editorState) => {
     const { onChange } = this.props;
-    if (onChange) {
-      const content = this.exporter(editorState.getCurrentContent());
-      onChange(content);
-    }
-    return this.setState({ editorState: editorState });
+    this.setState({ editorState: editorState }, () => {
+      if (onChange) onChange(this.state.editorState);
+    });
   };
 
   handleKeyCommand = (command) => {
@@ -270,7 +286,8 @@ class MediumEditor extends React.Component {
   };
 
   render() {
-    const { editorState, editorEnabled, placeholder } = this.state;
+    const { editorState, editorEnabled } = this.state;
+    const { placeholder } = this.props;
     return (
       <Editor
         ref={(editor) => {

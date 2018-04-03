@@ -152,3 +152,13 @@ export function getImagePalette(url) {
     return colorPallete;
   });
 }
+
+export function arrayToDict(list) {
+  const result = {};
+  const reducer = (accumulator, currentValue) => {
+    accumulator[currentValue] = currentValue;
+    return accumulator;
+  };
+  list.reduce(reducer, result);
+  return result;
+}

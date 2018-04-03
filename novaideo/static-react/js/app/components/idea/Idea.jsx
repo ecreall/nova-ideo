@@ -286,7 +286,7 @@ export class RunderIdea extends React.Component {
                 }}
                 className={classes.title}
               >
-                <IdeaIcon className={classNames(classes.icon)} />
+                <IdeaIcon className={classes.icon} />
                 {idea && idea.title}
               </h1>
               {images.length > 0 &&
@@ -300,13 +300,7 @@ export class RunderIdea extends React.Component {
                     }}
                   />
                 </div>}
-              <MediumEditor
-                readOnly
-                value={idea.text}
-                onChange={(value) => {
-                  console.log(value);
-                }}
-              />
+              <MediumEditor readOnly value={idea.text} />
               <FilesPreview files={files} />
               <div
                 ref={(comments) => {

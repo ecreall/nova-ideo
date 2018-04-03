@@ -63,7 +63,11 @@ const Translations = {
       ideamanagement: {
         create: {
           title: "",
-          description: ""
+          description: "",
+          submission: "Enregistrer"
+        },
+        createAndPublish: {
+          submission: "Enregistrer et publier"
         },
         edit: {
           title: "Editer",
@@ -286,7 +290,11 @@ const Translations = {
       ideamanagement: {
         create: {
           title: "",
-          description: ""
+          description: "",
+          submission: "Save"
+        },
+        createAndPublish: {
+          submission: "Save and publish"
         },
         edit: {
           title: "Edit",

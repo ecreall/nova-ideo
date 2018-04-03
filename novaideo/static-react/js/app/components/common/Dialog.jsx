@@ -95,7 +95,7 @@ class CommonDialog extends React.Component {
         fullScreen={fullScreen}
         open={open}
         onExited={this.onClose}
-        transition={transition && Transition}
+        transition={transition ? Transition : undefined}
       >
         <AppBar className={classNames({ [classes.appBar]: fullScreen, [classes.modal]: !fullScreen })}>
           <Toolbar>

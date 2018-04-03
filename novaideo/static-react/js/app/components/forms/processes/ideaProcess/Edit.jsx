@@ -4,7 +4,6 @@ import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { I18n } from 'react-redux-i18n';
-import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import AttachFileIcon from 'material-ui-icons/AttachFile';
 import IconButton from 'material-ui/IconButton';
@@ -14,20 +13,13 @@ import Moment from 'moment';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import SelectChipPreview from '../../widgets/SelectChipPreview';
-import {
-  renderTextInput,
-  renderRichTextField,
-  renderAnonymousCheckboxField,
-  renderFilesListField,
-  renderSelect
-} from '../../utils';
+import { renderTextInput, renderRichTextField, renderFilesListField, renderSelect } from '../../utils';
 import UserAvatar from '../../../user/UserAvatar';
 import { PROCESSES } from '../../../../processes';
-import { filterActions } from '../../../../utils/processes';
 import { getFormattedDate } from '../../../../utils/globalFunctions';
-import { create, createAndPublish } from '../../../../graphql/processes/ideaProcess';
-import { createMutation } from '../../../../graphql/processes/ideaProcess/create';
-import { createAndPublishMutation } from '../../../../graphql/processes/ideaProcess/createAndPublish';
+import { getEntityIcon } from '../../../../utils/processes';
+import { edit } from '../../../../graphql/processes/ideaProcess';
+import { editMutation } from '../../../../graphql/processes/ideaProcess/edit';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 
@@ -137,6 +129,36 @@ const styles = (theme) => {
       '&:hover': {
         textDecoration: 'underline'
       }
+    },
+    filesPreviewContainer: {
+      padding: 0
+    },
+    filesPreviewImage: {
+      height: 35
+    },
+    filesPreviewFileIcon: {
+      fontSize: '31px !important'
+    },
+    maskIcon: {
+      width: 'auto !important',
+      height: 'auto !important'
+    },
+    maskDefault: {
+      height: 40,
+      width: 40,
+      color: '#808080'
+    },
+    maskChecked: {
+      color: theme.palette.warning[700]
+    },
+    titleInputContainer: {
+      fontSize: 42,
+      color: '#2c2d30',
+      fontWeight: 900,
+      paddingTop: 3,
+      lineHeight: 'normal',
+      display: 'flex',
+      alignItems: 'baseline'
     }
   };
 };
@@ -144,49 +166,38 @@ const styles = (theme) => {
 export class DumbEditIdeaForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      opened: false
-    };
     this.filesPicker = null;
     this.keywordsPicker = null;
     this.form = null;
     this.editor = null;
   }
 
-  openForm = () => {
-    if (!this.state.opened) {
-      this.setState({ opened: true });
-    }
-  };
-
-  handleSubmit = (action) => {
-    const { formData, valid, globalProps } = this.props;
+  handleSubmit = () => {
+    const { formData, valid, idea, action } = this.props;
     const processNodes = PROCESSES.ideamanagement.nodes;
     if (valid) {
-      let files = formData.values.files || [];
-      files = files.filter((file) => {
-        return file;
+      const files = formData.values.files || [];
+      const newFiles = files.filter((file) => {
+        return file && !file.oid;
       });
-      const keywords = formData.values.keywords;
-      if (action.nodeId === processNodes.createAndPublish.nodeId) {
-        this.props.createAndPublishIdea({
-          text: formData.values.text,
-          title: formData.values.title,
-          keywords: keywords ? Object.values(formData.values.keywords) : [],
-          attachedFiles: files,
-          anonymous: Boolean(formData.values.anonymous),
-          account: globalProps.account
+
+      const oldFiles = files
+        .filter((file) => {
+          return file && file.oid;
+        })
+        .map((file) => {
+          return file.oid;
         });
-        this.initializeForm();
-      }
-      if (action.nodeId === processNodes.create.nodeId) {
-        this.props.createIdea({
-          text: formData.values.text,
+      const keywords = formData.values.keywords;
+      const htmlText = this.editor.getHTMLText();
+      if (action.nodeId === processNodes.edit.nodeId) {
+        this.props.editIdea({
+          context: idea,
+          text: htmlText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
-          attachedFiles: files,
-          anonymous: Boolean(formData.values.anonymous),
-          account: globalProps.account
+          attachedFiles: newFiles,
+          oldFiles: oldFiles
         });
         this.initializeForm();
       }
@@ -195,16 +206,15 @@ export class DumbEditIdeaForm extends React.Component {
 
   initializeForm = () => {
     const { form } = this.props;
+    this.closeForm();
     this.props.dispatch(
       initialize(form, {
         title: '',
         keywords: {},
         text: '',
-        anonymous: false,
-        files: []
+        attachedFiles: []
       })
     );
-    this.setState({ opened: false });
   };
 
   closeForm = () => {
@@ -212,43 +222,37 @@ export class DumbEditIdeaForm extends React.Component {
   };
 
   render() {
-    const { formData, globalProps: { site, account, rootActions }, action, onClose, classes, theme } = this.props;
-    const ideamanagementProcess = PROCESSES.ideamanagement;
-    const creationActions = filterActions(rootActions, {
-      processId: ideamanagementProcess.id,
-      nodeId: [ideamanagementProcess.nodes.create.nodeId, ideamanagementProcess.nodes.createAndPublish.nodeId]
-    });
+    const { idea, formData, isAnonymous, globalProps: { site, account }, action, onClose, classes, theme } = this.props;
     const authorPicture = account.picture;
     const keywords = {};
     site.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
     });
-    const withAnonymous = site.anonymisation;
     let files = [];
     let selectedKeywords = {};
-    let anonymousSelected = false;
     if (formData && formData.values) {
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
       });
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
-      anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
     }
     const date = getFormattedDate(Moment(), 'date.format3');
-    const authorTitle = anonymousSelected ? account.mask.title : account.title;
+    const authorTitle = isAnonymous ? account.mask.title : account.title;
+    const IdeaIcon = getEntityIcon(idea.__typename);
     return (
       <Form
         initRef={(form) => {
           this.form = form;
         }}
+        transition={false}
         fullScreen
         open
         onClose={onClose}
         appBar={[
           <div className={classes.titleContainer}>
             <UserAvatar
-              isAnonymous={anonymousSelected}
+              isAnonymous={isAnonymous}
               picture={authorPicture}
               title={authorTitle}
               classes={{ avatar: classes.avatar }}
@@ -304,20 +308,15 @@ export class DumbEditIdeaForm extends React.Component {
               name="files"
               component={renderFilesListField}
             />
-            {withAnonymous
-              ? <Field
-                props={{
-                  classes: classes
-                }}
-                name="anonymous"
-                component={renderAnonymousCheckboxField}
-                type="boolean"
-              />
-              : null}
           </div>
         ]}
         footer={[
           <FilesPickerPreview
+            classes={{
+              container: classes.filesPreviewContainer,
+              image: classes.filesPreviewImage,
+              fileIcon: classes.filesPreviewFileIcon
+            }}
             files={files}
             getPicker={() => {
               return this.filesPicker;
@@ -332,18 +331,21 @@ export class DumbEditIdeaForm extends React.Component {
         ]}
       >
         <div className={classes.form}>
-          <Field
-            props={{
-              placeholder: I18n.t('forms.idea.titleHelper'),
-              classes: {
-                root: classes.titleRoot,
-                input: classes.titleInput
-              }
-            }}
-            name="title"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
+          <div className={classes.titleInputContainer}>
+            <IdeaIcon className={classes.icon} />
+            <Field
+              props={{
+                placeholder: I18n.t('forms.idea.titleHelper'),
+                classes: {
+                  root: classes.titleRoot,
+                  input: classes.titleInput
+                }
+              }}
+              name="title"
+              component={renderTextInput}
+              onChange={() => {}}
+            />
+          </div>
           <SelectChipPreview
             items={selectedKeywords}
             onItemDelete={(id) => {
@@ -371,7 +373,7 @@ export class DumbEditIdeaForm extends React.Component {
 }
 
 // Decorate the form component
-const EditIdeaReduxForm = reduxForm({ destroyOnUnmount: false })(DumbEditIdeaForm);
+const EditIdeaReduxForm = reduxForm()(DumbEditIdeaForm);
 
 const mapStateToProps = (state, props) => {
   return {
@@ -380,20 +382,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const EditIdeaForm = graphql(createAndPublishMutation, {
+const EditIdeaForm = graphql(editMutation, {
   props: function (props) {
     return {
-      createAndPublishIdea: createAndPublish(props)
+      editIdea: edit(props)
     };
   }
-})(
-  graphql(createMutation, {
-    props: function (props) {
-      return {
-        createIdea: create(props)
-      };
-    }
-  })(EditIdeaReduxForm)
-);
+})(EditIdeaReduxForm);
 
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(EditIdeaForm));

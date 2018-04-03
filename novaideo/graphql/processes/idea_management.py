@@ -1,12 +1,13 @@
 import graphene
 import urllib
 
+from dace.util import get_obj
 from pontus.schema import select
 
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 from ..util import get_context, get_action, get_execution_data
 from . import Upload
-from novaideo import _
+from novaideo import _, log
 
 
 _marker = object()
@@ -62,6 +63,63 @@ class CreateIdea(graphene.Mutation):
 
         status = new_idea is not None
         return CreateIdea(idea=new_idea, status=status)
+
+
+class EditIdea(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        title = graphene.String()
+        text = graphene.String()
+        keywords = graphene.List(graphene.String)
+        old_files = graphene.List(graphene.String)
+        attached_files = graphene.List(Upload)
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.edit'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        idea_schema = select(
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+        args = dict(args)
+        context_oid = args.pop('context')
+        old_files = []
+        for of in args.pop('old_files'):
+            try:
+                old_files.append(get_obj(int(of)))
+            except Exception as e:
+                log.warning(e)
+                continue
+
+        attached_files = args.pop('attached_files', None)
+        uploaded_files = []
+        if attached_files:
+            for index, file_ in enumerate(attached_files):
+                file_storage = context.POST.get(str(index))
+                fp = file_storage.file
+                fp.seek(0)
+                uploaded_files.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
+
+        old_files = [get_obj(f) for f in old_files]
+        args['attached_files'] = uploaded_files
+        args = idea_schema.deserialize(args)
+        args['attached_files'].extend([{'_object_data': f} for f in old_files])
+        args['context'] = context_oid
+        context, request, action, args = get_execution_data(
+            EditIdea.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, args)
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return EditIdea(idea=context, status=status)
 
 
 class CreateAndPublishIdea(graphene.Mutation):

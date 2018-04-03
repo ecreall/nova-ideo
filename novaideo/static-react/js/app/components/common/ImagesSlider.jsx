@@ -34,13 +34,13 @@ const styles = (theme) => {
       marginRight: 10
     },
     sliderContainer: {
-      maxWidth: 'calc(100vw - 120px)',
       marginLeft: 'auto',
       marginRight: 'auto'
     },
     img: {
       margin: 'auto',
-      maxHeight: 'calc(100vh - 144px)'
+      maxHeight: 'calc(100vh - 144px)',
+      maxWidth: 'calc(100vw - 120px)'
     },
     appBar: {
       backgroundColor: 'rgba(0, 0, 0, 0.35)',

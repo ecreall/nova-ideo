@@ -12,6 +12,10 @@ export const STICKER_MAN_1 = STATIC_URL + require('./assets/sticker-man-1.svg');
 
 export const STICKER_MAN_2 = STATIC_URL + require('./assets/sticker-man-2.svg');
 
+export const NO_COMMENT = STATIC_URL + require('./assets/no-comment.svg');
+
+export const CT_COMMENT = STATIC_URL + require('./assets/ct-comment.svg');
+
 export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
 
 export const CONVERTOR_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/convertor_apple_32.png');

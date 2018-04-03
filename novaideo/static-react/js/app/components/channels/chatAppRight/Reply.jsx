@@ -11,9 +11,11 @@ import { commentQuery } from '../../../graphql/queries';
 import FlatList from '../../common/FlatList';
 import { filterActions } from '../../../utils/processes';
 import CommentItem from '../CommentItem';
+import Illustration from '../../common/Illustration';
 import Divider from '../Divider';
 import Comment from '../../forms/processes/common/Comment';
 import { PROCESSES, ACTIONS } from '../../../processes';
+import { NO_COMMENT, CT_COMMENT } from '../../../constants';
 import { markAsRead } from '../../../graphql/processes/commentProcess';
 import { markAsReadMutation } from '../../../graphql/processes/commentProcess/markAsRead';
 
@@ -65,13 +67,6 @@ const styles = (theme) => {
       color: '#2c2d30',
       fontSize: 17,
       lineHeight: 1.5
-    },
-    noResult: {
-      paddingLeft: 15,
-      marginBottom: 15,
-      fontSize: 15,
-      color: '#717274',
-      lineHeight: '20px'
     },
     commentsFooter: {
       margin: 15,
@@ -126,24 +121,12 @@ const ReplyFooter = (classes, inline) => {
   };
 };
 
-const NoComments = (classes) => {
-  return () => {
-    return (
-      <div className={classes.noResult}>
-        {I18n.t('channels.noMessage')}
-      </div>
-    );
-  };
+const NoComments = () => {
+  return <Illustration img={NO_COMMENT} message={I18n.t('channels.noMessage')} />;
 };
 
-const CtComment = (classes) => {
-  return () => {
-    return (
-      <div className={classes.noResult}>
-        {I18n.t('channels.ctComment')}
-      </div>
-    );
-  };
+const CtComment = () => {
+  return <Illustration img={CT_COMMENT} message={I18n.t('channels.ctComment')} />;
 };
 
 export class RenderComment extends React.Component {
@@ -211,7 +194,7 @@ export class RenderComment extends React.Component {
           {formTop && commentForm}
           <FlatList
             Footer={ReplyFooter(classes, inline)}
-            NoItems={NoItems || (commentAction ? NoComments(classes) : CtComment(classes))}
+            NoItems={NoItems || (commentAction ? NoComments : CtComment)}
             customScrollbar={customScrollbar}
             fetchMoreOnEvent={fetchMoreOnEvent}
             scrollEvent={id || rightProps.id}

@@ -10,7 +10,7 @@ const styles = {
   commentsFooter: {
     margin: '48px 32px 16px 16px',
     color: '#656565',
-    fontSize: 17,
+    fontSize: 15,
     lineHeight: 1.5
   },
   header: {

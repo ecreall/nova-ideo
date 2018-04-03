@@ -68,6 +68,9 @@ const styles = {
 };
 
 export class DumbForm extends React.Component {
+  static defaultProps = {
+    transition: true
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -95,7 +98,7 @@ export class DumbForm extends React.Component {
   };
 
   render() {
-    const { classes, fullScreen, appBar, footer, children } = this.props;
+    const { classes, fullScreen, appBar, footer, transition, children } = this.props;
     const { open } = this.state;
     const content = (
       <div className={fullScreen ? classes.maxContainer : classes.container}>
@@ -104,7 +107,7 @@ export class DumbForm extends React.Component {
     );
     return (
       <Dialog
-        transition
+        transition={transition}
         directDisplay={!fullScreen}
         fullScreen={fullScreen}
         open={open}
