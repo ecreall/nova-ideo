@@ -49,12 +49,12 @@ const styles = {
   headerTitle: {
     display: 'flex',
     fontSize: 15,
-    color: '#2c2d30',
+    color: '#737373',
     fontWeight: '900',
     justifyContent: 'space-around'
   },
   title: {
-    color: '#2d2d2d',
+    color: '#2c2d30',
     fontSize: 17,
     fontWeight: 900,
     '&:hover': {
@@ -62,7 +62,7 @@ const styles = {
     }
   },
   icon: {
-    color: '#2d2d2d',
+    color: '#2c2d30',
     fontSize: '16px !important',
     marginRight: 3
   },
@@ -291,9 +291,9 @@ export const mapStateToProps = (state) => {
 };
 
 function DumbIdeaItem(props) {
-  const { data, onActionClick } = props;
+  const { data, onActionClick, onFormOpened, onFormClosed } = props;
   return (
-    <IdeaProcessManager idea={data.idea} onActionClick={onActionClick}>
+    <IdeaProcessManager idea={data.idea} onActionClick={onActionClick} onFormOpened={onFormOpened} onFormClosed={onFormClosed}>
       <RenderIdeaItem {...props} />
     </IdeaProcessManager>
   );

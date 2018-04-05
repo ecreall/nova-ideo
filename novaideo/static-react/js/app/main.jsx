@@ -125,10 +125,8 @@ class Main extends React.Component {
 
   render() {
     const { data, theme } = this.props;
-
     if (data.loading) return null;
     const loged = true;
-
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <MuiThemeProvider theme={theme}>
@@ -170,7 +168,7 @@ export default withWidth()(
       graphql(siteQuery, {
         options: (props: any) => {
           return {
-            fetchPolicy: 'cache-first'
+            fetchPolicy: 'cache-and-network'
           };
         }
       })(Main)

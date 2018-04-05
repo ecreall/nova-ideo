@@ -3,7 +3,7 @@ import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 import IdeasList from '../idea/IdeasList';
-import CreateIdeaForm from '../forms/processes/ideaProcess/Create';
+import CreateIdeaHome from '../idea/CreateIdeaHome';
 import Idea from '../idea/Idea';
 import { openChatApp } from '../../actions/actions';
 
@@ -53,7 +53,7 @@ class Home extends React.Component {
       <div>
         {ideaId && <Idea id={ideaId} open />}
         <Typography component="div" style={styles.container}>
-          <CreateIdeaForm key="create-proposal-form" form="create-proposal-form" />
+          <CreateIdeaHome />
           <IdeasList />
         </Typography>
       </div>

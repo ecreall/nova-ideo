@@ -23,7 +23,7 @@ import {
 } from '../../utils';
 import UserAvatar from '../../../user/UserAvatar';
 import { PROCESSES } from '../../../../processes';
-import { filterActions } from '../../../../utils/processes';
+import { filterActions, getEntityIcon } from '../../../../utils/processes';
 import { getFormattedDate } from '../../../../utils/globalFunctions';
 import { create, createAndPublish } from '../../../../graphql/processes/ideaProcess';
 import { createMutation } from '../../../../graphql/processes/ideaProcess/create';
@@ -33,74 +33,19 @@ import Form from '../../Form';
 
 const styles = (theme) => {
   return {
-    fromContainer: {
-      padding: '15px 11px',
-      backgroundColor: 'whitesmoke',
-      border: 'solid 1px rgba(0,0,0,.1)',
-      borderBottom: 'none',
-      display: 'flex'
-    },
-    inputContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      height: 'auto',
-      outline: 0,
-      border: '1px solid #a0a0a2',
-      borderRadius: 4,
-      resize: 'none',
-      color: '#2c2d30',
-      fontSize: 15,
-      lineHeight: '1.2rem',
-      maxHeight: 'none',
-      minHeight: 40,
-      position: 'relative',
-      backgroundColor: 'white',
-      flex: 1,
-      flexDirection: 'column',
-      marginLeft: 15,
-      paddingLeft: 10
-    },
-    placeholder: {
-      color: '#000',
-      opacity: '.375',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      fontStyle: 'normal',
-      pointerEvents: 'none',
-      maxHeight: '100%'
-    },
     textContainer: {
       marginTop: 20
     },
     addon: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center'
-    },
-    addonContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    submit: {
-      color: 'gray',
-      opacity: 0.7
-    },
-    submitActive: {
-      opacity: 1,
-      color: theme.palette.primary[500],
-      cursor: 'pointer'
-    },
-    action: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      padding: 5
+      alignItems: 'center',
+      marginRight: 15
     },
     button: {
       height: 40,
       width: 40,
-      color: '#808080'
+      color: theme.palette.primary[500]
     },
     avatar: {
       borderRadius: 4,
@@ -138,18 +83,23 @@ const styles = (theme) => {
       fontSize: 42,
       fontWeight: 900,
       paddingTop: 3,
+      paddingLeft: 0,
       lineHeight: 'normal',
       '&::placeholder': {
-        fontSize: 40
+        fontSize: 40,
+        fontWeight: 900
       },
       '&::-webkit-input-placeholder': {
-        fontSize: 40
+        fontSize: 40,
+        fontWeight: 900
       },
       '&::-moz-placeholder': {
-        fontSize: 40
+        fontSize: 40,
+        fontWeight: 900
       },
       '&::-ms-input-placeholder': {
-        fontSize: 40
+        fontSize: 40,
+        fontWeight: 900
       }
     },
     formTitle: {
@@ -158,7 +108,6 @@ const styles = (theme) => {
     header: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-start',
       margin: '0 10px',
       position: 'relative'
     },
@@ -166,6 +115,7 @@ const styles = (theme) => {
       fontSize: 15,
       color: '#2c2d30',
       fontWeight: 900,
+      display: 'flex',
       lineHeight: 'normal'
     },
     titleContainer: {
@@ -174,18 +124,7 @@ const styles = (theme) => {
     headerAddOn: {
       color: '#999999ff',
       fontSize: 12,
-      lineHeight: 'normal',
-      fontWeight: 'initial'
-    },
-    title: {
-      display: 'flex',
-      fontSize: 15,
-      color: '#2c2d30',
-      fontWeight: '900',
-      cursor: 'pointer',
-      '&:hover': {
-        textDecoration: 'underline'
-      }
+      lineHeight: 'normal'
     },
     filesPreviewContainer: {
       padding: 0
@@ -203,10 +142,38 @@ const styles = (theme) => {
     maskDefault: {
       height: 41,
       width: 35,
-      color: 'gray'
+      color: theme.palette.primary[500]
     },
     maskChecked: {
       color: theme.palette.warning[700]
+    },
+    titleInputContainer: {
+      fontSize: 42,
+      color: '#2c2d30',
+      fontWeight: 900,
+      paddingTop: 3,
+      lineHeight: 'normal',
+      display: 'flex',
+      alignItems: 'baseline'
+    },
+    closeBtn: {
+      '&::after': {
+        display: 'block',
+        position: 'absolute',
+        top: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        left: -4,
+        height: 20,
+        transform: 'translateY(-50%)',
+        borderRadius: 0,
+        borderRight: '1px solid #e5e5e5',
+        content: '""',
+        color: '#2c2d30'
+      }
+    },
+    iconDesabled: {
+      color: '#989898'
     }
   };
 };
@@ -221,13 +188,7 @@ export class DumbCreateIdeaForm extends React.Component {
   }
 
   closeForm = () => {
-    const { onClose } = this.props;
     this.form.close();
-    if (onClose) onClose();
-  };
-
-  openForm = () => {
-    this.form.open();
   };
 
   handleSubmit = (action) => {
@@ -276,15 +237,11 @@ export class DumbCreateIdeaForm extends React.Component {
         files: []
       })
     );
-    this.form.close();
-  };
-
-  closeForm = () => {
-    this.form.close();
+    this.closeForm();
   };
 
   render() {
-    const { formData, globalProps: { site, account, rootActions }, classes, theme } = this.props;
+    const { formData, globalProps: { site, account, rootActions }, onClose, classes, theme } = this.props;
     const ideamanagementProcess = PROCESSES.ideamanagement;
     const creationActions = filterActions(rootActions, {
       processId: ideamanagementProcess.id,
@@ -301,8 +258,9 @@ export class DumbCreateIdeaForm extends React.Component {
     let selectedKeywords = {};
     let anonymousSelected = false;
     let canSubmit = false;
+    let hasTitle = false;
     if (formData && formData.values) {
-      hasText = this.editor && this.editor.getHTMLText();
+      hasText = this.editor && !this.editor.isEmpty();
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
@@ -311,32 +269,25 @@ export class DumbCreateIdeaForm extends React.Component {
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
-      canSubmit = formData.values.title && keywordsSatisfied && hasText;
+      hasTitle = formData.values.title;
+      canSubmit = hasTitle && keywordsSatisfied && hasText;
     }
     const date = getFormattedDate(Moment(), 'date.format3');
     const authorTitle = account && (anonymousSelected ? account.mask.title : account.title);
-    return [
-      <div className={classes.fromContainer}>
-        <div className={classes.left}>
-          <UserAvatar
-            isAnonymous={anonymousSelected}
-            picture={authorPicture}
-            title={account && account.title}
-            classes={{ avatar: classes.avatar }}
-          />
-        </div>
-        <div className={classes.inputContainer} onClick={this.openForm}>
-          <div className={classes.placeholder}>
-            {I18n.t('forms.idea.textPlaceholder')}
-          </div>
-        </div>
-      </div>,
+    const IdeaIcon = getEntityIcon('Idea');
+    return (
       <Form
         initRef={(form) => {
           this.form = form;
         }}
+        open
+        withDrawer
         fullScreen
-        onClose={this.closeForm}
+        transition={false}
+        onClose={onClose}
+        classes={{
+          closeBtn: classes.closeBtn
+        }}
         appBar={[
           <div className={classes.titleContainer}>
             <UserAvatar
@@ -346,7 +297,7 @@ export class DumbCreateIdeaForm extends React.Component {
               classes={{ avatar: classes.avatar }}
             />
             <div className={classes.header}>
-              <span className={classes.title}>
+              <span className={classes.headerTitle}>
                 {authorTitle}
               </span>
               <span className={classes.headerAddOn}>
@@ -355,7 +306,9 @@ export class DumbCreateIdeaForm extends React.Component {
             </div>
           </div>,
 
-          <div className={classes.formTitle}>Add a proposal</div>,
+          <div className={classes.formTitle}>
+            {I18n.t('forms.idea.addProposal')}
+          </div>,
 
           <div className={classes.addon}>
             <Field
@@ -425,6 +378,7 @@ export class DumbCreateIdeaForm extends React.Component {
             return (
               <Button
                 key={key}
+                disabled={!canSubmit}
                 onClick={
                   canSubmit
                     ? () => {
@@ -442,18 +396,21 @@ export class DumbCreateIdeaForm extends React.Component {
         ]}
       >
         <div className={classes.form}>
-          <Field
-            props={{
-              placeholder: I18n.t('forms.idea.titleHelper'),
-              classes: {
-                root: classes.titleRoot,
-                input: classes.titleInput
-              }
-            }}
-            name="title"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
+          <div className={classes.titleInputContainer}>
+            <IdeaIcon className={classNames(classes.icon, { [classes.iconDesabled]: !hasTitle })} />
+            <Field
+              props={{
+                placeholder: I18n.t('forms.idea.titleHelper'),
+                classes: {
+                  root: classes.titleRoot,
+                  input: classes.titleInput
+                }
+              }}
+              name="title"
+              component={renderTextInput}
+              onChange={() => {}}
+            />
+          </div>
           <SelectChipPreview
             items={selectedKeywords}
             onItemDelete={(id) => {
@@ -477,7 +434,7 @@ export class DumbCreateIdeaForm extends React.Component {
           </div>
         </div>
       </Form>
-    ];
+    );
   }
 }
 

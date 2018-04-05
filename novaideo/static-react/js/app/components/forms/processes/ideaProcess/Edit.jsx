@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key, no-confusing-arrow */
+/* eslint-disable react/no-array-index-key, no-confusing-arrow, no-underscore-dangle */
 import React from 'react';
 import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import AttachFileIcon from 'material-ui-icons/AttachFile';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
-import Moment from 'moment';
+import classNames from 'classnames';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import SelectChipPreview from '../../widgets/SelectChipPreview';
@@ -31,31 +31,13 @@ const styles = (theme) => {
     addon: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center'
-    },
-    addonContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    submit: {
-      color: 'gray',
-      opacity: 0.7
-    },
-    submitActive: {
-      opacity: 1,
-      color: theme.palette.primary[500],
-      cursor: 'pointer'
-    },
-    action: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      padding: 5
+      alignItems: 'center',
+      marginRight: 15
     },
     button: {
       height: 40,
       width: 40,
-      color: '#808080'
+      color: theme.palette.primary[500]
     },
     avatar: {
       borderRadius: 4,
@@ -109,6 +91,7 @@ const styles = (theme) => {
       fontSize: 15,
       color: '#2c2d30',
       fontWeight: 900,
+      display: 'flex',
       lineHeight: 'normal'
     },
     titleContainer: {
@@ -117,18 +100,7 @@ const styles = (theme) => {
     headerAddOn: {
       color: '#999999ff',
       fontSize: 12,
-      lineHeight: 'normal',
-      fontWeight: 'initial'
-    },
-    title: {
-      display: 'flex',
-      fontSize: 15,
-      color: '#2c2d30',
-      fontWeight: '900',
-      cursor: 'pointer',
-      '&:hover': {
-        textDecoration: 'underline'
-      }
+      lineHeight: 'normal'
     },
     filesPreviewContainer: {
       padding: 0
@@ -146,7 +118,7 @@ const styles = (theme) => {
     maskDefault: {
       height: 40,
       width: 40,
-      color: '#808080'
+      color: theme.palette.primary[500]
     },
     maskChecked: {
       color: theme.palette.warning[700]
@@ -159,6 +131,25 @@ const styles = (theme) => {
       lineHeight: 'normal',
       display: 'flex',
       alignItems: 'baseline'
+    },
+    closeBtn: {
+      '&::after': {
+        display: 'block',
+        position: 'absolute',
+        top: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        left: -4,
+        height: 20,
+        transform: 'translateY(-50%)',
+        borderRadius: 0,
+        borderRight: '1px solid #e5e5e5',
+        content: '""',
+        color: '#2c2d30'
+      }
+    },
+    iconDesabled: {
+      color: '#989898'
     }
   };
 };
@@ -222,23 +213,33 @@ export class DumbEditIdeaForm extends React.Component {
   };
 
   render() {
-    const { idea, formData, isAnonymous, globalProps: { site, account }, action, onClose, classes, theme } = this.props;
-    const authorPicture = account.picture;
+    const { idea, formData, site, action, onClose, onOpen, classes, theme } = this.props;
+    const author = idea.author;
+    const isAnonymous = author && author.isAnonymous;
+    const authorPicture = author && author.picture;
+    const authorTitle = author && author.title;
     const keywords = {};
     site.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
     });
     let files = [];
+    let hasText = false;
     let selectedKeywords = {};
+    let hasTitle = false;
+    let canSubmit = false;
     if (formData && formData.values) {
+      hasText = this.editor && !this.editor.isEmpty();
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
       });
+      const keywordsRequired = site.keywordsRequired;
+      const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
+      hasTitle = formData.values.title;
+      canSubmit = hasTitle && keywordsSatisfied && hasText;
     }
-    const date = getFormattedDate(Moment(), 'date.format3');
-    const authorTitle = isAnonymous ? account.mask.title : account.title;
+    const date = getFormattedDate(idea.createdAt, 'date.format3');
     const IdeaIcon = getEntityIcon(idea.__typename);
     return (
       <Form
@@ -246,9 +247,14 @@ export class DumbEditIdeaForm extends React.Component {
           this.form = form;
         }}
         transition={false}
+        withDrawer
         fullScreen
         open
         onClose={onClose}
+        onOpen={onOpen}
+        classes={{
+          closeBtn: classes.closeBtn
+        }}
         appBar={[
           <div className={classes.titleContainer}>
             <UserAvatar
@@ -258,7 +264,7 @@ export class DumbEditIdeaForm extends React.Component {
               classes={{ avatar: classes.avatar }}
             />
             <div className={classes.header}>
-              <span className={classes.title}>
+              <span className={classes.headerTitle}>
                 {authorTitle}
               </span>
               <span className={classes.headerAddOn}>
@@ -325,14 +331,19 @@ export class DumbEditIdeaForm extends React.Component {
           <CancelButton onClick={this.closeForm}>
             {I18n.t('forms.cancel')}
           </CancelButton>,
-          <Button onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.buttonFooter}>
+          <Button
+            disabled={!canSubmit}
+            onClick={this.handleSubmit}
+            background={theme.palette.success[500]}
+            className={classes.buttonFooter}
+          >
             {I18n.t(action.submission)}
           </Button>
         ]}
       >
         <div className={classes.form}>
           <div className={classes.titleInputContainer}>
-            <IdeaIcon className={classes.icon} />
+            <IdeaIcon className={classNames(classes.icon, { [classes.iconDesabled]: !hasTitle })} />
             <Field
               props={{
                 placeholder: I18n.t('forms.idea.titleHelper'),
@@ -378,7 +389,7 @@ const EditIdeaReduxForm = reduxForm()(DumbEditIdeaForm);
 const mapStateToProps = (state, props) => {
   return {
     formData: state.form[props.form],
-    globalProps: state.globalProps
+    site: state.globalProps.site
   };
 };
 

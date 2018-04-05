@@ -47,10 +47,21 @@ const styles = {
     margin: '10px 0',
     position: 'relative'
   },
+  headerTitle: {
+    color: '#737373'
+  },
   title: {
+    color: '#2c2d30',
+    fontSize: 17,
+    fontWeight: 900,
     '&:hover': {
       textDecoration: 'underline'
     }
+  },
+  icon: {
+    color: '#2c2d30',
+    fontSize: '16px !important',
+    marginRight: 3
   },
   headerAddOn: {
     color: '#999999ff',
@@ -245,7 +256,7 @@ export class RenderIdeaItem extends React.Component {
                 idea={node}
                 onActionClick={processManager.performAction}
               />}
-            <UserTitle node={author} />
+            <UserTitle node={author} classes={{ title: classes.headerTitle }} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>
@@ -259,7 +270,12 @@ export class RenderIdeaItem extends React.Component {
                 className={classNames(classes.bodyTitle, { [classes.disableBodyTitle]: passive })}
                 onClick={!passive && this.openDetails}
               >
-                <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={!passive && classes.title} />
+                <IconWithText
+                  name="mdi-set mdi-lightbulb"
+                  text={node.title}
+                  styleText={!passive && classes.title}
+                  styleIcon={classes.icon}
+                />
               </div>
 
               <Grid container item>

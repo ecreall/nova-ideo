@@ -21,7 +21,7 @@ import SeparatorButton from './SeparatorButton';
 import EmbedButton from './EmbedButton';
 import ImageButton from './ImageButton';
 
-export const emptyText = '<p></p>';
+export const emptyText = '<p class="md-block-unstyled"><br/></p>';
 
 class MediumEditor extends React.Component {
   constructor(props) {
@@ -242,6 +242,10 @@ class MediumEditor extends React.Component {
 
   isEmptyText = (text) => {
     return !text || text === emptyText;
+  };
+
+  isEmpty = () => {
+    return this.isEmptyText(this.getHTMLText());
   };
 
   insertText = (text) => {

@@ -198,7 +198,7 @@ export class RunderIdea extends React.Component {
 
   close = () => {
     this.setState({ open: false }, () => {
-      goTo(this.props.previousLocation || get('root'));
+      goTo(get('root'));
     });
   };
 
@@ -230,6 +230,7 @@ export class RunderIdea extends React.Component {
     const IdeaIcon = getEntityIcon(idea.__typename);
     return (
       <Dialog
+        withDrawer
         classes={{
           container: classes.container,
           closeBtn: classes.closeBtn

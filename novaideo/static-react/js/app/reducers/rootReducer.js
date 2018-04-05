@@ -300,8 +300,17 @@ const initialAppsState = {
   },
   chatApp: {
     open: false,
+    integreted: false,
     channel: undefined,
     subject: undefined,
+    right: {
+      open: false,
+      componentId: undefined,
+      full: false,
+      props: {}
+    }
+  },
+  collaborationApp: {
     right: {
       open: false,
       componentId: undefined,
@@ -348,6 +357,34 @@ export const apps = (state = initialAppsState, action) => {
       chatApp: { ...state.chatApp, ...{ open: true }, ...action.config }
     };
   }
+  case constants.OPEN_COLLABORATION_RIGHT: {
+    return {
+      ...state,
+      collaborationApp: {
+        ...state.collaborationApp,
+        right: {
+          ...state.collaborationApp.right,
+          open: true,
+          ...action.config
+        }
+      }
+    };
+  }
+  case constants.CLOSE_COLLABORATION_RIGHT: {
+    return {
+      ...state,
+      collaborationApp: {
+        ...state.collaborationApp,
+        right: {
+          open: false,
+          componentId: undefined,
+          full: false,
+          props: {},
+          ...action.config
+        }
+      }
+    };
+  }
   case constants.CLOSE_CHATAPP: {
     const defaultConfig = {
       channel: undefined,
@@ -376,6 +413,15 @@ export const apps = (state = initialAppsState, action) => {
       chatApp: {
         ...state.chatApp,
         right: { ...state.chatApp.right, ...action.config }
+      }
+    };
+  }
+  case constants.UPDATE_COLLABORATION_RIGHT: {
+    return {
+      ...state,
+      collaborationApp: {
+        ...state.collaborationApp,
+        right: { ...state.collaborationApp.right, ...action.config }
       }
     };
   }

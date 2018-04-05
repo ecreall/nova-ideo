@@ -21,6 +21,9 @@ const styles = (theme) => {
       paddingLeft: 16,
       paddingRight: 10
     },
+    listItemPrivate: {
+      paddingRight: '32px !important'
+    },
     listItemSelected: {
       backgroundColor: theme.palette.tertiary.color,
       '&:hover': {
@@ -68,6 +71,9 @@ const styles = (theme) => {
         padding: 0
       }
     },
+    root: {
+      display: 'none'
+    },
     badge: {
       right: 15,
       marginTop: -11,
@@ -109,7 +115,8 @@ const styles = (theme) => {
 
 export class DumbIdeaListingItem extends React.Component {
   state = {
-    open: false
+    open: false,
+    hide: false
   };
   menu = null;
 
@@ -159,6 +166,14 @@ export class DumbIdeaListingItem extends React.Component {
     if (this.menu) this.menu.close();
   };
 
+  hideMenu = () => {
+    this.setState({ hide: true });
+  };
+
+  showMenu = () => {
+    this.setState({ hide: false });
+  };
+
   onClose = () => {
     this.setState({ open: false });
   };
@@ -169,7 +184,7 @@ export class DumbIdeaListingItem extends React.Component {
 
   render() {
     const { classes, node } = this.props;
-    const { open } = this.state;
+    const { open, hide } = this.state;
     const isPrevate = node.state.includes(STATE.idea.private);
     const textClasses = classNames(classes.text, { [classes.textSelected]: open });
     return (
@@ -182,14 +197,17 @@ export class DumbIdeaListingItem extends React.Component {
           this.menu = menu;
         }}
         classes={{
-          menuPaper: classes.menuPaper
+          menuPaper: classes.menuPaper,
+          menu: hide && classes.root
         }}
         activator={
           <ListItem
             dense
             button
             ContainerComponent="div"
-            classes={{ root: classNames(classes.listItem, { [classes.listItemSelected]: open }) }}
+            classes={{
+              root: classNames(classes.listItem, { [classes.listItemSelected]: open, [classes.listItemPrivate]: isPrevate })
+            }}
           >
             {this.renderIcon()}
             <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
@@ -204,7 +222,7 @@ export class DumbIdeaListingItem extends React.Component {
           </ListItem>
         }
       >
-        <IdeaPopover id={node.id} onActionClick={this.closeMenu} />
+        <IdeaPopover id={node.id} onActionClick={this.closeMenu} onFormOpened={this.hideMenu} onFormClosed={this.showMenu} />
       </Menu>
     );
   }

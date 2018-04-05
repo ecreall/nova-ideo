@@ -33,12 +33,12 @@ class DumbApp extends React.Component {
   }
 
   render() {
-    const { data, classes, children, channelOpen, drawerOpen, channel } = this.props;
+    const { data, classes, children, channelOpen, drawerOpen, channel, channelIntegreted } = this.props;
     if (data.loading) return null;
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <CollaborationApp active={!channelOpen} left={drawerOpen || channelOpen}>
+          <CollaborationApp active={!channelOpen && !channelIntegreted} left={drawerOpen || channelOpen}>
             {children}
           </CollaborationApp>
           {channel && <ChatApp active={channelOpen} left={drawerOpen || channelOpen} />}
@@ -53,7 +53,8 @@ export const mapStateToProps = (state) => {
   return {
     channelOpen: state.apps.chatApp.open,
     drawerOpen: state.apps.drawer.open,
-    channel: state.apps.chatApp.channel
+    channel: state.apps.chatApp.channel,
+    channelIntegreted: state.apps.chatApp.integreted
   };
 };
 
@@ -66,7 +67,7 @@ export default withStyles(styles)(
     graphql(accountQuery, {
       options: () => {
         return {
-          fetchPolicy: 'cache-first'
+          fetchPolicy: 'cache-and-network'
         };
       }
     })(DumbApp)

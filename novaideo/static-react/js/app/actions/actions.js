@@ -128,9 +128,30 @@ export const closeChatApp = (config) => {
   };
 };
 
+export const openCollaborationRight = (config) => {
+  return {
+    type: constants.OPEN_COLLABORATION_RIGHT,
+    config: config
+  };
+};
+
+export const closeCollaborationRight = (config) => {
+  return {
+    type: constants.CLOSE_COLLABORATION_RIGHT,
+    config: config
+  };
+};
+
 export const updateChatAppRight = (config) => {
   return {
     type: constants.UPDATE_CHATAPP_RIGHT,
+    config: config
+  };
+};
+
+export const updateCollaborationAppRight = (config) => {
+  return {
+    type: constants.UPDATE_COLLABORATION_RIGHT,
     config: config
   };
 };

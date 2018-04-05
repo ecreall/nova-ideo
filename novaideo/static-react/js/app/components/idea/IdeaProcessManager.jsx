@@ -28,6 +28,16 @@ export class DumbIdeaProcessManager extends React.Component {
     if (onActionClick) onActionClick();
   };
 
+  beforeFormOpened = () => {
+    const { onFormOpened } = this.props;
+    if (onFormOpened) onFormOpened();
+  };
+
+  afterFormClosed = () => {
+    const { onFormClosed } = this.props;
+    if (onFormClosed) onFormClosed();
+  };
+
   evaluationClick = (action) => {
     const { idea, network, globalProps } = this.props;
     const processNodes = PROCESSES.ideamanagement.nodes;
@@ -111,9 +121,11 @@ export class DumbIdeaProcessManager extends React.Component {
 
   onFormClose = () => {
     this.setState({ action: null });
+    this.afterFormClosed();
   };
 
   displayForm = (action) => {
+    this.beforeFormOpened();
     this.setState({ action: action });
   };
 

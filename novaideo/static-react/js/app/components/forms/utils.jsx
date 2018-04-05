@@ -121,38 +121,51 @@ const styles = {
 };
 export const renderTextInput = withStyles(
   styles
-)(({ input: { name, value, onChange }, placeholder, endAdornment, endAdornmentPosition, label, helper, optional, classes }) => {
-  return (
-    <div className={classes.container}>
-      {label &&
-        <label className={classes.label} htmlFor={name}>
-          {label}
-          {optional &&
-            <span className={classes.labelOptional}>
-              {' '}{I18n.t('forms.optional')}
-            </span>}
-        </label>}
-      <Input
-        fullWidth
-        disableUnderline
-        id={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        classes={{
-          root: classes.root,
-          input: classes.input
-        }}
-        endAdornment={
-          <InputAdornment position={endAdornmentPosition}>
-            {endAdornment}
-          </InputAdornment>
-        }
-      />
-      {helper &&
-        <FormHelperText className={classes.helper} id={name}>
-          {helper}
-        </FormHelperText>}
-    </div>
-  );
-});
+)(
+  ({
+    input: { name, value, onChange },
+    multiline,
+    placeholder,
+    endAdornment,
+    endAdornmentPosition,
+    label,
+    helper,
+    optional,
+    classes
+  }) => {
+    return (
+      <div className={classes.container}>
+        {label &&
+          <label className={classes.label} htmlFor={name}>
+            {label}
+            {optional &&
+              <span className={classes.labelOptional}>
+                {' '}{I18n.t('forms.optional')}
+              </span>}
+          </label>}
+        <Input
+          fullWidth
+          disableUnderline
+          multiline={multiline}
+          id={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          classes={{
+            root: classes.root,
+            input: classes.input
+          }}
+          endAdornment={
+            <InputAdornment position={endAdornmentPosition}>
+              {endAdornment}
+            </InputAdornment>
+          }
+        />
+        {helper &&
+          <FormHelperText className={classes.helper} id={name}>
+            {helper}
+          </FormHelperText>}
+      </div>
+    );
+  }
+);

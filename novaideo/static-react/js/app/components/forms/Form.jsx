@@ -8,9 +8,10 @@ import Scrollbar from '../common/Scrollbar';
 
 const styles = {
   dialogContainer: {
-    display: 'block',
+    display: 'block !important',
     position: 'relative',
     height: '100%',
+    width: '100%',
     minWidth: 300
   },
   container: {
@@ -64,6 +65,14 @@ const styles = {
   },
   smallPaper: {
     backgroundColor: 'white'
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  },
+  appBarContainer: {
+    flex: 1,
+    display: 'flex'
   }
 };
 
@@ -71,6 +80,7 @@ export class DumbForm extends React.Component {
   static defaultProps = {
     transition: true
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +108,8 @@ export class DumbForm extends React.Component {
   };
 
   render() {
-    const { classes, fullScreen, appBar, footer, transition, children } = this.props;
+    const { classes, fullScreen, appBar, footer, transition, children, withDrawer, onOpen } = this.props;
+    const integretedForm = withDrawer || fullScreen;
     const { open } = this.state;
     const content = (
       <div className={fullScreen ? classes.maxContainer : classes.container}>
@@ -107,26 +118,31 @@ export class DumbForm extends React.Component {
     );
     return (
       <Dialog
+        withDrawer={withDrawer}
         transition={transition}
         directDisplay={!fullScreen}
         fullScreen={fullScreen}
         open={open}
         appBar={appBar}
         onClose={this.onClose}
+        onOpen={onOpen}
         close={this.close}
         classes={{
           container: classes.dialogContainer,
+          closeBtn: classes.closeBtn,
           appBarContent: classNames(classes.appBarContent, {
-            [classes.fullAppBarContent]: fullScreen
+            [classes.fullAppBarContent]: integretedForm
           }),
-          paper: !fullScreen && classes.smallPaper
+          paper: classNames({
+            [classes.smallPaper]: !integretedForm
+          })
         }}
       >
         <div
           className={classNames(classes.root, {
-            [classes.fullRoot]: fullScreen && !footer,
-            [classes.fullRootWithFooter]: fullScreen && footer,
-            [classes.smallRoot]: !fullScreen
+            [classes.fullRoot]: integretedForm && !footer,
+            [classes.fullRootWithFooter]: integretedForm && footer,
+            [classes.smallRoot]: !integretedForm
           })}
         >
           {fullScreen

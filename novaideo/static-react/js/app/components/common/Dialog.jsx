@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Dialog from 'material-ui/Dialog';
 import AppBar from 'material-ui/AppBar';
@@ -8,60 +9,133 @@ import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
+import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
+import Grid from 'material-ui/Grid';
 
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%'
-  },
-  appBar: {
-    position: 'relative',
-    backgroundColor: '#fff',
-    boxShadow: '0 1px 0 rgba(0,0,0,.1)'
-  },
-  modal: {
-    position: 'relative',
-    backgroundColor: 'transparent',
-    boxShadow: 'none'
-  },
-  paper: {
-    backgroundColor: '#f3f3f3'
-  },
-  paperSmall: {
-    position: 'absolute',
-    top: '11%',
-    borderRadius: 7,
-    margin: 0,
-    minWidth: 600,
-    '@media  (max-height:600px)': {
-      top: '5%'
+import { updateApp } from '../../actions/actions';
+import CollaborationAppRight from '../collaborationAppRight/CollaborationAppRight';
+import { STYLE_CONST } from '../../constants';
+
+const styles = (theme) => {
+  return {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%'
     },
-    '@media (max-height:550px)': {
-      top: '3%'
+    appBar: {
+      position: 'relative',
+      backgroundColor: '#fff',
+      boxShadow: '0 1px 0 rgba(0,0,0,.1)'
     },
-    '@media(max-height:500px)': {
-      top: '1%'
+    modal: {
+      position: 'relative',
+      backgroundColor: 'transparent',
+      boxShadow: 'none'
     },
-    '@media (max-width:600px)': {
-      minWidth: '95%'
+    paper: {
+      backgroundColor: '#f3f3f3'
+    },
+    paperSmall: {
+      position: 'absolute',
+      top: '11%',
+      borderRadius: 7,
+      margin: 0,
+      minWidth: 600,
+      '@media  (max-height:600px)': {
+        top: '5%'
+      },
+      '@media (max-height:550px)': {
+        top: '3%'
+      },
+      '@media(max-height:500px)': {
+        top: '1%'
+      },
+      '@media (max-width:600px)': {
+        minWidth: '95%'
+      }
+    },
+    appBarContent: {
+      flex: 1,
+      fontSize: 22,
+      fontWeight: 900
+    },
+    closeBtn: {
+      position: 'relative',
+      marginRight: -15
+    },
+    root: {
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: STYLE_CONST.drawerDuration
+      })
+    },
+    withDrawer: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: STYLE_CONST.drawerWidth + 1,
+        width: `calc(100% - ${STYLE_CONST.drawerWidth + 1}px)`
+      }
+    },
+    paperWithDrawer: {
+      boxShadow: 'none'
+    },
+    right: {
+      backgroundColor: '#f9f9f9',
+      borderLeft: '1px solid #e8e8e8',
+      padding: '0 !important',
+      paddingRight: '8px !important',
+      paddingTop: '8px !important'
+    },
+    grid: {
+      height: 'calc(100vh - 56px)',
+      position: 'relative',
+      width: 'calc(100% + 8px)',
+      '& .grid-item': {
+        paddingRight: '0 !important'
+      }
+    },
+    withRight: {
+      paddingRight: '0 !important',
+      [theme.breakpoints.only('xs')]: {
+        display: 'none'
+      }
+    },
+    withRightFull: {
+      display: 'none'
     }
-  },
-  appBarContent: {
-    flex: 1,
-    fontSize: 22,
-    fontWeight: 900
-  },
-  closeBtn: {
-    position: 'relative',
-    marginRight: -15
-  }
+  };
 };
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
 }
+
+const AppRightContainer = (props) => {
+  const { children, classes, withDrawer, rightOpen, rightFull } = props;
+  return (
+    <Grid className={classes.grid} container>
+      <Grid
+        item
+        xs={12}
+        md={withDrawer && rightOpen ? 8 : 12}
+        sm={withDrawer && rightOpen ? 7 : 12}
+        className={classNames('grid-item', {
+          [classes.withRight]: withDrawer && rightOpen,
+          [classes.withRightFull]: withDrawer && rightFull
+        })}
+      >
+        {children}
+      </Grid>
+      {withDrawer && rightOpen
+        ? <Grid className={classNames('grid-item', classes.right)} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
+          <CollaborationAppRight />
+        </Grid>
+        : null}
+    </Grid>
+  );
+};
 
 class CommonDialog extends React.Component {
   constructor(props) {
@@ -78,27 +152,74 @@ class CommonDialog extends React.Component {
   }
 
   onEntered = () => {
-    this.setState({ entered: true });
+    this.setState({ entered: true }, () => {
+      const { withDrawer, onOpen } = this.props;
+      if (onOpen) onOpen();
+      if (withDrawer) this.props.updateApp('chatApp', { integreted: true });
+    });
   };
 
   onClose = () => {
-    this.setState({ entered: false }, this.props.onClose);
+    this.setState({ entered: false }, () => {
+      const { onClose, withDrawer } = this.props;
+      if (onClose) onClose();
+      if (withDrawer) this.props.updateApp('chatApp', { integreted: false });
+    });
+  };
+
+  dispatchResize = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, true);
+    document.dispatchEvent(event);
+  };
+
+  toggleDrawer = () => {
+    const { drawerOpen } = this.props;
+    this.props.updateApp('drawer', { open: !drawerOpen });
+    this.dispatchResize();
   };
 
   render() {
-    const { appBar, children, classes, open, fullScreen, transition, directDisplay, close, PaperProps } = this.props;
+    const {
+      appBar,
+      children,
+      classes,
+      open,
+      fullScreen,
+      transition,
+      directDisplay,
+      close,
+      hideBackdrop,
+      PaperProps,
+      withDrawer,
+      drawerOpen
+    } = this.props;
+    const full = withDrawer || fullScreen;
+    const content =
+      (directDisplay || this.state.entered) &&
+      <div className={classes.container}>
+        {children}
+      </div>;
     return (
       <Dialog
+        hideBackdrop={hideBackdrop || withDrawer}
         PaperProps={PaperProps}
-        classes={{ paper: classNames(classes.paper, { [classes.paperSmall]: !fullScreen }) }}
+        classes={{
+          root: classNames(classes.root, { [classes.withDrawer]: withDrawer && drawerOpen }),
+          paper: classNames(classes.paper, { [classes.paperSmall]: !full, [classes.paperWithDrawer]: withDrawer })
+        }}
         onEntered={this.onEntered}
-        fullScreen={fullScreen}
+        fullScreen={full}
         open={open}
         onExited={this.onClose}
         transition={transition ? Transition : undefined}
       >
-        <AppBar className={classNames({ [classes.appBar]: fullScreen, [classes.modal]: !fullScreen })}>
+        <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
           <Toolbar>
+            {withDrawer &&
+              <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleDrawer}>
+                {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
+              </IconButton>}
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {appBar}
             </Typography>
@@ -107,13 +228,26 @@ class CommonDialog extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        {(directDisplay || this.state.entered) &&
-          <div className={classes.container}>
-            {children}
-          </div>}
+        {withDrawer
+          ? <AppRightContainer {...this.props}>
+            {content}
+          </AppRightContainer>
+          : content}
       </Dialog>
     );
   }
 }
 
-export default withStyles(styles)(CommonDialog);
+export const mapStateToProps = (state) => {
+  return {
+    drawerOpen: state.apps.drawer.open,
+    rightFull: state.apps.collaborationApp.right.full,
+    rightOpen: state.apps.collaborationApp.right.open
+  };
+};
+
+export const mapDispatchToProps = {
+  updateApp: updateApp
+};
+
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(CommonDialog));

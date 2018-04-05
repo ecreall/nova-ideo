@@ -280,6 +280,10 @@ figure.md-block-image {
   font-style: italic;
 }
 
+.public-DraftEditorPlaceholder-root {
+  color: #989898 !important;
+}
+
 /* MediumEditor --*/
 
 .comment-text p {
@@ -550,4 +554,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;
   margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.46429em;
 }

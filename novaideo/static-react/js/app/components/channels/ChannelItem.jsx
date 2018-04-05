@@ -10,6 +10,8 @@ import classNames from 'classnames';
 
 import { goTo, get } from '../../utils/routeMap';
 import UserAvatar from '../user/UserAvatar';
+import { openCollaborationRight } from '../../actions/actions';
+import { CONTENTS_IDS } from '../collaborationAppRight';
 
 const styles = (theme) => {
   return {
@@ -101,7 +103,15 @@ const styles = (theme) => {
 
 export class DumbChannelItem extends React.Component {
   open = () => {
-    goTo(get('messages', { channelId: this.props.node.id }));
+    const { chatAppIntegreted, node } = this.props;
+    if (chatAppIntegreted) {
+      this.props.openCollaborationRight({
+        componentId: CONTENTS_IDS.chat,
+        props: { channel: node.id, channelTitle: node.title }
+      });
+    } else {
+      goTo(get('messages', { channelId: node.id }));
+    }
   };
 
   renderIcon = (isActive, isSelected) => {
@@ -137,10 +147,10 @@ export class DumbChannelItem extends React.Component {
       </ListItemIcon>;
   };
   render() {
-    const { classes, node, activeChannel } = this.props;
+    const { classes, node, activeChannel, activeIntegretedChannel, channelIntegreted } = this.props;
     const lenUnreadComments = node.lenUnreadComments;
     const hasUnread = lenUnreadComments > 0;
-    const isSelected = activeChannel === node.id;
+    const isSelected = activeChannel === node.id || (channelIntegreted && activeIntegretedChannel === node.id);
     const isActive = isSelected || hasUnread;
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
@@ -164,11 +174,18 @@ export class DumbChannelItem extends React.Component {
   }
 }
 
+export const mapDispatchToProps = {
+  openCollaborationRight: openCollaborationRight
+};
+
 export const mapStateToProps = (state, props) => {
   return {
     currentMessage: state.form[props.node.id],
-    activeChannel: state.apps.chatApp.channel
+    activeChannel: state.apps.chatApp.channel,
+    channelIntegreted: state.apps.chatApp.integreted,
+    activeIntegretedChannel: state.apps.collaborationApp.right.props.channel,
+    chatAppIntegreted: state.apps.chatApp.integreted
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbChannelItem));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));

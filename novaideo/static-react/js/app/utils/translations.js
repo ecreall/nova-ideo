@@ -194,10 +194,11 @@ const Translations = {
       cancel: "Annuler",
       idea: {
         title: "Titre de la proposition",
-        titleHelper: "Ajouter un titre à votre proposition",
+        titleHelper: "Titre",
         textPlaceholder: "J'ai une proposition !",
         textPlaceholderOpened: "Le texte de votre proposition ici",
-        keywords: "Ajouter des mots clés"
+        keywords: "Ajouter des mots clés",
+        addProposal: "Ajouter une nouvelle proposition"
       },
       comment: {
         textPlaceholder: "Envoyer un message à #%{name}",
@@ -422,10 +423,11 @@ const Translations = {
       cancel: "Cancel",
       idea: {
         title: "The title of the proposal",
-        titleHelper: "Add a title to your proposal",
+        titleHelper: "Title",
         textPlaceholder: "I have an proposal!",
         textPlaceholderOpened: "The text of your proposal here",
-        keywords: "Add keywords"
+        keywords: "Add keywords",
+        addProposal: "Add a new proposal"
       },
       comment: {
         textPlaceholder: "Submit a message to #%{name}",
