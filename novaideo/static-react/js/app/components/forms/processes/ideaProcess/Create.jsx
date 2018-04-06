@@ -10,6 +10,7 @@ import AttachFileIcon from 'material-ui-icons/AttachFile';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
+import Zoom from 'material-ui/transitions/Zoom';
 import Moment from 'moment';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
@@ -283,7 +284,7 @@ export class DumbCreateIdeaForm extends React.Component {
         open
         withDrawer
         fullScreen
-        transition={false}
+        transition={Zoom}
         onClose={onClose}
         classes={{
           closeBtn: classes.closeBtn
@@ -401,6 +402,7 @@ export class DumbCreateIdeaForm extends React.Component {
             <Field
               props={{
                 placeholder: I18n.t('forms.idea.titleHelper'),
+                autoFocus: true,
                 classes: {
                   root: classes.titleRoot,
                   input: classes.titleInput

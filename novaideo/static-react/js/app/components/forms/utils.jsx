@@ -131,6 +131,7 @@ export const renderTextInput = withStyles(
     label,
     helper,
     optional,
+    autoFocus,
     classes
   }) => {
     return (
@@ -144,6 +145,7 @@ export const renderTextInput = withStyles(
               </span>}
           </label>}
         <Input
+          autoFocus={autoFocus}
           fullWidth
           disableUnderline
           multiline={multiline}

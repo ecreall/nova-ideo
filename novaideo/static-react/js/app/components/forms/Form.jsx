@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import Slide from 'material-ui/transitions/Slide';
 import classNames from 'classnames';
 
 import Dialog from '../common/Dialog';
@@ -76,9 +77,13 @@ const styles = {
   }
 };
 
+function Transition(props) {
+  return <Slide direction="down" {...props} />;
+}
+
 export class DumbForm extends React.Component {
   static defaultProps = {
-    transition: true
+    transition: Transition
   };
 
   constructor(props) {

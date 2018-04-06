@@ -2,12 +2,12 @@
 import React from 'react';
 import Moment from 'moment';
 import { connect } from 'react-redux';
-import Grid from 'material-ui/Grid';
 import { I18n } from 'react-redux-i18n';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
+import * as Vibrant from 'node-vibrant';
 
 import ImagesPreview from '../common/ImagesPreview';
 import Keywords from '../common/Keywords';
@@ -17,7 +17,6 @@ import AllignedActions from '../common/AllignedActions';
 import StatisticsDoughnut from '../common/Doughnut';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
-
 import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
 import { ACTIONS, PROCESSES, STATE } from '../../processes';
@@ -28,137 +27,141 @@ import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
 import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
 
-const styles = {
-  container: {
-    display: 'flex',
-    position: 'relative',
-    padding: '15px 12px',
-    '&:hover': {
-      backgroundColor: '#f9f9f9'
-    }
-  },
-  privateContainer: {
-    backgroundColor: '#e3f0f7'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: '10px 0',
-    position: 'relative'
-  },
-  headerTitle: {
-    color: '#737373'
-  },
-  title: {
-    color: '#2c2d30',
-    fontSize: 17,
-    fontWeight: 900,
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  },
-  icon: {
-    color: '#2c2d30',
-    fontSize: '16px !important',
-    marginRight: 3
-  },
-  headerAddOn: {
-    color: '#999999ff',
-    paddingLeft: 5,
-    fontSize: 13
-  },
-  body: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  bodyTitle: {
-    marginLeft: -3,
-    marginBottom: 10,
-    cursor: 'pointer'
-  },
-  disableBodyTitle: {
-    cursor: 'inherit'
-  },
-  left: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingRight: 10,
-    margin: '8px 0',
-    flexDirection: 'column'
-  },
-  right: {
-    backgroundColor: '#f5f5f5',
-    marginTop: -15,
-    marginBottom: -15,
-    marginRight: -12
-  },
-  leftActions: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 15
-  },
-  bodyContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%'
-  },
-  bodyFooter: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 10
-  },
-  tooltipSupport: {
-    position: 'absolute',
-    '& .tooltip-inner': {
-      backgroundColor: '#4eaf4e'
+const styles = (theme) => {
+  return {
+    container: {
+      display: 'flex',
+      position: 'relative',
+      padding: '15px 12px',
+      '&:hover': {
+        backgroundColor: '#f9f9f9'
+      }
     },
-    '& .tooltip-arrow': {
-      borderBottomColor: '#4eaf4e !important'
-    }
-  },
-  tooltipOppose: {
-    position: 'absolute',
-    '& .tooltip-inner': {
-      backgroundColor: '#ef6e18'
+    privateContainer: {
+      backgroundColor: `rgba(${Vibrant.Util.hexToRgb(theme.palette.primary[500]).join(',')}, 0.07)`
     },
-    '& .tooltip-arrow': {
-      borderBottomColor: '#ef6e18 !important'
-    }
-  },
-  ideaText: {
-    '& a': {
-      color: '#0576b9',
-      textDecoration: 'none',
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      margin: '10px 0',
+      position: 'relative'
+    },
+    headerTitle: {
+      color: '#737373'
+    },
+    title: {
+      color: '#2c2d30',
+      fontSize: 17,
+      fontWeight: 900
+    },
+    activeTitle: {
       '&:hover': {
         textDecoration: 'underline'
       }
     },
-    '& p': {
-      margin: 0
+    icon: {
+      color: '#2c2d30',
+      fontSize: '16px !important',
+      marginRight: 3
+    },
+    headerAddOn: {
+      color: '#999999ff',
+      paddingLeft: 5,
+      fontSize: 13
+    },
+    body: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%'
+    },
+    bodyTitle: {
+      marginLeft: -3,
+      marginBottom: 10,
+      cursor: 'pointer'
+    },
+    disableBodyTitle: {
+      cursor: 'inherit'
+    },
+    left: {
+      display: 'flex',
+      alignItems: 'center',
+      paddingRight: 10,
+      margin: '8px 0',
+      flexDirection: 'column'
+    },
+    right: {
+      backgroundColor: '#f5f5f5',
+      marginTop: -15,
+      marginBottom: -15,
+      marginRight: -12
+    },
+    leftActions: {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: 15
+    },
+    bodyContent: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100%'
+    },
+    bodyFooter: {
+      display: 'flex',
+      flexDirection: 'row',
+      marginTop: 10,
+      marginBottom: 10
+    },
+    tooltipSupport: {
+      position: 'absolute',
+      '& .tooltip-inner': {
+        backgroundColor: '#4eaf4e'
+      },
+      '& .tooltip-arrow': {
+        borderBottomColor: '#4eaf4e !important'
+      }
+    },
+    tooltipOppose: {
+      position: 'absolute',
+      '& .tooltip-inner': {
+        backgroundColor: '#ef6e18'
+      },
+      '& .tooltip-arrow': {
+        borderBottomColor: '#ef6e18 !important'
+      }
+    },
+    ideaText: {
+      '& a': {
+        color: '#0576b9',
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      },
+      '& p': {
+        margin: 0
+      }
+    },
+    imagesContainer: {
+      padding: '0 0 0 8px !important'
+    },
+    iconPrivate: {
+      fontSize: '30px !important',
+      color: '#607D8B',
+      textShadow: '0 1px 3px rgba(128, 128, 128, 0.7)'
+    },
+    iconActive: {
+      cursor: 'pointer',
+      '&:hover': {
+        color: '#3c525d'
+      }
     }
-  },
-  imagesContainer: {
-    padding: '0 0 0 8px !important'
-  },
-  iconPrivate: {
-    fontSize: '30px !important',
-    color: '#607D8B',
-    textShadow: '0 1px 3px rgba(128, 128, 128, 0.7)'
-  },
-  iconActive: {
-    cursor: 'pointer',
-    '&:hover': {
-      color: '#3c525d'
-    }
-  }
+  };
 };
 
 export class RenderIdeaItem extends React.Component {
@@ -273,17 +276,14 @@ export class RenderIdeaItem extends React.Component {
                 <IconWithText
                   name="mdi-set mdi-lightbulb"
                   text={node.title}
-                  styleText={!passive && classes.title}
+                  styleText={classNames(classes.title, { [classes.activeTitle]: !passive })}
                   styleIcon={classes.icon}
                 />
               </div>
-
-              <Grid container item>
-                <Grid item sm={12}>
-                  <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-                </Grid>
+              <div>
+                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 {images.length > 0 &&
-                  <Grid className={classes.imagesContainer} item sm={12}>
+                  <div className={classes.imagesContainer}>
                     <ImagesPreview
                       images={images}
                       context={{
@@ -292,8 +292,8 @@ export class RenderIdeaItem extends React.Component {
                         date: node.createdAt
                       }}
                     />
-                  </Grid>}
-              </Grid>
+                  </div>}
+              </div>
             </div>
             <div className={classes.bodyFooter}>
               {!passive && <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />}
@@ -329,4 +329,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItem));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItem));

@@ -114,6 +114,12 @@ export const closeDrawer = () => {
   };
 };
 
+export const toggleDrawer = () => {
+  return {
+    type: constants.TOGGLE_DRAWER
+  };
+};
+
 export const openChatApp = (config) => {
   return {
     type: constants.OPEN_CHATAPP,
@@ -139,6 +145,18 @@ export const closeCollaborationRight = (config) => {
   return {
     type: constants.CLOSE_COLLABORATION_RIGHT,
     config: config
+  };
+};
+
+export const addChatAppIntegration = () => {
+  return {
+    type: constants.ADD_CHATAPP_INTEGRATION
+  };
+};
+
+export const removeChatAppIntegration = () => {
+  return {
+    type: constants.REMOVE_CHATAPP_INTEGRATION
   };
 };
 

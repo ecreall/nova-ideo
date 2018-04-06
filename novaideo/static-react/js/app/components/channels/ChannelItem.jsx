@@ -85,14 +85,15 @@ const styles = (theme) => {
     badgeColor: {
       color: 'white',
       backgroundColor: theme.palette.danger['500'],
-      padding: '5px 9px',
+      padding: '0px 7px',
       marginLeft: 4,
       borderRadius: '1em',
       fontSize: 12,
       fontWeight: 700,
       width: 'auto',
       height: 'auto',
-      top: -3
+      top: -3,
+      right: -7
     },
     unreadComment: {
       color: 'white',
@@ -147,10 +148,10 @@ export class DumbChannelItem extends React.Component {
       </ListItemIcon>;
   };
   render() {
-    const { classes, node, activeChannel, activeIntegretedChannel, channelIntegreted } = this.props;
+    const { classes, node, activeChannel, activeIntegretedChannel, chatAppIntegreted } = this.props;
     const lenUnreadComments = node.lenUnreadComments;
     const hasUnread = lenUnreadComments > 0;
-    const isSelected = activeChannel === node.id || (channelIntegreted && activeIntegretedChannel === node.id);
+    const isSelected = activeChannel === node.id || (chatAppIntegreted && activeIntegretedChannel === node.id);
     const isActive = isSelected || hasUnread;
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
@@ -182,9 +183,8 @@ export const mapStateToProps = (state, props) => {
   return {
     currentMessage: state.form[props.node.id],
     activeChannel: state.apps.chatApp.channel,
-    channelIntegreted: state.apps.chatApp.integreted,
     activeIntegretedChannel: state.apps.collaborationApp.right.props.channel,
-    chatAppIntegreted: state.apps.chatApp.integreted
+    chatAppIntegreted: state.apps.chatApp.integrations
   };
 };
 

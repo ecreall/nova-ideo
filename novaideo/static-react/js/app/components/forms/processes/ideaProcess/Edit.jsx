@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
 import classNames from 'classnames';
+import Zoom from 'material-ui/transitions/Zoom';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import SelectChipPreview from '../../widgets/SelectChipPreview';
@@ -246,7 +247,7 @@ export class DumbEditIdeaForm extends React.Component {
         initRef={(form) => {
           this.form = form;
         }}
-        transition={false}
+        transition={Zoom}
         withDrawer
         fullScreen
         open

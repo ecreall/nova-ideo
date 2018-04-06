@@ -3,7 +3,6 @@ import React from 'react';
 import Moment from 'moment';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import Grid from 'material-ui/Grid';
 import { I18n } from 'react-redux-i18n';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
@@ -247,13 +246,10 @@ export class RenderIdeaItem extends React.Component {
               <div className={classes.bodyTitle} onClick={this.openDetails}>
                 <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} styleIcon={classes.icon} />
               </div>
-
-              <Grid container item>
-                <Grid item sm={12}>
-                  <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-                </Grid>
+              <div>
+                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
                 {images.length > 0 &&
-                  <Grid className={classes.imagesContainer} item sm={12}>
+                  <div className={classes.imagesContainer}>
                     <ImagesPreview
                       images={images}
                       context={{
@@ -262,8 +258,8 @@ export class RenderIdeaItem extends React.Component {
                         date: node.createdAt
                       }}
                     />
-                  </Grid>}
-              </Grid>
+                  </div>}
+              </div>
             </div>
             <div className={classes.bodyFooter}>
               <AllignedActions

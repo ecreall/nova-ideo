@@ -26,6 +26,17 @@ export class DumbCommentProcessManager extends React.Component {
     if (onActionClick) onActionClick();
   };
 
+  beforeFormOpened = () => {
+    const { onFormOpened } = this.props;
+    if (onFormOpened) onFormOpened();
+  };
+
+  afterFormClosed = () => {
+    const { onFormClosed } = this.props;
+    if (onFormClosed) onFormClosed();
+    this.onActionPerformed();
+  };
+
   performAction = (action, data) => {
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
@@ -51,9 +62,11 @@ export class DumbCommentProcessManager extends React.Component {
 
   onFormClose = () => {
     this.setState({ action: null });
+    this.afterFormClosed();
   };
 
   displayForm = (action) => {
+    this.beforeFormOpened();
     this.setState({ action: action });
   };
 

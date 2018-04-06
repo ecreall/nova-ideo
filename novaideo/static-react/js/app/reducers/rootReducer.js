@@ -300,7 +300,7 @@ const initialAppsState = {
   },
   chatApp: {
     open: false,
-    integreted: false,
+    integrations: 0,
     channel: undefined,
     subject: undefined,
     right: {
@@ -344,9 +344,12 @@ export const apps = (state = initialAppsState, action) => {
   case constants.CLOSE_DRAWER: {
     return { ...state, drawer: { open: false, app: undefined } };
   }
+  case constants.TOGGLE_DRAWER: {
+    return { ...state, drawer: { ...state.drawer, open: !state.drawer.open } };
+  }
   case constants.OPEN_CHATAPP: {
     const config = action.config;
-    let drawer = true;
+    let drawer = state.drawer;
     if ('drawer' in config) {
       drawer = config.drawer;
       delete config.drawer;
@@ -354,7 +357,45 @@ export const apps = (state = initialAppsState, action) => {
     return {
       ...state,
       drawer: { open: drawer, app: 'chatApp' },
-      chatApp: { ...state.chatApp, ...{ open: true }, ...action.config }
+      chatApp: { ...state.chatApp, open: true, ...action.config }
+    };
+  }
+  case constants.ADD_CHATAPP_INTEGRATION: {
+    return {
+      ...state,
+      chatApp: { ...state.chatApp, integrations: state.chatApp.integrations + 1 }
+    };
+  }
+  case constants.REMOVE_CHATAPP_INTEGRATION: {
+    let integrations = state.chatApp.integrations - 1;
+    integrations = integrations < 0 ? 0 : integrations;
+    return {
+      ...state,
+      drawer: { ...state.drawer, app: 'collaborationApp' },
+      chatApp: { ...state.chatApp, integrations: integrations }
+    };
+  }
+  case constants.CLOSE_CHATAPP: {
+    const defaultConfig = {
+      channel: undefined,
+      subject: undefined,
+      integrations: 0,
+      right: {
+        open: false,
+        componentId: undefined
+      }
+    };
+    const actionConfig = action.config || {};
+    let drawer = true;
+    if ('drawer' in actionConfig) {
+      drawer = actionConfig.drawer;
+      delete actionConfig.drawer;
+    }
+    const config = { ...defaultConfig, ...actionConfig };
+    return {
+      ...state,
+      drawer: { open: drawer, app: undefined },
+      chatApp: { ...state.chatApp, ...{ open: false }, ...config }
     };
   }
   case constants.OPEN_COLLABORATION_RIGHT: {
@@ -383,28 +424,6 @@ export const apps = (state = initialAppsState, action) => {
           ...action.config
         }
       }
-    };
-  }
-  case constants.CLOSE_CHATAPP: {
-    const defaultConfig = {
-      channel: undefined,
-      subject: undefined,
-      right: {
-        open: false,
-        componentId: undefined
-      }
-    };
-    const actionConfig = action.config || {};
-    let drawer = true;
-    if ('drawer' in actionConfig) {
-      drawer = actionConfig.drawer;
-      delete actionConfig.drawer;
-    }
-    const config = { ...defaultConfig, ...actionConfig };
-    return {
-      ...state,
-      drawer: { open: drawer, app: undefined },
-      chatApp: { ...state.chatApp, ...{ open: false }, ...config }
     };
   }
   case constants.UPDATE_CHATAPP_RIGHT: {

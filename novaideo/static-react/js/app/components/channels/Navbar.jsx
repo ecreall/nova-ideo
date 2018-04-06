@@ -82,7 +82,8 @@ const styles = (theme) => {
     },
     icon: {
       color: '#2c2d30',
-      fontWeight: 900
+      fontWeight: '900 !important',
+      fontSize: '16px !important'
     },
     infoIcon: {
       height: 17,
@@ -192,7 +193,7 @@ class NavBar extends React.Component {
   };
 
   handleSearchCancel = () => {
-    this.props.updateChatAppRight({ open: false, componentId: null, props: null, full: false });
+    this.props.updateChatAppRight({ open: false, componentId: null, props: {}, full: false });
     return false;
   };
 
@@ -294,7 +295,6 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
-    previousLocation: state.history.navigation.previous,
     rightComponentId: state.apps.chatApp.right.componentId,
     rightFull: state.apps.chatApp.right.full,
     rightOpen: state.apps.chatApp.right.open

@@ -40,7 +40,6 @@ class Home extends React.Component {
         }
         : {};
       this.props.openChatApp({
-        drawer: !smallScreen,
         channel: channelId,
         ...rightOpen
       });

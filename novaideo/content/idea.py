@@ -46,7 +46,7 @@ from novaideo.core import (
     Tokenable)
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
-    text_urls_format, truncate_text, get_files_data)
+    text_urls_format, truncate_text, get_files_data, html_to_text)
 
 
 OPINIONS = OrderedDict([
@@ -267,7 +267,7 @@ class Idea(VersionableEntity, DuplicableEntity,
 
 
     def presentation_text(self, nb_characters=400):
-        return truncate_text(getattr(self, 'text', ""), nb_characters)
+        return truncate_text(html_to_text(getattr(self, 'text', "")), nb_characters)
 
     def get_more_contents_criteria(self):
         "return specific query, filter values"

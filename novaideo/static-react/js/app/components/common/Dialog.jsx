@@ -8,12 +8,11 @@ import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
-import Slide from 'material-ui/transitions/Slide';
 import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import Grid from 'material-ui/Grid';
 
-import { updateApp } from '../../actions/actions';
+import { addChatAppIntegration, removeChatAppIntegration, toggleDrawer } from '../../actions/actions';
 import CollaborationAppRight from '../collaborationAppRight/CollaborationAppRight';
 import { STYLE_CONST } from '../../constants';
 
@@ -108,10 +107,6 @@ const styles = (theme) => {
   };
 };
 
-function Transition(props) {
-  return <Slide direction="down" {...props} />;
-}
-
 const AppRightContainer = (props) => {
   const { children, classes, withDrawer, rightOpen, rightFull } = props;
   return (
@@ -147,23 +142,27 @@ class CommonDialog extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
+      this.dispatchResize();
     }, 0);
+  }
+
+  componentWillUnmount() {
+    const { withDrawer, removeIntegration } = this.props;
+    if (withDrawer) removeIntegration();
   }
 
   onEntered = () => {
     this.setState({ entered: true }, () => {
-      const { withDrawer, onOpen } = this.props;
+      const { withDrawer, onOpen, addIntegration } = this.props;
       if (onOpen) onOpen();
-      if (withDrawer) this.props.updateApp('chatApp', { integreted: true });
+      if (withDrawer) addIntegration();
     });
   };
 
   onClose = () => {
     this.setState({ entered: false }, () => {
-      const { onClose, withDrawer } = this.props;
+      const { onClose } = this.props;
       if (onClose) onClose();
-      if (withDrawer) this.props.updateApp('chatApp', { integreted: false });
     });
   };
 
@@ -174,8 +173,7 @@ class CommonDialog extends React.Component {
   };
 
   toggleDrawer = () => {
-    const { drawerOpen } = this.props;
-    this.props.updateApp('drawer', { open: !drawerOpen });
+    this.props.toggleDrawer();
     this.dispatchResize();
   };
 
@@ -212,7 +210,7 @@ class CommonDialog extends React.Component {
         fullScreen={full}
         open={open}
         onExited={this.onClose}
-        transition={transition ? Transition : undefined}
+        transition={transition}
       >
         <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
           <Toolbar>
@@ -247,7 +245,9 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  updateApp: updateApp
+  toggleDrawer: toggleDrawer,
+  addIntegration: addChatAppIntegration,
+  removeIntegration: removeChatAppIntegration
 };
 
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(CommonDialog));

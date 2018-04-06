@@ -43,7 +43,7 @@ const styles = (theme) => {
       maxWidth: 'calc(100vw - 120px)'
     },
     appBar: {
-      backgroundColor: 'rgba(0, 0, 0, 0.35)',
+      backgroundColor: 'rgba(0, 0, 0, 0.35) !important',
       borderBottom: 'solid 1px rgba(255, 255, 255, 0.3)'
     },
     paper: {

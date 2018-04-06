@@ -19,7 +19,8 @@ import {
   setConnectionState,
   loadAdapters,
   updateGlobalProps,
-  updateNavigation
+  updateNavigation,
+  closeDrawer
 } from './actions/actions';
 import { getCurrentLocation } from './utils/routeMap';
 import { getActions } from './utils/processes';
@@ -98,6 +99,7 @@ class Main extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { data, width, navigation } = nextProps;
     if (data.root) {
+      const smallScreen = SMALL_WIDTH.includes(width);
       this.props.updateGlobalProps({
         site: data.root,
         rootActions: getActions(
@@ -105,13 +107,14 @@ class Main extends React.Component {
             return action.node;
           })
         ),
-        smallScreen: SMALL_WIDTH.includes(width)
+        smallScreen: smallScreen
       });
       this.props.loadAdapters(data.root.siteId);
       const currentLocation = getCurrentLocation();
       if (navigation.location !== currentLocation) {
         this.props.updateNavigation(currentLocation, true);
       }
+      if (smallScreen) this.props.closeDrawer();
     }
   }
 
@@ -159,7 +162,8 @@ export const mapDispatchToProps = {
   loadAdapters: loadAdapters,
   updateUserToken: updateUserToken,
   updateGlobalProps: updateGlobalProps,
-  updateNavigation: updateNavigation
+  updateNavigation: updateNavigation,
+  closeDrawer: closeDrawer
 };
 
 export default withWidth()(

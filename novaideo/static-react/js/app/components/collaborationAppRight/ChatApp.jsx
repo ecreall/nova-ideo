@@ -2,8 +2,9 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
-import ForumIcon from 'material-ui-icons/Forum';
+import Icon from 'material-ui/Icon';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import RightContent from './RightContent';
 import Comments from '../channels/Comments';
@@ -17,7 +18,8 @@ const styles = {
     alignItems: 'center'
   },
   appIcon: {
-    marginRight: 5
+    fontWeight: '900 !important',
+    fontSize: '16px !important'
   }
 };
 
@@ -27,12 +29,8 @@ const ChatApp = (props) => {
     <RightContent
       title={
         <div>
-          <div className={classes.appTitle}>
-            <ForumIcon className={classes.appIcon} />
-            <span>
-              {(appProps && appProps.channelTitle) || I18n.t('channels.comments')}
-            </span>
-          </div>
+          <Icon className={classNames('mdi-set mdi-pound', classes.appIcon)} />
+          {(appProps && appProps.channelTitle) || I18n.t('channels.comments')}
         </div>
       }
     >
@@ -40,6 +38,7 @@ const ChatApp = (props) => {
         inline
         customScrollbar
         reverted
+        rightDisabled
         dynamicDivider={false}
         channelId={appProps.channel}
         formProps={{ autoFocus: true }}

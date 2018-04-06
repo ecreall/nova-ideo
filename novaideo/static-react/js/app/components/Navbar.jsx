@@ -9,7 +9,7 @@ import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 
-import { updateApp } from '../actions/actions';
+import { toggleDrawer } from '../actions/actions';
 import AccountInformation from './user/AccountInformation';
 import UserMenu from './user/UserMenu';
 import Search from './forms/Search';
@@ -81,19 +81,12 @@ const styles = {
 
 class NavBar extends React.Component {
   render() {
-    const { classes, className, toggleDrawer, drawer, site } = this.props;
+    const { classes, className, drawer, site } = this.props;
     return (
       <div>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
           <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="primary"
-              aria-label="Menu"
-              onClick={() => {
-                return toggleDrawer('drawer', { open: !drawer });
-              }}
-            >
+            <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.props.toggleDrawer}>
               {drawer ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
             </IconButton>
             <Typography type="title" color="primary" className={classes.flex}>
@@ -129,7 +122,7 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  toggleDrawer: updateApp
+  toggleDrawer: toggleDrawer
 };
 
 export const mapStateToProps = (state) => {

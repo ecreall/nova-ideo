@@ -545,6 +545,7 @@ span.format-text-underline{
 .mdi-set {
   overflow: inherit !important;
   height: initial !important;
+  line-height: normal !important;
 }
 
 body {
@@ -556,5 +557,4 @@ body {
   margin: 0;
   font-size: 15px;
   font-weight: 400;
-  line-height: 1.46429em;
 }

@@ -72,7 +72,7 @@ const styles = (theme) => {
       }
     },
     root: {
-      display: 'none'
+      zIndex: -1
     },
     badge: {
       right: 15,
@@ -86,7 +86,7 @@ const styles = (theme) => {
       fontSize: 12,
       fontWeight: 700,
       top: 0,
-      right: -10,
+      right: -7,
       opacity: 0.6,
       height: 20,
       width: 20

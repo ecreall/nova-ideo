@@ -36,6 +36,7 @@ export class DumbIdeaProcessManager extends React.Component {
   afterFormClosed = () => {
     const { onFormClosed } = this.props;
     if (onFormClosed) onFormClosed();
+    // this.onActionPerformed();
   };
 
   evaluationClick = (action) => {

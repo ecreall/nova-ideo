@@ -8,6 +8,7 @@ import { I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import Zoom from 'material-ui/transitions/Zoom';
 
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
@@ -206,11 +207,7 @@ export class RunderIdea extends React.Component {
     const { classes, data, site, processManager, adapters } = this.props;
     const { idea } = data;
     if (data.loading || !idea) {
-      return (
-        <div className={classes.progress}>
-          <CircularProgress size={30} />
-        </div>
-      );
+      return null;
     }
     const { open } = this.state;
     const images = idea.attachedFiles
@@ -239,6 +236,7 @@ export class RunderIdea extends React.Component {
         fullScreen
         open={open}
         onClose={this.close}
+        transition={Zoom}
       >
         <div className={classes.root}>
           <Scrollbar scrollEvent={scrollEvent}>

@@ -41,6 +41,9 @@ const styles = (theme) => {
         height: '100%'
       }
     },
+    temporaryDrawerRoot: {
+      zIndex: 1301
+    },
     switchButton: {
       position: 'absolute',
       right: 0,
@@ -121,7 +124,8 @@ class AppDrawer extends React.Component {
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={drawerOpen}
           classes={{
-            paper: classes.temporaryDrawerPaper
+            paper: classes.temporaryDrawerPaper,
+            modal: classes.temporaryDrawerRoot
           }}
           onClose={() => {
             this.props.closeDrawer();

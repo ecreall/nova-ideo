@@ -22,7 +22,7 @@ const OverlaidTooltip = ({ children, tooltip, placement, classes }) => {
           {tooltip}
         </Tooltip>
       }
-      trigger={['hover', 'focus']}
+      trigger={['hover']}
       placement={placement || 'top'}
     >
       {children}
