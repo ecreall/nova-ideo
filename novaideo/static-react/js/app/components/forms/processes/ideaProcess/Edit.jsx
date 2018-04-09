@@ -182,10 +182,12 @@ export class DumbEditIdeaForm extends React.Component {
         });
       const keywords = formData.values.keywords;
       const htmlText = this.editor.getHTMLText();
+      const plainText = this.editor.getPlainText();
       if (action.nodeId === processNodes.edit.nodeId) {
         this.props.editIdea({
           context: idea,
           text: htmlText,
+          plainText: plainText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: newFiles,

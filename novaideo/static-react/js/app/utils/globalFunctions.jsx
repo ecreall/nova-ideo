@@ -5,6 +5,8 @@ import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
 import * as Vibrant from 'node-vibrant';
 
+import * as constants from '../constants';
+
 export const calculatePercentage = (value1, value2) => {
   return Math.round(value1 * 100 / value2 * 100) / 100;
 };
@@ -161,4 +163,8 @@ export function arrayToDict(list) {
   };
   list.reduce(reducer, result);
   return result;
+}
+
+export function truncateText(text, len = constants.PRESENTATION_TEXT_LEN) {
+  return `${text.substring(0, len)}...`;
 }

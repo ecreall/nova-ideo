@@ -85,14 +85,14 @@ const styles = (theme) => {
     badgeColor: {
       color: 'white',
       backgroundColor: theme.palette.danger['500'],
-      padding: '0px 7px',
+      padding: '3px 7px',
       marginLeft: 4,
       borderRadius: '1em',
       fontSize: 12,
       fontWeight: 700,
       width: 'auto',
       height: 'auto',
-      top: -3,
+      top: 0,
       right: -7
     },
     unreadComment: {

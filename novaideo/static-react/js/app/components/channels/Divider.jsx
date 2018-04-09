@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
+import { Translate } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 
 import { getFormattedDate } from '../../utils/globalFunctions';
@@ -18,15 +19,22 @@ export class DumbCommentDivider extends React.Component {
   addUnread = () => {
     const { node, reverted, dividerProps } = this.props;
     const item = reverted ? this.props.next : this.props.previous;
-    if (!item) return false;
     const unreadComments = dividerProps.unreadCommentsIds;
     const isUnread = unreadComments.includes(node.id);
+    if (!item) return isUnread;
     const nextIsUnread = unreadComments.includes(item.id);
     return isUnread && !nextIsUnread;
   };
 
   render() {
-    const { node, index, eventId, drawer, reverted, dividerProps: { fullScreen, ignorDrawer, dynamic } } = this.props;
+    const {
+      node,
+      index,
+      eventId,
+      drawer,
+      reverted,
+      dividerProps: { fullScreen, ignorDrawer, dynamic, unreadCommentsIds }
+    } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();
     const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
@@ -43,7 +51,7 @@ export class DumbCommentDivider extends React.Component {
         index={index}
         alert={addUnread}
         message={dateSeparator}
-        alertMessage="Unread"
+        alertMessage={<Translate value="channels.unreadMessages" count={unreadCommentsIds.length} />}
         eventId={eventId}
         shift={dividerShift}
         fixedTop={65}

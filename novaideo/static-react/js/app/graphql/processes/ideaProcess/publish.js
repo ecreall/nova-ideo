@@ -63,6 +63,18 @@ export default function publish({ mutate }) {
               state: { $set: newIdea.state }
             }
           });
+        },
+        Comments: (prev, { mutationResult, queryVariables }) => {
+          const newIdea = mutationResult.data.publishIdea.idea;
+          const channelId = newIdea.channel.id;
+          if (queryVariables.id !== channelId) return false;
+          return update(prev, {
+            node: {
+              subject: {
+                actions: { $set: newIdea.actions }
+              }
+            }
+          });
         }
       }
     });

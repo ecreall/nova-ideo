@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 
 import { ideaFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
+import { truncateText } from '../../../utils/globalFunctions';
 
 export const editMutation = gql`
   mutation($context: String!, $text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload],
@@ -25,7 +26,7 @@ export const editMutation = gql`
 `;
 
 export default function edit({ ownProps, mutate }) {
-  return ({ context, text, title, keywords, attachedFiles, oldFiles }) => {
+  return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles }) => {
     const { formData } = ownProps;
     const files = formData.values.files
       ? formData.values.files.map((file, index) => {
@@ -65,7 +66,7 @@ export default function edit({ ownProps, mutate }) {
             title: title,
             keywords: keywords,
             text: text,
-            presentationText: text,
+            presentationText: truncateText(plainText),
             attachedFiles: files
           }
         }

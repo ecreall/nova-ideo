@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 
 import { ideaFragment } from '../../queries';
 import { ACTIONS, STATE } from '../../../processes';
+import { truncateText } from '../../../utils/globalFunctions';
 
 export const createAndPublishMutation = gql`
   mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,
@@ -24,7 +25,7 @@ export const createAndPublishMutation = gql`
 `;
 
 export default function createAndPublish({ ownProps, mutate }) {
-  return ({ text, title, keywords, attachedFiles, anonymous, account }) => {
+  return ({ plainText, text, title, keywords, attachedFiles, anonymous, account }) => {
     const { formData, globalProps: { site } } = ownProps;
     const files =
       attachedFiles.length > 0
@@ -82,7 +83,7 @@ export default function createAndPublish({ ownProps, mutate }) {
             title: title,
             keywords: keywords,
             text: text,
-            presentationText: text,
+            presentationText: truncateText(plainText),
             attachedFiles: files,
             tokensSupport: 0,
             tokensOpposition: 0,

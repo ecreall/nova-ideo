@@ -182,7 +182,9 @@ const Translations = {
         pinned: "Les messages épinglés",
         members: "Les membres abonnés à la discussion",
         files: "Les messages avec des fichiers attachés"
-      }
+      },
+      unreadMessages: "nouveaux messages",
+      unreadMessages_1: "nouveau message"
     },
     forms: {
       optional: "(facultatif)",
@@ -411,7 +413,9 @@ const Translations = {
         pinned: "Pinned messages",
         members: "Members",
         files: "Files"
-      }
+      },
+      unreadMessages: "new messages",
+      unreadMessages_1: "new message"
     },
     forms: {
       optional: "(optional)",

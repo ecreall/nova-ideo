@@ -103,6 +103,9 @@ const styles = (theme) => {
     },
     withRightFull: {
       display: 'none'
+    },
+    menuButton: {
+      marginLeft: -24
     }
   };
 };

@@ -10,6 +10,7 @@ import CreateIcon from 'material-ui-icons/Create';
 
 import { STATE } from '../../processes';
 import { getEntityIcon } from '../../utils/processes';
+// import { get } from '../../utils/routeMap';
 import { Menu } from '../common/menu';
 import IdeaPopover from './IdeaPopover';
 
@@ -185,6 +186,8 @@ export class DumbIdeaListingItem extends React.Component {
   render() {
     const { classes, node } = this.props;
     const { open, hide } = this.state;
+    // const ideaRoot = get('ideas', { ideaId: node.id });
+    // const isOpened = open || location.pathname.startsWith(ideaRoot);
     const isPrevate = node.state.includes(STATE.idea.private);
     const textClasses = classNames(classes.text, { [classes.textSelected]: open });
     return (

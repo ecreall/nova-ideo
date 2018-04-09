@@ -76,6 +76,8 @@ export const UPDATE_CHATAPP_RIGHT = 'UPDATE_CHATAPP_RIGHT';
 
 export const UPDATE_COLLABORATION_RIGHT = 'UPDATE_COLLABORATION_RIGHT';
 
+export const PRESENTATION_TEXT_LEN = 300;
+
 export const SMALL_WIDTH = ['sm', 'xs'];
 
 export const SIZE_MAP = {

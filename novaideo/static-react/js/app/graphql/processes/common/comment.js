@@ -27,11 +27,17 @@ export const commentMutation = gql`
             id
             oid
             title
+            lenUnreadComments
             isDiscuss
             subject {
               ... on IEntity {
                 id
                 oid
+              }
+              ... on Person {
+                picture {
+                  url
+                }
               }
             }
           }

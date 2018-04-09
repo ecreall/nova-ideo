@@ -59,7 +59,8 @@ const styles = (theme) => {
 
     appBarContainer: {
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      alignItems: 'center'
     },
 
     appbarActions: {

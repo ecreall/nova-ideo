@@ -39,15 +39,18 @@ const styles = {
   },
   alert: {
     position: 'absolute',
-    right: 0,
+    right: 15,
     backgroundColor: 'white',
-    top: -13,
-    fontSize: '0.9rem',
+    top: -9,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#d72b3f',
     cursor: 'default',
     textAlign: 'center',
-    padding: 5
+    padding: '1px 5px',
+    border: 'solid 1px #d72b3f',
+    borderRadius: 6,
+    boxShadow: '0 0px 5px #8080808a'
   },
   background: {
     minHeight: 1,

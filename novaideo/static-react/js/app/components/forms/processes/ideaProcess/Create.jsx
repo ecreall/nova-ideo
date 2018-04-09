@@ -202,9 +202,11 @@ export class DumbCreateIdeaForm extends React.Component {
       });
       const keywords = formData.values.keywords;
       const htmlText = this.editor.getHTMLText();
+      const plainText = this.editor.getPlainText();
       if (action.nodeId === processNodes.createAndPublish.nodeId) {
         this.props.createAndPublishIdea({
           text: htmlText,
+          plainText: plainText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,
