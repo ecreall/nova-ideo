@@ -263,6 +263,7 @@ export class RenderIdeaItem extends React.Component {
             </div>
             <div className={classes.bodyFooter}>
               <AllignedActions
+                actionDecoration
                 actions={communicationActions}
                 onActionClick={processManager.performAction}
                 classes={{ actionsContainer: classes.actionsContainer }}

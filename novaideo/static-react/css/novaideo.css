@@ -181,16 +181,6 @@ figure.md-block-image {
   text-align: center;
 }
 
-.embedly-card-url {
-  color: gray;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 10px;
-  background: white;
-  border-radius: 6px;
-  border: solid 1px darkgrey;
-}
-
 .md-block-with-data-background {
   position: absolute;
   top: 0;

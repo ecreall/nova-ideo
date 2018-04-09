@@ -1,10 +1,11 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { CardActions } from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
+// import IconButton from 'material-ui/IconButton';
 import { I18n } from 'react-redux-i18n';
 
 import OverlaidTooltip from './OverlaidTooltip';
+import { IconButton } from '../styledComponents/Button';
 
 const styles = (theme) => {
   return {
@@ -35,7 +36,7 @@ const styles = (theme) => {
 
 class AllignedActions extends React.Component {
   render() {
-    const { actions, onActionClick, overlayPosition, classes } = this.props;
+    const { actions, onActionClick, overlayPosition, actionDecoration, classes } = this.props;
     return (
       <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
         {actions.map((action, key) => {
@@ -44,6 +45,7 @@ class AllignedActions extends React.Component {
             <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
               <IconButton
                 className={classes.actionsText}
+                textColor={actionDecoration && action.active && action.color}
                 key={key}
                 onClick={() => {
                   if (onActionClick) onActionClick(action);

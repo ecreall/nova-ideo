@@ -149,6 +149,7 @@ class Action(Node, graphene.ObjectType):
     order = graphene.Int()
     submission_title = graphene.String()
     description = graphene.String()
+    active = graphene.Boolean()
 
     def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.action.title)
@@ -193,6 +194,10 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_order(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_order', 100)
+
+    def resolve_active(self, args, context, info):  # pylint: disable=W0613
+        is_active = getattr(self.action, 'is_active', None)
+        return False if not is_active else self.action.is_active(self.context, context)
 
 
 class File(Node, graphene.ObjectType):

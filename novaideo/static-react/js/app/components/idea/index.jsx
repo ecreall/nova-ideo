@@ -1,4 +1,5 @@
-import { I18n } from 'react-redux-i18n';
+import React from 'react';
+import { Translate, I18n } from 'react-redux-i18n';
 
 import { iconAdapter } from '../../utils/globalFunctions';
 import { PROCESSES, STATE } from '../../processes';
@@ -48,12 +49,20 @@ export function getIdeaSupportStats(idea, classes) {
     {
       color: '#4eaf4e',
       count: idea.tokensSupport,
-      Tooltip: createTooltip(I18n.t('evaluation.support'), idea.tokensSupport, classes.tooltipSupport)
+      Tooltip: createTooltip(
+        <Translate value="evaluation.support" count={idea.tokensSupport} />,
+        idea.tokensSupport,
+        classes.tooltipSupport
+      )
     },
     {
       color: '#ef6e18',
       count: idea.tokensOpposition,
-      Tooltip: createTooltip(I18n.t('evaluation.opposition'), idea.tokensOpposition, classes.tooltipOppose)
+      Tooltip: createTooltip(
+        <Translate value="evaluation.opposition" count={idea.tokensOpposition} />,
+        idea.tokensOpposition,
+        classes.tooltipOppose
+      )
     }
   ];
 }

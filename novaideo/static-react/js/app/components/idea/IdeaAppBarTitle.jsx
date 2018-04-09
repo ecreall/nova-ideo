@@ -72,7 +72,7 @@ class IdeaAppBarTitle extends React.Component {
               classes={{
                 statisticsDoughnut: classes.statisticsDoughnut
               }}
-              title={I18n.t('evaluation.tokens')}
+              title="evaluation.tokens"
               elements={stats}
             />}
         </div>

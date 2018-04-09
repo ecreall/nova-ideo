@@ -122,6 +122,9 @@ class DeselectEntity(InfiniteCardinality):
     processsecurity_validation = deselect_processsecurity_validation
     state_validation = select_state_validation
 
+    def is_active(self, context, request):
+        return True
+
     def get_title(self, context, request, nb_only=False):
         len_selections = getattr(context, 'len_selections', 0)
         if nb_only:

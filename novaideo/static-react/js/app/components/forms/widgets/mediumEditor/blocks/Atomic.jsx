@@ -1,4 +1,5 @@
 import React from 'react';
+import { CircularProgress } from 'material-ui/Progress';
 
 import BlockDataManager from '../BlockDataManager';
 
@@ -44,7 +45,7 @@ export class AtomicEmbedComponent extends React.Component {
       <BlockDataManager {...this.props} className="md-block-with-data md-block-atomic-embed">
         <div className="embedly-card-url-container">
           <a className="embedly-card-url embedly-card" href={url} data-card-controls="0">
-            {url}
+            <CircularProgress size={30} />
           </a>
         </div>
       </BlockDataManager>

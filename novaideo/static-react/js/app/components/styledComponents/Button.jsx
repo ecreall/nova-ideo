@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
 import Button from 'material-ui/Button';
+import IconButtonBase from 'material-ui/IconButton';
 
 const StyledButton = glamorous(Button)((props) => {
   const background = props.background || '#2ea664';
@@ -48,6 +49,17 @@ export const CancelButton = glamorous(Button)(() => {
     margin: 0,
     textTransform: 'none'
   };
+});
+
+export const IconButton = glamorous(IconButtonBase)((props) => {
+  return props.textColor
+    ? {
+      color: props.textColor,
+      '&:hover': {
+        color: props.textColor
+      }
+    }
+    : {};
 });
 
 export default StyledButton;

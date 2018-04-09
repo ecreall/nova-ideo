@@ -793,6 +793,11 @@ class CommentIdea(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
+    def is_active(self, context, request):
+        user = get_current(request)
+        channel = context.get_channel(user)
+        return channel in getattr(user, 'following_channels', [])
+
     def get_nb(self, context, request):
         user = get_current(request)
         channel = context.channel

@@ -35,7 +35,7 @@ const styles = (theme) => {
       height: '100%'
     },
     title: {
-      fontSize: 42,
+      fontSize: 34,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
@@ -275,7 +275,7 @@ export class RunderIdea extends React.Component {
                     classes={{
                       statisticsDoughnut: classes.statisticsDoughnut
                     }}
-                    title={I18n.t('evaluation.tokens')}
+                    title="evaluation.tokens"
                     elements={stats}
                   />
                 </div>}

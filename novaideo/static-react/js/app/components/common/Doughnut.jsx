@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { Translate } from 'react-redux-i18n';
 
 import Tooltip from './overlay/Tooltip';
 import Doughnut from '../svg/doughnut';
@@ -85,7 +86,7 @@ const StatisticsDoughnut = ({ elements, placement, title, disableTotalCount, cla
             </div>
             {placeAfter ? ' ' : ''}
             <div className={classes.doughnutLabelText}>
-              {title}
+              <Translate value={title} count={totalCount} />
             </div>
           </div>}
       </div>

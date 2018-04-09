@@ -209,8 +209,11 @@ const Translations = {
     },
     evaluation: {
       tokens: "Jetons",
+      tokens_1: "Jeton",
       support: "Soutiens",
-      opposition: "Oppositions"
+      support_1: "Soutien",
+      opposition: "Oppositions",
+      opposition_1: "Opposition"
     },
     date: {
       format: "D MMMM YYYY",
@@ -440,8 +443,11 @@ const Translations = {
     },
     evaluation: {
       tokens: "Tokens",
+      tokens_1: "Token",
       support: "Supports",
-      opposition: "Oppositions"
+      support_1: "Support",
+      opposition: "Oppositions",
+      opposition_1: "Opposition"
     },
     date: {
       format: "MMMM Do, YYYY",

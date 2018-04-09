@@ -73,10 +73,27 @@ const styles = (theme) => {
     },
     titleInput: {
       color: '#2c2d30',
-      fontSize: 42,
+      fontSize: 34,
       fontWeight: 900,
       paddingTop: 3,
-      lineHeight: 'normal'
+      paddingLeft: 0,
+      lineHeight: 'normal',
+      '&::placeholder': {
+        fontSize: 34,
+        fontWeight: 900
+      },
+      '&::-webkit-input-placeholder': {
+        fontSize: 34,
+        fontWeight: 900
+      },
+      '&::-moz-placeholder': {
+        fontSize: 34,
+        fontWeight: 900
+      },
+      '&::-ms-input-placeholder': {
+        fontSize: 34,
+        fontWeight: 900
+      }
     },
     formTitle: {
       flexGrow: 1
@@ -125,7 +142,7 @@ const styles = (theme) => {
       color: theme.palette.warning[700]
     },
     titleInputContainer: {
-      fontSize: 42,
+      fontSize: 34,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
@@ -148,6 +165,9 @@ const styles = (theme) => {
         content: '""',
         color: '#2c2d30'
       }
+    },
+    icon: {
+      fontSize: 34
     },
     iconDesabled: {
       color: '#989898'

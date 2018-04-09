@@ -81,25 +81,25 @@ const styles = (theme) => {
     },
     titleInput: {
       color: '#2c2d30',
-      fontSize: 42,
+      fontSize: 34,
       fontWeight: 900,
       paddingTop: 3,
       paddingLeft: 0,
       lineHeight: 'normal',
       '&::placeholder': {
-        fontSize: 40,
+        fontSize: 34,
         fontWeight: 900
       },
       '&::-webkit-input-placeholder': {
-        fontSize: 40,
+        fontSize: 34,
         fontWeight: 900
       },
       '&::-moz-placeholder': {
-        fontSize: 40,
+        fontSize: 34,
         fontWeight: 900
       },
       '&::-ms-input-placeholder': {
-        fontSize: 40,
+        fontSize: 34,
         fontWeight: 900
       }
     },
@@ -149,7 +149,7 @@ const styles = (theme) => {
       color: theme.palette.warning[700]
     },
     titleInputContainer: {
-      fontSize: 42,
+      fontSize: 34,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
@@ -172,6 +172,9 @@ const styles = (theme) => {
         content: '""',
         color: '#2c2d30'
       }
+    },
+    icon: {
+      fontSize: 34
     },
     iconDesabled: {
       color: '#989898'
@@ -218,6 +221,7 @@ export class DumbCreateIdeaForm extends React.Component {
       if (action.nodeId === processNodes.create.nodeId) {
         this.props.createIdea({
           text: htmlText,
+          plainText: plainText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
           attachedFiles: files,

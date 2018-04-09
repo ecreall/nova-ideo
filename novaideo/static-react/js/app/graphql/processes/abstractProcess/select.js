@@ -36,7 +36,8 @@ export default function select({ mutate }) {
       counter: { $set: selectAction.counter + 1 },
       nodeId: { $set: nodeId },
       behaviorId: { $set: nodeId },
-      icon: { $set: 'glyphicon glyphicon-star' }
+      icon: { $set: 'glyphicon glyphicon-star' },
+      active: { $set: true }
     });
     const optimisticContext = update(context, {
       actions: {

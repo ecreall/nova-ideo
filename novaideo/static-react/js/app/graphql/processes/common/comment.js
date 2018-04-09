@@ -160,7 +160,8 @@ export default function comment({ ownProps, mutate }) {
 
           const indexAction = currentIdea.node.actions.indexOf(commentAction);
           const newAction = update(commentAction, {
-            counter: { $set: commentAction.counter + 1 }
+            counter: { $set: commentAction.counter + 1 },
+            active: { $set: true }
           });
           const newIdea = update(currentIdea, {
             node: {
@@ -185,7 +186,8 @@ export default function comment({ ownProps, mutate }) {
           })[0];
           const indexAction = prev.idea.actions.indexOf(commentAction);
           const newAction = update(commentAction, {
-            counter: { $set: commentAction.counter + 1 }
+            counter: { $set: commentAction.counter + 1 },
+            active: { $set: true }
           });
           return update(prev, {
             idea: {
@@ -203,7 +205,8 @@ export default function comment({ ownProps, mutate }) {
           })[0];
           const indexAction = prev.person.actions.indexOf(commentAction);
           const newAction = update(commentAction, {
-            counter: { $set: commentAction.counter + 1 }
+            counter: { $set: commentAction.counter + 1 },
+            active: { $set: true }
           });
           const setChannel = !commentChannel && {
             channel: { $set: { __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title } }
@@ -225,7 +228,8 @@ export default function comment({ ownProps, mutate }) {
           })[0];
           const indexAction = prev.person.actions.indexOf(commentAction);
           const newAction = update(commentAction, {
-            counter: { $set: commentAction.counter + 1 }
+            counter: { $set: commentAction.counter + 1 },
+            active: { $set: true }
           });
           const setChannel = !commentChannel && {
             channel: { $set: { __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title } }

@@ -79,7 +79,7 @@ export const newBlockToHTML = (block) => {
         start: '<figure class="md-block-atomic md-block-atomic-embed">',
         end: '</figure>'
       };
-    } else if (block.text === '-') {
+    } else if (type === 'separator' || block.text === '-') {
       return (
         <div className="md-block-atomic md-block-atomic-break">
           <hr className="text-node-separator" />

@@ -25,7 +25,8 @@ export const PROCESSES = {
       comment: {
         nodeId: 'comment',
         title: 'processes.ideamanagement.comment.title',
-        description: 'processes.ideamanagement.comment.description'
+        description: 'processes.ideamanagement.comment.description',
+        color: '#d72b3f'
       },
       support: {
         nodeId: 'support',
@@ -71,7 +72,8 @@ export const PROCESSES = {
       discuss: {
         nodeId: 'discuss',
         title: 'processes.usermanagement.discuss.title',
-        description: 'processes.usermanagement.discuss.description'
+        description: 'processes.usermanagement.discuss.description',
+        color: '#d72b3f'
       },
       generalDiscuss: {
         nodeId: 'general_discuss',
@@ -90,7 +92,8 @@ export const PROCESSES = {
       deselect: {
         nodeId: 'deselect',
         title: 'processes.novaideoabstractprocess.deselect.title',
-        description: 'processes.novaideoabstractprocess.deselect.title'
+        description: 'processes.novaideoabstractprocess.deselect.title',
+        color: '#2ea664'
       },
       addreaction: {
         nodeId: 'addreaction',

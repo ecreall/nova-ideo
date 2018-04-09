@@ -27,6 +27,7 @@ export const actionFragment = gql`
     tags
     icon
     order
+    active
   }
 `;
 

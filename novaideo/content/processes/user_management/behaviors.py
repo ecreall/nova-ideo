@@ -767,8 +767,13 @@ class Discuss(InfiniteCardinality):
     processsecurity_validation = discuss_processsecurity_validation
     state_validation = discuss_state_validation
 
+    def is_active(self, context, request):
+        user = get_current(request)
+        channel = context.get_channel(user)
+        return True if channel else False
+
     def get_nb(self, context, request):
-        user = get_current()
+        user = get_current(request)
         channel = context.get_channel(user)
         if channel:
             unread_comments = channel.get_comments_between(

@@ -296,13 +296,14 @@ export class RenderIdeaItem extends React.Component {
               </div>
             </div>
             <div className={classes.bodyFooter}>
-              {!passive && <AllignedActions actions={communicationActions} onActionClick={processManager.performAction} />}
+              {!passive &&
+                <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.performAction} />}
             </div>
           </div>
         </div>
         {hasEvaluation &&
           <div className={classes.right}>
-            <StatisticsDoughnut title={I18n.t('evaluation.tokens')} elements={getIdeaSupportStats(node, classes)} />
+            <StatisticsDoughnut title="evaluation.tokens" elements={getIdeaSupportStats(node, classes)} />
           </div>}
       </div>
     );
