@@ -40,7 +40,7 @@ class TestGraphQLSchema(FunctionalTests):
 
     def test_get_id_for_all_ideas(self):
         query = '{ ideas { edges { node { id, title } } } }'
-        result = schema.execute(query)
+        result = schema.execute(query, context_value=self.request)
         self.assertIsNone(result.errors)
         edges = result.data['ideas']['edges']
         self.assertEqual(len(edges), 2)
