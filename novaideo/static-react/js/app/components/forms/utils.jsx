@@ -12,6 +12,7 @@ import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
 import MediumEditor from './widgets/mediumEditor/MediumEditor';
+import Record from './widgets/Record';
 
 export const renderTextBoxField = ({
   input: { name, value, onChange },
@@ -75,6 +76,14 @@ export const renderFilesListField = ({ input: { value, onChange }, node, initRef
     <FilesPicker initRef={initRef} className="files-dropzone-list" value={value} onChange={onChange} multiple clickable>
       {node}
     </FilesPicker>
+  );
+};
+
+export const renderRecordField = ({ input: { value, onChange }, node, initRef }) => {
+  return (
+    <Record initRef={initRef} value={value} onChange={onChange} multiple clickable>
+      {node}
+    </Record>
   );
 };
 

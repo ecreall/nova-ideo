@@ -4,9 +4,7 @@ import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import { I18n } from 'react-redux-i18n';
 import Icon from 'material-ui/Icon';
-import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Zoom from 'material-ui/transitions/Zoom';
 

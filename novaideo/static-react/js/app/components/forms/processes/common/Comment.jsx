@@ -8,11 +8,12 @@ import { graphql } from 'react-apollo';
 import SendIcon from 'material-ui-icons/Send';
 import { withStyles } from 'material-ui/styles';
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
+import MicNoneIcon from 'material-ui-icons/MicNone';
 import IconButton from 'material-ui/IconButton';
 import { find as findUrls } from 'linkifyjs';
 
 import { formatText } from '../../../../utils/textFormatter';
-import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField } from '../../utils';
+import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderRecordField } from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
 import { renderMenuItem } from '../../../common/menu/MenuList';
@@ -222,6 +223,25 @@ export class DumbCommentForm extends React.Component {
                     withRef
                     name="files"
                     component={renderFilesListField}
+                  />
+                );
+              },
+              () => {
+                return (
+                  <Field
+                    props={{
+                      node: renderMenuItem({
+                        Icon: MicNoneIcon,
+                        title: I18n.t('forms.record'),
+                        hoverColor: theme.palette.info[500]
+                      }),
+                      initRef: (mic) => {
+                        this.mic = mic;
+                      }
+                    }}
+                    withRef
+                    name="record"
+                    component={renderRecordField}
                   />
                 );
               }

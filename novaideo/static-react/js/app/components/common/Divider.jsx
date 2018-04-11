@@ -62,11 +62,7 @@ const styles = {
 
 class Divider extends React.Component {
   static defaultProps = {
-    dynamic: true,
-    style: {
-      message: {},
-      messageFixed: {}
-    }
+    dynamic: true
   };
   constructor(props) {
     super(props);
@@ -127,21 +123,20 @@ class Divider extends React.Component {
   };
 
   render() {
-    const { message, alert, alertMessage, classes, style } = this.props;
+    const { message, alert, alertMessage, classes } = this.props;
     const fixedStyle = this.state.fixed ? { left: this.state.left, zIndex: this.getZIndex() } : {};
     return (
       <div
         ref={(container) => {
           this.container = container;
         }}
-        style={style.divider}
         className={classNames(classes.divider, {
           [classes.dividerAlert]: alert,
           [classes.dividerFixed]: this.state.fixed
         })}
       >
         {alert &&
-          <div style={style.alert} className={classes.alert}>
+          <div className={classes.alert}>
             {alertMessage}
           </div>}
         {message && [
@@ -150,7 +145,7 @@ class Divider extends React.Component {
             ref={(messageContainer) => {
               this.message = messageContainer;
             }}
-            style={{ ...fixedStyle, ...style.message, ...(this.state.fixed ? style.messageFixed : {}) }}
+            style={fixedStyle}
             className={classNames(classes.message, {
               [classes.messageFixed]: this.state.fixed
             })}

@@ -11,7 +11,7 @@ import Comments from '../channels/Comments';
 
 const styles = {
   container: {
-    height: 'calc(100vh - 122px)'
+    height: 'calc(100vh - 132px)'
   },
   appTitle: {
     display: 'flex',

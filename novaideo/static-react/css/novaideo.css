@@ -82,7 +82,8 @@ figure.md-block-image {
   border: none !important;
   color: white !important;
   background-color: rgb(33, 150, 243) !important;
-  margin-left: -10px
+  margin-left: -10px;
+  padding-top: 4px;
 }
 
 .md-sb-button svg path {
@@ -102,6 +103,7 @@ figure.md-block-image {
   border: 1px solid rgb(33, 150, 243);
   color: rgb(33, 150, 243) ;
   background-color: white ;
+  padding-top: 3px;
 }
 
 .text-node-separator {

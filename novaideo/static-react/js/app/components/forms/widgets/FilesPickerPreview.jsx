@@ -101,10 +101,6 @@ class FilesPickerPreview extends React.Component {
     this.props.getPicker().removeFiles();
   };
 
-  getDocumentType = (file) => {
-    return getFileType(file.type);
-  };
-
   render() {
     const { files, classes } = this.props;
     if (files.length === 0) return null;
@@ -117,7 +113,7 @@ class FilesPickerPreview extends React.Component {
         </div> */}
         <div className={classes.files}>
           {files.map((file) => {
-            const documentType = this.getDocumentType(file);
+            const documentType = getFileType(file.type);
             const icons = FILES_ICONS[documentType];
             const iconClass = (icons && icons.icon) || 'mdi-set mdi-file-outline';
             const isImage = file.preview.type === 'image';

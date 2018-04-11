@@ -22,7 +22,7 @@ import { markAsReadMutation } from '../../../graphql/processes/commentProcess/ma
 const styles = (theme) => {
   return {
     container: {
-      height: 'calc(100vh - 122px)'
+      height: 'calc(100vh - 132px)'
     },
     containerInline: {
       height: 'auto',
@@ -47,7 +47,7 @@ const styles = (theme) => {
       position: 'inherit'
     },
     commentsWithRight: {
-      paddingRight: '0 !important',
+      paddingTop: '0 !important',
       [theme.breakpoints.only('xs')]: {
         display: 'none'
       }
@@ -55,9 +55,7 @@ const styles = (theme) => {
     right: {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #e8e8e8',
-      padding: '0 !important',
-      paddingRight: '8px !important',
-      paddingTop: '8px !important'
+      padding: '0 !important'
     },
     list: {
       height: 'calc(100% - 55px)'
@@ -101,7 +99,7 @@ const styles = (theme) => {
     },
     blockComments: {
       position: 'absolute',
-      bottom: 15,
+      bottom: 7,
       width: 'calc(100% - 49px)'
     }
   };

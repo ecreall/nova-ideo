@@ -1,25 +1,26 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
-import { blue } from 'material-ui/colors';
+import { withStyles } from 'material-ui/styles';
 
 import { getFormattedDate } from '../../utils/globalFunctions';
 import Divider from '../common/Divider';
 
-const styles = {
-  messageFixed: {
-    borderRadius: 5,
-    color: 'white',
-    top: '70px !important',
-    backgroundColor: blue[500]
-  },
-  message: {
-    color: blue[500],
-    backgroundColor: 'transparent'
-  },
-  divider: {
-    margin: 0
-  }
+const styles = (theme) => {
+  return {
+    messageFixed: {
+      borderRadius: 5,
+      color: 'white !important',
+      backgroundColor: `${theme.palette.primary[500]} !important`
+    },
+    message: {
+      color: theme.palette.primary[500],
+      backgroundColor: 'transparent'
+    },
+    divider: {
+      margin: 0
+    }
+  };
 };
 
 class IdeasDivider extends React.Component {
@@ -30,7 +31,7 @@ class IdeasDivider extends React.Component {
   };
 
   render() {
-    const { node, index, eventId } = this.props;
+    const { node, index, eventId, classes } = this.props;
     const addDateSeparator = this.addDateSeparator();
     const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
     const dateSeparator = addDateSeparator && createdAtF;
@@ -42,14 +43,14 @@ class IdeasDivider extends React.Component {
         eventId={eventId}
         shift={0}
         fixedTop={65}
-        style={{
-          divider: styles.divider,
-          message: styles.message,
-          messageFixed: styles.messageFixed
+        classes={{
+          divider: classes.divider,
+          message: classes.message,
+          messageFixed: classes.messageFixed
         }}
       />
     );
   }
 }
 
-export default IdeasDivider;
+export default withStyles(styles, { withTheme: true })(IdeasDivider);

@@ -24,7 +24,7 @@ import { markAsReadMutation } from '../../graphql/processes/commentProcess/markA
 const styles = (theme) => {
   return {
     container: {
-      height: 'calc(100vh - 56px)',
+      height: 'calc(100vh - 66px)',
       position: 'relative'
     },
     comments: {
@@ -47,9 +47,7 @@ const styles = (theme) => {
     right: {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #e8e8e8',
-      padding: '0 !important',
-      paddingRight: '8px !important',
-      paddingTop: '8px !important'
+      padding: '0 !important'
     },
     list: {
       height: 'calc(100% - 55px)'
@@ -62,7 +60,7 @@ const styles = (theme) => {
     },
     blockComments: {
       position: 'absolute',
-      bottom: 15,
+      bottom: 7,
       width: 'calc(100% - 49px)'
     }
   };

@@ -40,10 +40,9 @@ const styles = (theme) => {
     },
     actionsText: {
       color: '#2c2d30',
-      marginRight: 15,
+      marginRight: 5,
       fontSize: 14,
       fontWeight: 400,
-      width: 35,
       '&:hover': {
         color: theme.palette.info['700']
       }

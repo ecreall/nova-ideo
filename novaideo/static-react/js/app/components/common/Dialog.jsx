@@ -83,14 +83,12 @@ const styles = (theme) => {
     right: {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #e8e8e8',
-      padding: '0 !important',
-      paddingRight: '8px !important',
-      paddingTop: '8px !important'
+      padding: '0 !important'
     },
     grid: {
-      height: 'calc(100vh - 56px)',
+      height: 'calc(100vh - 66px)',
       position: 'relative',
-      width: 'calc(100% + 8px)',
+      width: '100%',
       '& .grid-item': {
         paddingRight: '0 !important'
       }

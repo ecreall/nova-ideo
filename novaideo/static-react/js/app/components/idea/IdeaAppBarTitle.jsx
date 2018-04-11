@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { I18n } from 'react-redux-i18n';
 import Grow from 'material-ui/transitions/Grow';
 
 import StatisticsDoughnut from '../common/Doughnut';

@@ -157,5 +157,13 @@ export const FILES_ICONS = {
   PLAIN: {
     icon: 'document-icon mdi-set mdi-file-document',
     id: 'document-icon'
+  },
+  OGG: {
+    icon: 'document-icon mdi-set mdi-microphone',
+    id: 'document-icon'
+  },
+  WEBM: {
+    icon: 'document-icon mdi-set mdi-microphone',
+    id: 'document-icon'
   }
 };

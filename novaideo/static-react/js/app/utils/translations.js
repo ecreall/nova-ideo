@@ -194,6 +194,8 @@ const Translations = {
       searchOrAdd: "Recherche ou ajout",
       search: "Recherche",
       cancel: "Annuler",
+      add: "Ajouter",
+      record: "Enregistrer un message vocal",
       idea: {
         title: "Titre de la proposition",
         titleHelper: "Titre",
@@ -428,6 +430,8 @@ const Translations = {
       searchOrAdd: "Search or add",
       search: "Search",
       cancel: "Cancel",
+      add: "Add",
+      record: "Record a voice message",
       idea: {
         title: "The title of the proposal",
         titleHelper: "Title",

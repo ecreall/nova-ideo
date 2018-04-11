@@ -170,7 +170,7 @@ class ImagesSlider extends React.Component {
     super(props);
     this.state = {
       currentImage: props.current || 0,
-      color: ''
+      color: 'rgba(0, 0, 0, 0.4)'
     };
     this.setColor();
   }
