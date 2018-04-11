@@ -112,6 +112,11 @@ export const PROCESSES = {
         submission: 'processes.commentmanagement.delete.submission',
         confirmation: 'processes.commentmanagement.delete.confirmation'
       },
+      transformtoidea: {
+        nodeId: 'transformtoidea',
+        title: 'processes.commentmanagement.transformtoidea.title',
+        description: 'processes.commentmanagement.transformtoidea.description'
+      },
       pin: {
         nodeId: 'pin',
         title: 'processes.commentmanagement.pin.title',

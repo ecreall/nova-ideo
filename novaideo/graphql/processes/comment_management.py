@@ -231,7 +231,7 @@ class Edit(graphene.Mutation):
                     'fp': fp,
                     'filename': urllib.parse.unquote(file_storage.filename)})
         
-        old_files = [get_obj(f) for f in old_files]
+        # old_files = [get_obj(f) for f in old_files]
         args['files'] = uploaded_files
         args = comment_schema.deserialize(args)
         args['files'] = [f['_object_data']

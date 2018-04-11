@@ -82,8 +82,9 @@ const styles = (theme) => {
     },
     right: {
       backgroundColor: '#f9f9f9',
-      borderLeft: '1px solid #e8e8e8',
-      padding: '0 !important'
+      borderLeft: '1px solid #bbb9b9',
+      padding: '0 !important',
+      boxShadow: '-1px 0 3px rgba(128, 128, 128, 0.5)'
     },
     grid: {
       height: 'calc(100vh - 66px)',

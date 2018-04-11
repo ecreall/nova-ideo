@@ -104,6 +104,10 @@ const Translations = {
         }
       },
       commentmanagement: {
+        transformtoidea: {
+          title: "Transformer en une proposition",
+          description: "Transformer en une proposition"
+        },
         delete: {
           title: "Supprimer",
           description: "Supprimer le message",
@@ -143,12 +147,12 @@ const Translations = {
       switchChat: "Accéder à mes discussions",
       switchApp: "Accéder à mes contenus",
       jump: "Accéder à...",
-      channels: "Chaînes",
+      channels: "Discussions",
       thread: "Fil de discussion",
       edited: "modifié",
       noMessage: "Aucun message n'est encore posté sur cette discussion ! Soyez le premier à poster un message.",
       ctComment: "Actuellement, la discussion est bloquée et aucun message ne peut être posté.",
-      private: "Messages directs",
+      private: "Discussions privées",
       pinnedBlockTitle: "%{count} messages épinglés",
       pinnedBlockTitle_0: "Aucun message épinglé",
       pinnedBlockTitle_1: "Un message épinglé",
@@ -339,6 +343,10 @@ const Translations = {
         }
       },
       commentmanagement: {
+        transformtoidea: {
+          title: "Transform to a proposal",
+          description: "Transform to a proposal"
+        },
         delete: {
           title: "Remove",
           description: "Remove the message",
@@ -379,12 +387,12 @@ const Translations = {
       switchChat: "Access my discussions",
       switchApp: "Access my contents",
       jump: "Jump to...",
-      channels: "Channels",
+      channels: "Discussions",
       thread: "Thread",
       edited: "edited",
       noMessage: "There are no messages on this discussion yet! Be the first to post a message.",
       ctComment: "Currently, the discussion is blocked and no message can be posted.",
-      private: "Direct messages",
+      private: "Private discussions",
       pinnedBlockTitle: "%{count} pinned messages",
       pinnedBlockTitle_0: "No pinned messages",
       pinnedBlockTitle_1: "One pinned message",

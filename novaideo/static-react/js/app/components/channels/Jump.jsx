@@ -3,7 +3,9 @@ import { I18n } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import FormatIndentIncreaseIcon from 'material-ui-icons/FormatIndentIncrease';
-import Dialog, { DialogContent, DialogContentText } from 'material-ui/Dialog';
+
+import Dialog from '../common/Dialog';
+import Search from '../forms/Search';
 
 import ShortcutsManager from '../common/ShortcutsManager';
 import { STYLE_CONST } from '../../constants';
@@ -31,6 +33,18 @@ const styles = (theme) => {
       width: 20,
       height: 20,
       marginRight: 5
+    },
+    container: {
+      padding: '20px 25px',
+      width: '100%',
+      fontSize: 17,
+      lineHeight: 1.5
+    },
+    titleContainer: {
+      fontWeight: 900
+    },
+    title: {
+      marginLeft: 5
     }
   };
 };
@@ -61,14 +75,24 @@ class Jump extends React.Component {
           {I18n.t('channels.jump')}
         </Button>
         <Dialog
+          directDisplay
+          appBar={
+            <div className={classes.titleContainer}>
+              <span className={classes.title}>Rechercher</span>
+            </div>
+          }
           open={this.state.open}
           onClose={this.handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
         >
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">Test</DialogContentText>
-          </DialogContent>
+          <div className={classes.container}>
+            <Search
+              form={'globalSearch'}
+              key={'globalSearch'}
+              onSearch={this.handelSearch}
+              onCancel={this.handleSearchCancel}
+              title={'Search'}
+            />
+          </div>
         </Dialog>
       </ShortcutsManager>
     );

@@ -6,13 +6,16 @@ import { ACTIONS, STATE } from '../../../processes';
 import { truncateText } from '../../../utils/globalFunctions';
 
 export const createAndPublishMutation = gql`
-  mutation($text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload], $anonymous: Boolean,
+  mutation($context: String,$text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload],
+           $oldFiles: [String], $anonymous: Boolean,
            $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
     createAndPublish(
+      context: $context,
       title: $title
       keywords: $keywords
       text: $text
       attachedFiles: $attachedFiles,
+      oldFiles: $oldFiles,
       anonymous: $anonymous
     ) {
       status
@@ -25,7 +28,7 @@ export const createAndPublishMutation = gql`
 `;
 
 export default function createAndPublish({ ownProps, mutate }) {
-  return ({ plainText, text, title, keywords, attachedFiles, anonymous, account }) => {
+  return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account }) => {
     const { formData, globalProps: { site } } = ownProps;
     const files =
       attachedFiles.length > 0
@@ -60,10 +63,12 @@ export default function createAndPublish({ ownProps, mutate }) {
     }
     return mutate({
       variables: {
+        context: context ? context.oid : '',
         text: text,
         title: title,
         keywords: keywords,
         attachedFiles: attachedFiles,
+        oldFiles: oldFiles,
         anonymous: anonymous,
         processIds: [],
         nodeIds: [],

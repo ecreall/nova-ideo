@@ -5,6 +5,7 @@ from dace.util import get_obj
 from pontus.schema import select
 
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
+from novaideo.content.comment import Comment
 from ..util import get_context, get_action, get_execution_data
 from . import Upload
 from novaideo import _, log
@@ -16,21 +17,36 @@ _marker = object()
 class CreateIdea(graphene.Mutation):
 
     class Input:
+        context = graphene.String()
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        old_files = graphene.List(graphene.String)
         anonymous = graphene.Boolean()
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
-    action_id = 'ideamanagement.creat'
+    actions_ids = {
+        Comment: 'commentmanagement.transformtoidea',
+        'default': 'ideamanagement.creat'
+    }
+
 
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
+        old_files = []
+        context_oid = args.pop('context')
+        for of in args.pop('old_files'):
+            try:
+                old_files.append(get_obj(int(of)))
+            except Exception as e:
+                log.warning(e)
+                continue
+
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
         if attached_files:
@@ -42,12 +58,17 @@ class CreateIdea(graphene.Mutation):
                     'fp': fp,
                     'filename': urllib.parse.unquote(file_storage.filename)})
 
+        old_files = [f.copy() for f in old_files]
         args['attached_files'] = uploaded_files
         args = idea_schema.deserialize(args)
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]
+        args['attached_files'].extend(old_files)
+        if context_oid: args['context'] = context_oid
+        default_action_id = CreateIdea.actions_ids['default']
+        context = get_context(context_oid)
         context, request, action, args = get_execution_data(
-            CreateIdea.action_id, args)
+            CreateIdea.actions_ids.get(context.__class__, default_action_id), args)
         new_idea = None
         if action:
             anonymous = args.pop('anonymous', False)
@@ -104,7 +125,7 @@ class EditIdea(graphene.Mutation):
                     'fp': fp,
                     'filename': urllib.parse.unquote(file_storage.filename)})
 
-        old_files = [get_obj(f) for f in old_files]
+        # old_files = [get_obj(f) for f in old_files]
         args['attached_files'] = uploaded_files
         args = idea_schema.deserialize(args)
         args['attached_files'].extend([{'_object_data': f} for f in old_files])
@@ -125,10 +146,12 @@ class EditIdea(graphene.Mutation):
 class CreateAndPublishIdea(graphene.Mutation):
 
     class Input:
+        context = graphene.String()
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
         attached_files = graphene.List(Upload)
+        old_files = graphene.List(graphene.String)
         anonymous = graphene.Boolean()
         # the Upload object type deserialization currently doesn't work,
         # it fails silently, so we actually get a list of None.
@@ -147,6 +170,15 @@ class CreateAndPublishIdea(graphene.Mutation):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
+        old_files = []
+        context_oid = args.pop('context')
+        for of in args.pop('old_files'):
+            try:
+                old_files.append(get_obj(int(of)))
+            except Exception as e:
+                log.warning(e)
+                continue
+
         attached_files = args.pop('attached_files', None)
         uploaded_files = []
         if attached_files:
@@ -158,10 +190,13 @@ class CreateAndPublishIdea(graphene.Mutation):
                     'fp': fp,
                     'filename': urllib.parse.unquote(file_storage.filename)})
 
+        old_files = [f.copy() for f in old_files]
         args['attached_files'] = uploaded_files
         args = idea_schema.deserialize(args)
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]
+        args['attached_files'].extend(old_files)
+        if context_oid: args['context'] = context_oid
         context, request, action, args = get_execution_data(
             CreateAndPublishIdea.action_id, args)
         new_idea = None

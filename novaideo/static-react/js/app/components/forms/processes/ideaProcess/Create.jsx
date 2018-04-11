@@ -196,23 +196,35 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   handleSubmit = (action) => {
-    const { formData, valid, globalProps } = this.props;
+    const { context, formData, valid, globalProps } = this.props;
+    // context if transformation (transform a comment in to idea)
     const processNodes = PROCESSES.ideamanagement.nodes;
     if (valid) {
-      let files = formData.values.files || [];
-      files = files.filter((file) => {
-        return file;
+      const files = formData.values.files || [];
+      const newFiles = files.filter((file) => {
+        return file && !file.oid;
       });
+
+      const oldFiles = files
+        .filter((file) => {
+          return file && file.oid;
+        })
+        .map((file) => {
+          return file.oid;
+        });
+
       const keywords = formData.values.keywords;
       const htmlText = this.editor.getHTMLText();
       const plainText = this.editor.getPlainText();
       if (action.nodeId === processNodes.createAndPublish.nodeId) {
         this.props.createAndPublishIdea({
+          context: context,
           text: htmlText,
           plainText: plainText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
-          attachedFiles: files,
+          attachedFiles: newFiles,
+          oldFiles: oldFiles,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
         });
@@ -220,11 +232,13 @@ export class DumbCreateIdeaForm extends React.Component {
       }
       if (action.nodeId === processNodes.create.nodeId) {
         this.props.createIdea({
+          context: context,
           text: htmlText,
           plainText: plainText,
           title: formData.values.title,
           keywords: keywords ? Object.values(formData.values.keywords) : [],
-          attachedFiles: files,
+          attachedFiles: newFiles,
+          oldFiles: oldFiles,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account
         });
@@ -234,15 +248,20 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   initializeForm = () => {
-    const { form } = this.props;
+    const { form, context } = this.props;
     this.props.dispatch(
-      initialize(form, {
-        title: '',
-        keywords: {},
-        text: '',
-        anonymous: false,
-        files: []
-      })
+      initialize(
+        form,
+        !context
+          ? {
+            title: '',
+            keywords: {},
+            text: '',
+            anonymous: false,
+            files: []
+          }
+          : undefined
+      )
     );
     this.closeForm();
   };

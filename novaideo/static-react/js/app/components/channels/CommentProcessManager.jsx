@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import Delete from '../forms/processes/commentProcess/Delete';
 import Pin from '../forms/processes/commentProcess/Pin';
 import Unpin from '../forms/processes/commentProcess/Unpin';
+import CreateIdeaForm from '../forms/processes/ideaProcess/Create';
 import { addReactionMutation } from '../../graphql/processes/abstractProcess/addReaction';
 import { addReaction } from '../../graphql/processes/abstractProcess';
 import { updateChatAppRight } from '../../actions/actions';
@@ -82,6 +83,29 @@ export class DumbCommentProcessManager extends React.Component {
       return <Pin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
     case commentProcessNodes.unpin.nodeId:
       return <Unpin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
+    case commentProcessNodes.transformtoidea.nodeId:
+      return (
+        <CreateIdeaForm
+          context={comment}
+          key={`transform-proposal-${comment.id}`}
+          form={`transform-proposal-${comment.id}`}
+          onClose={this.onFormClose}
+          initialValues={{
+            text: comment.formattedText,
+            files: comment.attachedFiles.map((file) => {
+              return {
+                id: file.id,
+                oid: file.oid,
+                name: file.title,
+                size: file.size || 0,
+                mimetype: file.mimetype,
+                type: file.mimetype,
+                preview: { url: file.url, type: file.isImage ? 'image' : 'file' }
+              };
+            })
+          }}
+        />
+      );
     default:
       return null;
     }
