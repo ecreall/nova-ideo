@@ -666,6 +666,7 @@ export const allChannelsQuery = gql`
         node {
           channel {
             id
+            title
           }
           subject {
             ... on IEntity {
