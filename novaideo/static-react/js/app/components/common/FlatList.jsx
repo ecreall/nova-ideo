@@ -253,11 +253,6 @@ export class DumbFlatList extends React.Component {
     );
   };
 
-  renderFooter = () => {
-    const { Footer, data } = this.props;
-    return <Footer data={data} />;
-  };
-
   render() {
     const {
       data,

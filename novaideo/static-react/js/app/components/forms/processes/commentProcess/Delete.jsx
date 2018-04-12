@@ -8,7 +8,7 @@ import { deleteComment } from '../../../../graphql/processes/commentProcess';
 import { deleteMutation } from '../../../../graphql/processes/commentProcess/delete';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
-import { CommentItem } from '../../../channels/CommentItem';
+import { CommentItem } from '../../../chatApp/CommentItem';
 
 const styles = {
   button: {

@@ -6,6 +6,7 @@ import { Field, reduxForm, initialize } from 'redux-form';
 import SearchIcon from 'material-ui-icons/Search';
 import IconButton from 'material-ui/IconButton';
 import classNames from 'classnames';
+import debounce from 'lodash.debounce';
 
 import { iconAdapter } from '../../utils/globalFunctions';
 import { renderTextBoxField } from './utils';
@@ -104,7 +105,20 @@ const styles = (theme) => {
 };
 
 export class DumbSearchForm extends React.Component {
+  componentWillReceiveProps() {
+    const { liveSearch, onSearch } = this.props;
+    if (liveSearch && onSearch && this.editor) {
+      if (this.searchDebounce) this.searchDebounce.cancel();
+      const search = () => {
+        onSearch(this.getFilters(this.editor ? this.editor.getPlainText() : ''));
+      };
+      this.searchDebounce = debounce(search, 20);
+      this.searchDebounce();
+    }
+  }
+
   editor = null;
+  searchDebounce = null;
 
   getFilters = (query) => {
     return { text: query };

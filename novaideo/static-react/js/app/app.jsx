@@ -3,9 +3,9 @@ import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 
-import Drawer from './components/Drawer';
-import CollaborationApp from './components/CollaborationApp';
-import ChatApp from './components/ChatApp';
+import Drawer from './components/drawer/Drawer';
+import CollaborationApp from './components/collaborationApp/CollaborationApp';
+import ChatApp from './components/chatApp/ChatApp';
 import { accountQuery } from './graphql/queries';
 import { updateGlobalProps } from './actions/actions';
 

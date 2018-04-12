@@ -397,7 +397,8 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         all_channels = list(self.channels)
         all_channels.extend(list(getattr(user, 'channels', [])))
         for channel in all_channels:
-            if user in channel.members and self in channel.members:
+            members = channel.members
+            if user in members and self in members:
                 return channel
 
         return None

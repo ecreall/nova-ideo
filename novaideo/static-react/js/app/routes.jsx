@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import Main from './main';
-import Home from './components/views/Home';
+import Home from './components/collaborationApp/Home';
 
 export default [
   <Route path="/" component={Main}>

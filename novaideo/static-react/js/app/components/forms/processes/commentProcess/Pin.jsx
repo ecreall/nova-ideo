@@ -8,7 +8,7 @@ import { pinComment } from '../../../../graphql/processes/commentProcess';
 import { pinMutation } from '../../../../graphql/processes/commentProcess/pin';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
-import { CommentItem } from '../../../channels/CommentItem';
+import { CommentItem } from '../../../chatApp/CommentItem';
 
 const styles = {
   button: {

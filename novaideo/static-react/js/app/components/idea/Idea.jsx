@@ -17,7 +17,7 @@ import { ACTIONS, STATE } from '../../processes';
 import { goTo, get } from '../../utils/routeMap';
 import { getEntityIcon } from '../../utils/processes';
 import { ideaQuery } from '../../graphql/queries';
-import Comments from '../channels/Comments';
+import Comments from '../chatApp/Comments';
 import Scrollbar from '../common/Scrollbar';
 import Evaluation from '../common/Evaluation';
 import IdeaProcessManager from './IdeaProcessManager';

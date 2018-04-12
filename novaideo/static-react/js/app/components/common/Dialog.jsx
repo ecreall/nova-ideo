@@ -13,7 +13,7 @@ import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import Grid from 'material-ui/Grid';
 
 import { addChatAppIntegration, removeChatAppIntegration, toggleDrawer } from '../../actions/actions';
-import CollaborationAppRight from '../collaborationAppRight/CollaborationAppRight';
+import CollaborationAppRight from '../collaborationApp/collaborationAppRight/CollaborationAppRight';
 import { STYLE_CONST } from '../../constants';
 
 const styles = (theme) => {
@@ -84,7 +84,8 @@ const styles = (theme) => {
       backgroundColor: '#f9f9f9',
       borderLeft: '1px solid #bbb9b9',
       padding: '0 !important',
-      boxShadow: '-1px 0 3px rgba(128, 128, 128, 0.5)'
+      boxShadow: '-1px 0 3px rgba(128, 128, 128, 0.5)',
+      zIndex: 1
     },
     grid: {
       height: 'calc(100vh - 66px)',

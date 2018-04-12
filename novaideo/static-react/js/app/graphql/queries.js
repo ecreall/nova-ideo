@@ -654,3 +654,60 @@ export const discussionsQuery = gql`
     }
   }
 `;
+
+export const allChannelsQuery = gql`
+  query AllChannels($first: Int!, $after: String!, $filter: String!) {
+    allChannels(first: $first, after: $after, filter: $filter) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          channel {
+            id
+          }
+          subject {
+            ... on IEntity {
+              id
+              oid
+              title
+            }
+            ... on Person {
+              picture {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const allContentsQuery = gql`
+  query AllContents($first: Int!, $after: String!, $filter: String!) {
+    allContents(first: $first, after: $after, filter: $filter) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          subject {
+            ... on IEntity {
+              id
+              oid
+              title
+            }
+            ... on Person {
+              picture {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

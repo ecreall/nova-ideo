@@ -21,8 +21,11 @@ from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
 from .mutations import Mutations
-from .interfaces import IEntity
-from .util import get_user_by_token, get_entities, get_all_comments, get_actions, connection_for_type, get_context
+from .interfaces import IEntity, IDebatable
+from .util import (
+    get_user_by_token, get_entities, get_all_comments,
+    get_actions, connection_for_type, get_context,
+    ResolverLazyList)
 
 
 class Node(object):
@@ -32,39 +35,6 @@ class Node(object):
         oid = int(id)
         return get_obj(oid)
 
-
-class Debatable(graphene.AbstractType):
-
-    channel = graphene.Field(lambda: Channel)
-    comments = relay.ConnectionField(
-        lambda: Comment,
-        filter=graphene.String())
-    len_comments = graphene.Int()
-
-    def resolve_channel(self, args, context, info):
-        if not hasattr(self, 'get_channel'):
-            return None
-
-        return self.get_channel(getattr(context, 'user', None))
-
-    def resolve_comments(self, args, context, info):
-        if not hasattr(self, 'get_channel'):
-            return []
-
-        channel = self.get_channel(getattr(context, 'user', None))
-        total_count, oids = get_all_comments(channel, args)
-        return ResolverLazyList(
-            oid,
-            Comment,
-            total_count=total_count)
-
-    def resolve_len_comments(self, args, context, info):
-        if not hasattr(self, 'get_channel'):
-            return 0
-
-        channel = self.get_channel(getattr(context, 'user', None))
-        return channel.len_comments if channel else 0
- 
 
 class Emoji(Node, graphene.ObjectType):
     
@@ -93,10 +63,10 @@ class Emojiable(graphene.AbstractType):
         return self.get_user_emoji(getattr(context, 'user', None))
 
 
-class Root(Node, Debatable, graphene.ObjectType):
+class Root(Node, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, IEntity)
+        interfaces = (relay.Node, IEntity, IDebatable)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -223,10 +193,10 @@ class File(Node, graphene.ObjectType):
         return self.get_size()
 
 
-class Person(Node, Debatable, graphene.ObjectType):
+class Person(Node, graphene.ObjectType):
 
     class Meta(object):
-        interfaces = (relay.Node, IEntity)
+        interfaces = (relay.Node, IEntity, IDebatable)
 
     function = graphene.String()
     description = graphene.String()
@@ -474,12 +444,12 @@ class Channel(Node, graphene.ObjectType):
 Channel.Connection = connection_for_type(Channel)
 
 
-class Idea(Node, Debatable, graphene.ObjectType):
+class Idea(Node, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
 
     class Meta(object):
-        interfaces = (relay.Node, IEntity)
+        interfaces = (relay.Node, IEntity, IDebatable)
 
     presentation_text = graphene.String()
     text = graphene.String()
@@ -539,60 +509,25 @@ class EntityUnion(graphene.Union):
         raise Exception()
 
 
-class ResolverLazyList(object):
+class EntityData(Node, graphene.ObjectType):
+    """Nova-Ideo ideas."""
 
-    def __init__(self, origin, object_type, state=None, total_count=None):
-        self._origin = origin
-        self._state = state or []
-        self._origin_iter = None
-        self._total_count = total_count
-        self._finished = False
-        objectmap = find_objectmap(get_current_request().root)
-        self.resolver = objectmap.object_for
-        self.object_type = object_type
+    class Meta(object):
+        interfaces = (relay.Node, IEntity)
 
-    def __iter__(self):
-        return self if not self._finished else iter(self._state)
+    channel = graphene.Field(lambda: Channel)
+    subject = graphene.Field(lambda: EntityUnion)
 
-    def iter(self):
-        return self.__iter__()
+    def resolve_channel(self, args, context, info):
+        user = getattr(context, 'user', None)
+        if not hasattr(self, 'get_channel') or user is self: return None
+        return self.get_channel(getattr(context, 'user', None))
 
-    def __len__(self):
-        return self._origin.__len__()
+    def resolve_subject(self, args, context, info):
+        return self
+ 
 
-    def __next__(self):
-        try:
-            if not self._origin_iter:
-                self._origin_iter = self._origin.__iter__()
-            # n = next(self._origin_iter)
-            oid = next(self._origin_iter)
-            n = self.resolver(oid)
-        except StopIteration as e:
-            self._finished = True
-            raise e
-        else:
-            self._state.append(n)
-            return n
-
-    def next(self):
-        return self.__next__()
-
-    def __getitem__(self, key):
-        item = self._origin[key]
-        if isinstance(key, slice):
-            return self.__class__(item, object_type=self.object_type)
-
-        return item
-
-    def __getattr__(self, name):
-        return getattr(self._origin, name)
-
-    def __repr__(self):
-        return "<{} {}>".format(self.__class__.__name__, repr(self._origin))
-
-    @property
-    def total_count(self):
-        return self._total_count
+EntityData.Connection = connection_for_type(EntityData)
 
 
 class Query(graphene.ObjectType):
@@ -612,9 +547,26 @@ class Query(graphene.ObjectType):
         context=graphene.String()
     )
     root = graphene.Field(Root)
+    all_channels = relay.ConnectionField(
+        EntityData,
+        filter=graphene.String()
+    )
+    all_contents = relay.ConnectionField(
+        EntityData,
+        filter=graphene.String()
+    )
 
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
         total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=context.user)
+        return ResolverLazyList(oids, Idea, total_count=total_count)
+
+    def resolve_all_channels(self, args, context, info):  # pylint: disable=W0613
+        total_count, oids = get_entities([Iidea, IPerson], ['published', 'active'], args, info, user=context.user)
+        return ResolverLazyList(oids, EntityData, total_count=total_count)
+
+    def resolve_all_contents(self, args, context, info):  # pylint: disable=W0613
+        # todo add questions...
+        total_count, oids = get_entities([Iidea], ['published', 'active'], args, info, user=context.user)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_account(self, args, context, info):  # pylint: disable=W0613

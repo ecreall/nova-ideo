@@ -4,7 +4,6 @@ import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
 import { I18n } from 'react-redux-i18n';
-import classNames from 'classnames';
 
 import Button from '../styledComponents/Button';
 import { Menu } from '../common/menu';

@@ -25,6 +25,11 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
           kind: 'INTERFACE',
           name: 'IEntity',
           possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }]
+        },
+        {
+          kind: 'INTERFACE',
+          name: 'IDebatable',
+          possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }]
         }
       ]
     }

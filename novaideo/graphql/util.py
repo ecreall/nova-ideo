@@ -3,6 +3,7 @@ import graphene
 from pyramid.threadlocal import get_current_request
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 from hypatia.interfaces import STABLE
+from substanced.objectmap import find_objectmap
 
 from dace.util import get_obj, find_catalog, getSite, getAllBusinessAction
 from dace.objectofcollaboration.entity import ActionCall
@@ -10,6 +11,62 @@ from dace.objectofcollaboration.entity import ActionCall
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import IPerson
 from novaideo.views.filter import get_comments
+
+
+class ResolverLazyList(object):
+
+    def __init__(self, origin, object_type, state=None, total_count=None):
+        self._origin = origin
+        self._state = state or []
+        self._origin_iter = None
+        self._total_count = total_count
+        self._finished = False
+        objectmap = find_objectmap(get_current_request().root)
+        self.resolver = objectmap.object_for
+        self.object_type = object_type
+
+    def __iter__(self):
+        return self if not self._finished else iter(self._state)
+
+    def iter(self):
+        return self.__iter__()
+
+    def __len__(self):
+        return self._origin.__len__()
+
+    def __next__(self):
+        try:
+            if not self._origin_iter:
+                self._origin_iter = self._origin.__iter__()
+            # n = next(self._origin_iter)
+            oid = next(self._origin_iter)
+            n = self.resolver(oid)
+        except StopIteration as e:
+            self._finished = True
+            raise e
+        else:
+            self._state.append(n)
+            return n
+
+    def next(self):
+        return self.__next__()
+
+    def __getitem__(self, key):
+        item = self._origin[key]
+        if isinstance(key, slice):
+            return self.__class__(item, object_type=self.object_type)
+
+        return item
+
+    def __getattr__(self, name):
+        return getattr(self._origin, name)
+
+    def __repr__(self):
+        return "<{} {}>".format(self.__class__.__name__, repr(self._origin))
+
+    @property
+    def total_count(self):
+        return self._total_count
 
 
 def get_user_by_token(token):

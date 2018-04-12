@@ -5,7 +5,8 @@ import 'mousetrap/plugins/global-bind/mousetrap-global-bind';
 
 export const keymap = {
   APP: {
-    OPEN_USER_MENU: 'ctrl+m'
+    OPEN_USER_MENU: 'ctrl+m',
+    APP_OPEN_JUMP: 'ctrl+Maj+k'
   },
   CHATAPP: {
     CHATAPP_OPEN_JUMP: 'ctrl+k',

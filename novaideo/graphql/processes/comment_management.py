@@ -10,9 +10,39 @@ from novaideo.content.comment import Comment as CommentClass, CommentSchema
 from ..util import get_context, get_action, get_execution_data
 from . import Upload
 from novaideo import _, log
+from novaideo.core import PrivateChannel
 
 
 _marker = object()
+
+
+class AddPrivateChannel(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    channel = graphene.Field('novaideo.graphql.schema.Channel')
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        data = dict(args)
+        member = get_context(data.get('context'), _marker)
+        user = context.user
+        status = False
+        channel= None
+        if user and member is not _marker:
+            channel = user.get_channel(member)
+            if not channel:
+                channel = PrivateChannel()
+                user.addtoproperty('channels', channel)
+                channel.addtoproperty('members', user)
+                channel.addtoproperty('members', member)
+                user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
+
+            status = True
+
+        return AddPrivateChannel(status=status, channel=channel)
 
 
 class CommentObject(graphene.Mutation):

@@ -6,7 +6,7 @@ from .processes.idea_management import (
     Support, Oppose, WithdrawToken, Publish, EditIdea)
 from .processes.comment_management import (
     CommentObject, MarkCommentsAsRead, DeleteComment,
-    Pin, Unpin, Edit)
+    Pin, Unpin, Edit, AddPrivateChannel)
 
 class Mutations(graphene.ObjectType):
     # abstract process
@@ -23,6 +23,7 @@ class Mutations(graphene.ObjectType):
     oppose_idea = Oppose.Field()
     withdraw_token_idea = WithdrawToken.Field()
     # comment management process
+    add_private_channel = AddPrivateChannel.Field()
     comment_object = CommentObject.Field()
     mark_as_read = MarkCommentsAsRead.Field()
     delete_comment = DeleteComment.Field()
