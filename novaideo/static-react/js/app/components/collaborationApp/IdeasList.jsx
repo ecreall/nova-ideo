@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import IdeaItem from '../idea/IdeaItem';
 import FlatList from '../common/FlatList';
 import IdeasList from '../../graphql/queries/IdeasList.graphql';
-import Divider from '../idea/Divider';
+import Divider from './Divider';
 import { ACTIONS } from '../../processes';
 
 const styles = {
