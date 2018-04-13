@@ -1,0 +1,10 @@
+fragment File on File {
+  id
+  oid
+  title
+  url
+  isImage
+  variations
+  size
+  mimetype
+}

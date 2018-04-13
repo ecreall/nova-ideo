@@ -1,0 +1,11 @@
+#import "../fragments/Action.graphql"
+
+query Actions($context: String, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  actions(context: $context, processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
+    edges {
+      node {
+        ...Action
+      }
+    }
+  }
+}

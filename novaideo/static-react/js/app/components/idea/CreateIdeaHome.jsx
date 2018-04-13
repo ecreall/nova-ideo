@@ -52,12 +52,9 @@ const styles = {
 };
 
 export class DumbCreateIdeaHome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
+  state = {
+    open: false
+  };
 
   openForm = () => {
     this.setState({ open: true });

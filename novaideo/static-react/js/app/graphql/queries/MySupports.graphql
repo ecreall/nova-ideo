@@ -1,0 +1,19 @@
+#import "../fragments/IdeaData.graphql"
+
+query MySupports($first: Int!, $after: String!) {
+  account {
+    id
+    supportedIdeas(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...IdeaData
+        }
+      }
+    }
+  }
+}

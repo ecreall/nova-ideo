@@ -10,18 +10,11 @@ import { create } from 'jss';
 import JssProvider from 'react-jss/lib/JssProvider';
 
 import App from './app';
-import { siteQuery } from './graphql/queries';
+import SiteData from './graphql/queries/SiteData.graphql';
 import { SMALL_WIDTH } from './constants';
-import {
-  userLogin,
-  logout,
-  updateUserToken,
-  setConnectionState,
-  loadAdapters,
-  updateGlobalProps,
-  updateNavigation,
-  closeDrawer
-} from './actions/actions';
+import { userLogin, userLogout, updateUserToken } from './actions/authActions';
+import { setConnectionState, loadAdapters, updateGlobalProps, updateNavigation } from './actions/instanceActions';
+import { closeDrawer } from './actions/collaborationAppActions';
 import { getCurrentLocation } from './utils/routeMap';
 import { getActions } from './utils/processes';
 
@@ -128,7 +121,7 @@ class Main extends React.Component {
 
   render() {
     const { data, theme } = this.props;
-    if (data.loading) return null;
+    if (data.loading || !data.root) return null;
     const loged = true;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -158,7 +151,7 @@ const mapStateToProps = (state) => {
 export const mapDispatchToProps = {
   setConnectionState: setConnectionState,
   userLogin: userLogin,
-  logout: logout,
+  logout: userLogout,
   loadAdapters: loadAdapters,
   updateUserToken: updateUserToken,
   updateGlobalProps: updateGlobalProps,
@@ -169,7 +162,7 @@ export const mapDispatchToProps = {
 export default withWidth()(
   withApollo(
     connect(mapStateToProps, mapDispatchToProps)(
-      graphql(siteQuery, {
+      graphql(SiteData, {
         options: (props: any) => {
           return {
             fetchPolicy: 'cache-and-network'

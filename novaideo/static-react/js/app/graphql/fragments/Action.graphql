@@ -1,0 +1,14 @@
+fragment Action on Action {
+  processId
+  nodeId
+  behaviorId
+  title
+  description
+  counter
+  style
+  descriminator
+  tags
+  icon
+  order
+  active
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { CardActions } from 'material-ui/Card';
-// import IconButton from 'material-ui/IconButton';
 import { I18n } from 'react-redux-i18n';
 
 import OverlaidTooltip from './OverlaidTooltip';
@@ -34,33 +33,30 @@ const styles = (theme) => {
   };
 };
 
-class AllignedActions extends React.Component {
-  render() {
-    const { actions, onActionClick, overlayPosition, actionDecoration, classes } = this.props;
-    return (
-      <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
-        {actions.map((action, key) => {
-          const Icon = action.icon;
-          return (
-            <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
-              <IconButton
-                className={classes.actionsText}
-                textColor={actionDecoration && action.active && action.color}
-                key={key}
-                onClick={() => {
-                  if (onActionClick) onActionClick(action);
-                }}
-                aria-label="todo"
-              >
-                <Icon className={classes.actionsIcon} />
-                {action.counter}
-              </IconButton>
-            </OverlaidTooltip>
-          );
-        })}
-      </CardActions>
-    );
-  }
-}
+export const DumbAllignedActions = ({ actions, onActionClick, overlayPosition, actionDecoration, classes }) => {
+  return (
+    <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
+      {actions.map((action, key) => {
+        const Icon = action.icon;
+        return (
+          <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
+            <IconButton
+              className={classes.actionsText}
+              textColor={actionDecoration && action.active && action.color}
+              key={key}
+              onClick={() => {
+                if (onActionClick) onActionClick(action);
+              }}
+              aria-label="todo"
+            >
+              <Icon className={classes.actionsIcon} />
+              {action.counter}
+            </IconButton>
+          </OverlaidTooltip>
+        );
+      })}
+    </CardActions>
+  );
+};
 
-export default withStyles(styles)(AllignedActions);
+export default withStyles(styles)(DumbAllignedActions);

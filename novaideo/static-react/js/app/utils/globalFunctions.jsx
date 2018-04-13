@@ -43,10 +43,11 @@ export const computeDomElementOffset = (ref, offset) => {
   return result;
 };
 
-export const createEvent = (typeArg, eventInit = { bubbles: false, cancelable: false }) => {
+export const createEvent = (typeArg, dispatch = false, eventInit = { bubbles: false, cancelable: false }) => {
   // inspired from https://developer.mozilla.org/en-US/docs/Web/API/Event/Event
   const event = document.createEvent('Event'); // we can't use 'new Event()' because ie
   event.initEvent(typeArg, eventInit.bubbles, eventInit.cancelable);
+  if (dispatch) document.dispatchEvent(event);
   return event;
 };
 

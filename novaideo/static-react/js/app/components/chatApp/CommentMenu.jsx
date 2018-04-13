@@ -48,12 +48,9 @@ const styles = (theme) => {
 };
 
 export class DumbCommentMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: false
-    };
-  }
+  state = {
+    menu: false
+  };
 
   componentDidMount() {
     const { initRef } = this.props;

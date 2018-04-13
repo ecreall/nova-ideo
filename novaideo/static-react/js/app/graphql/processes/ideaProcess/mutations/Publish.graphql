@@ -1,0 +1,10 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Publish($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  publishIdea(context: $context) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

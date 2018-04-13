@@ -1,13 +1,4 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
-
-export const markAsReadMutation = gql`
-  mutation($context: String!) {
-    markAsRead(context: $context) {
-      status
-    }
-  }
-`;
 
 export default function markAsRead({ mutate }) {
   return ({ context, isDiscussion }) => {

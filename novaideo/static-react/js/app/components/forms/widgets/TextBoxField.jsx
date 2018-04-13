@@ -10,11 +10,6 @@ class TextBoxField extends React.Component {
     withEmoji: true
   };
 
-  constructor(props) {
-    super(props);
-    this.editor = null;
-  }
-
   componentDidMount() {
     const { autoFocus, initRef } = this.props;
     if (autoFocus) this.editor.focus(this.props.value);
@@ -24,6 +19,8 @@ class TextBoxField extends React.Component {
   shouldComponentUpdate() {
     return false;
   }
+
+  editor = null;
 
   clear = () => {
     if (this.editor) {

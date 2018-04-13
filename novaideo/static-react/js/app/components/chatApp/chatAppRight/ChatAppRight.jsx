@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -8,9 +10,14 @@ import { CONTENTS_IDS } from '.';
 
 const ChatAppRight = (props) => {
   const { componentId } = props;
-  if (componentId === CONTENTS_IDS.search) return <SearchApp {...props} />;
-  if (componentId === CONTENTS_IDS.reply) return <ReplyApp {...props} reverted customScrollbar dynamicDivider={false} />;
-  return <DetailsApp {...props} />;
+  switch (componentId) {
+  case CONTENTS_IDS.search:
+    return <SearchApp {...props} />;
+  case CONTENTS_IDS.reply:
+    return <ReplyApp {...props} reverted customScrollbar dynamicDivider={false} />;
+  default:
+    return <DetailsApp {...props} />;
+  }
 };
 
 export const mapStateToProps = (state) => {

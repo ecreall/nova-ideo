@@ -18,7 +18,7 @@ import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
 import { renderMenuItem } from '../../../common/menu/MenuList';
 import { comment } from '../../../../graphql/processes/common';
-import { commentMutation } from '../../../../graphql/processes/common/comment';
+import Comment from '../../../../graphql/processes/common/mutations/Comment.graphql';
 
 const styles = (theme) => {
   return {
@@ -128,11 +128,9 @@ const styles = (theme) => {
 };
 
 export class DumbCommentForm extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.filesPicker = null;
-    this.editor = null;
-  }
+  filesPicker = null;
+
+  editor = null;
 
   handleSubmit = () => {
     const { globalProps, formData, valid, context, action, onSubmit } = this.props;
@@ -308,7 +306,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const CommentForm = graphql(commentMutation, {
+const CommentForm = graphql(Comment, {
   props: function (props) {
     return {
       commentObject: comment(props)

@@ -92,7 +92,7 @@ const styles = {
   }
 };
 
-class FilePrevie extends React.Component {
+class FilePreview extends React.Component {
   state = {
     hover: false
   };
@@ -147,16 +147,15 @@ class FilePrevie extends React.Component {
   }
 }
 
-const FilesPreview = (props) => {
-  const { files, classes } = props;
+export const DumbFilesPreview = ({ files, classes }) => {
   if (files.length === 0) return null;
   return (
     <div className={classes.container}>
       {files.map((file) => {
-        return <FilePrevie file={file} classes={classes} />;
+        return <FilePreview file={file} classes={classes} />;
       })}
     </div>
   );
 };
 
-export default withStyles(styles)(FilesPreview);
+export default withStyles(styles)(DumbFilesPreview);

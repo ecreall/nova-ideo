@@ -1,0 +1,68 @@
+#import "../fragments/Action.graphql"
+#import "../fragments/Comment.graphql"
+
+query Comments(
+  $first: Int!
+  $after: String!
+  $filter: String!
+  $pinned: Boolean!
+  $file: Boolean!
+  $id: ID!
+  $subjectActionsNodeIds: [String]
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  node(id: $id) {
+    ... on Channel {
+      id
+      oid
+      title
+      lenComments
+      isDiscuss
+      unreadComments {
+        id
+        oid
+      }
+      subject {
+        ... on IEntity {
+          id
+          oid
+          title
+          actions(nodeIds: $subjectActionsNodeIds) {
+            ...Action
+          }
+        }
+        ... on Person {
+          picture {
+            url
+          }
+        }
+        ... on Idea {
+          author {
+            id
+            oid
+            title
+            isAnonymous
+            picture {
+              url
+            }
+          }
+        }
+      }
+      comments(first: $first, after: $after, filter: $filter, pinned: $pinned, file: $file) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            ...Comment
+          }
+        }
+      }
+    }
+  }
+}

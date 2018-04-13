@@ -14,7 +14,8 @@ import { CardActions } from 'material-ui/Card';
 import ChatIcon from 'material-ui-icons/Chat';
 import Hidden from 'material-ui/Hidden';
 
-import { updateChatAppRight, closeChatApp, openDrawer } from '../../actions/actions';
+import { updateChatAppRight, closeChatApp } from '../../actions/chatAppActions';
+import { openDrawer } from '../../actions/collaborationAppActions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';

@@ -1,13 +1,4 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
-
-export const deleteMutation = gql`
-  mutation($context: String) {
-    deleteIdea(context: $context) {
-      status
-    }
-  }
-`;
 
 export default function deleteIdea({ mutate }) {
   return ({ context }) => {

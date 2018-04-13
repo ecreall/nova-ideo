@@ -85,64 +85,61 @@ const styles = (theme) => {
   };
 };
 
-class Url extends React.Component {
-  render() {
-    const { data, classes } = this.props;
-    const isYoutubeVideo = data.url.match(youtubeRegexp);
-    return (
-      <div className={classes.container}>
-        {data.authorName || data.authorAvatar
-          ? <div className={classes.header}>
-            <Avatar classes={{ root: classes.avatarRoot }} size={10} src={data.authorAvatar} />
-            <div>
-              <a target="_blank" href={data.url} className={classes.contributionTitle}>
-                {data.title}
-              </a>
-              <span className={classes.authorName}>
-                {data.authorName}
-              </span>
-            </div>
+export const DumbUrl = ({ data, classes }) => {
+  const isYoutubeVideo = data.url.match(youtubeRegexp);
+  return (
+    <div className={classes.container}>
+      {data.authorName || data.authorAvatar
+        ? <div className={classes.header}>
+          <Avatar classes={{ root: classes.avatarRoot }} size={10} src={data.authorAvatar} />
+          <div>
+            <a target="_blank" href={data.url} className={classes.contributionTitle}>
+              {data.title}
+            </a>
+            <span className={classes.authorName}>
+              {data.authorName}
+            </span>
           </div>
-          : <div>
-            <div className={classes.header}>
-              <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
-              <span className={classes.headerTitle}>
-                {data.siteName}
-              </span>
-            </div>
-            <div>
-              <a target="_blank" href={data.url} className={classes.url}>
-                {data.title}
-              </a>
-            </div>
-          </div>}
-        <span className={classes.description}>
-          {data.description}
-        </span>
-        {!isYoutubeVideo &&
-          data.imageUrl &&
-          <ImagesPreview
-            images={[{ url: data.imageUrl, variations: [] }]}
-            context={{
-              title: data.title,
-              author: {
-                title: data.authorName || data.siteName,
-                picture: { url: data.authorAvatar || data.favicon, strictUrl: true }
-              }
-            }}
-          />}
-        {isYoutubeVideo && <YoutubeTheater videoId={isYoutubeVideo[1]} />}
-        {data.authorName || data.authorAvatar
-          ? <div className={classes.header}>
+        </div>
+        : <div>
+          <div className={classes.header}>
             <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
             <span className={classes.headerTitle}>
               {data.siteName}
             </span>
           </div>
-          : undefined}
-      </div>
-    );
-  }
-}
+          <div>
+            <a target="_blank" href={data.url} className={classes.url}>
+              {data.title}
+            </a>
+          </div>
+        </div>}
+      <span className={classes.description}>
+        {data.description}
+      </span>
+      {!isYoutubeVideo &&
+        data.imageUrl &&
+        <ImagesPreview
+          images={[{ url: data.imageUrl, variations: [] }]}
+          context={{
+            title: data.title,
+            author: {
+              title: data.authorName || data.siteName,
+              picture: { url: data.authorAvatar || data.favicon, strictUrl: true }
+            }
+          }}
+        />}
+      {isYoutubeVideo && <YoutubeTheater videoId={isYoutubeVideo[1]} />}
+      {data.authorName || data.authorAvatar
+        ? <div className={classes.header}>
+          <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
+          <span className={classes.headerTitle}>
+            {data.siteName}
+          </span>
+        </div>
+        : undefined}
+    </div>
+  );
+};
 
-export default withStyles(styles)(Url);
+export default withStyles(styles)(DumbUrl);

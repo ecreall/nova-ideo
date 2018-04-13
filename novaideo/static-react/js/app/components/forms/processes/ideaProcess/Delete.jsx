@@ -7,8 +7,8 @@ import { I18n } from 'react-redux-i18n';
 
 import { goTo, get } from '../../../../utils/routeMap';
 import { deleteIdea } from '../../../../graphql/processes/ideaProcess';
-import { deleteMutation } from '../../../../graphql/processes/ideaProcess/delete';
-import { closeChatApp } from '../../../../actions/actions';
+import Delete from '../../../../graphql/processes/ideaProcess/mutations/Delete.graphql';
+import { closeChatApp } from '../../../../actions/chatAppActions';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 
@@ -83,7 +83,7 @@ export const mapStateToProps = (state) => {
 
 export default withStyles(styles, { withTheme: true })(
   connect(mapStateToProps, mapDispatchToProps)(
-    graphql(deleteMutation, {
+    graphql(Delete, {
       props: function (props) {
         return {
           deleteIdea: deleteIdea(props)

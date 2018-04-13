@@ -5,10 +5,10 @@ import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { deleteComment } from '../../../../graphql/processes/commentProcess';
-import { deleteMutation } from '../../../../graphql/processes/commentProcess/delete';
+import Delete from '../../../../graphql/processes/commentProcess/mutations/Delete.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
-import { CommentItem } from '../../../chatApp/CommentItem';
+import { StyledCommentItem } from '../../../chatApp/CommentItem';
 
 const styles = {
   button: {
@@ -59,7 +59,7 @@ export class DumbDelete extends React.Component {
       >
         {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>
-          <CommentItem node={comment} disableReply />
+          <StyledCommentItem node={comment} disableReply />
         </div>
       </Form>
     );
@@ -67,7 +67,7 @@ export class DumbDelete extends React.Component {
 }
 
 export default withStyles(styles, { withTheme: true })(
-  graphql(deleteMutation, {
+  graphql(Delete, {
     props: function (props) {
       return {
         deleteComment: deleteComment(props)

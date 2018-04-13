@@ -27,13 +27,10 @@ const styles = {
   }
 };
 
-class IdeaAppBarTitle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      titleVisible: true
-    };
-  }
+export class DumbIdeaAppBarTitle extends React.Component {
+  state = {
+    titleVisible: true
+  };
 
   componentDidMount() {
     const { idea } = this.props;
@@ -80,4 +77,4 @@ class IdeaAppBarTitle extends React.Component {
   }
 }
 
-export default withStyles(styles)(IdeaAppBarTitle);
+export default withStyles(styles)(DumbIdeaAppBarTitle);

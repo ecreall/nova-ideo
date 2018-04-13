@@ -20,7 +20,7 @@ import { PROCESSES } from '../../../../processes';
 import { getFormattedDate } from '../../../../utils/globalFunctions';
 import { getEntityIcon } from '../../../../utils/processes';
 import { edit } from '../../../../graphql/processes/ideaProcess';
-import { editMutation } from '../../../../graphql/processes/ideaProcess/edit';
+import Edit from '../../../../graphql/processes/ideaProcess/mutations/Edit.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 
@@ -176,13 +176,13 @@ const styles = (theme) => {
 };
 
 export class DumbEditIdeaForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.filesPicker = null;
-    this.keywordsPicker = null;
-    this.form = null;
-    this.editor = null;
-  }
+  filesPicker = null;
+
+  keywordsPicker = null;
+
+  form = null;
+
+  editor = null;
 
   handleSubmit = () => {
     const { formData, valid, idea, action } = this.props;
@@ -416,7 +416,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const EditIdeaForm = graphql(editMutation, {
+const EditIdeaForm = graphql(Edit, {
   props: function (props) {
     return {
       editIdea: edit(props)

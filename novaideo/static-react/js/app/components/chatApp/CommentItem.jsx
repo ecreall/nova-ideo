@@ -212,7 +212,7 @@ const styles = (theme) => {
   };
 };
 
-class RenderCommentItem extends React.Component {
+class DumbCommentItem extends React.Component {
   state = { action: null };
 
   menu = null;
@@ -253,9 +253,13 @@ class RenderCommentItem extends React.Component {
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     const { processManager, itemProps } = this.props;
     const inline = itemProps && itemProps.inline;
-    if (action.behaviorId === commentProcessNodes.edit.nodeId) return this.setState({ action: action });
-    if (inline && action.behaviorId === commentProcessNodes.respond.nodeId) return this.setState({ action: action });
-    return processManager.performAction(action, data);
+    const isEdit = action.behaviorId === commentProcessNodes.edit.nodeId;
+    const isReply = inline && action.behaviorId === commentProcessNodes.respond.nodeId;
+    if (isEdit || isReply) {
+      this.setState({ action: action });
+    } else {
+      processManager.execute(action, data);
+    }
   };
 
   onEdit = () => {
@@ -462,9 +466,9 @@ class RenderCommentItem extends React.Component {
   }
 }
 
-export const CommentItem = withStyles(styles, { withTheme: true })(RenderCommentItem);
+export const StyledCommentItem = withStyles(styles, { withTheme: true })(DumbCommentItem);
 
-function DumbCommentItem(props) {
+function CommentItemWithProcessManager(props) {
   const { node, itemProps, onActionClick } = props;
   return (
     <CommentProcessManager
@@ -472,9 +476,9 @@ function DumbCommentItem(props) {
       channel={(itemProps && itemProps.channel) || node.channel}
       onActionClick={onActionClick}
     >
-      <RenderCommentItem {...props} />
+      <DumbCommentItem {...props} />
     </CommentProcessManager>
   );
 }
 
-export default withStyles(styles, { withTheme: true })(DumbCommentItem);
+export default withStyles(styles, { withTheme: true })(CommentItemWithProcessManager);

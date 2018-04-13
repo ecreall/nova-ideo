@@ -1,6 +1,5 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
@@ -121,7 +120,7 @@ const styles = {
   }
 };
 
-const Evaluation = ({ icon, text, actions, onClick, active, big, classes }) => {
+export const DumbEvaluation = ({ icon, text, actions, onClick, active, big, classes }) => {
   const IconTop = icon.top;
   const IconDown = icon.down;
   if (active) {
@@ -202,4 +201,4 @@ const Evaluation = ({ icon, text, actions, onClick, active, big, classes }) => {
   );
 };
 
-export default withStyles(styles)(Evaluation);
+export default withStyles(styles)(DumbEvaluation);

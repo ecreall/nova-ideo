@@ -1,0 +1,27 @@
+query ChannelMembers($first: Int!, $after: String!, $filter: String!, $id: ID!) {
+  node(id: $id) {
+    ... on Channel {
+      id
+      oid
+      members(first: $first, after: $after, filter: $filter) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            ... on Person {
+              id
+              oid
+              title
+              picture {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

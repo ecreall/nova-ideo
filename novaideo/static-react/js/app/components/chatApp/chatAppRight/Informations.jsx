@@ -28,31 +28,28 @@ const InformationsContent = ({ id, onActionClick, kind, classes }) => {
   }
 };
 
-export class DumbInformations extends React.Component {
-  render() {
-    const { id, subject, onActionClick, channel, onOpen, open, classes } = this.props;
-    return (
-      <DetailsSection
-        classes={{
-          listItem: classes.listItem
-        }}
-        id={id}
-        onOpen={onOpen}
-        open={open}
-        title={
+export const DumbInformations = ({ id, subject, onActionClick, channel, onOpen, open, classes }) => {
+  return (
+    <DetailsSection
+      classes={{
+        listItem: classes.listItem
+      }}
+      id={id}
+      onOpen={onOpen}
+      open={open}
+      title={
+        <span>
           <span>
-            <span>
-              {I18n.t('channels.infoBlockTitle')}
-            </span>
+            {I18n.t('channels.infoBlockTitle')}
           </span>
-        }
-        Icon={InfoOutlineIcon}
-      >
-        {open &&
-          <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />}
-      </DetailsSection>
-    );
-  }
-}
+        </span>
+      }
+      Icon={InfoOutlineIcon}
+    >
+      {open &&
+        <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />}
+    </DetailsSection>
+  );
+};
 
 export default withStyles(styles)(DumbInformations);

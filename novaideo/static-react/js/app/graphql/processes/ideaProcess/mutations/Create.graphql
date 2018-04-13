@@ -1,0 +1,30 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Create(
+  $context: String
+  $text: String!
+  $title: String!
+  $keywords: [String]!
+  $attachedFiles: [Upload]
+  $oldFiles: [String]
+  $anonymous: Boolean
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  createIdea(
+    context: $context
+    title: $title
+    keywords: $keywords
+    text: $text
+    attachedFiles: $attachedFiles
+    oldFiles: $oldFiles
+    anonymous: $anonymous
+  ) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

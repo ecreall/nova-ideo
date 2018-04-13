@@ -1,0 +1,18 @@
+query Account {
+  account {
+    oid
+    id
+    title
+    description
+    function
+    availableTokens
+    mask {
+      id
+      oid
+      title
+    }
+    picture {
+      url
+    }
+  }
+}

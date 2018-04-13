@@ -86,8 +86,7 @@ const styles = (theme) => {
   };
 };
 
-const IdeaAppBar = (props) => {
-  const { idea, hasEvaluation, stats, processManager, classes, theme } = props;
+const IdeaAppBar = ({ idea, hasEvaluation, stats, processManager, classes, theme }) => {
   const author = idea.author;
   const authorPicture = author && author.picture;
   const isAnonymous = author && author.isAnonymous;
@@ -108,7 +107,7 @@ const IdeaAppBar = (props) => {
       <div className={classes.appbarActions}>
         <AllignedActions
           actions={communicationActions}
-          onActionClick={processManager.performAction}
+          onActionClick={processManager.execute}
           overlayPosition="bottom"
           classes={{
             actionsContainer: classes.actionsContainer,
@@ -120,7 +119,7 @@ const IdeaAppBar = (props) => {
           open
           overlayPosition="bottom"
           idea={idea}
-          onActionClick={processManager.performAction}
+          onActionClick={processManager.execute}
           classes={{ container: classes.menu, button: classes.menuButton, action: classes.menuAction }}
           actionsProps={{
             publish: { className: classes.publishAction, type: 'button', props: { background: theme.palette.success[500] } }

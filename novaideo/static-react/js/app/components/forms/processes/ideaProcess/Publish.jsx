@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { publish } from '../../../../graphql/processes/ideaProcess';
-import { publishMutation } from '../../../../graphql/processes/ideaProcess/publish';
+import Publish from '../../../../graphql/processes/ideaProcess/mutations/Publish.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 import IdeaItem from '../../../idea/IdeaItem';
@@ -66,7 +66,7 @@ export class Dumbpublish extends React.Component {
 }
 
 export default withStyles(styles, { withTheme: true })(
-  graphql(publishMutation, {
+  graphql(Publish, {
     props: function (props) {
       return {
         publishIdea: publish(props)

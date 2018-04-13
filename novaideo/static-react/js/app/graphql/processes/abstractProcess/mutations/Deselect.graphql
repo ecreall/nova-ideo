@@ -1,0 +1,16 @@
+#import "../../../fragments/Action.graphql"
+
+mutation Deselect($context: String!, $processIds: [String!], $nodeIds: [String]) {
+  deselect(context: $context) {
+    status
+    context {
+      ... on IEntity {
+        id
+        oid
+        actions(processIds: $processIds, nodeIds: $nodeIds) {
+          ...Action
+        }
+      }
+    }
+  }
+}

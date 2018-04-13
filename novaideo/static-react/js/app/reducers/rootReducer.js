@@ -5,7 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import getAllAdapters from '../components/vendor/utils';
 import theme from '../theme';
-import * as constants from '../constants';
+import * as actionTypes from '../actions/actionTypes';
 
 // 4b3fc3b2e8b64e3ab95dc38122737f67
 
@@ -15,7 +15,7 @@ const initialUserTest = {
 };
 export const user = (state = initialUserTest, action) => {
   switch (action.type) {
-  case `${constants.LOGIN}_FULFILLED`: {
+  case `${actionTypes.LOGIN}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         token: action.payload.token,
@@ -27,25 +27,25 @@ export const user = (state = initialUserTest, action) => {
       loadingState: 'error'
     };
   }
-  case `${constants.LOGIN}_PENDING`: {
+  case `${actionTypes.LOGIN}_PENDING`: {
     return {
       token: state.token,
       loadingState: 'pending'
     };
   }
-  case `${constants.LOGIN}_REJECTED`: {
+  case `${actionTypes.LOGIN}_REJECTED`: {
     return {
       token: state.token,
       loadingState: 'error'
     };
   }
-  case constants.LOGIN_IN_PROGRESS: {
+  case actionTypes.LOGIN_IN_PROGRESS: {
     return {
       token: state.token,
       loadingState: 'progress'
     };
   }
-  case `${constants.LOGOUT}_FULFILLED`: {
+  case `${actionTypes.LOGOUT}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         token: undefined,
@@ -56,21 +56,21 @@ export const user = (state = initialUserTest, action) => {
     return state;
   }
 
-  case `${constants.LOGOUT}_REJECTED`: {
+  case `${actionTypes.LOGOUT}_REJECTED`: {
     return {
       token: state.token,
       loadingState: 'error'
     };
   }
 
-  case `${constants.INIT_INSTANCE}_REJECTED`: {
+  case `${actionTypes.INIT_INSTANCE}_REJECTED`: {
     return {
       token: state.token,
       loadingState: 'error'
     };
   }
 
-  case `${constants.INIT_INSTANCE}_FULFILLED`: {
+  case `${actionTypes.INIT_INSTANCE}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         token: undefined,
@@ -87,7 +87,7 @@ export const user = (state = initialUserTest, action) => {
 
 export const search = (state = { text: '' }, action) => {
   switch (action.type) {
-  case constants.SEARCH_ENTITIES: {
+  case actionTypes.SEARCH_ENTITIES: {
     return {
       text: action.text
     };
@@ -99,12 +99,12 @@ export const search = (state = { text: '' }, action) => {
 
 export const adapters = (state = { theme: theme }, action) => {
   switch (action.type) {
-  case `${constants.SET_INSTANCE}_FULFILLED`: {
+  case `${actionTypes.SET_INSTANCE}_FULFILLED`: {
     let instanceId;
     if (action.payload) instanceId = action.payload.app;
     return getAllAdapters(instanceId);
   }
-  case constants.LOAD_ADAPTERS: {
+  case actionTypes.LOAD_ADAPTERS: {
     return getAllAdapters(action.instanceId);
   }
   default:
@@ -121,7 +121,7 @@ export const network = (
   action
 ) => {
   switch (action.type) {
-  case constants.SET_CONNECTION_STATE: {
+  case actionTypes.SET_CONNECTION_STATE: {
     return {
       isConnected: action.isConnected,
       isLogged: state.isLogged,
@@ -129,35 +129,35 @@ export const network = (
     };
   }
 
-  case constants.SET_URL_STATE: {
+  case actionTypes.SET_URL_STATE: {
     return {
       isConnected: state.isConnected,
       isLogged: state.isLogged,
       url: { error: action.error, messages: action.messages }
     };
   }
-  case `${constants.LOGIN}_REJECTED`: {
+  case `${actionTypes.LOGIN}_REJECTED`: {
     return {
       isConnected: state.isConnected,
       isLogged: false,
       url: { error: true, messages: ['Login failed'] }
     };
   }
-  case `${constants.LOGOUT}_REJECTED`: {
+  case `${actionTypes.LOGOUT}_REJECTED`: {
     return {
       isConnected: state.isConnected,
       isLogged: state.isLogged,
       url: { error: true, messages: ['Logout failed'] }
     };
   }
-  case `${constants.INIT_INSTANCE}_REJECTED`: {
+  case `${actionTypes.INIT_INSTANCE}_REJECTED`: {
     return {
       isConnected: state.isConnected,
       isLogged: state.isLogged,
       url: { error: true, messages: ['Logout failed'] }
     };
   }
-  case `${constants.LOGIN}_FULFILLED`: {
+  case `${actionTypes.LOGIN}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         isConnected: state.isConnected,
@@ -167,7 +167,7 @@ export const network = (
     }
     return state;
   }
-  case `${constants.LOGOUT}_FULFILLED`: {
+  case `${actionTypes.LOGOUT}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         isConnected: state.isConnected,
@@ -178,7 +178,7 @@ export const network = (
 
     return state;
   }
-  case `${constants.INIT_INSTANCE}_FULFILLED`: {
+  case `${actionTypes.INIT_INSTANCE}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
         isConnected: state.isConnected,
@@ -203,7 +203,7 @@ const initNavigationState = {
 
 export const history = (state = initNavigationState, action) => {
   switch (action.type) {
-  case `${constants.SET_INSTANCE}_FULFILLED`: {
+  case `${actionTypes.SET_INSTANCE}_FULFILLED`: {
     if (action.payload) {
       const instanceId = action.payload.app;
       const currentEntry = state[instanceId] || { data: {}, userPreferences: {} };
@@ -224,7 +224,7 @@ export const history = (state = initNavigationState, action) => {
     }
     return state;
   }
-  case constants.SET_THEME: {
+  case actionTypes.SET_THEME: {
     const instanceId = action.instance.id;
     let currentEntry = state[instanceId];
     if (!currentEntry) {
@@ -247,7 +247,7 @@ export const history = (state = initNavigationState, action) => {
     newStateEntry[instanceId] = newEntry;
     return update(state, { $merge: newStateEntry });
   }
-  case constants.UPDATE_TOKEN: {
+  case actionTypes.UPDATE_TOKEN: {
     const instanceId = action.instance.id;
     let currentEntry = state[instanceId];
     if (!currentEntry) {
@@ -273,7 +273,7 @@ export const history = (state = initNavigationState, action) => {
     newStateEntry[instanceId] = newEntry;
     return update(state, { $merge: newStateEntry });
   }
-  case constants.UPDATE_NAVIGATION: {
+  case actionTypes.UPDATE_NAVIGATION: {
     const navigation = state.navigation;
     const newPrevious = action.updatePrevious ? navigation.location : navigation.previous;
     return { ...state, ...{ navigation: { location: action.location, previous: newPrevious } } };
@@ -285,7 +285,7 @@ export const history = (state = initNavigationState, action) => {
 
 export const globalProps = (state = {}, action) => {
   switch (action.type) {
-  case constants.UPDATE_GLOBAL_PROPS: {
+  case actionTypes.UPDATE_GLOBAL_PROPS: {
     return { ...state, ...action.props };
   }
   default:
@@ -321,9 +321,7 @@ const initialAppsState = {
 };
 
 export const apps = (state = initialAppsState, action) => {
-  switch (action.type) {
-  case constants.UPDATE_APP: {
-    const app = action.app;
+  const updateApp = (app) => {
     let currentEntry = state[app];
     if (!currentEntry) {
       currentEntry = {
@@ -337,17 +335,29 @@ export const apps = (state = initialAppsState, action) => {
     const newStateEntry = {};
     newStateEntry[app] = newEntry;
     return update(state, { $merge: newStateEntry });
+  };
+
+  switch (action.type) {
+  case actionTypes.UPDATE_APP: {
+    const app = action.app;
+    return updateApp(app);
   }
-  case constants.OPEN_DRAWER: {
+  case actionTypes.UPDATE_COLLABORATIONAPP: {
+    return updateApp('collaborationApp');
+  }
+  case actionTypes.UPDATE_CHATAPP: {
+    return updateApp('chatApp');
+  }
+  case actionTypes.OPEN_DRAWER: {
     return { ...state, drawer: { open: true, app: action.app } };
   }
-  case constants.CLOSE_DRAWER: {
+  case actionTypes.CLOSE_DRAWER: {
     return { ...state, drawer: { open: false, app: undefined } };
   }
-  case constants.TOGGLE_DRAWER: {
+  case actionTypes.TOGGLE_DRAWER: {
     return { ...state, drawer: { ...state.drawer, open: !state.drawer.open } };
   }
-  case constants.OPEN_CHATAPP: {
+  case actionTypes.OPEN_CHATAPP: {
     const config = action.config;
     let drawer = state.drawer;
     if ('drawer' in config) {
@@ -360,22 +370,21 @@ export const apps = (state = initialAppsState, action) => {
       chatApp: { ...state.chatApp, open: true, ...action.config }
     };
   }
-  case constants.ADD_CHATAPP_INTEGRATION: {
+  case actionTypes.ADD_CHATAPP_INTEGRATION: {
     return {
       ...state,
       chatApp: { ...state.chatApp, integrations: state.chatApp.integrations + 1 }
     };
   }
-  case constants.REMOVE_CHATAPP_INTEGRATION: {
+  case actionTypes.REMOVE_CHATAPP_INTEGRATION: {
     let integrations = state.chatApp.integrations - 1;
     integrations = integrations < 0 ? 0 : integrations;
     return {
       ...state,
-      drawer: { ...state.drawer, app: 'collaborationApp' },
       chatApp: { ...state.chatApp, integrations: integrations }
     };
   }
-  case constants.CLOSE_CHATAPP: {
+  case actionTypes.CLOSE_CHATAPP: {
     const defaultConfig = {
       channel: undefined,
       subject: undefined,
@@ -386,7 +395,7 @@ export const apps = (state = initialAppsState, action) => {
       }
     };
     const actionConfig = action.config || {};
-    let drawer = true;
+    let drawer = state.drawer.open;
     if ('drawer' in actionConfig) {
       drawer = actionConfig.drawer;
       delete actionConfig.drawer;
@@ -394,11 +403,11 @@ export const apps = (state = initialAppsState, action) => {
     const config = { ...defaultConfig, ...actionConfig };
     return {
       ...state,
-      drawer: { open: drawer, app: undefined },
+      drawer: { ...state.drawer, open: drawer },
       chatApp: { ...state.chatApp, ...{ open: false }, ...config }
     };
   }
-  case constants.OPEN_COLLABORATION_RIGHT: {
+  case actionTypes.OPEN_COLLABORATION_RIGHT: {
     return {
       ...state,
       collaborationApp: {
@@ -411,7 +420,7 @@ export const apps = (state = initialAppsState, action) => {
       }
     };
   }
-  case constants.CLOSE_COLLABORATION_RIGHT: {
+  case actionTypes.CLOSE_COLLABORATION_RIGHT: {
     return {
       ...state,
       collaborationApp: {
@@ -426,7 +435,7 @@ export const apps = (state = initialAppsState, action) => {
       }
     };
   }
-  case constants.UPDATE_CHATAPP_RIGHT: {
+  case actionTypes.UPDATE_CHATAPP_RIGHT: {
     return {
       ...state,
       chatApp: {
@@ -435,7 +444,7 @@ export const apps = (state = initialAppsState, action) => {
       }
     };
   }
-  case constants.UPDATE_COLLABORATION_RIGHT: {
+  case actionTypes.UPDATE_COLLABORATION_RIGHT: {
     return {
       ...state,
       collaborationApp: {

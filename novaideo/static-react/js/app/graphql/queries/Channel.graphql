@@ -1,0 +1,17 @@
+query Channel($id: ID!) {
+  node(id: $id) {
+    ... on Channel {
+      id
+      oid
+      title
+      lenComments
+      isDiscuss
+      subject {
+        ... on IEntity {
+          id
+          oid
+        }
+      }
+    }
+  }
+}

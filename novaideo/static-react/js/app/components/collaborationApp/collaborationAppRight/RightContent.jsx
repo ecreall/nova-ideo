@@ -9,7 +9,8 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import classNames from 'classnames';
 
-import { updateCollaborationAppRight, closeCollaborationRight } from '../../../actions/actions';
+import { updateCollaborationAppRight, closeCollaborationRight } from '../../../actions/collaborationAppActions';
+import { createEvent } from '../../../utils/globalFunctions';
 import Scrollbar from '../../common/Scrollbar';
 
 const styles = {
@@ -48,18 +49,12 @@ const styles = {
 
 class RightContent extends React.Component {
   componentDidMount() {
-    this.dispatchResize();
+    createEvent('resize', true);
   }
 
   componentWillUnmount() {
-    this.dispatchResize();
+    createEvent('resize', true);
   }
-
-  dispatchResize = () => {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, true);
-    document.dispatchEvent(event);
-  };
 
   toggleWidth = () => {
     const { rightFull, updateRight } = this.props;

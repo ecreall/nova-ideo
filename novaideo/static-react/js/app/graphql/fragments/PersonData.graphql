@@ -1,0 +1,23 @@
+#import "./Action.graphql"
+
+fragment PersonData on Person {
+  id
+  oid
+  title
+  createdAt
+  description
+  function
+  isAnonymous
+  channel {
+    id
+    oid
+    title
+    isDiscuss
+  }
+  picture {
+    url
+  }
+  actions {
+    ...Action
+  }
+}

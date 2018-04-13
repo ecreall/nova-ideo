@@ -26,26 +26,23 @@ const styles = {
   }
 };
 
-export class DumbUserSmallItem extends React.Component {
-  render() {
-    const { node, classes } = this.props;
-    return (
-      <div className={classes.container}>
-        <UserAvatar
-          isAnonymous={node.isAnonymous}
-          picture={node.picture}
-          title={node.title}
-          classes={{ avatar: classes.avatar, noPicture: classes.avatarNoPicture }}
-        />
-        <UserTitle
-          node={node}
-          classes={{
-            title: classes.title
-          }}
-        />
-      </div>
-    );
-  }
-}
+export const DumbUserSmallItem = ({ node, classes }) => {
+  return (
+    <div className={classes.container}>
+      <UserAvatar
+        isAnonymous={node.isAnonymous}
+        picture={node.picture}
+        title={node.title}
+        classes={{ avatar: classes.avatar, noPicture: classes.avatarNoPicture }}
+      />
+      <UserTitle
+        node={node}
+        classes={{
+          title: classes.title
+        }}
+      />
+    </div>
+  );
+};
 
 export default withStyles(styles)(DumbUserSmallItem);

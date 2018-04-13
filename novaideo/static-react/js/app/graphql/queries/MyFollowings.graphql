@@ -1,0 +1,19 @@
+#import "../fragments/IdeaData.graphql"
+
+query MyFollowings($first: Int!, $after: String!) {
+  account {
+    id
+    followedIdeas(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...IdeaData
+        }
+      }
+    }
+  }
+}

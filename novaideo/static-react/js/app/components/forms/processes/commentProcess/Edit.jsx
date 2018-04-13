@@ -16,7 +16,7 @@ import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from '../common/CommentMenu';
 import { renderMenuItem } from '../../../common/menu/MenuList';
 import { edit } from '../../../../graphql/processes/commentProcess';
-import { editMutation } from '../../../../graphql/processes/commentProcess/edit';
+import Edit from '../../../../graphql/processes/commentProcess/mutations/Edit.graphql';
 
 const styles = {
   container: {
@@ -88,11 +88,9 @@ const styles = {
 };
 
 export class DumbEditCommentForm extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.filesPicker = null;
-    this.editor = null;
-  }
+  filesPicker = null;
+
+  editor = null;
 
   handleSubmit = () => {
     const { formData, valid, context, onSubmit } = this.props;
@@ -215,7 +213,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const EditCommentForm = graphql(editMutation, {
+const EditCommentForm = graphql(Edit, {
   props: function (props) {
     return {
       editComment: edit(props)

@@ -1,30 +1,7 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { ideaFragment } from '../../queries';
 import { ACTIONS, STATE } from '../../../processes';
 import { truncateText } from '../../../utils/globalFunctions';
-
-export const createMutation = gql`
-  mutation($context: String, $text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload],
-           $oldFiles: [String], $anonymous: Boolean,
-           $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
-    createIdea(
-      context: $context,
-      title: $title,
-      keywords: $keywords,
-      text: $text,
-      attachedFiles: $attachedFiles,
-      oldFiles: $oldFiles,
-      anonymous: $anonymous) {
-      status
-      idea {
-        ...idea
-      }
-    }
-  }
-  ${ideaFragment}
-`;
 
 export default function create({ ownProps, mutate }) {
   return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account }) => {

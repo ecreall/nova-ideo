@@ -1,0 +1,11 @@
+fragment Author on Person {
+  id
+  oid
+  title
+  description
+  function
+  isAnonymous
+  picture {
+    url
+  }
+}

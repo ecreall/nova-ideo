@@ -7,20 +7,20 @@ import { Translate } from 'react-redux-i18n';
 import { goTo, get } from '../../utils/routeMap';
 import { PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
-import { selectMutation } from '../../graphql/processes/abstractProcess/select';
-import { deselectMutation } from '../../graphql/processes/abstractProcess/deselect';
+import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
+import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 
 export class DumbUserProcessManager extends React.Component {
-  onActionPerformed = () => {
+  onActionExecuted = () => {
     const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
   };
 
-  performAction = (action) => {
+  execute = (action) => {
     const { person, network, globalProps } = this.props;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     if (action.nodeId === userProcessNodes.discuss.nodeId) {
-      this.onActionPerformed();
+      this.onActionExecuted();
       setTimeout(() => {
         goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
       }, 200);
@@ -31,10 +31,10 @@ export class DumbUserProcessManager extends React.Component {
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
       case processNodes.select.nodeId:
-        selectUser({ context: person }).then(this.onActionPerformed).catch(globalProps.showError);
+        selectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
       case processNodes.deselect.nodeId:
-        deselectUser({ context: person }).then(this.onActionPerformed).catch(globalProps.showError);
+        deselectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
       default:
         globalProps.showMessage(<Translate value="comingSoon" />);
@@ -52,14 +52,14 @@ export class DumbUserProcessManager extends React.Component {
   }
 }
 
-const UserProcessManagerWithActions = graphql(selectMutation, {
+const UserProcessManagerWithActions = graphql(Select, {
   props: function (props) {
     return {
       selectUser: select(props)
     };
   }
 })(
-  graphql(deselectMutation, {
+  graphql(Deselect, {
     props: function (props) {
       return {
         deselectUser: deselect(props)

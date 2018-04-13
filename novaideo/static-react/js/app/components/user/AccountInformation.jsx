@@ -29,24 +29,21 @@ const styles = (theme) => {
   };
 };
 
-class AccountInformation extends React.Component {
-  render() {
-    const { account, classes, onlyIcon } = this.props;
-    const picture = account && account.picture;
-    const title = account && account.title;
-    return (
-      <div className={classes.accountInfo}>
-        <div className={classes.accountTitle}>
-          <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={title} />
-          {!onlyIcon &&
-            <div className={classNames('account-title-text', classes.accountTitleText)}>
-              {title}
-            </div>}
-        </div>
+export const DumbAccountInformation = ({ account, classes, onlyIcon }) => {
+  const picture = account && account.picture;
+  const title = account && account.title;
+  return (
+    <div className={classes.accountInfo}>
+      <div className={classes.accountTitle}>
+        <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={title} />
+        {!onlyIcon &&
+          <div className={classNames('account-title-text', classes.accountTitleText)}>
+            {title}
+          </div>}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export const mapStateToProps = (state) => {
   return {
@@ -54,4 +51,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(AccountInformation));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbAccountInformation));

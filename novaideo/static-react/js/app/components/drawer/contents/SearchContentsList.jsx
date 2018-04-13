@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
 
 import FlatList from '../../common/FlatList';
-import { allContentsQuery } from '../../../graphql/queries';
+import AllContents from '../../../graphql/queries/AllContents.graphql';
 import Search from '../../forms/Search';
 import SearchContentItem from './SearchContentItem';
 
@@ -65,7 +65,7 @@ class SearchContentsList extends React.Component {
       <Query
         notifyOnNetworkStatusChange
         fetchPolicy="cache-and-network"
-        query={allContentsQuery}
+        query={AllContents}
         variables={{ first: 25, after: '', filter: this.state.filter.text }}
       >
         {(data) => {

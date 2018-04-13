@@ -3,7 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import { Translate } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 
-import { updateChatAppRight } from '../../../actions/actions';
+import { updateChatAppRight } from '../../../actions/chatAppActions';
 import RightContent from './RightContent';
 import Details from './Details';
 
@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-const DetailsApp = (props) => {
+export const DumbDetailsApp = (props) => {
   const { classes, channel } = props;
   return (
     <RightContent
@@ -42,4 +42,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DetailsApp));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DumbDetailsApp));

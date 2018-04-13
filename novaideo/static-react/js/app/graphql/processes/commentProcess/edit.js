@@ -1,37 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { commentFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
-
-export const editMutation = gql`
-  mutation($context: String!, $comment: String!, $formattedComment: String!, $urls: [String],
-           $attachedFiles: [Upload], $oldFiles: [String],
-           $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
-    editComment(
-      context: $context
-      comment: $comment
-      formattedComment: $formattedComment
-      urls: $urls
-      attachedFiles: $attachedFiles
-      oldFiles: $oldFiles
-    ) {
-      status
-      comment {
-        ...comment
-        ...on Comment {
-          channel {
-            id
-            oid
-            title
-            isDiscuss
-          }
-        }
-      }
-    }
-  }
-  ${commentFragment}
-`;
 
 export default function edit({ ownProps, mutate }) {
   return ({ context, text, formattedText, urls, attachedFiles, oldFiles }) => {

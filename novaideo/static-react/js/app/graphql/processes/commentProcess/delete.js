@@ -1,16 +1,7 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
 import { filterActions } from '../../../utils/processes';
 import { PROCESSES } from '../../../processes';
-
-export const deleteMutation = gql`
-  mutation($context: String) {
-    deleteComment(context: $context) {
-      status
-    }
-  }
-`;
 
 export default function deleteComment({ mutate }) {
   return ({ context, channel }) => {
@@ -126,7 +117,7 @@ export default function deleteComment({ mutate }) {
             }
           });
         },
-        PersonInfo: (prev, { queryVariables }) => {
+        PersonData: (prev, { queryVariables }) => {
           if (queryVariables.id !== channel.subject.id) return false;
           const commentAction = filterActions(prev.person.actions, {
             behaviorId: PROCESSES.usermanagement.nodes.discuss.nodeId

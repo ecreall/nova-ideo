@@ -1,0 +1,23 @@
+#import "../fragments/Idea.graphql"
+
+query IdeasList(
+  $first: Int!
+  $after: String!
+  $filter: String!
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  ideas(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Idea
+      }
+    }
+  }
+}

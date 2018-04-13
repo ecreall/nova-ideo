@@ -19,7 +19,7 @@ const styles = {
   }
 };
 
-const IconWithText = ({ name, text, containerStyle, styleText, styleIcon, classes }) => {
+export const DumbIconWithText = ({ name, text, containerStyle, styleText, styleIcon, classes }) => {
   return (
     <div className={classNames(classes.containerStyle, containerStyle)}>
       <Icon className={classNames(classes.styleIcon, styleIcon, name)} />
@@ -30,4 +30,4 @@ const IconWithText = ({ name, text, containerStyle, styleText, styleIcon, classe
   );
 };
 
-export default withStyles(styles)(IconWithText);
+export default withStyles(styles)(DumbIconWithText);

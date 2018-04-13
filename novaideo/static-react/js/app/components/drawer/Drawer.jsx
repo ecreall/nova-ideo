@@ -14,8 +14,9 @@ import { STYLE_CONST } from '../../constants';
 import ChannelsDrawer from './channels/ChannelsDrawer';
 import UserMenu from '../user/UserMenu';
 import UserDrawer from './contents/UserDrawer';
-import { updateApp, closeDrawer } from '../../actions/actions';
+import { updateApp, closeDrawer } from '../../actions/collaborationAppActions';
 import OverlaidTooltip from '../common/OverlaidTooltip';
+import { createEvent } from '../../utils/globalFunctions';
 
 const styles = (theme) => {
   return {
@@ -104,16 +105,10 @@ function DrawerContent({ drawerApp, switchDrawer, classes }) {
   );
 }
 
-class AppDrawer extends React.Component {
+class AppDrawer extends React.PureComponent {
   componentDidUpdate() {
-    this.dispatchResize();
+    createEvent('resize', true);
   }
-
-  dispatchResize = () => {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, true);
-    document.dispatchEvent(event);
-  };
 
   render() {
     const { classes, theme, drawerOpen, drawerApp, switchDrawer } = this.props;

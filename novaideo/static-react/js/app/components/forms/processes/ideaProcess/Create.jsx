@@ -27,8 +27,8 @@ import { PROCESSES } from '../../../../processes';
 import { filterActions, getEntityIcon } from '../../../../utils/processes';
 import { getFormattedDate } from '../../../../utils/globalFunctions';
 import { create, createAndPublish } from '../../../../graphql/processes/ideaProcess';
-import { createMutation } from '../../../../graphql/processes/ideaProcess/create';
-import { createAndPublishMutation } from '../../../../graphql/processes/ideaProcess/createAndPublish';
+import Create from '../../../../graphql/processes/ideaProcess/mutations/Create.graphql';
+import CreateAndPublish from '../../../../graphql/processes/ideaProcess/mutations/CreateAndPublish.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 
@@ -183,13 +183,13 @@ const styles = (theme) => {
 };
 
 export class DumbCreateIdeaForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.filesPicker = null;
-    this.keywordsPicker = null;
-    this.form = null;
-    this.editor = null;
-  }
+  filesPicker = null;
+
+  keywordsPicker = null;
+
+  form = null;
+
+  editor = null;
 
   closeForm = () => {
     this.form.close();
@@ -475,14 +475,14 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const CreateIdeaForm = graphql(createAndPublishMutation, {
+const CreateIdeaForm = graphql(CreateAndPublish, {
   props: function (props) {
     return {
       createAndPublishIdea: createAndPublish(props)
     };
   }
 })(
-  graphql(createMutation, {
+  graphql(Create, {
     props: function (props) {
       return {
         createIdea: create(props)

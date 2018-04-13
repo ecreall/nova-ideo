@@ -92,7 +92,7 @@ const styles = {
   }
 };
 
-class FilesPickerPreview extends React.Component {
+export class DumbFilesPickerPreview extends React.Component {
   filesRemoveOne = (file) => {
     this.props.getPicker().removeFile(file);
   };
@@ -146,4 +146,4 @@ class FilesPickerPreview extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(FilesPickerPreview);
+export default withStyles(styles, { withTheme: true })(DumbFilesPickerPreview);

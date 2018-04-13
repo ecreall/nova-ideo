@@ -1,0 +1,28 @@
+query AllChannels($first: Int!, $after: String!, $filter: String!) {
+  allChannels(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        channel {
+          id
+          title
+        }
+        subject {
+          ... on IEntity {
+            id
+            oid
+            title
+          }
+          ... on Person {
+            picture {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}

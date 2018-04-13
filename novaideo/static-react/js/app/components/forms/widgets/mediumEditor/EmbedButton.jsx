@@ -33,11 +33,10 @@ const styles = {
 };
 
 class EmbedButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { url: '' };
-    this.form = null;
-  }
+  state = { url: '' };
+
+  form = null;
+
   handleClickOpen = () => {
     this.form.open();
   };

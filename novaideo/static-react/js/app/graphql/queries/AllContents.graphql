@@ -1,0 +1,24 @@
+query AllContents($first: Int!, $after: String!, $filter: String!) {
+  allContents(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        subject {
+          ... on IEntity {
+            id
+            oid
+            title
+          }
+          ... on Person {
+            picture {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}

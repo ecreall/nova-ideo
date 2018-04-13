@@ -79,46 +79,34 @@ const styles = (theme) => {
   };
 };
 
-export class DumbContentCollapse extends React.Component {
-  toggle = () => {
-    const { onOpen, id } = this.props;
+export const DumbContentCollapse = ({ id, onOpen, title, Icon, open, children, classes }) => {
+  const textClasses = classNames(classes.text, { [classes.textActive]: open });
+  const iconClasses = classNames(classes.icon, { [classes.iconActive]: open });
+  const sectionIconClasses = classNames(classes.sectionIcon, { [classes.sectionIconActive]: open });
+  const toggle = () => {
     onOpen(id);
   };
-
-  render() {
-    const { classes, title, Icon, open, children } = this.props;
-    const textClasses = classNames(classes.text, { [classes.textActive]: open });
-    const iconClasses = classNames(classes.icon, { [classes.iconActive]: open });
-    const sectionIconClasses = classNames(classes.sectionIcon, { [classes.sectionIconActive]: open });
-    return [
-      <ListItem
-        onClick={this.toggle}
-        dense
-        button
-        classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: open }) }}
-      >
-        <ListItemIcon>
-          <Icon classes={{ root: sectionIconClasses }} />
-        </ListItemIcon>
-        <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={title} />
-        {open
-          ? <KeyboardArrowUpIcon classes={{ root: iconClasses }} />
-          : <KeyboardArrowDownIcon classes={{ root: iconClasses }} />}
-      </ListItem>,
-      <Collapse
-        in={open}
-        timeout={300}
-        classes={{
-          container: classes.container,
-          entered: classes.entered,
-          wrapper: classes.wrapper,
-          wrapperInner: classes.wrapperInner
-        }}
-      >
-        {children}
-      </Collapse>
-    ];
-  }
-}
+  return [
+    <ListItem onClick={toggle} dense button classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: open }) }}>
+      <ListItemIcon>
+        <Icon classes={{ root: sectionIconClasses }} />
+      </ListItemIcon>
+      <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={title} />
+      {open ? <KeyboardArrowUpIcon classes={{ root: iconClasses }} /> : <KeyboardArrowDownIcon classes={{ root: iconClasses }} />}
+    </ListItem>,
+    <Collapse
+      in={open}
+      timeout={300}
+      classes={{
+        container: classes.container,
+        entered: classes.entered,
+        wrapper: classes.wrapper,
+        wrapperInner: classes.wrapperInner
+      }}
+    >
+      {children}
+    </Collapse>
+  ];
+};
 
 export default withStyles(styles)(DumbContentCollapse);

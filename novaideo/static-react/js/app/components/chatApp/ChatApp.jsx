@@ -4,8 +4,8 @@ import { graphql } from 'react-apollo';
 
 import ChannelNavbar from './Navbar';
 import App from '../common/App';
-import { channelQuery } from '../../graphql/queries';
-import { updateApp } from '../../actions/actions';
+import Channel from '../../graphql/queries/Channel.graphql';
+import { updateChatApp } from '../../actions/chatAppActions';
 import Comments from './Comments';
 
 export class DumbChatApp extends React.Component {
@@ -13,7 +13,7 @@ export class DumbChatApp extends React.Component {
     const { data: { node }, subject } = nextProps;
     const subjectId = node && node.subject && node.subject.id;
     if (subjectId !== subject) {
-      this.props.updateApp('chatApp', { subject: subjectId });
+      this.props.updateChatApp({ subject: subjectId });
     }
   }
 
@@ -29,7 +29,7 @@ export class DumbChatApp extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateApp: updateApp
+  updateChatApp: updateChatApp
 };
 
 export const mapStateToProps = (state) => {
@@ -40,7 +40,7 @@ export const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  graphql(channelQuery, {
+  graphql(Channel, {
     options: (props) => {
       return {
         notifyOnNetworkStatusChange: true,

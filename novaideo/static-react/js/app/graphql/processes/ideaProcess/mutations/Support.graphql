@@ -1,0 +1,19 @@
+#import "../../../fragments/Action.graphql"
+
+mutation Support($context: String!, $actionTags: [String]) {
+  supportIdea(context: $context) {
+    status
+    user {
+      availableTokens
+    }
+    idea {
+      id
+      tokensSupport
+      tokensOpposition
+      userToken
+      actions(actionTags: $actionTags) {
+        ...Action
+      }
+    }
+  }
+}

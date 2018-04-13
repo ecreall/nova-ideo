@@ -60,19 +60,15 @@ const styles = {
   }
 };
 
-class Divider extends React.Component {
+export class DumbDivider extends React.Component {
   static defaultProps = {
     dynamic: true
   };
-  constructor(props) {
-    super(props);
-    this.container = null;
-    this.message = null;
-    this.state = {
-      fixed: false,
-      left: 0
-    };
-  }
+
+  state = {
+    fixed: false,
+    left: 0
+  };
 
   componentDidMount() {
     const { eventId } = this.props;
@@ -90,6 +86,10 @@ class Divider extends React.Component {
       document.removeEventListener('resize', this.initializePosition);
     }
   }
+
+  container = null;
+
+  message = null;
 
   updatePosition = () => {
     const { dynamic } = this.props;
@@ -158,4 +158,4 @@ class Divider extends React.Component {
   }
 }
 
-export default withStyles(styles)(Divider);
+export default withStyles(styles)(DumbDivider);

@@ -1,0 +1,44 @@
+#import "./Action.graphql"
+#import "./Author.graphql"
+#import "./File.graphql"
+
+fragment Idea on Idea {
+  id
+  oid
+  createdAt
+  title
+  keywords
+  text
+  presentationText
+  attachedFiles {
+    ...File
+  }
+  tokensSupport
+  tokensOpposition
+  userToken
+  state
+  opinion
+  channel {
+    id
+    oid
+    title
+    isDiscuss
+  }
+  urls {
+    url
+    title
+    description
+    imageUrl
+    siteName
+    favicon
+    domain
+    authorAvatar
+    authorName
+  }
+  author {
+    ...Author
+  }
+  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
+    ...Action
+  }
+}

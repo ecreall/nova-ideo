@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
@@ -6,7 +5,7 @@ import MIcon from 'material-ui/Icon';
 import ForumIcon from 'material-ui-icons/Forum';
 import { connect } from 'react-redux';
 
-import { updateChatAppRight } from '../../../actions/actions';
+import { updateChatAppRight } from '../../../actions/chatAppActions';
 import { goTo, get } from '../../../utils/routeMap';
 import RightContent from './RightContent';
 import Reply from './Reply';

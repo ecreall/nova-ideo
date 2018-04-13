@@ -1,0 +1,7 @@
+#import "../fragments/Person.graphql"
+
+query Person($id: ID!, $first: Int!, $after: String!) {
+  person: node(id: $id) {
+    ...Person
+  }
+}

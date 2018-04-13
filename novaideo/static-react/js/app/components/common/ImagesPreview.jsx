@@ -81,14 +81,12 @@ const styles = {
   }
 };
 
-class ImagesPreview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sliderOpen: false,
-      current: 0
-    };
-  }
+export class DumbImagesPreview extends React.Component {
+  state = {
+    sliderOpen: false,
+    current: 0
+  };
+
   handleClose = () => {
     this.setState({ sliderOpen: false, current: 0 });
   };
@@ -155,4 +153,4 @@ class ImagesPreview extends React.Component {
   }
 }
 
-export default withStyles(styles)(ImagesPreview);
+export default withStyles(styles)(DumbImagesPreview);

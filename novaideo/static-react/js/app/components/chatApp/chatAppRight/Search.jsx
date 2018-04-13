@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
@@ -25,34 +24,31 @@ const styles = {
   }
 };
 
-class Search extends React.Component {
-  render() {
-    const { channel, searchProps, classes } = this.props;
-    return (
-      <Comments
-        rightDisabled
-        customScrollbar
-        dynamicDivider={false}
-        displayForm={false}
-        displayFooter={false}
-        NoItems={() => {
-          return (
-            <div className={classes.noResult}>
-              {I18n.t('channels.noResultBlock')}
-            </div>
-          );
-        }}
-        channelId={channel.id}
-        filter={{ text: searchProps && searchProps.filter && searchProps.filter.text }}
-        classes={{ container: classes.commentsContainer, list: classes.list }}
-      />
-    );
-  }
-}
+export const DumbSearch = ({ channel, searchProps, classes }) => {
+  return (
+    <Comments
+      rightDisabled
+      customScrollbar
+      dynamicDivider={false}
+      displayForm={false}
+      displayFooter={false}
+      NoItems={() => {
+        return (
+          <div className={classes.noResult}>
+            {I18n.t('channels.noResultBlock')}
+          </div>
+        );
+      }}
+      channelId={channel.id}
+      filter={{ text: searchProps && searchProps.filter && searchProps.filter.text }}
+      classes={{ container: classes.commentsContainer, list: classes.list }}
+    />
+  );
+};
 
 export const mapStateToProps = (state) => {
   return {
     searchProps: state.apps.chatApp.right.props
   };
 };
-export default withStyles(styles)(connect(mapStateToProps)(Search));
+export default withStyles(styles)(connect(mapStateToProps)(DumbSearch));

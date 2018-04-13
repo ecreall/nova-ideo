@@ -27,7 +27,7 @@ const styles = {
   }
 };
 
-export class DumbUserTitle extends React.Component {
+export class DumbUserTitle extends React.PureComponent {
   menu = null;
 
   closeMenu = () => {

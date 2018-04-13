@@ -1,29 +1,7 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { ideaFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
 import { truncateText } from '../../../utils/globalFunctions';
-
-export const editMutation = gql`
-  mutation($context: String!, $text: String!, $title: String!, $keywords: [String]!, $attachedFiles: [Upload],
-           $oldFiles: [String], $processIds: [String], $nodeIds: [String],
-           $processTags: [String], $actionTags: [String]) {
-    editIdea(
-      context: $context,
-      title: $title,
-      keywords: $keywords,
-      text: $text,
-      attachedFiles: $attachedFiles,
-      oldFiles: $oldFiles) {
-      status
-      idea {
-        ...idea
-      }
-    }
-  }
-  ${ideaFragment}
-`;
 
 export default function edit({ ownProps, mutate }) {
   return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles }) => {

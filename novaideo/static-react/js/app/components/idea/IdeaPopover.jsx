@@ -21,8 +21,8 @@ import { getFormattedDate } from '../../utils/globalFunctions';
 import IdeaMenu from './IdeaMenu';
 import IdeaProcessManager from './IdeaProcessManager';
 import { goTo, get } from '../../utils/routeMap';
-import { closeChatApp } from '../../actions/actions';
-import { ideaQuery } from '../../graphql/queries';
+import { closeChatApp } from '../../actions/chatAppActions';
+import Idea from '../../graphql/queries/Idea.graphql';
 import UserAvatar from '../user/UserAvatar';
 import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getExaminationTtile } from '.';
 
@@ -147,7 +147,7 @@ const styles = {
   }
 };
 
-export class RenderIdeaItem extends React.Component {
+export class DumbIdeaPopover extends React.Component {
   menu = null;
 
   onMouseOver = () => {
@@ -160,7 +160,7 @@ export class RenderIdeaItem extends React.Component {
 
   openDetails = () => {
     this.props.closeChatApp();
-    this.props.processManager.onActionPerformed();
+    this.props.processManager.onActionExecuted();
     goTo(get('ideas', { ideaId: this.props.data.idea.id }));
   };
 
@@ -221,7 +221,7 @@ export class RenderIdeaItem extends React.Component {
                   onClick={
                     publishAction
                       ? () => {
-                        processManager.performAction(publishAction);
+                        processManager.execute(publishAction);
                       }
                       : null
                   }
@@ -231,7 +231,7 @@ export class RenderIdeaItem extends React.Component {
         </div>
         <div className={classes.body}>
           <div className={classes.header}>
-            <IdeaMenu open idea={node} onActionClick={processManager.performAction} />
+            <IdeaMenu open idea={node} onActionClick={processManager.execute} />
             <span className={classes.headerTitle}>
               {author && author.title}
             </span>
@@ -265,7 +265,7 @@ export class RenderIdeaItem extends React.Component {
               <AllignedActions
                 actionDecoration
                 actions={communicationActions}
-                onActionClick={processManager.performAction}
+                onActionClick={processManager.execute}
                 classes={{ actionsContainer: classes.actionsContainer }}
               />
             </div>
@@ -287,18 +287,18 @@ export const mapStateToProps = (state) => {
   };
 };
 
-function DumbIdeaItem(props) {
+function IdeaPopoverWithProcessManager(props) {
   const { data, onActionClick, onFormOpened, onFormClosed } = props;
   return (
     <IdeaProcessManager idea={data.idea} onActionClick={onActionClick} onFormOpened={onFormOpened} onFormClosed={onFormClosed}>
-      <RenderIdeaItem {...props} />
+      <DumbIdeaPopover {...props} />
     </IdeaProcessManager>
   );
 }
 
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(
-    graphql(ideaQuery, {
+    graphql(Idea, {
       options: (props) => {
         return {
           fetchPolicy: 'cache-and-network',
@@ -311,6 +311,6 @@ export default withStyles(styles)(
           }
         };
       }
-    })(DumbIdeaItem)
+    })(IdeaPopoverWithProcessManager)
   )
 );

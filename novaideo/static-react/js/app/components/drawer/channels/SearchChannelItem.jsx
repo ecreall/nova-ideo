@@ -9,10 +9,10 @@ import { graphql } from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 
 import { addPrivateChannel } from '../../../graphql/processes/commentProcess';
-import { addPrivateChannelMutation } from '../../../graphql/processes/commentProcess/addPrivateChannel';
+import AddPrivateChannel from '../../../graphql/processes/commentProcess/mutations/AddPrivateChannel.graphql';
 import { goTo, get } from '../../../utils/routeMap';
 import UserAvatar from '../../user/UserAvatar';
-import { openCollaborationRight } from '../../../actions/actions';
+import { openCollaborationRight } from '../../../actions/collaborationAppActions';
 import { CONTENTS_IDS } from '../../collaborationApp/collaborationAppRight';
 import { ListItem, ListItemIcon, ListItemText } from '../../styledComponents/List';
 
@@ -55,6 +55,7 @@ export class DumbSearchChannelItem extends React.Component {
   state = {
     loading: false
   };
+
   open = () => {
     const { node, addChannel } = this.props;
     if (node.channel) {
@@ -154,7 +155,7 @@ export const mapStateToProps = (state, props) => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  graphql(addPrivateChannelMutation, {
+  graphql(AddPrivateChannel, {
     props: function (props) {
       return {
         addChannel: addPrivateChannel(props)

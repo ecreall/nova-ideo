@@ -87,15 +87,14 @@ const styles = (theme) => {
   };
 };
 
-class UserMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: false
-    };
-    this.popper = null;
-    this.anchor = null;
-  }
+export class DumbUserMenu extends React.Component {
+  state = {
+    menu: false
+  };
+
+  popper = null;
+
+  anchor = null;
 
   handleOpen = (event) => {
     if (this.popper) {
@@ -129,13 +128,13 @@ class UserMenu extends React.Component {
 
   siteSectionHeader = () => {
     const { classes, site } = this.props;
-    const picture = site.logo;
+    const picture = site && site.logo;
     return (
       <div className={classes.sectionHeaderTitle}>
         <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
         <div className={classes.sectionHeaderTitleContainer}>
           <div className={classes.sectionHeaderTitleText}>
-            {site.title}
+            {site && site.title}
           </div>
           <div className={classes.sectionHeaderAddon}>
             {window.location.host}
@@ -167,7 +166,7 @@ class UserMenu extends React.Component {
                 <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
                   <div className={classes.siteInfo}>
                     <div className={classes.siteTitle}>
-                      {site.title}
+                      {site && site.title}
                     </div>
                     <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
                   </div>
@@ -211,4 +210,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(UserMenu));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbUserMenu));

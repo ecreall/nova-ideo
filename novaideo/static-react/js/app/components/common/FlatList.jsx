@@ -6,10 +6,11 @@ import classNames from 'classnames';
 import { CircularProgress } from 'material-ui/Progress';
 import debounce from 'lodash.debounce';
 
-import { setURLState } from '../../actions/actions';
+import { setURLState } from '../../actions/instanceActions';
 import { VirtualizedListItem } from './VirtualizedListItem';
 import { APOLLO_NETWORK_STATUS } from '../../constants';
 import Scrollbar from './Scrollbar';
+import { createEvent } from '../../utils/globalFunctions';
 
 const styles = {
   progress: {
@@ -80,16 +81,6 @@ export class DumbFlatList extends React.Component {
     progressStyle: { size: 30 }
   };
 
-  constructor(props) {
-    super(props);
-    this.offline = {
-      entities: undefined,
-      status: false
-    };
-    this.loading = false;
-    this.loadingDebounce = null;
-  }
-
   componentDidMount() {
     const { fetchMoreOnEvent, customScrollbar, moreBtn } = this.props;
     if (!moreBtn && (fetchMoreOnEvent || !customScrollbar)) {
@@ -100,7 +91,7 @@ export class DumbFlatList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {
-      this.dispatchResize();
+      createEvent('resize', true);
     }
   }
 
@@ -148,20 +139,14 @@ export class DumbFlatList extends React.Component {
     }
   }
 
-  dispatchResize = () => {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, true);
-    document.dispatchEvent(event);
+  offline = {
+    entities: undefined,
+    status: false
   };
 
-  dispatchScrollEvent = () => {
-    const { scrollEvent } = this.props;
-    if (scrollEvent) {
-      const event = document.createEvent('HTMLEvents');
-      event.initEvent(scrollEvent, true, true);
-      document.dispatchEvent(event);
-    }
-  };
+  loading = false;
+
+  loadingDebounce = null;
 
   endReached = ({ scrollTop, scrollHeight, clientHeight }) => {
     const { onEndReachedThreshold, reverted } = this.props;
@@ -177,8 +162,8 @@ export class DumbFlatList extends React.Component {
   };
 
   handleScroll = (event) => {
-    const { data, customScrollbar, getEntities } = this.props;
-    if (!customScrollbar) this.dispatchScrollEvent();
+    const { data, customScrollbar, getEntities, scrollEvent } = this.props;
+    if (!customScrollbar && scrollEvent) createEvent(scrollEvent, true);
     if (getEntities(data).pageInfo.hasNextPage) {
       if (this.loadingDebounce) this.loadingDebounce.cancel();
       const loadNextData = () => {

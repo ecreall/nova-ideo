@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 
@@ -10,12 +9,8 @@ const styles = {
   }
 };
 
-export class DumbIdea extends React.Component {
-  render() {
-    const { classes } = this.props;
-    const { subject, onActionClick } = this.props;
-    return <Idea id={subject} onActionClick={onActionClick} classes={{ container: classes.container }} />;
-  }
-}
+const DumbIdea = ({ subject, onActionClick, classes }) => {
+  return <Idea id={subject} onActionClick={onActionClick} classes={{ container: classes.container }} />;
+};
 
 export default withStyles(styles)(DumbIdea);

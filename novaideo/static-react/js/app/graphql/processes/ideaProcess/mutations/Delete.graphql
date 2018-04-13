@@ -1,0 +1,5 @@
+mutation Delete($context: String) {
+  deleteIdea(context: $context) {
+    status
+  }
+}

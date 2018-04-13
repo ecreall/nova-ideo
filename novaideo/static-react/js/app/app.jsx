@@ -6,8 +6,8 @@ import { graphql } from 'react-apollo';
 import Drawer from './components/drawer/Drawer';
 import CollaborationApp from './components/collaborationApp/CollaborationApp';
 import ChatApp from './components/chatApp/ChatApp';
-import { accountQuery } from './graphql/queries';
-import { updateGlobalProps } from './actions/actions';
+import Account from './graphql/queries/Account.graphql';
+import { updateGlobalProps } from './actions/instanceActions';
 
 const styles = {
   root: {
@@ -63,7 +63,7 @@ export const mapDispatchToProps = {
 
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(
-    graphql(accountQuery, {
+    graphql(Account, {
       options: () => {
         return {
           fetchPolicy: 'cache-and-network'

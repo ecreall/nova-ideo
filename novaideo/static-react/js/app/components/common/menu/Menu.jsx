@@ -19,7 +19,7 @@ const styles = {
   }
 };
 
-class MenuWithActivator extends React.Component {
+export class DumbMenuWithActivator extends React.Component {
   state = {
     anchorEl: null
   };
@@ -80,4 +80,4 @@ class MenuWithActivator extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(MenuWithActivator);
+export default withStyles(styles, { withTheme: true })(DumbMenuWithActivator);

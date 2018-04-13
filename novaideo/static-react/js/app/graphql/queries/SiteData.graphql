@@ -1,0 +1,31 @@
+#import "../fragments/Action.graphql"
+
+query SiteData {
+  root {
+    siteId
+    title
+    logo {
+      url
+    }
+    keywordsRequired
+    keywords
+    canAddKeywords
+    anonymisation
+    moderateProposals
+    moderateIdeas
+    examineProposals
+    examineIdeas
+    supportProposals
+    supportIdeas
+    manageChallenges
+    manageQuestions
+    manageProposals
+  }
+  actions {
+    edges {
+      node {
+        ...Action
+      }
+    }
+  }
+}

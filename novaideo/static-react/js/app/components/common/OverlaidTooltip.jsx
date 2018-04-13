@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-const OverlaidTooltip = ({ children, tooltip, placement, classes }) => {
+export const DumbOverlaidTooltip = ({ children, tooltip, placement, classes }) => {
   return (
     <OverlayTrigger
       overlay={
@@ -30,4 +30,4 @@ const OverlaidTooltip = ({ children, tooltip, placement, classes }) => {
   );
 };
 
-export default withStyles(styles)(OverlaidTooltip);
+export default withStyles(styles)(DumbOverlaidTooltip);

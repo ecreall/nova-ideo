@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 
-import { commentQuery } from '../../../graphql/queries';
+import CommentQuery from '../../../graphql/queries/Comment.graphql';
 import FlatList from '../../common/FlatList';
 import { filterActions } from '../../../utils/processes';
 import CommentItem from '../CommentItem';
@@ -17,7 +17,7 @@ import Comment from '../../forms/processes/common/Comment';
 import { PROCESSES, ACTIONS } from '../../../processes';
 import { NO_COMMENT, CT_COMMENT } from '../../../constants';
 import { markAsRead } from '../../../graphql/processes/commentProcess';
-import { markAsReadMutation } from '../../../graphql/processes/commentProcess/markAsRead';
+import MarkAsRead from '../../../graphql/processes/commentProcess/mutations/MarkAsRead.graphql';
 
 const styles = (theme) => {
   return {
@@ -237,7 +237,7 @@ export const mapStateToProps = (state) => {
 
 export default withStyles(styles, { withTheme: true })(
   connect(mapStateToProps)(
-    graphql(commentQuery, {
+    graphql(CommentQuery, {
       options: (props) => {
         return {
           fetchPolicy: 'cache-and-network',
@@ -256,7 +256,7 @@ export default withStyles(styles, { withTheme: true })(
         };
       }
     })(
-      graphql(markAsReadMutation, {
+      graphql(MarkAsRead, {
         props: function (props) {
           return {
             markAsReadReplies: markAsRead(props)

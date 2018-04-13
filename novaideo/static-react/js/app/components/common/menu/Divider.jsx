@@ -25,18 +25,15 @@ const styles = {
   }
 };
 
-class Divider extends React.Component {
-  render() {
-    const { title, classes } = this.props;
-    return (
-      <div className={classNames(classes.divider, { [classes.full]: !title })}>
-        {title &&
-          <div className={classes.title}>
-            {title}
-          </div>}
-      </div>
-    );
-  }
-}
+export const DumbDivider = ({ title, classes }) => {
+  return (
+    <div className={classNames(classes.divider, { [classes.full]: !title })}>
+      {title &&
+        <div className={classes.title}>
+          {title}
+        </div>}
+    </div>
+  );
+};
 
-export default withStyles(styles)(Divider);
+export default withStyles(styles)(DumbDivider);

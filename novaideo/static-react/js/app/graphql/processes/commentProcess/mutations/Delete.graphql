@@ -1,0 +1,5 @@
+mutation Delete($context: String) {
+  deleteComment(context: $context) {
+    status
+  }
+}

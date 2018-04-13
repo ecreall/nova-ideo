@@ -30,14 +30,15 @@ const styles = {
   }
 };
 
-class Popper extends React.Component {
+export class DumbPopper extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      popper: false
-    };
     this.popper = document.createElement('div');
   }
+
+  state = {
+    popper: false
+  };
 
   componentDidMount() {
     popperRoot.appendChild(this.popper);
@@ -108,4 +109,4 @@ class Popper extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Popper);
+export default withStyles(styles, { withTheme: true })(DumbPopper);

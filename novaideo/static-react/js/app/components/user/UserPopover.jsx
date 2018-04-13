@@ -10,8 +10,8 @@ import { getActions, filterActions } from '../../utils/processes';
 import { goTo, get } from '../../utils/routeMap';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import UserProcessManager from './UserProcessManager';
-import { closeChatApp } from '../../actions/actions';
-import { personInfoQuery } from '../../graphql/queries';
+import { closeChatApp } from '../../actions/chatAppActions';
+import PersonData from '../../graphql/queries/PersonData.graphql';
 import Comment from '../forms/processes/common/Comment';
 import { PROCESSES, ACTIONS } from '../../processes';
 
@@ -116,11 +116,8 @@ const styles = {
   }
 };
 
-export class RenderUserPopover extends React.Component {
-  constructor(props) {
-    super(props);
-    this.menu = null;
-  }
+export class DumbUserPopover extends React.Component {
+  menu = null;
 
   onMouseOver = () => {
     if (this.menu) this.menu.open();
@@ -132,7 +129,7 @@ export class RenderUserPopover extends React.Component {
 
   openDetails = () => {
     this.props.closeChatApp();
-    this.props.processManager.onActionPerformed();
+    this.props.processManager.onActionExecuted();
     goTo(get('users', { userId: this.props.data.person.id }));
   };
 
@@ -185,7 +182,7 @@ export class RenderUserPopover extends React.Component {
           <div className={classes.bodyContent}>
             <div className={classes.text} dangerouslySetInnerHTML={{ __html: person.description }} />
             <div className={classes.bodyFooter}>
-              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.performAction} />
+              <AllignedActions actions={communicationActions} onActionClick={this.props.processManager.execute} />
             </div>
           </div>
         </div>
@@ -211,24 +208,24 @@ export const mapDispatchToProps = {
   closeChatApp: closeChatApp
 };
 
-function DumbUserPopover(props) {
+function UserPopoverWithProcessManager(props) {
   const { data, onActionClick } = props;
   return (
     <UserProcessManager person={data.person} onActionClick={onActionClick}>
-      <RenderUserPopover {...props} />
+      <DumbUserPopover {...props} />
     </UserProcessManager>
   );
 }
 
 export default withStyles(styles)(
   connect(null, mapDispatchToProps)(
-    graphql(personInfoQuery, {
+    graphql(PersonData, {
       options: (props) => {
         return {
           fetchPolicy: 'cache-and-network',
           variables: { id: props.id }
         };
       }
-    })(DumbUserPopover)
+    })(UserPopoverWithProcessManager)
   )
 );

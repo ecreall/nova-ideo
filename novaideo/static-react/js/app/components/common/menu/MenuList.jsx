@@ -45,7 +45,7 @@ export function renderMenuItem({ Icon, title, onClick, color, hoverColor }) {
   );
 }
 
-class MenuList extends React.Component {
+export class DumbMenuList extends React.Component {
   renderItem = (field) => {
     const { theme, close } = this.props;
     if (typeof field === 'string') {
@@ -89,4 +89,4 @@ class MenuList extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(MenuList);
+export default withStyles(styles, { withTheme: true })(DumbMenuList);

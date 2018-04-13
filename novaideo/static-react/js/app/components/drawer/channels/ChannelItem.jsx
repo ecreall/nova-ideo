@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 import { goTo, get } from '../../../utils/routeMap';
 import UserAvatar from '../../user/UserAvatar';
-import { openCollaborationRight } from '../../../actions/actions';
+import { openCollaborationRight } from '../../../actions/collaborationAppActions';
 import { CONTENTS_IDS } from '../../collaborationApp/collaborationAppRight';
 
 const styles = (theme) => {
@@ -102,7 +102,7 @@ const styles = (theme) => {
   };
 };
 
-export class DumbChannelItem extends React.Component {
+export class DumbChannelItem extends React.PureComponent {
   open = () => {
     const { chatAppIntegreted, node } = this.props;
     if (chatAppIntegreted) {
@@ -147,6 +147,7 @@ export class DumbChannelItem extends React.Component {
         />
       </ListItemIcon>;
   };
+
   render() {
     const { classes, node, activeChannel, activeIntegretedChannel, chatAppIntegreted } = this.props;
     const lenUnreadComments = node.lenUnreadComments;

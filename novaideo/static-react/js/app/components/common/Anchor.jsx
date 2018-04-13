@@ -9,13 +9,10 @@ const styles = {
   }
 };
 
-class Anchor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: true
-    };
-  }
+export class DumbAnchor extends React.Component {
+  state = {
+    visible: true
+  };
 
   componentDidMount() {
     const { scrollEvent } = this.props;
@@ -72,4 +69,4 @@ class Anchor extends React.Component {
   }
 }
 
-export default withStyles(styles)(Anchor);
+export default withStyles(styles)(DumbAnchor);

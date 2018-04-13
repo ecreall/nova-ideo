@@ -1,0 +1,34 @@
+#import "./Action.graphql"
+#import "./Idea.graphql"
+
+fragment Person on Person {
+  id
+  oid
+  title
+  createdAt
+  description
+  function
+  isAnonymous
+  channel {
+    id
+    oid
+    title
+  }
+  picture {
+    url
+  }
+  actions {
+    ...Action
+  }
+  contents(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Idea
+      }
+    }
+  }
+}

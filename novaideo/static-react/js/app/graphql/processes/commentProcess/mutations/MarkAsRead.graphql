@@ -1,0 +1,5 @@
+mutation MarkAsRead($context: String!) {
+  markAsRead(context: $context) {
+    status
+  }
+}

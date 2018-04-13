@@ -9,7 +9,7 @@ import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 
-import { toggleDrawer } from '../../actions/actions';
+import { toggleDrawer } from '../../actions/collaborationAppActions';
 import AccountInformation from '../user/AccountInformation';
 import UserMenu from '../user/UserMenu';
 import Search from '../forms/Search';
@@ -80,6 +80,10 @@ const styles = {
 };
 
 class NavBar extends React.Component {
+  handelSearch = () => {
+    // todo
+  };
+
   render() {
     const { classes, className, drawer, site } = this.props;
     return (

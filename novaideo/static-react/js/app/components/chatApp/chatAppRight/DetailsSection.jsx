@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 
@@ -79,32 +78,29 @@ export const stylesContentCollapse = (theme) => {
   };
 };
 
-export class DumbDetailsSection extends React.Component {
-  render() {
-    const { id, title, children, Icon, onOpen, open, classes } = this.props;
-    return (
-      <ContentCollapse
-        classes={{
-          entered: classes.entered,
-          listItem: classes.listItem,
-          listItemActive: classes.listItemActive,
-          text: classes.titleText,
-          textActive: classes.titleTextActive,
-          sectionIcon: classes.sectionIcon,
-          sectionIconActive: classes.sectionIconActive,
-          icon: classes.icon,
-          iconActive: classes.iconActive
-        }}
-        id={id}
-        onOpen={onOpen}
-        open={open}
-        title={title}
-        Icon={Icon}
-      >
-        {children}
-      </ContentCollapse>
-    );
-  }
-}
+export const DumbDetailsSection = ({ id, title, children, Icon, onOpen, open, classes }) => {
+  return (
+    <ContentCollapse
+      classes={{
+        entered: classes.entered,
+        listItem: classes.listItem,
+        listItemActive: classes.listItemActive,
+        text: classes.titleText,
+        textActive: classes.titleTextActive,
+        sectionIcon: classes.sectionIcon,
+        sectionIconActive: classes.sectionIconActive,
+        icon: classes.icon,
+        iconActive: classes.iconActive
+      }}
+      id={id}
+      onOpen={onOpen}
+      open={open}
+      title={title}
+      Icon={Icon}
+    >
+      {children}
+    </ContentCollapse>
+  );
+};
 
 export default withStyles(stylesContentCollapse, { withTheme: true })(DumbDetailsSection);

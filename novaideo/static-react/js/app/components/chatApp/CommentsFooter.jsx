@@ -38,8 +38,7 @@ const styles = {
   }
 };
 
-const CommentsIdeaFooter = (props) => {
-  const { data, classes } = props;
+const CommentsIdeaFooter = ({ data, classes }) => {
   const author = data.node.subject.author;
   const authorPicture = author.picture;
   const isAnonymous = author.isAnonymous;
@@ -63,8 +62,7 @@ const CommentsIdeaFooter = (props) => {
   );
 };
 
-const CommentsUserFooter = (props) => {
-  const { data, classes } = props;
+const CommentsUserFooter = ({ data, classes }) => {
   const user = data.node.subject;
   const userPicture = user.picture;
   const userTitle = user && user.title;
@@ -84,7 +82,7 @@ const CommentsUserFooter = (props) => {
   );
 };
 
-const DumbCommentsFooter = (props) => {
+export const DumbCommentsFooter = (props) => {
   const { data } = props;
   switch (data.node.subject.__typename) {
   case 'Idea':

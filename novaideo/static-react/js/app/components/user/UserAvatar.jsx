@@ -26,29 +26,26 @@ const styles = (theme) => {
   };
 };
 
-class UserAvatar extends React.Component {
-  render() {
-    const { classes, picture, isAnonymous, title, strictUrl } = this.props;
-    let content = null;
-    if (isAnonymous) {
-      content = <Icon className={'mdi-set mdi-guy-fawkes-mask'} />;
-    } else if (title && !picture) {
-      content = initalsGenerator(title);
-    }
-    const urlAddon = !strictUrl ? '/profil' : '';
-    return (
-      <Avatar
-        className={classNames({
-          [classes.anonymousAvatar]: isAnonymous,
-          [classes.noPicture]: !isAnonymous && !picture
-        })}
-        classes={{ root: classes.avatar }}
-        src={picture ? `${picture.url}${urlAddon}` : ''}
-      >
-        {content}
-      </Avatar>
-    );
+export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl }) => {
+  let content = null;
+  if (isAnonymous) {
+    content = <Icon className={'mdi-set mdi-guy-fawkes-mask'} />;
+  } else if (title && !picture) {
+    content = initalsGenerator(title);
   }
-}
+  const urlAddon = !strictUrl ? '/profil' : '';
+  return (
+    <Avatar
+      className={classNames({
+        [classes.anonymousAvatar]: isAnonymous,
+        [classes.noPicture]: !isAnonymous && !picture
+      })}
+      classes={{ root: classes.avatar }}
+      src={picture ? `${picture.url}${urlAddon}` : ''}
+    >
+      {content}
+    </Avatar>
+  );
+};
 
-export default withStyles(styles)(UserAvatar);
+export default withStyles(styles)(DumbUserAvatar);

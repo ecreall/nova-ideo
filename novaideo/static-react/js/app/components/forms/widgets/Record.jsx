@@ -51,16 +51,13 @@ const styles = (theme) => {
   };
 };
 
-class Record extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      record: false,
-      open: false,
-      loading: true,
-      file: null
-    };
-  }
+export class DumbRecord extends React.Component {
+  state = {
+    record: false,
+    open: false,
+    loading: true,
+    file: null
+  };
 
   startRecording = () => {
     this.setState({
@@ -183,4 +180,4 @@ class Record extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Record);
+export default withStyles(styles, { withTheme: true })(DumbRecord);

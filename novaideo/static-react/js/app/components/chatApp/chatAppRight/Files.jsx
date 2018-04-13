@@ -1,11 +1,10 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { Translate, I18n } from 'react-redux-i18n';
 import { graphql } from 'react-apollo';
 
 import { iconAdapter } from '../../../utils/globalFunctions';
-import { commentsQuery } from '../../../graphql/queries';
+import Comments from '../../../graphql/queries/Comments.graphql';
 import { COMMENTS_ACTIONS, ACTIONS } from '../../../processes';
 
 import DetailsSection from './DetailsSection';
@@ -43,56 +42,53 @@ const styles = (theme) => {
   };
 };
 
-class Files extends React.Component {
-  render() {
-    const { data, id, channel, classes, onOpen, open } = this.props;
-    const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
-    return (
-      <DetailsSection
-        id={id}
-        classes={{
-          sectionIcon: classes.sectionIcon,
-          sectionIconActive: classes.sectionIconActive
-        }}
-        onOpen={onOpen}
-        open={open}
-        title={
-          <span>
-            {<Translate value="channels.filesBlockTitle" count={totalCount} />}
-          </span>
-        }
-        Icon={iconAdapter('mdi-set mdi-file-outline')}
-      >
-        {open &&
-          <RenderComments
-            rightDisabled
-            dynamicDivider={false}
-            displayForm={false}
-            displayFooter={false}
-            data={data}
-            moreBtn={
-              <span>
-                {I18n.t('common.moreResult')}
-              </span>
-            }
-            NoItems={() => {
-              return (
-                <div className={classes.noResult}>
-                  {I18n.t('channels.noFilesBlock')}
-                </div>
-              );
-            }}
-            channelId={channel.id}
-            filter={{ file: true }}
-            classes={{ container: classes.container, list: classes.container }}
-          />}
-      </DetailsSection>
-    );
-  }
-}
+const Files = ({ data, id, channel, classes, onOpen, open }) => {
+  const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
+  return (
+    <DetailsSection
+      id={id}
+      classes={{
+        sectionIcon: classes.sectionIcon,
+        sectionIconActive: classes.sectionIconActive
+      }}
+      onOpen={onOpen}
+      open={open}
+      title={
+        <span>
+          {<Translate value="channels.filesBlockTitle" count={totalCount} />}
+        </span>
+      }
+      Icon={iconAdapter('mdi-set mdi-file-outline')}
+    >
+      {open &&
+        <RenderComments
+          rightDisabled
+          dynamicDivider={false}
+          displayForm={false}
+          displayFooter={false}
+          data={data}
+          moreBtn={
+            <span>
+              {I18n.t('common.moreResult')}
+            </span>
+          }
+          NoItems={() => {
+            return (
+              <div className={classes.noResult}>
+                {I18n.t('channels.noFilesBlock')}
+              </div>
+            );
+          }}
+          channelId={channel.id}
+          filter={{ file: true }}
+          classes={{ container: classes.container, list: classes.container }}
+        />}
+    </DetailsSection>
+  );
+};
 
 export default withStyles(styles, { withTheme: true })(
-  graphql(commentsQuery, {
+  graphql(Comments, {
     options: (props) => {
       return {
         fetchPolicy: 'cache-and-network',

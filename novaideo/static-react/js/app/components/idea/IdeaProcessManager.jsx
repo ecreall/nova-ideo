@@ -11,19 +11,19 @@ import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict } from '../../utils/globalFunctions';
 import { PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
-import { selectMutation } from '../../graphql/processes/abstractProcess/select';
-import { deselectMutation } from '../../graphql/processes/abstractProcess/deselect';
 import { support, oppose, withdraw } from '../../graphql/processes/ideaProcess';
-import { supportMutation } from '../../graphql/processes/ideaProcess/support';
-import { opposeMutation } from '../../graphql/processes/ideaProcess/oppose';
-import { withdrawMutation } from '../../graphql/processes/ideaProcess/withdraw';
+import Support from '../../graphql/processes/ideaProcess/mutations/Support.graphql';
+import Oppose from '../../graphql/processes/ideaProcess/mutations/Oppose.graphql';
+import Withdraw from '../../graphql/processes/ideaProcess/mutations/Withdraw.graphql';
+import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
+import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 
 export class DumbIdeaProcessManager extends React.Component {
   state = {
     action: null
   };
 
-  onActionPerformed = () => {
+  onActionExecuted = () => {
     const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
   };
@@ -36,7 +36,7 @@ export class DumbIdeaProcessManager extends React.Component {
   afterFormClosed = () => {
     const { onFormClosed } = this.props;
     if (onFormClosed) onFormClosed();
-    // this.onActionPerformed();
+    // this.onActionExecuted();
   };
 
   evaluationClick = (action) => {
@@ -54,7 +54,7 @@ export class DumbIdeaProcessManager extends React.Component {
           context: idea,
           availableTokens: globalProps.account.availableTokens
         })
-          .then(this.onActionPerformed)
+          .then(this.onActionExecuted)
           .catch(globalProps.showError);
         break;
       case processNodes.support.nodeId:
@@ -63,7 +63,7 @@ export class DumbIdeaProcessManager extends React.Component {
             context: idea,
             availableTokens: globalProps.account.availableTokens
           })
-            .then(this.onActionPerformed)
+            .then(this.onActionExecuted)
             .catch(globalProps.showError);
         } else {
           globalProps.showMessage(<Translate value="AuthorizationFailed" />);
@@ -75,7 +75,7 @@ export class DumbIdeaProcessManager extends React.Component {
             context: idea,
             availableTokens: globalProps.account.availableTokens
           })
-            .then(this.onActionPerformed)
+            .then(this.onActionExecuted)
             .catch(globalProps.showError);
         } else {
           globalProps.showMessage(<Translate value="AuthorizationFailed" />);
@@ -87,11 +87,11 @@ export class DumbIdeaProcessManager extends React.Component {
     }
   };
 
-  performAction = (action) => {
+  execute = (action) => {
     const { idea, network, globalProps } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     if (action.nodeId === ideaProcessNodes.comment.nodeId) {
-      this.onActionPerformed();
+      this.onActionExecuted();
       setTimeout(() => {
         goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
       }, 200);
@@ -103,10 +103,10 @@ export class DumbIdeaProcessManager extends React.Component {
 
       switch (action.behaviorId) {
       case processNodes.select.nodeId:
-        selectIdea({ context: idea }).then(this.onActionPerformed).catch(globalProps.showError);
+        selectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
       case processNodes.deselect.nodeId:
-        deselectIdea({ context: idea }).then(this.onActionPerformed).catch(globalProps.showError);
+        deselectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
       case ideaProcessNodes.edit.nodeId:
         this.displayForm(action);
@@ -181,35 +181,35 @@ export class DumbIdeaProcessManager extends React.Component {
   }
 }
 
-const IdeaProcessManagerWithActions = graphql(supportMutation, {
+const IdeaProcessManagerWithActions = graphql(Support, {
   props: function (props) {
     return {
       supportIdea: support(props)
     };
   }
 })(
-  graphql(opposeMutation, {
+  graphql(Oppose, {
     props: function (props) {
       return {
         opposeIdea: oppose(props)
       };
     }
   })(
-    graphql(withdrawMutation, {
+    graphql(Withdraw, {
       props: function (props) {
         return {
           withdrawIdea: withdraw(props)
         };
       }
     })(
-      graphql(selectMutation, {
+      graphql(Select, {
         props: function (props) {
           return {
             selectIdea: select(props)
           };
         }
       })(
-        graphql(deselectMutation, {
+        graphql(Deselect, {
           props: function (props) {
             return {
               deselectIdea: deselect(props)

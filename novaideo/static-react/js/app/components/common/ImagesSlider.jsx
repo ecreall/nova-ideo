@@ -165,7 +165,7 @@ const SliderHeader = ({ context, classes, image }) => {
   );
 };
 
-class ImagesSlider extends React.Component {
+export class DumbImagesSlider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -253,4 +253,4 @@ class ImagesSlider extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ImagesSlider);
+export default withStyles(styles, { withTheme: true })(DumbImagesSlider);

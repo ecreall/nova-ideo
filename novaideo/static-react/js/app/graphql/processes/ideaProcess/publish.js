@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import gql from 'graphql-tag';
 
-import { ideaFragment } from '../../queries';
+import Idea from '../../fragments/Idea.graphql';
 import { ACTIONS } from '../../../processes';
 
 export const publishMutation = gql`
@@ -9,11 +9,11 @@ export const publishMutation = gql`
     publishIdea(context: $context) {
       status
       idea {
-        ...idea
+        ...Idea
       }
     }
   }
-  ${ideaFragment}
+  ${Idea}
 `;
 
 export default function publish({ mutate }) {

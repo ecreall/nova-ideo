@@ -23,8 +23,7 @@ const styles = {
   }
 };
 
-const ChatApp = (props) => {
-  const { classes, appProps } = props;
+export const DumbChatApp = ({ classes, appProps }) => {
   return (
     <RightContent
       title={
@@ -54,4 +53,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(ChatApp));
+export default withStyles(styles)(connect(mapStateToProps)(DumbChatApp));

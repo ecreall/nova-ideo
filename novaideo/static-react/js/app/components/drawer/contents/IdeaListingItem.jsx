@@ -119,6 +119,7 @@ export class DumbIdeaListingItem extends React.Component {
     open: false,
     hide: false
   };
+
   menu = null;
 
   renderIcon = (isActive) => {

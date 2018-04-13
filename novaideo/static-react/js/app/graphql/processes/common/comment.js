@@ -1,52 +1,7 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { commentFragment } from '../../queries';
 import { filterActions } from '../../../utils/processes';
 import { PROCESSES, ACTIONS } from '../../../processes';
-
-export const commentMutation = gql`
-  mutation($context: String!, $comment: String!, $formattedComment: String!, $urls: [String],
-           $action: String!, $attachedFiles: [Upload], $anonymous: Boolean,
-           $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
-    commentObject(
-      context: $context
-      comment: $comment
-      formattedComment: $formattedComment
-      urls: $urls
-      action: $action
-      attachedFiles: $attachedFiles,
-      anonymous: $anonymous
-    ) {
-      status
-      isNewChannel
-      comment {
-        ...comment
-        ...on Comment {
-          channel {
-            id
-            oid
-            title
-            lenUnreadComments
-            isDiscuss
-            subject {
-              ... on IEntity {
-                id
-                oid
-              }
-              ... on Person {
-                picture {
-                  url
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  ${commentFragment}
-`;
 
 export default function comment({ ownProps, mutate }) {
   return ({ context, text, formattedText, urls, action, attachedFiles, anonymous, account }) => {
@@ -220,7 +175,7 @@ export default function comment({ ownProps, mutate }) {
             }
           });
         },
-        PersonInfo: (prev, { mutationResult }) => {
+        PersonData: (prev, { mutationResult }) => {
           if (prev.person.oid !== ownProps.subject) return false;
           const newChannel = mutationResult.data.commentObject.comment.channel;
           const commentAction = filterActions(prev.person.actions, {

@@ -1,0 +1,20 @@
+mutation AddPrivateChannel($context: String!) {
+  addPrivateChannel(context: $context) {
+    status
+    channel {
+      id
+      oid
+      title
+      lenUnreadComments
+      subject {
+        ... on Person {
+          id
+          oid
+          picture {
+            url
+          }
+        }
+      }
+    }
+  }
+}

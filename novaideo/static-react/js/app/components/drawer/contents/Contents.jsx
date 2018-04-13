@@ -26,13 +26,10 @@ const CONTENTS_IDS = {
   following: 'following'
 };
 
-class Contents extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: CONTENTS_IDS.contents
-    };
-  }
+export class DumbContents extends React.Component {
+  state = {
+    expanded: CONTENTS_IDS.contents
+  };
 
   onOpen = (id) => {
     const { expanded } = this.state;
@@ -55,4 +52,4 @@ class Contents extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Contents);
+export default withStyles(styles, { withTheme: true })(DumbContents);

@@ -46,13 +46,11 @@ class EmojiPicker extends React.Component {
     style: {}
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      opened: false
-    };
-    this.picker = null;
-  }
+  state = {
+    opened: false
+  };
+
+  picker = null;
 
   openPicker = () => {
     this.setState({ opened: true });

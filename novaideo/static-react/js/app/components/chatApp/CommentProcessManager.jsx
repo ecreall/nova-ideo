@@ -7,9 +7,9 @@ import Delete from '../forms/processes/commentProcess/Delete';
 import Pin from '../forms/processes/commentProcess/Pin';
 import Unpin from '../forms/processes/commentProcess/Unpin';
 import CreateIdeaForm from '../forms/processes/ideaProcess/Create';
-import { addReactionMutation } from '../../graphql/processes/abstractProcess/addReaction';
+import AddReaction from '../../graphql/processes/abstractProcess/mutations/AddReaction.graphql';
 import { addReaction } from '../../graphql/processes/abstractProcess';
-import { updateChatAppRight } from '../../actions/actions';
+import { updateChatAppRight } from '../../actions/chatAppActions';
 import { PROCESSES } from '../../processes';
 import { CONTENTS_IDS } from './chatAppRight';
 
@@ -22,7 +22,7 @@ export class DumbCommentProcessManager extends React.Component {
     this.props.updateChatAppRight({ open: true, componentId: id, props: props });
   };
 
-  onActionPerformed = () => {
+  onActionExecuted = () => {
     const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
   };
@@ -35,10 +35,10 @@ export class DumbCommentProcessManager extends React.Component {
   afterFormClosed = () => {
     const { onFormClosed } = this.props;
     if (onFormClosed) onFormClosed();
-    this.onActionPerformed();
+    this.onActionExecuted();
   };
 
-  performAction = (action, data) => {
+  execute = (action, data) => {
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     const { comment, account, addReactionComment, channel } = this.props;
@@ -54,7 +54,7 @@ export class DumbCommentProcessManager extends React.Component {
         context: comment,
         emoji: data.emoji,
         user: account
-      }).then(this.onActionPerformed);
+      }).then(this.onActionExecuted);
       break;
     default:
       this.displayForm(action);
@@ -132,7 +132,7 @@ export const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  graphql(addReactionMutation, {
+  graphql(AddReaction, {
     props: function (props) {
       return {
         addReactionComment: addReaction(props)

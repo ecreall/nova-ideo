@@ -22,7 +22,7 @@ import { goTo, get } from '../../utils/routeMap';
 import { ACTIONS, PROCESSES, STATE } from '../../processes';
 import IdeaMenu from './IdeaMenu';
 import IdeaProcessManager from './IdeaProcessManager';
-import { closeChatApp } from '../../actions/actions';
+import { closeChatApp } from '../../actions/chatAppActions';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
 import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
@@ -164,15 +164,12 @@ const styles = (theme) => {
   };
 };
 
-export class RenderIdeaItem extends React.Component {
+export class DumbIdeaItem extends React.Component {
   static defaultProps = {
     passive: false
   };
 
-  constructor(props) {
-    super(props);
-    this.menu = null;
-  }
+  menu = null;
 
   onMouseOver = () => {
     if (this.menu) this.menu.open();
@@ -241,7 +238,7 @@ export class RenderIdeaItem extends React.Component {
                   onClick={
                     publishAction
                       ? () => {
-                        processManager.performAction(publishAction);
+                        processManager.execute(publishAction);
                       }
                       : null
                   }
@@ -257,7 +254,7 @@ export class RenderIdeaItem extends React.Component {
                   this.menu = menu;
                 }}
                 idea={node}
-                onActionClick={processManager.performAction}
+                onActionClick={processManager.execute}
               />}
             <UserTitle node={author} classes={{ title: classes.headerTitle }} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
@@ -297,7 +294,7 @@ export class RenderIdeaItem extends React.Component {
             </div>
             <div className={classes.bodyFooter}>
               {!passive &&
-                <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.performAction} />}
+                <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.execute} />}
             </div>
           </div>
         </div>
@@ -310,11 +307,11 @@ export class RenderIdeaItem extends React.Component {
   }
 }
 
-function DumbIdeaItem(props) {
+function IdeaItemWithProcessManager(props) {
   const { node, onActionClick } = props;
   return (
     <IdeaProcessManager idea={node} onActionClick={onActionClick}>
-      <RenderIdeaItem {...props} />
+      <DumbIdeaItem {...props} />
     </IdeaProcessManager>
   );
 }
@@ -330,4 +327,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbIdeaItem));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(IdeaItemWithProcessManager));

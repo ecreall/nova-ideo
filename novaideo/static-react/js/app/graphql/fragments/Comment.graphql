@@ -1,0 +1,49 @@
+#import "./Action.graphql"
+#import "./Author.graphql"
+#import "./File.graphql"
+
+fragment Comment on Comment {
+  id
+  oid
+  rootOid
+  createdAt
+  text
+  formattedText
+  edited
+  pinned
+  author {
+    ...Author
+  }
+  attachedFiles {
+    ...File
+  }
+  emojis {
+    title
+    isUserEmoji
+    users(first: 5) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+        }
+      }
+    }
+  }
+  urls {
+    url
+    title
+    description
+    imageUrl
+    siteName
+    favicon
+    domain
+    authorAvatar
+    authorName
+  }
+  lenComments
+  lenUnreadReplies
+  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
+    ...Action
+  }
+}

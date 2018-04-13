@@ -1,29 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { actionFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
-
-export const opposeMutation = gql`
-  mutation($context: String!, $actionTags: [String]) {
-    opposeIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions(actionTags: $actionTags) {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
 
 export default function oppose({ mutate }) {
   return ({ context, availableTokens }) => {

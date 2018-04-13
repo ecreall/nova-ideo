@@ -4,12 +4,9 @@ import { CircularProgress } from 'material-ui/Progress';
 import BlockDataManager from '../BlockDataManager';
 
 export class AtomicEmbedComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showIframe: false
-    };
-  }
+  state = {
+    showIframe: false
+  };
 
   componentDidMount() {
     this.renderEmbedly();

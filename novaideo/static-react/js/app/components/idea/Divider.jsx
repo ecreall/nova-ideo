@@ -23,7 +23,7 @@ const styles = (theme) => {
   };
 };
 
-class IdeasDivider extends React.Component {
+export class DumbIdeasDivider extends React.PureComponent {
   addDateSeparator = () => {
     const { node, previous } = this.props;
     if (!previous) return true;
@@ -53,4 +53,4 @@ class IdeasDivider extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(IdeasDivider);
+export default withStyles(styles, { withTheme: true })(DumbIdeasDivider);

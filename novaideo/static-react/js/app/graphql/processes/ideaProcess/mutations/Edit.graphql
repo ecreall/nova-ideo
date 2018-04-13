@@ -1,0 +1,28 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Edit(
+  $context: String!
+  $text: String!
+  $title: String!
+  $keywords: [String]!
+  $attachedFiles: [Upload]
+  $oldFiles: [String]
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  editIdea(
+    context: $context
+    title: $title
+    keywords: $keywords
+    text: $text
+    attachedFiles: $attachedFiles
+    oldFiles: $oldFiles
+  ) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

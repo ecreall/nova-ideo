@@ -1,0 +1,19 @@
+#import "../../../fragments/Action.graphql"
+
+mutation Withdraw($context: String!, $actionTags: [String]) {
+  withdrawTokenIdea(context: $context) {
+    status
+    user {
+      availableTokens
+    }
+    idea {
+      id
+      tokensSupport
+      tokensOpposition
+      userToken
+      actions(actionTags: $actionTags) {
+        ...Action
+      }
+    }
+  }
+}

@@ -1,29 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { actionFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
-
-export const supportMutation = gql`
-  mutation($context: String!, $actionTags: [String]) {
-    supportIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions(actionTags: $actionTags) {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
 
 export default function support({ mutate }) {
   return ({ context, availableTokens }) => {

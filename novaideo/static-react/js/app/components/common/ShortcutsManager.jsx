@@ -16,11 +16,6 @@ export const keymap = {
 };
 
 class ShortcutsManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.mousetrapBindings = [];
-  }
-
   componentDidMount() {
     const { shortcuts, domain } = this.props;
     const domainShortcuts = keymap[domain];
@@ -37,6 +32,8 @@ class ShortcutsManager extends React.Component {
   componentWillUnmount() {
     this.unbindAllShortcuts();
   }
+
+  mousetrapBindings = [];
 
   bindShortcut = (key, callback) => {
     Mousetrap.bindGlobal(key, callback);

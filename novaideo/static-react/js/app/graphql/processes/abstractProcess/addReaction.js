@@ -1,14 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
-
-export const addReactionMutation = gql`
-  mutation($context: String!, $emoji: String!) {
-    addReaction(context: $context, emoji: $emoji) {
-      status
-    }
-  }
-`;
 
 const updateCommentQueries = (prev, emoji, context, user) => {
   const currentComment = prev.node.comments.edges.filter((item) => {

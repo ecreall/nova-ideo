@@ -79,7 +79,7 @@ const styles = {
   }
 };
 
-class YoutubeTheater extends React.Component {
+export class DumbYoutubeTheater extends React.Component {
   state: {
     open: boolean
   };
@@ -134,4 +134,4 @@ class YoutubeTheater extends React.Component {
   };
 }
 
-export default withStyles(styles)(YoutubeTheater);
+export default withStyles(styles)(DumbYoutubeTheater);

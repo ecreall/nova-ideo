@@ -48,13 +48,10 @@ const styles = (theme) => {
   };
 };
 
-class Jump extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
+export class DumbJump extends React.Component {
+  state = {
+    open: false
+  };
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -65,6 +62,7 @@ class Jump extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
   render() {
     const { classes } = this.props;
     return (
@@ -94,4 +92,4 @@ class Jump extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Jump);
+export default withStyles(styles, { withTheme: true })(DumbJump);

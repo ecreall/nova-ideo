@@ -31,7 +31,7 @@ const styles = {
   }
 };
 
-const Keywords = ({ keywords, onKeywordClick, classes }) => {
+export const DumbKeywords = ({ keywords, onKeywordClick, classes }) => {
   const onClick = (k) => {
     if (onKeywordClick) {
       onKeywordClick(k);
@@ -61,4 +61,4 @@ const Keywords = ({ keywords, onKeywordClick, classes }) => {
   );
 };
 
-export default withStyles(styles)(Keywords);
+export default withStyles(styles)(DumbKeywords);

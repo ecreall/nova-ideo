@@ -2,10 +2,10 @@ import React from 'react';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
-import IdeasList from '../idea/IdeasList';
+import IdeasList from './IdeasList';
 import CreateIdeaHome from '../idea/CreateIdeaHome';
 import Idea from '../idea/Idea';
-import { openChatApp } from '../../actions/actions';
+import { openChatApp } from '../../actions/chatAppActions';
 
 const styles = {
   container: {
@@ -48,15 +48,13 @@ class Home extends React.Component {
 
   render() {
     const { ideaId } = this.props.params;
-    return (
-      <div>
-        {ideaId && <Idea id={ideaId} open />}
-        <Typography component="div" style={styles.container}>
-          <CreateIdeaHome />
-          <IdeasList />
-        </Typography>
-      </div>
-    );
+    return [
+      ideaId && <Idea id={ideaId} open />,
+      <Typography component="div" style={styles.container}>
+        <CreateIdeaHome />
+        <IdeasList />
+      </Typography>
+    ];
   }
 }
 

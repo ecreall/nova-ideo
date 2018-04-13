@@ -1,0 +1,25 @@
+query Channels($first: Int!, $after: String!) {
+  account {
+    id
+    channels(first: $first, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          oid
+          title
+          lenUnreadComments
+          subject {
+            ... on IEntity {
+              id
+              oid
+            }
+          }
+        }
+      }
+    }
+  }
+}

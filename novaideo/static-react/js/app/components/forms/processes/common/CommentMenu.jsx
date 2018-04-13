@@ -40,13 +40,10 @@ const styles = (theme) => {
   };
 };
 
-class CommentMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: false
-    };
-  }
+export class DumbCommentMenu extends React.Component {
+  state = {
+    menu: false
+  };
 
   onMenuOpen = () => {
     this.setState({ menu: true });
@@ -94,4 +91,4 @@ class CommentMenu extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(CommentMenu);
+export default withStyles(styles, { withTheme: true })(DumbCommentMenu);

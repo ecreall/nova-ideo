@@ -5,10 +5,10 @@ import { withStyles } from 'material-ui/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { unpinComment } from '../../../../graphql/processes/commentProcess';
-import { unpinMutation } from '../../../../graphql/processes/commentProcess/unpin';
+import Unpin from '../../../../graphql/processes/commentProcess/mutations/Unpin.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
-import { CommentItem } from '../../../chatApp/CommentItem';
+import { StyledCommentItem } from '../../../chatApp/CommentItem';
 
 const styles = {
   button: {
@@ -59,7 +59,7 @@ export class DumbUnpin extends React.Component {
       >
         {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>
-          <CommentItem node={comment} disableReply />
+          <StyledCommentItem node={comment} disableReply />
         </div>
       </Form>
     );
@@ -67,7 +67,7 @@ export class DumbUnpin extends React.Component {
 }
 
 export default withStyles(styles, { withTheme: true })(
-  graphql(unpinMutation, {
+  graphql(Unpin, {
     props: function (props) {
       return {
         unpinComment: unpinComment(props)

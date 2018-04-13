@@ -9,7 +9,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import classNames from 'classnames';
 
-import { updateChatAppRight } from '../../../actions/actions';
+import { updateChatAppRight } from '../../../actions/chatAppActions';
 import Scrollbar from '../../common/Scrollbar';
 
 const styles = {

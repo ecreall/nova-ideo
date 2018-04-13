@@ -62,31 +62,28 @@ const styles = (theme) => {
   };
 };
 
-class App extends React.Component {
-  render() {
-    const { data, classes, Navbar, active, left } = this.props;
-    return (
-      <div
-        className={classNames(classes.app, {
-          [classes.appShift]: active,
-          [classes['appShift-left']]: left
+export const DumbApp = ({ data, classes, Navbar, active, left, children }) => {
+  return (
+    <div
+      className={classNames(classes.app, {
+        [classes.appShift]: active,
+        [classes['appShift-left']]: left
+      })}
+    >
+      <Navbar
+        className={classNames(classes.appBar, {
+          [classes.appBarShift]: left,
+          [classes['appBarShift-left']]: left
         })}
-      >
-        <Navbar
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: left,
-            [classes['appBarShift-left']]: left
-          })}
-          data={data}
-        />
-        <main className={classes.main}>
-          <div className="app-child">
-            {this.props.children}
-          </div>
-        </main>
-      </div>
-    );
-  }
-}
+        data={data}
+      />
+      <main className={classes.main}>
+        <div className="app-child">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+};
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(DumbApp);

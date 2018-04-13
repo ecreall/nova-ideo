@@ -3,15 +3,13 @@ import React from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import Measure from 'react-measure';
 
-export class VirtualizedListItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dimensions: {
-        height: this.props.itemHeightEstimation
-      }
-    };
-  }
+class VirtualizedListItem extends React.Component {
+  state = {
+    dimensions: {
+      height: this.props.itemHeightEstimation
+    }
+  };
+
   render() {
     const { height } = this.state.dimensions;
     return (

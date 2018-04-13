@@ -1,0 +1,92 @@
+#import "../fragments/Action.graphql"
+#import "../fragments/Author.graphql"
+#import "../fragments/File.graphql"
+#import "../fragments/Comment.graphql"
+
+query Comment(
+  $first: Int!
+  $after: String!
+  $filter: String!
+  $id: ID!
+  $processIds: [String]
+  $nodeIds: [String]
+  $subjectActionsTags: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  node(id: $id) {
+    ... on Comment {
+      id
+      oid
+      rootOid
+      createdAt
+      text
+      formattedText
+      edited
+      pinned
+      channel {
+        id
+        oid
+        title
+        isDiscuss
+        subject {
+          ... on IEntity {
+            id
+            oid
+          }
+        }
+      }
+      author {
+        ...Author
+      }
+      attachedFiles {
+        ...File
+      }
+      urls {
+        url
+        title
+        description
+        imageUrl
+        siteName
+        favicon
+        domain
+        authorAvatar
+        authorName
+      }
+      emojis {
+        title
+        isUserEmoji
+        users(first: 5) {
+          totalCount
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
+      }
+      lenComments
+      lenUnreadReplies
+      actions(actionTags: $subjectActionsTags) {
+        ...Action
+      }
+      unreadReplies {
+        id
+        oid
+      }
+      comments(first: $first, after: $after, filter: $filter) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            ...Comment
+          }
+        }
+      }
+    }
+  }
+}

@@ -20,19 +20,16 @@ const styles = {
   }
 };
 
-class Illustration extends React.Component {
-  render() {
-    const { message, img, classes } = this.props;
-    return (
-      <div className={classes.container}>
-        <img alt="Sticker" className={classes.image} src={img} />
-        {message &&
-          <div className={classes.message}>
-            {message}
-          </div>}
-      </div>
-    );
-  }
-}
+export const DumbIllustration = ({ message, img, classes }) => {
+  return (
+    <div className={classes.container}>
+      <img alt="Sticker" className={classes.image} src={img} />
+      {message &&
+        <div className={classes.message}>
+          {message}
+        </div>}
+    </div>
+  );
+};
 
-export default withStyles(styles)(Illustration);
+export default withStyles(styles)(DumbIllustration);

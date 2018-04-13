@@ -1,28 +1,4 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
-
-export const addPrivateChannelMutation = gql`
-  mutation($context: String!) {
-    addPrivateChannel(context: $context) {
-      status
-      channel {
-        id
-        oid
-        title
-        lenUnreadComments
-        subject {
-          ... on Person {
-            id
-            oid
-            picture {
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 export default function addPrivateChannel({ mutate }) {
   return ({ context }) => {

@@ -1,0 +1,28 @@
+query Discussions($first: Int!, $after: String!) {
+  account {
+    id
+    discussions(first: $first, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          oid
+          title
+          lenUnreadComments
+          subject {
+            ... on Person {
+              id
+              oid
+              picture {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

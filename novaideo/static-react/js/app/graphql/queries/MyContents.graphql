@@ -1,0 +1,19 @@
+#import "../fragments/IdeaData.graphql"
+
+query MyContents($first: Int!, $after: String!) {
+  account {
+    id
+    contents(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...IdeaData
+        }
+      }
+    }
+  }
+}

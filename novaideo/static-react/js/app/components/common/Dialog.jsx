@@ -12,7 +12,9 @@ import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import Grid from 'material-ui/Grid';
 
-import { addChatAppIntegration, removeChatAppIntegration, toggleDrawer } from '../../actions/actions';
+import { createEvent } from '../../utils/globalFunctions';
+import { addChatAppIntegration, removeChatAppIntegration } from '../../actions/chatAppActions';
+import { toggleDrawer } from '../../actions/collaborationAppActions';
 import CollaborationAppRight from '../collaborationApp/collaborationAppRight/CollaborationAppRight';
 import { STYLE_CONST } from '../../constants';
 
@@ -136,16 +138,13 @@ const AppRightContainer = (props) => {
 };
 
 class CommonDialog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entered: false
-    };
-  }
+  state = {
+    entered: false
+  };
 
   componentDidMount() {
     setTimeout(() => {
-      this.dispatchResize();
+      createEvent('resize', true);
     }, 0);
   }
 
@@ -169,15 +168,9 @@ class CommonDialog extends React.Component {
     });
   };
 
-  dispatchResize = () => {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, true);
-    document.dispatchEvent(event);
-  };
-
   toggleDrawer = () => {
     this.props.toggleDrawer();
-    this.dispatchResize();
+    createEvent('resize', true);
   };
 
   render() {

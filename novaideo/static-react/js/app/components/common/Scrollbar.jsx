@@ -4,6 +4,8 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import Baron from 'react-baron';
 
+import { createEvent } from '../../utils/globalFunctions';
+
 const styles = {
   clipper: {
     overflow: 'hidden',
@@ -107,8 +109,7 @@ class Scrollbar extends React.Component {
 
   dispatchEvent = (values) => {
     const { scrollEvent } = this.props;
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent(scrollEvent, true, true);
+    const event = createEvent(scrollEvent);
     event.values = values;
     document.dispatchEvent(event);
   };

@@ -16,7 +16,7 @@ import Dialog from '../common/Dialog';
 import { ACTIONS, STATE } from '../../processes';
 import { goTo, get } from '../../utils/routeMap';
 import { getEntityIcon } from '../../utils/processes';
-import { ideaQuery } from '../../graphql/queries';
+import Idea from '../../graphql/queries/Idea.graphql';
 import Comments from '../chatApp/Comments';
 import Scrollbar from '../common/Scrollbar';
 import Evaluation from '../common/Evaluation';
@@ -185,15 +185,17 @@ const styles = (theme) => {
   };
 };
 
-export class RunderIdea extends React.Component {
+export class DumbIdea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: this.props.open
     };
-    this.comments = null;
-    this.title = null;
   }
+
+  comments = null;
+
+  title = null;
 
   close = () => {
     this.setState({ open: false }, () => {
@@ -339,11 +341,11 @@ export class RunderIdea extends React.Component {
   }
 }
 
-function DumbIdea(props) {
+function IdeaWithProcessManager(props) {
   const { data, onActionClick } = props;
   return (
     <IdeaProcessManager idea={data.idea} onActionClick={onActionClick}>
-      <RunderIdea {...props} />
+      <DumbIdea {...props} />
     </IdeaProcessManager>
   );
 }
@@ -358,7 +360,7 @@ export const mapStateToProps = (state) => {
 
 export default withStyles(styles, { withTheme: true })(
   connect(mapStateToProps)(
-    graphql(ideaQuery, {
+    graphql(Idea, {
       options: (props) => {
         return {
           fetchPolicy: 'cache-and-network',
@@ -371,6 +373,6 @@ export default withStyles(styles, { withTheme: true })(
           }
         };
       }
-    })(DumbIdea)
+    })(IdeaWithProcessManager)
   )
 );

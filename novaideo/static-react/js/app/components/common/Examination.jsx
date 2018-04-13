@@ -41,13 +41,11 @@ const styles = {
   }
 };
 
-class Examination extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
+export class DumbExamination extends React.Component {
+  state = {
+    open: false
+  };
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -86,4 +84,4 @@ class Examination extends React.Component {
   }
 }
 
-export default withStyles(styles)(Examination);
+export default withStyles(styles)(DumbExamination);

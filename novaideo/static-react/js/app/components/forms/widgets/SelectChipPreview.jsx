@@ -13,26 +13,23 @@ const styles = {
   }
 };
 
-class SelectChipPreview extends React.Component {
-  render() {
-    const { classes, items, onItemDelete } = this.props;
-    return (
-      <div className={classes.chipContainer}>
-        {Object.keys(items).map((id) => {
-          const option = items[id];
-          return (
-            <Chip
-              label={option}
-              onDelete={() => {
-                onItemDelete(id);
-              }}
-              className={classes.chip}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-}
+export const DumbSelectChipPreview = ({ classes, items, onItemDelete }) => {
+  return (
+    <div className={classes.chipContainer}>
+      {Object.keys(items).map((id) => {
+        const option = items[id];
+        return (
+          <Chip
+            label={option}
+            onDelete={() => {
+              onItemDelete(id);
+            }}
+            className={classes.chip}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-export default withStyles(styles)(SelectChipPreview);
+export default withStyles(styles)(DumbSelectChipPreview);

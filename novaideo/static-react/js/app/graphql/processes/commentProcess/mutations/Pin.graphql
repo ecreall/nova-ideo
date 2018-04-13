@@ -1,0 +1,12 @@
+mutation Pin($context: String!) {
+  pinComment(context: $context) {
+    status
+    context {
+      ... on Comment {
+        id
+        oid
+        pinned
+      }
+    }
+  }
+}

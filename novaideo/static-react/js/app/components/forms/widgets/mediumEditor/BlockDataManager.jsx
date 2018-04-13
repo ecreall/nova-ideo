@@ -2,7 +2,6 @@ import React from 'react';
 import { Entity, EditorState, Modifier, SelectionState } from 'draft-js';
 import { getCurrentBlock } from 'medium-draft/lib/model';
 import Icon from 'material-ui/Icon';
-import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 
 import { EMBED_SIZES, EMBED_POSITIONS, DEFAULT_EMBED_DATA } from './constants';

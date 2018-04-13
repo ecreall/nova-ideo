@@ -96,7 +96,7 @@ const EmojiTitle = ({ emoji, users, isUserEmoji, currentUser, classes }) => {
   );
 };
 
-const EmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes }) => {
+export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes }) => {
   if (emojis.length === 0) return null;
   let emojisContents = emojis.map((emoji) => {
     const count = emoji.users.totalCount;
@@ -164,4 +164,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(EmojiEvaluation));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbEmojiEvaluation));

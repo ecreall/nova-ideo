@@ -1,28 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { actionFragment } from '../../queries';
 import { filterActions } from '../../../utils/processes';
 import { PROCESSES } from '../../../processes';
-
-export const selectMutation = gql`
-  mutation($context: String!, $processIds: [String], $nodeIds: [String]) {
-    select(context: $context) {
-      status
-      context {
-        ... on IEntity {
-          id
-          oid
-          actions(processIds: $processIds, nodeIds: $nodeIds) {
-            ...action
-          }
-        }
-      }
-    }
-  }
-  ${actionFragment}
-`;
 
 export default function select({ mutate }) {
   return ({ context }) => {

@@ -69,7 +69,7 @@ const styles = (theme) => {
   };
 };
 
-class Select extends React.Component {
+export class DumbSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -234,4 +234,4 @@ class Select extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Select);
+export default withStyles(styles, { withTheme: true })(DumbSelect);

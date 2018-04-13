@@ -34,27 +34,24 @@ const styles = (theme) => {
   };
 };
 
-class Channels extends React.Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.list}>
-        <div className={classes.titleContainer}>
-          <div className={classes.title}>
-            {I18n.t('channels.channels')}
-          </div>
+export const DumbChannels = ({ classes }) => {
+  return (
+    <div className={classes.list}>
+      <div className={classes.titleContainer}>
+        <div className={classes.title}>
+          {I18n.t('channels.channels')}
         </div>
-        <PublicChannels />
-        <Divider className={classes.divider} light />
-        <div className={classes.titleContainer}>
-          <div className={classes.title}>
-            {I18n.t('channels.private')}
-          </div>
-        </div>
-        <PrivateChannels />
       </div>
-    );
-  }
-}
+      <PublicChannels />
+      <Divider className={classes.divider} light />
+      <div className={classes.titleContainer}>
+        <div className={classes.title}>
+          {I18n.t('channels.private')}
+        </div>
+      </div>
+      <PrivateChannels />
+    </div>
+  );
+};
 
-export default withStyles(styles, { withTheme: true })(Channels);
+export default withStyles(styles, { withTheme: true })(DumbChannels);

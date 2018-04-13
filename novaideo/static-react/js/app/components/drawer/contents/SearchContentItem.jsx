@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { goTo, get } from '../../../utils/routeMap';
 import { ListItem, ListItemIcon, ListItemText } from '../../styledComponents/List';
-import { closeChatApp } from '../../../actions/actions';
+import { closeChatApp } from '../../../actions/chatAppActions';
 
 const styles = (theme) => {
   return {
@@ -44,7 +44,7 @@ const styles = (theme) => {
   };
 };
 
-export class DumbSearchContentItem extends React.Component {
+export class DumbSearchContentItem extends React.PureComponent {
   open = () => {
     const { node, itemProps: { onClick } } = this.props;
     this.props.closeChatApp();

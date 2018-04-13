@@ -1,23 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
 import { PROCESSES } from '../../../processes';
-
-export const pinMutation = gql`
-  mutation($context: String!) {
-    pinComment(context: $context) {
-      status
-      context {
-        ... on Comment {
-          id
-          oid
-          pinned
-        }
-      }
-    }
-  }
-`;
 
 export default function pinComment({ mutate }) {
   return ({ context, channel }) => {

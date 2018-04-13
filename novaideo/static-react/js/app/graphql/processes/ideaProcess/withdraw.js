@@ -1,29 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import { actionFragment } from '../../queries';
 import { ACTIONS } from '../../../processes';
-
-export const withdrawMutation = gql`
-  mutation($context: String!, $actionTags: [String]) {
-    withdrawTokenIdea(context: $context) {
-      status
-      user {
-        availableTokens
-      }
-      idea {
-        id
-        tokensSupport
-        tokensOpposition
-        userToken
-        actions(actionTags: $actionTags) {
-          ...action
-        }
-      }
-    }
-  }
-    ${actionFragment}
-`;
 
 export default function withdraw({ mutate }) {
   return ({ context, availableTokens }) => {
