@@ -3,8 +3,11 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+
 import { goTo, get } from '../../../utils/routeMap';
 import { ListItem, ListItemIcon, ListItemText } from '../../styledComponents/List';
+import { closeChatApp } from '../../../actions/actions';
 
 const styles = (theme) => {
   return {
@@ -44,6 +47,7 @@ const styles = (theme) => {
 export class DumbSearchContentItem extends React.Component {
   open = () => {
     const { node, itemProps: { onClick } } = this.props;
+    this.props.closeChatApp();
     goTo(get('ideas', { ideaId: node.subject.id }));
     if (onClick) onClick();
   };
@@ -82,4 +86,8 @@ export class DumbSearchContentItem extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(DumbSearchContentItem);
+export const mapDispatchToProps = {
+  closeChatApp: closeChatApp
+};
+
+export default withStyles(styles, { withTheme: true })(connect(null, mapDispatchToProps)(DumbSearchContentItem));

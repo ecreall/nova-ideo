@@ -566,7 +566,7 @@ class Query(graphene.ObjectType):
 
     def resolve_all_contents(self, args, context, info):  # pylint: disable=W0613
         # todo add questions...
-        total_count, oids = get_entities([Iidea], ['published', 'active'], args, info, user=context.user)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft', 'active'], args, info, user=context.user)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_account(self, args, context, info):  # pylint: disable=W0613
