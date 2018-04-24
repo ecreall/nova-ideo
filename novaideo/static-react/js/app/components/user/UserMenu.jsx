@@ -1,213 +1,158 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
-import Avatar from 'material-ui/Avatar';
+import IconButton from 'material-ui/IconButton';
+import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
+import { I18n } from 'react-redux-i18n';
 
-import { DEFAULT_LOGO } from '../../constants';
-import AccountInformation from './AccountInformation';
-import { MenuList, Menu } from '../common/menu';
-import ShortcutsManager from '../common/ShortcutsManager';
+import Button from '../styledComponents/Button';
+import { Menu } from '../common/menu';
+import EmojiPicker from '../forms/widgets/EmojiPicker';
+import { ACTIONS, PROCESSES } from '../../processes';
+import { getActions } from '../../utils/processes';
+import MenuMore from '../common/MenuMore';
+import OverlaidTooltip from '../common/OverlaidTooltip';
 
 const styles = (theme) => {
   return {
-    drawerHeader: {
-      padding: '0 15px',
-      paddingBottom: 2,
-      cursor: 'pointer',
-      ...theme.mixins.toolbar,
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.12)',
-        '& .account-title-text': {
-          color: 'white'
-        },
-        '& .arrow': {
-          color: 'white'
-        }
-      }
-    },
-    drawerHeaderActive: {
-      backgroundColor: 'rgba(0, 0, 0, 0.12)',
-      '& .account-title-text': {
-        color: 'white'
-      },
-      '& .arrow': {
-        color: 'white'
-      }
-    },
-    siteInfo: {
+    container: {
+      border: '1px solid rgba(0, 0, 0, 0.15)',
+      borderRadius: 6,
+      backgroundColor: 'white',
+      zIndex: 10,
+      boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
       display: 'flex',
       alignItems: 'center',
-      paddingTop: 9,
-      marginBottom: 5
+      justifyContent: 'center',
+      '&:hover': {
+        borderColor: 'rgba(0, 0, 0, 0.3)'
+      }
     },
-    siteTitle: {
-      display: 'block',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      fontSize: 17,
-      lineHeight: 1.375,
-      fontWeight: 900,
-      color: '#fff'
+    button: {
+      height: 30,
+      width: 30,
+      '&:hover': {
+        color: theme.palette.info[500]
+      }
     },
-    arrow: {
-      color: theme.palette.primary.light,
+    icon: {
+      height: 20,
+      width: 20,
+      fontSize: '20px !important'
+    },
+    iconButton: {
+      marginRight: 5,
+      height: 17,
       width: 17,
-      height: 17
+      fontSize: '17px !important'
     },
-    sectionHeaderTitle: {
-      display: 'flex',
-      position: 'relative',
-      justifyContent: 'flex-start'
-    },
-    sectionHeaderTitleContainer: {
-      paddingLeft: 7
-    },
-    sectionHeaderTitleText: {
-      color: '#2c2d30',
-      fontSize: 18,
-      fontWeight: 900
-    },
-    sectionHeaderAddon: {
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textDecoration: 'none',
-      color: '#a0a0a2',
-      fontWeight: 500,
-      fontSize: 15
-    },
-    avatar: {
-      width: 36,
-      height: 36,
-      borderRadius: 4
+    action: {
+      borderRight: '1px solid rgba(0, 0, 0, 0.15)'
     }
   };
 };
 
 export class DumbUserMenu extends React.Component {
-  state = {
-    menu: false
+  static defaultProps = {
+    overlayPosition: 'top'
   };
 
-  popper = null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      menu: props.open
+    };
+  }
 
-  anchor = null;
-
-  handleOpen = (event) => {
-    if (this.popper) {
-      this.popper.open(event, this.anchor);
+  componentDidMount() {
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
-    return false;
-  };
+  }
 
-  onMenuOpen = () => {
+  open = () => {
     this.setState({ menu: true });
   };
 
-  onMenuClose = () => {
+  close = () => {
     this.setState({ menu: false });
   };
 
-  userSectionHeader = () => {
-    const { classes, account } = this.props;
-    const picture = account && account.picture;
-    return (
-      <div className={classes.sectionHeaderTitle}>
-        <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : ''} />
-        <div className={classes.sectionHeaderTitleContainer}>
-          <div className={classes.sectionHeaderTitleText}>
-            {account && account.title}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  siteSectionHeader = () => {
-    const { classes, site } = this.props;
-    const picture = site && site.logo;
-    return (
-      <div className={classes.sectionHeaderTitle}>
-        <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
-        <div className={classes.sectionHeaderTitleContainer}>
-          <div className={classes.sectionHeaderTitleText}>
-            {site && site.title}
-          </div>
-          <div className={classes.sectionHeaderAddon}>
-            {window.location.host}
-          </div>
-        </div>
-      </div>
-    );
+  getAction = (action) => {
+    const { classes, onActionClick, actionsProps } = this.props;
+    const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
+    const Icon = action.icon;
+    const actionProps = (actionsProps && actionsProps[action.behaviorId]) || {};
+    const actionClassName = actionProps.className || classes.button;
+    switch (action.nodeId) {
+    case abstractProcessNodes.addreaction.nodeId:
+      return (
+        <EmojiPicker
+          classes={{
+            button: actionClassName,
+            icon: classes.icon
+          }}
+          onSelect={(emoji) => {
+            if (onActionClick) onActionClick(action, { emoji: emoji });
+          }}
+          style={{ picker: { right: 1 } }}
+        />
+      );
+    default:
+      return actionProps.type === 'button'
+        ? <Button
+          onClick={() => {
+            if (onActionClick) onActionClick(action);
+          }}
+          {...actionProps.props}
+          className={actionClassName}
+        >
+          <Icon className={classes.iconButton} />
+          {I18n.t(action.title)}
+        </Button>
+        : <IconButton
+          onClick={() => {
+            if (onActionClick) onActionClick(action);
+          }}
+          className={actionClassName}
+        >
+          <Icon className={classes.icon} />
+        </IconButton>;
+    }
   };
 
   render() {
-    const { site, classes, theme, activator } = this.props;
-    const { menu } = this.state;
+    const { user, classes, onActionClick, overlayPosition } = this.props;
+    if (!this.state.menu) return null;
+    const actions = getActions(user.actions, { tags: ACTIONS.menu });
+    if (actions.length === 0) return null;
     return (
-      <ShortcutsManager domain="APP" shortcuts={{ OPEN_USER_MENU: this.handleOpen }}>
-        <Menu
-          initRef={(popper) => {
-            this.popper = popper;
-          }}
-          id="user-menu"
-          onOpen={this.onMenuOpen}
-          onClose={this.onMenuClose}
-          activator={
-            <div
-              ref={(anchor) => {
-                this.anchor = anchor;
-              }}
-            >
-              {activator ||
-                <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
-                  <div className={classes.siteInfo}>
-                    <div className={classes.siteTitle}>
-                      {site && site.title}
-                    </div>
-                    <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
-                  </div>
-                  <AccountInformation color={theme.palette.primary.light} />
-                </div>}
-            </div>
-          }
-        >
-          <MenuList
-            header={this.userSectionHeader()}
-            fields={[
-              {
-                title: 'Une action importante'
-              },
-              {
-                title: 'Un autre action importante'
-              }
-            ]}
-          />
-          <MenuList
-            header={this.siteSectionHeader()}
-            fields={[
-              {
-                title: 'Une action importante'
-              },
-              {
-                title: 'Un autre action importante'
-              }
-            ]}
-          />
-        </Menu>
-      </ShortcutsManager>
+      <div className={classes.container}>
+        {actions.map((action) => {
+          return (
+            <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
+              <div className={classes.action}>
+                {this.getAction(action)}
+              </div>
+            </OverlaidTooltip>
+          );
+        })}
+        <div>
+          <Menu
+            id="comment-more-menu"
+            activator={
+              <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
+                <MoreHorizIcon className={classes.icon} />
+              </IconButton>
+            }
+          >
+            <MenuMore context={user} onActionClick={onActionClick} />
+          </Menu>
+        </div>
+      </div>
     );
   }
 }
 
-export const mapStateToProps = (state) => {
-  return {
-    site: state.globalProps.site,
-    account: state.globalProps.account
-  };
-};
-
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbUserMenu));
+export default withStyles(styles, { withTheme: true })(DumbUserMenu);

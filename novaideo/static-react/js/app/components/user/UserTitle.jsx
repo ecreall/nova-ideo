@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 
 import { Menu } from '../common/menu';
-import UserPopover from './UserPopover';
+import UserCard from './UserCard';
 
 const styles = {
   menuPaper: {
@@ -24,6 +24,10 @@ const styles = {
     '&:hover': {
       textDecoration: 'underline'
     }
+  },
+  cardContainer: {
+    width: 370,
+    border: 'none'
   }
 };
 
@@ -53,7 +57,7 @@ export class DumbUserTitle extends React.PureComponent {
           </span>
         }
       >
-        <UserPopover id={node.id} onActionClick={this.closeMenu} />
+        <UserCard withCommentForm id={node.id} onActionClick={this.closeMenu} classes={{ container: classes.cardContainer }} />
       </Menu>
     );
   }

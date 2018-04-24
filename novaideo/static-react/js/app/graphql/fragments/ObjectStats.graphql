@@ -1,0 +1,13 @@
+fragment ObjectStats on IEntity {
+  id
+  oid
+  evaluationStats {
+    opposition
+    support
+  }
+  examinationStats {
+    favorable
+    toStudy
+    unfavorable
+  }
+}

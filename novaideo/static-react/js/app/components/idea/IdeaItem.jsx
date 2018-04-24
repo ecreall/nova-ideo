@@ -48,7 +48,8 @@ const styles = (theme) => {
       position: 'relative'
     },
     headerTitle: {
-      color: '#737373'
+      color: '#737373',
+      fontWeight: 'bold'
     },
     title: {
       color: '#2c2d30',
@@ -73,7 +74,8 @@ const styles = (theme) => {
     body: {
       display: 'flex',
       flexDirection: 'column',
-      width: '100%'
+      width: '100%',
+      paddingRight: 7
     },
     bodyTitle: {
       marginLeft: -3,
@@ -136,6 +138,9 @@ const styles = (theme) => {
       }
     },
     ideaText: {
+      lineHeight: '20px',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
       '& a': {
         color: '#0576b9',
         textDecoration: 'none',

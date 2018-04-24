@@ -1,7 +1,0 @@
-fragment IdeaData on Idea {
-  id
-  oid
-  createdAt
-  title
-  state
-}

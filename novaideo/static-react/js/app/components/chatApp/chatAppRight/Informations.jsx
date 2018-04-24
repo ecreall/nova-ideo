@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 
 import DetailsSection from './DetailsSection';
 import Idea from '../../idea/IdeaPopover';
-import User from '../../user/UserPopover';
+import User from '../../user/UserCard';
 
 const styles = {
   listItem: {
@@ -14,6 +14,20 @@ const styles = {
   },
   ideaContainer: {
     maxWidth: 'inherit'
+  },
+  userCardContainer: {
+    width: '100%',
+    borderRadius: 0,
+    border: 'none'
+  },
+  imgContainer: {
+    borderRadius: 0
+  },
+  img: {
+    borderRadius: 0
+  },
+  userText: {
+    fontSize: 15
   }
 };
 
@@ -22,7 +36,18 @@ const InformationsContent = ({ id, onActionClick, kind, classes }) => {
   case 'Idea':
     return <Idea id={id} onActionClick={onActionClick} classes={{ container: classes.ideaContainer }} />;
   case 'Person':
-    return <User id={id} onActionClick={onActionClick} />;
+    return (
+      <User
+        id={id}
+        onActionClick={onActionClick}
+        classes={{
+          container: classes.userCardContainer,
+          imgContainer: classes.imgContainer,
+          img: classes.img,
+          text: classes.userText
+        }}
+      />
+    );
   default:
     return null;
   }

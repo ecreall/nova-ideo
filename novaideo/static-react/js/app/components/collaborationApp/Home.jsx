@@ -5,16 +5,8 @@ import { connect } from 'react-redux';
 import IdeasList from './IdeasList';
 import CreateIdeaHome from '../idea/CreateIdeaHome';
 import Idea from '../idea/Idea';
+import User from '../user/User';
 import { openChatApp } from '../../actions/chatAppActions';
-
-const styles = {
-  container: {
-    marginTop: 25,
-    maxWidth: 588,
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  }
-};
 
 class Home extends React.Component {
   constructor(props) {
@@ -47,12 +39,16 @@ class Home extends React.Component {
   };
 
   render() {
-    const { ideaId } = this.props.params;
+    const { ideaId, userId } = this.props.params;
+    const { filter } = this.props;
+    const hasFilter = filter && filter.text;
+    const searchId = 'globalSearch';
     return [
       ideaId && <Idea id={ideaId} open />,
-      <Typography component="div" style={styles.container}>
-        <CreateIdeaHome />
-        <IdeasList />
+      userId && <User id={userId} open />,
+      <Typography component="div">
+        {!hasFilter && <CreateIdeaHome />}
+        <IdeasList searchId={searchId} />
       </Typography>
     ];
   }
@@ -64,7 +60,8 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
-    smallScreen: state.globalProps.smallScreen
+    smallScreen: state.globalProps.smallScreen,
+    filter: state.search.globalSearch
   };
 };
 

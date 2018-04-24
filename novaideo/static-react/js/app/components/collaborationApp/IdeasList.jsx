@@ -9,6 +9,7 @@ import FlatList from '../common/FlatList';
 import IdeasList from '../../graphql/queries/IdeasList.graphql';
 import Divider from './Divider';
 import { ACTIONS } from '../../processes';
+import SearchData from '../common/SearchData';
 
 const styles = {
   list: {
@@ -18,7 +19,7 @@ const styles = {
   }
 };
 
-export const DumbIdeasList = ({ classes }) => {
+export const DumbIdeasList = ({ filter, searchId, classes }) => {
   return (
     <Query
       notifyOnNetworkStatusChange
@@ -27,18 +28,20 @@ export const DumbIdeasList = ({ classes }) => {
       variables={{
         first: 15,
         after: '',
-        filter: '',
+        filter: filter,
         processIds: [],
         nodeIds: [],
         processTags: [],
         actionTags: [ACTIONS.primary]
       }}
     >
-      {(data) => {
-        return (
+      {(result) => {
+        const totalCount = result.data && result.data.ideas && result.data.ideas.totalCount;
+        return [
+          filter ? <SearchData id={searchId} count={totalCount} /> : null,
           <FlatList
             scrollEvent="ideas"
-            data={data}
+            data={result}
             getEntities={(entities) => {
               return entities.data ? entities.data.ideas : entities.ideas;
             }}
@@ -46,15 +49,16 @@ export const DumbIdeasList = ({ classes }) => {
             Divider={Divider}
             className={classes.list}
           />
-        );
+        ];
       }}
     </Query>
   );
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, props) => {
+  const searchId = props.searchId;
   return {
-    filter: state.search.text
+    filter: state.search[searchId] ? state.search[searchId].text : ''
   };
 };
 

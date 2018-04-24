@@ -110,6 +110,9 @@ const styles = {
     marginBottom: 5
   },
   ideaText: {
+    lineHeight: '20px',
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
     '& a': {
       color: '#0576b9',
       textDecoration: 'none',

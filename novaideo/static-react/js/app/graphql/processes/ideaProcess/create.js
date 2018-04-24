@@ -74,6 +74,7 @@ export default function create({ ownProps, mutate }) {
               __typename: 'Channel',
               id: 'channel-id',
               oid: 'channel-oid',
+              title: title,
               isDiscuss: false
             },
             opinion: '',

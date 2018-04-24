@@ -1,0 +1,30 @@
+#import "../fragments/Idea.graphql"
+
+query UserContents(
+  $id: ID!
+  $first: Int!
+  $after: String!
+  $filter: String!
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  person: node(id: $id) {
+    ... on Person {
+      id
+      contents(first: $first, after: $after, filter: $filter) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            ...Idea
+          }
+        }
+      }
+    }
+  }
+}

@@ -138,6 +138,7 @@ class Edit(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
+    tags = ['primary', 'menu']
     title = _('Edit')
     submission_title = _('Save')
     context = IPerson
@@ -174,6 +175,7 @@ class GetAPIToken(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-wrench'
     style_order = 1
+    tags = ['secondary', 'entity']
     title = _('Get API token')
     submission_title = _('Get a new API token')
     context = IPerson
@@ -222,6 +224,7 @@ class Deactivate(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-ban-circle'
     style_interaction = 'ajax-action'
     style_order = 0
+    tags = ['secondary', 'entity']
     title = _('Disactivate the profile')
     submission_title = _('Continue')
     context = IPerson
@@ -279,6 +282,7 @@ class Activate(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ok-circle'
     style_order = 0
+    tags = ['secondary', 'entity']
     title = _('Activate the profile')
     context = IPerson
     roles_validation = activate_roles_validation
@@ -316,6 +320,7 @@ class AssignRoles(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-tower'
     style_order = 2
+    tags = ['secondary', 'entity']
     title = _('Assign roles')
     submission_title = _('Save')
     context = IPerson
@@ -761,7 +766,7 @@ class Discuss(InfiniteCardinality):
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
-    tags = ['communication']
+    tags = ['primary', 'communication']
     context = IPerson
     roles_validation = discuss_roles_validation
     processsecurity_validation = discuss_processsecurity_validation
@@ -940,6 +945,7 @@ class ExtractAlerts(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-export'
     style_order = 8
+    tags = ['secondary', 'entity']
     submission_title = _('Continue')
     context = IPerson
     roles_validation = edit_roles_validation

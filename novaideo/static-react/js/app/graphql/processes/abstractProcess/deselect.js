@@ -35,7 +35,10 @@ export default function select({ mutate }) {
           __typename: 'Deselect',
           status: true,
           context: {
-            ...optimisticContext
+            __typename: optimisticContext.__typename,
+            id: optimisticContext.id,
+            oid: optimisticContext.oid,
+            actions: optimisticContext.actions
           }
         }
       },
@@ -45,6 +48,7 @@ export default function select({ mutate }) {
           const currentContext = prev.account.followedIdeas.edges.filter((item) => {
             return item && item.node.id === newContext.id;
           })[0];
+          if (!currentContext) return false;
           const index = prev.account.followedIdeas.edges.indexOf(currentContext);
           const totalCount = prev.account.followedIdeas.totalCount - 1;
           return update(prev, {
@@ -54,6 +58,19 @@ export default function select({ mutate }) {
                 edges: {
                   $splice: [[index, 1]]
                 }
+              }
+            }
+          });
+        },
+        PersonData: (prev, { mutationResult, queryVariables }) => {
+          if (queryVariables.id !== context.id) return false;
+          const newContext = mutationResult.data.deselect.context;
+          const newActions = newContext.actions;
+          return update(prev, {
+            person: {
+              nbFollowers: { $set: deselectAction.counter - 1 },
+              actions: {
+                $splice: [[indexAction, 1, ...newActions]]
               }
             }
           });

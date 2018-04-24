@@ -138,6 +138,10 @@ const AppRightContainer = (props) => {
 };
 
 class CommonDialog extends React.Component {
+  static defaultProps = {
+    withRightApp: true
+  };
+
   state = {
     entered: false
   };
@@ -155,9 +159,9 @@ class CommonDialog extends React.Component {
 
   onEntered = () => {
     this.setState({ entered: true }, () => {
-      const { withDrawer, onOpen, addIntegration } = this.props;
+      const { withDrawer, withRightApp, onOpen, addIntegration } = this.props;
       if (onOpen) onOpen();
-      if (withDrawer) addIntegration();
+      if (withDrawer && withRightApp) addIntegration();
     });
   };
 
@@ -186,6 +190,7 @@ class CommonDialog extends React.Component {
       hideBackdrop,
       PaperProps,
       withDrawer,
+      withRightApp,
       drawerOpen
     } = this.props;
     const full = withDrawer || fullScreen;
@@ -222,7 +227,7 @@ class CommonDialog extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        {withDrawer
+        {withDrawer && withRightApp
           ? <AppRightContainer {...this.props}>
             {content}
           </AppRightContainer>

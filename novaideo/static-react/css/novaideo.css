@@ -58,10 +58,10 @@
 
 .md-RichEditor-root{
   background-color: transparent !important;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.58;
+  line-height: 1.5 !important;
   letter-spacing: -.003em;
   padding: 0 !important;
 }
@@ -164,15 +164,15 @@ figure.md-block-image {
 }
 
 .md-RichEditor-editor h1 {
-  font-size: 34px !important;
+  font-size: 30px !important;
 }
 
 .md-RichEditor-editor h2 {
- font-size: 29px !important; 
+ font-size: 25px !important; 
 }
 
 .md-RichEditor-editor h3 {
- font-size: 24px !important; 
+ font-size: 20px !important; 
 }
 
 .card .brd {

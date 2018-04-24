@@ -33,7 +33,7 @@ const styles = (theme) => {
       height: '100%'
     },
     title: {
-      fontSize: 34,
+      fontSize: 30,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
@@ -331,7 +331,7 @@ export class DumbIdea extends React.Component {
             }}
             classes={{ container: classes.goToTop }}
           >
-            <Button variant="fab" color="primary" aria-label="comment" className={classes.goToTopBtn}>
+            <Button variant="fab" color="primary" className={classes.goToTopBtn}>
               <Icon className={classNames(classes.goToTopIcon, 'mdi-set mdi-chevron-double-up')} />
             </Button>
           </Anchor>

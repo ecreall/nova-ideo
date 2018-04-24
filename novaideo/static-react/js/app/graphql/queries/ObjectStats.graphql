@@ -1,0 +1,7 @@
+#import "../fragments/ObjectStats.graphql"
+
+query ObjectStats($id: ID!) {
+  stats: node(id: $id) {
+    ...ObjectStats
+  }
+}

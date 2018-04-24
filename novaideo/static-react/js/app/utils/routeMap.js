@@ -10,7 +10,8 @@ import { capitalize } from './globalFunctions';
 const routes = {
   root: '',
   messages: 'messages/${channelId}',
-  ideas: 'ideas/${ideaId}'
+  ideas: 'ideas/${ideaId}',
+  users: 'users/${userId}'
 };
 
 const convertToContextualName = (name) => {
@@ -74,6 +75,15 @@ export const getCurrentView = () => {
 
 export const goTo = (url) => {
   browserHistory.push(url);
+};
+
+export const goToEntity = (type, id) => {
+  switch (type) {
+  case 'Idea':
+    return goTo(get('ideas', { ideaId: id }));
+  default:
+    return false;
+  }
 };
 
 export const getCurrentLocation = () => {

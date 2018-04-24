@@ -16,6 +16,8 @@ export const NO_COMMENT = STATIC_URL + require('./assets/no-comment.svg');
 
 export const CT_COMMENT = STATIC_URL + require('./assets/ct-comment.svg');
 
+export const USER_BACKGROUND = STATIC_URL + require('./assets/background-person.png');
+
 export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
 
 export const CONVERTOR_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/convertor_apple_32.png');

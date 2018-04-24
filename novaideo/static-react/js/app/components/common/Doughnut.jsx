@@ -17,7 +17,7 @@ const styles = {
     right: 0,
     width: '20%',
     '& .circle': {
-      strokeWidth: 16,
+      strokeWidth: 11,
       fill: 'transparent'
     }
   },
@@ -57,6 +57,12 @@ const styles = {
     fontFamily: 'LatoWebLight',
     fontSize: 10,
     letterSpacing: 'initial'
+  },
+  caption: {
+    fontFamily: 'LatoWebLight',
+    fontSize: 10,
+    letterSpacing: 'initial',
+    marginTop: -5
   }
 };
 
@@ -68,7 +74,7 @@ export const createTooltip = (title, count, className) => {
   );
 };
 
-const StatisticsDoughnut = ({ elements, placement, title, disableTotalCount, classes }) => {
+const StatisticsDoughnut = ({ elements, placement, title, caption, disableTotalCount, classes }) => {
   const totalCount = elements.reduce((result, element) => {
     return result + element.count;
   }, 0);
@@ -85,11 +91,16 @@ const StatisticsDoughnut = ({ elements, placement, title, disableTotalCount, cla
               {totalCount}
             </div>
             {placeAfter ? ' ' : ''}
-            <div className={classes.doughnutLabelText}>
-              <Translate value={title} count={totalCount} />
-            </div>
+            {title &&
+              <div className={classes.doughnutLabelText}>
+                <Translate value={title} count={totalCount} />
+              </div>}
           </div>}
       </div>
+      {caption &&
+        <div className={classes.caption}>
+          <Translate value={caption} count={totalCount} />
+        </div>}
     </div>
   );
 };

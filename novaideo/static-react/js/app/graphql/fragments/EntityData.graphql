@@ -1,0 +1,7 @@
+fragment EntityData on IEntity {
+  id
+  oid
+  createdAt
+  title
+  state
+}

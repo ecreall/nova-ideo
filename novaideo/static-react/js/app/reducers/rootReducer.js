@@ -8,9 +8,11 @@ import theme from '../theme';
 import * as actionTypes from '../actions/actionTypes';
 
 // 4b3fc3b2e8b64e3ab95dc38122737f67
+// 0bfa81ae040541aeb65df6d8a710631e
+// 03515792dedc4f8bbb1c77cdb0142fd6
 
 const initialUserTest = {
-  token: '4b3fc3b2e8b64e3ab95dc38122737f67',
+  token: '03515792dedc4f8bbb1c77cdb0142fd6',
   loadingState: 'completed'
 };
 export const user = (state = initialUserTest, action) => {
@@ -85,11 +87,15 @@ export const user = (state = initialUserTest, action) => {
   }
 };
 
-export const search = (state = { text: '' }, action) => {
+export const search = (state = {}, action) => {
   switch (action.type) {
   case actionTypes.SEARCH_ENTITIES: {
+    const id = action.id;
     return {
-      text: action.text
+      ...state,
+      [id]: {
+        text: action.text
+      }
     };
   }
   default:

@@ -8,10 +8,11 @@ import IconButton from 'material-ui/IconButton';
 import KeyboardArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from 'material-ui-icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
+import { I18n } from 'react-redux-i18n';
 
-import { toggleDrawer } from '../../actions/collaborationAppActions';
+import { toggleDrawer, globalSearch } from '../../actions/collaborationAppActions';
 import AccountInformation from '../user/AccountInformation';
-import UserMenu from '../user/UserMenu';
+import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
 
 const styles = {
@@ -38,30 +39,31 @@ const styles = {
   menuContainer: {
     display: 'flex',
     alignItems: 'center',
+    margin: '2px 0 0'
+  },
+  search: {
     height: 34,
-    margin: '2px 0 0',
-    padding: '0 10px 0 0',
     transition: 'width .15s ease-out 0s',
-    width: 360,
+    minWidth: 360,
     '&:focus-within': {
-      width: 437
+      minWidth: 437
     },
     '@media (max-width:1440px)': {
-      width: 315,
+      minWidth: 315,
       '&:focus-within': {
-        width: 387
+        minWidth: 387
       }
     },
     '@media (max-width:1366px)': {
-      width: 260,
+      minWidth: 260,
       '&:focus-within': {
-        width: 337
+        minWidth: 337
       }
     },
     '@media (max-width:1279px)': {
-      width: 245,
+      minWidth: 245,
       '&:focus-within': {
-        width: 312
+        minWidth: 312
       }
     },
     '@media (max-width:1070px)': {
@@ -76,12 +78,19 @@ const styles = {
         width: 257
       }
     }
+  },
+  searchContainer: {
+    paddingLeft: 5
   }
 };
 
 class NavBar extends React.Component {
-  handelSearch = () => {
-    // todo
+  handelSearch = (filter) => {
+    this.props.search(filter.text);
+  };
+
+  handleSearchCancel = () => {
+    this.props.search('');
   };
 
   render() {
@@ -97,17 +106,21 @@ class NavBar extends React.Component {
               {!drawer && site.title}
             </Typography>
             <div className={classes.menuContainer}>
-              <Search
-                form={'globalSearch'}
-                key={'globalSearch'}
-                onSearch={this.handelSearch}
-                onCancel={this.handleSearchCancel}
-                title={'Search'}
-              />
+              <div className={classes.search}>
+                <Search
+                  liveSearch
+                  form="globalSearch"
+                  key="globalSearch"
+                  onSearch={this.handelSearch}
+                  onCancel={this.handleSearchCancel}
+                  title={I18n.t('common.search')}
+                  classes={{ container: classes.searchContainer }}
+                />
+              </div>
             </div>
             {!drawer &&
               <div className={classes.userMenuContainer}>
-                <UserMenu
+                <UserMainMenu
                   activator={
                     <AccountInformation
                       onlyIcon
@@ -126,7 +139,8 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  toggleDrawer: toggleDrawer
+  toggleDrawer: toggleDrawer,
+  search: globalSearch
 };
 
 export const mapStateToProps = (state) => {

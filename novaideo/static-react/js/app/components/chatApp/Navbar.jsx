@@ -30,30 +30,31 @@ const styles = (theme) => {
     menuContainer: {
       display: 'flex',
       alignItems: 'center',
+      margin: '2px 0 0'
+    },
+    search: {
       height: 34,
-      margin: '2px 0 0',
-      padding: '0 10px 0 0',
       transition: 'width .15s ease-out 0s',
-      width: 360,
+      minWidth: 360,
       '&:focus-within': {
-        width: 437
+        minWidth: 437
       },
       '@media (max-width:1440px)': {
-        width: 315,
+        minWidth: 315,
         '&:focus-within': {
-          width: 387
+          minWidth: 387
         }
       },
       '@media (max-width:1366px)': {
-        width: 260,
+        minWidth: 260,
         '&:focus-within': {
-          width: 337
+          minWidth: 337
         }
       },
       '@media (max-width:1279px)': {
-        width: 245,
+        minWidth: 245,
         '&:focus-within': {
-          width: 312
+          minWidth: 312
         }
       },
       '@media (max-width:1070px)': {
@@ -87,8 +88,8 @@ const styles = (theme) => {
       fontSize: '16px !important'
     },
     infoIcon: {
-      height: 17,
-      width: 17
+      height: 25,
+      width: 25
     },
     filesIcon: {
       fontSize: '17px !important'
@@ -157,6 +158,9 @@ const styles = (theme) => {
       [`&.${CONTENTS_IDS.members}`]: {
         color: theme.palette.success[500]
       }
+    },
+    searchContainer: {
+      paddingLeft: 5
     }
   };
 };
@@ -227,20 +231,10 @@ class NavBar extends React.Component {
                 {channelTitle}
               </div>
               <CardActions className={classes.actions} disableActionSpacing>
-                <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
-                  <IconButton
-                    onClick={this.handleInfo}
-                    className={classNames(CONTENTS_IDS.info, classes.action, {
-                      [classes.actionActive]: rightComponentId === CONTENTS_IDS.info
-                    })}
-                  >
-                    <InfoOutlineIcon className={classes.infoIcon} />
-                  </IconButton>
-                </OverlaidTooltip>
                 <OverlaidTooltip tooltip={I18n.t('channels.navbar.pinned')} placement="bottom">
                   <IconButton
                     onClick={this.handlePinned}
-                    className={classNames(CONTENTS_IDS.pinned, actionWithSeparator, {
+                    className={classNames(CONTENTS_IDS.pinned, classes.action, {
                       [classes.actionActive]: rightComponentId === CONTENTS_IDS.pinned
                     })}
                   >
@@ -270,13 +264,26 @@ class NavBar extends React.Component {
               </CardActions>
             </Typography>
             <div className={classes.menuContainer}>
-              <Search
-                form={searchFormId}
-                key={searchFormId}
-                onSearch={this.handelSearch}
-                onCancel={this.handleSearchCancel}
-                title={<Translate value="forms.comment.searchPlaceholder" name={channelTitle || '...'} />}
-              />
+              <OverlaidTooltip tooltip={I18n.t('channels.navbar.info')} placement="bottom">
+                <IconButton
+                  onClick={this.handleInfo}
+                  className={classNames(CONTENTS_IDS.info, classes.action, {
+                    [classes.actionActive]: rightComponentId === CONTENTS_IDS.info
+                  })}
+                >
+                  <InfoOutlineIcon className={classes.infoIcon} />
+                </IconButton>
+              </OverlaidTooltip>
+              <div className={classes.search}>
+                <Search
+                  form={searchFormId}
+                  key={searchFormId}
+                  onSearch={this.handelSearch}
+                  onCancel={this.handleSearchCancel}
+                  title={<Translate value="forms.comment.searchPlaceholder" name={channelTitle || '...'} />}
+                  classes={{ container: classes.searchContainer }}
+                />
+              </div>
             </div>
             <IconButton color="primary" aria-label="Menu" onClick={this.handleClose}>
               <CloseIcon />

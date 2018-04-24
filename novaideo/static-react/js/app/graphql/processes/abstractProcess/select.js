@@ -32,28 +32,33 @@ export default function select({ mutate }) {
           __typename: 'Select',
           status: true,
           context: {
-            ...optimisticContext
+            __typename: optimisticContext.__typename,
+            id: optimisticContext.id,
+            oid: optimisticContext.oid,
+            actions: optimisticContext.actions
           }
         }
       },
       updateQueries: {
         MyFollowings: (prev, { mutationResult }) => {
-          const newActions = mutationResult.data.select.context.actions;
-          const totalCount = prev.account.followedIdeas.totalCount + 1;
-          const newContext = update(context, {
-            actions: {
-              $splice: [[indexAction, 1, ...newActions]]
-            }
-          });
+          const newContext = mutationResult.data.select.context;
+          if (newContext.__typename !== 'Idea') return false;
           return update(prev, {
             account: {
               followedIdeas: {
-                totalCount: { $set: totalCount },
+                totalCount: { $set: prev.account.followedIdeas.totalCount + 1 },
                 edges: {
                   $unshift: [
                     {
-                      __typename: newContext.__typename,
-                      node: { ...newContext }
+                      __typename: context.__typename,
+                      node: {
+                        __typename: context.__typename,
+                        id: context.id,
+                        oid: context.oid,
+                        createdAt: context.createdAt,
+                        title: context.title,
+                        state: context.state || []
+                      }
                     }
                   ]
                 }
@@ -81,6 +86,19 @@ export default function select({ mutate }) {
             ideas: {
               edges: {
                 $splice: [[index, 1, newIdea]]
+              }
+            }
+          });
+        },
+        PersonData: (prev, { mutationResult, queryVariables }) => {
+          if (queryVariables.id !== context.id) return false;
+          const newContext = mutationResult.data.select.context;
+          const newActions = newContext.actions;
+          return update(prev, {
+            person: {
+              nbFollowers: { $set: selectAction.counter + 1 },
+              actions: {
+                $splice: [[indexAction, 1, ...newActions]]
               }
             }
           });

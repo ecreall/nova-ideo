@@ -101,6 +101,7 @@ const styles = {
     height: 35
   },
   container: {
+    width: '100%',
     marginBottom: 10
   },
   input: {

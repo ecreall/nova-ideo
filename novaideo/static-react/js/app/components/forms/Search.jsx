@@ -67,7 +67,6 @@ const styles = (theme) => {
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       fontStyle: 'normal',
-      pointerEvents: 'none',
       position: 'absolute',
       display: 'none',
       top: 0,

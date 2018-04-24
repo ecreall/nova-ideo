@@ -1,6 +1,6 @@
 #import "../fragments/PersonData.graphql"
 
-query PersonData($id: ID!) {
+query PersonData($id: ID!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
   person: node(id: $id) {
     ...PersonData
   }

@@ -1,9 +1,18 @@
 import * as actionTypes from './actionTypes';
 
-export const searchEntities = (text) => {
+export const search = (id, text) => {
   return {
     type: actionTypes.SEARCH_ENTITIES,
-    text: text
+    text: text,
+    id: id
+  };
+};
+
+export const globalSearch = (text) => {
+  return {
+    type: actionTypes.SEARCH_ENTITIES,
+    text: text,
+    id: 'globalSearch'
   };
 };
 

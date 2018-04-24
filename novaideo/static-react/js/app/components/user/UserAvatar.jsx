@@ -29,7 +29,7 @@ const styles = (theme) => {
 export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl }) => {
   let content = null;
   if (isAnonymous) {
-    content = <Icon className={'mdi-set mdi-guy-fawkes-mask'} />;
+    content = <Icon className="mdi-set mdi-guy-fawkes-mask" />;
   } else if (title && !picture) {
     content = initalsGenerator(title);
   }

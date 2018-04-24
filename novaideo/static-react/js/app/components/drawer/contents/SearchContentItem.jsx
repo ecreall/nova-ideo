@@ -1,11 +1,11 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable  no-confusing-arrow, no-underscore-dangle */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import Icon from 'material-ui/Icon';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 
-import { goTo, get } from '../../../utils/routeMap';
+import { goToEntity } from '../../../utils/routeMap';
+import { getEntityIcon } from '../../../utils/processes';
 import { ListItem, ListItemIcon, ListItemText } from '../../styledComponents/List';
 import { closeChatApp } from '../../../actions/chatAppActions';
 
@@ -48,16 +48,16 @@ export class DumbSearchContentItem extends React.PureComponent {
   open = () => {
     const { node, itemProps: { onClick } } = this.props;
     this.props.closeChatApp();
-    goTo(get('ideas', { ideaId: node.subject.id }));
+    goToEntity(node.subject.__typename, node.subject.id);
     if (onClick) onClick();
   };
 
   renderIcon = () => {
-    const { classes } = this.props;
-
+    const { classes, node } = this.props;
+    const ItemIcon = getEntityIcon(node.subject.__typename);
     return (
       <ListItemIcon>
-        <Icon className={classNames('menu-item-icon mdi-set mdi-pound', classes.icon)} />
+        <ItemIcon className={classes.icon} />
       </ListItemIcon>
     );
   };

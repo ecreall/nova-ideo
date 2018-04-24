@@ -1,12 +1,14 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
+import { connect } from 'react-redux';
 import 'emoji-mart/css/emoji-mart.css';
 
 import Navbar from './Navbar';
 import Footer from './Footer';
 import App from '../common/App';
 import Scrollbar from '../common/Scrollbar';
+import User from '../user/UserCard';
 
 export const styles = {
   root: {
@@ -14,17 +16,26 @@ export const styles = {
     overflow: 'auto'
   },
   maxContainer: {
-    maxWidth: 1400,
+    maxWidth: 1110,
+    marginTop: 25,
     marginRight: 'auto',
     marginLeft: 'auto'
   },
   scroll: {
     paddingLeft: 8,
     paddingRight: 8
+  },
+  userCardContainer: {
+    float: 'right',
+    marginRight: 16,
+    marginLeft: 16,
+    width: 'auto',
+    maxWidth: 295,
+    minWidth: 270
   }
 };
 
-function CollaborationApp({ children, active, left, classes }) {
+function CollaborationApp({ children, active, left, account, smallScreen, classes }) {
   return (
     <App active={active} left={left} Navbar={Navbar}>
       <div className={classes.root}>
@@ -36,11 +47,13 @@ function CollaborationApp({ children, active, left, classes }) {
         >
           <div className={classes.maxContainer}>
             <Grid container>
-              <Grid item xs={12} md={3} />
+              <Grid item xs={12} md={4}>
+                {!smallScreen ? <User id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
+              </Grid>
               <Grid item xs={12} md={6}>
                 {children}
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={2}>
                 <Footer />
               </Grid>
             </Grid>
@@ -51,4 +64,11 @@ function CollaborationApp({ children, active, left, classes }) {
   );
 }
 
-export default withStyles(styles)(CollaborationApp);
+export const mapStateToProps = (state) => {
+  return {
+    account: state.globalProps.account,
+    smallScreen: state.globalProps.smallScreen
+  };
+};
+
+export default withStyles(styles)(connect(mapStateToProps)(CollaborationApp));

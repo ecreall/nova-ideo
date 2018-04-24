@@ -1,4 +1,4 @@
-#import "../fragments/IdeaData.graphql"
+#import "../fragments/EntityData.graphql"
 
 query MySupports($first: Int!, $after: String!) {
   account {
@@ -11,7 +11,7 @@ query MySupports($first: Int!, $after: String!) {
       }
       edges {
         node {
-          ...IdeaData
+          ...EntityData
         }
       }
     }

@@ -8,6 +8,8 @@ fragment PersonData on Person {
   description
   function
   isAnonymous
+  nbFollowers
+  email
   channel {
     id
     oid
@@ -17,7 +19,10 @@ fragment PersonData on Person {
   picture {
     url
   }
-  actions {
+  coverPicture {
+    url
+  }
+  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
     ...Action
   }
 }

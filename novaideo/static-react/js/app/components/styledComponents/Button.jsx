@@ -4,15 +4,16 @@ import IconButtonBase from 'material-ui/IconButton';
 
 const StyledButton = glamorous(Button)((props) => {
   const background = props.background || '#2ea664';
+  const color = props.color || '#fff';
   return {
     background: background,
-    color: props.color || '#fff',
+    color: color,
     lineHeight: '19px',
     fontWeight: 700,
     textDecoration: 'none',
     cursor: 'pointer',
     textShadow: '0 1px 1px rgba(0,0,0,.2)',
-    border: 'none',
+    border: `solid 1px ${color}`,
     borderRadius: 4,
     boxShadow: 'none',
     position: 'relative',
@@ -23,7 +24,9 @@ const StyledButton = glamorous(Button)((props) => {
     margin: 0,
     textTransform: 'none',
     '&:hover': {
-      backgroundColor: background,
+      backgroundColor: color,
+      color: background,
+      border: `solid 1px ${background}`,
       boxShadow: '0 1px 2px 1px rgba(128, 128, 128, 0.4)'
     }
   };

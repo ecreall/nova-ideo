@@ -9,6 +9,7 @@ from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
 from dace.util import get_obj
+from dace.objectofcollaboration.principal.util import has_role
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
@@ -26,6 +27,7 @@ from .util import (
     get_user_by_token, get_entities, get_all_comments,
     get_actions, connection_for_type, get_context,
     ResolverLazyList)
+from novaideo.utilities.util import get_object_examination_stat, get_object_evaluation_stat
 
 
 class Node(object):
@@ -34,6 +36,50 @@ class Node(object):
     def get_node(cls, id, context, info):  #pylint: disable=W0613,W0622
         oid = int(id)
         return get_obj(oid)
+
+
+class ExaminationStats(Node, graphene.ObjectType):
+    
+    class Meta(object):
+        interfaces = (relay.Node, )
+    
+    favorable = graphene.Int()
+    unfavorable = graphene.Int()
+    toStudy = graphene.Int()
+    
+    def resolve_favorable(self, args, context, info):
+        stats = get_object_examination_stat(self, context)
+        if not stats: return 0
+        return stats['favorable']['value']
+    
+    def resolve_unfavorable(self, args, context, info):
+        stats = get_object_examination_stat(self, context)
+        if not stats: return 0
+        return stats['unfavorable']['value']
+
+    def resolve_toStudy(self, args, context, info):
+        stats = get_object_examination_stat(self, context)
+        if not stats: return 0
+        return stats['to_study']['value']
+
+
+class EvaluationStats(Node, graphene.ObjectType):
+    
+    class Meta(object):
+        interfaces = (relay.Node, )
+    
+    opposition = graphene.Int()
+    support = graphene.Int()
+    
+    def resolve_opposition(self, args, context, info):
+        stats = get_object_evaluation_stat(self, context)
+        if not stats: return 0
+        return stats['opposition']['value']
+    
+    def resolve_support(self, args, context, info):
+        stats = get_object_evaluation_stat(self, context)
+        if not stats: return 0
+        return stats['support']['value']
 
 
 class Emoji(Node, graphene.ObjectType):
@@ -201,6 +247,7 @@ class Person(Node, graphene.ObjectType):
     function = graphene.String()
     description = graphene.String()
     picture = graphene.Field(File)
+    cover_picture = graphene.Field(File)
     first_name = graphene.String()
     last_name = graphene.String()
     user_title = graphene.String()
@@ -222,9 +269,10 @@ class Person(Node, graphene.ObjectType):
     available_tokens = graphene.Int()
     is_anonymous = graphene.Boolean()
     mask = graphene.Field(lambda: Person)
+#   email should be visible only by user with Admin or Site Administrator role
+    email = graphene.String()
 
-#    email = graphene.String()
-#    email should be visible only by user with Admin or Site Administrator role
+
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
         if isinstance(root, cls):
@@ -239,7 +287,7 @@ class Person(Node, graphene.ObjectType):
         contents = self.get_contents(context.user) \
             if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
         user_ideas = [get_oid(o) for o in contents]
-        total_count, oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=context.user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
@@ -271,6 +319,10 @@ class Person(Node, graphene.ObjectType):
             return self.get_len_free_tokens(context.root, True)
         
         return 0
+
+    def resolve_email(self, args, context, info):  # pylint: disable=W0613
+        user = context.user
+        return user.email if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
 
 
 Person.Connection = connection_for_type(Person)

@@ -53,11 +53,9 @@ const styles = {
     width: '20%'
   },
   globalItemContainer: {
-    marginRight: 3,
     width: '100%'
   },
   firstItemContainer: {
-    marginRight: 3,
     width: '80%'
   },
   plusItemContainer: {

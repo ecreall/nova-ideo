@@ -4,7 +4,7 @@ import { CardActions } from 'material-ui/Card';
 import { I18n } from 'react-redux-i18n';
 
 import OverlaidTooltip from './OverlaidTooltip';
-import { IconButton } from '../styledComponents/Button';
+import Button, { IconButton } from '../styledComponents/Button';
 
 const styles = (theme) => {
   return {
@@ -29,11 +29,17 @@ const styles = (theme) => {
       height: 16,
       width: 16,
       overflow: 'inherit'
+    },
+    btnAction: {
+      marginRight: '4px !important',
+      minWidth: 'auto',
+      minHeight: 'auto',
+      padding: '5px 10px'
     }
   };
 };
 
-export const DumbAllignedActions = ({ actions, onActionClick, overlayPosition, actionDecoration, classes }) => {
+const IconActions = ({ actions, onActionClick, overlayPosition, actionDecoration, classes }) => {
   return (
     <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
       {actions.map((action, key) => {
@@ -47,7 +53,6 @@ export const DumbAllignedActions = ({ actions, onActionClick, overlayPosition, a
               onClick={() => {
                 if (onActionClick) onActionClick(action);
               }}
-              aria-label="todo"
             >
               <Icon className={classes.actionsIcon} />
               {action.counter}
@@ -59,4 +64,36 @@ export const DumbAllignedActions = ({ actions, onActionClick, overlayPosition, a
   );
 };
 
-export default withStyles(styles)(DumbAllignedActions);
+const BtnActions = ({ actions, onActionClick, theme, classes }) => {
+  return (
+    <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
+      {actions.map((action, key) => {
+        return (
+          <Button
+            key={key}
+            onClick={() => {
+              if (onActionClick) onActionClick(action);
+            }}
+            className={classes.btnAction}
+            background={theme.palette.primary[500]}
+          >
+            {I18n.t(action.title)}
+          </Button>
+        );
+      })}
+    </CardActions>
+  );
+};
+
+export const DumbAllignedActions = ({ type = 'icon', ...props }) => {
+  switch (type) {
+  case 'icon':
+    return <IconActions {...props} />;
+  case 'button':
+    return <BtnActions {...props} />;
+  default:
+    return null;
+  }
+};
+
+export default withStyles(styles, { withTheme: true })(DumbAllignedActions);

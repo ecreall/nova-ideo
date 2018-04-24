@@ -51,6 +51,9 @@ class IEntity(relay.Node):
         process_tags=graphene.List(graphene.String),
         process_ids=graphene.List(graphene.String),
         node_ids=graphene.List(graphene.String))
+    evaluation_stats= graphene.Field('novaideo.graphql.schema.EvaluationStats')
+    examination_stats= graphene.Field('novaideo.graphql.schema.ExaminationStats')
+    nb_followers = graphene.Int()
 
     def resolve_created_at(self, args, context, info):
         return self.created_at.isoformat()
@@ -60,3 +63,12 @@ class IEntity(relay.Node):
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
         return get_actions(self, context, args)
+
+    def resolve_evaluation_stats(self, args, context, info):  # pylint: disable=W0613
+        return self
+
+    def resolve_examination_stats(self, args, context, info):  # pylint: disable=W0613
+        return self
+
+    def resolve_nb_followers(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, 'len_selections', 0)

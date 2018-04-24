@@ -246,7 +246,9 @@ class Idea(VersionableEntity, DuplicableEntity,
     def relevant_data(self):
         return [getattr(self, 'title', ''),
                 getattr(self, 'text', ''),
-                ', '.join(self.keywords)]
+                ', '.join(self.keywords),
+                getattr(self.author, 'title',
+                        getattr(self.author, '__name__', ''))]
 
     def __setattr__(self, name, value):
         super(Idea, self).__setattr__(name, value)

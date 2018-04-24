@@ -16,7 +16,10 @@ const Translations = {
       imageSlider: {
         downLoadImage: "Cliquer pour télécharger",
         downLoadImageSize: "Cliquer pour télécharger (%{size})"
-      }
+      },
+      search: "Rechercher sur la plateforme",
+      searchData: "résultats de recherche pour : ",
+      searchData_1: "résultat de recherche pour : "
     },
     idea: {
       private: "Privée",
@@ -52,7 +55,7 @@ const Translations = {
           description: "Suivre"
         },
         deselect: {
-          title: "Retirer de mes suivis",
+          title: "Ne plus suivre",
           description: "Retirer de mes suivis"
         },
         addreaction: {
@@ -138,7 +141,7 @@ const Translations = {
       },
       usermanagement: {
         discuss: {
-          title: "Discuter",
+          title: "Message",
           description: "Discuter"
         }
       }
@@ -222,10 +225,18 @@ const Translations = {
       opposition: "Oppositions",
       opposition_1: "Opposition"
     },
+    examination: {
+      examin: "Examens",
+      examin_1: "Examen",
+      favorable: "Favorable",
+      unfavorable: "Défavorable",
+      toStudy: "À retravailler"
+    },
     date: {
       format: "D MMMM YYYY",
       format2: "DD-MM-YYYY",
       format3: "D MMMM YYYY à h [h] mm [min] ss [s]",
+      format4: "D MMMM YYYY à h [h] mm [min]",
       today: "[Aujourd'hui]",
       yesterday: "[Hier]",
       todayFormat: "[Aujourd'hui] à h [h] mm [min] ss [s]",
@@ -237,7 +248,12 @@ const Translations = {
     user: {
       myContents: "Mes contenus",
       myFollowings: "Mes suivis",
-      myEvaluations: "Mes appréciations"
+      myEvaluations: "Mes appréciations",
+      folloers: "Suivis par %{count} personnes",
+      folloers_1: "Suivis par une personne",
+      folloers_0: "N'est suivis par personne",
+      search: "Rechercher dans les contenus de %{name}",
+      subscribed: "Inscrit le %{date}"
     }
   },
   en: {
@@ -256,7 +272,10 @@ const Translations = {
       imageSlider: {
         downLoadImage: "Click to download",
         downLoadImageSize: "Click to download (%{size})"
-      }
+      },
+      search: "Search on the platform",
+      searchData: "search results for: ",
+      searchData_1: "search result for : "
     },
     idea: {
       private: "Private",
@@ -463,10 +482,18 @@ const Translations = {
       opposition: "Oppositions",
       opposition_1: "Opposition"
     },
+    examination: {
+      examin: "Examinations",
+      examin_1: "Examination",
+      favorable: "Positive",
+      unfavorable: "Negative",
+      toStudy: "To be re-worked upon"
+    },
     date: {
       format: "MMMM Do, YYYY",
       format2: "YYYY-MM-DD",
       format3: "MMMM Do, YYYY at h [h] mm [min] ss [s]",
+      format4: "MMMM Do, YYYY at h [h] mm [min]",
       today: "[Today]",
       yesterday: "[Yesterday]",
       todayFormat: "[Today at] h [h] mm [min] ss [s]",
@@ -478,7 +505,12 @@ const Translations = {
     user: {
       myContents: "My contents",
       myFollowings: "My followings",
-      myEvaluations: "My evaluations"
+      myEvaluations: "My evaluations",
+      folloers: "Followed by %{count} members",
+      folloers_1: "Followed by one member",
+      folloers_0: "Not followed",
+      search: "Search on the %{name} contents",
+      subscribed: "Subscribed the %{date}"
     }
   }
 };

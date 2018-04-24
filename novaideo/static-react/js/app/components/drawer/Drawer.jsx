@@ -12,7 +12,7 @@ import { I18n } from 'react-redux-i18n';
 
 import { STYLE_CONST } from '../../constants';
 import ChannelsDrawer from './channels/ChannelsDrawer';
-import UserMenu from '../user/UserMenu';
+import UserMainMenu from '../user/UserMainMenu';
 import UserDrawer from './contents/UserDrawer';
 import { updateApp, closeDrawer } from '../../actions/collaborationAppActions';
 import OverlaidTooltip from '../common/OverlaidTooltip';
@@ -88,7 +88,7 @@ function DrawerContent({ drawerApp, switchDrawer, classes }) {
           {isChatApp ? <ExitToAppIcon /> : <ChatIcon />}
         </IconButton>
       </OverlaidTooltip>
-      <UserMenu />
+      <UserMainMenu />
       <div className={classes.drawersContainer}>
         <Slide in={isChatApp} direction="right">
           <div className={classes.channelsDrawer}>
