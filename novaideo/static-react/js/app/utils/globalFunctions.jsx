@@ -107,7 +107,10 @@ export const isMobile = {
   }
 };
 
-export const youtubeRegexp = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
+export const REGEXP = {
+  youtube: /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i,
+  sketchfab: /(?:sketchfab\.com\/(show|models)\/(.*))/i
+};
 
 export function initalsGenerator(name) {
   return name

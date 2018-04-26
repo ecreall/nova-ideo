@@ -373,7 +373,8 @@ def extract_urls_metadata(urls, save_images=False):
     for url in urls:
         page = ''
         try:
-            resp = urllib.request.urlopen(url)
+            resp = urllib.request.urlopen(
+                urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}))
             url = resp.url
             page = resp.read()
             url_metadata = metadata_parser.MetadataParser(

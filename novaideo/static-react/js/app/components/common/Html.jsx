@@ -3,8 +3,7 @@ import React from 'react';
 import activeHtml from 'react-active-html';
 
 import { transformLinksInHtml } from '../../utils/linkify';
-import { youtubeRegexp } from '../../utils/globalFunctions';
-import YoutubeTheater from './YoutubeTheater';
+import Embed from './Embed';
 
 type Props = {
   body: string,
@@ -14,12 +13,7 @@ type Props = {
 const bodyReplacementComponents = {
   iframe: (attributes) => {
     const { src } = attributes;
-    const regexpMatch = src.match(youtubeRegexp);
-    if (regexpMatch) {
-      const videoId = regexpMatch[1];
-      return <YoutubeTheater videoId={videoId} />;
-    }
-    return <iframe title="post-embed" {...attributes} />;
+    return <Embed url={src} default={<iframe title="post-embed" {...attributes} />}/>
   }
 };
 

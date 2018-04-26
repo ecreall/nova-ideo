@@ -2,8 +2,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 
-import { youtubeRegexp } from '../../utils/globalFunctions';
-import YoutubeTheater from './YoutubeTheater';
+import Embed from './Embed';
 import ImagesPreview from './ImagesPreview';
 
 const styles = (theme) => {
@@ -86,7 +85,6 @@ const styles = (theme) => {
 };
 
 export const DumbUrl = ({ data, classes }) => {
-  const isYoutubeVideo = data.url.match(youtubeRegexp);
   return (
     <div className={classes.container}>
       {data.authorName || data.authorAvatar
@@ -117,19 +115,23 @@ export const DumbUrl = ({ data, classes }) => {
       <span className={classes.description}>
         {data.description}
       </span>
-      {!isYoutubeVideo &&
-        data.imageUrl &&
-        <ImagesPreview
-          images={[{ url: data.imageUrl, variations: [] }]}
-          context={{
-            title: data.title,
-            author: {
-              title: data.authorName || data.siteName,
-              picture: { url: data.authorAvatar || data.favicon, strictUrl: true }
-            }
-          }}
-        />}
-      {isYoutubeVideo && <YoutubeTheater videoId={isYoutubeVideo[1]} />}
+      <Embed
+        url={data.url}
+        imageUrl={data.imageUrl}
+        default={
+          data.imageUrl &&
+          <ImagesPreview
+            images={[{ url: data.imageUrl, variations: [] }]}
+            context={{
+              title: data.title,
+              author: {
+                title: data.authorName || data.siteName,
+                picture: { url: data.authorAvatar || data.favicon, strictUrl: true }
+              }
+            }}
+          />
+        }
+      />
       {data.authorName || data.authorAvatar
         ? <div className={classes.header}>
           <img alt="favicon" className={classes.headerAvatar} src={data.favicon} />
