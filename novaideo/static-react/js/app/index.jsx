@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Router, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import createAppStore from './store';
 import getApolloClient from './client';
@@ -13,14 +14,16 @@ import hashLinkScroll from './utils/hashLinkScroll';
 
 require('smoothscroll-polyfill').polyfill();
 
-const store = createAppStore();
+const storeData = createAppStore();
 
 const renderRoutes = (routes) => {
   ReactDOM.render(
     <AppContainer>
-      <ApolloProvider client={getApolloClient(store)}>
-        <Provider store={store}>
-          <Router history={browserHistory} routes={routes} onUpdate={hashLinkScroll} />
+      <ApolloProvider client={getApolloClient(storeData.store)}>
+        <Provider store={storeData.store}>
+          <PersistGate loading={null} persistor={storeData.persistor}>
+            <Router history={browserHistory} routes={routes} onUpdate={hashLinkScroll} />
+          </PersistGate>
         </Provider>
       </ApolloProvider>
     </AppContainer>,

@@ -10,7 +10,6 @@ const styles = {
     width: 350
   },
   message: {
-    paddingLeft: 15,
     marginBottom: 15,
     marginTop: 15,
     fontSize: 15,

@@ -86,10 +86,11 @@ def accept_preregistration(request, preregistration, root):
 
 
 def login_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous', 'Collaborator'))
+    return has_role(role=('Anonymous', ))
 
 
 class LogIn(InfiniteCardinality):
+    tags = ['main-menu', 'instance']
     title = _('Log in')
     access_controled = True
     context = INovaIdeoApplication
@@ -108,6 +109,7 @@ def logout_roles_validation(process, context):
 
 
 class LogOut(InfiniteCardinality):
+    tags = ['main-menu', 'instance']
     title = _('Log out')
     access_controled = True
     context = INovaIdeoApplication
@@ -138,7 +140,7 @@ class Edit(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
-    tags = ['primary', 'menu']
+    tags = ['primary', 'menu', 'main-menu']
     title = _('Edit')
     submission_title = _('Save')
     context = IPerson

@@ -3,7 +3,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
-import { I18n } from 'react-redux-i18n';
+import { Translate } from 'react-redux-i18n';
 
 import Actions from '../../graphql/queries/Actions.graphql';
 import { MenuList } from '../common/menu';
@@ -20,11 +20,11 @@ const styles = {
   }
 };
 
-const getFields = (actions, onActionClick, theme) => {
+export const getFields = (actions, onActionClick, theme, titlesProps = {}) => {
   return actions.map((action) => {
     const isDanger = action.tags.includes(ACTIONS.danger);
     return {
-      title: I18n.t(action.title),
+      title: <Translate value={action.title} {...titlesProps} />,
       color: isDanger && theme.palette.danger.primary,
       hoverColor: isDanger && theme.palette.danger.primary,
       Icon: action.icon,

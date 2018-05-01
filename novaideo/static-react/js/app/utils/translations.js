@@ -2,6 +2,9 @@
 const Translations = {
   fr: {
     common: {
+      signIn: "Se connecter",
+      failedLogin: "Désolé, vous avez entré un identifiant ou un mot de passe incorrect.",
+      needLogin: "Pour réaliser cette action vous devez vous connecter",
       pinned: "Épinglés",
       moreResult: "Afficher plus de résultats",
       emojis: {
@@ -143,6 +146,12 @@ const Translations = {
         discuss: {
           title: "Message",
           description: "Discuter"
+        },
+        login: {
+          title: "Se connecter à %{siteTitle}"
+        },
+        logout: {
+          title: "Se déconnecter de %{siteTitle}"
         }
       }
     },
@@ -258,6 +267,8 @@ const Translations = {
   },
   en: {
     common: {
+      signIn: "Sign in",
+      failedLogin: "Sorry, you entered an incorrect identifier or password.",
       pinned: "Pinned",
       moreResult: "See more results",
       emojis: {
@@ -399,6 +410,12 @@ const Translations = {
         discuss: {
           title: "Discuss",
           description: "Discuss"
+        },
+        login: {
+          title: "Sign in to %{siteTitle}"
+        },
+        logout: {
+          title: "Sign out from %{siteTitle}"
         }
       }
     },

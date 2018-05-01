@@ -1,4 +1,5 @@
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
+import { persistStore } from 'redux-persist';
 
 import configureStore from './configureStore';
 import middlewares from './middlewares';
@@ -19,5 +20,5 @@ export default function createAppStore(initialState) {
   syncTranslationWithStore(store);
   store.dispatch(loadTranslations(getTranslations()));
   store.dispatch(setLocale(userLocale));
-  return store;
+  return { store: store, persistor: persistStore(store) };
 }

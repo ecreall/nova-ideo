@@ -60,7 +60,10 @@ const styles = {
     boxShadow: '0 0px 7px rgba(0, 0, 0, 0.6)',
     top: 0,
     right: 0,
-    margin: 15
+    margin: 15,
+    '&:hover': {
+      backgroundColor: 'rgb(187, 187, 187)'
+    }
   },
   youtubeEmbedOpen: {
     top: 0,

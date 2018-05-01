@@ -69,6 +69,14 @@ export const PROCESSES = {
   usermanagement: {
     id: 'usermanagement',
     nodes: {
+      login: {
+        nodeId: 'login',
+        title: 'processes.usermanagement.login.title'
+      },
+      logout: {
+        nodeId: 'logout',
+        title: 'processes.usermanagement.logout.title'
+      },
       discuss: {
         nodeId: 'discuss',
         title: 'processes.usermanagement.discuss.title',
@@ -154,7 +162,9 @@ export const ACTIONS = {
   entity: 'entity',
   global: 'global',
   other: 'other',
-  menu: 'menu'
+  menu: 'menu',
+  mainMenu: 'main-menu',
+  site: 'site'
 };
 
 export const STATE = {

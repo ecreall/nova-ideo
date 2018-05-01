@@ -16,7 +16,6 @@ const styles = (theme) => {
     container: {
       backgroundColor: 'white',
       paddingLeft: 20,
-      paddingRight: 20,
       flex: 1,
       height: '100%'
     },

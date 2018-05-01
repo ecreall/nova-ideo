@@ -74,13 +74,14 @@ const styles = (theme) => {
 };
 
 const EmojiTitle = ({ emoji, users, isUserEmoji, currentUser, classes }) => {
-  const names = users
-    .filter((user) => {
+  const allUsers = currentUser
+    ? users.filter((user) => {
       return currentUser.id !== user.node.id;
     })
-    .map((user) => {
-      return user.node.title;
-    });
+    : users;
+  const names = allUsers.map((user) => {
+    return user.node.title;
+  });
   if (isUserEmoji) names.push(I18n.t('common.emojis.currentUserTooltip'));
   return (
     <span>

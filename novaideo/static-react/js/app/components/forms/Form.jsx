@@ -138,7 +138,7 @@ export class DumbForm extends React.Component {
           appBarContent: classNames(classes.appBarContent, {
             [classes.fullAppBarContent]: integretedForm
           }),
-          paper: classNames({
+          paper: classNames(classes.paper, {
             [classes.smallPaper]: !integretedForm
           })
         }}

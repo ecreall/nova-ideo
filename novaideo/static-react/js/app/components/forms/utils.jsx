@@ -91,49 +91,62 @@ export const renderSelect = ({ input: { value, onChange }, options, label, canAd
   return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
 };
 
-const styles = {
-  root: {
-    backgroundColor: 'white',
-    border: '1px solid #a0a0a2',
-    borderRadius: 4,
-    boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
-    alignItems: 'center',
-    height: 35
-  },
-  container: {
-    width: '100%',
-    marginBottom: 10
-  },
-  input: {
-    padding: '10px 10px 10px',
-    fontSize: 15,
-    '&::placeholder': {
-      color: '#000',
+const styles = (theme) => {
+  return {
+    root: {
+      backgroundColor: 'white',
+      border: '1px solid #a0a0a2',
+      borderRadius: 4,
+      boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
+      alignItems: 'center',
+      height: 35
+    },
+    errorRoot: {
+      borderColor: theme.palette.danger.primary
+    },
+    container: {
+      width: '100%',
+      marginBottom: 10
+    },
+    input: {
+      padding: '10px 10px 10px',
       fontSize: 15,
-      fontWeight: 400,
-      opacity: '.375'
+      '&::placeholder': {
+        color: '#000',
+        fontSize: 15,
+        fontWeight: 400,
+        opacity: '.375'
+      }
+    },
+    helper: {
+      marginTop: 4,
+      fontSize: 11
+    },
+    error: {
+      marginTop: 4,
+      paddingLeft: 5,
+      fontSize: 11,
+      color: theme.palette.danger.primary,
+      fontWeight: 'bold'
+    },
+    label: {
+      fontWeight: 700,
+      margin: '0 0 .25rem',
+      display: 'block',
+      fontSize: 13
+    },
+    labelOptional: {
+      fontWeight: '400 !important',
+      color: '#717274 !important'
     }
-  },
-  helper: {
-    marginTop: 4,
-    fontSize: 11
-  },
-  label: {
-    fontWeight: 700,
-    margin: '0 0 .25rem',
-    display: 'block',
-    fontSize: 13
-  },
-  labelOptional: {
-    fontWeight: '400 !important',
-    color: '#717274 !important'
-  }
+  };
 };
-export const renderTextInput = withStyles(
-  styles
-)(
+export const renderTextInput = withStyles(styles, {
+  withTheme: true
+})(
   ({
     input: { name, value, onChange },
+    meta: { touched, error },
     multiline,
     placeholder,
     endAdornment,
@@ -142,6 +155,8 @@ export const renderTextInput = withStyles(
     helper,
     optional,
     autoFocus,
+    type,
+    autoComplete,
     classes
   }) => {
     return (
@@ -155,6 +170,8 @@ export const renderTextInput = withStyles(
               </span>}
           </label>}
         <Input
+          type={type || 'text'}
+          autoComplete={autoComplete}
           autoFocus={autoFocus}
           fullWidth
           disableUnderline
@@ -164,7 +181,9 @@ export const renderTextInput = withStyles(
           onChange={onChange}
           placeholder={placeholder}
           classes={{
-            root: classes.root,
+            root: classNames(classes.root, {
+              [classes.errorRoot]: touched && error
+            }),
             input: classes.input
           }}
           endAdornment={
@@ -176,6 +195,11 @@ export const renderTextInput = withStyles(
         {helper &&
           <FormHelperText className={classes.helper} id={name}>
             {helper}
+          </FormHelperText>}
+        {touched &&
+          error &&
+          <FormHelperText className={classes.error} id={name}>
+            {error}
           </FormHelperText>}
       </div>
     );

@@ -48,7 +48,7 @@ function CollaborationApp({ children, active, left, account, smallScreen, classe
           <div className={classes.maxContainer}>
             <Grid container>
               <Grid item xs={12} md={4}>
-                {!smallScreen ? <User id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
+                {account && !smallScreen ? <User id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
               </Grid>
               <Grid item xs={12} md={6}>
                 {children}

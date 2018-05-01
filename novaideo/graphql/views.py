@@ -120,3 +120,21 @@ def logout(context, request):
         'status': True
     }
     return Response(json=data, status=200, headerlist=headers)
+
+
+@view_config(request_method='POST', name='json_validate_login', renderer='json')
+def validate_login(context, request):
+    login_data = json.loads(request.body.decode())
+    login = login_data.get('login', None)
+    user= None
+    if login:
+        novaideo_catalog = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        identifier_index = novaideo_catalog['identifier']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any([IPerson.__identifier__]) &\
+            identifier_index.any([login])
+        users = list(query.execute().all())
+        user = users[0] if users else None
+    
+    return {'status': True if user else False}

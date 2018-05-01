@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import PlayIcon from 'material-ui-icons/PlayCircleOutline';
+import ThreeDRotationIcon from 'material-ui-icons/ThreeDRotation';
 import CloseIcon from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
 
@@ -60,7 +60,10 @@ const styles = {
     boxShadow: '0 0px 7px rgba(0, 0, 0, 0.6)',
     top: 0,
     right: 0,
-    margin: 15
+    margin: 15,
+    '&:hover': {
+      backgroundColor: 'rgb(187, 187, 187)'
+    }
   },
   sketchfabEmbedOpen: {
     top: 0,
@@ -105,7 +108,7 @@ export class DumbSketchfabEmbed extends React.Component {
           <div className={classes.sketchfabThumbnail} style={{ backgroundImage: `url(${imageUrl})` }}>
             <div className={classes.playButtonContainer}>
               <IconButton className={classes.playButton} onClick={this.openEmbed}>
-                <PlayIcon className={classes.playButtonIcon} />
+                <ThreeDRotationIcon className={classes.playButtonIcon} />
               </IconButton>
             </div>
           </div>

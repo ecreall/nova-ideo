@@ -9,7 +9,7 @@ from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
 from dace.util import get_obj
-from dace.objectofcollaboration.principal.util import has_role
+from dace.objectofcollaboration.principal.util import has_role, get_current
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
@@ -284,10 +284,11 @@ class Person(Node, graphene.ObjectType):
         return getattr(self, 'is_anonymous', False)
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
-        contents = self.get_contents(context.user) \
+        user = get_current(context)
+        contents = self.get_contents(user) \
             if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
         user_ideas = [get_oid(o) for o in contents]
-        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=context.user, intersect=user_ideas)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
@@ -609,16 +610,19 @@ class Query(graphene.ObjectType):
     )
 
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
-        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=context.user)
+        user = get_current(context)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=user)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_all_channels(self, args, context, info):  # pylint: disable=W0613
-        total_count, oids = get_entities([Iidea, IPerson], ['published', 'active'], args, info, user=context.user)
+        user = get_current(context)
+        total_count, oids = get_entities([Iidea, IPerson], ['published', 'active'], args, info, user=user)
         return ResolverLazyList(oids, EntityData, total_count=total_count)
 
     def resolve_all_contents(self, args, context, info):  # pylint: disable=W0613
         # todo add questions...
-        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft', 'active'], args, info, user=context.user)
+        user = get_current(context)
+        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft', 'active'], args, info, user=user)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_account(self, args, context, info):  # pylint: disable=W0613

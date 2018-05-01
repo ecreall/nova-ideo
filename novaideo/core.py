@@ -344,7 +344,7 @@ class Emojiable(Entity):
             self.users_emoji.pop(user_oid)
 
     def get_user_emoji(self, user):
-        user_oid = get_oid(user)
+        user_oid = get_oid(user, None)
         return self.users_emoji.get(user_oid, None)
 
     def can_add_reaction(self, user, process):

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
 
+import Login from '../forms/processes/userProcess/Login';
+import { filterActions } from '../../utils/processes';
+import { ACTIONS, PROCESSES } from '../../processes';
 import CreateIdeaForm from '../forms/processes/ideaProcess/Create';
 import UserAvatar from '../user/UserAvatar';
 
@@ -65,10 +68,25 @@ export class DumbCreateIdeaHome extends React.Component {
   };
 
   render() {
-    const { account, classes } = this.props;
+    const { rootActions, account, classes } = this.props;
+    const { open } = this.state;
+    const userProcessNodes = PROCESSES.usermanagement.nodes;
+    const loginAction = filterActions(rootActions, {
+      tags: [ACTIONS.mainMenu, ACTIONS.site],
+      behaviorId: userProcessNodes.login.nodeId
+    })[0];
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
-    const { open } = this.state;
+    const form = account
+      ? <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" />
+      : (<Login
+        form="user-login"
+        key="user-login"
+        action={loginAction}
+        onClose={this.closeForm}
+        messageType="warning"
+        message={I18n.t('common.needLogin')}
+      />);
     return [
       <div className={classes.fromContainer}>
         <div className={classes.left}>
@@ -80,14 +98,15 @@ export class DumbCreateIdeaHome extends React.Component {
           </div>
         </div>
       </div>,
-      open ? <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" /> : null
+      open ? form : null
     ];
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    account: state.globalProps.account
+    account: state.globalProps.account,
+    rootActions: state.globalProps.rootActions
   };
 };
 

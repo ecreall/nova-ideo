@@ -53,7 +53,8 @@ const cache = new InMemoryCache({
 });
 
 // persistCache({
-//   cache: cache
+//   cache: cache,
+//   storage: window.localStorage
 // });
 
 export default function getApolloClient(store) {

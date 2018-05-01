@@ -4,11 +4,17 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
 import Avatar from 'material-ui/Avatar';
+import { Query } from 'react-apollo';
 
+import Actions from '../../graphql/queries/Actions.graphql';
 import { DEFAULT_LOGO } from '../../constants';
 import AccountInformation from './AccountInformation';
 import { MenuList, Menu } from '../common/menu';
 import ShortcutsManager from '../common/ShortcutsManager';
+import { getFields } from '../common/MenuMore';
+import { filterActions } from '../../utils/processes';
+import { ACTIONS } from '../../processes';
+import UserProcessManager from './UserProcessManager';
 
 const styles = (theme) => {
   return {
@@ -145,8 +151,10 @@ export class DumbUserMainMenu extends React.Component {
   };
 
   render() {
-    const { site, classes, theme, activator } = this.props;
+    const { account, rootActions, site, processManager, classes, theme, activator } = this.props;
     const { menu } = this.state;
+    const siteActions = filterActions(rootActions, { tags: [ACTIONS.mainMenu, ACTIONS.site] });
+    const siteFields = getFields(siteActions, processManager.execute, theme, { siteTitle: site.title });
     return (
       <ShortcutsManager domain="APP" shortcuts={{ OPEN_USER_MENU: this.handleOpen }}>
         <Menu
@@ -170,44 +178,63 @@ export class DumbUserMainMenu extends React.Component {
                     </div>
                     <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
                   </div>
-                  <AccountInformation color={theme.palette.primary.light} />
+                  {account && <AccountInformation color={theme.palette.primary.light} />}
                 </div>}
             </div>
           }
         >
-          <MenuList
-            header={this.userSectionHeader()}
-            fields={[
-              {
-                title: 'Une action importante'
-              },
-              {
-                title: 'Un autre action importante'
-              }
-            ]}
-          />
-          <MenuList
-            header={this.siteSectionHeader()}
-            fields={[
-              {
-                title: 'Une action importante'
-              },
-              {
-                title: 'Un autre action importante'
-              }
-            ]}
-          />
+          {account
+            ? <Query
+              notifyOnNetworkStatusChange
+              fetchPolicy="cache-and-network"
+              query={Actions}
+              variables={{
+                context: account.oid,
+                processIds: [],
+                nodeIds: [],
+                processTags: [],
+                actionTags: [ACTIONS.mainMenu]
+              }}
+            >
+              {(result) => {
+                return (
+                  <MenuList
+                    header={this.userSectionHeader()}
+                    fields={[
+                      {
+                        title: 'Une action importante'
+                      },
+                      {
+                        title: 'Un autre action importante'
+                      }
+                    ]}
+                  />
+                );
+              }}
+            </Query>
+            : null}
+          <MenuList header={this.siteSectionHeader()} fields={siteFields} />
         </Menu>
       </ShortcutsManager>
     );
   }
 }
 
+function UserMainMenuWithProcessManager(props) {
+  const { account, onActionClick } = props;
+  return (
+    <UserProcessManager person={account} onActionClick={onActionClick}>
+      <DumbUserMainMenu {...props} />
+    </UserProcessManager>
+  );
+}
+
 export const mapStateToProps = (state) => {
   return {
     site: state.globalProps.site,
+    rootActions: state.globalProps.rootActions,
     account: state.globalProps.account
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(DumbUserMainMenu));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(UserMainMenuWithProcessManager));

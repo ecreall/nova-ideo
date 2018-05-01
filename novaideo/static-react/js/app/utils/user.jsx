@@ -1,3 +1,18 @@
+export function asyncValidateLogin(login) {
+  const url = `${window.location.origin}/json_validate_login`;
+  return fetch(url, {
+    method: 'post',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ login: login })
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    // login failed
+    return undefined;
+  });
+}
+
 export function asyncLogin(login, password, token) {
   const url = `${window.location.origin}/json_login`;
   return fetch(url, {

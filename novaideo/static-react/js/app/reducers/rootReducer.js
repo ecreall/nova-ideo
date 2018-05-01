@@ -12,7 +12,7 @@ import * as actionTypes from '../actions/actionTypes';
 // 03515792dedc4f8bbb1c77cdb0142fd6
 
 const initialUserTest = {
-  token: '03515792dedc4f8bbb1c77cdb0142fd6',
+  token: '',
   loadingState: 'completed'
 };
 export const user = (state = initialUserTest, action) => {
@@ -282,7 +282,7 @@ export const history = (state = initNavigationState, action) => {
   case actionTypes.UPDATE_NAVIGATION: {
     const navigation = state.navigation;
     const newPrevious = action.updatePrevious ? navigation.location : navigation.previous;
-    return { ...state, ...{ navigation: { location: action.location, previous: newPrevious } } };
+    return { ...state, navigation: { location: action.location, previous: newPrevious } };
   }
   default:
     return state;

@@ -48,10 +48,6 @@ class Main extends React.Component {
     // const isConnected = await NetInfo.isConnected.fetch();
     const isConnected = true;
     // NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
-    // await Font.loadAsync({
-    //   'Roboto-Regular': FONTS.robotoRegular,
-    //   'Roboto-Medium': FONTS.robotoMedium
-    // });
     const { user, network, client } = this.props;
     // connect the user if he is not logged in (only if online).
     // When Offline mode is enabled (isConnected === false), we must display all of stored data

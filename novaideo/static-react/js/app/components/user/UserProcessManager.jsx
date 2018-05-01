@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
+import { withApollo, graphql } from 'react-apollo';
 import { Translate } from 'react-redux-i18n';
 
 import { goTo, get } from '../../utils/routeMap';
@@ -9,11 +9,28 @@ import { PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
+import Login from '../forms/processes/userProcess/Login';
+import { userLogout } from '../../actions/authActions';
 
 export class DumbUserProcessManager extends React.Component {
+  state = {
+    action: null
+  };
+
   onActionExecuted = () => {
     const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
+  };
+
+  beforeFormOpened = () => {
+    const { onFormOpened } = this.props;
+    if (onFormOpened) onFormOpened();
+  };
+
+  afterFormClosed = () => {
+    const { onFormClosed } = this.props;
+    if (onFormClosed) onFormClosed();
+    // this.onActionExecuted();
   };
 
   execute = (action) => {
@@ -25,7 +42,13 @@ export class DumbUserProcessManager extends React.Component {
         goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
+      switch (action.behaviorId) {
+      case userProcessNodes.login.nodeId:
+        this.displayForm(action);
+        break;
+      default:
+        globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
+      }
     } else {
       const { selectUser, deselectUser } = this.props;
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
@@ -36,9 +59,42 @@ export class DumbUserProcessManager extends React.Component {
       case processNodes.deselect.nodeId:
         deselectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
+      case userProcessNodes.logout.nodeId:
+        this.props
+          .userLogout()
+          .then(({ value }) => {
+            if (value.status) {
+              this.props.client.resetStore();
+            }
+          })
+          .catch(() => {
+            return null;
+          });
+        break;
       default:
         globalProps.showMessage(<Translate value="comingSoon" />);
       }
+    }
+  };
+  onFormClose = () => {
+    this.setState({ action: null });
+    this.afterFormClosed();
+  };
+
+  displayForm = (action) => {
+    this.beforeFormOpened();
+    this.setState({ action: action });
+  };
+
+  renderForm = () => {
+    const { action } = this.state;
+    if (!action) return null;
+    const userProcessNodes = PROCESSES.usermanagement.nodes;
+    switch (action.behaviorId) {
+    case userProcessNodes.login.nodeId:
+      return <Login form="user-login" key="user-login" action={action} onClose={this.onFormClose} />;
+    default:
+      return null;
     }
   };
 
@@ -48,7 +104,7 @@ export class DumbUserProcessManager extends React.Component {
         processManager: this
       });
     });
-    return children;
+    return [children, this.renderForm()];
   }
 }
 
@@ -68,6 +124,10 @@ const UserProcessManagerWithActions = graphql(Select, {
   })(DumbUserProcessManager)
 );
 
+export const mapDispatchToProps = {
+  userLogout: userLogout
+};
+
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
@@ -75,4 +135,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(UserProcessManagerWithActions);
+export default withApollo(connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(UserProcessManagerWithActions));

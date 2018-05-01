@@ -14,6 +14,8 @@ export const STICKER_MAN_2 = STATIC_URL + require('./assets/sticker-man-2.svg');
 
 export const NO_COMMENT = STATIC_URL + require('./assets/no-comment.svg');
 
+export const NOT_LOGGED = STATIC_URL + require('./assets/not-logged.svg');
+
 export const CT_COMMENT = STATIC_URL + require('./assets/ct-comment.svg');
 
 export const USER_BACKGROUND = STATIC_URL + require('./assets/background-person.png');

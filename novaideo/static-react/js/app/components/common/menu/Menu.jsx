@@ -53,10 +53,12 @@ export class DumbMenuWithActivator extends React.Component {
     const { id, activator, keepMounted, anchorOrigin, classes } = this.props;
     const { anchorEl } = this.state;
     const children = React.Children.map(this.props.children, (child) => {
-      return React.cloneElement(child, {
-        open: this.open,
-        close: this.close
-      });
+      return child
+        ? React.cloneElement(child, {
+          open: this.open,
+          close: this.close
+        })
+        : null;
     });
     const open = Boolean(anchorEl);
     return [
