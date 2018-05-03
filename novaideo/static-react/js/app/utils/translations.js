@@ -2,9 +2,10 @@
 const Translations = {
   fr: {
     common: {
+      you: "Vous",
       signIn: "Se connecter",
       failedLogin: "Désolé, vous avez entré un identifiant ou un mot de passe incorrect.",
-      needLogin: "Pour réaliser cette action vous devez vous connecter",
+      needLogin: "Vous devez être connecté pour effectuer cette action et plus encore. Veuillez vous connecter ou vous inscrire.",
       pinned: "Épinglés",
       moreResult: "Afficher plus de résultats",
       emojis: {
@@ -153,6 +154,11 @@ const Translations = {
         logout: {
           title: "Se déconnecter de %{siteTitle}"
         }
+      },
+      registrationmanagement: {
+        registration: {
+          title: "S'inscrire"
+        }
       }
     },
     channels: {
@@ -201,7 +207,9 @@ const Translations = {
         files: "Les messages avec des fichiers attachés"
       },
       unreadMessages: "nouveaux messages",
-      unreadMessages_1: "nouveau message"
+      unreadMessages_1: "nouveau message",
+      noUserCtComment: "Vous ne pouvez pas envoyer des messages à #%{name}. Veuillez vous connecter avant.",
+      noUserCtReply: "Vous ne pouvez pas répendre à %{name}. Veuillez vous connecter avant."
     },
     forms: {
       optional: "(facultatif)",
@@ -262,13 +270,18 @@ const Translations = {
       folloers_1: "Suivis par une personne",
       folloers_0: "N'est suivis par personne",
       search: "Rechercher dans les contenus de %{name}",
-      subscribed: "Inscrit le %{date}"
+      subscribed: "Inscrit le %{date}",
+      noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
+      noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
+      noUserChannels: "Pour accéder à vos discussion vous devez être connecté."
     }
   },
   en: {
     common: {
+      you: "You",
       signIn: "Sign in",
       failedLogin: "Sorry, you entered an incorrect identifier or password.",
+      needLogin: "You must be logged in to perform this action and more. Please sign in or register",
       pinned: "Pinned",
       moreResult: "See more results",
       emojis: {
@@ -417,6 +430,11 @@ const Translations = {
         logout: {
           title: "Sign out from %{siteTitle}"
         }
+      },
+      registrationmanagement: {
+        registration: {
+          title: "Register"
+        }
       }
     },
 
@@ -466,7 +484,9 @@ const Translations = {
         files: "Files"
       },
       unreadMessages: "new messages",
-      unreadMessages_1: "new message"
+      unreadMessages_1: "new message",
+      noUserCtComment: "You cannot send a message to #%{name}. Please login before.",
+      noUserCtReply: "You cannot answer %{name}. Please login before."
     },
     forms: {
       optional: "(optional)",
@@ -527,7 +547,10 @@ const Translations = {
       folloers_1: "Followed by one member",
       folloers_0: "Not followed",
       search: "Search on the %{name} contents",
-      subscribed: "Subscribed the %{date}"
+      subscribed: "Subscribed the %{date}",
+      noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
+      noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
+      noUserChannels: "Pour accéder à vos discussion vous devez être connecté."
     }
   }
 };

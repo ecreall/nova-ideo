@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
+import IconButton from 'material-ui/IconButton';
 
 import { iconAdapter } from '../../utils/globalFunctions';
 
@@ -14,6 +15,7 @@ const styles = (theme) => {
       borderLeftWidth: 5,
       borderRadius: 6,
       display: 'flex',
+      alignItems: 'center',
       '&.info': {
         borderLeftColor: theme.palette.info[500]
       },
@@ -30,7 +32,24 @@ const styles = (theme) => {
     icon: {
       marginRight: 10,
       fontSize: '22px !important',
-      marginTop: -7,
+      '&.info': {
+        color: theme.palette.info[500]
+      },
+      '&.danger': {
+        color: theme.palette.danger.primary
+      },
+      '&.warning': {
+        color: theme.palette.warning[500]
+      },
+      '&.success': {
+        color: theme.palette.success[500]
+      }
+    },
+    closeBtn: {
+      fontSize: 18,
+      height: 35,
+      width: 35,
+      marginLeft: 10,
       '&.info': {
         color: theme.palette.info[500]
       },
@@ -54,16 +73,38 @@ export const ALERTS_ICONS = {
   success: iconAdapter('mdi-set mdi-check-circle-outline')
 };
 
-export const DumbAlert = ({ type = 'info', classes, children }) => {
-  const Icon = ALERTS_ICONS[type];
-  return (
-    <div className={classNames(classes.container, type)}>
-      <Icon className={classNames(classes.icon, type)} />
-      <div>
-        {children}
+export class DumbAlert extends React.Component {
+  static defaultProps = {
+    type: 'info'
+  };
+
+  state = {
+    open: true
+  };
+
+  close = () => {
+    this.setState({ open: false });
+  };
+
+  render() {
+    const { type, dismissible, classes, children } = this.props;
+    const Icon = ALERTS_ICONS[type];
+    const CloseIcon = iconAdapter('mdi-set mdi-close');
+    const open = (dismissible && this.state.open) || !dismissible;
+    return (
+      open &&
+      <div className={classNames(classes.container, type)}>
+        <Icon className={classNames(classes.icon, type)} />
+        <div className={classes.messageContainer}>
+          {children}
+        </div>
+        {dismissible &&
+          <IconButton className={classNames(classes.closeBtn, type)} onClick={this.close}>
+            <CloseIcon />
+          </IconButton>}
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default withStyles(styles, { withTheme: true })(DumbAlert);

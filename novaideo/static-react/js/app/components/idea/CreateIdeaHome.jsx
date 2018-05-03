@@ -79,14 +79,7 @@ export class DumbCreateIdeaHome extends React.Component {
     const authorTitle = account && account.title;
     const form = account
       ? <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" />
-      : (<Login
-        form="user-login"
-        key="user-login"
-        action={loginAction}
-        onClose={this.closeForm}
-        messageType="warning"
-        message={I18n.t('common.needLogin')}
-      />);
+      : <Login action={loginAction} onClose={this.closeForm} messageType="warning" message={I18n.t('common.needLogin')} />;
     return [
       <div className={classes.fromContainer}>
         <div className={classes.left}>

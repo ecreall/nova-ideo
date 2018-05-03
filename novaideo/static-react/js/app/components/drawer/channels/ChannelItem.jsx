@@ -7,6 +7,7 @@ import CreateIcon from 'material-ui-icons/Create';
 import Badge from 'material-ui/Badge';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { convertFromRaw } from 'draft-js';
 
 import { goTo, get } from '../../../utils/routeMap';
 import UserAvatar from '../../user/UserAvatar';
@@ -119,7 +120,7 @@ export class DumbChannelItem extends React.PureComponent {
     const { classes, node, itemProps, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
     const editor = currentMessage && currentMessage.values && currentMessage.values.comment;
-    const hasMessage = editor && editor.getCurrentContent().getPlainText();
+    const hasMessage = editor && convertFromRaw(editor).getPlainText();
     if (!isSelected && hasMessage) {
       return (
         <ListItemIcon>

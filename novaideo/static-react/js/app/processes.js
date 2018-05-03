@@ -28,6 +28,13 @@ export const PROCESSES = {
         description: 'processes.ideamanagement.comment.description',
         color: '#d72b3f'
       },
+      commentAnonymous: {
+        nodeId: 'comment',
+        behaviorId: 'comment_anonymous',
+        title: 'processes.ideamanagement.comment.title',
+        description: 'processes.ideamanagement.comment.description',
+        color: '#d72b3f'
+      },
       support: {
         nodeId: 'support',
         title: 'processes.ideamanagement.support.title',
@@ -89,11 +96,27 @@ export const PROCESSES = {
       }
     }
   },
+  registrationmanagement: {
+    id: 'registrationmanagement',
+    nodes: {
+      registration: {
+        nodeId: 'select',
+        title: 'processes.registrationmanagement.registration.title',
+        description: 'processes.registrationmanagement.registration.title'
+      }
+    }
+  },
   novaideoabstractprocess: {
     id: 'novaideoabstractprocess',
     nodes: {
       select: {
         nodeId: 'select',
+        title: 'processes.novaideoabstractprocess.select.title',
+        description: 'processes.novaideoabstractprocess.select.title'
+      },
+      selectAnonymous: {
+        nodeId: 'select',
+        behaviorId: 'select_anonymous',
         title: 'processes.novaideoabstractprocess.select.title',
         description: 'processes.novaideoabstractprocess.select.title'
       },

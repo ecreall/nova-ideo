@@ -9,6 +9,8 @@ import classNames from 'classnames';
 
 import CommentQuery from '../../../graphql/queries/Comment.graphql';
 import FlatList from '../../common/FlatList';
+import Alert from '../../common/Alert';
+import LoginButton from '../../common/LoginButton';
 import { filterActions } from '../../../utils/processes';
 import CommentItem from '../CommentItem';
 import Illustration from '../../common/Illustration';
@@ -101,6 +103,24 @@ const styles = (theme) => {
       position: 'absolute',
       bottom: 7,
       width: 'calc(100% - 49px)'
+    },
+    alertsContainer: {
+      padding: 16,
+      position: 'absolute',
+      width: 'calc(100% - 32px)',
+      zIndex: 15
+    },
+    alertsContainerInline: {
+      position: 'initial'
+    },
+    alertContainer: {
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)'
+    },
+    alertMessageContainer: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
     }
   };
 };
@@ -144,33 +164,34 @@ export class RenderComment extends React.Component {
     }
   }
 
-  render() {
-    const {
-      id,
-      rightProps,
-      data,
-      customScrollbar,
-      dynamicDivider,
-      reverted,
-      inline,
-      ignorDrawer,
-      fullScreen,
-      fetchMoreOnEvent,
-      displayForm,
-      formTop,
-      formProps,
-      classes,
-      moreBtn,
-      NoItems
-    } = this.props;
+  renderAlert = () => {
+    const { data, inline, account, theme, classes } = this.props;
     const comment = data.node;
     const channel = comment && comment.channel;
-    const commentAction =
-      displayForm &&
-      comment &&
-      comment.actions &&
-      filterActions(comment.actions, { behaviorId: PROCESSES.commentmanagement.nodes.respond.nodeId })[0];
-    const commentForm =
+    if (!account) {
+      return (
+        <div className={classNames(classes.alertsContainer, { [classes.alertsContainerInline]: inline })}>
+          <Alert
+            dismissible
+            type="warning"
+            classes={{ container: classes.alertContainer, messageContainer: classes.alertMessageContainer }}
+          >
+            <div>
+              <Translate value="channels.noUserCtReply" name={channel ? channel.title : '...'} />
+            </div>
+            <LoginButton color={theme.palette.warning[500]} />
+          </Alert>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  renderCommentForm = (commentAction) => {
+    const { id, rightProps, data, inline, formProps, classes } = this.props;
+    const comment = data.node;
+    const channel = comment && comment.channel;
+    return (
       commentAction &&
       <Comment
         placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
@@ -185,10 +206,40 @@ export class RenderComment extends React.Component {
           container: inline ? classes.inlineFormContainer : classes.blockComments,
           containerAddon: inline && classes.inlineContainerAddon
         }}
-      />;
+      />
+    );
+  };
+
+  render() {
+    const {
+      id,
+      rightProps,
+      data,
+      customScrollbar,
+      dynamicDivider,
+      reverted,
+      inline,
+      ignorDrawer,
+      fullScreen,
+      fetchMoreOnEvent,
+      displayForm,
+      formTop,
+      classes,
+      moreBtn,
+      NoItems
+    } = this.props;
+    const comment = data.node;
+    const channel = comment && comment.channel;
+    const commentAction =
+      displayForm &&
+      comment &&
+      comment.actions &&
+      filterActions(comment.actions, { behaviorId: PROCESSES.commentmanagement.nodes.respond.nodeId })[0];
+    const commentForm = this.renderCommentForm(commentAction);
     return (
       <Grid className={classNames(classes.container, { [classes.containerInline]: inline })} container>
         <Grid className={classNames(classes.comments, { [classes.commentsInline]: inline })} item>
+          {this.renderAlert()}
           {formTop && commentForm}
           <FlatList
             Footer={ReplyFooter(classes, inline)}
@@ -231,7 +282,8 @@ export class RenderComment extends React.Component {
 
 export const mapStateToProps = (state) => {
   return {
-    rightProps: state.apps.chatApp.right.props
+    rightProps: state.apps.chatApp.right.props,
+    account: state.globalProps.account
   };
 };
 

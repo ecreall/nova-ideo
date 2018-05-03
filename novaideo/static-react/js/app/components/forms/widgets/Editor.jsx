@@ -7,7 +7,9 @@ import {
   ContentState,
   SelectionState,
   getDefaultKeyBinding,
-  KeyBindingUtil
+  KeyBindingUtil,
+  convertFromRaw,
+  convertToRaw
 } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
 
@@ -27,7 +29,7 @@ class TextEditor extends React.Component {
     super(props);
     this.editor = null;
     let editorstate = props.value && typeof props.value === 'string' && this.resetEditor(props.value);
-    editorstate = editorstate || props.value;
+    editorstate = editorstate || (props.value && EditorState.createWithContent(convertFromRaw(props.value))) || props.value;
     this.state = { editorState: editorstate || EditorState.createEmpty() };
   }
 
@@ -110,7 +112,7 @@ class TextEditor extends React.Component {
 
   onChange = (editorState) => {
     this.setState({ editorState: editorState }, () => {
-      this.props.onChange(this.state.editorState);
+      this.props.onChange(convertToRaw(this.state.editorState.getCurrentContent()));
     });
   };
 

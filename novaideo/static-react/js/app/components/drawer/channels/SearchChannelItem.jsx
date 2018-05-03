@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
+import { convertFromRaw } from 'draft-js';
 
 import { addPrivateChannel } from '../../../graphql/processes/commentProcess';
 import AddPrivateChannel from '../../../graphql/processes/commentProcess/mutations/AddPrivateChannel.graphql';
@@ -100,7 +101,7 @@ export class DumbSearchChannelItem extends React.Component {
     }
     const channelPicture = node.subject.picture;
     const editor = currentMessage && currentMessage.values && currentMessage.values.comment;
-    const hasMessage = editor && editor.getCurrentContent().getPlainText();
+    const hasMessage = editor && convertFromRaw(editor).getPlainText();
     if (hasMessage) {
       return (
         <ListItemIcon>

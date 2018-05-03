@@ -2,14 +2,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 
 import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
 import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict } from '../../utils/globalFunctions';
-import { PROCESSES } from '../../processes';
+import { PROCESSES, ACTIONS } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import { support, oppose, withdraw } from '../../graphql/processes/ideaProcess';
 import Support from '../../graphql/processes/ideaProcess/mutations/Support.graphql';
@@ -17,6 +17,8 @@ import Oppose from '../../graphql/processes/ideaProcess/mutations/Oppose.graphql
 import Withdraw from '../../graphql/processes/ideaProcess/mutations/Withdraw.graphql';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
+import { filterActions } from '../../utils/processes';
+import Login from '../forms/processes/userProcess/Login';
 
 export class DumbIdeaProcessManager extends React.Component {
   state = {
@@ -90,20 +92,34 @@ export class DumbIdeaProcessManager extends React.Component {
   execute = (action) => {
     const { idea, network, globalProps } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
+    const processNodes = PROCESSES.novaideoabstractprocess.nodes;
     if (action.nodeId === ideaProcessNodes.comment.nodeId) {
       this.onActionExecuted();
       setTimeout(() => {
         goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
+      const { globalProps: { rootActions } } = this.props;
+      const userProcessNodes = PROCESSES.usermanagement.nodes;
+      const loginAction = filterActions(rootActions, {
+        tags: [ACTIONS.mainMenu, ACTIONS.site],
+        behaviorId: userProcessNodes.login.nodeId
+      })[0];
+      switch (action.behaviorId) {
+      case processNodes.selectAnonymous.behaviorId:
+        this.displayForm(loginAction);
+        break;
+      default:
+        this.displayForm(loginAction);
+      }
     } else {
       const { selectIdea, deselectIdea } = this.props;
-      const processNodes = PROCESSES.novaideoabstractprocess.nodes;
-
       switch (action.behaviorId) {
       case processNodes.select.nodeId:
         selectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
+        break;
+      case processNodes.selectAnonymous.behaviorId:
+        this.displayForm(action);
         break;
       case processNodes.deselect.nodeId:
         deselectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
@@ -135,6 +151,7 @@ export class DumbIdeaProcessManager extends React.Component {
     if (!action) return null;
     const { idea } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
+    const userProcessNodes = PROCESSES.usermanagement.nodes;
     switch (action.behaviorId) {
     case ideaProcessNodes.delete.nodeId:
       return <Delete idea={idea} action={action} onClose={this.onFormClose} />;
@@ -166,6 +183,8 @@ export class DumbIdeaProcessManager extends React.Component {
       );
     case ideaProcessNodes.publish.nodeId:
       return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
+    case userProcessNodes.login.nodeId:
+      return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
     default:
       return null;
     }

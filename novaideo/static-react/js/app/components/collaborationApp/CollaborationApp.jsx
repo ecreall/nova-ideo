@@ -8,7 +8,8 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import App from '../common/App';
 import Scrollbar from '../common/Scrollbar';
-import User from '../user/UserCard';
+import UserCard from '../user/UserCard';
+import AnonymousCard from '../user/AnonymousCard';
 
 export const styles = {
   root: {
@@ -48,7 +49,8 @@ function CollaborationApp({ children, active, left, account, smallScreen, classe
           <div className={classes.maxContainer}>
             <Grid container>
               <Grid item xs={12} md={4}>
-                {account && !smallScreen ? <User id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
+                {!account && !smallScreen ? <AnonymousCard classes={{ container: classes.userCardContainer }} /> : null}
+                {account && !smallScreen ? <UserCard id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
               </Grid>
               <Grid item xs={12} md={6}>
                 {children}

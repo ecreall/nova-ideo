@@ -26,7 +26,8 @@ const styles = {
     color: 'white',
     opacity: 0.7,
     fontWeight: 100,
-    fontSize: 13
+    fontSize: 13,
+    marginBottom: 7
   }
 };
 
@@ -37,7 +38,7 @@ function UserDrawer({ account, classes }) {
       img={NOT_LOGGED}
       message={[
         <div className={classes.illustrationMessage}>
-          {I18n.t('channels.noMessage')}
+          {I18n.t('user.noUserContents')}
         </div>,
         <LoginButton />
       ]}

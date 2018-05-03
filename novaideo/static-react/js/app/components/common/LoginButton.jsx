@@ -26,7 +26,7 @@ export class DumbLoginButton extends React.Component {
   };
 
   render() {
-    const { rootActions, site, classes, theme } = this.props;
+    const { rootActions, site, color, classes, theme } = this.props;
     const { open } = this.state;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     const loginAction = filterActions(rootActions, {
@@ -35,10 +35,10 @@ export class DumbLoginButton extends React.Component {
     })[0];
     return (
       loginAction && [
-        <Button onClick={this.open} background={theme.palette.success[500]} className={classes.button}>
+        <Button onClick={this.open} background={color || theme.palette.success[500]} className={classes.button}>
           <Translate value={loginAction.title} siteTitle={site.title} />
         </Button>,
-        open && <Login form="user-login" key="user-login" action={loginAction} onClose={this.close} />
+        open && <Login action={loginAction} onClose={this.close} />
       ]
     );
   }

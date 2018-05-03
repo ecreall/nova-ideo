@@ -92,7 +92,7 @@ export class DumbUserProcessManager extends React.Component {
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     switch (action.behaviorId) {
     case userProcessNodes.login.nodeId:
-      return <Login form="user-login" key="user-login" action={action} onClose={this.onFormClose} />;
+      return <Login action={action} onClose={this.onFormClose} />;
     default:
       return null;
     }

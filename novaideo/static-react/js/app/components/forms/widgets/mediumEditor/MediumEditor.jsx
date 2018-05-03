@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditorState, Modifier, convertToRaw, SelectionState } from 'draft-js';
+import { EditorState, Modifier, convertToRaw, SelectionState, convertFromRaw } from 'draft-js';
 import { Editor, Block, createEditorState, addNewBlockAt, rendererFn, HANDLED, NOT_HANDLED } from 'medium-draft';
 import { setImportOptions, htmlToStyle } from 'medium-draft/lib/importer';
 import { setRenderOptions, styleToHTML } from 'medium-draft/lib/exporter';
@@ -61,7 +61,7 @@ class MediumEditor extends React.Component {
     this.inlineButtons = INLINE_BUTTONS();
 
     let editorstate = props.value && typeof props.value === 'string' && this.resetEditor(props.value);
-    editorstate = editorstate || props.value;
+    editorstate = editorstate || (props.value && EditorState.createWithContent(convertFromRaw(props.value))) || props.value;
     this.state = {
       editorState: editorstate || EditorState.createEmpty(),
       editorEnabled: !props.readOnly
@@ -255,10 +255,7 @@ class MediumEditor extends React.Component {
     const textWithEntity = Modifier.insertText(currentContent, selection, text, null, null);
     let newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
     newEditorState = this.endFocus(newEditorState);
-    const { onChange } = this.props;
-    this.setState({ editorState: newEditorState }, () => {
-      if (onChange) onChange(this.state.editorState);
-    });
+    this.onChange(newEditorState);
   };
 
   getPlainText = () => {
@@ -272,7 +269,7 @@ class MediumEditor extends React.Component {
   onChange = (editorState) => {
     const { onChange } = this.props;
     this.setState({ editorState: editorState }, () => {
-      if (onChange) onChange(this.state.editorState);
+      if (onChange) onChange(convertToRaw(this.state.editorState.getCurrentContent()));
     });
   };
 

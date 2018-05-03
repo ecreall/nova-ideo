@@ -36,7 +36,8 @@ export function getActionData(action) {
     processDef.nodes[
       Object.keys(processDef.nodes).filter((key) => {
         const node = processDef.nodes[key];
-        return node.nodeId === behaviorId;
+        const id = node.behaviorId || node.nodeId;
+        return id === behaviorId;
       })[0]
     ];
   if (!actionDef) return newAction;

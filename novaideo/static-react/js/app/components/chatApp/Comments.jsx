@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18n } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from 'material-ui/Grid';
@@ -7,11 +7,13 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
-import Comments from '../../graphql/queries/Comments.graphql';
+import Illustration from '../common/Illustration';
 import FlatList from '../common/FlatList';
+import Alert from '../common/Alert';
+import LoginButton from '../common/LoginButton';
+import Comments from '../../graphql/queries/Comments.graphql';
 import { filterActions } from '../../utils/processes';
 import CommentItem from './CommentItem';
-import Illustration from '../common/Illustration';
 import CommentsFooter from './CommentsFooter';
 import ChatAppRight from './chatAppRight/ChatAppRight';
 import Divider from './Divider';
@@ -62,6 +64,24 @@ const styles = (theme) => {
       position: 'absolute',
       bottom: 7,
       width: 'calc(100% - 49px)'
+    },
+    alertsContainer: {
+      padding: 16,
+      position: 'absolute',
+      width: 'calc(100% - 32px)',
+      zIndex: 15
+    },
+    alertsContainerInline: {
+      position: 'initial'
+    },
+    alertContainer: {
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)'
+    },
+    alertMessageContainer: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
     }
   };
 };
@@ -90,6 +110,47 @@ export class RenderComments extends React.Component {
       }, 400)();
     }
   }
+  renderAlert = () => {
+    const { data, inline, account, theme, classes } = this.props;
+    const channel = data.node;
+    if (!account) {
+      return (
+        <div className={classNames(classes.alertsContainer, { [classes.alertsContainerInline]: inline })}>
+          <Alert
+            dismissible
+            type="warning"
+            classes={{ container: classes.alertContainer, messageContainer: classes.alertMessageContainer }}
+          >
+            <div>
+              <Translate value="channels.noUserCtComment" name={channel ? channel.title : '...'} />
+            </div>
+            <LoginButton color={theme.palette.warning[500]} />
+          </Alert>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  renderCommentForm = (commentAction) => {
+    const { channelId, data, inline, formProps, classes } = this.props;
+    const channel = data.node;
+    const subject = channel && channel.subject;
+    const contextOid = subject ? subject.oid : '';
+    return (
+      commentAction &&
+      <Comment
+        key={channelId}
+        form={channelId}
+        channel={channel}
+        context={contextOid}
+        subject={contextOid}
+        action={commentAction}
+        {...formProps}
+        classes={{ container: classNames(classes.formContainer, { [classes.blockComments]: !inline }) }}
+      />
+    );
+  };
 
   render() {
     const {
@@ -107,7 +168,6 @@ export class RenderComments extends React.Component {
       fetchMoreOnEvent,
       displayForm,
       formTop,
-      formProps,
       classes,
       moreBtn,
       displayFooter,
@@ -118,20 +178,8 @@ export class RenderComments extends React.Component {
     const subject = channel && channel.subject;
     const commentAction =
       displayForm && subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
-    const contextOid = subject ? subject.oid : '';
     const displayRightBlock = !rightDisabled && rightOpen;
-    const commentForm =
-      commentAction &&
-      <Comment
-        key={channelId}
-        form={channelId}
-        channel={channel}
-        context={contextOid}
-        subject={contextOid}
-        action={commentAction}
-        {...formProps}
-        classes={{ container: classNames(classes.formContainer, { [classes.blockComments]: !inline }) }}
-      />;
+    const commentForm = this.renderCommentForm(commentAction);
     return (
       <Grid className={classes.container} container>
         <Grid
@@ -144,6 +192,7 @@ export class RenderComments extends React.Component {
           md={displayRightBlock ? 8 : 12}
           sm={displayRightBlock ? 7 : 12}
         >
+          {this.renderAlert()}
           {formTop && commentForm}
           <FlatList
             Footer={displayFooter && (Footer || CommentsFooter)}
@@ -192,7 +241,8 @@ export class RenderComments extends React.Component {
 export const mapStateToProps = (state) => {
   return {
     rightOpen: state.apps.chatApp.right.open,
-    rightFull: state.apps.chatApp.right.full
+    rightFull: state.apps.chatApp.right.full,
+    account: state.globalProps.account
   };
 };
 
