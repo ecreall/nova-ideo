@@ -35,7 +35,13 @@ export const DumbAccountInformation = ({ account, classes, onlyIcon }) => {
   return (
     <div className={classes.accountInfo}>
       <div className={classes.accountTitle}>
-        <UserAvatar picture={picture} classes={{ avatar: classes.avatar }} title={title} />
+        <UserAvatar
+          isAnonymous={!account}
+          anonymousIcon="account"
+          picture={picture}
+          classes={{ avatar: classes.avatar }}
+          title={title}
+        />
         {!onlyIcon &&
           <div className={classNames('account-title-text', classes.accountTitleText)}>
             {title}

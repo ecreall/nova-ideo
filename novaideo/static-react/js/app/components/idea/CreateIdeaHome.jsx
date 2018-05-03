@@ -83,7 +83,13 @@ export class DumbCreateIdeaHome extends React.Component {
     return [
       <div className={classes.fromContainer}>
         <div className={classes.left}>
-          <UserAvatar picture={authorPicture} title={authorTitle} classes={{ avatar: classes.avatar }} />
+          <UserAvatar
+            isAnonymous={!account}
+            anonymousIcon="account"
+            picture={authorPicture}
+            title={authorTitle}
+            classes={{ avatar: classes.avatar }}
+          />
         </div>
         <div className={classes.inputContainer} onClick={this.openForm}>
           <div className={classes.placeholder}>

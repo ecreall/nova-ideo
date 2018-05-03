@@ -26,10 +26,10 @@ const styles = (theme) => {
   };
 };
 
-export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl }) => {
+export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl, anonymousIcon = 'guy-fawkes-mask' }) => {
   let content = null;
   if (isAnonymous) {
-    content = <Icon className="mdi-set mdi-guy-fawkes-mask" />;
+    content = <Icon className={`mdi-set mdi-${anonymousIcon}`} />;
   } else if (title && !picture) {
     content = initalsGenerator(title);
   }
