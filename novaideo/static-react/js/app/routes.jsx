@@ -1,13 +1,16 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router';
 import Main from './main';
-import Home from './components/collaborationApp/Home';
+import Channel from './components/chatApp/Channel';
+import Idea from './components/idea/Idea';
+import User from './components/user/User';
+import Login from './components/forms/processes/userProcess/Login';
 
 export default [
   <Route path="/" component={Main}>
-    <IndexRoute component={Home} />
-    <Route path="/messages/:channelId" component={Home} />
-    <Route path="/ideas/:ideaId" component={Home} />
-    <Route path="/users/:userId" component={Home} />
+    <Route path="/messages/:channelId" component={Channel} />
+    <Route path="/ideas/:ideaId" component={Idea} />
+    <Route path="/users/:userId" component={User} />
+    <Route path="/login" component={Login} />
   </Route>
 ];

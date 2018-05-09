@@ -4,18 +4,15 @@ import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
-import Zoom from 'material-ui/transitions/Zoom';
-import Avatar from 'material-ui/Avatar';
 import { withApollo } from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 
 import { renderTextInput } from '../../utils';
 import Alert from '../../../common/Alert';
-import { DEFAULT_LOGO } from '../../../../constants';
 import Button from '../../../styledComponents/Button';
-import Form from '../../Form';
 import { asyncValidateLogin } from '../../../../utils/user';
 import { userLogin, updateUserToken } from '../../../../actions/authActions';
+import { LOGIN_VIEWS } from './Login';
 
 const styles = (theme) => {
   return {
@@ -179,6 +176,11 @@ export class DumbLoginForm extends React.Component {
     this.props.dispatch(initialize(form));
   };
 
+  goToRegistration = () => {
+    const { switchView } = this.props;
+    switchView(LOGIN_VIEWS.registration);
+  };
+
   render() {
     const { action, globalProps: { site }, classes, theme } = this.props;
     const { loading, error } = this.state;
@@ -237,7 +239,13 @@ export class DumbLoginForm extends React.Component {
               {I18n.t('common.signIn')}
             </Button>}
         </div>
-      </form>
+      </form>,
+      <div>
+        <strong>Don't have an account on this platform yet?</strong>
+        {site.onlyInvitation
+          ? <div>Trying to create a account? Contact the platform administrator for an invitation</div>
+          : <div onClick={this.goToRegistration}>Trying to create an account? Create a new account</div>}
+      </div>
     ];
   }
 }

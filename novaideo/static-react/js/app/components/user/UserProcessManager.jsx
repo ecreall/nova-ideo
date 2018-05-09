@@ -2,15 +2,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withApollo, graphql } from 'react-apollo';
-import { Translate } from 'react-redux-i18n';
+import { Translate, I18n } from 'react-redux-i18n';
 
 import { goTo, get } from '../../utils/routeMap';
-import { PROCESSES } from '../../processes';
+import { ACTIONS, PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import Login from '../forms/processes/userProcess/Login';
 import { userLogout } from '../../actions/authActions';
+import { filterActions } from '../../utils/processes';
 
 export class DumbUserProcessManager extends React.Component {
   state = {
@@ -42,12 +43,18 @@ export class DumbUserProcessManager extends React.Component {
         goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
+      const { globalProps: { rootActions } } = this.props;
+      const loginAction = filterActions(rootActions, {
+        tags: [ACTIONS.mainMenu, ACTIONS.site],
+        behaviorId: userProcessNodes.login.nodeId
+      })[0];
+      const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
-      case userProcessNodes.login.nodeId:
-        this.displayForm(action);
+      case processNodes.selectAnonymous.behaviorId:
+        this.displayForm(loginAction);
         break;
       default:
-        globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
+        this.displayForm(loginAction);
       }
     } else {
       const { selectUser, deselectUser } = this.props;
@@ -92,7 +99,7 @@ export class DumbUserProcessManager extends React.Component {
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     switch (action.behaviorId) {
     case userProcessNodes.login.nodeId:
-      return <Login action={action} onClose={this.onFormClose} />;
+      return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
     default:
       return null;
     }

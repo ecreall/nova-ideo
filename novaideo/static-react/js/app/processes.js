@@ -100,7 +100,7 @@ export const PROCESSES = {
     id: 'registrationmanagement',
     nodes: {
       registration: {
-        nodeId: 'select',
+        nodeId: 'registration',
         title: 'processes.registrationmanagement.registration.title',
         description: 'processes.registrationmanagement.registration.title'
       }

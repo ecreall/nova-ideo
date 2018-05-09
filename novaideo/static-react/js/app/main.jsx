@@ -116,14 +116,13 @@ class Main extends React.Component {
   };
 
   render() {
-    const { data, theme } = this.props;
-    if (data.loading || !data.root) return null;
-    const loged = true;
+    const { data, site, network, theme } = this.props;
+    if (data.loading || !site) return null;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <MuiThemeProvider theme={theme}>
           <div className="main">
-            {loged
+            {network.isLogged || (site && !site.onlyForMembers)
               ? <App params={this.props.params}>
                 {this.props.children}
               </App>
@@ -140,7 +139,8 @@ const mapStateToProps = (state) => {
     user: state.user,
     theme: state.adapters.theme,
     network: state.network,
-    navigation: state.history.navigation
+    navigation: state.history.navigation,
+    site: state.globalProps.site
   };
 };
 

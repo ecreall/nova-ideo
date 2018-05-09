@@ -404,6 +404,7 @@ def remove_expired_preregistration_callback(root, preregistration):
 
 
 class Registration(InfiniteCardinality):
+    tags = ['main-menu', 'instance']
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = reg_roles_validation

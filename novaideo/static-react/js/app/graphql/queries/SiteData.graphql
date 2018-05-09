@@ -20,6 +20,8 @@ query SiteData {
     manageChallenges
     manageQuestions
     manageProposals
+    onlyInvitation
+    onlyForMembers
   }
   actions {
     edges {

@@ -8,6 +8,7 @@ import CollaborationApp from './components/collaborationApp/CollaborationApp';
 import ChatApp from './components/chatApp/ChatApp';
 import Account from './graphql/queries/Account.graphql';
 import { updateGlobalProps } from './actions/instanceActions';
+import Home from './components/collaborationApp/Home';
 
 const styles = {
   root: {
@@ -40,6 +41,7 @@ class DumbApp extends React.Component {
         <div className={classes.appFrame}>
           <CollaborationApp active={!channelOpen} left={drawerOpen || channelOpen}>
             {children}
+            <Home />
           </CollaborationApp>
           {channel && <ChatApp active={channelOpen} left={drawerOpen || channelOpen} />}
           <Drawer />

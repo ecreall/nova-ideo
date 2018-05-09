@@ -136,6 +136,8 @@ class Root(Node, graphene.ObjectType):
     manage_challenges = graphene.Boolean()
     manage_questions = graphene.Boolean()
     manage_proposals = graphene.Boolean()
+    only_invitation = graphene.Boolean()
+    only_for_members = graphene.Boolean()
     logo = graphene.Field(lambda: File)
 
     def resolve_site_id(self, args, context, info):  # pylint: disable=W0613
@@ -146,6 +148,10 @@ class Root(Node, graphene.ObjectType):
         return self.picture
 
     def resolve_keywords_required(self, args, context, info):  # pylint: disable=W0613
+        return False
+
+    def resolve_only_for_members(self, args, context, info):  # pylint: disable=W0613
+        # TODO return the site id exp: evolutions...
         return False
 
 

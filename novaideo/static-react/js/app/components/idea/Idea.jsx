@@ -189,7 +189,7 @@ export class DumbIdea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: this.props.open
+      open: true
     };
   }
 
@@ -365,7 +365,7 @@ export default withStyles(styles, { withTheme: true })(
         return {
           fetchPolicy: 'cache-and-network',
           variables: {
-            id: props.id,
+            id: props.id || (props.params && props.params.ideaId),
             processIds: [],
             nodeIds: [],
             processTags: [],

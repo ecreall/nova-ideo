@@ -6,14 +6,18 @@ import { withStyles } from 'material-ui/styles';
 import Zoom from 'material-ui/transitions/Zoom';
 import Avatar from 'material-ui/Avatar';
 import { withApollo } from 'react-apollo';
+import { Fade } from 'material-ui/transitions';
+import classNames from 'classnames';
 
 import Alert from '../../../common/Alert';
 import { DEFAULT_LOGO } from '../../../../constants';
 import { PROCESSES, ACTIONS } from '../../../../processes';
+import { goTo, get } from '../../../../utils/routeMap';
 import { filterActions } from '../../../../utils/processes';
 import Button from '../../../styledComponents/Button';
 import Form from '../../Form';
 import LoginForm from './LoginForm';
+import Registration from './Registration';
 
 const styles = (theme) => {
   return {
@@ -141,19 +145,58 @@ const styles = (theme) => {
     },
     alertContainer: {
       marginBottom: 20
+    },
+    slidesContainer: {
+      position: 'relative'
+    },
+    open: {
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      zIndex: 1
     }
   };
 };
 
+export const LOGIN_VIEWS = {
+  login: 'login',
+  registration: 'registration'
+};
+
 export class DumbLogin extends React.Component {
+  state = {
+    view: LOGIN_VIEWS.login
+  };
+
   form = null;
+
+  close = () => {
+    const { onClose, params, location } = this.props;
+    if (onClose) onClose();
+    if (params) {
+      goTo((location && location.camfrom && location.camfrom) || get('root'));
+    }
+  };
 
   closeForm = () => {
     this.form.close();
   };
 
+  switchView = (view) => {
+    this.setState({ view: view });
+  };
+
   render() {
-    const { action, message, messageType, globalProps: { site, rootActions }, onClose, classes } = this.props;
+    const { action, message, messageType, globalProps: { site, rootActions }, classes } = this.props;
+    const { view } = this.state;
+    let loginAction = action;
+    if (!loginAction) {
+      const userProcessNodes = PROCESSES.usermanagement.nodes;
+      loginAction = filterActions(rootActions, {
+        tags: [ACTIONS.mainMenu, ACTIONS.site],
+        behaviorId: userProcessNodes.login.nodeId
+      })[0];
+    }
     const picture = site && site.logo;
     const userProcessNodes = PROCESSES.registrationmanagement.nodes;
     const registrationAction = filterActions(rootActions, {
@@ -168,7 +211,7 @@ export class DumbLogin extends React.Component {
         open
         fullScreen
         transition={Zoom}
-        onClose={onClose}
+        onClose={this.close}
         appBar={
           <div className={classes.appBarHeaderTitle}>
             <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
@@ -187,10 +230,31 @@ export class DumbLogin extends React.Component {
           <Alert type={messageType} classes={{ container: classes.alertContainer }}>
             {message}
           </Alert>}
-        <LoginForm form="user-login" key="user-login" action={action} onSucces={this.closeForm} />
-        <div>
-          <strong>Don't have an account on this workspace yet?</strong>
-          <div>Trying to create a workspace? Create a new workspace</div>
+        <div className={classes.slidesContainer}>
+          <Fade in={view === LOGIN_VIEWS.login}>
+            <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.login })}>
+              {loginAction &&
+                <LoginForm
+                  form="user-login"
+                  key="user-login"
+                  action={loginAction}
+                  onSucces={this.closeForm}
+                  switchView={this.switchView}
+                />}
+            </div>
+          </Fade>
+          <Fade in={view === LOGIN_VIEWS.registration}>
+            <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.registration })}>
+              {registrationAction &&
+                <Registration
+                  form="user-registration"
+                  key="user-registration"
+                  action={registrationAction}
+                  onSucces={this.closeForm}
+                  switchView={this.switchView}
+                />}
+            </div>
+          </Fade>
         </div>
       </Form>
     );
