@@ -20,6 +20,8 @@ export const NOT_LOGGED_2 = STATIC_URL + require('./assets/not-logged-2.svg');
 
 export const CT_COMMENT = STATIC_URL + require('./assets/ct-comment.svg');
 
+export const REGISTRATION_CONFIRMATION = STATIC_URL + require('./assets/registration-confirmation.svg');
+
 export const USER_BACKGROUND = STATIC_URL + require('./assets/background-person.png');
 
 export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');

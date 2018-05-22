@@ -1,6 +1,6 @@
-/* eslint-disable react/no-array-index-key, no-confusing-arrow */
+/* eslint-disable react/no-array-index-key, no-confusing-arrow, no-throw-literal */
 import React from 'react';
-import { Field, reduxForm, initialize } from 'redux-form';
+import { Form, Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
@@ -135,16 +135,34 @@ const styles = (theme) => {
     },
     alertContainer: {
       marginBottom: 20
+    },
+    newAccountContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    newAccountTitle: {
+      fontWeight: 'bold',
+      marginBottom: 5
+    },
+    newAccountDescription: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    buttonSubscription: {
+      marginLeft: '10px !important'
     }
   };
 };
 
 export class DumbLoginForm extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    error: false
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { formData, valid, onSucces } = this.props;
     // context if transformation (transform a comment in to idea)
     if (valid) {
@@ -189,7 +207,7 @@ export class DumbLoginForm extends React.Component {
         <Alert type="danger" classes={{ container: classes.alertContainer }}>
           {I18n.t('common.failedLogin')}
         </Alert>,
-      <form className={classes.form}>
+      <Form className={classes.form} onSubmit={this.handleSubmit}>
         <div className={classes.formContainer}>
           <div className={classes.formTitle}>
             <div className={classes.siteTitle}>
@@ -203,12 +221,12 @@ export class DumbLoginForm extends React.Component {
               </div>
             </div>
             <div className={classes.description}>
-              Enter your <strong>identifier</strong> and <strong>password</strong>
+              <div dangerouslySetInnerHTML={{ __html: I18n.t('forms.singin.enterLogin') }} />
             </div>
           </div>
           <Field
             props={{
-              placeholder: 'votre.email@test.com',
+              placeholder: I18n.t('forms.singin.email'),
               classes: {
                 root: classes.titleRoot
               },
@@ -220,7 +238,7 @@ export class DumbLoginForm extends React.Component {
           />
           <Field
             props={{
-              placeholder: 'password',
+              placeholder: I18n.t('forms.singin.password'),
               type: 'password',
               autoComplete: 'current-password',
               classes: {
@@ -233,18 +251,27 @@ export class DumbLoginForm extends React.Component {
           />
           {loading
             ? <div className={classes.loading}>
-              <CircularProgress size={30} style={{ color: theme.palette.success[500] }} />
+              <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
             </div>
-            : <Button onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.buttonFooter}>
+            : <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
               {I18n.t('common.signIn')}
             </Button>}
         </div>
-      </form>,
-      <div>
-        <strong>Don't have an account on this platform yet?</strong>
+      </Form>,
+      <div className={classes.newAccountContainer}>
+        <div className={classes.newAccountTitle}>
+          {I18n.t('common.dontHaveAccount')}
+        </div>
         {site.onlyInvitation
-          ? <div>Trying to create a account? Contact the platform administrator for an invitation</div>
-          : <div onClick={this.goToRegistration}>Trying to create an account? Create a new account</div>}
+          ? <div className={classes.newAccountInvitation}>
+            {I18n.t('common.requestInvitation')}
+          </div>
+          : <div className={classes.newAccountDescription}>
+            {I18n.t('common.tryingCreateAccount')}
+            <Button onClick={this.goToRegistration} background={theme.palette.info[500]} className={classes.buttonSubscription}>
+              {I18n.t('common.createAccount')}
+            </Button>
+          </div>}
       </div>
     ];
   }
@@ -252,20 +279,20 @@ export class DumbLoginForm extends React.Component {
 
 const validate = (values) => {
   const errors = {};
+  const requiredMessage = I18n.t('forms.required');
   if (!values.login) {
-    errors.login = 'Required';
+    errors.login = requiredMessage;
   }
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = requiredMessage;
   }
   return errors;
 };
 
 const asyncValidate = (values /* , dispatch */) => {
   return asyncValidateLogin(values.login).then((value) => {
-    // simulate server latency
     if (!value.status) {
-      throw { login: 'That login is not valid' };
+      throw { login: I18n.t('forms.singin.loginNotValid') };
     }
   });
 };

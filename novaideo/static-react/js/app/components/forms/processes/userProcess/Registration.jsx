@@ -1,18 +1,20 @@
-/* eslint-disable react/no-array-index-key, no-confusing-arrow */
+/* eslint-disable react/no-array-index-key, no-confusing-arrow, no-throw-literal */
 import React from 'react';
-import { Field, reduxForm, initialize } from 'redux-form';
+import { Form, Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
 import { withStyles } from 'material-ui/styles';
-import { withApollo } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { CircularProgress } from 'material-ui/Progress';
 
-import { renderTextInput } from '../../utils';
+import { renderTextInput, renderCheckboxField } from '../../utils';
 import Alert from '../../../common/Alert';
+import TermsAndConditions from '../../../common/TermsAndConditions';
 import Button from '../../../styledComponents/Button';
 import { asyncValidateLogin } from '../../../../utils/user';
-import { userLogin, updateUserToken } from '../../../../actions/authActions';
 import { LOGIN_VIEWS } from './Login';
+import { registration } from '../../../../graphql/processes/userProcess';
+import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
 
 const styles = (theme) => {
   return {
@@ -31,6 +33,9 @@ const styles = (theme) => {
     },
     formContainer: {
       maxWidth: 400,
+      width: '100%'
+    },
+    validationContainer: {
       width: '100%'
     },
     siteTitle: {
@@ -135,37 +140,46 @@ const styles = (theme) => {
     },
     alertContainer: {
       marginBottom: 20
+    },
+    newAccountContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    newAccountTitle: {
+      fontWeight: 'bold',
+      marginBottom: 5
+    },
+    newAccountDescription: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    buttonSubscription: {
+      marginLeft: '10px !important'
     }
   };
 };
 
 export class DumbRegistrationForm extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    submitted: false
   };
 
-  handleSubmit = () => {
-    const { formData, valid, onSucces } = this.props;
-    // context if transformation (transform a comment in to idea)
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { formData, valid } = this.props;
     if (valid) {
       this.setState({ loading: true }, () => {
         this.props
-          .userLogin(formData.values.login, formData.values.password)
-          .then(({ value }) => {
-            // update the user token (see the history reducer)
-            // this.props.updateUserToken(value.token);
-            if (value.status) {
-              this.setState({ loading: false }, () => {
-                this.props.client.resetStore();
-                this.initializeForm();
-                if (onSucces) onSucces();
-              });
-            } else {
-              this.setState({ loading: false, error: true });
-            }
+          .registration({
+            firstName: formData.values.firstName,
+            lastName: formData.values.lastName,
+            email: formData.values.email,
+            password: formData.values.password
           })
-          .catch(() => {
-            this.setState({ loading: false });
+          .then(() => {
+            this.setState({ submitted: true }, this.initializeForm);
           });
       });
     }
@@ -183,95 +197,119 @@ export class DumbRegistrationForm extends React.Component {
 
   render() {
     const { action, globalProps: { site }, classes, theme } = this.props;
-    const { loading, error } = this.state;
+    const { loading, error, submitted } = this.state;
     return [
       error &&
         <Alert type="danger" classes={{ container: classes.alertContainer }}>
           {I18n.t('common.failedLogin')}
         </Alert>,
-      <form className={classes.form}>
-        <div className={classes.formContainer}>
+      <Form className={classes.form} onSubmit={this.handleSubmit}>
+        <div className={submitted ? classes.validationContainer : classes.formContainer}>
           <div className={classes.formTitle}>
             <div className={classes.siteTitle}>
               <div>
-                <Translate value={action.title} siteTitle={site.title} />
+                {submitted ? I18n.t('forms.singin.accountCreated') : <Translate value={action.title} siteTitle={site.title} />}
               </div>
             </div>
           </div>
-
-          <Field
-            props={{
-              placeholder: 'First name',
-              classes: {
-                root: classes.titleRoot
-              }
-            }}
-            name="firstName"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          <Field
-            props={{
-              placeholder: 'Last name',
-              classes: {
-                root: classes.titleRoot
-              }
-            }}
-            name="lastName"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          <Field
-            props={{
-              placeholder: 'votre.email@test.com',
-              type: 'email',
-              classes: {
-                root: classes.titleRoot
-              },
-              autoFocus: true
-            }}
-            name="email"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          <Field
-            props={{
-              placeholder: 'Password',
-              type: 'password',
-              autoComplete: 'current-password',
-              classes: {
-                root: classes.titleRoot
-              }
-            }}
-            name="password"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          <Field
-            props={{
-              placeholder: 'Repeat password',
-              type: 'password',
-              autoComplete: 'current-password',
-              classes: {
-                root: classes.titleRoot
-              }
-            }}
-            name="confirmPassword"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          {loading
-            ? <div className={classes.loading}>
-              <CircularProgress size={30} style={{ color: theme.palette.success[500] }} />
+          {submitted
+            ? <div>
+              {I18n.t('forms.singin.confirmationSent')}
             </div>
-            : <Button onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.buttonFooter}>
-              {I18n.t('common.signIn')}
-            </Button>}
+            : <div>
+              <Field
+                props={{
+                  placeholder: I18n.t('forms.singin.firstName'),
+                  classes: {
+                    root: classes.titleRoot
+                  }
+                }}
+                name="firstName"
+                component={renderTextInput}
+                onChange={() => {}}
+              />
+              <Field
+                props={{
+                  placeholder: I18n.t('forms.singin.lastName'),
+                  classes: {
+                    root: classes.titleRoot
+                  }
+                }}
+                name="lastName"
+                component={renderTextInput}
+                onChange={() => {}}
+              />
+              <Field
+                props={{
+                  placeholder: I18n.t('forms.singin.email'),
+                  type: 'email',
+                  classes: {
+                    root: classes.titleRoot
+                  },
+                  autoFocus: true
+                }}
+                name="email"
+                component={renderTextInput}
+                onChange={() => {}}
+              />
+              <Field
+                props={{
+                  placeholder: I18n.t('forms.singin.password'),
+                  type: 'password',
+                  autoComplete: 'current-password',
+                  classes: {
+                    root: classes.titleRoot
+                  }
+                }}
+                name="password"
+                component={renderTextInput}
+                onChange={() => {}}
+              />
+              <Field
+                props={{
+                  placeholder: I18n.t('forms.singin.passwordConfirmation'),
+                  type: 'password',
+                  autoComplete: 'current-password',
+                  classes: {
+                    root: classes.titleRoot
+                  }
+                }}
+                name="confirmPassword"
+                component={renderTextInput}
+                onChange={() => {}}
+              />
+              <Field
+                props={{
+                  label: (
+                    <div>
+                      {I18n.t('common.readAccept')} <TermsAndConditions />
+                    </div>
+                  )
+                }}
+                name="terms"
+                component={renderCheckboxField}
+                onChange={() => {}}
+              />
+
+              {loading
+                ? <div className={classes.loading}>
+                  <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+                </div>
+                : <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+                  {I18n.t('common.singUp')}
+                </Button>}
+            </div>}
         </div>
-      </form>,
-      <div>
-        <strong>You have an account on this platform?</strong>
-        <div onClick={this.goToLogin}>Login</div>
+      </Form>,
+      <div className={classes.newAccountContainer}>
+        <div className={classes.newAccountTitle}>
+          {I18n.t('common.haveAccount')}
+        </div>
+        <div className={classes.newAccountDescription}>
+          <Button onClick={this.goToLogin} background={theme.palette.info[500]} className={classes.buttonSubscription}>
+            {I18n.t('common.signIn')}
+          </Button>
+        </div>
       </div>
     ];
   }
@@ -279,33 +317,36 @@ export class DumbRegistrationForm extends React.Component {
 
 const validate = (values) => {
   const errors = {};
+  const requiredMessage = I18n.t('forms.required');
   if (!values.firstName) {
-    errors.firstName = 'Required';
+    errors.firstName = requiredMessage;
   }
   if (!values.lastName) {
-    errors.lastName = 'Required';
+    errors.lastName = requiredMessage;
   }
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = requiredMessage;
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
+    errors.email = I18n.t('forms.singin.invalidEmail');
   }
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = requiredMessage;
   } else if (!values.confirmPassword) {
-    errors.confirmPassword = 'Required';
+    errors.confirmPassword = requiredMessage;
   } else if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = 'The passwords that you have entered do not match';
+    errors.confirmPassword = I18n.t('forms.singin.passwordsNotMatch');
+  }
+  if (!values.terms) {
+    errors.terms = I18n.t('forms.singin.acceptTerms');
   }
 
   return errors;
 };
 
-const asyncValidate = (values /* , dispatch */) => {
+const asyncValidate = (values) => {
   return asyncValidateLogin(values.email).then((value) => {
-    // simulate server latency
     if (value.status) {
-      throw { email: 'Email address used' };
+      throw { email: I18n.t('forms.singin.emailInUse') };
     }
   });
 };
@@ -326,11 +367,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export const mapDispatchToProps = {
-  userLogin: userLogin,
-  updateUserToken: updateUserToken
-};
+const RegistrationReduxFormWithMutation = graphql(Registration, {
+  props: function (props) {
+    return {
+      registration: registration(props)
+    };
+  }
+})(RegistrationReduxForm);
 
-export default withStyles(styles, { withTheme: true })(
-  withApollo(connect(mapStateToProps, mapDispatchToProps)(RegistrationReduxForm))
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(RegistrationReduxFormWithMutation));

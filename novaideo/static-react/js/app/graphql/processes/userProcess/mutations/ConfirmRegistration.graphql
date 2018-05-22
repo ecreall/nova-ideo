@@ -1,0 +1,6 @@
+mutation ConfirmRegistration($registration: String!) {
+  confirmRegistration(registration: $registration) {
+    status
+    token
+  }
+}

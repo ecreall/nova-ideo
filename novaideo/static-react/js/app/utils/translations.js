@@ -2,8 +2,16 @@
 const Translations = {
   fr: {
     common: {
+      termesConditions: "Termes & conditions",
       you: "Vous",
       signIn: "Se connecter",
+      singUp: "Créer un compte",
+      haveAccount: "Vous avez un compte sur cette plateforme?",
+      readAccept: "J'ai lu et j'accepte les ",
+      dontHaveAccount: "Vous n'avez pas encore de compte sur cette plateforme ?",
+      requestInvitation: "Vous essayez de créer un compte ? Demandez à l’administrateur de la plateforme de vous inviter",
+      tryingCreateAccount: "Vous essayez de créer un compte ?",
+      createAccount: "Créer un nouveau compte",
       failedLogin: "Désolé, vous avez entré un identifiant ou un mot de passe incorrect.",
       needLogin: "Vous devez être connecté pour effectuer cette action et plus encore. Veuillez vous connecter ou vous inscrire.",
       pinned: "Épinglés",
@@ -157,7 +165,7 @@ const Translations = {
       },
       registrationmanagement: {
         registration: {
-          title: "S'inscrire"
+          title: "Créer un nouveau compte"
         }
       }
     },
@@ -221,6 +229,7 @@ const Translations = {
       cancel: "Annuler",
       add: "Ajouter",
       record: "Enregistrer un message vocal",
+      required: "Champs obligatoires",
       idea: {
         title: "Titre de la proposition",
         titleHelper: "Titre",
@@ -232,6 +241,22 @@ const Translations = {
       comment: {
         textPlaceholder: "Envoyer un message à #%{name}",
         searchPlaceholder: "Rechercher dans #%{name}"
+      },
+      singin: {
+        email: "votre-email@exemple.com",
+        password: "Mot de passe",
+        passwordConfirmation: "Confirmation de mot de passe",
+        firstName: "Nom",
+        lastName: "Prénom",
+        invalidEmail: "adresse e-mail invalide",
+        passwordsNotMatch: "Les mots de passe que vous avez entrés ne correspondent pas",
+        acceptTerms: "Veuillez accepter les Terms & Conditions",
+        emailInUse: "Adresse e-mail déjà utilisée",
+        loginNotValid: "L'identifiant n'est pas valide",
+        enterLogin: "Saisissez votre <strong>identifiant</strong> et votre <strong>mot de passe</strong>.",
+        accountCreated: "Votre compte a été créé",
+        confirmationSent:
+          "Un e-mail de confirmation a été envoyé à votre compte et devrait apparaître dans votre boîte de réception dans quelques minutes. Il contient un lien de confirmation, veuillez cliquer dessus pour confirmer votre adresse e-mail. Vérifiez votre dossier spam si vous n'avez pas reçu d'e-mail de confirmation."
       }
     },
     evaluation: {
@@ -273,13 +298,22 @@ const Translations = {
       subscribed: "Inscrit le %{date}",
       noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
       noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
-      noUserChannels: "Pour accéder à vos discussion vous devez être connecté."
+      noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
+      confirmRegistration: "Veuillez patienter pendant que nous vérifions votre inscription !"
     }
   },
   en: {
     common: {
+      termesConditions: "Termes & conditions",
       you: "You",
       signIn: "Sign in",
+      singUp: "Sing up",
+      haveAccount: "You have an account on this platform?",
+      readAccept: "I have read and I accept the ",
+      dontHaveAccount: "Don't have an account on this platform yet?",
+      requestInvitation: "Trying to create a account? Contact the platform administrator for an invitation",
+      tryingCreateAccount: "Trying to create an account?",
+      createAccount: "Create a new account",
       failedLogin: "Sorry, you entered an incorrect identifier or password.",
       needLogin: "You must be logged in to perform this action and more. Please sign in or register",
       pinned: "Pinned",
@@ -433,7 +467,7 @@ const Translations = {
       },
       registrationmanagement: {
         registration: {
-          title: "Register"
+          title: "Create a new account"
         }
       }
     },
@@ -498,6 +532,7 @@ const Translations = {
       cancel: "Cancel",
       add: "Add",
       record: "Record a voice message",
+      required: "Required",
       idea: {
         title: "The title of the proposal",
         titleHelper: "Title",
@@ -509,6 +544,22 @@ const Translations = {
       comment: {
         textPlaceholder: "Submit a message to #%{name}",
         searchPlaceholder: "Search in #%{name}"
+      },
+      singin: {
+        email: "yor-email@example.com",
+        password: "Password",
+        passwordConfirmation: "Password (confirm)",
+        firstName: "First name",
+        lastName: "last name",
+        invalidEmail: "Invalid email address",
+        passwordsNotMatch: "The passwords that you have entered do not match",
+        acceptTerms: "Please accept the Terms & Conditions",
+        emailInUse: "Email address already in use",
+        loginNotValid: "The login is not valid",
+        enterLogin: "Enter your <strong>identifier</strong> and <strong>password</strong>.",
+        accountCreated: "Your account has been created",
+        confirmationSent:
+          "A confirmation e-mail has been sent to your account and should be in your inbox in a few minutes. It contains a confirmation link, please click on it in order to confirm your e-mail address. Check your spam folder if you did not receive a confirmation e-mail."
       }
     },
     evaluation: {
@@ -550,7 +601,8 @@ const Translations = {
       subscribed: "Subscribed the %{date}",
       noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
       noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
-      noUserChannels: "Pour accéder à vos discussion vous devez être connecté."
+      noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
+      confirmRegistration: "Please wait while we check your registration!"
     }
   }
 };

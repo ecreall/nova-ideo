@@ -17,6 +17,12 @@ const initialUserTest = {
 };
 export const user = (state = initialUserTest, action) => {
   switch (action.type) {
+  case actionTypes.UPDATE_TOKEN: {
+    return {
+      token: action.token,
+      loadingState: 'completed'
+    };
+  }
   case `${actionTypes.LOGIN}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
@@ -173,6 +179,13 @@ export const network = (
     }
     return state;
   }
+  case actionTypes.UPDATE_TOKEN: {
+    return {
+      isConnected: true,
+      isLogged: true,
+      url: state.url
+    };
+  }
   case `${actionTypes.LOGOUT}_FULFILLED`: {
     if (action.payload && action.payload.status) {
       return {
@@ -253,32 +266,32 @@ export const history = (state = initNavigationState, action) => {
     newStateEntry[instanceId] = newEntry;
     return update(state, { $merge: newStateEntry });
   }
-  case actionTypes.UPDATE_TOKEN: {
-    const instanceId = action.instance.id;
-    let currentEntry = state[instanceId];
-    if (!currentEntry) {
-      currentEntry = {
-        data: {
-          id: instanceId,
-          url: action.instance.url,
-          isPrivate: action.instance.isPrivate,
-          logo: action.instance.logo,
-          title: action.instance.title
-        },
-        userPreferences: {}
-      };
-    }
-    const newEntry = {
-      ...currentEntry,
-      data: {
-        ...currentEntry.data,
-        token: action.token
-      }
-    };
-    const newStateEntry = {};
-    newStateEntry[instanceId] = newEntry;
-    return update(state, { $merge: newStateEntry });
-  }
+  // case actionTypes.UPDATE_TOKEN: {
+  //   const instanceId = action.instance.id;
+  //   let currentEntry = state[instanceId];
+  //   if (!currentEntry) {
+  //     currentEntry = {
+  //       data: {
+  //         id: instanceId,
+  //         url: action.instance.url,
+  //         isPrivate: action.instance.isPrivate,
+  //         logo: action.instance.logo,
+  //         title: action.instance.title
+  //       },
+  //       userPreferences: {}
+  //     };
+  //   }
+  //   const newEntry = {
+  //     ...currentEntry,
+  //     data: {
+  //       ...currentEntry.data,
+  //       token: action.token
+  //     }
+  //   };
+  //   const newStateEntry = {};
+  //   newStateEntry[instanceId] = newEntry;
+  //   return update(state, { $merge: newStateEntry });
+  // }
   case actionTypes.UPDATE_NAVIGATION: {
     const navigation = state.navigation;
     const newPrevious = action.updatePrevious ? navigation.location : navigation.previous;

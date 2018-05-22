@@ -15,4 +15,5 @@ set_default_resolver(substanced_attr_resolver)
 
 def includeme(config):
     config.add_route('graphql', '/graphql')
+    config.add_route('registrations', '/registrations')
     config.scan()

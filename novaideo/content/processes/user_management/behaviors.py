@@ -67,7 +67,8 @@ def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
         locale = my_locale_negotiator(request)
-        url = request.resource_url(preregistration, "")
+        # url = request.resource_url(preregistration, "")
+        url = request.route_url('registrations', preregistration.__name__)
         mail_template = root.get_mail_template(
             'preregistration', getattr(preregistration, 'locale', locale))
         email_data = get_user_data(preregistration, 'recipient', request)
@@ -417,7 +418,8 @@ class Registration(InfiniteCardinality):
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
         deadline = DEADLINE_PREREGISTRATION * 1000
-        call_id = 'persistent_' + str(get_oid(preregistration))
+        oid = get_oid(preregistration)
+        call_id = 'persistent_' + str(oid)
         push_callback_after_commit(
             remove_expired_preregistration_callback, deadline, call_id,
             root=root, preregistration=preregistration)
@@ -544,7 +546,6 @@ class ConfirmRegistration(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         data = context.get_data(PersonSchema())
         annotations = getattr(context, 'annotations', {}).get(PROCESS_HISTORY_KEY, [])
-        data.update({'password': appstruct['password']})
         data = {key: value for key, value in data.items()
                 if value is not colander.null}
         data.pop('title')
@@ -597,12 +598,7 @@ class ConfirmRegistration(InfiniteCardinality):
         return {'person': person}
 
     def redirect(self, context, request, **kw):
-        person = kw['person']
-        headers = remember(request, get_oid(person))
-        request.registry.notify(LoggedIn(person.email, person,
-                                         context, request))
-        return HTTPFound(location=request.resource_url(context),
-                         headers=headers)
+        return kw['person']
 
 
 def remind_roles_validation(process, context):

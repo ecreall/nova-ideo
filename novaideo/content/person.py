@@ -7,6 +7,7 @@
 import os
 import datetime
 import pytz
+import uuid
 from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
@@ -300,6 +301,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.allocated_tokens = OOBTree()
         self.len_allocated_tokens = PersistentDict({})
         self.reserved_tokens = PersistentList([])
+        self.api_token = uuid.uuid4().hex 
 
     def __setattr__(self, name, value):
         super(Person, self).__setattr__(name, value)

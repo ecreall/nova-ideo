@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Tooltip from 'material-ui/Tooltip';
 import Input, { InputAdornment } from 'material-ui/Input';
 import { withStyles } from 'material-ui/styles';
-import { FormHelperText } from 'material-ui/Form';
+import { FormHelperText, FormControlLabel } from 'material-ui/Form';
 
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
@@ -71,6 +71,32 @@ export const renderAnonymousCheckboxField = ({ input: { value, onChange }, class
   );
 };
 
+const checkboxStyles = (theme) => {
+  return {
+    error: {
+      marginTop: -10,
+      marginBottom: 10,
+      paddingLeft: 5,
+      fontSize: 11,
+      color: theme.palette.danger.primary,
+      fontWeight: 'bold'
+    }
+  };
+};
+
+export const renderCheckboxField = withStyles(checkboxStyles, {
+  withTheme: true
+})(({ input: { value, onChange }, meta: { touched, error }, label, classes }) => {
+  return [
+    <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />,
+    touched &&
+      error &&
+      <FormHelperText className={classes.error} id={name}>
+        {error}
+      </FormHelperText>
+  ];
+});
+
 export const renderFilesListField = ({ input: { value, onChange }, node, initRef }) => {
   return (
     <FilesPicker initRef={initRef} className="files-dropzone-list" value={value} onChange={onChange} multiple clickable>
@@ -91,7 +117,7 @@ export const renderSelect = ({ input: { value, onChange }, options, label, canAd
   return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
 };
 
-const styles = (theme) => {
+const textInputStyles = (theme) => {
   return {
     root: {
       backgroundColor: 'white',
@@ -141,7 +167,8 @@ const styles = (theme) => {
     }
   };
 };
-export const renderTextInput = withStyles(styles, {
+
+export const renderTextInput = withStyles(textInputStyles, {
   withTheme: true
 })(
   ({

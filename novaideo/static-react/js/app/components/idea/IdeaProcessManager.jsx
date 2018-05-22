@@ -45,7 +45,12 @@ export class DumbIdeaProcessManager extends React.Component {
     const { idea, network, globalProps } = this.props;
     const processNodes = PROCESSES.ideamanagement.nodes;
     if (!network.isLogged) {
-      globalProps.showMessage(<Translate value="LogInToPerformThisAction" />);
+      const userProcessNodes = PROCESSES.usermanagement.nodes;
+      const loginAction = filterActions(globalProps.rootActions, {
+        tags: [ACTIONS.mainMenu, ACTIONS.site],
+        behaviorId: userProcessNodes.login.nodeId
+      })[0];
+      this.displayForm(loginAction);
     } else if (!action) {
       globalProps.showMessage(<Translate value="AuthorizationFailed" />);
     } else {

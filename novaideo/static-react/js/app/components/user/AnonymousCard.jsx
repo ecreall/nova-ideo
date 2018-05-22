@@ -1,10 +1,8 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import StarBorderIcon from 'material-ui-icons/StarBorder';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 
-import OverlaidTooltip from '../common/OverlaidTooltip';
 import Illustration from '../common/Illustration';
 import LoginButton from '../common/LoginButton';
 import { NOT_LOGGED_2 } from '../../constants';

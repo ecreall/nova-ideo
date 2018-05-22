@@ -329,7 +329,7 @@ class Person(Node, graphene.ObjectType):
 
     def resolve_email(self, args, context, info):  # pylint: disable=W0613
         user = context.user
-        return user.email if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
+        return self.email if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
 
 
 Person.Connection = connection_for_type(Person)
