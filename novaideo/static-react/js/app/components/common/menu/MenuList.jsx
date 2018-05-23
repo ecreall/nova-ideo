@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 import { MenuList as StyledMenuList, MenuItem } from '../../styledComponents/Menu';

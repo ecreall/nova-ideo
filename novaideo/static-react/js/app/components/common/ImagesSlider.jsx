@@ -1,9 +1,9 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import ArrowBackIcon from 'material-ui-icons/ArrowBack';
-import ArrowForwardIcon from 'material-ui-icons/ArrowForward';
-import CloudDownloadIcon from 'material-ui-icons/CloudDownload';
-import Button from 'material-ui/Button';
+import { withStyles } from '@material-ui/core/styles';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import * as Vibrant from 'node-vibrant';
 import filesize from 'filesize';

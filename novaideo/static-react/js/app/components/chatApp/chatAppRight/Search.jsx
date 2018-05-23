@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 

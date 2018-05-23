@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Emoji } from 'emoji-mart';
 import { Translate, I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';

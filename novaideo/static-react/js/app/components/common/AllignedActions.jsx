@@ -1,6 +1,6 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import { CardActions } from 'material-ui/Card';
+import { withStyles } from '@material-ui/core/styles';
+import CardActions from '@material-ui/core/CardActions';
 import { I18n } from 'react-redux-i18n';
 
 import OverlaidTooltip from './OverlaidTooltip';

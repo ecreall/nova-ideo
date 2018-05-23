@@ -331,6 +331,9 @@ class Person(Node, graphene.ObjectType):
         user = context.user
         return self.email if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
 
+    def resolve_mask(self, args, context, info):  # pylint: disable=W0613
+        return self.get_mask(context.root)
+
 
 Person.Connection = connection_for_type(Person)
 

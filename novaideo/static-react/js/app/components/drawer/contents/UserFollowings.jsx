@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { Query } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
-import StarIcon from 'material-ui-icons/Star';
+import { withStyles } from '@material-ui/core/styles';
+import StarIcon from '@material-ui/icons/Star';
 import { I18n } from 'react-redux-i18n';
 
 import ContentItem from './ContentItem';

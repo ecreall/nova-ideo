@@ -1,6 +1,6 @@
 import glamorous from 'glamorous';
-import Button from 'material-ui/Button';
-import IconButtonBase from 'material-ui/IconButton';
+import Button from '@material-ui/core/Button';
+import IconButtonBase from '@material-ui/core/IconButton';
 
 const StyledButton = glamorous(Button)((props) => {
   const background = props.background || '#2ea664';

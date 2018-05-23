@@ -3,9 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MuiThemeProvider, createGenerateClassName, jssPreset } from 'material-ui/styles';
+import { MuiThemeProvider, createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 import { withApollo, graphql } from 'react-apollo';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 import { create } from 'jss';
 import JssProvider from 'react-jss/lib/JssProvider';
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { Translate, I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import Grid from 'material-ui/Grid';
-import { withStyles } from 'material-ui/styles';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
@@ -111,9 +111,9 @@ export class RenderComments extends React.Component {
     }
   }
   renderAlert = () => {
-    const { data, inline, account, theme, classes } = this.props;
+    const { data, inline, account, displayForm, theme, classes } = this.props;
     const channel = data.node;
-    if (!account) {
+    if (displayForm && !account) {
       return (
         <div className={classNames(classes.alertsContainer, { [classes.alertsContainerInline]: inline })}>
           <Alert

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import { getFormattedDate } from '../../utils/globalFunctions';
 import Divider from '../common/Divider';

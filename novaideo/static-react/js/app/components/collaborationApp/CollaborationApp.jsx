@@ -1,6 +1,6 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import 'emoji-mart/css/emoji-mart.css';
 

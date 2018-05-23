@@ -3,7 +3,7 @@ import { EditorState, Modifier } from 'draft-js';
 import { StringToTypeMap, Block, Entity as EntityConstants, beforeInput, getCurrentBlock, HANDLED } from 'medium-draft';
 import { blockToHTML, entityToHTML } from 'medium-draft/lib/exporter';
 import { htmlToBlock, htmlToEntity } from 'medium-draft/lib/importer';
-import Icon from 'material-ui/Icon';
+import Icon from '@material-ui/core/Icon';
 import { I18n } from 'react-redux-i18n';
 
 import { DQUOTE_START, DQUOTE_END, SQUOTE_START, SQUOTE_END } from './constants';

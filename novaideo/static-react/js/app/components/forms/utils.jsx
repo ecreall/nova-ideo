@@ -1,12 +1,14 @@
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
-import Checkbox from 'material-ui/Checkbox';
-import Icon from 'material-ui/Icon';
+import Checkbox from '@material-ui/core/Checkbox';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
-import Tooltip from 'material-ui/Tooltip';
-import Input, { InputAdornment } from 'material-ui/Input';
-import { withStyles } from 'material-ui/styles';
-import { FormHelperText, FormControlLabel } from 'material-ui/Form';
+import Tooltip from '@material-ui/core/Tooltip';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { withStyles } from '@material-ui/core/styles';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';

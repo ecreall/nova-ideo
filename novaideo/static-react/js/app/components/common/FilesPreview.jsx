@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
-import Zoom from 'material-ui/transitions/Zoom';
+import Icon from '@material-ui/core/Icon';
+import Zoom from '@material-ui/core/Zoom';
 import { I18n } from 'react-redux-i18n';
 import filesize from 'filesize';
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { Query } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
-import StorageIcon from 'material-ui-icons/Storage';
+import { withStyles } from '@material-ui/core/styles';
+import StorageIcon from '@material-ui/icons/Storage';
 import { I18n } from 'react-redux-i18n';
 
 import ContentItem from './ContentItem';

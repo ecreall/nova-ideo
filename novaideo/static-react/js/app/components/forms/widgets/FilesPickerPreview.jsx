@@ -1,10 +1,10 @@
 import React from 'react';
-// import DeleteForeverIcon from 'material-ui-icons/DeleteForever';
-import CancelIcon from 'material-ui-icons/Cancel';
+// import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import CancelIcon from '@material-ui/icons/Cancel';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
-import Tooltip from 'material-ui/Tooltip';
-import { withStyles } from 'material-ui/styles';
+import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { FILES_ICONS } from '../../../constants';

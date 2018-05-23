@@ -1,8 +1,8 @@
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import FormatIndentIncreaseIcon from 'material-ui-icons/FormatIndentIncrease';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import FormatIndentIncreaseIcon from '@material-ui/icons/FormatIndentIncrease';
 
 import Dialog from '../../common/Dialog';
 import ShortcutsManager from '../../common/ShortcutsManager';
@@ -71,22 +71,23 @@ export class DumbJump extends React.Component {
           <FormatIndentIncreaseIcon className={classes.jumpIcon} />
           {I18n.t('channels.jump')}
         </Button>
-        <Dialog
-          directDisplay
-          appBar={
-            <div className={classes.titleContainer}>
-              <span className={classes.title}>
-                {I18n.t('channels.jump')}
-              </span>
+        {this.state.open &&
+          <Dialog
+            directDisplay
+            appBar={
+              <div className={classes.titleContainer}>
+                <span className={classes.title}>
+                  {I18n.t('channels.jump')}
+                </span>
+              </div>
+            }
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
+            <div className={classes.container}>
+              <SearchContentsList onItemClick={this.handleClose} />
             </div>
-          }
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <div className={classes.container}>
-            <SearchContentsList onItemClick={this.handleClose} />
-          </div>
-        </Dialog>
+          </Dialog>}
       </ShortcutsManager>
     );
   }

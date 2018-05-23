@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { Query } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import ChannelItem from './ChannelItem';
 import FlatList from '../../common/FlatList';

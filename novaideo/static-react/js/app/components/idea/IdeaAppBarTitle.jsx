@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Grow from 'material-ui/transitions/Grow';
+import { withStyles } from '@material-ui/core/styles';
+import Grow from '@material-ui/core/Grow';
 
 import StatisticsDoughnut from '../common/Doughnut';
 import { getEntityIcon } from '../../utils/processes';

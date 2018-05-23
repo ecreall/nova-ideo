@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
-import { MenuList as MuiMenuList, MenuItem as MuiMenuItem } from 'material-ui/Menu';
+import MuiMenuItem from '@material-ui/core/MenuItem';
+import MuiMenuList from '@material-ui/core/MenuList';
 
 export const MenuList = glamorous(MuiMenuList)({
   paddingTop: 15,

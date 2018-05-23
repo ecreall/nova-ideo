@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Menu from 'material-ui/Menu';
+import { withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
 
 const styles = {
   menu: {
@@ -65,19 +65,20 @@ export class DumbMenuWithActivator extends React.Component {
       <div onClick={this.open}>
         {activator}
       </div>,
-      <Menu
-        transitionDuration={150}
-        keepMounted={keepMounted}
-        className={classes.menu}
-        classes={{ paper: classes.menuPaper }}
-        id={id}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={this.close}
-        anchorOrigin={anchorOrigin}
-      >
-        {children}
-      </Menu>
+      open &&
+        <Menu
+          transitionDuration={150}
+          keepMounted={keepMounted}
+          className={classes.menu}
+          classes={{ paper: classes.menuPaper }}
+          id={id}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={this.close}
+          anchorOrigin={anchorOrigin}
+        >
+          {children}
+        </Menu>
     ];
   }
 }

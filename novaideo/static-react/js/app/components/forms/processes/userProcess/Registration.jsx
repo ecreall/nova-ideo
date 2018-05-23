@@ -3,9 +3,9 @@ import React from 'react';
 import { Form, Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
-import { CircularProgress } from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { renderTextInput, renderCheckboxField } from '../../utils';
 import Alert from '../../../common/Alert';

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Slide from 'material-ui/transitions/Slide';
+import { withStyles } from '@material-ui/core/styles';
+import Slide from '@material-ui/core/Slide';
 import classNames from 'classnames';
 
 import Dialog from '../common/Dialog';

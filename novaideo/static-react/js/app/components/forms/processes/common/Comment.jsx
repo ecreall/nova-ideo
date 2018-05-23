@@ -5,11 +5,11 @@ import { Translate, I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import SendIcon from 'material-ui-icons/Send';
-import { withStyles } from 'material-ui/styles';
-import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile';
-import MicNoneIcon from 'material-ui-icons/MicNone';
-import IconButton from 'material-ui/IconButton';
+import SendIcon from '@material-ui/icons/Send';
+import { withStyles } from '@material-ui/core/styles';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import MicNoneIcon from '@material-ui/icons/MicNone';
+import IconButton from '@material-ui/core/IconButton';
 import { find as findUrls } from 'linkifyjs';
 
 import { formatText } from '../../../../utils/textFormatter';
@@ -65,7 +65,7 @@ const styles = (theme) => {
     },
     textField: {
       paddingLeft: 10,
-      marginLeft: 48,
+      marginLeft: 45,
       minHeight: 45,
       display: 'flex',
       alignItems: 'center',
@@ -122,7 +122,7 @@ const styles = (theme) => {
       color: 'gray'
     },
     maskChecked: {
-      color: theme.palette.warning[700]
+      color: `${theme.palette.warning[700]}!important`
     }
   };
 };

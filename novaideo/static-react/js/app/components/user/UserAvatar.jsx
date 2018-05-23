@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Avatar from 'material-ui/Avatar';
-import Icon from 'material-ui/Icon';
+import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 
 import { initalsGenerator } from '../../utils/globalFunctions';

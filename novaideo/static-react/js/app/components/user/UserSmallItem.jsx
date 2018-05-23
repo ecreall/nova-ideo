@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import UserTitle from './UserTitle';
 import UserAvatar from './UserAvatar';

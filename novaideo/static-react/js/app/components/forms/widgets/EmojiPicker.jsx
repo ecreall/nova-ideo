@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Picker } from 'emoji-mart';
-import IconButton from 'material-ui/IconButton';
-import InsertEmoticonIcon from 'material-ui-icons/InsertEmoticon';
+import IconButton from '@material-ui/core/IconButton';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
 import { Menu } from '../../common/menu';
 import { PICKER_EMOJI_SHEET_APPLE_32 } from '../../../constants';

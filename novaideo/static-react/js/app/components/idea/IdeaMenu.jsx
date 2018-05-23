@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import IconButton from 'material-ui/IconButton';
-import MoreHorizIcon from 'material-ui-icons/MoreHoriz';
+import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { I18n } from 'react-redux-i18n';
 
 import Button from '../styledComponents/Button';

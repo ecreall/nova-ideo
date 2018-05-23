@@ -1,7 +1,7 @@
 import React from 'react';
-import Icon from 'material-ui/Icon';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Translate } from 'react-redux-i18n';
 
 import Dialog from './Dialog';
@@ -63,23 +63,24 @@ export class DumbExamination extends React.Component {
           {icon}
         </OverlaidTooltip>
       </div>,
-      <Dialog
-        directDisplay
-        appBar={
-          <div className={classes.titleContainer}>
-            {icon}
-            <span className={classes.title}>
-              {title}
-            </span>
+      this.state.open &&
+        <Dialog
+          directDisplay
+          appBar={
+            <div className={classes.titleContainer}>
+              {icon}
+              <span className={classes.title}>
+                {title}
+              </span>
+            </div>
+          }
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div className={classes.container}>
+            {message}
           </div>
-        }
-        open={this.state.open}
-        onClose={this.handleClose}
-      >
-        <div className={classes.container}>
-          {message}
-        </div>
-      </Dialog>
+        </Dialog>
     ];
   }
 }

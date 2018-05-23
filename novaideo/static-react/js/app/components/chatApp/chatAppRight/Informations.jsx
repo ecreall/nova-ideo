@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
-import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
-import { withStyles } from 'material-ui/styles';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
+import { withStyles } from '@material-ui/core/styles';
 
 import DetailsSection from './DetailsSection';
 import Idea from '../../idea/IdeaPopover';

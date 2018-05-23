@@ -1,10 +1,10 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Field, reduxForm, initialize } from 'redux-form';
-import SearchIcon from 'material-ui-icons/Search';
-import IconButton from 'material-ui/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
@@ -96,8 +96,11 @@ const styles = (theme) => {
     },
     icon: {
       fontSize: '22px !important',
-      color: '#717274',
-      marginRight: 5
+      color: '#717274'
+    },
+    cancelButton: {
+      height: 35,
+      width: 35
     }
   };
 };
@@ -176,7 +179,7 @@ export class DumbSearchForm extends React.Component {
             </div>
           </div>
           {hasQuery
-            ? <IconButton onClick={this.cancel}>
+            ? <IconButton className={classes.cancelButton} onClick={this.cancel}>
               <CancelIcon className={classes.icon} />
             </IconButton>
             : null}

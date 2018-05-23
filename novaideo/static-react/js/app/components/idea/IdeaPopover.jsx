@@ -4,10 +4,10 @@ import Moment from 'moment';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
-import Tooltip from 'material-ui/Tooltip';
-import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui/Progress';
-import Icon from 'material-ui/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 
 import OverlaidTooltip from '../common/OverlaidTooltip';

@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import classNames from 'classnames';
-import AddIcon from 'material-ui-icons/Add';
-import IconButton from 'material-ui/IconButton';
-import { withStyles } from 'material-ui/styles';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 
 import { Popper, MenuList } from '../../../common/menu';
 
@@ -33,6 +33,10 @@ const styles = (theme) => {
       backgroundColor: theme.palette.tertiary.color,
       border: 'solid 1px',
       borderColor: theme.palette.tertiary.color
+    },
+    button: {
+      width: 45,
+      height: 45
     },
     buttonOpen: {
       color: theme.palette.tertiary.hover.color
@@ -69,7 +73,7 @@ export class DumbCommentMenu extends React.Component {
         onClose={this.onMenuClose}
         activator={
           <IconButton
-            className={classNames('menu-button', {
+            className={classNames('menu-button', classes.button, {
               [classes.buttonOpen]: menu
             })}
             aria-owns={menuId}

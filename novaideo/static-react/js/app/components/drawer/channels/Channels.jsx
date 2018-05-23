@@ -1,6 +1,6 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Divider from 'material-ui/Divider';
+import { withStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
 import { I18n } from 'react-redux-i18n';
 
 import PrivateChannels from './PrivateChannels';

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-undef */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import Illustration from '../common/Illustration';

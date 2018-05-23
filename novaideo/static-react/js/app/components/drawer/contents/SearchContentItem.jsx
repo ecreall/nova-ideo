@@ -1,6 +1,6 @@
 /* eslint-disable  no-confusing-arrow, no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 

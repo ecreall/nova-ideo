@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import Dialog from '../common/Dialog';
@@ -49,20 +49,21 @@ export class DumbTermsAndConditions extends React.Component {
       <span className={classes.button} onClick={this.handleClickOpen}>
         {I18n.t('common.termesConditions')}
       </span>,
-      <Dialog
-        directDisplay
-        appBar={
-          <div className={classes.titleContainer}>
-            <span className={classes.title}>
-              {I18n.t('common.termesConditions')}
-            </span>
-          </div>
-        }
-        open={this.state.open}
-        onClose={this.handleClose}
-      >
-        <div className={classes.container}>Termes & conditions text</div>
-      </Dialog>
+      this.state.open &&
+        <Dialog
+          directDisplay
+          appBar={
+            <div className={classes.titleContainer}>
+              <span className={classes.title}>
+                {I18n.t('common.termesConditions')}
+              </span>
+            </div>
+          }
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div className={classes.container}>Termes & conditions text</div>
+        </Dialog>
     ];
   }
 }

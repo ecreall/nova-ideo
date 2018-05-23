@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import PlayIcon from 'material-ui-icons/PlayCircleOutline';
-import CloseIcon from 'material-ui-icons/Close';
-import IconButton from 'material-ui/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import PlayIcon from '@material-ui/icons/PlayCircleOutline';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = {
   container: {

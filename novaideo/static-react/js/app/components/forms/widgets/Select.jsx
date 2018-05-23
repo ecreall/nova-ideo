@@ -3,17 +3,19 @@
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
-import IconButton from 'material-ui/IconButton';
-import { MenuItem, MenuList } from 'material-ui/Menu';
-import Grow from 'material-ui/transitions/Grow';
-import Paper from 'material-ui/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
 import { Manager, Target, Popper } from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
-import { ListItemText } from 'material-ui/List';
-import Checkbox from 'material-ui/Checkbox';
-import { withStyles } from 'material-ui/styles';
-import Input, { InputAdornment } from 'material-ui/Input';
-import SearchIcon from 'material-ui-icons/Search';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 const styles = (theme) => {
   return {

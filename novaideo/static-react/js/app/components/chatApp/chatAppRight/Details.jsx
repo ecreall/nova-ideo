@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Informations from './Informations';
 import Pinned from './Pinned';

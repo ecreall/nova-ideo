@@ -2,11 +2,11 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
-import Button from 'material-ui/Button';
-import Zoom from 'material-ui/transitions/Zoom';
+import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
+import Zoom from '@material-ui/core/Zoom';
 
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';

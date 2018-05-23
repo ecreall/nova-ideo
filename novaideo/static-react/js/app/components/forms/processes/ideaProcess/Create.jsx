@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
-import AttachFileIcon from 'material-ui-icons/AttachFile';
-import IconButton from 'material-ui/IconButton';
-import Icon from 'material-ui/Icon';
-import Tooltip from 'material-ui/Tooltip';
-import Zoom from 'material-ui/transitions/Zoom';
+import { withStyles } from '@material-ui/core/styles';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 import Moment from 'moment';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';

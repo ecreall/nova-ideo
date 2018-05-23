@@ -1,15 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import Moment from 'moment';
-import Tooltip from 'material-ui/Tooltip';
-import { withStyles } from 'material-ui/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { Translate, I18n } from 'react-redux-i18n';
-import Icon from 'material-ui/Icon';
-import CancelIcon from 'material-ui-icons/Cancel';
-import ForumIcon from 'material-ui-icons/Forum';
-import Collapse from 'material-ui/transitions/Collapse';
-import IconButton from 'material-ui/IconButton';
+import Icon from '@material-ui/core/Icon';
+import CancelIcon from '@material-ui/icons/Cancel';
+import ForumIcon from '@material-ui/icons/Forum';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';

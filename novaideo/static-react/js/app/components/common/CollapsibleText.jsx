@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import IconButton from 'material-ui/IconButton';
-import ExpandLessIcon from 'material-ui-icons/ExpandLess';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { truncateText } from '../../utils/globalFunctions';
 

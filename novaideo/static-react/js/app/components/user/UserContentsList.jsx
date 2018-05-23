@@ -2,7 +2,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import IdeaItem from '../idea/IdeaItem';
 import FlatList from '../common/FlatList';

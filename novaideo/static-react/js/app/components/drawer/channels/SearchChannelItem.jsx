@@ -1,12 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Icon from 'material-ui/Icon';
-import CreateIcon from 'material-ui-icons/Create';
+import { withStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
+import CreateIcon from '@material-ui/icons/Create';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
-import { CircularProgress } from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { convertFromRaw } from 'draft-js';
 
 import { addPrivateChannel } from '../../../graphql/processes/commentProcess';

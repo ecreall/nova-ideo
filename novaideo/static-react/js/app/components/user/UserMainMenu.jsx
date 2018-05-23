@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
-import Avatar from 'material-ui/Avatar';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import Avatar from '@material-ui/core/Avatar';
 import { Query } from 'react-apollo';
 
 import Actions from '../../graphql/queries/Actions.graphql';

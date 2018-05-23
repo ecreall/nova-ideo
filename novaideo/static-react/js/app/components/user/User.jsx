@@ -2,17 +2,17 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Zoom from 'material-ui/transitions/Zoom';
-import { CircularProgress } from 'material-ui/Progress';
-import StarBorderIcon from 'material-ui-icons/StarBorder';
-import EmailIcon from 'material-ui-icons/Email';
-import Icon from 'material-ui/Icon';
+import { withStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import EmailIcon from '@material-ui/icons/Email';
+import Icon from '@material-ui/core/Icon';
 import { Translate } from 'react-redux-i18n';
-import Grid from 'material-ui/Grid';
+import Grid from '@material-ui/core/Grid';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 
 import Anchor from '../common/Anchor';
 import AllignedActions from '../common/AllignedActions';

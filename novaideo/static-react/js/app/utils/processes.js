@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export, no-underscore-dangle, no-param-reassign */
-import HelpIcon from 'material-ui-icons/Help';
+import HelpIcon from '@material-ui/icons/Help';
 import { PROCESSES, ICONS_MAPPING, ENTITIES_ICONS, STATE } from '../processes';
 
 function equal(element, filter, defaultValue = true) {

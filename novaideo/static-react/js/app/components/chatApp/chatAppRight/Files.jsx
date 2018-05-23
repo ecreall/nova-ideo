@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Translate, I18n } from 'react-redux-i18n';
 import { graphql } from 'react-apollo';
 

@@ -1,18 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Translate, I18n } from 'react-redux-i18n';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Icon from 'material-ui/Icon';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
-import CloseIcon from 'material-ui-icons/Close';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Icon from '@material-ui/core/Icon';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
+import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
-import { CardActions } from 'material-ui/Card';
-import ChatIcon from 'material-ui-icons/Chat';
-import Hidden from 'material-ui/Hidden';
+import CardActions from '@material-ui/core/CardActions';
+import ChatIcon from '@material-ui/icons/Chat';
+import Hidden from '@material-ui/core/Hidden';
 
 import { updateChatAppRight, closeChatApp } from '../../actions/chatAppActions';
 import { openDrawer } from '../../actions/collaborationAppActions';
@@ -112,8 +112,10 @@ const styles = (theme) => {
     action: {
       fontSize: 17,
       color: '#a0a0a0',
-      width: 37,
+      width: 30,
       height: 30,
+      marginRight: 3,
+      marginLeft: 3,
       '&:hover': {
         [`&.${CONTENTS_IDS.info}`]: {
           color: theme.palette.info[500]
@@ -136,7 +138,7 @@ const styles = (theme) => {
         top: '50%',
         right: 'auto',
         bottom: 'auto',
-        left: -1,
+        left: -4,
         height: 17,
         transform: 'translateY(-50%)',
         borderRadius: 0,

@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Translate } from 'react-redux-i18n';
 
 import Actions from '../../graphql/queries/Actions.graphql';

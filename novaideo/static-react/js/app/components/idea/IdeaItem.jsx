@@ -3,9 +3,9 @@ import React from 'react';
 import Moment from 'moment';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
-import Tooltip from 'material-ui/Tooltip';
-import { withStyles } from 'material-ui/styles';
-import Icon from 'material-ui/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import * as Vibrant from 'node-vibrant';
 

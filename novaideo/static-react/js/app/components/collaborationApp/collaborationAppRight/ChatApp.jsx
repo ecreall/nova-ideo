@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
-import Icon from 'material-ui/Icon';
+import Icon from '@material-ui/core/Icon';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 

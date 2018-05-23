@@ -2,12 +2,12 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui/Progress';
-import StarBorderIcon from 'material-ui-icons/StarBorder';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { Translate } from 'react-redux-i18n';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
+import Icon from '@material-ui/core/Icon';
 
 import { getActions, filterActions } from '../../utils/processes';
 import { goTo, get } from '../../utils/routeMap';
@@ -163,7 +163,7 @@ const styles = (theme) => {
       color: 'white',
       padding: 5
     },
-    imgContainerAnonymous: {
+    noImgContainer: {
       backgroundColor: theme.palette.tertiary.color
     }
   };
@@ -171,6 +171,8 @@ const styles = (theme) => {
 
 export class DumbUserCard extends React.Component {
   openDetails = () => {
+    const { onActionClick } = this.props;
+    if (onActionClick) onActionClick();
     this.props.closeChatApp();
     goTo(get('users', { userId: this.props.data.person.id }));
   };
@@ -209,12 +211,12 @@ export class DumbUserCard extends React.Component {
     return [
       <div className={classes.container}>
         <div
-          className={classNames(classes.imgContainer, { [classes.imgContainerAnonymous]: imgContent })}
+          className={classNames(classes.imgContainer, { [classes.noImgContainer]: imgContent })}
           onClick={!isAnonymous ? this.openDetails : null}
         >
           {!imgContent
             ? <div
-              className={classNames(classes.img, { [classes.imgAnonymous]: imgContent })}
+              className={classNames(classes.img, { [classes.imgAnonymous]: isAnonymous })}
               style={{
                 backgroundImage: `${imgGradient} url('${authorPicture && authorPicture.url}')`
               }}

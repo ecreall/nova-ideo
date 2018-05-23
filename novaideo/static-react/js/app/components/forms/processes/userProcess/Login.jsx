@@ -1,12 +1,11 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { connect } from 'react-redux';
-import { I18n, Translate } from 'react-redux-i18n';
-import { withStyles } from 'material-ui/styles';
-import Zoom from 'material-ui/transitions/Zoom';
-import Avatar from 'material-ui/Avatar';
+import { withStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
+import Avatar from '@material-ui/core/Avatar';
 import { withApollo } from 'react-apollo';
-import { Fade } from 'material-ui/transitions';
+import { Fade } from '@material-ui/core';
 import classNames from 'classnames';
 
 import Alert from '../../../common/Alert';
@@ -14,7 +13,6 @@ import { DEFAULT_LOGO } from '../../../../constants';
 import { PROCESSES, ACTIONS } from '../../../../processes';
 import { goTo, get } from '../../../../utils/routeMap';
 import { filterActions } from '../../../../utils/processes';
-import Button from '../../../styledComponents/Button';
 import Form from '../../Form';
 import LoginForm from './LoginForm';
 import Registration from './Registration';

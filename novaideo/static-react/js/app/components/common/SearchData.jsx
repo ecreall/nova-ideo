@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Translate } from 'react-redux-i18n';
-// import IconButton from 'material-ui/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 
 // import { iconAdapter } from '../../utils/globalFunctions';
 import { search } from '../../actions/collaborationAppActions';

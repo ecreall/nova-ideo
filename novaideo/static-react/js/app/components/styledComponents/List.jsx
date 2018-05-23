@@ -1,5 +1,7 @@
 import glamorous from 'glamorous';
-import { ListItem as MuiListItem, ListItemText as MuiListItemText, ListItemIcon as MuiListItemIcon } from 'material-ui/List';
+import MuiListItem from '@material-ui/core/ListItem';
+import MuiListItemText from '@material-ui/core/ListItemText';
+import MuiListItemIcon from '@material-ui/core/ListItemIcon';
 
 export const ListItem = glamorous(MuiListItem)((props) => {
   return {

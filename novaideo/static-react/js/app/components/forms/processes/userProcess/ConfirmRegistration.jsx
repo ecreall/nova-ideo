@@ -1,9 +1,9 @@
 import React from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui/Progress';
-import Dialog from 'material-ui/Dialog';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
 import { I18n } from 'react-redux-i18n';
 
 import { goTo, get } from '../../../../utils/routeMap';

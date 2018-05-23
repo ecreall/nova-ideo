@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Zoom from 'material-ui/transitions/Zoom';
+import { withStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
 
 const styles = {
   container: {

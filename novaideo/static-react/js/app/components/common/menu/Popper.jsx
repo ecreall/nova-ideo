@@ -2,11 +2,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
-import Grow from 'material-ui/transitions/Grow';
-import Paper from 'material-ui/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
 import { Manager, Target, Popper as PopperBase } from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const popperRoot = document.getElementById('modal-portal');
 

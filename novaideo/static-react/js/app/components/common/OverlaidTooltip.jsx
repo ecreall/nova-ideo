@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Tooltip from './overlay/Tooltip';
 import OverlayTrigger from '../common/overlay/OverlayTrigger';

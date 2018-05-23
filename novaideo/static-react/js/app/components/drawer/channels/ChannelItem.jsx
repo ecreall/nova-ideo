@@ -1,10 +1,13 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
-import Icon from 'material-ui/Icon';
-import CreateIcon from 'material-ui-icons/Create';
-import Badge from 'material-ui/Badge';
+import { withStyles } from '@material-ui/core/styles';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@material-ui/core/Icon';
+import CreateIcon from '@material-ui/icons/Create';
+import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { convertFromRaw } from 'draft-js';

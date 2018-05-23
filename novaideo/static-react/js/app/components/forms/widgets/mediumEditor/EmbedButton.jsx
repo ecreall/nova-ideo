@@ -1,8 +1,8 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { AtomicBlockUtils, Entity } from 'draft-js';
 import { I18n } from 'react-redux-i18n';
-import Input from 'material-ui/Input';
+import Input from '@material-ui/core/Input';
 
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';

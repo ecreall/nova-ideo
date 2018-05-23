@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
-import Drawer from 'material-ui/Drawer';
+import { withStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
 import classNames from 'classnames';
-import Hidden from 'material-ui/Hidden';
-import IconButton from 'material-ui/IconButton';
-import ChatIcon from 'material-ui-icons/Chat';
-import ExitToAppIcon from 'material-ui-icons/ExitToApp';
-import { Slide } from 'material-ui/transitions';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import ChatIcon from '@material-ui/icons/Chat';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Slide from '@material-ui/core/Slide';
 import { I18n } from 'react-redux-i18n';
 
 import { STYLE_CONST } from '../../constants';

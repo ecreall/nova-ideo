@@ -1,10 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { ReactMic } from 'react-mic';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import MicNoneIcon from 'material-ui-icons/MicNone';
-import StopIcon from 'material-ui-icons/Stop';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import MicNoneIcon from '@material-ui/icons/MicNone';
+import StopIcon from '@material-ui/icons/Stop';
 import classNames from 'classnames';
 import filesize from 'filesize';
 import { I18n } from 'react-redux-i18n';

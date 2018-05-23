@@ -1,8 +1,8 @@
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
-import MIcon from 'material-ui/Icon';
-import ForumIcon from 'material-ui-icons/Forum';
+import MIcon from '@material-ui/core/Icon';
+import ForumIcon from '@material-ui/icons/Forum';
 import { connect } from 'react-redux';
 
 import { updateChatAppRight } from '../../../actions/chatAppActions';

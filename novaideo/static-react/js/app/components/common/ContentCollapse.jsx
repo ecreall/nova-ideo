@@ -1,10 +1,12 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import { Collapse } from 'material-ui/transitions';
-import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
-import KeyboardArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from 'material-ui-icons/KeyboardArrowUp';
+import { withStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/Collapse';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import classNames from 'classnames';
 
 const styles = (theme) => {

@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export, import/no-extraneous-dependencies */
-import StarBorderIcon from 'material-ui-icons/StarBorder';
-import StarIcon from 'material-ui-icons/Star';
-import HistoryIcon from 'material-ui-icons/History';
-import ReportIcon from 'material-ui-icons/Report';
-import ReplyIcon from 'material-ui-icons/Reply';
-import ModeEditIcon from 'material-ui-icons/ModeEdit';
-import DeleteIcon from 'material-ui-icons/Delete';
-import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
+import HistoryIcon from '@material-ui/icons/History';
+import ReportIcon from '@material-ui/icons/Report';
+import ReplyIcon from '@material-ui/icons/Reply';
+import ModeEditIcon from '@material-ui/icons/ModeEdit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 import { iconAdapter } from './utils/globalFunctions';
 

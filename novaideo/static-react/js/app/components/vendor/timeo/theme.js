@@ -1,5 +1,5 @@
-import { teal, grey, deepOrange, orange, blue } from 'material-ui/colors';
-import { createMuiTheme } from 'material-ui/styles';
+import { teal, grey, deepOrange, orange, blue } from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 function theme() {
   return createMuiTheme({

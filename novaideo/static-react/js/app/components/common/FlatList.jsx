@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { CircularProgress } from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash.debounce';
 
 import { setURLState } from '../../actions/instanceActions';

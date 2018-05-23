@@ -2,8 +2,8 @@ import React from 'react';
 import { Translate, I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
-import Grid from 'material-ui/Grid';
-import { withStyles } from 'material-ui/styles';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import { I18n } from 'react-redux-i18n';
-import Icon from 'material-ui/Icon';
+import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import * as Vibrant from 'node-vibrant';
 

@@ -1,5 +1,5 @@
-import { teal, grey, red, orange, blue, green } from 'material-ui/colors';
-import { createMuiTheme } from 'material-ui/styles';
+import { teal, grey, red, orange, blue, green } from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const primaryCode = 500;
 

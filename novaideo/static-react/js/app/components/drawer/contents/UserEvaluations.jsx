@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { Query } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
-import SwapVerticalCircleIcon from 'material-ui-icons/SwapVerticalCircle';
+import { withStyles } from '@material-ui/core/styles';
+import SwapVerticalCircleIcon from '@material-ui/icons/SwapVerticalCircle';
 import { I18n } from 'react-redux-i18n';
 
 import ContentItem from './ContentItem';

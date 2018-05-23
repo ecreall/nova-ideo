@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { deleteComment } from '../../../../graphql/processes/commentProcess';

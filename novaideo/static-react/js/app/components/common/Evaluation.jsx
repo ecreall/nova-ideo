@@ -1,7 +1,7 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import Tooltip from './overlay/Tooltip';
