@@ -10,7 +10,6 @@ import { getFormattedDate } from '../../utils/globalFunctions';
 import AllignedActions from '../common/AllignedActions';
 import { getActions } from '../../utils/processes';
 import { ACTIONS } from '../../processes';
-import UserMenu from './UserMenu';
 import UserAvatar from './UserAvatar';
 import UserTitle from './UserTitle';
 import Search from '../forms/Search';
@@ -221,13 +220,6 @@ class UserAppBar extends React.Component {
               />
             </div>
           </div>
-          <UserMenu
-            open
-            overlayPosition="bottom"
-            user={person}
-            onActionClick={processManager.execute}
-            classes={{ container: classes.menu, button: classes.menuButton, action: classes.menuAction }}
-          />
         </div>
       </div>
     );

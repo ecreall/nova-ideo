@@ -6,6 +6,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ModeEditIcon from '@material-ui/icons/ModeEdit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SettingsIcon from '@material-ui/icons/Settings';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 import { iconAdapter } from './utils/globalFunctions';
@@ -214,6 +215,7 @@ export const ICONS_MAPPING = {
   'md md-sms-failed': ReportIcon,
   'ion-chatbubbles': ReplyIcon,
   'glyphicon glyphicon-pencil': ModeEditIcon,
+  'glyphicon glyphicon-settings': SettingsIcon,
   'glyphicon glyphicon-trash': DeleteIcon,
   'icon md md-live-help': QuestionAnswerIcon,
   'typcn typcn-pin': iconAdapter('mdi-set mdi-pin'),

@@ -139,7 +139,7 @@ def edit_state_validation(process, context):
 class Edit(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'glyphicon glyphicon-settings'
     style_order = 1
     tags = ['primary', 'menu', 'main-menu']
     title = _('Edit')

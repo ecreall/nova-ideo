@@ -30,6 +30,7 @@ import UserAppBar from './UserAppBar';
 import UserContentsList from './UserContentsList';
 import Footer from '../collaborationApp/Footer';
 import { initalsGenerator, getFormattedDate } from '../../utils/globalFunctions';
+import UserMenu from './UserMenu';
 
 const imgGradient =
   'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
@@ -202,6 +203,10 @@ const styles = (theme) => {
     paper: {
       backgroundColor: '#fafafa'
     },
+    menuContainer: {
+      display: 'flex',
+      alignItems: 'center'
+    },
     actionsContainer: {
       height: 45,
       width: 'auto',
@@ -344,7 +349,7 @@ export class DumbUser extends React.Component {
         withRightApp={false}
         classes={{
           container: classes.container,
-          closeBtn: classes.closeBtn,
+          // closeBtn: classes.closeBtn,
           paper: classes.paper
         }}
         appBar={
@@ -411,19 +416,22 @@ export class DumbUser extends React.Component {
                               <div className={classes.headerAddOn}>
                                 {person.function}
                               </div>}
-                            {communicationActions.length > 0
-                              ? <AllignedActions
-                                type="button"
-                                actions={communicationActions}
-                                onActionClick={processManager.execute}
-                                overlayPosition="bottom"
-                                classes={{
-                                  actionsContainer: classes.actionsContainer,
-                                  actionsText: classes.actionsText,
-                                  actionsIcon: classes.actionsIcon
-                                }}
-                              />
-                              : null}
+                            <div className={classes.menuContainer}>
+                              {communicationActions.length > 0
+                                ? <AllignedActions
+                                  type="button"
+                                  actions={communicationActions}
+                                  onActionClick={processManager.execute}
+                                  overlayPosition="bottom"
+                                  classes={{
+                                    actionsContainer: classes.actionsContainer,
+                                    actionsText: classes.actionsText,
+                                    actionsIcon: classes.actionsIcon
+                                  }}
+                                />
+                                : null}
+                              <UserMenu open user={person} onActionClick={processManager.execute} />
+                            </div>
                           </div>
                           <CollapsibleText className={classes.text} text={person.description} textLen={150} />
                           <UserData person={person} classes={classes} />
