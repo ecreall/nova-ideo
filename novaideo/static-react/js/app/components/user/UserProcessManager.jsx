@@ -10,6 +10,7 @@ import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import Login from '../forms/processes/userProcess/Login';
+import Paramters from '../forms/processes/userProcess/Paramters';
 import { userLogout } from '../../actions/authActions';
 import { filterActions } from '../../utils/processes';
 
@@ -66,6 +67,9 @@ export class DumbUserProcessManager extends React.Component {
       case processNodes.deselect.nodeId:
         deselectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
         break;
+      case userProcessNodes.edit.nodeId:
+        this.displayForm(action);
+        break;
       case userProcessNodes.logout.nodeId:
         this.props
           .userLogout()
@@ -100,6 +104,8 @@ export class DumbUserProcessManager extends React.Component {
     switch (action.behaviorId) {
     case userProcessNodes.login.nodeId:
       return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
+    case userProcessNodes.edit.nodeId:
+      return <Paramters onClose={this.onFormClose} />;
     default:
       return null;
     }

@@ -94,6 +94,11 @@ export const PROCESSES = {
       generalDiscuss: {
         nodeId: 'general_discuss',
         title: 'processes.usermanagement.generalDiscuss.title'
+      },
+      edit: {
+        nodeId: 'edit',
+        title: 'processes.usermanagement.edit.title',
+        description: 'processes.usermanagement.edit.description'
       }
     }
   },

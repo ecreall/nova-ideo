@@ -15,6 +15,7 @@ import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
 import MediumEditor from './widgets/mediumEditor/MediumEditor';
 import Record from './widgets/Record';
+import ImagePicker from './widgets/ImagePicker';
 
 export const renderTextBoxField = ({
   input: { name, value, onChange },
@@ -107,6 +108,10 @@ export const renderFilesListField = ({ input: { value, onChange }, node, initRef
   );
 };
 
+export const renderImageField = ({ input: { value, onChange }, initRef, label, helper }) => {
+  return <ImagePicker initRef={initRef} value={value} onChange={onChange} label={label} helper={helper} />;
+};
+
 export const renderRecordField = ({ input: { value, onChange }, node, initRef }) => {
   return (
     <Record initRef={initRef} value={value} onChange={onChange} multiple clickable>
@@ -129,6 +134,11 @@ const textInputStyles = (theme) => {
       alignItems: 'center',
       height: 35
     },
+    multilineRoot: {
+      height: 'auto !important',
+      minHeight: 35,
+      padding: '6px 0 14px 0'
+    },
     errorRoot: {
       borderColor: theme.palette.danger.primary
     },
@@ -139,6 +149,7 @@ const textInputStyles = (theme) => {
     input: {
       padding: '10px 10px 10px',
       fontSize: 15,
+      width: 'calc(100% - 19px)',
       '&::placeholder': {
         color: '#000',
         fontSize: 15,
@@ -158,10 +169,10 @@ const textInputStyles = (theme) => {
       fontWeight: 'bold'
     },
     label: {
-      fontWeight: 700,
+      fontWeight: 'bold',
       margin: '0 0 .25rem',
       display: 'block',
-      fontSize: 13
+      fontSize: 17
     },
     labelOptional: {
       fontWeight: '400 !important',
@@ -211,7 +222,8 @@ export const renderTextInput = withStyles(textInputStyles, {
           placeholder={placeholder}
           classes={{
             root: classNames(classes.root, {
-              [classes.errorRoot]: touched && error
+              [classes.errorRoot]: touched && error,
+              [classes.multilineRoot]: multiline
             }),
             input: classes.input
           }}

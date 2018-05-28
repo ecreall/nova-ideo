@@ -161,6 +161,10 @@ const Translations = {
         },
         logout: {
           title: "Se déconnecter de %{siteTitle}"
+        },
+        edit: {
+          title: "Paramètres",
+          description: "Paramètres du compte"
         }
       },
       registrationmanagement: {
@@ -463,6 +467,10 @@ const Translations = {
         },
         logout: {
           title: "Sign out from %{siteTitle}"
+        },
+        edit: {
+          title: "Paramters",
+          description: "Paramters of the account"
         }
       },
       registrationmanagement: {
