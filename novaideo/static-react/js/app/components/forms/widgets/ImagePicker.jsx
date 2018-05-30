@@ -58,7 +58,12 @@ const styles = (theme) => {
       cursor: 'pointer',
       background: 'rgba(0, 0, 0, 0.4)',
       borderRadius: 6,
-      border: `solid 3px ${theme.palette.info[500]}`
+      border: `solid 3px ${theme.palette.info[500]}`,
+      padding: 10,
+      textAlign: 'center'
+    },
+    imageBackgroundActive: {
+      display: 'flex'
     },
     icon: {
       color: 'white',
@@ -186,7 +191,7 @@ class ImagePicker extends React.Component {
                 backgroundImage: `url('${imgUrl}')`
               }}
             />}
-          <div className={classNames('image-background', classes.imgBtn)}>
+          <div className={classNames('image-background', classes.imgBtn, { [classes.imageBackgroundActive]: !imgUrl })}>
             {imgUrl &&
               <IconButton className={classes.deleteBtn} onClick={this.removeFile}>
                 <DeleteIcon />

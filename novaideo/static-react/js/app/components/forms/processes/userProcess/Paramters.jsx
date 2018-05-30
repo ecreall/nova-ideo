@@ -12,7 +12,10 @@ import WorkIcon from '@material-ui/icons/Work';
 import VerticalTab from '../../../common/VerticalTab';
 import Form from '../../Form';
 import EditProfile from './EditProfile';
+import EditPassword from './EditPassword';
+import AssignRoles from './AssignRoles';
 import UserAvatar from '../../../user/UserAvatar';
+import EditApiToken from './EditApiToken';
 
 const styles = {
   maxContainer: {
@@ -41,6 +44,11 @@ const styles = {
     display: 'flex',
     lineHeight: 'normal'
   },
+  headerAddOn: {
+    color: '#999999ff',
+    fontSize: 12,
+    lineHeight: 'normal'
+  },
   titleContainer: {
     display: 'flex'
   },
@@ -61,7 +69,7 @@ export class DumbParamters extends React.Component {
   };
 
   render() {
-    const { globalProps: { account }, onClose, classes, theme } = this.props;
+    const { account, onClose, classes, theme } = this.props;
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
     const func = account && account.function;
@@ -108,21 +116,21 @@ export class DumbParamters extends React.Component {
             {
               title: 'Changer de mot de passe',
               description: 'ma description 2',
-              content: 'sdgsdgf',
+              content: <EditPassword form="edit-password" key="edit-password" />,
               Icon: VpnKeyIcon,
               color: '#d72b3f'
             },
             {
               title: 'Obtenir un jeton d\'API',
               description: 'ma description 3',
-              content: 'Mon test 3',
+              content: <EditApiToken />,
               Icon: SettingsInputComponentIcon,
               color: '#ff9000'
             },
             {
               title: 'Assigner des rôles',
               description: 'ma description 3',
-              content: 'Mon test 3',
+              content: <AssignRoles form="Assign-roles" key="Assign-roles" />,
               Icon: WorkIcon,
               color: theme.palette.success[800]
             }

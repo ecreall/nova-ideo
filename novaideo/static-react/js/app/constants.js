@@ -1,5 +1,10 @@
 /* eslint-disable global-require */
 
+export const LANGUAGES_TITLES = {
+  en: 'English',
+  fr: 'Français'
+};
+
 export const STATIC_URL = '/novaideostatic-react/';
 
 export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');

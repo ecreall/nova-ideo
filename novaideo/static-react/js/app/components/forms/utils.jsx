@@ -13,6 +13,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
+import SelectField from './widgets/SelectField';
+import SelectList from './widgets/SelectList';
 import MediumEditor from './widgets/mediumEditor/MediumEditor';
 import Record from './widgets/Record';
 import ImagePicker from './widgets/ImagePicker';
@@ -122,6 +124,14 @@ export const renderRecordField = ({ input: { value, onChange }, node, initRef })
 
 export const renderSelect = ({ input: { value, onChange }, options, label, canAdd, initRef }) => {
   return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
+};
+
+export const renderSelectList = ({ input: { value, onChange }, options, label, initRef }) => {
+  return <SelectList initRef={initRef} label={label} options={options} value={value} onChange={onChange} />;
+};
+
+export const renderSelectField = ({ input: { name, value, onChange }, options, label, initRef }) => {
+  return <SelectField initRef={initRef} name={name} label={label} options={options} value={value} onChange={onChange} />;
 };
 
 const textInputStyles = (theme) => {

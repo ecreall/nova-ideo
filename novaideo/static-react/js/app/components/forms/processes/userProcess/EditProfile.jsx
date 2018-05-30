@@ -2,145 +2,43 @@
 import React from 'react';
 import { Form, Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
-import { I18n, Translate } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 
-import { renderTextInput, renderImageField } from '../../utils';
+import { renderTextInput, renderImageField, renderSelectField } from '../../utils';
 import Alert from '../../../common/Alert';
 import Button from '../../../styledComponents/Button';
 import { asyncValidateLogin } from '../../../../utils/user';
 import { LOGIN_VIEWS } from './Login';
 import { registration } from '../../../../graphql/processes/userProcess';
 import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
+import { LANGUAGES_TITLES } from '../../../../constants';
 
-const styles = (theme) => {
-  return {
-    form: {
-      padding: 15
-    },
-    siteTitle: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 35,
-      color: '#2c2d30',
-      letterSpacing: -1
-    },
-    description: {
-      fontSize: 16,
-      marginBottom: 20,
-      color: '#2c2d30'
-    },
-    paper: {
-      backgroundColor: '#fafafa'
-    },
-    sectionHeaderTitle: {
-      display: 'flex',
-      position: 'relative',
-      justifyContent: 'center'
-    },
-    sectionHeaderAddon: {
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textDecoration: 'none',
-      color: '#a0a0a2',
-      fontWeight: 500,
-      fontSize: 15
-    },
-    appBarHeaderTitle: {
-      display: 'flex',
-      position: 'relative',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    appBarHeaderTitleText: {
-      color: '#2c2d30',
-      fontSize: 18,
-      fontWeight: 900,
-      marginLeft: 7
-    },
-    avatar: {
-      width: 36,
-      height: 36,
-      borderRadius: 4
-    },
-    button: {
-      height: 40,
-      width: 40,
-      color: theme.palette.primary[500]
-    },
-    buttonFooter: {
-      width: '100%',
-      minHeight: 45,
-      fontSize: 18,
-      fontWeight: 900
-    },
-    titleRoot: {
-      height: 45
-    },
-    formTitle: {
-      flexGrow: 1
-    },
-    header: {
-      display: 'flex',
-      flexDirection: 'column',
-      margin: '0 10px',
-      position: 'relative'
-    },
-    headerTitle: {
-      fontSize: 15,
-      color: '#2c2d30',
-      fontWeight: 900,
-      display: 'flex',
-      lineHeight: 'normal'
-    },
-    titleContainer: {
-      display: 'flex'
-    },
-    closeBtn: {
-      '&::after': {
-        display: 'block',
-        position: 'absolute',
-        top: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        left: -4,
-        height: 20,
-        transform: 'translateY(-50%)',
-        borderRadius: 0,
-        borderRight: '1px solid #e5e5e5',
-        content: '""',
-        color: '#2c2d30'
-      }
-    },
-    loading: {
-      display: 'flex',
-      justifyContent: 'center'
-    },
-    alertContainer: {
-      marginBottom: 20
-    },
-    newAccountContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    },
-    newAccountTitle: {
-      fontWeight: 'bold',
-      marginBottom: 5
-    },
-    newAccountDescription: {
-      display: 'flex',
-      alignItems: 'center'
-    },
-    buttonSubscription: {
-      marginLeft: '10px !important'
-    }
-  };
+const styles = {
+  form: {
+    padding: 15
+  },
+  buttonFooter: {
+    width: '50%',
+    minHeight: 45,
+    fontSize: 18,
+    fontWeight: 900,
+    marginTop: 15,
+    float: 'right'
+  },
+  titleRoot: {
+    height: 45
+  },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  alertContainer: {
+    marginBottom: 20
+  }
 };
 
 export class DumbEditProfile extends React.Component {
@@ -179,7 +77,7 @@ export class DumbEditProfile extends React.Component {
   };
 
   render() {
-    const { action, globalProps: { site }, classes, theme } = this.props;
+    const { formData, ction, globalProps: { site }, classes, theme } = this.props;
     const { loading, error, submitted } = this.state;
     return [
       error &&
@@ -221,6 +119,7 @@ export class DumbEditProfile extends React.Component {
                 placeholder: 'Description',
                 label: 'Description',
                 multiline: true,
+                optional: true,
                 classes: {
                   root: classes.titleRoot
                 }
@@ -233,6 +132,7 @@ export class DumbEditProfile extends React.Component {
               props={{
                 placeholder: 'Fonction',
                 label: 'Fonction',
+                optional: true,
                 classes: {
                   root: classes.titleRoot
                 }
@@ -254,6 +154,15 @@ export class DumbEditProfile extends React.Component {
               name="email"
               component={renderTextInput}
               onChange={() => {}}
+            />
+
+            <Field
+              props={{
+                label: 'Langue',
+                options: LANGUAGES_TITLES
+              }}
+              name="locale"
+              component={renderSelectField}
             />
 
             <Grid container spacing={16}>
@@ -307,17 +216,6 @@ const validate = (values) => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = I18n.t('forms.singin.invalidEmail');
   }
-  if (!values.password) {
-    errors.password = requiredMessage;
-  } else if (!values.confirmPassword) {
-    errors.confirmPassword = requiredMessage;
-  } else if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = I18n.t('forms.singin.passwordsNotMatch');
-  }
-  if (!values.terms) {
-    errors.terms = I18n.t('forms.singin.acceptTerms');
-  }
-
   return errors;
 };
 
