@@ -28,10 +28,7 @@ const styles = {
 export const DumbDivider = ({ title, classes }) => {
   return (
     <div className={classNames(classes.divider, { [classes.full]: !title })}>
-      {title &&
-        <div className={classes.title}>
-          {title}
-        </div>}
+      {title && <div className={classes.title}>{title}</div>}
     </div>
   );
 };

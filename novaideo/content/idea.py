@@ -43,10 +43,11 @@ from novaideo.core import (
     Emojiable,
     SignalableEntity,
     Debatable,
-    Tokenable)
+    Tokenable,
+    ContentWithURLs)
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
-    text_urls_format, truncate_text, get_files_data, html_to_text)
+    truncate_text, get_files_data, html_to_text)
 
 
 OPINIONS = OrderedDict([
@@ -185,7 +186,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
            ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable,
-           Tokenable):
+           ContentWithURLs, Tokenable):
     """Idea class"""
 
     type_title = _('Idea')
@@ -207,7 +208,6 @@ class Idea(VersionableEntity, DuplicableEntity,
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.addtoproperty('channels', Channel())
-        self.urls = PersistentDict({})
 
     @property
     def is_workable(self):
@@ -286,11 +286,5 @@ class Idea(VersionableEntity, DuplicableEntity,
     def get_node_descriminator(self):
         return 'idea'
 
-    def format(self, request):
-        text = getattr(self, 'text', '')
-        all_urls, url_files, text_urls, formatted_text = text_urls_format(
-            text, request)
-        self.urls = PersistentDict(all_urls)
-        self.setproperty('url_files', url_files)
-        self.formatted_text = formatted_text
-        self.formatted_urls = text_urls
+    def get_content(self):
+        return html_to_text(self.text)

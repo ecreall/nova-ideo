@@ -113,8 +113,8 @@ class CreateIdea(InfiniteCardinality):
                 alert_kind='transformation_'+context_type,
                 content=context
                 )
-
-        idea.format(request)
+        
+        idea.extract_urls_metadata(request)
         idea.reindex()
         request.registry.notify(ActivityExecuted(self, [idea], author))
         return {'newcontext': idea}
@@ -298,8 +298,8 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.set_data(appstruct)
         copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.subscribe_to_channel(user)
-        copy_of_idea.format(request)
         copy_of_idea.reindex()
+        copy_of_idea.extract_urls_metadata(request)
         context.reindex()
         request.registry.notify(ActivityExecuted(
             self, [context, copy_of_idea], author))
@@ -397,7 +397,7 @@ class EditIdea(InfiniteCardinality):
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.reindex()
-        context.format(request)
+        context.extract_urls_metadata(request)
         context.reindex()
         if 'archived' in context.state:
             recuperate_actions = getBusinessAction(context,
@@ -856,21 +856,12 @@ class CommentIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
-        formatted_comment = appstruct.get('formatted_comment', None)
-        urls = appstruct.get('urls', None)
         channel = context.channel
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
-            if not formatted_comment:
-                comment.format(request)
-            else:
-                comment.formatted_comment = formatted_comment
-
-            if urls:
-                comment.add_urls(urls, request)
-
             comment.state = PersistentList(['published'])
+            comment.extract_urls_metadata(request)
             comment.reindex()
             user = appstruct.get('user', get_current())
             mask = user.get_mask(getSite()) if hasattr(user, 'get_mask') else user

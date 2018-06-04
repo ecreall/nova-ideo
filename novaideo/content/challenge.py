@@ -45,8 +45,7 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.widget import LimitedTextAreaWidget, FilesWidget
 from novaideo import _, log
 from novaideo.file import Image
-from novaideo.utilities.util import (
-    text_urls_format, get_files_data)
+from novaideo.utilities.util import get_files_data
 from novaideo.content import get_file_widget
 from novaideo.content.idea import anonymous_widget
 
@@ -235,7 +234,6 @@ class Challenge(
         super(Challenge, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.addtoproperty('channels', Channel())
-        self.urls = PersistentDict({})
 
     def __setattr__(self, name, value):
         super(Challenge, self).__setattr__(name, value)
@@ -314,12 +312,3 @@ class Challenge(
 
     def get_node_descriminator(self):
         return 'challenge'
-
-    def format(self, request):
-        text = getattr(self, 'text', '')
-        all_urls, url_files, text_urls, formatted_text = text_urls_format(
-            text, request, True)
-        self.urls = PersistentDict(all_urls)
-        self.setproperty('url_files', url_files)
-        self.formatted_text = formatted_text
-        self.formatted_urls = text_urls

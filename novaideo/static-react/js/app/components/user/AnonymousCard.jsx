@@ -88,16 +88,12 @@ function DumbAnonymousCard({ classes }) {
           }}
         />
         <div className={classes.header}>
-          <div className={classes.headerTitle}>
-            {I18n.t('common.you')}
-          </div>
+          <div className={classes.headerTitle}>{I18n.t('common.you')}</div>
         </div>
       </div>
       <div className={classes.body}>
         <div className={classes.bodyContent}>
-          <div className={classes.illustrationMessage}>
-            {I18n.t('user.noUserCard')}
-          </div>
+          <div className={classes.illustrationMessage}>{I18n.t('user.noUserCard')}</div>
           <LoginButton />
         </div>
       </div>

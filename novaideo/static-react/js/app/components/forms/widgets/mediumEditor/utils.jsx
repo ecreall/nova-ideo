@@ -93,9 +93,7 @@ export const newBlockToHTML = (block) => {
     return (
       <figure className={`md-block-image${extraClass}`}>
         <img src={imgData.src} alt={text} {...extractEmbedData(imgData, 'data-')} />
-        <figcaption className="md-block-image-caption">
-          {text}
-        </figcaption>
+        <figcaption className="md-block-image-caption">{text}</figcaption>
       </figure>
     );
   }

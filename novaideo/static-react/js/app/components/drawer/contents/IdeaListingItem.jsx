@@ -218,14 +218,15 @@ export class DumbIdeaListingItem extends React.Component {
           >
             {this.renderIcon()}
             <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
-            {isPrevate &&
+            {isPrevate && (
               <ListItemSecondaryAction className={classes.badge}>
                 <Badge
                   classes={{ colorAccent: classNames(classes.badgeColor, { [classes.badgeColorSelected]: open }) }}
                   badgeContent={<Icon className="mdi-set mdi-lock" />}
                   color="accent"
                 />
-              </ListItemSecondaryAction>}
+              </ListItemSecondaryAction>
+            )}
           </ListItem>
         }
       >

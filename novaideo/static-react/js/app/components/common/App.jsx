@@ -78,9 +78,7 @@ export const DumbApp = ({ data, classes, Navbar, active, left, children }) => {
         data={data}
       />
       <main className={classes.main}>
-        <div className="app-child">
-          {children}
-        </div>
+        <div className="app-child">{children}</div>
       </main>
     </div>
   );

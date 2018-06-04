@@ -30,10 +30,11 @@ const styles = {
 export function renderMenuItem({ Icon, title, onClick, color, hoverColor }) {
   return (
     <MenuItem onClick={onClick} hoverColor={hoverColor}>
-      {Icon &&
+      {Icon && (
         <ListItemIcon iconColor={color}>
           <Icon className="menu-item-icon" />
-        </ListItemIcon>}
+        </ListItemIcon>
+      )}
       <ListItemText
         color={color}
         classes={{
@@ -53,11 +54,7 @@ export class DumbMenuList extends React.Component {
     }
 
     if (typeof field === 'function') {
-      return (
-        <div onClick={close}>
-          {field()}
-        </div>
-      );
+      return <div onClick={close}>{field()}</div>;
     }
     const Icon = field.Icon;
     return renderMenuItem({
@@ -75,10 +72,7 @@ export class DumbMenuList extends React.Component {
     const { header, fields, classes } = this.props;
     return (
       <div className={classNames({ [classes.section]: header, 'menu-section': header })}>
-        {header &&
-          <div className={classes.sectionHeader}>
-            {header}
-          </div>}
+        {header && <div className={classes.sectionHeader}>{header}</div>}
         <StyledMenuList className={header && classes.menuSection} role="menu">
           {fields.map((field) => {
             return this.renderItem(field);

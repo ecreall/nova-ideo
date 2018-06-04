@@ -179,28 +179,28 @@ class ImagePicker extends React.Component {
     return (
       <div className={classes.container}>
         <input {...inputAttributes} />
-        {label &&
+        {label && (
           <label className={classes.label} htmlFor={name}>
             {label}
-          </label>}
+          </label>
+        )}
         <div className={classNames(classes.imgContainer, { [classes.noImgContainer]: !imgUrl })} onClick={this.openFileChooser}>
-          {imgUrl &&
+          {imgUrl && (
             <div
               className={classes.img}
               style={{
                 backgroundImage: `url('${imgUrl}')`
               }}
-            />}
+            />
+          )}
           <div className={classNames('image-background', classes.imgBtn, { [classes.imageBackgroundActive]: !imgUrl })}>
-            {imgUrl &&
+            {imgUrl && (
               <IconButton className={classes.deleteBtn} onClick={this.removeFile}>
                 <DeleteIcon />
-              </IconButton>}
+              </IconButton>
+            )}
             <PhotoCameraIcon className={classes.icon} />
-            {helper &&
-              <div className={classes.helper}>
-                {helper}
-              </div>}
+            {helper && <div className={classes.helper}>{helper}</div>}
           </div>
         </div>
       </div>

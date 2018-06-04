@@ -43,8 +43,8 @@ export class DumbCommentDivider extends React.Component {
     if (!ignorDrawer) {
       dividerShift = drawer ? STYLE_CONST.drawerWidth : 0;
     }
-    return dateSeparator || addUnread
-      ? <Divider
+    return dateSeparator || addUnread ? (
+      <Divider
         dynamic={dynamic}
         fullScreen={fullScreen}
         reverted={reverted}
@@ -56,7 +56,7 @@ export class DumbCommentDivider extends React.Component {
         shift={dividerShift}
         fixedTop={65}
       />
-      : null;
+    ) : null;
   }
 }
 

@@ -108,18 +108,9 @@ export class DumbEditCommentForm extends React.Component {
           return file.oid;
         });
       const plainComment = this.editor.getPlainText();
-      const formattedComment = formatText(plainComment);
       this.props.editComment({
         context: context,
         text: plainComment,
-        formattedText: formattedComment,
-        urls: findUrls(plainComment)
-          .filter((link) => {
-            return link.type === 'url';
-          })
-          .map((link) => {
-            return link.href;
-          }),
         attachedFiles: newFiles,
         oldFiles: oldFiles
       });

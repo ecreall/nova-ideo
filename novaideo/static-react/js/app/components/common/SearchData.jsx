@@ -59,4 +59,9 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(SearchData));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchData)
+);

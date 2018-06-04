@@ -161,4 +161,9 @@ export const mapStateToProps = (state) => {
     drawerApp: state.apps.drawer.app
   };
 };
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(AppDrawer));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AppDrawer)
+);

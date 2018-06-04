@@ -62,10 +62,8 @@ export class DumbMenuWithActivator extends React.Component {
     });
     const open = Boolean(anchorEl);
     return [
-      <div onClick={this.open}>
-        {activator}
-      </div>,
-      open &&
+      <div onClick={this.open}>{activator}</div>,
+      open && (
         <Menu
           transitionDuration={150}
           keepMounted={keepMounted}
@@ -79,6 +77,7 @@ export class DumbMenuWithActivator extends React.Component {
         >
           {children}
         </Menu>
+      )
     ];
   }
 }

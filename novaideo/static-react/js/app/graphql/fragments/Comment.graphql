@@ -8,7 +8,6 @@ fragment Comment on Comment {
   rootOid
   createdAt
   text
-  formattedText
   edited
   pinned
   author {
@@ -16,6 +15,21 @@ fragment Comment on Comment {
   }
   attachedFiles {
     ...File
+  }
+  urls {
+    url
+    html
+    title
+    description
+    thumbnailUrl
+    providerName
+    faviconUrl
+    authorName
+    authorAvatar
+    data {
+      label
+      data
+    }
   }
   emojis {
     title
@@ -29,17 +43,6 @@ fragment Comment on Comment {
         }
       }
     }
-  }
-  urls {
-    url
-    title
-    description
-    imageUrl
-    siteName
-    favicon
-    domain
-    authorAvatar
-    authorName
   }
   lenComments
   lenUnreadReplies

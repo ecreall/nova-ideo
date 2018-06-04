@@ -32,21 +32,18 @@ const styles = {
 };
 
 function UserDrawer({ account, classes }) {
-  return account
-    ? [<Jump />, <Contents />]
-    : <Illustration
+  return account ? (
+    [<Jump />, <Contents />]
+  ) : (
+    <Illustration
       img={NOT_LOGGED}
-      message={[
-        <div className={classes.illustrationMessage}>
-          {I18n.t('user.noUserContents')}
-        </div>,
-        <LoginButton />
-      ]}
+      message={[<div className={classes.illustrationMessage}>{I18n.t('user.noUserContents')}</div>, <LoginButton />]}
       classes={{
         container: classes.illustrationContainer,
         image: classes.imgIllustration
       }}
-    />;
+    />
+  );
 }
 
 export const mapStateToProps = (state) => {

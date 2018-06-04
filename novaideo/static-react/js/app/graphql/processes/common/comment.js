@@ -4,7 +4,7 @@ import { filterActions } from '../../../utils/processes';
 import { PROCESSES, ACTIONS } from '../../../processes';
 
 export default function comment({ ownProps, mutate }) {
-  return ({ context, text, formattedText, urls, action, attachedFiles, anonymous, account }) => {
+  return ({ context, text, action, attachedFiles, anonymous, account }) => {
     const { formData } = ownProps;
     const files =
       attachedFiles.length > 0
@@ -49,8 +49,6 @@ export default function comment({ ownProps, mutate }) {
       variables: {
         context: context,
         comment: text,
-        formattedComment: formattedText,
-        urls: urls,
         attachedFiles: attachedFiles,
         anonymous: anonymous,
         action: action,
@@ -75,10 +73,9 @@ export default function comment({ ownProps, mutate }) {
             rootOid: ownProps.subject,
             createdAt: createdAt.toISOString(),
             text: text,
-            formattedText: formattedText,
             attachedFiles: files,
-            emojis: [],
             urls: [],
+            emojis: [],
             edited: false,
             pinned: false,
             author: {

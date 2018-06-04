@@ -46,7 +46,10 @@ const styles = (theme) => {
 
 export class DumbSearchContentItem extends React.PureComponent {
   open = () => {
-    const { node, itemProps: { onClick } } = this.props;
+    const {
+      node,
+      itemProps: { onClick }
+    } = this.props;
     this.props.closeChatApp();
     goToEntity(node.subject.__typename, node.subject.id);
     if (onClick) onClick();
@@ -90,4 +93,9 @@ export const mapDispatchToProps = {
   closeChatApp: closeChatApp
 };
 
-export default withStyles(styles, { withTheme: true })(connect(null, mapDispatchToProps)(DumbSearchContentItem));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    null,
+    mapDispatchToProps
+  )(DumbSearchContentItem)
+);

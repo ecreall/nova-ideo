@@ -33,11 +33,7 @@ export const DumbSearch = ({ channel, searchProps, classes }) => {
       displayForm={false}
       displayFooter={false}
       NoItems={() => {
-        return (
-          <div className={classes.noResult}>
-            {I18n.t('channels.noResultBlock')}
-          </div>
-        );
+        return <div className={classes.noResult}>{I18n.t('channels.noResultBlock')}</div>;
       }}
       channelId={channel.id}
       filter={{ text: searchProps && searchProps.filter && searchProps.filter.text }}

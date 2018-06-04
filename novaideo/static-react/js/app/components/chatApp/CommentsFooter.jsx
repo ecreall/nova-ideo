@@ -52,9 +52,7 @@ const CommentsIdeaFooter = ({ data, classes }) => {
           <span className={classes.headerTitle}>
             <UserTitle node={author} />
           </span>
-          <span className={classes.headerAddOn}>
-            {title}
-          </span>
+          <span className={classes.headerAddOn}>{title}</span>
         </div>
       </div>
       <b>{<Translate value="channels.ideasCommentsFooterTitle" name={title} />}</b> {I18n.t('channels.ideasCommentsFooter')}

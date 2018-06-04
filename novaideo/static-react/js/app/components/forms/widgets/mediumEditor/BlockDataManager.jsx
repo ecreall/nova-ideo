@@ -80,7 +80,12 @@ class BlockDataManager extends React.Component {
   };
 
   updateData = (key, value) => {
-    const { entity, contentState, selection, blockProps: { getEditorState, setEditorState } } = this.props;
+    const {
+      entity,
+      contentState,
+      selection,
+      blockProps: { getEditorState, setEditorState }
+    } = this.props;
     const data = { [key]: value };
     this.setState(data, () => {
       if (entity !== undefined) Entity.mergeData(entity, data);
@@ -129,7 +134,7 @@ class BlockDataManager extends React.Component {
     return (
       <div className={classNames(className, position, `size-${size}`)} onClick={this.focusBlock}>
         {children}
-        {!readOnly &&
+        {!readOnly && (
           <div
             ref={(background) => {
               this.background = background;
@@ -181,7 +186,8 @@ class BlockDataManager extends React.Component {
                 <Icon className="icon mdi-set mdi-magnify-plus" />
               </span>
             </div>
-          </div>}
+          </div>
+        )}
       </div>
     );
   }

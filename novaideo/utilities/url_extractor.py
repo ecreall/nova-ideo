@@ -7,6 +7,10 @@ http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 source: https://github.com/rcompton/ryancompton.net/blob/master/assets/praw_drugs/urlmarker.py
 """
 import re
+import urllib
+import json
+from urllib.parse import urlparse
+
 
 """
 The regex patterns in this gist are intended to match any URLs,
@@ -26,3 +30,20 @@ WEB_URL_REGEX = r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|
 
 def extract_urls(text):
     return re.findall(WEB_URL_REGEX, text)
+
+
+def extract_url_metadata(request, url=None):
+    try:
+        ws_url = request.resource_url(request.root, 'url_metadata')
+        parsed_uri = urlparse(ws_url)
+        # If dev mode
+        if parsed_uri.port:
+            ws_url = 'http://0.0.0.0:5000'
+
+        # get metadata: use url_metadata web service
+        req_url = '{ws_url}/?url={url}'.format(url=url, ws_url=ws_url)
+        response = urllib.request.urlopen(req_url).read()
+        data = json.loads(response.decode())
+        return data.get('metadata', None)
+    except Exception:
+        return None

@@ -18,9 +18,7 @@ const SearchApp = (props) => {
     <RightContent
       title={
         <div className={classes.appTitle}>
-          <span>
-            {I18n.t('channels.searchBlockTitle')}
-          </span>
+          <span>{I18n.t('channels.searchBlockTitle')}</span>
         </div>
       }
     >

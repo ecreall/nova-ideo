@@ -136,20 +136,22 @@ export class DumbChannelItem extends React.PureComponent {
         </ListItemIcon>
       );
     }
-    return itemProps && itemProps.isDiscussion
-      ? <UserAvatar
+    return itemProps && itemProps.isDiscussion ? (
+      <UserAvatar
         picture={channelPicture}
         classes={{ avatar: classes.avatar, noPicture: classes.avatarNoPicture }}
         title={node.title}
       />
-      : <ListItemIcon>
+    ) : (
+      <ListItemIcon>
         <Icon
           className={classNames('mdi-set mdi-pound', classes.icon, {
             [classes.iconActive]: isActive,
             [classes.iconSelected]: isSelected
           })}
         />
-      </ListItemIcon>;
+      </ListItemIcon>
+    );
   };
 
   render() {
@@ -171,10 +173,11 @@ export class DumbChannelItem extends React.PureComponent {
       >
         {this.renderIcon(isActive, isSelected)}
         <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
-        {hasUnread &&
+        {hasUnread && (
           <ListItemSecondaryAction className={classes.badge}>
             <Badge classes={{ colorAccent: classes.badgeColor }} badgeContent={lenUnreadComments} color="accent" />
-          </ListItemSecondaryAction>}
+          </ListItemSecondaryAction>
+        )}
       </ListItem>
     );
   }
@@ -193,4 +196,9 @@ export const mapStateToProps = (state, props) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DumbChannelItem)
+);

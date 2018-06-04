@@ -107,18 +107,8 @@ class Respond(InfiniteCardinality):
         root = getSite()
         anonymous = appstruct.get('anonymous', False)
         comment = appstruct['_object_data']
-        formatted_comment = appstruct.get('formatted_comment', None)
-        urls = appstruct.get('urls', None)
         context.addtoproperty('comments', comment)
         context.add_comment(comment)
-        if not formatted_comment:
-            comment.format(request)
-        else:
-            comment.formatted_comment = formatted_comment
-
-        if urls:
-            comment.add_urls(urls, request)
-
         user = appstruct.get('user', get_current())
         author = user if not anonymous else user.get_mask(root)
         comment.setproperty('author', author)
@@ -128,6 +118,7 @@ class Respond(InfiniteCardinality):
         channel = comment.channel
         is_discuss = channel.is_discuss()
         channel.add_comment(comment)
+        comment.extract_urls_metadata(request)
         comment.reindex()
         if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
@@ -232,20 +223,13 @@ class Edit(InfiniteCardinality):
     state_validation = state_validation
 
     def start(self, context, request, appstruct, **kw):
-        urls = appstruct.get('urls', None)
-        formatted_comment = appstruct.get('formatted_comment', None)
         context.edited = True
         user = context.author
         if appstruct.get('associated_contents', []):
             context.set_associated_contents(
                 appstruct['associated_contents'], user)
-
-        if not formatted_comment:
-            context.format(request)
-        else:
-            context.formatted_comment = formatted_comment
-            context.set_urls(urls, request)
-
+        
+        context.extract_urls_metadata(request)
         context.reindex()
         return {}
 

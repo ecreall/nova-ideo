@@ -116,11 +116,7 @@ export class DumbForm extends React.Component {
     const { classes, fullScreen, appBar, footer, transition, children, withDrawer, onOpen } = this.props;
     const integretedForm = withDrawer || fullScreen;
     const { open } = this.state;
-    const content = (
-      <div className={fullScreen ? classes.maxContainer : classes.container}>
-        {children}
-      </div>
-    );
+    const content = <div className={fullScreen ? classes.maxContainer : classes.container}>{children}</div>;
     return (
       <Dialog
         withDrawer={withDrawer}
@@ -150,16 +146,9 @@ export class DumbForm extends React.Component {
             [classes.smallRoot]: !integretedForm
           })}
         >
-          {fullScreen
-            ? <Scrollbar>
-              {content}
-            </Scrollbar>
-            : content}
+          {fullScreen ? <Scrollbar>{content}</Scrollbar> : content}
         </div>
-        {footer &&
-          <div className={classes.footer}>
-            {footer}
-          </div>}
+        {footer && <div className={classes.footer}>{footer}</div>}
       </Dialog>
     );
   }

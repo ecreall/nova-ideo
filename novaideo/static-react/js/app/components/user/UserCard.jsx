@@ -202,11 +202,7 @@ export class DumbUserCard extends React.Component {
     if (isAnonymous) {
       imgContent = <Icon className={classNames(classes.userIcon, 'mdi-set mdi-guy-fawkes-mask')} />;
     } else if (person.title && !authorPicture) {
-      imgContent = (
-        <div className={classes.userIcon}>
-          {initalsGenerator(person.title)}
-        </div>
-      );
+      imgContent = <div className={classes.userIcon}>{initalsGenerator(person.title)}</div>;
     }
     return [
       <div className={classes.container}>
@@ -214,35 +210,33 @@ export class DumbUserCard extends React.Component {
           className={classNames(classes.imgContainer, { [classes.noImgContainer]: imgContent })}
           onClick={!isAnonymous ? this.openDetails : null}
         >
-          {!imgContent
-            ? <div
+          {!imgContent ? (
+            <div
               className={classNames(classes.img, { [classes.imgAnonymous]: isAnonymous })}
               style={{
                 backgroundImage: `${imgGradient} url('${authorPicture && authorPicture.url}')`
               }}
             />
-            : imgContent}
+          ) : (
+            imgContent
+          )}
           <div className={classes.header}>
-            <div className={classes.headerTitle}>
-              {person.title}
-            </div>
-            {!isAnonymous &&
-              <div className={classes.headerAddOn}>
-                {person.function}
-              </div>}
+            <div className={classes.headerTitle}>{person.title}</div>
+            {!isAnonymous && <div className={classes.headerAddOn}>{person.function}</div>}
           </div>
         </div>
         <div className={classes.body}>
           {!isAnonymous
             ? [
               <div className={classes.actions}>
-                {communicationActions.length > 0 &&
-                <AllignedActions
-                  type="button"
-                  actions={communicationActions}
-                  onActionClick={processManager.execute}
-                  classes={{ actionsContainer: classes.actionsContainer }}
-                />}
+                {communicationActions.length > 0 && (
+                  <AllignedActions
+                    type="button"
+                    actions={communicationActions}
+                    onActionClick={processManager.execute}
+                    classes={{ actionsContainer: classes.actionsContainer }}
+                  />
+                )}
                 <UserMenu open user={person} onActionClick={processManager.execute} />
               </div>,
               <div className={classes.bodyContent}>
@@ -261,8 +255,8 @@ export class DumbUserCard extends React.Component {
             : null}
         </div>
       </div>,
-      withCommentForm && commentAction
-        ? <Comment
+      withCommentForm && commentAction ? (
+        <Comment
           isDiscuss
           classes={{ container: classes.formContainer }}
           key={channelId}
@@ -273,7 +267,7 @@ export class DumbUserCard extends React.Component {
           channel={person.channel}
           onSubmit={this.onCommentSubmit}
         />
-        : null
+      ) : null
     ];
   }
 }
@@ -292,7 +286,10 @@ function UserCardWithProcessManager(props) {
 }
 
 export default withStyles(styles)(
-  connect(null, mapDispatchToProps)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(
     graphql(PersonData, {
       options: (props) => {
         return {

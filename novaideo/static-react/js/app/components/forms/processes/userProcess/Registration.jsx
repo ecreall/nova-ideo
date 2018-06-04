@@ -196,13 +196,19 @@ export class DumbRegistrationForm extends React.Component {
   };
 
   render() {
-    const { action, globalProps: { site }, classes, theme } = this.props;
+    const {
+      action,
+      globalProps: { site },
+      classes,
+      theme
+    } = this.props;
     const { loading, error, submitted } = this.state;
     return [
-      error &&
+      error && (
         <Alert type="danger" classes={{ container: classes.alertContainer }}>
           {I18n.t('common.failedLogin')}
-        </Alert>,
+        </Alert>
+      ),
       <Form className={classes.form} onSubmit={this.handleSubmit}>
         <div className={submitted ? classes.validationContainer : classes.formContainer}>
           <div className={classes.formTitle}>
@@ -212,11 +218,10 @@ export class DumbRegistrationForm extends React.Component {
               </div>
             </div>
           </div>
-          {submitted
-            ? <div>
-              {I18n.t('forms.singin.confirmationSent')}
-            </div>
-            : <div>
+          {submitted ? (
+            <div>{I18n.t('forms.singin.confirmationSent')}</div>
+          ) : (
+            <div>
               <Field
                 props={{
                   placeholder: I18n.t('forms.singin.firstName'),
@@ -291,20 +296,21 @@ export class DumbRegistrationForm extends React.Component {
                 onChange={() => {}}
               />
 
-              {loading
-                ? <div className={classes.loading}>
+              {loading ? (
+                <div className={classes.loading}>
                   <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
                 </div>
-                : <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+              ) : (
+                <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
                   {I18n.t('common.singUp')}
-                </Button>}
-            </div>}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </Form>,
       <div className={classes.newAccountContainer}>
-        <div className={classes.newAccountTitle}>
-          {I18n.t('common.haveAccount')}
-        </div>
+        <div className={classes.newAccountTitle}>{I18n.t('common.haveAccount')}</div>
         <div className={classes.newAccountDescription}>
           <Button onClick={this.goToLogin} background={theme.palette.info[500]} className={classes.buttonSubscription}>
             {I18n.t('common.signIn')}

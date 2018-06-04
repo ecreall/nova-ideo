@@ -168,7 +168,13 @@ export class DumbIdeaPopover extends React.Component {
   };
 
   render() {
-    const { data, processManager, adapters, globalProps: { site }, classes } = this.props;
+    const {
+      data,
+      processManager,
+      adapters,
+      globalProps: { site },
+      classes
+    } = this.props;
     const node = data.idea;
     if (!node || !node.author) {
       return (
@@ -199,8 +205,8 @@ export class DumbIdeaPopover extends React.Component {
         <div className={classes.left}>
           <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
           <div className={classes.leftActions}>
-            {hasEvaluation
-              ? <Evaluation
+            {hasEvaluation ? (
+              <Evaluation
                 icon={getEvaluationIcons(node.userToken)}
                 onClick={{
                   top: processManager.evaluationClick,
@@ -210,11 +216,11 @@ export class DumbIdeaPopover extends React.Component {
                 actions={getEvaluationActions(node)}
                 active={state.includes(STATE.idea.submittedSupport)}
               />
-              : null}
-            {site.examineIdeas && state.includes(STATE.idea.examined)
-              ? <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
-              : null}
-            {isPrevate &&
+            ) : null}
+            {site.examineIdeas && state.includes(STATE.idea.examined) ? (
+              <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
+            ) : null}
+            {isPrevate && (
               <OverlaidTooltip
                 tooltip={publishAction ? I18n.t('idea.privatePublishAction') : I18n.t('idea.private')}
                 placement="top"
@@ -229,19 +235,16 @@ export class DumbIdeaPopover extends React.Component {
                       : null
                   }
                 />
-              </OverlaidTooltip>}
+              </OverlaidTooltip>
+            )}
           </div>
         </div>
         <div className={classes.body}>
           <div className={classes.header}>
             <IdeaMenu open idea={node} onActionClick={processManager.execute} />
-            <span className={classes.headerTitle}>
-              {author && author.title}
-            </span>
+            <span className={classes.headerTitle}>{author && author.title}</span>
             <Tooltip id={node.id} title={createdAtF3} placement="top">
-              <span className={classes.headerAddOn}>
-                {createdAt}
-              </span>
+              <span className={classes.headerAddOn}>{createdAt}</span>
             </Tooltip>
           </div>
           <div className={classes.bodyContent}>
@@ -251,7 +254,7 @@ export class DumbIdeaPopover extends React.Component {
               </div>
               <div>
                 <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-                {images.length > 0 &&
+                {images.length > 0 && (
                   <div className={classes.imagesContainer}>
                     <ImagesPreview
                       images={images}
@@ -261,7 +264,8 @@ export class DumbIdeaPopover extends React.Component {
                         date: node.createdAt
                       }}
                     />
-                  </div>}
+                  </div>
+                )}
               </div>
             </div>
             <div className={classes.bodyFooter}>
@@ -300,7 +304,10 @@ function IdeaPopoverWithProcessManager(props) {
 }
 
 export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(
     graphql(Idea, {
       options: (props) => {
         return {

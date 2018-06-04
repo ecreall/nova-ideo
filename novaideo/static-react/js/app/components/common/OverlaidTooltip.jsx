@@ -17,11 +17,7 @@ const styles = {
 export const DumbOverlaidTooltip = ({ children, tooltip, placement, classes }) => {
   return (
     <OverlayTrigger
-      overlay={
-        <Tooltip className={classes.tooltip}>
-          {tooltip}
-        </Tooltip>
-      }
+      overlay={<Tooltip className={classes.tooltip}>{tooltip}</Tooltip>}
       trigger={['hover']}
       placement={placement || 'top'}
     >

@@ -49,14 +49,12 @@ export class DumbTermsAndConditions extends React.Component {
       <span className={classes.button} onClick={this.handleClickOpen}>
         {I18n.t('common.termesConditions')}
       </span>,
-      this.state.open &&
+      this.state.open && (
         <Dialog
           directDisplay
           appBar={
             <div className={classes.titleContainer}>
-              <span className={classes.title}>
-                {I18n.t('common.termesConditions')}
-              </span>
+              <span className={classes.title}>{I18n.t('common.termesConditions')}</span>
             </div>
           }
           open={this.state.open}
@@ -64,6 +62,7 @@ export class DumbTermsAndConditions extends React.Component {
         >
           <div className={classes.container}>Termes & conditions text</div>
         </Dialog>
+      )
     ];
   }
 }

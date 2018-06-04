@@ -38,9 +38,7 @@ const ReplyApp = (props) => {
         <div>
           <div className={classes.appTitle}>
             <ForumIcon className={classes.appIcon} />
-            <span>
-              {I18n.t('channels.thread')}
-            </span>
+            <span>{I18n.t('channels.thread')}</span>
           </div>
           <div
             onClick={() => {
@@ -70,4 +68,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ReplyApp));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ReplyApp)
+);

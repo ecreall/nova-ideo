@@ -1,5 +1,4 @@
 import graphene
-import urllib
 
 from dace.util import getSite
 from pontus.schema import select

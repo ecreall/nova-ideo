@@ -104,7 +104,9 @@ export class DumbIdeaProcessManager extends React.Component {
         goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      const { globalProps: { rootActions } } = this.props;
+      const {
+        globalProps: { rootActions }
+      } = this.props;
       const userProcessNodes = PROCESSES.usermanagement.nodes;
       const loginAction = filterActions(rootActions, {
         tags: [ACTIONS.mainMenu, ACTIONS.site],
@@ -121,13 +123,17 @@ export class DumbIdeaProcessManager extends React.Component {
       const { selectIdea, deselectIdea } = this.props;
       switch (action.behaviorId) {
       case processNodes.select.nodeId:
-        selectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
+        selectIdea({ context: idea })
+          .then(this.onActionExecuted)
+          .catch(globalProps.showError);
         break;
       case processNodes.selectAnonymous.behaviorId:
         this.displayForm(action);
         break;
       case processNodes.deselect.nodeId:
-        deselectIdea({ context: idea }).then(this.onActionExecuted).catch(globalProps.showError);
+        deselectIdea({ context: idea })
+          .then(this.onActionExecuted)
+          .catch(globalProps.showError);
         break;
       case ideaProcessNodes.edit.nodeId:
         this.displayForm(action);
@@ -252,4 +258,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(IdeaProcessManagerWithActions);
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  { withRef: true }
+)(IdeaProcessManagerWithActions);

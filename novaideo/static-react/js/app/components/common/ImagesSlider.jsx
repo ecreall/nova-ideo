@@ -134,26 +134,21 @@ const SliderHeader = ({ context, classes, image }) => {
           title={author.title}
         />
         <div className={classes.header}>
-          <span className={classes.headerTitle}>
-            {image.title}
-          </span>
+          <span className={classes.headerTitle}>{image.title}</span>
           <span className={classes.headerAddOn}>
             {author.title}
-            {context.date &&
-              <span className={classes.headerItem}>
-                {getFormattedDate(context.date, 'date.format3')}
-              </span>}
-            <span className={classes.headerItem}>
-              {context.title}
-            </span>
+            {context.date && <span className={classes.headerItem}>{getFormattedDate(context.date, 'date.format3')}</span>}
+            <span className={classes.headerItem}>{context.title}</span>
           </span>
         </div>
       </div>
       <OverlaidTooltip
         tooltip={
-          image.size
-            ? <Translate value="common.imageSlider.downLoadImageSize" size={filesize(image.size)} />
-            : I18n.t('common.imageSlider.downLoadImage')
+          image.size ? (
+            <Translate value="common.imageSlider.downLoadImageSize" size={filesize(image.size)} />
+          ) : (
+            I18n.t('common.imageSlider.downLoadImage')
+          )
         }
         placement="bottom"
       >
@@ -223,7 +218,7 @@ export class DumbImagesSlider extends React.Component {
         }}
         PaperProps={{ style: { backgroundColor: color } }}
       >
-        {lengthImages > 1 &&
+        {lengthImages > 1 && (
           <div>
             <Button
               onClick={this.onPreviousClick}
@@ -233,11 +228,12 @@ export class DumbImagesSlider extends React.Component {
             >
               <ArrowBackIcon />
             </Button>
-          </div>}
+          </div>
+        )}
         <div className={classes.sliderContainer}>
           <img alt={image.name} className={classes.img} src={image.url} />
         </div>
-        {lengthImages > 1 &&
+        {lengthImages > 1 && (
           <div>
             <Button
               onClick={this.onNextClick}
@@ -247,7 +243,8 @@ export class DumbImagesSlider extends React.Component {
             >
               <ArrowForwardIcon />
             </Button>
-          </div>}
+          </div>
+        )}
       </Dialog>
     );
   }

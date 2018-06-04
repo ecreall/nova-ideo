@@ -64,7 +64,10 @@ export const mapDispatchToProps = {
 };
 
 export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(
     graphql(Account, {
       options: () => {
         return {

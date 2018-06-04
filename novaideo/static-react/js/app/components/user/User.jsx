@@ -278,13 +278,12 @@ const UserData = ({ person, classes }) => {
           <Translate value="user.subscribed" date={fCreatedAt} />
         </span>
       </div>
-      {email &&
+      {email && (
         <div className={classes.dataItem}>
           <EmailIcon className={classes.dataItemIcon} />
-          <span>
-            {email}
-          </span>
-        </div>}
+          <span>{email}</span>
+        </div>
+      )}
     </div>
   );
 };
@@ -337,11 +336,7 @@ export class DumbUser extends React.Component {
     const communicationActions = getActions(person.actions, { tags: ACTIONS.communication });
     let imgContent = null;
     if (person.title && !authorPicture) {
-      imgContent = (
-        <div className={classes.userIcon}>
-          {initalsGenerator(person.title)}
-        </div>
-      );
+      imgContent = <div className={classes.userIcon}>{initalsGenerator(person.title)}</div>;
     }
     return (
       <Dialog
@@ -393,32 +388,26 @@ export class DumbUser extends React.Component {
                       <Grid item xs={12} md={4}>
                         <div className={classes.userData}>
                           <div className={classes.userImgContainer}>
-                            {imgContent ||
+                            {imgContent || (
                               <div
                                 className={classes.userImg}
                                 style={{
                                   backgroundImage: `url('${authorPicture && authorPicture.url}')`
                                 }}
-                              />}
+                              />
+                            )}
                           </div>
                           <div className={classes.header}>
                             <VisibilitySensor partialVisibility offset={{ top: 64, bottom: 64 }}>
                               {({ isVisible }) => {
                                 this.updateAppbardUserData(isVisible);
-                                return (
-                                  <div className={classes.headerTitle}>
-                                    {person.title}
-                                  </div>
-                                );
+                                return <div className={classes.headerTitle}>{person.title}</div>;
                               }}
                             </VisibilitySensor>
-                            {!isAnonymous &&
-                              <div className={classes.headerAddOn}>
-                                {person.function}
-                              </div>}
+                            {!isAnonymous && <div className={classes.headerAddOn}>{person.function}</div>}
                             <div className={classes.menuContainer}>
-                              {communicationActions.length > 0
-                                ? <AllignedActions
+                              {communicationActions.length > 0 ? (
+                                <AllignedActions
                                   type="button"
                                   actions={communicationActions}
                                   onActionClick={processManager.execute}
@@ -429,7 +418,7 @@ export class DumbUser extends React.Component {
                                     actionsIcon: classes.actionsIcon
                                   }}
                                 />
-                                : null}
+                              ) : null}
                               <UserMenu open user={person} onActionClick={processManager.execute} />
                             </div>
                           </div>

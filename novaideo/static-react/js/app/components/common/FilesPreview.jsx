@@ -124,21 +124,13 @@ class FilePreview extends React.Component {
           <Icon className={classNames(downIconClass, classes.fileDown)} />
         </Zoom>
         <div className={classes.file}>
-          <div className={classes.fileTitle}>
-            {file.title}
-          </div>
+          <div className={classes.fileTitle}>{file.title}</div>
           <div className={classes.fileAddon}>
             {filesize(file.size)}
             -
-            {!hover &&
-              documentType &&
-              <span>
-                {documentType}
-              </span>}
+            {!hover && documentType && <span>{documentType}</span>}
             <Zoom in={hover}>
-              <span className={classes.fileAddonZoom}>
-                {hover && I18n.t('common.clickDownload')}
-              </span>
+              <span className={classes.fileAddonZoom}>{hover && I18n.t('common.clickDownload')}</span>
             </Zoom>
           </div>
         </div>

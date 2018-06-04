@@ -848,7 +848,6 @@ class Discuss(InfiniteCardinality):
             channel.add_comment(comment)
             comment.state = PersistentList(['published'])
             comment.reindex()
-            comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
             if appstruct.get('associated_contents', []):
@@ -922,7 +921,6 @@ class GeneralDiscuss(InfiniteCardinality):
             channel.add_comment(comment)
             comment.state = PersistentList(['published'])
             comment.reindex()
-            comment.format(request)
             comment.setproperty('author', author)
             grant_roles(user=author, roles=(('Owner', comment), ))
             if appstruct.get('associated_contents', []):

@@ -44,7 +44,9 @@ export class DumbUserProcessManager extends React.Component {
         goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      const { globalProps: { rootActions } } = this.props;
+      const {
+        globalProps: { rootActions }
+      } = this.props;
       const loginAction = filterActions(rootActions, {
         tags: [ACTIONS.mainMenu, ACTIONS.site],
         behaviorId: userProcessNodes.login.nodeId
@@ -62,10 +64,14 @@ export class DumbUserProcessManager extends React.Component {
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
       case processNodes.select.nodeId:
-        selectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
+        selectUser({ context: person })
+          .then(this.onActionExecuted)
+          .catch(globalProps.showError);
         break;
       case processNodes.deselect.nodeId:
-        deselectUser({ context: person }).then(this.onActionExecuted).catch(globalProps.showError);
+        deselectUser({ context: person })
+          .then(this.onActionExecuted)
+          .catch(globalProps.showError);
         break;
       case userProcessNodes.edit.nodeId:
         this.displayForm(action);
@@ -149,4 +155,11 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withApollo(connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(UserProcessManagerWithActions));
+export default withApollo(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    { withRef: true }
+  )(UserProcessManagerWithActions)
+);

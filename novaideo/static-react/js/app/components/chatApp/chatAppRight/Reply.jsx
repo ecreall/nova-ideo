@@ -131,9 +131,7 @@ const ReplyFooter = (classes, inline) => {
     return (
       <div className={classes.commentsFooter}>
         {!inline && <CommentItem disableReply node={data.node} />}
-        <div className={classes.commentsFooterMessage}>
-          {I18n.t('channels.replyCommentFooter')}
-        </div>
+        <div className={classes.commentsFooterMessage}>{I18n.t('channels.replyCommentFooter')}</div>
       </div>
     );
   };
@@ -192,21 +190,22 @@ export class RenderComment extends React.Component {
     const comment = data.node;
     const channel = comment && comment.channel;
     return (
-      commentAction &&
-      <Comment
-        placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
-        key={id || rightProps.id}
-        form={id || rightProps.id}
-        channel={channel}
-        context={comment && comment.oid}
-        subject={comment && comment.rootOid}
-        action={commentAction}
-        {...formProps}
-        classes={{
-          container: inline ? classes.inlineFormContainer : classes.blockComments,
-          containerAddon: inline && classes.inlineContainerAddon
-        }}
-      />
+      commentAction && (
+        <Comment
+          placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
+          key={id || rightProps.id}
+          form={id || rightProps.id}
+          channel={channel}
+          context={comment && comment.oid}
+          subject={comment && comment.rootOid}
+          action={commentAction}
+          {...formProps}
+          classes={{
+            container: inline ? classes.inlineFormContainer : classes.blockComments,
+            containerAddon: inline && classes.inlineContainerAddon
+          }}
+        />
+      )
     );
   };
 

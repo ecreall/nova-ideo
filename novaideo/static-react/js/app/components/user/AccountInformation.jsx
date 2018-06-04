@@ -42,10 +42,7 @@ export const DumbAccountInformation = ({ account, classes, onlyIcon }) => {
           classes={{ avatar: classes.avatar }}
           title={title}
         />
-        {!onlyIcon &&
-          <div className={classNames('account-title-text', classes.accountTitleText)}>
-            {title}
-          </div>}
+        {!onlyIcon && <div className={classNames('account-title-text', classes.accountTitleText)}>{title}</div>}
       </div>
     </div>
   );

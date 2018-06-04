@@ -62,7 +62,7 @@ export class DumbIdeaAppBarTitle extends React.Component {
             <IdeaIcon className={classes.icon} />
             {idea && idea.title}
           </h1>
-          {hasEvaluation &&
+          {hasEvaluation && (
             <StatisticsDoughnut
               disableTotalCount
               classes={{
@@ -70,7 +70,8 @@ export class DumbIdeaAppBarTitle extends React.Component {
               }}
               title="evaluation.tokens"
               elements={stats}
-            />}
+            />
+          )}
         </div>
       </Grow>
     );

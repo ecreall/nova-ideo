@@ -64,6 +64,11 @@ class IEmojiable(IEntity):
     pass
 
 
+@interface(True)
+class IContentWithURLs(IEntity):
+    pass
+
+
 @interface()
 class ICorrection(IEntity):
     pass

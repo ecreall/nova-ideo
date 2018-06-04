@@ -129,10 +129,6 @@ def alert_comment_nia(context, request, root, **kwargs):
             channel.addtoproperty('comments', comment)
 
         channel.add_comment(comment)
-        comment.format(request, True)
-        comment.formatted_comment = '<div class="bot-message">' + \
-            comment.formatted_comment +\
-            '</div>'
         comment.state = PersistentList(['published'])
         comment.reindex()
         comment.setproperty('author', nia)

@@ -63,24 +63,21 @@ export class DumbExamination extends React.Component {
           {icon}
         </OverlaidTooltip>
       </div>,
-      this.state.open &&
+      this.state.open && (
         <Dialog
           directDisplay
           appBar={
             <div className={classes.titleContainer}>
               {icon}
-              <span className={classes.title}>
-                {title}
-              </span>
+              <span className={classes.title}>{title}</span>
             </div>
           }
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <div className={classes.container}>
-            {message}
-          </div>
+          <div className={classes.container}>{message}</div>
         </Dialog>
+      )
     ];
   }
 }

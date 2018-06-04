@@ -311,4 +311,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(NavBar));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NavBar)
+);

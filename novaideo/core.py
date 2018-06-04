@@ -32,6 +32,8 @@ from pontus.core import VisualisableElement
 from pontus.widget import (
     Select2Widget)
 
+from novaideo.utilities.util import extract_urls
+from novaideo.utilities.url_extractor import extract_url_metadata
 from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
     IVersionableEntity,
@@ -48,7 +50,8 @@ from novaideo.content.interface import (
     ISignalableEntity,
     ISustainable,
     IDebatable,
-    ITokenable)
+    ITokenable,
+    IContentWithURLs)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -826,3 +829,28 @@ class Tokenable(Entity):
     @property
     def len_opposition(self):
         return self.len_allocated_tokens.get(Evaluations.oppose, 0)
+
+
+@implementer(IContentWithURLs)
+class ContentWithURLs(Entity):
+    """ContentWithURLs class"""
+
+    def __init__(self, **kwargs):
+        super(ContentWithURLs, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.urls = PersistentList()
+
+    def get_content(self):
+        pass
+
+    def extract_urls_metadata(self, request=None):
+        if not request:
+            request = get_current_request()
+
+        content = self.get_content()
+        self.urls = PersistentList()
+        if content:
+            for url in extract_urls(content):
+                metadata = extract_url_metadata(request, url)
+                if metadata:
+                    self.urls.append(metadata)

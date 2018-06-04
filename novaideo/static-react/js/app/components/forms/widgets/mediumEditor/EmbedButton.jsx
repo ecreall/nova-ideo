@@ -80,9 +80,7 @@ class EmbedButton extends React.Component {
         }}
         appBar={I18n.t('editor.addEmbedForm')}
         footer={[
-          <CancelButton onClick={this.handleClose}>
-            {I18n.t('forms.cancel')}
-          </CancelButton>,
+          <CancelButton onClick={this.handleClose}>{I18n.t('forms.cancel')}</CancelButton>,
           <Button disabled={!url} onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.button}>
             {I18n.t('editor.addEmbedFormSubmission')}
           </Button>

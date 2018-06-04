@@ -39,12 +39,8 @@ export const DumbUserContents = ({ classes, onOpen, id, open }) => {
             open={open}
             title={
               <span>
-                <span>
-                  {I18n.t('user.myContents')}
-                </span>
-                <span className={classes.counter}>
-                  {totalCount && `(${totalCount})`}
-                </span>
+                <span>{I18n.t('user.myContents')}</span>
+                <span className={classes.counter}>{totalCount && `(${totalCount})`}</span>
               </span>
             }
             Icon={StorageIcon}

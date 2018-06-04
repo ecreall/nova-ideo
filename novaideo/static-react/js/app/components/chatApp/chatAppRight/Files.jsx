@@ -53,36 +53,25 @@ const Files = ({ data, id, channel, classes, onOpen, open }) => {
       }}
       onOpen={onOpen}
       open={open}
-      title={
-        <span>
-          {<Translate value="channels.filesBlockTitle" count={totalCount} />}
-        </span>
-      }
+      title={<span>{<Translate value="channels.filesBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-file-outline')}
     >
-      {open &&
+      {open && (
         <RenderComments
           rightDisabled
           dynamicDivider={false}
           displayForm={false}
           displayFooter={false}
           data={data}
-          moreBtn={
-            <span>
-              {I18n.t('common.moreResult')}
-            </span>
-          }
+          moreBtn={<span>{I18n.t('common.moreResult')}</span>}
           NoItems={() => {
-            return (
-              <div className={classes.noResult}>
-                {I18n.t('channels.noFilesBlock')}
-              </div>
-            );
+            return <div className={classes.noResult}>{I18n.t('channels.noFilesBlock')}</div>;
           }}
           channelId={channel.id}
           filter={{ file: true }}
           classes={{ container: classes.container, list: classes.container }}
-        />}
+        />
+      )}
     </DetailsSection>
   );
 };

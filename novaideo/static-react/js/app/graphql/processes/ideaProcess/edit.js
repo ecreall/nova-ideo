@@ -62,8 +62,7 @@ export default function edit({ ownProps, mutate }) {
               title: { $set: newContext.title },
               attachedFiles: { $set: newContext.attachedFiles },
               keywords: { $set: newContext.keywords },
-              presentationText: { $set: newContext.presentationText },
-              urls: { $set: newContext.urls }
+              presentationText: { $set: newContext.presentationText }
             }
           });
           const index = prev.ideas.edges.indexOf(currentIdea);
@@ -84,8 +83,7 @@ export default function edit({ ownProps, mutate }) {
               title: { $set: newIdea.title },
               attachedFiles: { $set: newIdea.attachedFiles },
               keywords: { $set: newIdea.keywords },
-              presentationText: { $set: newIdea.presentationText },
-              urls: { $set: newIdea.urls }
+              presentationText: { $set: newIdea.presentationText }
             }
           });
         }

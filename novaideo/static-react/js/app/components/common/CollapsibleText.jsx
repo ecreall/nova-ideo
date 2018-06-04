@@ -35,10 +35,11 @@ export class DumbCollapsibleText extends React.Component {
     return (
       <div className={className}>
         {smallText || open ? text : truncateText(text, textLen)}
-        {!smallText &&
+        {!smallText && (
           <IconButton onClick={open ? this.close : this.open} className={classes.btn}>
             {open ? <ExpandLessIcon className={classes.icon} /> : <ExpandMoreIcon className={classes.icon} />}
-          </IconButton>}
+          </IconButton>
+        )}
       </div>
     );
   }

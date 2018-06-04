@@ -48,36 +48,25 @@ export const DumbPinned = ({ id, channel, classes, onOpen, open, data }) => {
       }}
       onOpen={onOpen}
       open={open}
-      title={
-        <span>
-          {<Translate value="channels.pinnedBlockTitle" count={totalCount} />}
-        </span>
-      }
+      title={<span>{<Translate value="channels.pinnedBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-pin')}
     >
-      {open &&
+      {open && (
         <RenderComments
           rightDisabled
           dynamicDivider={false}
           displayForm={false}
           displayFooter={false}
           NoItems={() => {
-            return (
-              <div className={classes.noResult}>
-                {I18n.t('channels.noPinnedBlock')}
-              </div>
-            );
+            return <div className={classes.noResult}>{I18n.t('channels.noPinnedBlock')}</div>;
           }}
           data={data}
           channelId={channel.id}
-          moreBtn={
-            <span>
-              {I18n.t('common.moreResult')}
-            </span>
-          }
+          moreBtn={<span>{I18n.t('common.moreResult')}</span>}
           filter={{ pinned: true }}
           classes={{ container: classes.container, list: classes.container }}
-        />}
+        />
+      )}
     </DetailsSection>
   );
 };

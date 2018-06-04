@@ -43,9 +43,7 @@ class Tooltip extends React.Component {
       <div {...elementProps} role="tooltip" className={classNames(className, classes)} style={outerStyle}>
         <div className={prefix(bsProps, 'arrow')} style={arrowStyle} />
 
-        <div className={prefix(bsProps, 'inner')}>
-          {children}
-        </div>
+        <div className={prefix(bsProps, 'inner')}>{children}</div>
       </div>
     );
   }

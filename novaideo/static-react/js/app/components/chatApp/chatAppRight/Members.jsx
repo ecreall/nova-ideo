@@ -50,14 +50,10 @@ export const DumbMembers = ({ data, id, classes, onOpen, open }) => {
       }}
       onOpen={onOpen}
       open={open}
-      title={
-        <span>
-          {<Translate value="channels.membersBlockTitle" count={totalCount} />}
-        </span>
-      }
+      title={<span>{<Translate value="channels.membersBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-account-multiple-outline')}
     >
-      {open &&
+      {open && (
         <FlatList
           data={data}
           getEntities={(entities) => {
@@ -65,13 +61,10 @@ export const DumbMembers = ({ data, id, classes, onOpen, open }) => {
           }}
           ListItem={UserSmallItem}
           onEndReachedThreshold={0.5}
-          moreBtn={
-            <span>
-              {I18n.t('common.moreResult')}
-            </span>
-          }
+          moreBtn={<span>{I18n.t('common.moreResult')}</span>}
           className={classes.list}
-        />}
+        />
+      )}
     </DetailsSection>
   );
 };

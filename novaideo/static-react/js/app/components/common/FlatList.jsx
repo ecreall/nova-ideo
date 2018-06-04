@@ -67,11 +67,7 @@ function scrollbarContainer({ children, handleScroll, scrollEvent, reverted, cla
 }
 
 function virtualizedItemContainer({ itemHeightEstimation, children }) {
-  return (
-    <VirtualizedListItem itemHeightEstimation={itemHeightEstimation}>
-      {children}
-    </VirtualizedListItem>
-  );
+  return <VirtualizedListItem itemHeightEstimation={itemHeightEstimation}>{children}</VirtualizedListItem>;
 }
 
 export class DumbFlatList extends React.Component {
@@ -113,9 +109,12 @@ export class DumbFlatList extends React.Component {
         if (!filter) {
           entities = dataEntities.edges;
         } else {
-          const words = filter.toLowerCase().split(' ').filter((item) => {
-            return item;
-          });
+          const words = filter
+            .toLowerCase()
+            .split(' ')
+            .filter((item) => {
+              return item;
+            });
           entities = dataEntities.edges.filter((entity) => {
             return words
               .map((item) => {
@@ -327,10 +326,11 @@ export class DumbFlatList extends React.Component {
               {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && items.pageInfo.hasNextPage && this.renderProgress()}
               {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore &&
                 items.pageInfo.hasNextPage &&
-                moreBtn &&
+                moreBtn && (
                 <div className={classes.moreBtn} onClick={this.fetchMore}>
                   {moreBtn}
-                </div>}
+                </div>
+              )}
             </div>
             <div>
               {Footer && !items.pageInfo.hasNextPage ? <Footer data={data} /> : null}
@@ -349,4 +349,9 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = { setURLState: setURLState };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbFlatList));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DumbFlatList)
+);

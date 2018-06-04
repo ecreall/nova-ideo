@@ -23,10 +23,7 @@ export const DumbIllustration = ({ message, img, classes }) => {
   return (
     <div className={classes.container}>
       <img alt="Sticker" className={classes.image} src={img} />
-      {message &&
-        <div className={classes.message}>
-          {message}
-        </div>}
+      {message && <div className={classes.message}>{message}</div>}
     </div>
   );
 };

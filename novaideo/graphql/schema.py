@@ -30,12 +30,64 @@ from .util import (
 from novaideo.utilities.util import get_object_examination_stat, get_object_evaluation_stat
 
 
+
+url_data_keys = [
+    'url',
+    'html',
+    'title',
+    'description',
+    'thumbnail_url',
+    'provider_name',
+    'favicon_url',
+    'author_name',
+    'author_avatar',
+    'data'
+]
+
+
+def extract_url_metadata(url_metadata):
+    result = {}
+    for key in url_data_keys:
+        result[key] = url_metadata.get(key, None)
+
+    return result
+
+
 class Node(object):
 
     @classmethod
     def get_node(cls, id, context, info):  #pylint: disable=W0613,W0622
         oid = int(id)
         return get_obj(oid)
+
+
+class UrlData(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    label = graphene.String()
+    data = graphene.String()
+
+
+class Url(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    url = graphene.String()
+    html = graphene.String()
+    title = graphene.String()
+    description = graphene.String()
+    thumbnail_url = graphene.String()
+    provider_name = graphene.String()
+    favicon_url = graphene.String()
+    author_name = graphene.String()
+    author_avatar = graphene.String()
+    data = graphene.List(UrlData)
+
+    def resolve_data(self, args, context, info):  # pylint: disable=W0613
+        return [UrlData(**entry) for entry in self.data]
 
 
 class ExaminationStats(Node, graphene.ObjectType):
@@ -338,23 +390,6 @@ class Person(Node, graphene.ObjectType):
 Person.Connection = connection_for_type(Person)
 
 
-class Url(Node, graphene.ObjectType):
-
-    class Meta(object):
-        interfaces = (relay.Node, )
-
-    url = graphene.String()
-    domain = graphene.String()
-    title = graphene.String()
-    description = graphene.String()
-    image_url = graphene.String()
-    site_name = graphene.String()
-    favicon = graphene.String()
-    image = graphene.Field(File)
-    author_avatar = graphene.String()
-    author_name = graphene.String()
-
-
 class Comment(Node, Emojiable, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
@@ -364,10 +399,8 @@ class Comment(Node, Emojiable, graphene.ObjectType):
 
     state = graphene.List(graphene.String)
     text = graphene.String()
-    formatted_text = graphene.String()
     author = graphene.Field(Person)
     attached_files = graphene.List(File)
-    urls = graphene.List(Url)
     oid = graphene.String()
     comments = relay.ConnectionField(
         lambda: Comment,
@@ -379,6 +412,7 @@ class Comment(Node, Emojiable, graphene.ObjectType):
     pinned = graphene.Boolean()
     unread_replies = graphene.List(lambda: Comment)
     len_unread_replies = graphene.Int()
+    urls = graphene.List(Url)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -386,6 +420,10 @@ class Comment(Node, Emojiable, graphene.ObjectType):
             return True
 
         return isinstance(root, SDComment)
+
+    def resolve_urls(self, args, context, info):
+        urls = getattr(self, 'urls', [])
+        return [Url(**extract_url_metadata(url_metadata)) for url_metadata in urls]
 
     def resolve_unread_replies(self, args, context, info):
         if not context.user:
@@ -406,12 +444,6 @@ class Comment(Node, Emojiable, graphene.ObjectType):
 
     def resolve_text(self, args, context, info):
         return self.comment
-
-    def resolve_formatted_text(self, args, context, info):
-        return getattr(self, 'formatted_comment', self.comment)
-
-    def resolve_urls(self, args, context, info):  # pylint: disable=W0613
-        return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_oid(self, args, context, info):  # pylint: disable=W0613
         return get_oid(self, None)
@@ -521,7 +553,6 @@ class Idea(Node, graphene.ObjectType):
     tokens_support = graphene.Int()
     attached_files = graphene.List(File)
     user_token = graphene.String()
-    urls = graphene.List(Url)
     opinion = graphene.String()
     
     @classmethod
@@ -539,9 +570,6 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  # pylint: disable=W0613
         return self.len_support
-
-    def resolve_urls(self, args, context, info):  # pylint: disable=W0613
-        return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_user_token(self, args, context, info):  # pylint: disable=W0613
         return self.evaluation(context.user)

@@ -178,11 +178,11 @@ export class DumbSearchForm extends React.Component {
               {title}
             </div>
           </div>
-          {hasQuery
-            ? <IconButton className={classes.cancelButton} onClick={this.cancel}>
+          {hasQuery ? (
+            <IconButton className={classes.cancelButton} onClick={this.cancel}>
               <CancelIcon className={classes.icon} />
             </IconButton>
-            : null}
+          ) : null}
         </div>
       </div>
     );

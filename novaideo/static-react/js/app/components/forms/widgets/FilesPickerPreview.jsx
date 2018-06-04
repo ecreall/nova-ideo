@@ -121,9 +121,11 @@ export class DumbFilesPickerPreview extends React.Component {
             return (
               <Tooltip title={file.name} placement="top">
                 <div className={classNames(classes.file, { [classes.fileContainer]: !isImage })} key={file.id}>
-                  {isImage
-                    ? <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
-                    : <Icon className={classNames(iconClass, classes.fileIcon)} />}
+                  {isImage ? (
+                    <div style={{ backgroundImage: `url("${file.preview.url}")` }} className={classes.image} />
+                  ) : (
+                    <Icon className={classNames(iconClass, classes.fileIcon)} />
+                  )}
                   <div className={classNames(classes.action, { [classes.fileAction]: !isImage })}>
                     <Tooltip title={I18n.t('common.remove')} placement="right">
                       <CancelIcon

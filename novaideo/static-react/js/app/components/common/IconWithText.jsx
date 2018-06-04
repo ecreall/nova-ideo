@@ -23,9 +23,7 @@ export const DumbIconWithText = ({ name, text, containerStyle, styleText, styleI
   return (
     <div className={classNames(classes.containerStyle, containerStyle)}>
       <Icon className={classNames(classes.styleIcon, styleIcon, name)} />
-      <span className={classNames(classes.styleText, styleText)}>
-        {text}
-      </span>
+      <span className={classNames(classes.styleText, styleText)}>{text}</span>
     </div>
   );
 };

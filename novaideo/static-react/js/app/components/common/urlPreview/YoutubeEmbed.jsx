@@ -116,7 +116,7 @@ export class DumbYoutubeEmbed extends React.Component {
             </div>
           </div>
         </div>
-        {open &&
+        {open && (
           <div className={classes.youtubeEmbedOpen} onClick={this.closeEmbed}>
             <iframe
               title="YouTube video"
@@ -131,7 +131,8 @@ export class DumbYoutubeEmbed extends React.Component {
             <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>
               <CloseIcon />
             </IconButton>
-          </div>}
+          </div>
+        )}
       </div>
     );
   };

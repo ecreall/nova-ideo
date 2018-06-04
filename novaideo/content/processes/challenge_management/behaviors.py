@@ -110,7 +110,6 @@ class CreateChallenge(InfiniteCardinality):
         #         content=context
         #         )
 
-        challenge.format(request)
         challenge.reindex()
         request.registry.notify(ActivityExecuted(self, [challenge], author))
         return {'newcontext': challenge}
@@ -394,7 +393,6 @@ class EditChallenge(InfiniteCardinality):
 
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.format(request)
         context.reindex()
         request.registry.notify(
             ActivityExecuted(self, [context], context.author))

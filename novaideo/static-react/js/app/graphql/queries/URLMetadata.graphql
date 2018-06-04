@@ -1,0 +1,17 @@
+query URLMetadata($url: String) {
+  metadata(url: $url) {
+    url
+    html
+    title
+    description
+    thumbnailUrl
+    providerName
+    faviconUrl
+    authorName
+    authorAvatar
+    data {
+      label
+      data
+    }
+  }
+}

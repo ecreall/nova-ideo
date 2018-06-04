@@ -33,21 +33,18 @@ const styles = {
 };
 
 function ChannelsDrawerContent({ account, classes }) {
-  return account
-    ? [<Jump />, <Channels />]
-    : <Illustration
+  return account ? (
+    [<Jump />, <Channels />]
+  ) : (
+    <Illustration
       img={NOT_LOGGED}
-      message={[
-        <div className={classes.illustrationMessage}>
-          {I18n.t('user.noUserChannels')}
-        </div>,
-        <LoginButton />
-      ]}
+      message={[<div className={classes.illustrationMessage}>{I18n.t('user.noUserChannels')}</div>, <LoginButton />]}
       classes={{
         container: classes.illustrationContainer,
         image: classes.imgIllustration
       }}
-    />;
+    />
+  );
 }
 
 export const mapStateToProps = (state) => {

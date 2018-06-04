@@ -102,8 +102,8 @@ export class DumbIdeaMenu extends React.Component {
         />
       );
     default:
-      return actionProps.type === 'button'
-        ? <Button
+      return actionProps.type === 'button' ? (
+        <Button
           onClick={() => {
             if (onActionClick) onActionClick(action);
           }}
@@ -113,14 +113,16 @@ export class DumbIdeaMenu extends React.Component {
           <Icon className={classes.iconButton} />
           {I18n.t(action.title)}
         </Button>
-        : <IconButton
+      ) : (
+        <IconButton
           onClick={() => {
             if (onActionClick) onActionClick(action);
           }}
           className={actionClassName}
         >
           <Icon className={classes.icon} />
-        </IconButton>;
+        </IconButton>
+      );
     }
   };
 
@@ -133,9 +135,7 @@ export class DumbIdeaMenu extends React.Component {
         {actions.map((action) => {
           return (
             <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement={overlayPosition}>
-              <div className={classes.action}>
-                {this.getAction(action)}
-              </div>
+              <div className={classes.action}>{this.getAction(action)}</div>
             </OverlaidTooltip>
           );
         })}

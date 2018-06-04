@@ -267,7 +267,13 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   render() {
-    const { formData, globalProps: { site, account, rootActions }, onClose, classes, theme } = this.props;
+    const {
+      formData,
+      globalProps: { site, account, rootActions },
+      onClose,
+      classes,
+      theme
+    } = this.props;
     const ideamanagementProcess = PROCESSES.ideamanagement;
     const creationActions = filterActions(rootActions, {
       processId: ideamanagementProcess.id,
@@ -323,18 +329,12 @@ export class DumbCreateIdeaForm extends React.Component {
               classes={{ avatar: classes.avatar }}
             />
             <div className={classes.header}>
-              <span className={classes.headerTitle}>
-                {authorTitle}
-              </span>
-              <span className={classes.headerAddOn}>
-                {date}
-              </span>
+              <span className={classes.headerTitle}>{authorTitle}</span>
+              <span className={classes.headerAddOn}>{date}</span>
             </div>
           </div>,
 
-          <div className={classes.formTitle}>
-            {I18n.t('forms.idea.addProposal')}
-          </div>,
+          <div className={classes.formTitle}>{I18n.t('forms.idea.addProposal')}</div>,
 
           <div className={classes.addon}>
             <Field
@@ -373,8 +373,8 @@ export class DumbCreateIdeaForm extends React.Component {
               name="files"
               component={renderFilesListField}
             />
-            {withAnonymous
-              ? <Field
+            {withAnonymous ? (
+              <Field
                 props={{
                   classes: classes
                 }}
@@ -382,7 +382,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 component={renderAnonymousCheckboxField}
                 type="boolean"
               />
-              : null}
+            ) : null}
           </div>
         ]}
         footer={[
@@ -397,9 +397,7 @@ export class DumbCreateIdeaForm extends React.Component {
               return this.filesPicker;
             }}
           />,
-          <CancelButton onClick={this.closeForm}>
-            {I18n.t('forms.cancel')}
-          </CancelButton>,
+          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
           creationActions.map((action, key) => {
             return (
               <Button

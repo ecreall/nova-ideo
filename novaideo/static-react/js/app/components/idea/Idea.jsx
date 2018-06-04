@@ -8,6 +8,7 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Zoom from '@material-ui/core/Zoom';
 
+import URLs from '../common/urlPreview/URLs';
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
 import Anchor from '../common/Anchor';
@@ -181,6 +182,11 @@ const styles = (theme) => {
     goToTopIcon: {
       marginTop: 3,
       marginLeft: 2
+    },
+    urlsContainer: {
+      paddingRight: 30,
+      marginTop: 15,
+      maxWidth: 400
     }
   };
 };
@@ -242,8 +248,8 @@ export class DumbIdea extends React.Component {
           <Scrollbar scrollEvent={scrollEvent}>
             <div className={classes.maxContainer}>
               <div className={classes.leftActions}>
-                {hasEvaluation
-                  ? <Evaluation
+                {hasEvaluation ? (
+                  <Evaluation
                     big
                     icon={getEvaluationIcons(idea.userToken)}
                     onClick={{
@@ -254,10 +260,10 @@ export class DumbIdea extends React.Component {
                     actions={getEvaluationActions(idea)}
                     active={idea.state.includes(STATE.idea.submittedSupport)}
                   />
-                  : null}
-                {site.examineIdeas && idea.state.includes(STATE.idea.examined)
-                  ? <Examination message={idea.opinion} title={getExaminationTtile(idea)} value={getExaminationValue(idea)} />
-                  : null}
+                ) : null}
+                {site.examineIdeas && idea.state.includes(STATE.idea.examined) ? (
+                  <Examination message={idea.opinion} title={getExaminationTtile(idea)} value={getExaminationValue(idea)} />
+                ) : null}
                 <Anchor
                   scrollEvent={scrollEvent}
                   getAnchor={() => {
@@ -269,7 +275,7 @@ export class DumbIdea extends React.Component {
                   </Button>
                 </Anchor>
               </div>
-              {hasEvaluation &&
+              {hasEvaluation && (
                 <div className={classes.right}>
                   <StatisticsDoughnut
                     classes={{
@@ -278,7 +284,8 @@ export class DumbIdea extends React.Component {
                     title="evaluation.tokens"
                     elements={stats}
                   />
-                </div>}
+                </div>
+              )}
               <h1
                 ref={(title) => {
                   this.title = title;
@@ -288,7 +295,7 @@ export class DumbIdea extends React.Component {
                 <IdeaIcon className={classes.icon} />
                 {idea && idea.title}
               </h1>
-              {images.length > 0 &&
+              {images.length > 0 && (
                 <div className={classes.imagesContainer}>
                   <ImagesPreview
                     images={images}
@@ -298,9 +305,11 @@ export class DumbIdea extends React.Component {
                       date: idea.createdAt
                     }}
                   />
-                </div>}
+                </div>
+              )}
               <MediumEditor readOnly value={idea.text} />
               <FilesPreview files={files} />
+              <URLs body={idea.text} className={classes.urlsContainer} />
               <div
                 ref={(comments) => {
                   this.comments = comments;

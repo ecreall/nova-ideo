@@ -119,7 +119,6 @@ class AskQuestion(InfiniteCardinality):
                 question=question
                 )
 
-        question.format(request)
         question.reindex()
         request.registry.notify(ActivityExecuted(self, [question], author))
         request.registry.notify(ObjectPublished(object=question))
@@ -194,7 +193,6 @@ class EditQuestion(InfiniteCardinality):
         appstruct['attached_files'] = files
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.format(request)
         context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
@@ -347,7 +345,6 @@ class AnswerQuestion(InfiniteCardinality):
         answer = appstruct['_object_data']
         context.addtoproperty('answers', answer)
         answer.init_title()
-        answer.format(request)
         answer.state = PersistentList(['published'])
         answer.reindex()
         if getattr(answer, 'option', None) is not None:
@@ -768,7 +765,6 @@ class EditAnswer(InfiniteCardinality):
             context.set_associated_contents(
                 appstruct['associated_contents'], author)
 
-        context.format(request)
         context.reindex()
         return {}
 

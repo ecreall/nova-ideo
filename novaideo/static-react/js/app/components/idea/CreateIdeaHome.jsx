@@ -77,9 +77,11 @@ export class DumbCreateIdeaHome extends React.Component {
     })[0];
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
-    const form = account
-      ? <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" />
-      : <Login action={loginAction} onClose={this.closeForm} messageType="warning" message={I18n.t('common.needLogin')} />;
+    const form = account ? (
+      <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" />
+    ) : (
+      <Login action={loginAction} onClose={this.closeForm} messageType="warning" message={I18n.t('common.needLogin')} />
+    );
     return [
       <div className={classes.fromContainer}>
         <div className={classes.left}>
@@ -92,9 +94,7 @@ export class DumbCreateIdeaHome extends React.Component {
           />
         </div>
         <div className={classes.inputContainer} onClick={this.openForm}>
-          <div className={classes.placeholder}>
-            {I18n.t('forms.idea.textPlaceholder')}
-          </div>
+          <div className={classes.placeholder}>{I18n.t('forms.idea.textPlaceholder')}</div>
         </div>
       </div>,
       open ? form : null

@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import { ACTIONS } from '../../../processes';
 
 export default function edit({ ownProps, mutate }) {
-  return ({ context, text, formattedText, urls, attachedFiles, oldFiles }) => {
+  return ({ context, text, attachedFiles, oldFiles }) => {
     const { formData } = ownProps;
     const files = formData.values.files
       ? formData.values.files.map((file, index) => {
@@ -25,8 +25,6 @@ export default function edit({ ownProps, mutate }) {
       variables: {
         context: context.oid,
         comment: text,
-        formattedComment: formattedText,
-        urls: urls,
         attachedFiles: attachedFiles,
         oldFiles: oldFiles,
         processIds: [],
@@ -43,10 +41,9 @@ export default function edit({ ownProps, mutate }) {
           comment: {
             ...context,
             text: text,
-            formattedText: formattedText,
             attachedFiles: files,
-            edited: true,
-            urls: []
+            urls: [],
+            edited: true
           }
         }
       },
@@ -62,11 +59,9 @@ export default function edit({ ownProps, mutate }) {
           const newComment = update(currentComment, {
             node: {
               text: { $set: newContext.text },
-              formattedText: { $set: newContext.formattedText },
               edited: { $set: newContext.edited },
               pinned: { $set: newContext.pinned },
-              attachedFiles: { $set: newContext.attachedFiles },
-              urls: { $set: newContext.urls }
+              attachedFiles: { $set: newContext.attachedFiles }
             }
           });
           const index = prev.node.comments.edges.indexOf(currentComment);

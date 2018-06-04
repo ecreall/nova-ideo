@@ -185,7 +185,13 @@ export class DumbLogin extends React.Component {
   };
 
   render() {
-    const { action, message, messageType, globalProps: { site, rootActions }, classes } = this.props;
+    const {
+      action,
+      message,
+      messageType,
+      globalProps: { site, rootActions },
+      classes
+    } = this.props;
     const { view } = this.state;
     let loginAction = action;
     if (!loginAction) {
@@ -213,9 +219,7 @@ export class DumbLogin extends React.Component {
         appBar={
           <div className={classes.appBarHeaderTitle}>
             <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
-            <div className={classes.appBarHeaderTitleText}>
-              {site && site.title}
-            </div>
+            <div className={classes.appBarHeaderTitleText}>{site && site.title}</div>
           </div>
         }
         classes={{
@@ -224,33 +228,36 @@ export class DumbLogin extends React.Component {
           paper: classes.paper
         }}
       >
-        {message &&
+        {message && (
           <Alert type={messageType} classes={{ container: classes.alertContainer }}>
             {message}
-          </Alert>}
+          </Alert>
+        )}
         <div className={classes.slidesContainer}>
           <Fade in={view === LOGIN_VIEWS.login}>
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.login })}>
-              {loginAction &&
+              {loginAction && (
                 <LoginForm
                   form="user-login"
                   key="user-login"
                   action={loginAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
-                />}
+                />
+              )}
             </div>
           </Fade>
           <Fade in={view === LOGIN_VIEWS.registration}>
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.registration })}>
-              {registrationAction &&
+              {registrationAction && (
                 <Registration
                   form="user-registration"
                   key="user-registration"
                   action={registrationAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
-                />}
+                />
+              )}
             </div>
           </Fade>
         </div>

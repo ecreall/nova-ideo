@@ -79,11 +79,7 @@ class SearchContentsList extends React.Component {
               }}
               ListItem={SearchContentItem}
               itemProps={{ onClick: onItemClick }}
-              moreBtn={
-                <span>
-                  {I18n.t('common.moreResult')}
-                </span>
-              }
+              moreBtn={<span>{I18n.t('common.moreResult')}</span>}
             />
           );
         }}

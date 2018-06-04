@@ -5,7 +5,10 @@ import { truncateText } from '../../../utils/globalFunctions';
 
 export default function createAndPublish({ ownProps, mutate }) {
   return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account }) => {
-    const { formData, globalProps: { site } } = ownProps;
+    const {
+      formData,
+      globalProps: { site }
+    } = ownProps;
     const files =
       attachedFiles.length > 0
         ? formData.values.files.map((file, index) => {
@@ -78,7 +81,6 @@ export default function createAndPublish({ ownProps, mutate }) {
               isDiscuss: false
             },
             opinion: '',
-            urls: [],
             author: {
               __typename: 'Person',
               isAnonymous: anonymous,

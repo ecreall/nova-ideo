@@ -351,7 +351,6 @@ class Import(InfiniteCardinality):
                     grant_roles(user=author, roles=(('Owner', idea), ))
                     idea.setproperty('author', author)
                     idea.subscribe_to_channel(author)
-                    idea.format(request)
                     idea.set_source_data({
                         'app_name': YAMMER_CONNECTOR_ID,
                         'id': m_id

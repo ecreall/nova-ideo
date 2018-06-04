@@ -287,18 +287,12 @@ export class DumbEditIdeaForm extends React.Component {
               classes={{ avatar: classes.avatar }}
             />
             <div className={classes.header}>
-              <span className={classes.headerTitle}>
-                {authorTitle}
-              </span>
-              <span className={classes.headerAddOn}>
-                {date}
-              </span>
+              <span className={classes.headerTitle}>{authorTitle}</span>
+              <span className={classes.headerAddOn}>{date}</span>
             </div>
           </div>,
 
-          <div className={classes.formTitle}>
-            {I18n.t(action.description)}
-          </div>,
+          <div className={classes.formTitle}>{I18n.t(action.description)}</div>,
 
           <div className={classes.addon}>
             <Field
@@ -351,9 +345,7 @@ export class DumbEditIdeaForm extends React.Component {
               return this.filesPicker;
             }}
           />,
-          <CancelButton onClick={this.closeForm}>
-            {I18n.t('forms.cancel')}
-          </CancelButton>,
+          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
           <Button
             disabled={!canSubmit}
             onClick={this.handleSubmit}

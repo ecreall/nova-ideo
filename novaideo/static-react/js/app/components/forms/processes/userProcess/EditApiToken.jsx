@@ -55,13 +55,15 @@ export class DumbEditApiToken extends React.Component {
     return (
       <div>
         {user.token}
-        {loading
-          ? <div className={classes.loading}>
+        {loading ? (
+          <div className={classes.loading}>
             <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
           </div>
-          : <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-              Demander un nouveau jeton d'API
-          </Button>}
+        ) : (
+          <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+            Demander un nouveau jeton d'API
+          </Button>
+        )}
       </div>
     );
   }

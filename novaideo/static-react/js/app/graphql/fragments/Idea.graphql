@@ -24,17 +24,6 @@ fragment Idea on Idea {
     title
     isDiscuss
   }
-  urls {
-    url
-    title
-    description
-    imageUrl
-    siteName
-    favicon
-    domain
-    authorAvatar
-    authorName
-  }
   author {
     ...Author
   }

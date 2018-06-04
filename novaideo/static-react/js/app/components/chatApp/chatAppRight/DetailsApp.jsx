@@ -42,4 +42,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DumbDetailsApp));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DumbDetailsApp)
+);

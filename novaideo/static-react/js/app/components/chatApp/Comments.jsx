@@ -138,17 +138,18 @@ export class RenderComments extends React.Component {
     const subject = channel && channel.subject;
     const contextOid = subject ? subject.oid : '';
     return (
-      commentAction &&
-      <Comment
-        key={channelId}
-        form={channelId}
-        channel={channel}
-        context={contextOid}
-        subject={contextOid}
-        action={commentAction}
-        {...formProps}
-        classes={{ container: classNames(classes.formContainer, { [classes.blockComments]: !inline }) }}
-      />
+      commentAction && (
+        <Comment
+          key={channelId}
+          form={channelId}
+          channel={channel}
+          context={contextOid}
+          subject={contextOid}
+          action={commentAction}
+          {...formProps}
+          classes={{ container: classNames(classes.formContainer, { [classes.blockComments]: !inline }) }}
+        />
+      )
     );
   };
 
@@ -228,11 +229,11 @@ export class RenderComments extends React.Component {
           />
           {!formTop && commentForm}
         </Grid>
-        {displayRightBlock && channel
-          ? <Grid className={classes.right} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
+        {displayRightBlock && channel ? (
+          <Grid className={classes.right} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
             <ChatAppRight channel={channel} />
           </Grid>
-          : null}
+        ) : null}
       </Grid>
     );
   }

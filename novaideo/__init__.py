@@ -298,23 +298,6 @@ def evolve_process_def(root, registry):
     log.info('Process def evolved.')
 
 
-def evolve_comments(root, registry):
-    from novaideo.views.filter import find_entities
-    from novaideo.content.interface import IComment
-    request = get_current_request()
-    contents = find_entities(interfaces=[IComment])
-    for comment in contents:
-        if hasattr(comment, 'formated_comment'):
-            del comment.formated_comment
-
-        if hasattr(comment, 'formated_urls'):
-            del comment.formated_urls
-
-        comment.format(request)
-
-    log.info('Comments evolved.')
-
-
 def evolve_nodes(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import INode
@@ -534,28 +517,6 @@ def evolve_mails(root, registry):
 
     root.mail_templates = PersistentList(result)
     log.info('Emails evolved.')
-
-
-def format_ideas(root, registry):
-    from novaideo.views.filter import find_entities
-    from novaideo.content.interface import Iidea
-
-    contents = find_entities(
-        interfaces=[Iidea]
-        )
-    request = get_current_request()
-    len_entities = str(len(contents))
-    for index, node in enumerate(contents):
-        if hasattr(node, 'formated_text'):
-            del node.formated_text
-
-        if hasattr(node, 'formated_urls'):
-            del node.formated_urls
-
-        node.format(request)
-        log.info(str(index) + "/" + len_entities)
-
-    log.info('Ideas evolved.')
 
 
 def publish_comments(root, registry):
@@ -1027,6 +988,23 @@ def evolve_novaideoabstractprocess_process(root, registry):
         pass 
 
 
+def evolve_content_with_urls(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IContentWithURLs
+    
+    contents = find_entities(
+        interfaces=[IContentWithURLs]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.urls = PersistentList()
+        node.reindex()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Content with urls evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -1051,7 +1029,6 @@ def main(global_config, **settings):
     config.add_evolution_step(update_len_comments)
     config.add_evolution_step(update_len_selections)
     config.add_evolution_step(evolve_process_def)
-    config.add_evolution_step(evolve_comments)
     config.add_evolution_step(evolve_nodes)
     config.add_evolution_step(evolve_channels)
     config.add_evolution_step(evolve_person)
@@ -1063,7 +1040,6 @@ def main(global_config, **settings):
     config.add_evolution_step(subscribe_users_notif_ids)
     config.add_evolution_step(evolve_mails)
     config.add_evolution_step(evolve_access_keys)
-    config.add_evolution_step(format_ideas)
     config.add_evolution_step(publish_comments)
     config.add_evolution_step(evolve_nonproductive_cycle)
     config.add_evolution_step(evolve_files)
@@ -1087,6 +1063,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_emojiable_data)
     config.add_evolution_step(evolve_invitation_organization_process)
     config.add_evolution_step(evolve_novaideoabstractprocess_process)
+    config.add_evolution_step(evolve_content_with_urls)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

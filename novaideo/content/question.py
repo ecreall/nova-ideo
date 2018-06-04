@@ -47,7 +47,7 @@ from novaideo.content import get_file_widget
 from novaideo.content.idea import anonymous_widget
 from novaideo.content.comment import CommentSchema
 from novaideo.utilities.util import (
-    text_urls_format, truncate_text, to_localized_time,
+    truncate_text, to_localized_time,
     get_files_data, connect, disconnect)
 
 
@@ -171,7 +171,6 @@ class Question(VersionableEntity, DuplicableEntity,
         self.addtoproperty('channels', Channel())
         self.selected_options = OOBTree()
         self.users_options = OOBTree()
-        self.urls = PersistentDict({})
         self.len_answers = 0
 
     @property
@@ -238,15 +237,6 @@ class Question(VersionableEntity, DuplicableEntity,
 
     def get_node_descriminator(self):
         return 'question'
-
-    def format(self, request):
-        text = getattr(self, 'text', '')
-        all_urls, url_files, text_urls, formatted_text = text_urls_format(
-            text, request)
-        self.urls = PersistentDict(all_urls)
-        self.setproperty('url_files', url_files)
-        self.formatted_text = formatted_text
-        self.formatted_urls = text_urls
 
     def add_selected_option(self, user, option):
         self.remove_selected_option(user)
@@ -330,7 +320,6 @@ class Answer(CorrelableEntity, PresentableEntity,
         super(Answer, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.addtoproperty('channels', Channel())
-        self.urls = PersistentDict({})
 
     def init_title(self):
         self.title = 'Answer: {question} {date}'.format(
@@ -396,12 +385,3 @@ class Answer(CorrelableEntity, PresentableEntity,
 
     def get_node_descriminator(self):
         return 'answer'
-
-    def format(self, request):
-        comment = getattr(self, 'comment', '')
-        all_urls, url_files, text_urls, formatted_text = text_urls_format(
-            comment, request)
-        self.urls = PersistentDict(all_urls)
-        self.setproperty('url_files', url_files)
-        self.formatted_comment = formatted_text
-        self.formatted_urls = text_urls

@@ -191,8 +191,8 @@ class UserAppBar extends React.Component {
                 </span>
               </div>
             </div>
-            {communicationActions.length > 0
-              ? <AllignedActions
+            {communicationActions.length > 0 ? (
+              <AllignedActions
                 type="button"
                 actions={communicationActions}
                 onActionClick={processManager.execute}
@@ -203,7 +203,7 @@ class UserAppBar extends React.Component {
                   actionsIcon: classes.actionsIcon
                 }}
               />
-              : null}
+            ) : null}
           </div>
         </Grow>
         <div className={classes.appbarActions}>
@@ -230,4 +230,9 @@ export const mapDispatchToProps = {
   search: search
 };
 
-export default withStyles(styles, { withTheme: true })(connect(null, mapDispatchToProps)(UserAppBar));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    null,
+    mapDispatchToProps
+  )(UserAppBar)
+);

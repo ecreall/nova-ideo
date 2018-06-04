@@ -124,9 +124,7 @@ export class DumbUserMainMenu extends React.Component {
       <div className={classes.sectionHeaderTitle}>
         <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : ''} />
         <div className={classes.sectionHeaderTitleContainer}>
-          <div className={classes.sectionHeaderTitleText}>
-            {account && account.title}
-          </div>
+          <div className={classes.sectionHeaderTitleText}>{account && account.title}</div>
         </div>
       </div>
     );
@@ -139,12 +137,8 @@ export class DumbUserMainMenu extends React.Component {
       <div className={classes.sectionHeaderTitle}>
         <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
         <div className={classes.sectionHeaderTitleContainer}>
-          <div className={classes.sectionHeaderTitleText}>
-            {site && site.title}
-          </div>
-          <div className={classes.sectionHeaderAddon}>
-            {window.location.host}
-          </div>
+          <div className={classes.sectionHeaderTitleText}>{site && site.title}</div>
+          <div className={classes.sectionHeaderAddon}>{window.location.host}</div>
         </div>
       </div>
     );
@@ -170,21 +164,20 @@ export class DumbUserMainMenu extends React.Component {
                 this.anchor = anchor;
               }}
             >
-              {activator ||
+              {activator || (
                 <div className={classNames(classes.drawerHeader, { [classes.drawerHeaderActive]: menu })}>
                   <div className={classes.siteInfo}>
-                    <div className={classes.siteTitle}>
-                      {site && site.title}
-                    </div>
+                    <div className={classes.siteTitle}>{site && site.title}</div>
                     <KeyboardArrowDownIcon className={classNames('arrow', classes.arrow)} />
                   </div>
                   {account && <AccountInformation color={theme.palette.primary.light} />}
-                </div>}
+                </div>
+              )}
             </div>
           }
         >
-          {account
-            ? <Query
+          {account ? (
+            <Query
               notifyOnNetworkStatusChange
               fetchPolicy="cache-and-network"
               query={Actions}
@@ -212,7 +205,7 @@ export class DumbUserMainMenu extends React.Component {
                 );
               }}
             </Query>
-            : null}
+          ) : null}
           <MenuList header={this.siteSectionHeader()} fields={siteFields} />
         </Menu>
       </ShortcutsManager>

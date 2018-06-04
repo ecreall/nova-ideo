@@ -79,11 +79,7 @@ class SearchChannelsList extends React.Component {
               }}
               ListItem={SearchChannelItem}
               itemProps={{ onClick: onItemClick }}
-              moreBtn={
-                <span>
-                  {I18n.t('common.moreResult')}
-                </span>
-              }
+              moreBtn={<span>{I18n.t('common.moreResult')}</span>}
             />
           );
         }}

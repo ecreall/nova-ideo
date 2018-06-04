@@ -158,9 +158,7 @@ export class DumbSelect extends React.Component {
     return (
       <Manager>
         <Target>
-          <div onClick={this.openMenu}>
-            {label}
-          </div>
+          <div onClick={this.openMenu}>{label}</div>
         </Target>
         <Popper placement="bottom" eventsEnabled={menu} className={classNames(classes.popper, { [classes.popperClose]: !menu })}>
           <ClickAwayListener onClickAway={this.closeMenu}>
@@ -188,7 +186,7 @@ export class DumbSelect extends React.Component {
                 <MenuList role="menu">
                   {searchText &&
                     canAdd &&
-                    !exactMatch &&
+                    !exactMatch && (
                     <MenuItem
                       onClick={() => {
                         this.addOption(searchText);
@@ -210,7 +208,8 @@ export class DumbSelect extends React.Component {
                         }}
                         primary={searchText}
                       />
-                    </MenuItem>}
+                    </MenuItem>
+                  )}
                   {Object.keys(optionsResult).map((id) => {
                     const title = optionsResult[id];
                     return (

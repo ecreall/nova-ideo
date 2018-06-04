@@ -51,11 +51,7 @@ export class DumbUserTitle extends React.PureComponent {
         classes={{
           menuPaper: classes.menuPaper
         }}
-        activator={
-          <span className={classes.title}>
-            {node.title}
-          </span>
-        }
+        activator={<span className={classes.title}>{node.title}</span>}
       >
         <UserCard withCommentForm id={node.id} onActionClick={this.closeMenu} classes={{ container: classes.cardContainer }} />
       </Menu>

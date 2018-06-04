@@ -91,15 +91,11 @@ export class DumbParamters extends React.Component {
           <div className={classes.titleContainer}>
             <UserAvatar picture={authorPicture} title={authorTitle} classes={{ avatar: classes.avatar }} />
             <div className={classes.header}>
-              <span className={classes.headerTitle}>
-                {authorTitle}
-              </span>
-              <span className={classes.headerAddOn}>
-                {func}
-              </span>
+              <span className={classes.headerTitle}>{authorTitle}</span>
+              <span className={classes.headerAddOn}>{func}</span>
             </div>
           </div>,
-          <div className={classes.formTitle}>Modifier votre profil</div>
+          <div className={classes.formTitle}>Paramètres de votre compte</div>
         ]}
       >
         <VerticalTab
@@ -108,28 +104,30 @@ export class DumbParamters extends React.Component {
           }}
           tabs={[
             {
-              title: 'Compte',
-              description: 'ma description 1',
+              title: 'Profil',
+              description: 'Mise à jour de vos coordonnées, modifications des photos et images',
               content: <EditProfile form="edit-profile" key="edit-profile" />,
               Icon: AccountCircleIcon
             },
             {
-              title: 'Changer de mot de passe',
-              description: 'ma description 2',
+              title: 'Mot de passe',
+              description: 'Modification du mot de passe',
               content: <EditPassword form="edit-password" key="edit-password" />,
               Icon: VpnKeyIcon,
               color: '#d72b3f'
             },
             {
-              title: 'Obtenir un jeton d\'API',
-              description: 'ma description 3',
+              title: 'Jeton API ',
+              description:
+                'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
               content: <EditApiToken />,
               Icon: SettingsInputComponentIcon,
               color: '#ff9000'
             },
             {
-              title: 'Assigner des rôles',
-              description: 'ma description 3',
+              title: 'Rôles',
+              description:
+                'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
               content: <AssignRoles form="Assign-roles" key="Assign-roles" />,
               Icon: WorkIcon,
               color: theme.palette.success[800]

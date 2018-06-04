@@ -118,7 +118,7 @@ class NavBar extends React.Component {
                 />
               </div>
             </div>
-            {!drawer &&
+            {!drawer && (
               <div className={classes.userMenuContainer}>
                 <UserMainMenu
                   activator={
@@ -130,7 +130,8 @@ class NavBar extends React.Component {
                     />
                   }
                 />
-              </div>}
+              </div>
+            )}
           </Toolbar>
         </AppBar>
       </div>
@@ -150,4 +151,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NavBar)
+);

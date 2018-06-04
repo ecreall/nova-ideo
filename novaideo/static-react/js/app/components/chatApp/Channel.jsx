@@ -14,7 +14,10 @@ class Channel extends React.Component {
   }
 
   openChannel = (props) => {
-    const { params: { channelId }, location: { query } } = props;
+    const {
+      params: { channelId },
+      location: { query }
+    } = props;
     if (channelId) {
       const { smallScreen } = props;
       const toOpen = query && query.right;
@@ -48,4 +51,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Channel);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Channel);

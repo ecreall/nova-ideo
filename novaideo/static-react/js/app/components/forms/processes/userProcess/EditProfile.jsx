@@ -77,19 +77,25 @@ export class DumbEditProfile extends React.Component {
   };
 
   render() {
-    const { formData, ction, globalProps: { site }, classes, theme } = this.props;
+    const {
+      formData,
+      ction,
+      globalProps: { site },
+      classes,
+      theme
+    } = this.props;
     const { loading, error, submitted } = this.state;
     return [
-      error &&
+      error && (
         <Alert type="danger" classes={{ container: classes.alertContainer }}>
           {I18n.t('common.failedLogin')}
-        </Alert>,
+        </Alert>
+      ),
       <Form className={classes.form} onSubmit={this.handleSubmit}>
-        {submitted
-          ? <div>
-            {I18n.t('forms.singin.confirmationSent')}
-          </div>
-          : <div>
+        {submitted ? (
+          <div>{I18n.t('forms.singin.confirmationSent')}</div>
+        ) : (
+          <div>
             <Field
               props={{
                 placeholder: I18n.t('forms.singin.firstName'),
@@ -189,14 +195,17 @@ export class DumbEditProfile extends React.Component {
                 />
               </Grid>
             </Grid>
-            {loading
-              ? <div className={classes.loading}>
+            {loading ? (
+              <div className={classes.loading}>
                 <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
               </div>
-              : <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-                    Enregistrer
-              </Button>}
-          </div>}
+            ) : (
+              <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+                Enregistrer
+              </Button>
+            )}
+          </div>
+        )}
       </Form>
     ];
   }

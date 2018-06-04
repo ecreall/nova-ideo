@@ -85,22 +85,23 @@ const StatisticsDoughnut = ({ elements, placement, title, caption, disableTotalC
         <div className={!placeAfter && classes.superpose}>
           <Doughnut elements={elements} />
         </div>
-        {!disableTotalCount &&
+        {!disableTotalCount && (
           <div className={placeAfter ? classes.after : classes.labelSuperpose}>
-            <div className={classes.doughnutLabelCount}>
-              {totalCount}
-            </div>
+            <div className={classes.doughnutLabelCount}>{totalCount}</div>
             {placeAfter ? ' ' : ''}
-            {title &&
+            {title && (
               <div className={classes.doughnutLabelText}>
                 <Translate value={title} count={totalCount} />
-              </div>}
-          </div>}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      {caption &&
+      {caption && (
         <div className={classes.caption}>
           <Translate value={caption} count={totalCount} />
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

@@ -190,7 +190,14 @@ export class DumbIdeaItem extends React.Component {
   };
 
   render() {
-    const { node, processManager, passive, adapters, globalProps: { site }, classes } = this.props;
+    const {
+      node,
+      processManager,
+      passive,
+      adapters,
+      globalProps: { site },
+      classes
+    } = this.props;
     const author = node.author;
     const authorPicture = author.picture;
     const isAnonymous = author.isAnonymous;
@@ -218,8 +225,8 @@ export class DumbIdeaItem extends React.Component {
         <div className={classes.left}>
           <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={authorTitle} />
           <div className={classes.leftActions}>
-            {hasEvaluation
-              ? <Evaluation
+            {hasEvaluation ? (
+              <Evaluation
                 icon={getEvaluationIcons(node.userToken)}
                 onClick={{
                   top: processManager.evaluationClick,
@@ -229,11 +236,11 @@ export class DumbIdeaItem extends React.Component {
                 actions={getEvaluationActions(node)}
                 active={node.state.includes(STATE.idea.submittedSupport)}
               />
-              : null}
-            {site.examineIdeas && node.state.includes(STATE.idea.examined)
-              ? <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
-              : null}
-            {isPrevate &&
+            ) : null}
+            {site.examineIdeas && node.state.includes(STATE.idea.examined) ? (
+              <Examination message={node.opinion} title={getExaminationTtile(node)} value={getExaminationValue(node)} />
+            ) : null}
+            {isPrevate && (
               <OverlaidTooltip
                 tooltip={publishAction ? I18n.t('idea.privatePublishAction') : I18n.t('idea.private')}
                 placement="top"
@@ -248,25 +255,25 @@ export class DumbIdeaItem extends React.Component {
                       : null
                   }
                 />
-              </OverlaidTooltip>}
+              </OverlaidTooltip>
+            )}
           </div>
         </div>
         <div className={classes.body}>
           <div className={classes.header}>
-            {!passive &&
+            {!passive && (
               <IdeaMenu
                 initRef={(menu) => {
                   this.menu = menu;
                 }}
                 idea={node}
                 onActionClick={processManager.execute}
-              />}
+              />
+            )}
             <UserTitle node={author} classes={{ title: classes.headerTitle }} />
             {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
             <Tooltip id={node.id} title={createdAtF3} placement="top">
-              <span className={classes.headerAddOn}>
-                {createdAt}
-              </span>
+              <span className={classes.headerAddOn}>{createdAt}</span>
             </Tooltip>
           </div>
           <div className={classes.bodyContent}>
@@ -284,7 +291,7 @@ export class DumbIdeaItem extends React.Component {
               </div>
               <div>
                 <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
-                {images.length > 0 &&
+                {images.length > 0 && (
                   <div className={classes.imagesContainer}>
                     <ImagesPreview
                       images={images}
@@ -294,19 +301,22 @@ export class DumbIdeaItem extends React.Component {
                         date: node.createdAt
                       }}
                     />
-                  </div>}
+                  </div>
+                )}
               </div>
             </div>
             <div className={classes.bodyFooter}>
-              {!passive &&
-                <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.execute} />}
+              {!passive && (
+                <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.execute} />
+              )}
             </div>
           </div>
         </div>
-        {hasEvaluation &&
+        {hasEvaluation && (
           <div className={classes.right}>
             <StatisticsDoughnut title="evaluation.tokens" elements={getIdeaSupportStats(node, classes)} />
-          </div>}
+          </div>
+        )}
       </div>
     );
   }
@@ -332,4 +342,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(IdeaItemWithProcessManager));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(IdeaItemWithProcessManager)
+);

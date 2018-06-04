@@ -8,7 +8,7 @@ import * as Vibrant from 'node-vibrant';
 import * as constants from '../constants';
 
 export const calculatePercentage = (value1, value2) => {
-  return Math.round(value1 * 100 / value2 * 100) / 100;
+  return Math.round(((value1 * 100) / value2) * 100) / 100;
 };
 
 /*
@@ -55,7 +55,11 @@ export const createEvent = (typeArg, dispatch = false, eventInit = { bubbles: fa
   Get basename from a unix or windows path
 */
 export const getBasename = (path) => {
-  return path.split('\\').pop().split('/').pop();
+  return path
+    .split('\\')
+    .pop()
+    .split('/')
+    .pop();
 };
 
 export const hashLinkScroll = () => {
@@ -146,17 +150,19 @@ export const getFileType = (type) => {
 };
 
 export function getImagePalette(url) {
-  return Vibrant.from(url).getPalette().then((response) => {
-    const keys = Object.keys(response);
-    const addPalette = (acc, paletteName) => {
-      return {
-        ...acc,
-        [paletteName]: response[paletteName] && response[paletteName].getHex()
+  return Vibrant.from(url)
+    .getPalette()
+    .then((response) => {
+      const keys = Object.keys(response);
+      const addPalette = (acc, paletteName) => {
+        return {
+          ...acc,
+          [paletteName]: response[paletteName] && response[paletteName].getHex()
+        };
       };
-    };
-    const colorPallete = keys.reduce(addPalette, {});
-    return colorPallete;
-  });
+      const colorPallete = keys.reduce(addPalette, {});
+      return colorPallete;
+    });
 }
 
 export function arrayToDict(list) {

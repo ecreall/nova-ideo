@@ -38,16 +38,12 @@ export const DumbChannels = ({ classes }) => {
   return (
     <div className={classes.list}>
       <div className={classes.titleContainer}>
-        <div className={classes.title}>
-          {I18n.t('channels.channels')}
-        </div>
+        <div className={classes.title}>{I18n.t('channels.channels')}</div>
       </div>
       <PublicChannels />
       <Divider className={classes.divider} light />
       <div className={classes.titleContainer}>
-        <div className={classes.title}>
-          {I18n.t('channels.private')}
-        </div>
+        <div className={classes.title}>{I18n.t('channels.private')}</div>
       </div>
       <PrivateChannels />
     </div>

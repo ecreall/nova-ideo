@@ -1,50 +1,15 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 
 import BlockDataManager from '../BlockDataManager';
+import URLMetadataLoader from '../../../../common/urlPreview/URLMetadataLoader';
 
 export class AtomicEmbedComponent extends React.Component {
-  state = {
-    showIframe: false
-  };
-
-  componentDidMount() {
-    this.renderEmbedly();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.showIframe !== this.state.showIframe && this.state.showIframe === true) {
-      this.renderEmbedly();
-    }
-  }
-
-  getScript = () => {
-    const script = document.createElement('script');
-    script.async = 1;
-    script.src = '//cdn.embedly.com/widgets/platform.js';
-    script.onload = () => {
-      window.embedly();
-    };
-    document.body.appendChild(script);
-  };
-
-  renderEmbedly = () => {
-    if (window.embedly) {
-      window.embedly();
-    } else {
-      this.getScript();
-    }
-  };
-
   render() {
     const { url } = this.props.data;
     return (
       <BlockDataManager {...this.props} className="md-block-with-data md-block-atomic-embed">
-        <div className="embedly-card-url-container">
-          <a className="embedly-card-url embedly-card" href={url} data-card-controls="0">
-            <CircularProgress size={30} />
-          </a>
-        </div>
+        <URLMetadataLoader url={url} />
       </BlockDataManager>
     );
   }

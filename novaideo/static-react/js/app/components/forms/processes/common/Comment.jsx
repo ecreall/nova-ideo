@@ -10,9 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MicNoneIcon from '@material-ui/icons/MicNone';
 import IconButton from '@material-ui/core/IconButton';
-import { find as findUrls } from 'linkifyjs';
 
-import { formatText } from '../../../../utils/textFormatter';
 import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderRecordField } from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
@@ -113,8 +111,8 @@ const styles = (theme) => {
       padding: 5
     },
     maskIcon: {
-      width: 'auto !important',
-      height: 'auto !important'
+      width: '45px !important',
+      height: '45px !important'
     },
     maskDefault: {
       height: 41,
@@ -140,19 +138,10 @@ export class DumbCommentForm extends React.Component {
         return file;
       });
       const plainComment = this.editor.getPlainText();
-      const formattedComment = formatText(plainComment);
       this.props
         .commentObject({
           context: context,
           text: plainComment,
-          formattedText: formattedComment,
-          urls: findUrls(plainComment)
-            .filter((link) => {
-              return link.type === 'url';
-            })
-            .map((link) => {
-              return link.href;
-            }),
           attachedFiles: files,
           anonymous: Boolean(formData.values.anonymous),
           account: globalProps.account,
@@ -179,7 +168,17 @@ export class DumbCommentForm extends React.Component {
   };
 
   render() {
-    const { formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, placeholder, classes, theme } = this.props;
+    const {
+      formData,
+      channel,
+      isDiscuss,
+      title,
+      globalProps: { site },
+      autoFocus,
+      placeholder,
+      classes,
+      theme
+    } = this.props;
     const hasComment = this.editor && this.editor.getPlainText();
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
@@ -271,8 +270,8 @@ export class DumbCommentForm extends React.Component {
             </div>
           </div>
           <div className={withAnonymous && classes.addon}>
-            {withAnonymous
-              ? <Field
+            {withAnonymous ? (
+              <Field
                 props={{
                   classes: classes
                 }}
@@ -280,7 +279,7 @@ export class DumbCommentForm extends React.Component {
                 component={renderAnonymousCheckboxField}
                 type="boolean"
               />
-              : null}
+            ) : null}
           </div>
           <IconButton onClick={canSubmit ? this.handleSubmit : undefined} className={classes.action}>
             <SendIcon

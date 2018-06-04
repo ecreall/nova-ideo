@@ -115,16 +115,12 @@ export class DumbRecord extends React.Component {
     const { children, theme, classes } = this.props;
     const { open, record, file } = this.state;
     return [
-      <div onClick={this.open}>
-        {children}
-      </div>,
+      <div onClick={this.open}>{children}</div>,
       <Dialog
         directDisplay
         appBar={
           <div className={classes.titleContainer}>
-            <span className={classes.title}>
-              {I18n.t('forms.record')}
-            </span>
+            <span className={classes.title}>{I18n.t('forms.record')}</span>
           </div>
         }
         open={open}
@@ -160,10 +156,11 @@ export class DumbRecord extends React.Component {
               <StopIcon />
             </Button>
           </div>
-          {file &&
+          {file && (
             <audio controls style={{ width: '100%' }}>
               <source src={file.preview.url} type={file.type} />
-            </audio>}
+            </audio>
+          )}
           <div className={classes.footer}>
             <StyledButton
               disabled={!file}

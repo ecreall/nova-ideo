@@ -64,15 +64,14 @@ export const DumbInformations = ({ id, subject, onActionClick, channel, onOpen, 
       open={open}
       title={
         <span>
-          <span>
-            {I18n.t('channels.infoBlockTitle')}
-          </span>
+          <span>{I18n.t('channels.infoBlockTitle')}</span>
         </span>
       }
       Icon={InfoOutlineIcon}
     >
-      {open &&
-        <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />}
+      {open && (
+        <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />
+      )}
     </DetailsSection>
   );
 };

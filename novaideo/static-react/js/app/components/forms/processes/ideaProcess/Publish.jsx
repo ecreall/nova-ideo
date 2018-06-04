@@ -48,9 +48,7 @@ export class Dumbpublish extends React.Component {
         appBar={I18n.t(action.description)}
         onClose={onClose}
         footer={[
-          <CancelButton onClick={this.closeForm}>
-            {I18n.t('forms.cancel')}
-          </CancelButton>,
+          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
           <Button onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.button}>
             {I18n.t(action.submission)}
           </Button>

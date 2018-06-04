@@ -108,9 +108,7 @@ export class DumbCommentMenu extends React.Component {
         {actions.map((action) => {
           return (
             <OverlaidTooltip tooltip={I18n.t(action.description || action.title)} placement="top">
-              <div className={classes.action}>
-                {this.getAction(action)}
-              </div>
+              <div className={classes.action}>{this.getAction(action)}</div>
             </OverlaidTooltip>
           );
         })}

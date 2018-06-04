@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 
+import { formatText } from '../../utils/textFormatter';
 import Delete from '../forms/processes/commentProcess/Delete';
 import Pin from '../forms/processes/commentProcess/Pin';
 import Unpin from '../forms/processes/commentProcess/Unpin';
@@ -91,7 +92,7 @@ export class DumbCommentProcessManager extends React.Component {
           form={`transform-proposal-${comment.id}`}
           onClose={this.onFormClose}
           initialValues={{
-            text: comment.formattedText,
+            text: formatText(comment.text),
             files: comment.attachedFiles.map((file) => {
               return {
                 id: file.id,
@@ -131,7 +132,10 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
   graphql(AddReaction, {
     props: function (props) {
       return {

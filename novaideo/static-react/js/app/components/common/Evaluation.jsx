@@ -134,24 +134,16 @@ export const DumbEvaluation = ({ icon, text, actions, onClick, active, big, clas
             }}
           >
             <OverlayTrigger
-              overlay={
-                <Tooltip className={classes.buttonTopOverlay}>
-                  {I18n.t(actions.top.description)}
-                </Tooltip>
-              }
+              overlay={<Tooltip className={classes.buttonTopOverlay}>{I18n.t(actions.top.description)}</Tooltip>}
               placement="right"
             >
               <IconTop className={classNames(classes.token, classes.tokenTop, { [classes.tokenBig]: big })} />
             </OverlayTrigger>
           </IconButton>
-          <div className={classNames(classes.tokenNbTop, { [classes.tokenNbTopBig]: big })}>
-            {text.top}
-          </div>
+          <div className={classNames(classes.tokenNbTop, { [classes.tokenNbTopBig]: big })}>{text.top}</div>
         </div>
         <div className={classNames(classes.itemContainer, { [classes.itemContainerBig]: big })}>
-          <div className={classNames(classes.tokenNbBottom, { [classes.tokenNbBottomBig]: big })}>
-            {text.down}
-          </div>
+          <div className={classNames(classes.tokenNbBottom, { [classes.tokenNbBottomBig]: big })}>{text.down}</div>
           <IconButton
             className={classes.buttonBottom}
             onClick={() => {
@@ -159,11 +151,7 @@ export const DumbEvaluation = ({ icon, text, actions, onClick, active, big, clas
             }}
           >
             <OverlayTrigger
-              overlay={
-                <Tooltip className={classes.buttonBottomOverlay}>
-                  {I18n.t(actions.down.description)}
-                </Tooltip>
-              }
+              overlay={<Tooltip className={classes.buttonBottomOverlay}>{I18n.t(actions.down.description)}</Tooltip>}
               placement="right"
             >
               <IconDown className={classNames(classes.token, classes.tokenBottom, { [classes.tokenBig]: big })} />
@@ -182,9 +170,7 @@ export const DumbEvaluation = ({ icon, text, actions, onClick, active, big, clas
             [classes.inactiveBig]: big
           })}
         />
-        <div className={classNames(classes.tokenNbTop, classes.nbInactive, { [classes.tokenNbBottomBig]: big })}>
-          {text.top}
-        </div>
+        <div className={classNames(classes.tokenNbTop, classes.nbInactive, { [classes.tokenNbBottomBig]: big })}>{text.top}</div>
       </div>
       <div className={classNames(classes.itemContainer, classes.inactiveItemContainer, { [classes.itemContainerBig]: big })}>
         <div className={classNames(classes.tokenNbBottom, classes.nbInactive, { [classes.tokenNbBottomBig]: big })}>

@@ -84,9 +84,7 @@ export class DumbPopper extends React.Component {
           [classes.rootOpen]: popper
         })}
       >
-        <Target onClick={this.open}>
-          {activator}
-        </Target>
+        <Target onClick={this.open}>{activator}</Target>
         {(popper || keepMounted) &&
           ReactDOM.createPortal(
             <PopperBase

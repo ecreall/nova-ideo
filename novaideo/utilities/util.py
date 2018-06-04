@@ -11,13 +11,10 @@ import pytz
 import string
 import random
 import unicodedata
-import urllib
 import io
 import re
 import json
-import metadata_parser
 from webob.multidict import MultiDict
-from urllib.parse import urlparse
 from itertools import groupby
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -273,157 +270,6 @@ def guess_extension(file_):
             return extensions[0][1:]
 
     return 'file'
-
-
-def get_url_domain(url, name_only=False):
-    parsed_uri = urlparse(url)
-    if not name_only:
-        return '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-
-    return '{uri.netloc}'.format(uri=parsed_uri)
-
-
-def extract_twitter_metadata(page, url, url_metadata):
-    result = {}
-    soup = BeautifulSoup(page, "lxml")
-    twit = soup.find('div', attrs={'class': 'permalink-header'})
-    if twit:
-        img = twit.find('img', attrs={'class': 'avatar'})
-        if img:
-            result = {'author_avatar': img['src']}
-
-        username = twit.find('span', attrs={'class': 'username'})
-        if username:
-            name = username.find('b')
-            if name:
-                result['author_name'] = '@'+name.text
-
-    return result
-
-
-def extract_favicon(page, domain):
-    result = {}
-    soup = BeautifulSoup(page, "lxml")
-    links = {
-        'href': re.compile("\.ico"),
-        'rel': "icon",
-        'type': "image/x-icon"
-    }
-    favicon = None
-    for link, value in links.items():
-        try:
-            favicon = soup.head.find(
-                'link', **{link: value})
-            if favicon:
-                break
-        except Exception as error:
-            pass
-
-    if favicon:
-        href = favicon['href']
-        domain_href = get_url_domain(href, True)
-        if not domain_href:
-            href = domain + href
-
-        result = {'favicon': href}
-
-    return result
-
-
-def extract_wikipedia_metadata(page, url, url_metadata):
-    result = {}
-    try:
-        parsed_uri = urlparse(url)
-        title = parsed_uri.path.split('/')[-1].replace('_',  '%20')
-        # get metadata: use wikipedia api
-        api_url = url_metadata['domain']+"/w/api.php?action=query&prop=extracts&format=json&explaintext=&exintro=&titles="+title
-        response = urllib.request.urlopen(api_url).read()
-        data = json.loads(response.decode())
-        pages = data.get('query', {}).get('pages', {})
-        if pages:
-            item = list(pages.items())[0][1]
-            result['description'] = item.get('extract').replace('\n', '')
-
-    except Exception:
-        pass
-
-    return result
-
-
-DATA_EXTRACTORS = {
-    'twitter': extract_twitter_metadata,
-    'wikipedia': extract_wikipedia_metadata,
-}
-
-
-def get_data_extractor(site_name):
-    site_id = site_name.lower()
-    extractor = DATA_EXTRACTORS.get(site_id, None)
-    if not extractor:
-        for key in DATA_EXTRACTORS:
-            if site_id.find(key+'-') >= 0:
-                site_id = key
-                break
-
-    return site_id, DATA_EXTRACTORS.get(site_id, None)
-
-
-def extract_urls_metadata(urls, save_images=False):
-    results = []
-    for url in urls:
-        page = ''
-        try:
-            resp = urllib.request.urlopen(
-                urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}))
-            url = resp.url
-            page = resp.read()
-            url_metadata = metadata_parser.MetadataParser(
-                html=page.decode('utf-8'), requests_timeout=100)
-        except Exception as e:
-            log.warning(e)
-            continue
-        
-        result = {
-            'url': url,
-            'title': url_metadata.get_metadata('title'),
-            'description': url_metadata.get_metadata('description', ''),
-            'site_name': url_metadata.get_metadata('site_name'),
-            'image_url': None,
-            'image': None,
-            'domain': get_url_domain(url)
-        }
-        if not result.get('site_name'):
-            result['site_name'] = get_url_domain(
-                url, True).replace('www.', '').replace('.', '-')
-
-        if result['site_name']:
-            site_name, extractor = get_data_extractor(result['site_name'])
-            result['site_name'] = site_name.title()
-            if extractor:
-                result.update(extractor(page, url, result))
-
-        result.update(extract_favicon(page, get_url_domain(url)))
-        if result['description']:
-            result['description'] = result['description'][:500] + '...'
-
-        try:
-            image = url_metadata.get_metadata('image')
-            if save_images and image:
-                buf = io.BytesIO(urllib.request.urlopen(
-                    image).read())
-                buf.seek(0)
-                newimg = Image(fp=buf)
-                result['image'] = newimg
-            elif image:
-                result['image_url'] = image
-
-        except Exception:
-            continue
-
-        results.append(result)
-
-    return results
-
 
 #source: http://dinoblog.tuxfamily.org/?p=40
 
@@ -702,47 +548,6 @@ def render_urls(urls, request):
             url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
     return formatted_urls
-
-
-def get_urls_metadata(urls, request=None):
-    if not request:
-        request = get_current_request()
-
-    url_results = []
-    url_files = []
-    urls_metadata = {}
-    for url_metadata in extract_urls_metadata(urls):
-        if url_metadata['url'] not in urls_metadata and \
-           (url_metadata['image'] or url_metadata['description']):
-            if url_metadata['image']:
-                new_image = url_metadata.pop('image')
-                url_files.append(new_image)
-                url_metadata['image_url'] = new_image.url
-
-            urls_metadata[url_metadata['url']] = url_metadata
-
-    return urls_metadata, url_files
-
-
-def text_urls_format(text, request=None, is_html=False):
-    if not request:
-        request = get_current_request()
-
-    formatted_urls = ''
-    formatted_text = ''
-    url_files = []
-    urls_metadata = {}
-    if text:
-        urls = extract_urls(text)
-        urls_metadata, url_files = get_urls_metadata(urls, request)
-        if not is_html:
-            text = truncate_text(text, len(text))
-            text = text.replace('\n', '<br/>')
-
-        formatted_text = '<div class="emoji-container">' + text + '</div>'
-        formatted_urls = render_urls(urls_metadata, request)
-
-    return urls_metadata, url_files, formatted_urls, formatted_text
 
 
 def truncate_text(text, nb, ellipsis='...'):

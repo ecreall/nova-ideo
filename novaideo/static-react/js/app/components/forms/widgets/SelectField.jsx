@@ -85,10 +85,11 @@ export class DumbSelectField extends React.Component {
     const { options, selected } = this.state;
     return (
       <div className={classes.container}>
-        {this.props.label &&
+        {this.props.label && (
           <label className={classes.label} htmlFor={name}>
             {this.props.label}
-          </label>}
+          </label>
+        )}
         <div className={classes.selectContainer}>
           <select
             className={classes.select}

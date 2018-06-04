@@ -11,9 +11,11 @@ import ForumIcon from '@material-ui/icons/Forum';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 
+import { formatText } from '../../utils/textFormatter';
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
-import Url from '../common/Url';
+import URLs from '../common/urlPreview/URLs';
+import URLPreview from '../common/urlPreview/URLPreview';
 import EmojiEvaluation from '../common/EmojiEvaluation';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import { emojiConvert } from '../../utils/emojiConvertor';
@@ -311,15 +313,14 @@ class DumbCommentItem extends React.Component {
       <div>
         <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
           {pinned &&
-            !this.ignorePinned() &&
+            !this.ignorePinned() && (
             <div className={classes.pinnedLabel}>
               <div className={classes.pinnedIcon}>
                 <Icon className="mdi-set mdi-pin" />
               </div>
-              <div className={classes.pinnedText}>
-                {I18n.t('common.pinned')}
-              </div>
-            </div>}
+              <div className={classes.pinnedText}>{I18n.t('common.pinned')}</div>
+            </div>
+          )}
           <div
             className={classNames(classes.container, {
               [classes.pinnedContainer]: !edit && pinned,
@@ -327,44 +328,44 @@ class DumbCommentItem extends React.Component {
             })}
           >
             {!edit &&
-              processManager &&
+              processManager && (
               <CommentMenu
                 initRef={(menu) => {
                   this.menu = menu;
                 }}
                 comment={node}
                 onActionClick={this.onActionClick}
-              />}
+              />
+            )}
             <div
               className={classNames(classes.left, {
                 [classes.leftDateOnly]: ignoreMetaData
               })}
             >
-              {ignoreMetaData
-                ? <Tooltip id={node.id} title={createdAtF} placement="top">
-                  <div className={classNames('creation-date', classes.creationDate)}>
-                    {createdAt}
-                  </div>
+              {ignoreMetaData ? (
+                <Tooltip id={node.id} title={createdAtF} placement="top">
+                  <div className={classNames('creation-date', classes.creationDate)}>{createdAt}</div>
                 </Tooltip>
-                : <UserAvatar
+              ) : (
+                <UserAvatar
                   isAnonymous={isAnonymous}
                   picture={authorPicture}
                   title={author.title}
                   classes={{ avatar: classes.avatar }}
-                />}
+                />
+              )}
             </div>
             <div className={classes.body}>
-              {!ignoreMetaData &&
+              {!ignoreMetaData && (
                 <div className={classes.header}>
                   <UserTitle node={author} />
                   <Tooltip classes={{ root: classes.tooltip }} id={node.id} title={createdAtF} placement="top">
-                    <span className={classes.headerAddOn}>
-                      {createdAt}
-                    </span>
+                    <span className={classes.headerAddOn}>{createdAt}</span>
                   </Tooltip>
-                </div>}
-              {edit
-                ? <Edit
+                </div>
+              )}
+              {edit ? (
+                <Edit
                   key={`edit-${node.id}`}
                   form={`edit-${node.id}`}
                   context={node}
@@ -385,20 +386,18 @@ class DumbCommentItem extends React.Component {
                     })
                   }}
                 />
-                : <div className={classes.bodyContent}>
+              ) : (
+                <div className={classes.bodyContent}>
                   <div>
                     <div className={classes.contentText}>
                       <div
                         className={classNames('comment-text', classes.commentText)}
                         dangerouslySetInnerHTML={{
-                          __html: emojiConvert(node.formattedText)
+                          __html: emojiConvert(formatText(node.text))
                         }}
                       />
 
-                      {edited &&
-                      <span className={classes.edited}>
-                            ({I18n.t('channels.edited')})
-                      </span>}
+                      {edited && <span className={classes.edited}>({I18n.t('channels.edited')})</span>}
                     </div>
                     <ImagesPreview
                       images={images}
@@ -410,54 +409,52 @@ class DumbCommentItem extends React.Component {
                     />
                     <FilesPreview files={files} />
                   </div>
-                  {node.urls.length > 0 &&
-                  <div className={classes.urlsContainer}>
-                    {node.urls.map((url, key) => {
-                      return <Url key={key} data={url} />;
-                    })}
-                  </div>}
-                  {node.emojis &&
-                  <EmojiEvaluation
-                    emojis={node.emojis}
-                    onEmojiClick={(emoji) => {
-                      if (addReactionAction) this.onActionClick(addReactionAction, { emoji: emoji });
-                    }}
-                  />}
-                  {!disableReply && node.lenComments > 0
-                    ? <div onClick={this.toggleReply} className={classes.replyContainer}>
+                  {node.urls.length > 0 ? (
+                    <div className={classes.urlsContainer}>
+                      {node.urls.map((url) => {
+                        return <URLPreview {...url} />;
+                      })}
+                    </div>
+                  ) : (
+                    <URLs body={node.text} className={classes.urlsContainer} />
+                  )}
+                  {node.emojis && (
+                    <EmojiEvaluation
+                      emojis={node.emojis}
+                      onEmojiClick={(emoji) => {
+                        if (addReactionAction) this.onActionClick(addReactionAction, { emoji: emoji });
+                      }}
+                    />
+                  )}
+                  {!disableReply && node.lenComments > 0 ? (
+                    <div onClick={this.toggleReply} className={classes.replyContainer}>
                       <ForumIcon className={classes.replyIcon} />
                       <span>
                         <Translate value="channels.replies" count={node.lenComments} />
-                        {node.lenUnreadReplies > 0 &&
-                        <span className={classes.badgeUnread}>
-                          <Translate value="channels.unreadReplies" count={node.lenUnreadReplies} />
-                        </span>}
+                        {node.lenUnreadReplies > 0 && (
+                          <span className={classes.badgeUnread}>
+                            <Translate value="channels.unreadReplies" count={node.lenUnreadReplies} />
+                          </span>
+                        )}
                       </span>
                     </div>
-                    : null}
-                </div>}
+                  ) : null}
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className={reply && classes.replyCommentsContainer}>
           {reply && <Icon className={classNames('mdi-set mdi-source-commit-start-next-local', classes.iconStart)} />}
-          {reply &&
+          {reply && (
             <IconButton onClick={this.toggleReply} className={classNames('close-reply', classes.closeReply)}>
               <CancelIcon />
-            </IconButton>}
+            </IconButton>
+          )}
           <Collapse in={reply}>
-            {reply &&
-              <Reply
-                inline
-                formTop
-                dynamicDivider={false}
-                id={node.id}
-                moreBtn={
-                  <span>
-                    {I18n.t('common.moreResult')}
-                  </span>
-                }
-              />}
+            {reply && (
+              <Reply inline formTop dynamicDivider={false} id={node.id} moreBtn={<span>{I18n.t('common.moreResult')}</span>} />
+            )}
           </Collapse>
           {reply && <Icon className={classNames('mdi-set mdi-source-commit-end-local', classes.iconEnd)} />}
         </div>

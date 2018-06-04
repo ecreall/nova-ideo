@@ -71,14 +71,12 @@ export class DumbJump extends React.Component {
           <FormatIndentIncreaseIcon className={classes.jumpIcon} />
           {I18n.t('channels.jump')}
         </Button>
-        {this.state.open &&
+        {this.state.open && (
           <Dialog
             directDisplay
             appBar={
               <div className={classes.titleContainer}>
-                <span className={classes.title}>
-                  {I18n.t('channels.jump')}
-                </span>
+                <span className={classes.title}>{I18n.t('channels.jump')}</span>
               </div>
             }
             open={this.state.open}
@@ -87,7 +85,8 @@ export class DumbJump extends React.Component {
             <div className={classes.container}>
               <SearchContentsList onItemClick={this.handleClose} />
             </div>
-          </Dialog>}
+          </Dialog>
+        )}
       </ShortcutsManager>
     );
   }

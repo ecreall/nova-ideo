@@ -3,8 +3,6 @@
 mutation Edit(
   $context: String!
   $comment: String!
-  $formattedComment: String!
-  $urls: [String]
   $attachedFiles: [Upload]
   $oldFiles: [String]
   $processIds: [String]
@@ -12,14 +10,7 @@ mutation Edit(
   $processTags: [String]
   $actionTags: [String]
 ) {
-  editComment(
-    context: $context
-    comment: $comment
-    formattedComment: $formattedComment
-    urls: $urls
-    attachedFiles: $attachedFiles
-    oldFiles: $oldFiles
-  ) {
+  editComment(context: $context, comment: $comment, attachedFiles: $attachedFiles, oldFiles: $oldFiles) {
     status
     comment {
       ...Comment

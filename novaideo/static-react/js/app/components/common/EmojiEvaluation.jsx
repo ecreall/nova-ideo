@@ -124,9 +124,7 @@ export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes
             [classes.clicableEmoji]: onEmojiClick
           })}
         >
-          <span className={classes.count}>
-            {count}
-          </span>
+          <span className={classes.count}>{count}</span>
           <Emoji
             sheetSize={32}
             backgroundImageFn={() => {
@@ -146,7 +144,7 @@ export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes
   return (
     <div className={classes.container}>
       {emojisContents}
-      {onEmojiClick &&
+      {onEmojiClick && (
         <EmojiPicker
           classes={{
             button: classNames('emoji-picker-btn', classes.button),
@@ -154,7 +152,8 @@ export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes
           }}
           onSelect={onEmojiClick}
           style={{ picker: { right: 1 } }}
-        />}
+        />
+      )}
     </div>
   );
 };

@@ -26,12 +26,10 @@ from pontus.file import ObjectData, File
 from .interface import IComment
 from novaideo.core import (
     Commentable, Emojiable, can_access, SignalableEntity,
-    CorrelableEntity)
+    CorrelableEntity, ContentWithURLs)
 from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
-    text_urls_format,
-    get_urls_metadata,
     get_emoji_form,
     get_files_data, connect, disconnect)
 from novaideo.content.correlation import CorrelationType
@@ -186,7 +184,7 @@ class CommentSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IComment)
-class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
+class Comment(Commentable, CorrelableEntity, Emojiable, ContentWithURLs, SignalableEntity):
     """Comment class"""
     icon = 'icon ion-chatbubbles'
     templates = {'default': 'novaideo:views/templates/comment_result.pt'}
@@ -201,7 +199,6 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)
         self.set_data(kwargs)
-        self.urls = PersistentDict({})
         self.edited = False
         self.pinned = False
 
@@ -301,31 +298,11 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]
 
-    def format(self, request, is_html=False):
-        comment = getattr(self, 'comment', '')
-        urls_metadata, url_files, formatted_urls, formatted_text = text_urls_format(
-            comment, request, is_html)
-        self.urls = PersistentDict(urls_metadata)
-        self.setproperty('url_files', url_files)
-        self.formatted_comment = formatted_text
-        self.formatted_urls = formatted_urls
-
-    def add_urls(self, urls, request):
-        urls_metadata, url_files = get_urls_metadata(
-            urls, request)
-
-        self.urls.update(urls_metadata)
-        for url_file in url_files:
-            self.addtoproperty('url_files', url_file)
-
-    def set_urls(self, urls, request):
-        urls_metadata, url_files = get_urls_metadata(
-            urls, request)
-        self.urls = PersistentDict(urls_metadata)
-        self.setproperty('url_files', url_files)
-
     def get_attached_files_data(self):
         return get_files_data(self.files)
 
     def can_add_reaction(self, user, process):
         return True
+
+    def get_content(self):
+        return self.comment

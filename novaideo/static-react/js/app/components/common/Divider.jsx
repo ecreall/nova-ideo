@@ -135,10 +135,7 @@ export class DumbDivider extends React.Component {
           [classes.dividerFixed]: this.state.fixed
         })}
       >
-        {alert &&
-          <div className={classes.alert}>
-            {alertMessage}
-          </div>}
+        {alert && <div className={classes.alert}>{alertMessage}</div>}
         {message && [
           <div className={classes.background} />,
           <div

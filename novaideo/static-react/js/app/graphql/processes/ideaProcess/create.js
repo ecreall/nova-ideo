@@ -78,7 +78,6 @@ export default function create({ ownProps, mutate }) {
               isDiscuss: false
             },
             opinion: '',
-            urls: [],
             author: {
               __typename: 'Person',
               isAnonymous: anonymous,

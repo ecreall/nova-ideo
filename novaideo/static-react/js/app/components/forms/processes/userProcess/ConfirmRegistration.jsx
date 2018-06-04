@@ -28,14 +28,20 @@ const styles = {
 
 export class DumbConfirmRegistration extends React.Component {
   componentDidMount() {
-    const { params: { registrationId } } = this.props;
+    const {
+      params: { registrationId }
+    } = this.props;
     if (registrationId) {
       this.props
         .confirmRegistration({
           registration: registrationId
         })
         .then((result) => {
-          const { data: { confirmRegistration: { status, token } } } = result;
+          const {
+            data: {
+              confirmRegistration: { status, token }
+            }
+          } = result;
           if (status && token) {
             this.props.updateUserToken(token);
             this.props.client.resetStore();
@@ -58,11 +64,7 @@ export class DumbConfirmRegistration extends React.Component {
         <div className={classes.message}>
           <Illustration
             img={REGISTRATION_CONFIRMATION}
-            message={[
-              <div className={classes.message}>
-                {I18n.t('user.confirmRegistration')}
-              </div>
-            ]}
+            message={[<div className={classes.message}>{I18n.t('user.confirmRegistration')}</div>]}
             classes={{
               container: classes.illustrationContainer,
               image: classes.imgIllustration
@@ -86,5 +88,12 @@ export default withStyles(styles)(
         confirmRegistration: confirmRegistration(props)
       };
     }
-  })(withApollo(connect(null, mapDispatchToProps)(DumbConfirmRegistration)))
+  })(
+    withApollo(
+      connect(
+        null,
+        mapDispatchToProps
+      )(DumbConfirmRegistration)
+    )
+  )
 );

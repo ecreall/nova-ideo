@@ -98,9 +98,7 @@ const IdeaAppBar = ({ idea, hasEvaluation, stats, processManager, classes, theme
         <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
         <div className={classes.header}>
           <UserTitle node={author} classes={{ title: classes.headerTitle }} />
-          <span className={classes.headerAddOn}>
-            {createdAtF3}
-          </span>
+          <span className={classes.headerAddOn}>{createdAtF3}</span>
         </div>
       </div>
       <IdeaAppBarTitle idea={idea} hasEvaluation={hasEvaluation} stats={stats} />

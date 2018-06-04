@@ -63,13 +63,13 @@ export const renderAnonymousCheckboxField = ({ input: { value, onChange }, class
   return (
     <Tooltip title={anonymous ? I18n.t('forms.disableAnonymity') : I18n.t('forms.remainAnonymous')} placement="top">
       <Checkbox
-        icon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
-        checkedIcon={<Icon className={classNames(classes.maskIcon, 'mdi-set mdi-guy-fawkes-mask')} />}
+        icon={<Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
+        checkedIcon={<Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
         value={value}
         onChange={onChange}
         classes={{
-          default: classes.maskDefault,
-          checked: classes.maskChecked
+          root: classNames(classes.maskIcon, classes.maskDefault),
+          checked: classNames(classes.maskIcon, classes.maskChecked)
         }}
       />
     </Tooltip>
@@ -95,10 +95,11 @@ export const renderCheckboxField = withStyles(checkboxStyles, {
   return [
     <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />,
     touched &&
-      error &&
+      error && (
       <FormHelperText className={classes.error} id={name}>
         {error}
       </FormHelperText>
+    )
   ];
 });
 
@@ -211,14 +212,12 @@ export const renderTextInput = withStyles(textInputStyles, {
   }) => {
     return (
       <div className={classes.container}>
-        {label &&
+        {label && (
           <label className={classes.label} htmlFor={name}>
             {label}
-            {optional &&
-              <span className={classes.labelOptional}>
-                {' '}{I18n.t('forms.optional')}
-              </span>}
-          </label>}
+            {optional && <span className={classes.labelOptional}> {I18n.t('forms.optional')}</span>}
+          </label>
+        )}
         <Input
           type={type || 'text'}
           autoComplete={autoComplete}
@@ -237,21 +236,19 @@ export const renderTextInput = withStyles(textInputStyles, {
             }),
             input: classes.input
           }}
-          endAdornment={
-            <InputAdornment position={endAdornmentPosition}>
-              {endAdornment}
-            </InputAdornment>
-          }
+          endAdornment={<InputAdornment position={endAdornmentPosition}>{endAdornment}</InputAdornment>}
         />
-        {helper &&
+        {helper && (
           <FormHelperText className={classes.helper} id={name}>
             {helper}
-          </FormHelperText>}
+          </FormHelperText>
+        )}
         {touched &&
-          error &&
+          error && (
           <FormHelperText className={classes.error} id={name}>
             {error}
-          </FormHelperText>}
+          </FormHelperText>
+        )}
       </div>
     );
   }

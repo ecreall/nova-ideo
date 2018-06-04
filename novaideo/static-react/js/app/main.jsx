@@ -122,11 +122,11 @@ class Main extends React.Component {
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <MuiThemeProvider theme={theme}>
           <div className="main">
-            {network.isLogged || (site && !site.onlyForMembers)
-              ? <App params={this.props.params}>
-                {this.props.children}
-              </App>
-              : 'login'}
+            {network.isLogged || (site && !site.onlyForMembers) ? (
+              <App params={this.props.params}>{this.props.children}</App>
+            ) : (
+              'login'
+            )}
           </div>
         </MuiThemeProvider>
       </JssProvider>
@@ -157,7 +157,10 @@ export const mapDispatchToProps = {
 
 export default withWidth()(
   withApollo(
-    connect(mapStateToProps, mapDispatchToProps)(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(
       graphql(SiteData, {
         options: (props: any) => {
           return {

@@ -21,7 +21,6 @@ query Comment(
       rootOid
       createdAt
       text
-      formattedText
       edited
       pinned
       channel {
@@ -44,14 +43,18 @@ query Comment(
       }
       urls {
         url
+        html
         title
         description
-        imageUrl
-        siteName
-        favicon
-        domain
-        authorAvatar
+        thumbnailUrl
+        providerName
+        faviconUrl
         authorName
+        authorAvatar
+        data {
+          label
+          data
+        }
       }
       emojis {
         title

@@ -4,6 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import { Query } from 'react-apollo';
+
+import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
 
 const styles = {
   container: {
@@ -82,11 +85,16 @@ const styles = {
   }
 };
 
-export class DumbSketchfabEmbed extends React.Component {
-  state: {
-    open: boolean
-  };
+export type Props = {
+  url: string,
+  classes: Object
+};
 
+export type State = {
+  open: boolean
+};
+
+class DumbSketchfabEmbed extends React.Component<*, Props, State> {
   state = {
     open: false
   };
@@ -100,36 +108,56 @@ export class DumbSketchfabEmbed extends React.Component {
   };
 
   render = () => {
-    const { id, imageUrl, classes } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
     return (
-      <div className={classes.container}>
-        <div className={classes.sketchfabEmbed}>
-          <div className={classes.sketchfabThumbnail} style={{ backgroundImage: `url(${imageUrl})` }}>
-            <div className={classes.playButtonContainer}>
-              <IconButton className={classes.playButton} onClick={this.openEmbed}>
-                <ThreeDRotationIcon className={classes.playButtonIcon} />
-              </IconButton>
+      <Query
+        notifyOnNetworkStatusChange
+        fetchPolicy="cache-and-network"
+        query={URLMetadata}
+        variables={{
+          url: this.props.url
+        }}
+      >
+        {(result) => {
+          const metadata = result.data && result.data.metadata;
+          if (!metadata) return null;
+          const url = metadata && metadata.url;
+          return (
+            <div className={classes.container}>
+              <div className={classes.sketchfabEmbed}>
+                <div
+                  className={classes.sketchfabThumbnail}
+                  style={{ backgroundImage: `url(${metadata ? metadata.thumbnailUrl : ''})` }}
+                >
+                  <div className={classes.playButtonContainer}>
+                    <IconButton className={classes.playButton} onClick={this.openEmbed}>
+                      <ThreeDRotationIcon className={classes.playButtonIcon} />
+                    </IconButton>
+                  </div>
+                </div>
+              </div>
+              {url &&
+                open && (
+                <div className={classes.sketchfabEmbedOpen} onClick={this.closeEmbed}>
+                  <iframe
+                    title="Sketchfab"
+                    id="SketchfabPlayer"
+                    type="text/html"
+                    width="640"
+                    height="360"
+                    src={`${url}/embed?autostart=1&autospin=0.5`}
+                    frameBorder="0"
+                  />
+                  <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              )}
             </div>
-          </div>
-        </div>
-        {open &&
-          <div className={classes.sketchfabEmbedOpen} onClick={this.closeEmbed}>
-            <iframe
-              title="Sketchfab"
-              id="SketchfabPlayer"
-              type="text/html"
-              width="640"
-              height="360"
-              className={classes.frame}
-              src={`https://sketchfab.com/models/${id}/embed?autostart=1&autospin=0.5`}
-              frameBorder="0"
-            />
-            <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>
-              <CloseIcon />
-            </IconButton>
-          </div>}
-      </div>
+          );
+        }}
+      </Query>
     );
   };
 }

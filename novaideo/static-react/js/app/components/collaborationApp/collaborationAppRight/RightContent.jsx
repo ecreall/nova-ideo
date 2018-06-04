@@ -68,9 +68,11 @@ class RightContent extends React.Component {
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton onClick={this.toggleWidth}>
-              {rightFull
-                ? <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-right')} />
-                : <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />}
+              {rightFull ? (
+                <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-right')} />
+              ) : (
+                <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
+              )}
             </IconButton>
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {title}
@@ -87,9 +89,7 @@ class RightContent extends React.Component {
           </Toolbar>
         </AppBar>
         <div className={classes.content}>
-          <Scrollbar>
-            {children}
-          </Scrollbar>
+          <Scrollbar>{children}</Scrollbar>
         </div>
       </div>
     );
@@ -106,4 +106,9 @@ export const mapStateToProps = (state) => {
     rightFull: state.apps.collaborationApp.right.full
   };
 };
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(RightContent));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RightContent)
+);

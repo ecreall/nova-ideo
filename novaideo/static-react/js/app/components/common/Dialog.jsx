@@ -128,11 +128,11 @@ const AppRightContainer = (props) => {
       >
         {children}
       </Grid>
-      {withDrawer && rightOpen
-        ? <Grid className={classNames('grid-item', classes.right)} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
+      {withDrawer && rightOpen ? (
+        <Grid className={classNames('grid-item', classes.right)} item xs={12} md={rightFull ? 12 : 4} sm={rightFull ? 12 : 5}>
           <CollaborationAppRight />
         </Grid>
-        : null}
+      ) : null}
     </Grid>
   );
 };
@@ -194,11 +194,7 @@ class CommonDialog extends React.Component {
       drawerOpen
     } = this.props;
     const full = withDrawer || fullScreen;
-    const content =
-      (directDisplay || this.state.entered) &&
-      <div className={classes.container}>
-        {children}
-      </div>;
+    const content = (directDisplay || this.state.entered) && <div className={classes.container}>{children}</div>;
     return (
       <Dialog
         hideBackdrop={hideBackdrop || withDrawer}
@@ -215,10 +211,11 @@ class CommonDialog extends React.Component {
       >
         <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
           <Toolbar>
-            {withDrawer &&
+            {withDrawer && (
               <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleDrawer}>
                 {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
-              </IconButton>}
+              </IconButton>
+            )}
             <Typography type="title" color="primary" className={classes.appBarContent}>
               {appBar}
             </Typography>
@@ -227,11 +224,7 @@ class CommonDialog extends React.Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        {withDrawer && withRightApp
-          ? <AppRightContainer {...this.props}>
-            {content}
-          </AppRightContainer>
-          : content}
+        {withDrawer && withRightApp ? <AppRightContainer {...this.props}>{content}</AppRightContainer> : content}
       </Dialog>
     );
   }
@@ -251,4 +244,9 @@ export const mapDispatchToProps = {
   removeIntegration: removeChatAppIntegration
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(CommonDialog));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CommonDialog)
+);
