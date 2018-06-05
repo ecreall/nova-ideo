@@ -1,5 +1,6 @@
 #import "./Action.graphql"
 #import "./Idea.graphql"
+#import "./File.graphql"
 
 fragment Person on Person {
   id
@@ -15,7 +16,7 @@ fragment Person on Person {
     title
   }
   picture {
-    url
+    ...File
   }
   actions {
     ...Action

@@ -3,12 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Zoom from '@material-ui/core/Zoom';
-import { withApollo } from 'react-apollo';
+import { withApollo, Query } from 'react-apollo';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 import WorkIcon from '@material-ui/icons/Work';
 
+import ProfileParameters from '../../../../graphql/queries/ProfileParameters.graphql';
 import VerticalTab from '../../../common/VerticalTab';
 import Form from '../../Form';
 import EditProfile from './EditProfile';
@@ -73,6 +74,7 @@ export class DumbParamters extends React.Component {
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
     const func = account && account.function;
+    const functionKey = 'function';
     return (
       <Form
         initRef={(form) => {
@@ -98,42 +100,89 @@ export class DumbParamters extends React.Component {
           <div className={classes.formTitle}>Paramètres de votre compte</div>
         ]}
       >
-        <VerticalTab
-          classes={{
-            panelRoot: classes.tabPanelRoot
+        <Query
+          notifyOnNetworkStatusChange
+          fetchPolicy="cache-and-network"
+          query={ProfileParameters}
+          variables={{
+            id: account.id
           }}
-          tabs={[
-            {
-              title: 'Profil',
-              description: 'Mise à jour de vos coordonnées, modifications des photos et images',
-              content: <EditProfile form="edit-profile" key="edit-profile" />,
-              Icon: AccountCircleIcon
-            },
-            {
-              title: 'Mot de passe',
-              description: 'Modification du mot de passe',
-              content: <EditPassword form="edit-password" key="edit-password" />,
-              Icon: VpnKeyIcon,
-              color: '#d72b3f'
-            },
-            {
-              title: 'Jeton API ',
-              description:
-                'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
-              content: <EditApiToken />,
-              Icon: SettingsInputComponentIcon,
-              color: '#ff9000'
-            },
-            {
-              title: 'Rôles',
-              description:
-                'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
-              content: <AssignRoles form="Assign-roles" key="Assign-roles" />,
-              Icon: WorkIcon,
-              color: theme.palette.success[800]
-            }
-          ]}
-        />
+        >
+          {(result) => {
+            const profile = result.data && result.data.person;
+            if (!profile) return null;
+            return (
+              <VerticalTab
+                classes={{
+                  panelRoot: classes.tabPanelRoot
+                }}
+                tabs={[
+                  {
+                    title: 'Profil',
+                    description: 'Mise à jour de vos coordonnées, modifications des photos et images',
+                    content: (
+                      <EditProfile
+                        form="edit-profile"
+                        key="edit-profile"
+                        account={profile}
+                        initialValues={{
+                          firstName: profile.firstName,
+                          lastName: profile.lastName,
+                          email: profile.email,
+                          [functionKey]: profile.function,
+                          description: profile.description,
+                          locale: profile.locale,
+                          picture: profile.picture && {
+                            id: profile.picture.id,
+                            oid: profile.picture.oid,
+                            name: profile.picture.title,
+                            size: profile.picture.size || 0,
+                            mimetype: profile.picture.mimetype,
+                            type: profile.picture.mimetype,
+                            preview: { url: profile.picture.url, type: 'image' }
+                          },
+                          coverPicture: profile.coverPicture && {
+                            id: profile.coverPicture.id,
+                            oid: profile.coverPicture.oid,
+                            name: profile.coverPicture.title,
+                            size: profile.coverPicture.size || 0,
+                            mimetype: profile.coverPicture.mimetype,
+                            type: profile.coverPicture.mimetype,
+                            preview: { url: profile.coverPicture.url, type: 'image' }
+                          }
+                        }}
+                      />
+                    ),
+                    Icon: AccountCircleIcon
+                  },
+                  {
+                    title: 'Mot de passe',
+                    description: 'Modification du mot de passe',
+                    content: <EditPassword form="edit-password" key="edit-password" account={profile} />,
+                    Icon: VpnKeyIcon,
+                    color: '#d72b3f'
+                  },
+                  {
+                    title: 'Jeton API ',
+                    description:
+                      'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
+                    content: <EditApiToken account={profile} />,
+                    Icon: SettingsInputComponentIcon,
+                    color: '#ff9000'
+                  },
+                  {
+                    title: 'Rôles',
+                    description:
+                      'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
+                    content: <AssignRoles form="Assign-roles" key="Assign-roles" account={profile} />,
+                    Icon: WorkIcon,
+                    color: theme.palette.success[800]
+                  }
+                ]}
+              />
+            );
+          }}
+        </Query>
       </Form>
     );
   }

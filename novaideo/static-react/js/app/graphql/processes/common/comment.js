@@ -89,8 +89,7 @@ export default function comment({ ownProps, mutate }) {
               picture:
                 !anonymous && account.picture
                   ? {
-                    __typename: 'File',
-                    url: account.picture.url
+                    ...account.picture
                   }
                   : null
             },

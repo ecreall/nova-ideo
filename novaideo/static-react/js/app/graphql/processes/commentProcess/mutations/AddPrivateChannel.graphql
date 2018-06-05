@@ -11,7 +11,9 @@ mutation AddPrivateChannel($context: String!) {
           id
           oid
           picture {
+            id
             url
+            variations
           }
         }
       }

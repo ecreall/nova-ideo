@@ -18,7 +18,9 @@ query AllChannels($first: Int!, $after: String!, $filter: String!) {
           }
           ... on Person {
             picture {
+              id
               url
+              variations
             }
           }
         }

@@ -36,7 +36,9 @@ query Comments(
         }
         ... on Person {
           picture {
+            id
             url
+            variations
           }
         }
         ... on Idea {
@@ -46,7 +48,9 @@ query Comments(
             title
             isAnonymous
             picture {
+              id
               url
+              variations
             }
           }
         }

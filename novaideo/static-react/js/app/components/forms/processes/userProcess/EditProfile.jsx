@@ -13,8 +13,8 @@ import Alert from '../../../common/Alert';
 import Button from '../../../styledComponents/Button';
 import { asyncValidateLogin } from '../../../../utils/user';
 import { LOGIN_VIEWS } from './Login';
-import { registration } from '../../../../graphql/processes/userProcess';
-import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
+import { editProfile } from '../../../../graphql/processes/userProcess';
+import EditProfileMutation from '../../../../graphql/processes/userProcess/mutations/EditProfile.graphql';
 import { LANGUAGES_TITLES } from '../../../../constants';
 
 const styles = {
@@ -49,15 +49,26 @@ export class DumbEditProfile extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { formData, valid } = this.props;
+    const { formData, valid, account } = this.props;
     if (valid) {
+      const picture = formData.values.picture;
+      const coverPicture = formData.values.coverPicture;
+      const oldPicture = picture && picture.oid;
+      const oldCoverPicture = coverPicture && coverPicture.oid;
       this.setState({ loading: true }, () => {
         this.props
-          .registration({
+          .editProfile({
+            context: account,
             firstName: formData.values.firstName,
             lastName: formData.values.lastName,
+            description: formData.values.description,
+            userFunction: formData.values.function,
             email: formData.values.email,
-            password: formData.values.password
+            locale: formData.values.locale,
+            picture: picture,
+            oldPicture: oldPicture,
+            coverPicture: coverPicture,
+            oldCoverPicture: oldCoverPicture
           })
           .then(() => {
             this.setState({ submitted: true }, this.initializeForm);
@@ -178,7 +189,7 @@ export class DumbEditProfile extends React.Component {
                     label: 'Photo de profil',
                     helper: 'Changer votre photo de profil'
                   }}
-                  name="image"
+                  name="picture"
                   component={renderImageField}
                   onChange={() => {}}
                 />
@@ -189,7 +200,7 @@ export class DumbEditProfile extends React.Component {
                     label: 'Image de couverture',
                     helper: 'Changer votre image de couverture'
                   }}
-                  name="test"
+                  name="coverPicture"
                   component={renderImageField}
                   onChange={() => {}}
                 />
@@ -252,10 +263,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const EditProfileReduxFormWithMutation = graphql(Registration, {
+const EditProfileReduxFormWithMutation = graphql(EditProfileMutation, {
   props: function (props) {
     return {
-      registration: registration(props)
+      editProfile: editProfile(props)
     };
   }
 })(EditProfileReduxForm);

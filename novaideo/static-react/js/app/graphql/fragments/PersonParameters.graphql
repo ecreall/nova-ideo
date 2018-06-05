@@ -1,0 +1,20 @@
+#import "./File.graphql"
+
+fragment PersonParameters on Person {
+  id
+  oid
+  title
+  createdAt
+  firstName
+  lastName
+  description
+  function
+  locale
+  email
+  picture {
+    ...File
+  }
+  coverPicture {
+    ...File
+  }
+}

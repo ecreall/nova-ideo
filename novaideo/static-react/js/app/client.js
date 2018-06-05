@@ -77,7 +77,7 @@ export default function getApolloClient(store) {
     fetch: customFetch
   });
 
-  // use the instane url
+  // use the url_metadata ws url
   const customFetchURLMetadta = (uri, options) => {
     return fetch(`${urlMetadataWebServiceUrl}/graphql`, options);
   };

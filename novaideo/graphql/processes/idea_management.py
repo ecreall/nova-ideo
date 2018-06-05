@@ -6,7 +6,9 @@ from pontus.schema import select
 
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 from novaideo.content.comment import Comment
-from ..util import get_context, get_action, get_execution_data
+from ..util import (
+    get_context, get_action, get_execution_data,
+    get_current_request, extract_files)
 from . import Upload
 from novaideo import _, log
 
@@ -38,6 +40,7 @@ class CreateIdea(graphene.Mutation):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
+        request = get_current_request()
         old_files = []
         context_oid = args.pop('context')
         for of in args.pop('old_files'):
@@ -47,19 +50,8 @@ class CreateIdea(graphene.Mutation):
                 log.warning(e)
                 continue
 
-        attached_files = args.pop('attached_files', None)
-        uploaded_files = []
-        if attached_files:
-            for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(str(index))
-                fp = file_storage.file
-                fp.seek(0)
-                uploaded_files.append({
-                    'fp': fp,
-                    'filename': urllib.parse.unquote(file_storage.filename)})
-
         old_files = [f.copy() for f in old_files]
-        args['attached_files'] = uploaded_files
+        args['attached_files'] = extract_files('attached_files', request)
         args = idea_schema.deserialize(args)
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]
@@ -105,6 +97,7 @@ class EditIdea(graphene.Mutation):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
         args = dict(args)
+        request = get_current_request()
         context_oid = args.pop('context')
         old_files = []
         for of in args.pop('old_files'):
@@ -114,19 +107,7 @@ class EditIdea(graphene.Mutation):
                 log.warning(e)
                 continue
 
-        attached_files = args.pop('attached_files', None)
-        uploaded_files = []
-        if attached_files:
-            for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(str(index))
-                fp = file_storage.file
-                fp.seek(0)
-                uploaded_files.append({
-                    'fp': fp,
-                    'filename': urllib.parse.unquote(file_storage.filename)})
-
-        # old_files = [get_obj(f) for f in old_files]
-        args['attached_files'] = uploaded_files
+        args['attached_files'] = extract_files('attached_files', request)
         args = idea_schema.deserialize(args)
         args['attached_files'].extend([{'_object_data': f} for f in old_files])
         args['context'] = context_oid
@@ -170,6 +151,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files', 'anonymous'])
         args = dict(args)
+        request = get_current_request()
         old_files = []
         context_oid = args.pop('context')
         for of in args.pop('old_files'):
@@ -179,19 +161,8 @@ class CreateAndPublishIdea(graphene.Mutation):
                 log.warning(e)
                 continue
 
-        attached_files = args.pop('attached_files', None)
-        uploaded_files = []
-        if attached_files:
-            for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(str(index))
-                fp = file_storage.file
-                fp.seek(0)
-                uploaded_files.append({
-                    'fp': fp,
-                    'filename': urllib.parse.unquote(file_storage.filename)})
-
         old_files = [f.copy() for f in old_files]
-        args['attached_files'] = uploaded_files
+        args['attached_files'] = extract_files('attached_files', request)
         args = idea_schema.deserialize(args)
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]

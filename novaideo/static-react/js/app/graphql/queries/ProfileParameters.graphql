@@ -1,0 +1,7 @@
+#import "../fragments/PersonParameters.graphql"
+
+query ProfileParameters($id: ID!) {
+  person: node(id: $id) {
+    ...PersonParameters
+  }
+}

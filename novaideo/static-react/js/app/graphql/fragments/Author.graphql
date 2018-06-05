@@ -6,6 +6,7 @@ fragment Author on Person {
   function
   isAnonymous
   picture {
+    id
     url
   }
 }

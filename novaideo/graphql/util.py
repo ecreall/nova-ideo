@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import graphene
+import json
+import urllib
 from pyramid.threadlocal import get_current_request
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 from hypatia.interfaces import STABLE
@@ -221,3 +223,38 @@ def connection_for_type(_type):
             return getattr(self.iterable, 'total_count', len(self.iterable))
 
     return Connection
+
+
+def extract_files(key, request):
+    """
+    the Upload object type deserialization currently doesn't work,
+    it fails silently, so we actually get a list of None.
+    So if we uploaded 3 files, we get files = [None, None, None]
+    We retrieve the files with the hard coded
+    variables.attachedFiles.{0,1,2} below.
+    This code will not work if batched mode is
+    implemented in graphql-wsgi and batched mode is enabled on apollo.
+    """
+    results = []
+    if request.POST:
+        key_items = key.split('_')
+        if len(key_items) == 1:
+            cc_key = key
+        else:
+            cc_key = key_items[0]+"".join([e.capitalize() for e in key_items[1:]])
+
+        files_map = request.POST.get('map')
+        if files_map:
+            map_values = list(json.loads(files_map).values())
+            file_id = "variables.{key}.".format(key=cc_key)
+            files_keys = [file_key for files in map_values for file_key in files]
+            files_keys = [f for f in files_keys if f.startswith(file_id)]
+            file_storages = [request.POST.get(fk.split('.')[2]) for fk in files_keys]
+            for file_storage in file_storages:
+                fp = file_storage.file
+                fp.seek(0)
+                results.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
+
+    return results

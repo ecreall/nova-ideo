@@ -92,8 +92,7 @@ export default function createAndPublish({ ownProps, mutate }) {
               picture:
                 !anonymous && account.picture
                   ? {
-                    __typename: 'File',
-                    url: account.picture.url
+                    ...account.picture
                   }
                   : null
             },

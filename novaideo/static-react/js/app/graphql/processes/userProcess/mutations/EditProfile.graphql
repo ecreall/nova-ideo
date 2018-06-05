@@ -1,0 +1,34 @@
+#import "../../../fragments/PersonParameters.graphql"
+
+mutation EditProfile(
+  $context: String!
+  $firstName: String!
+  $lastName: String!
+  $description: String!
+  $function: String!
+  $email: String!
+  $locale: String!
+  $oldPicture: String
+  $oldCoverPicture: String
+  $picture: [Upload]
+  $coverPicture: [Upload]
+) {
+  editProfile(
+    context: $context
+    firstName: $firstName
+    lastName: $lastName
+    description: $description
+    function: $function
+    email: $email
+    locale: $locale
+    oldPicture: $oldPicture
+    oldCover: $oldCoverPicture
+    picture: $picture
+    coverPicture: $coverPicture
+  ) {
+    status
+    profile {
+      ...PersonParameters
+    }
+  }
+}

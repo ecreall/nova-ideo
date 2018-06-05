@@ -12,7 +12,9 @@ query Account {
       title
     }
     picture {
+      id
       url
+      variations
     }
   }
 }

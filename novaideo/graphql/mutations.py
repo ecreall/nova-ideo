@@ -7,7 +7,7 @@ from .processes.idea_management import (
 from .processes.comment_management import (
     CommentObject, MarkCommentsAsRead, DeleteComment,
     Pin, Unpin, Edit, AddPrivateChannel)
-from .processes.user_management import Registration, ConfirmRegistration
+from .processes.user_management import Registration, ConfirmRegistration, EditProfile
 
 class Mutations(graphene.ObjectType):
     # abstract process
@@ -34,3 +34,4 @@ class Mutations(graphene.ObjectType):
     # user management
     registration = Registration.Field()
     confirm_registration = ConfirmRegistration.Field()
+    edit_profile = EditProfile.Field()

@@ -1,0 +1,6 @@
+mutation EditApiToken($context: String!) {
+  editApiToken(context: $context) {
+    status
+    token
+  }
+}

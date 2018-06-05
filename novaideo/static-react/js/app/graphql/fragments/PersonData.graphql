@@ -1,4 +1,5 @@
 #import "./Action.graphql"
+#import "./File.graphql"
 
 fragment PersonData on Person {
   id
@@ -17,10 +18,10 @@ fragment PersonData on Person {
     isDiscuss
   }
   picture {
-    url
+    ...File
   }
   coverPicture {
-    url
+    ...File
   }
   actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
     ...Action

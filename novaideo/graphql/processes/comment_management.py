@@ -7,7 +7,9 @@ from dace.util import get_obj
 from pontus.schema import select
 
 from novaideo.content.comment import Comment as CommentClass, CommentSchema
-from ..util import get_context, get_action, get_execution_data
+from ..util import (
+    get_context, get_action, get_execution_data,
+    get_current_request, extract_files)
 from . import Upload
 from novaideo import _, log
 from novaideo.core import PrivateChannel
@@ -70,20 +72,10 @@ class CommentObject(graphene.Mutation):
         comment_schema = select(
             CommentSchema(), ['comment', 'files', 'anonymous'])
         args = dict(args)
+        request = get_current_request()
         action_id = args.pop('action')
         context_oid = args.pop('context')
-        attached_files = args.pop('attached_files', None)
-        uploaded_files = []
-        if attached_files:
-            for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(str(index))
-                fp = file_storage.file
-                fp.seek(0)
-                uploaded_files.append({
-                    'fp': fp,
-                    'filename': urllib.parse.unquote(file_storage.filename)})
-
-        args['files'] = uploaded_files
+        args['files'] = extract_files('attached_files', request)
         args = comment_schema.deserialize(args)
         args['files'] = [f['_object_data']
                                   for f in args['files']]
@@ -231,6 +223,7 @@ class Edit(graphene.Mutation):
         comment_schema = select(
             CommentSchema(), ['comment', 'files'])
         args = dict(args)
+        request = get_current_request()
         old_files = []
         context_oid = args.pop('context')
         for of in args.pop('old_files'):
@@ -240,19 +233,7 @@ class Edit(graphene.Mutation):
                 log.warning(e)
                 continue
 
-        attached_files = args.pop('attached_files', None)
-        uploaded_files = []
-        if attached_files:
-            for index, file_ in enumerate(attached_files):
-                file_storage = context.POST.get(str(index))
-                fp = file_storage.file
-                fp.seek(0)
-                uploaded_files.append({
-                    'fp': fp,
-                    'filename': urllib.parse.unquote(file_storage.filename)})
-        
-        # old_files = [get_obj(f) for f in old_files]
-        args['files'] = uploaded_files
+        args['files'] = extract_files('attached_files', request)
         args = comment_schema.deserialize(args)
         args['files'] = [f['_object_data']
                                   for f in args['files']]

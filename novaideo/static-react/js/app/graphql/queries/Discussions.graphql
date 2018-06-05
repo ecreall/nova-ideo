@@ -17,7 +17,9 @@ query Discussions($first: Int!, $after: String!) {
               id
               oid
               picture {
+                id
                 url
+                variations
               }
             }
           }

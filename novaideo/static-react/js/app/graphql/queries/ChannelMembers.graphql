@@ -16,7 +16,9 @@ query ChannelMembers($first: Int!, $after: String!, $filter: String!, $id: ID!) 
               oid
               title
               picture {
+                id
                 url
+                variations
               }
             }
           }

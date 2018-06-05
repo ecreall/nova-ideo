@@ -151,21 +151,41 @@ class Edit(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct.get('organization', None)
-        changepassword = appstruct['change_password']['changepassword']
-        current_user_password = appstruct['change_password']['currentuserpassword']
-        user = get_current()
-        user_password = getattr(user, 'password', None)
-        if changepassword and \
-           (not user_password or user.check_password(current_user_password)):
-            password = appstruct['change_password']['password']
-            context.set_password(password)
-
         root = getSite()
         root.merge_keywords(context.keywords)
         context.set_title()
         context.set_organization(organization)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class EditPassword(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-settings'
+    style_order = 1
+    tags = ['primary', 'menu', 'main-menu']
+    title = _('Edit password')
+    submission_title = _('Save')
+    context = IPerson
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        current_user_password = appstruct['current_password']
+        user = get_current()
+        user_password = getattr(user, 'password', None)
+        if not user_password or user.check_password(current_user_password):
+            password = appstruct['password']
+            context.set_password(password)
+            context.reindex()
+
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 

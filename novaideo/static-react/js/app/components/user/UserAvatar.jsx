@@ -33,7 +33,8 @@ export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl
   } else if (title && !picture) {
     content = initalsGenerator(title);
   }
-  const urlAddon = !strictUrl ? '/profil' : '';
+  const hasProfile = picture && picture.variations && picture.variations.includes('profil');
+  const urlAddon = !strictUrl && hasProfile ? '/profil' : '';
   return (
     <Avatar
       className={classNames({

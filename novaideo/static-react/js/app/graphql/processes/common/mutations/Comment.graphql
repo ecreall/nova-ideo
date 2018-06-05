@@ -30,7 +30,9 @@ mutation Comment(
             }
             ... on Person {
               picture {
+                id
                 url
+                variations
               }
             }
           }
