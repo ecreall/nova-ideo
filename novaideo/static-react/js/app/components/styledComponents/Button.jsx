@@ -28,6 +28,9 @@ const StyledButton = glamorous(Button)((props) => {
       color: background,
       border: `solid 1px ${background}`,
       boxShadow: '0 1px 2px 1px rgba(128, 128, 128, 0.4)'
+    },
+    '&:disabled': {
+      backgroundColor: '#dadada'
     }
   };
 });

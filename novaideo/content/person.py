@@ -201,8 +201,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         )
 
     cover_picture = colander.SchemaNode(
-        ObjectData(File),
-        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
+        ObjectData(Image),
+        widget=picture_widget,
         title=_('Cover picture'),
         missing=None,
         description=_("Only PNG and SVG files are supported."),

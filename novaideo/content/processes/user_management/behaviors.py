@@ -152,7 +152,7 @@ class Edit(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         organization = appstruct.get('organization', None)
         root = getSite()
-        root.merge_keywords(context.keywords)
+        # root.merge_keywords(context.keywords)
         context.set_title()
         context.set_organization(organization)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
@@ -169,7 +169,7 @@ class EditPassword(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-settings'
     style_order = 1
-    tags = ['primary', 'menu', 'main-menu']
+    tags = ['secondary']
     title = _('Edit password')
     submission_title = _('Save')
     context = IPerson
@@ -181,16 +181,18 @@ class EditPassword(InfiniteCardinality):
         current_user_password = appstruct['current_password']
         user = get_current()
         user_password = getattr(user, 'password', None)
+        edited = False
         if not user_password or user.check_password(current_user_password):
             password = appstruct['password']
             context.set_password(password)
             context.reindex()
+            edited = True
 
         request.registry.notify(ActivityExecuted(self, [context], user))
-        return {}
+        return {'edited': edited}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return kw
 
 
 class GetAPIToken(InfiniteCardinality):

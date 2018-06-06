@@ -7,9 +7,11 @@ import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import { renderTextInput, renderImageField, renderSelectField } from '../../utils';
 import Alert from '../../../common/Alert';
+import SnackbarContent from '../../../common/SnackbarContent';
 import Button from '../../../styledComponents/Button';
 import { asyncValidateLogin } from '../../../../utils/user';
 import { LOGIN_VIEWS } from './Login';
@@ -22,11 +24,9 @@ const styles = {
     padding: 15
   },
   buttonFooter: {
-    width: '50%',
-    minHeight: 45,
-    fontSize: 18,
-    fontWeight: 900,
-    marginTop: 15,
+    minHeight: 35,
+    fontSize: 17,
+    marginTop: '15px !important',
     float: 'right'
   },
   titleRoot: {
@@ -44,7 +44,8 @@ const styles = {
 export class DumbEditProfile extends React.Component {
   state = {
     loading: false,
-    submitted: false
+    success: false,
+    error: false
   };
 
   handleSubmit = (event) => {
@@ -70,155 +71,187 @@ export class DumbEditProfile extends React.Component {
             coverPicture: coverPicture,
             oldCoverPicture: oldCoverPicture
           })
-          .then(() => {
-            this.setState({ submitted: true }, this.initializeForm);
+          .then((value) => {
+            this.setState({ loading: false, success: true, error: false }, this.initializeForm);
+          })
+          .catch(() => {
+            this.setState({ loading: false, success: false, error: true });
           });
       });
     }
   };
 
   initializeForm = () => {
-    const { form } = this.props;
-    this.props.dispatch(initialize(form));
+    const { form, account } = this.props;
+    this.props.reset();
+    const functionKey = 'function';
+    this.props.dispatch(
+      initialize(form, {
+        firstName: account.firstName,
+        lastName: account.lastName,
+        description: account.description,
+        [functionKey]: account.function,
+        email: account.email,
+        locale: account.locale,
+        picture: account.picture && {
+          id: account.picture.id,
+          oid: account.picture.oid,
+          name: account.picture.title,
+          size: account.picture.size || 0,
+          mimetype: account.picture.mimetype,
+          type: account.picture.mimetype,
+          preview: { url: account.picture.url, type: 'image' }
+        },
+        coverPicture: account.coverPicture && {
+          id: account.coverPicture.id,
+          oid: account.coverPicture.oid,
+          name: account.coverPicture.title,
+          size: account.coverPicture.size || 0,
+          mimetype: account.coverPicture.mimetype,
+          type: account.coverPicture.mimetype,
+          preview: { url: account.coverPicture.url, type: 'image' }
+        }
+      })
+    );
   };
 
-  goToLogin = () => {
-    const { switchView } = this.props;
-    switchView(LOGIN_VIEWS.login);
+  handleSnackbarClose = () => {
+    this.setState({ success: false, error: false });
   };
 
   render() {
-    const {
-      formData,
-      ction,
-      globalProps: { site },
-      classes,
-      theme
-    } = this.props;
-    const { loading, error, submitted } = this.state;
-    return [
-      error && (
-        <Alert type="danger" classes={{ container: classes.alertContainer }}>
-          {I18n.t('common.failedLogin')}
-        </Alert>
-      ),
+    const { formData, classes, valid, theme } = this.props;
+    const { loading, error, success } = this.state;
+    return (
       <Form className={classes.form} onSubmit={this.handleSubmit}>
-        {submitted ? (
-          <div>{I18n.t('forms.singin.confirmationSent')}</div>
-        ) : (
-          <div>
-            <Field
-              props={{
-                placeholder: I18n.t('forms.singin.firstName'),
-                label: I18n.t('forms.singin.firstName'),
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="firstName"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: I18n.t('forms.singin.lastName'),
-                label: I18n.t('forms.singin.lastName'),
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="lastName"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: 'Description',
-                label: 'Description',
-                multiline: true,
-                optional: true,
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="description"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: 'Fonction',
-                label: 'Fonction',
-                optional: true,
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="function"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: I18n.t('forms.singin.email'),
-                label: 'Email',
-                type: 'email',
-                classes: {
-                  root: classes.titleRoot
-                },
-                autoFocus: true
-              }}
-              name="email"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.singin.firstName'),
+            label: I18n.t('forms.singin.firstName'),
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="firstName"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.singin.lastName'),
+            label: I18n.t('forms.singin.lastName'),
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="lastName"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: 'Description',
+            label: 'Description',
+            multiline: true,
+            optional: true,
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="description"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: 'Fonction',
+            label: 'Fonction',
+            optional: true,
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="function"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.singin.email'),
+            label: 'Email',
+            type: 'email',
+            classes: {
+              root: classes.titleRoot
+            },
+            autoFocus: true
+          }}
+          name="email"
+          component={renderTextInput}
+        />
 
+        <Field
+          props={{
+            label: 'Langue',
+            options: LANGUAGES_TITLES
+          }}
+          name="locale"
+          component={renderSelectField}
+        />
+
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={6}>
             <Field
               props={{
-                label: 'Langue',
-                options: LANGUAGES_TITLES
+                label: 'Photo de profil',
+                helper: 'Changer votre photo de profil'
               }}
-              name="locale"
-              component={renderSelectField}
+              name="picture"
+              component={renderImageField}
             />
-
-            <Grid container spacing={16}>
-              <Grid item xs={12} md={6}>
-                <Field
-                  props={{
-                    label: 'Photo de profil',
-                    helper: 'Changer votre photo de profil'
-                  }}
-                  name="picture"
-                  component={renderImageField}
-                  onChange={() => {}}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Field
-                  props={{
-                    label: 'Image de couverture',
-                    helper: 'Changer votre image de couverture'
-                  }}
-                  name="coverPicture"
-                  component={renderImageField}
-                  onChange={() => {}}
-                />
-              </Grid>
-            </Grid>
-            {loading ? (
-              <div className={classes.loading}>
-                <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
-              </div>
-            ) : (
-              <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-                Enregistrer
-              </Button>
-            )}
-          </div>
-        )}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field
+              props={{
+                label: 'Image de couverture',
+                helper: 'Changer votre image de couverture'
+              }}
+              name="coverPicture"
+              component={renderImageField}
+            />
+          </Grid>
+        </Grid>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={success}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent
+            onClose={this.handleSnackbarClose}
+            variant="success"
+            message={I18n.t('forms.editProfile.confirmation')}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={error}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent onClose={this.handleSnackbarClose} variant="error" message={I18n.t('forms.editProfile.error')} />
+        </Snackbar>
+        <div className={classes.loading}>
+          {loading ? (
+            <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+          ) : (
+            <Button
+              type="submit"
+              background={theme.palette.success[800]}
+              className={classes.buttonFooter}
+              disabled={this.props.pristine || !valid}
+            >
+              {I18n.t('forms.editProfile.save')}
+            </Button>
+          )}
+        </div>
       </Form>
-    ];
+    );
   }
 }
 
@@ -258,8 +291,7 @@ const EditProfileReduxForm = reduxForm({
 
 const mapStateToProps = (state, props) => {
   return {
-    formData: state.form[props.form],
-    globalProps: state.globalProps
+    formData: state.form[props.form]
   };
 };
 

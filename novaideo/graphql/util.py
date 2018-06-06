@@ -245,11 +245,11 @@ def extract_files(key, request):
 
         files_map = request.POST.get('map')
         if files_map:
-            map_values = list(json.loads(files_map).values())
+            map_values = list(json.loads(files_map).items())
             file_id = "variables.{key}.".format(key=cc_key)
-            files_keys = [file_key for files in map_values for file_key in files]
-            files_keys = [f for f in files_keys if f.startswith(file_id)]
-            file_storages = [request.POST.get(fk.split('.')[2]) for fk in files_keys]
+            files_keys = [(index, file_key) for index, files in map_values for file_key in files]
+            files_keys = [(index, f) for index, f in files_keys if f.startswith(file_id)]
+            file_storages = [request.POST.get(index) for index, fk in files_keys]
             for file_storage in file_storages:
                 fp = file_storage.file
                 fp.seek(0)

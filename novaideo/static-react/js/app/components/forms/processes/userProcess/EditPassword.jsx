@@ -6,13 +6,15 @@ import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import { renderTextInput } from '../../utils';
 import Alert from '../../../common/Alert';
+import SnackbarContent from '../../../common/SnackbarContent';
 import Button from '../../../styledComponents/Button';
 import { LOGIN_VIEWS } from './Login';
-import { registration } from '../../../../graphql/processes/userProcess';
-import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
+import { editPassword } from '../../../../graphql/processes/userProcess';
+import EditPassword from '../../../../graphql/processes/userProcess/mutations/EditPassword.graphql';
 
 const styles = {
   form: {
@@ -41,23 +43,27 @@ const styles = {
 export class DumbEditPassword extends React.Component {
   state = {
     loading: false,
-    submitted: false
+    success: false,
+    error: false
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { formData, valid } = this.props;
+    const { formData, valid, account } = this.props;
     if (valid) {
       this.setState({ loading: true }, () => {
         this.props
-          .registration({
-            firstName: formData.values.firstName,
-            lastName: formData.values.lastName,
-            email: formData.values.email,
+          .editPassword({
+            context: account,
+            currentPassword: formData.values.currentPassword,
             password: formData.values.password
           })
-          .then(() => {
-            this.setState({ submitted: true }, this.initializeForm);
+          .then((value) => {
+            const edited = value.data.editPassword.status;
+            this.setState({ loading: false, success: edited, error: !edited }, edited ? this.initializeForm : undefined);
+          })
+          .catch(() => {
+            this.setState({ loading: false, success: false, error: true });
           });
       });
     }
@@ -68,90 +74,98 @@ export class DumbEditPassword extends React.Component {
     this.props.dispatch(initialize(form));
   };
 
-  goToLogin = () => {
-    const { switchView } = this.props;
-    switchView(LOGIN_VIEWS.login);
+  handleSnackbarClose = () => {
+    this.setState({ success: false, error: false });
   };
 
   render() {
-    const {
-      action,
-      globalProps: { site },
-      classes,
-      theme
-    } = this.props;
-    const { loading, error, submitted } = this.state;
-    return [
-      error && (
-        <Alert type="danger" classes={{ container: classes.alertContainer }}>
-          {I18n.t('common.failedLogin')}
-        </Alert>
-      ),
+    const { action, classes, valid, theme } = this.props;
+    const { loading, error, success } = this.state;
+    return (
       <Form className={classes.form} onSubmit={this.handleSubmit}>
-        {submitted ? (
-          <div>{I18n.t('forms.singin.confirmationSent')}</div>
-        ) : (
-          <div>
-            <Field
-              props={{
-                placeholder: 'Current password',
-                label: 'Current password',
-                type: 'password',
-                autoComplete: 'current-password',
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="currentPassword"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: I18n.t('forms.singin.password'),
-                label: 'New password',
-                type: 'password',
-                autoComplete: 'current-password',
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="password"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            <Field
-              props={{
-                placeholder: I18n.t('forms.singin.passwordConfirmation'),
-                type: 'password',
-                autoComplete: 'current-password',
-                classes: {
-                  root: classes.titleRoot
-                }
-              }}
-              name="confirmPassword"
-              component={renderTextInput}
-              onChange={() => {}}
-            />
-            {loading ? (
-              <div className={classes.loading}>
-                <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
-              </div>
-            ) : (
-              <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-                Enregistrer
-              </Button>
-            )}
-          </div>
-        )}
+        <Field
+          props={{
+            placeholder: 'Current password',
+            label: 'Current password',
+            type: 'password',
+            autoComplete: 'current-password',
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="currentPassword"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.singin.password'),
+            label: 'New password',
+            type: 'password',
+            autoComplete: 'current-password',
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="password"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.singin.passwordConfirmation'),
+            type: 'password',
+            autoComplete: 'current-password',
+            classes: {
+              root: classes.titleRoot
+            }
+          }}
+          name="confirmPassword"
+          component={renderTextInput}
+        />
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={success}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent
+            onClose={this.handleSnackbarClose}
+            variant="success"
+            message={I18n.t('forms.editPassword.confirmation')}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={error}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent onClose={this.handleSnackbarClose} variant="error" message={I18n.t('forms.editPassword.error')} />
+        </Snackbar>
+        <div className={classes.loading}>
+          {loading ? (
+            <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+          ) : (
+            <Button
+              type="submit"
+              background={theme.palette.success[800]}
+              className={classes.buttonFooter}
+              disabled={this.props.pristine || !valid}
+            >
+              {I18n.t('forms.editPassword.save')}
+            </Button>
+          )}
+        </div>
       </Form>
-    ];
+    );
   }
 }
 
 const validate = (values) => {
   const errors = {};
   const requiredMessage = I18n.t('forms.required');
+  if (!values.currentPassword) {
+    errors.currentPassword = requiredMessage;
+  }
   if (!values.password) {
     errors.password = requiredMessage;
   } else if (!values.confirmPassword) {
@@ -171,15 +185,14 @@ const EditPasswordReduxForm = reduxForm({
 
 const mapStateToProps = (state, props) => {
   return {
-    formData: state.form[props.form],
-    globalProps: state.globalProps
+    formData: state.form[props.form]
   };
 };
 
-const EditPasswordReduxFormWithMutation = graphql(Registration, {
+const EditPasswordReduxFormWithMutation = graphql(EditPassword, {
   props: function (props) {
     return {
-      registration: registration(props)
+      editPassword: editPassword(props)
     };
   }
 })(EditPasswordReduxForm);

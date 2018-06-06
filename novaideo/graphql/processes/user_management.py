@@ -5,7 +5,7 @@ from dace.util import getSite, get_obj
 from pontus.schema import select
 
 from novaideo.content.person import Preregistration, PersonSchema
-from ..util import get_context, get_current_request, get_action, extract_files
+from ..util import get_context, get_current_request, get_action, extract_files, get_execution_data
 from novaideo import _
 from . import Upload
 
@@ -139,3 +139,35 @@ class EditProfile(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return EditProfile(profile=context, status=status)
+
+
+class EditPassword(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        current_password = graphene.String()
+        password = graphene.String()
+
+    status = graphene.Boolean()
+    action_id = 'usermanagement.edit_password'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        person_schema = select(
+            PersonSchema(), ['password'])
+        context_oid = args.pop('context')
+        current_password = args.pop('current_password')
+        args = person_schema.deserialize(dict(args))
+        args['context'] = context_oid
+        args['current_password'] = current_password
+        context, request, action, args = get_execution_data(
+            EditPassword.action_id, args)
+        status = False
+        if action:
+            result = action.execute(context, request, args)
+            status = result.get('edited', False)
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return EditPassword(status=status)

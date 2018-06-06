@@ -123,8 +123,8 @@ export class DumbChannelItem extends React.PureComponent {
     const { classes, node, itemProps, currentMessage } = this.props;
     const channelPicture = node.subject.picture;
     const editor = currentMessage && currentMessage.values && currentMessage.values.comment;
-    const hasMessage = editor && convertFromRaw(editor).getPlainText();
-    if (!isSelected && hasMessage) {
+    const hasMessage = !isSelected && editor && convertFromRaw(editor).getPlainText();
+    if (hasMessage) {
       return (
         <ListItemIcon>
           <CreateIcon

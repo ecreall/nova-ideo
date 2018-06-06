@@ -9,7 +9,7 @@ mutation EditProfile(
   $email: String!
   $locale: String!
   $oldPicture: String
-  $oldCoverPicture: String
+  $oldCover: String
   $picture: [Upload]
   $coverPicture: [Upload]
 ) {
@@ -22,7 +22,7 @@ mutation EditProfile(
     email: $email
     locale: $locale
     oldPicture: $oldPicture
-    oldCover: $oldCoverPicture
+    oldCover: $oldCover
     picture: $picture
     coverPicture: $coverPicture
   ) {

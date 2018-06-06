@@ -261,6 +261,17 @@ const Translations = {
         accountCreated: "Votre compte a été créé",
         confirmationSent:
           "Un e-mail de confirmation a été envoyé à votre compte et devrait apparaître dans votre boîte de réception dans quelques minutes. Il contient un lien de confirmation, veuillez cliquer dessus pour confirmer votre adresse e-mail. Vérifiez votre dossier spam si vous n'avez pas reçu d'e-mail de confirmation."
+      },
+      editProfile: {
+        save: "Enregistrer mes données",
+        confirmation: "Vos données de profile ont bien été enregistrées",
+        error: "Une erreur est survenue! Les données de votre profil n'ont pas été enregistrées"
+      },
+      editPassword: {
+        save: "Modifier mon mot de passe",
+        confirmation: "Votre mot de passe a été modifié",
+        error:
+          "Une erreur est survenue! Vos données de mot de passe n'ont pas été modifiées. Veuillez vérifier votre mot de passe"
       }
     },
     evaluation: {
@@ -568,6 +579,16 @@ const Translations = {
         accountCreated: "Your account has been created",
         confirmationSent:
           "A confirmation e-mail has been sent to your account and should be in your inbox in a few minutes. It contains a confirmation link, please click on it in order to confirm your e-mail address. Check your spam folder if you did not receive a confirmation e-mail."
+      },
+      editProfile: {
+        save: "Save my data",
+        confirmation: "Your profile data has been saved",
+        error: "An error has occurred! Your profile data has not been saved"
+      },
+      editPassword: {
+        save: "Edit my password",
+        confirmation: "Your password has been edited",
+        error: "An error has occurred! Your password data has not been edited. Please check your password"
       }
     },
     evaluation: {

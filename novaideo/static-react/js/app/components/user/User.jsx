@@ -205,7 +205,8 @@ const styles = (theme) => {
     },
     menuContainer: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginBottom: 10
     },
     actionsContainer: {
       height: 45,
@@ -405,22 +406,22 @@ export class DumbUser extends React.Component {
                               }}
                             </VisibilitySensor>
                             {!isAnonymous && <div className={classes.headerAddOn}>{person.function}</div>}
-                            <div className={classes.menuContainer}>
-                              {communicationActions.length > 0 ? (
-                                <AllignedActions
-                                  type="button"
-                                  actions={communicationActions}
-                                  onActionClick={processManager.execute}
-                                  overlayPosition="bottom"
-                                  classes={{
-                                    actionsContainer: classes.actionsContainer,
-                                    actionsText: classes.actionsText,
-                                    actionsIcon: classes.actionsIcon
-                                  }}
-                                />
-                              ) : null}
-                              <UserMenu open user={person} onActionClick={processManager.execute} />
-                            </div>
+                          </div>
+                          <div className={classes.menuContainer}>
+                            {communicationActions.length > 0 ? (
+                              <AllignedActions
+                                type="button"
+                                actions={communicationActions}
+                                onActionClick={processManager.execute}
+                                overlayPosition="bottom"
+                                classes={{
+                                  actionsContainer: classes.actionsContainer,
+                                  actionsText: classes.actionsText,
+                                  actionsIcon: classes.actionsIcon
+                                }}
+                              />
+                            ) : null}
+                            <UserMenu open user={person} onActionClick={processManager.execute} />
                           </div>
                           <CollapsibleText className={classes.text} text={person.description} textLen={150} />
                           <UserData person={person} classes={classes} />

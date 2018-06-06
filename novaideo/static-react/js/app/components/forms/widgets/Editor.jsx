@@ -97,9 +97,7 @@ class TextEditor extends React.Component {
     const textWithEntity = Modifier.insertText(currentContent, selection, text, null, null);
     let newEditorState = EditorState.push(editorState, textWithEntity, 'insert-characters');
     newEditorState = this.endFocus(newEditorState);
-    this.setState({ editorState: newEditorState }, () => {
-      this.props.onChange(this.state.editorState);
-    });
+    this.onChange(newEditorState);
   };
 
   getPlainText = () => {

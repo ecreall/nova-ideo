@@ -36,7 +36,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     margin: '0 10px',
-    position: 'relative'
+    position: 'relative',
+    alignItems: 'start'
   },
   headerTitle: {
     fontSize: 15,
@@ -48,7 +49,8 @@ const styles = {
   headerAddOn: {
     color: '#999999ff',
     fontSize: 12,
-    lineHeight: 'normal'
+    lineHeight: 'normal',
+    fontWeight: 700
   },
   titleContainer: {
     display: 'flex'
@@ -122,8 +124,8 @@ export class DumbParamters extends React.Component {
                     description: 'Mise à jour de vos coordonnées, modifications des photos et images',
                     content: (
                       <EditProfile
-                        form="edit-profile"
-                        key="edit-profile"
+                        form={`edit-profile${account.id}`}
+                        key={`edit-profile${account.id}`}
                         account={profile}
                         initialValues={{
                           firstName: profile.firstName,
@@ -158,7 +160,9 @@ export class DumbParamters extends React.Component {
                   {
                     title: 'Mot de passe',
                     description: 'Modification du mot de passe',
-                    content: <EditPassword form="edit-password" key="edit-password" account={profile} />,
+                    content: (
+                      <EditPassword form={`edit-password${account.id}`} key={`edit-password${account.id}`} account={profile} />
+                    ),
                     Icon: VpnKeyIcon,
                     color: '#d72b3f'
                   },
@@ -166,7 +170,9 @@ export class DumbParamters extends React.Component {
                     title: 'Jeton API ',
                     description:
                       'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
-                    content: <EditApiToken account={profile} />,
+                    content: (
+                      <EditApiToken form={`editapitoken${account.id}`} key={`editapitoken${account.id}`} account={profile} />
+                    ),
                     Icon: SettingsInputComponentIcon,
                     color: '#ff9000'
                   },
@@ -174,7 +180,9 @@ export class DumbParamters extends React.Component {
                     title: 'Rôles',
                     description:
                       'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
-                    content: <AssignRoles form="Assign-roles" key="Assign-roles" account={profile} />,
+                    content: (
+                      <AssignRoles form={`Assign-roles${account.id}`} key={`Assign-roles${account.id}`} account={profile} />
+                    ),
                     Icon: WorkIcon,
                     color: theme.palette.success[800]
                   }
