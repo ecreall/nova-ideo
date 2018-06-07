@@ -1,3 +1,4 @@
+#import "./Action.graphql"
 #import "./File.graphql"
 
 fragment PersonParameters on Person {
@@ -11,10 +12,15 @@ fragment PersonParameters on Person {
   function
   locale
   email
+  apiToken
+  roles
   picture {
     ...File
   }
   coverPicture {
     ...File
+  }
+  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
+    ...Action
   }
 }

@@ -143,11 +143,11 @@ const textInputStyles = (theme) => {
       borderRadius: 4,
       boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
       alignItems: 'center',
-      height: 35
+      height: 45
     },
     multilineRoot: {
       height: 'auto !important',
-      minHeight: 35,
+      minHeight: 45,
       padding: '6px 0 14px 0'
     },
     errorRoot: {
@@ -199,6 +199,7 @@ export const renderTextInput = withStyles(textInputStyles, {
     input: { name, value, onChange },
     meta: { touched, error },
     multiline,
+    disabled,
     placeholder,
     endAdornment,
     endAdornmentPosition,
@@ -229,6 +230,7 @@ export const renderTextInput = withStyles(textInputStyles, {
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          disabled={disabled}
           classes={{
             root: classNames(classes.root, {
               [classes.errorRoot]: touched && error,

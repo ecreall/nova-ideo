@@ -141,7 +141,7 @@ class Edit(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-settings'
     style_order = 1
-    tags = ['primary', 'menu', 'main-menu']
+    tags = ['primary', 'menu', 'main-menu', 'parameters-menu']
     title = _('Edit')
     submission_title = _('Save')
     context = IPerson
@@ -169,7 +169,7 @@ class EditPassword(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-settings'
     style_order = 1
-    tags = ['secondary']
+    tags = ['parameters-menu']
     title = _('Edit password')
     submission_title = _('Save')
     context = IPerson
@@ -200,7 +200,7 @@ class GetAPIToken(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-wrench'
     style_order = 1
-    tags = ['secondary', 'entity']
+    tags = ['secondary', 'entity', 'parameters-menu']
     title = _('Get API token')
     submission_title = _('Get a new API token')
     context = IPerson
@@ -220,12 +220,7 @@ class GetAPIToken(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        query = {}
-        if 'api_token' not in kw:
-            query['invalid_password'] = True
-
-        return HTTPFound(request.resource_url(
-            context, "@@get_api_token", query=query))
+        return kw
 
 
 def deactivate_roles_validation(process, context):
@@ -345,7 +340,7 @@ class AssignRoles(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-tower'
     style_order = 2
-    tags = ['secondary', 'entity']
+    tags = ['secondary', 'entity', 'parameters-menu']
     title = _('Assign roles')
     submission_title = _('Save')
     context = IPerson

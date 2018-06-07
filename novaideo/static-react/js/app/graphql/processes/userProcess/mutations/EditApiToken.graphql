@@ -1,6 +1,6 @@
-mutation EditApiToken($context: String!) {
-  editApiToken(context: $context) {
+mutation EditApiToken($context: String!, $password: String!) {
+  editApiToken(context: $context, password: $password) {
     status
-    token
+    apiToken
   }
 }

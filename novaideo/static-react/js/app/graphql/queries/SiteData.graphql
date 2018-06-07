@@ -22,6 +22,7 @@ query SiteData {
     manageProposals
     onlyInvitation
     onlyForMembers
+    roles
   }
   actions {
     edges {

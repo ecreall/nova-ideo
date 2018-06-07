@@ -72,6 +72,7 @@
     "apollo-client": "2.2.7",
     "apollo-link": "1.2.2",
     "apollo-link-http": "^1.5.3",
+    "apollo-link-retry": "^2.2.3",
     "apollo-upload-client": "8.0.0",
     "apollo-utilities": "^1.0.10",
     "babel-polyfill": "^6.26.0",

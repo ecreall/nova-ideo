@@ -14,6 +14,7 @@ export class DumbVerticalTab extends React.Component {
   };
 
   renderEntry = (entry, index) => {
+    if (!entry) return null;
     const { expanded } = this.state;
     return (
       <Tab

@@ -99,6 +99,21 @@ export const PROCESSES = {
         nodeId: 'edit',
         title: 'processes.usermanagement.edit.title',
         description: 'processes.usermanagement.edit.description'
+      },
+      assignRoles: {
+        nodeId: 'assign_roles',
+        title: 'processes.usermanagement.assignRoles.title',
+        description: 'processes.usermanagement.assignRoles.description'
+      },
+      getApiToken: {
+        nodeId: 'get_api_token',
+        title: 'processes.usermanagement.getApiToken.title',
+        description: 'processes.usermanagement.getApiToken.description'
+      },
+      editPassword: {
+        nodeId: 'edit_password',
+        title: 'processes.usermanagement.editPassword.title',
+        description: 'processes.usermanagement.editPassword.description'
       }
     }
   },
@@ -193,7 +208,8 @@ export const ACTIONS = {
   other: 'other',
   menu: 'menu',
   mainMenu: 'main-menu',
-  site: 'site'
+  site: 'site',
+  parametersMenu: 'parameters-menu'
 };
 
 export const STATE = {

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { connect } from 'react-redux';
+import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import Zoom from '@material-ui/core/Zoom';
 import { withApollo, Query } from 'react-apollo';
@@ -9,6 +10,8 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 import WorkIcon from '@material-ui/icons/Work';
 
+import { getActions } from '../../../../utils/processes';
+import { ACTIONS, PROCESSES } from '../../../../processes';
 import ProfileParameters from '../../../../graphql/queries/ProfileParameters.graphql';
 import VerticalTab from '../../../common/VerticalTab';
 import Form from '../../Form';
@@ -77,6 +80,7 @@ export class DumbParamters extends React.Component {
     const authorTitle = account && account.title;
     const func = account && account.function;
     const functionKey = 'function';
+    const userProcessNodes = PROCESSES.usermanagement.nodes;
     return (
       <Form
         initRef={(form) => {
@@ -107,19 +111,30 @@ export class DumbParamters extends React.Component {
           fetchPolicy="cache-and-network"
           query={ProfileParameters}
           variables={{
-            id: account.id
+            id: account.id,
+            processIds: [PROCESSES.usermanagement.id],
+            nodeIds: [],
+            processTags: [],
+            actionTags: [ACTIONS.parametersMenu]
           }}
         >
           {(result) => {
             const profile = result.data && result.data.person;
             if (!profile) return null;
+            const roles = {};
+            profile.roles.forEach((role) => {
+              roles[role] = I18n.t(`roles.${role}`);
+            });
+            const parametersMenuActions = getActions(profile.actions).map((action) => {
+              return action.behaviorId;
+            });
             return (
               <VerticalTab
                 classes={{
                   panelRoot: classes.tabPanelRoot
                 }}
                 tabs={[
-                  {
+                  parametersMenuActions.includes(userProcessNodes.edit.nodeId) && {
                     title: 'Profil',
                     description: 'Mise à jour de vos coordonnées, modifications des photos et images',
                     content: (
@@ -157,16 +172,23 @@ export class DumbParamters extends React.Component {
                     ),
                     Icon: AccountCircleIcon
                   },
-                  {
+                  parametersMenuActions.includes(userProcessNodes.editPassword.nodeId) && {
                     title: 'Mot de passe',
                     description: 'Modification du mot de passe',
                     content: (
-                      <EditPassword form={`edit-password${account.id}`} key={`edit-password${account.id}`} account={profile} />
+                      <EditPassword
+                        form={`edit-password${account.id}`}
+                        key={`edit-password${account.id}`}
+                        account={profile}
+                        initialValues={{
+                          email: profile.email
+                        }}
+                      />
                     ),
                     Icon: VpnKeyIcon,
                     color: '#d72b3f'
                   },
-                  {
+                  parametersMenuActions.includes(userProcessNodes.getApiToken.nodeId) && {
                     title: 'Jeton API ',
                     description:
                       'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
@@ -176,12 +198,19 @@ export class DumbParamters extends React.Component {
                     Icon: SettingsInputComponentIcon,
                     color: '#ff9000'
                   },
-                  {
+                  parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId) && {
                     title: 'Rôles',
                     description:
                       'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
                     content: (
-                      <AssignRoles form={`Assign-roles${account.id}`} key={`Assign-roles${account.id}`} account={profile} />
+                      <AssignRoles
+                        form={`Assign-roles${account.id}`}
+                        key={`Assign-roles${account.id}`}
+                        account={profile}
+                        initialValues={{
+                          roles: roles
+                        }}
+                      />
                     ),
                     Icon: WorkIcon,
                     color: theme.palette.success[800]

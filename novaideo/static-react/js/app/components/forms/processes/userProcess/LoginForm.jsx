@@ -91,9 +91,6 @@ const styles = (theme) => {
       fontSize: 18,
       fontWeight: 900
     },
-    titleRoot: {
-      height: 45
-    },
     formTitle: {
       flexGrow: 1
     },
@@ -231,9 +228,6 @@ export class DumbLoginForm extends React.Component {
           <Field
             props={{
               placeholder: I18n.t('forms.singin.email'),
-              classes: {
-                root: classes.titleRoot
-              },
               autoFocus: true
             }}
             name="login"
@@ -244,10 +238,7 @@ export class DumbLoginForm extends React.Component {
             props={{
               placeholder: I18n.t('forms.singin.password'),
               type: 'password',
-              autoComplete: 'current-password',
-              classes: {
-                root: classes.titleRoot
-              }
+              autoComplete: 'current-password'
             }}
             name="password"
             component={renderTextInput}

@@ -10,11 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { renderTextInput, renderImageField, renderSelectField } from '../../utils';
-import Alert from '../../../common/Alert';
 import SnackbarContent from '../../../common/SnackbarContent';
 import Button from '../../../styledComponents/Button';
 import { asyncValidateLogin } from '../../../../utils/user';
-import { LOGIN_VIEWS } from './Login';
 import { editProfile } from '../../../../graphql/processes/userProcess';
 import EditProfileMutation from '../../../../graphql/processes/userProcess/mutations/EditProfile.graphql';
 import { LANGUAGES_TITLES } from '../../../../constants';
@@ -28,9 +26,6 @@ const styles = {
     fontSize: 17,
     marginTop: '15px !important',
     float: 'right'
-  },
-  titleRoot: {
-    height: 45
   },
   loading: {
     display: 'flex',
@@ -71,7 +66,7 @@ export class DumbEditProfile extends React.Component {
             coverPicture: coverPicture,
             oldCoverPicture: oldCoverPicture
           })
-          .then((value) => {
+          .then(() => {
             this.setState({ loading: false, success: true, error: false }, this.initializeForm);
           })
           .catch(() => {
@@ -120,7 +115,7 @@ export class DumbEditProfile extends React.Component {
   };
 
   render() {
-    const { formData, classes, valid, theme } = this.props;
+    const { classes, valid, theme } = this.props;
     const { loading, error, success } = this.state;
     return (
       <Form className={classes.form} onSubmit={this.handleSubmit}>
@@ -128,9 +123,7 @@ export class DumbEditProfile extends React.Component {
           props={{
             placeholder: I18n.t('forms.singin.firstName'),
             label: I18n.t('forms.singin.firstName'),
-            classes: {
-              root: classes.titleRoot
-            }
+            autoFocus: true
           }}
           name="firstName"
           component={renderTextInput}
@@ -138,10 +131,7 @@ export class DumbEditProfile extends React.Component {
         <Field
           props={{
             placeholder: I18n.t('forms.singin.lastName'),
-            label: I18n.t('forms.singin.lastName'),
-            classes: {
-              root: classes.titleRoot
-            }
+            label: I18n.t('forms.singin.lastName')
           }}
           name="lastName"
           component={renderTextInput}
@@ -151,10 +141,7 @@ export class DumbEditProfile extends React.Component {
             placeholder: 'Description',
             label: 'Description',
             multiline: true,
-            optional: true,
-            classes: {
-              root: classes.titleRoot
-            }
+            optional: true
           }}
           name="description"
           component={renderTextInput}
@@ -163,10 +150,7 @@ export class DumbEditProfile extends React.Component {
           props={{
             placeholder: 'Fonction',
             label: 'Fonction',
-            optional: true,
-            classes: {
-              root: classes.titleRoot
-            }
+            optional: true
           }}
           name="function"
           component={renderTextInput}
@@ -175,11 +159,7 @@ export class DumbEditProfile extends React.Component {
           props={{
             placeholder: I18n.t('forms.singin.email'),
             label: 'Email',
-            type: 'email',
-            classes: {
-              root: classes.titleRoot
-            },
-            autoFocus: true
+            type: 'email'
           }}
           name="email"
           component={renderTextInput}

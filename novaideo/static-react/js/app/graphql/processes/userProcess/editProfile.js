@@ -35,6 +35,7 @@ export default function editProfile({ mutate }) {
           status: true,
           profile: {
             ...context,
+            title: `${firstName} ${lastName}`,
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -73,7 +74,7 @@ export default function editProfile({ mutate }) {
           const profile = mutationResult.data.editProfile.profile;
           return update(prev, {
             person: {
-              title: { $set: `${firstName} ${lastName}` },
+              title: { $set: profile.title },
               function: { $set: userFunction },
               description: { $set: description },
               picture: context.picture && !profile.picture ? { $set: null } : { $set: profile.picture }
@@ -86,6 +87,7 @@ export default function editProfile({ mutate }) {
           const profile = mutationResult.data.editProfile.profile;
           return update(prev, {
             person: {
+              title: { $set: profile.title },
               firstName: { $set: firstName },
               lastName: { $set: lastName },
               function: { $set: userFunction },
@@ -102,6 +104,7 @@ export default function editProfile({ mutate }) {
           const profile = mutationResult.data.editProfile.profile;
           return update(prev, {
             person: {
+              title: { $set: profile.title },
               firstName: { $set: firstName },
               lastName: { $set: lastName },
               function: { $set: userFunction },

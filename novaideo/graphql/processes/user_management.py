@@ -1,6 +1,8 @@
 import graphene
 import urllib
 
+from dace.objectofcollaboration.principal.role import DACE_ROLES
+from dace.objectofcollaboration.principal.util import get_roles
 from dace.util import getSite, get_obj
 from pontus.schema import select
 
@@ -171,3 +173,66 @@ class EditPassword(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return EditPassword(status=status)
+
+
+class EditApiToken(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        password = graphene.String()
+
+    status = graphene.Boolean()
+    api_token = graphene.String()
+    action_id = 'usermanagement.get_api_token'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        person_schema = select(
+            PersonSchema(), ['password'])
+        context_oid = args.pop('context')
+        args = person_schema.deserialize(dict(args))
+        args['context'] = context_oid
+        context, request, action, args = get_execution_data(
+            EditApiToken.action_id, args)
+        status = False
+        api_token = ''
+        if action:
+            result = action.execute(context, request, args)
+            api_token = result.get('api_token', '')
+            status = True if api_token else False
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return EditApiToken(status=status, api_token=api_token)
+
+
+class AssignRoles(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        roles = graphene.List(graphene.String)
+
+    status = graphene.Boolean()
+    roles = graphene.List(graphene.String)
+    action_id = 'usermanagement.assign_roles'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context_oid = args.pop('context')
+        args = dict(args)
+        args['context'] = context_oid
+        context, request, action, args = get_execution_data(
+            AssignRoles.action_id, args)
+        status = False
+        user_roles = []
+        if action:
+            action.execute(context, request, args)
+            user_roles = [r for r in get_roles(context)
+                          if not getattr(DACE_ROLES.get(r, None), 'islocal', False)]
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return AssignRoles(status=status, roles=user_roles)

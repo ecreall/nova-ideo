@@ -165,6 +165,18 @@ const Translations = {
         edit: {
           title: "Paramètres",
           description: "Paramètres du compte"
+        },
+        getApiToken: {
+          title: "Obtenir un jeton API",
+          description: "Obtenir un jeton API"
+        },
+        editPassword: {
+          title: "Changer le mot de passe",
+          description: "Paramètres du compte"
+        },
+        assignRoles: {
+          title: "Assigner des rôles",
+          description: "Assigner des rôles"
         }
       },
       registrationmanagement: {
@@ -270,8 +282,22 @@ const Translations = {
       editPassword: {
         save: "Modifier mon mot de passe",
         confirmation: "Votre mot de passe a été modifié",
-        error:
-          "Une erreur est survenue! Vos données de mot de passe n'ont pas été modifiées. Veuillez vérifier votre mot de passe"
+        error: "Une erreur est survenue! Votre mot de passe n'a pas été modifié. Veuillez vérifier votre mot de passe actuel",
+        currentPassword: "Votre mot de passe",
+        newPassword: "Le nouveau mot de passe"
+      },
+      editApiToken: {
+        save: "Obtenir un nouveau jeton API",
+        confirmation: "Votre nouveau jeton API a été généré",
+        error: "Une erreur est survenue! Votre jeton API n'a pas été généré. Veuillez vérifier votre mot de passe actuel",
+        password: "Votre mot de passe",
+        message: "Votre jeton API:"
+      },
+      assignRoles: {
+        save: "Changer les rôles",
+        confirmation: "Les rôles ont été changés",
+        error: "Une erreur est survenue! Les rôles n'ont pas été changés",
+        roles: "Les rôles"
       }
     },
     evaluation: {
@@ -315,6 +341,13 @@ const Translations = {
       noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
       noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
       confirmRegistration: "Veuillez patienter pendant que nous vérifions votre inscription !"
+    },
+    roles: {
+      Member: "Membre",
+      Admin: "Administrateur",
+      SiteAdmin: "Administrateur du site",
+      Moderator: "Moderateur",
+      Examiner: "Examinateur"
     }
   },
   en: {
@@ -482,6 +515,18 @@ const Translations = {
         edit: {
           title: "Paramters",
           description: "Paramters of the account"
+        },
+        getApiToken: {
+          title: "Obtenir un jeton API",
+          description: "Obtenir un jeton API"
+        },
+        editPassword: {
+          title: "Changer le mot de passe",
+          description: "Paramètres du compte"
+        },
+        assignRoles: {
+          title: "Assigner des rôles",
+          description: "Assigner des rôles"
         }
       },
       registrationmanagement: {
@@ -588,7 +633,22 @@ const Translations = {
       editPassword: {
         save: "Edit my password",
         confirmation: "Your password has been edited",
-        error: "An error has occurred! Your password data has not been edited. Please check your password"
+        error: "An error has occurred! Your password has not been edited. Please check your current password",
+        currentPassword: "Your password",
+        newPassword: "The new password"
+      },
+      editApiToken: {
+        save: "Obtenir un nouveau jeton API",
+        confirmation: "Votre nouveau jeton API a été généré",
+        error: "Une erreur est survenue! Votre jeton API n'a pas été généré. Veuillez vérifier votre mot de passe actuel",
+        password: "Votre mot de passe",
+        message: "Your API token:"
+      },
+      assignRoles: {
+        save: "Change the roles",
+        confirmation: "The roles has been changed",
+        error: "An error has occurred! The roles has not been changed",
+        roles: "The roles"
       }
     },
     evaluation: {
@@ -632,6 +692,13 @@ const Translations = {
       noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
       noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
       confirmRegistration: "Please wait while we check your registration!"
+    },
+    roles: {
+      Member: "Member",
+      Admin: "Administrator",
+      SiteAdmin: "Site administrator",
+      Moderator: "Moderator",
+      Examiner: "Examiner"
     }
   }
 };

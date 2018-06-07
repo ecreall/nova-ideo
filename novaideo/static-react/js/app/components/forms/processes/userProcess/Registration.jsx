@@ -96,9 +96,6 @@ const styles = (theme) => {
       fontSize: 18,
       fontWeight: 900
     },
-    titleRoot: {
-      height: 45
-    },
     formTitle: {
       flexGrow: 1
     },
@@ -225,63 +222,43 @@ export class DumbRegistrationForm extends React.Component {
               <Field
                 props={{
                   placeholder: I18n.t('forms.singin.firstName'),
-                  classes: {
-                    root: classes.titleRoot
-                  }
+                  autoFocus: true
                 }}
                 name="firstName"
                 component={renderTextInput}
-                onChange={() => {}}
               />
               <Field
                 props={{
-                  placeholder: I18n.t('forms.singin.lastName'),
-                  classes: {
-                    root: classes.titleRoot
-                  }
+                  placeholder: I18n.t('forms.singin.lastName')
                 }}
                 name="lastName"
                 component={renderTextInput}
-                onChange={() => {}}
               />
               <Field
                 props={{
                   placeholder: I18n.t('forms.singin.email'),
-                  type: 'email',
-                  classes: {
-                    root: classes.titleRoot
-                  },
-                  autoFocus: true
+                  type: 'email'
                 }}
                 name="email"
                 component={renderTextInput}
-                onChange={() => {}}
               />
               <Field
                 props={{
                   placeholder: I18n.t('forms.singin.password'),
                   type: 'password',
-                  autoComplete: 'current-password',
-                  classes: {
-                    root: classes.titleRoot
-                  }
+                  autoComplete: 'current-password'
                 }}
                 name="password"
                 component={renderTextInput}
-                onChange={() => {}}
               />
               <Field
                 props={{
                   placeholder: I18n.t('forms.singin.passwordConfirmation'),
                   type: 'password',
-                  autoComplete: 'current-password',
-                  classes: {
-                    root: classes.titleRoot
-                  }
+                  autoComplete: 'current-password'
                 }}
                 name="confirmPassword"
                 component={renderTextInput}
-                onChange={() => {}}
               />
               <Field
                 props={{
@@ -293,7 +270,6 @@ export class DumbRegistrationForm extends React.Component {
                 }}
                 name="terms"
                 component={renderCheckboxField}
-                onChange={() => {}}
               />
 
               {loading ? (

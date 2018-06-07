@@ -9,10 +9,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { renderTextInput } from '../../utils';
-import Alert from '../../../common/Alert';
 import SnackbarContent from '../../../common/SnackbarContent';
 import Button from '../../../styledComponents/Button';
-import { LOGIN_VIEWS } from './Login';
 import { editPassword } from '../../../../graphql/processes/userProcess';
 import EditPassword from '../../../../graphql/processes/userProcess/mutations/EditPassword.graphql';
 
@@ -21,15 +19,10 @@ const styles = {
     padding: 15
   },
   buttonFooter: {
-    width: '50%',
-    minHeight: 45,
-    fontSize: 18,
-    fontWeight: 900,
-    marginTop: 15,
+    minHeight: 35,
+    fontSize: 17,
+    marginTop: '15px !important',
     float: 'right'
-  },
-  titleRoot: {
-    height: 45
   },
   loading: {
     display: 'flex',
@@ -70,8 +63,8 @@ export class DumbEditPassword extends React.Component {
   };
 
   initializeForm = () => {
-    const { form } = this.props;
-    this.props.dispatch(initialize(form));
+    const { form, account } = this.props;
+    this.props.dispatch(initialize(form, { email: account.email }));
   };
 
   handleSnackbarClose = () => {
@@ -79,32 +72,34 @@ export class DumbEditPassword extends React.Component {
   };
 
   render() {
-    const { action, classes, valid, theme } = this.props;
+    const { classes, valid, theme } = this.props;
     const { loading, error, success } = this.state;
     return (
       <Form className={classes.form} onSubmit={this.handleSubmit}>
         <Field
           props={{
-            placeholder: 'Current password',
-            label: 'Current password',
+            placeholder: I18n.t('forms.singin.email'),
+            type: 'email',
+            disabled: true
+          }}
+          name="email"
+          component={renderTextInput}
+        />
+        <Field
+          props={{
+            placeholder: I18n.t('forms.editPassword.currentPassword'),
+            label: I18n.t('forms.editPassword.currentPassword'),
             type: 'password',
-            autoComplete: 'current-password',
-            classes: {
-              root: classes.titleRoot
-            }
+            autoComplete: 'current-password'
           }}
           name="currentPassword"
           component={renderTextInput}
         />
         <Field
           props={{
-            placeholder: I18n.t('forms.singin.password'),
-            label: 'New password',
-            type: 'password',
-            autoComplete: 'current-password',
-            classes: {
-              root: classes.titleRoot
-            }
+            placeholder: I18n.t('forms.editPassword.newPassword'),
+            label: I18n.t('forms.editPassword.newPassword'),
+            type: 'password'
           }}
           name="password"
           component={renderTextInput}
@@ -112,11 +107,7 @@ export class DumbEditPassword extends React.Component {
         <Field
           props={{
             placeholder: I18n.t('forms.singin.passwordConfirmation'),
-            type: 'password',
-            autoComplete: 'current-password',
-            classes: {
-              root: classes.titleRoot
-            }
+            type: 'password'
           }}
           name="confirmPassword"
           component={renderTextInput}

@@ -6,13 +6,13 @@ import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
+import SnackbarContent from '../../../common/SnackbarContent';
 import { renderSelectList } from '../../utils';
-import Alert from '../../../common/Alert';
 import Button from '../../../styledComponents/Button';
-import { LOGIN_VIEWS } from './Login';
-import { registration } from '../../../../graphql/processes/userProcess';
-import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
+import { assignRoles } from '../../../../graphql/processes/userProcess';
+import AssignRoles from '../../../../graphql/processes/userProcess/mutations/AssignRoles.graphql';
 
 const styles = {
   form: {
@@ -38,92 +38,107 @@ const styles = {
 export class DumbAssignRoles extends React.Component {
   state = {
     loading: false,
-    submitted: false
+    success: false,
+    error: false
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { formData, valid } = this.props;
+    const { formData, valid, account } = this.props;
     if (valid) {
       this.setState({ loading: true }, () => {
         this.props
-          .registration({
-            firstName: formData.values.firstName,
-            lastName: formData.values.lastName,
-            email: formData.values.email,
-            password: formData.values.password
+          .assignRoles({
+            context: account,
+            roles: Object.keys(formData.values.roles)
           })
-          .then(() => {
-            this.setState({ submitted: true }, this.initializeForm);
+          .then((value) => {
+            const status = value.data.assignRoles.status;
+            this.setState({ loading: false, success: status, error: !status }, this.initializeForm);
+          })
+          .catch(() => {
+            this.setState({ loading: false, success: false, error: true });
           });
       });
     }
   };
 
   initializeForm = () => {
-    const { form } = this.props;
-    this.props.dispatch(initialize(form));
+    const { form, account } = this.props;
+    this.props.dispatch(initialize(form, { roles: this.getRoles(account.roles) }));
   };
 
-  goToLogin = () => {
-    const { switchView } = this.props;
-    switchView(LOGIN_VIEWS.login);
+  getRoles = (rolesIds) => {
+    const roles = {};
+    rolesIds.forEach((role) => {
+      roles[role] = I18n.t(`roles.${role}`);
+    });
+    return roles;
   };
 
   render() {
     const {
-      action,
       globalProps: { site },
+      valid,
       classes,
       theme
     } = this.props;
-    const { loading, error, submitted } = this.state;
-    const roles = {
-      admin: 'Admin',
-      examiner: 'Examiner',
-      member: 'Member'
-    };
-    return [
-      error && (
-        <Alert type="danger" classes={{ container: classes.alertContainer }}>
-          {I18n.t('common.failedLogin')}
-        </Alert>
-      ),
+    const { loading, error, success } = this.state;
+    return (
       <Form className={classes.form} onSubmit={this.handleSubmit}>
-        {submitted ? (
-          <div>{I18n.t('forms.singin.confirmationSent')}</div>
-        ) : (
-          <div>
-            <Field
-              props={{
-                label: 'Current password',
-                options: roles
-              }}
-              withRef
-              name="roles"
-              component={renderSelectList}
-            />
-            {loading ? (
-              <div className={classes.loading}>
-                <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
-              </div>
-            ) : (
-              <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-                Enregistrer
-              </Button>
-            )}
-          </div>
-        )}
+        <Field
+          props={{
+            label: I18n.t('forms.assignRoles.roles'),
+            options: this.getRoles(site.roles)
+          }}
+          withRef
+          name="roles"
+          component={renderSelectList}
+        />
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={success}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent
+            onClose={this.handleSnackbarClose}
+            variant="success"
+            message={I18n.t('forms.assignRoles.confirmation')}
+          />
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={6000}
+          open={error}
+          onClose={this.handleSnackbarClose}
+        >
+          <SnackbarContent onClose={this.handleSnackbarClose} variant="error" message={I18n.t('forms.assignRoles.error')} />
+        </Snackbar>
+        <div className={classes.loading}>
+          {loading ? (
+            <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+          ) : (
+            <Button
+              type="submit"
+              background={theme.palette.success[800]}
+              className={classes.buttonFooter}
+              disabled={this.props.pristine || !valid}
+            >
+              {I18n.t('forms.assignRoles.save')}
+            </Button>
+          )}
+        </div>
       </Form>
-    ];
+    );
   }
 }
 
 const validate = (values) => {
   const errors = {};
   const requiredMessage = I18n.t('forms.required');
-  if (!values.roles || values.roles.length === 0) {
-    errors.firstName = requiredMessage;
+  if (!values.roles || Object.keys(values.roles).length === 0) {
+    errors.roles = requiredMessage;
   }
   return errors;
 };
@@ -142,10 +157,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const AssignRolesReduxFormWithMutation = graphql(Registration, {
+const AssignRolesReduxFormWithMutation = graphql(AssignRoles, {
   props: function (props) {
     return {
-      registration: registration(props)
+      assignRoles: assignRoles(props)
     };
   }
 })(AssignRolesReduxForm);

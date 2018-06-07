@@ -1,88 +1,171 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow, no-throw-literal */
 import React from 'react';
 import { connect } from 'react-redux';
-import { I18n, Translate } from 'react-redux-i18n';
+import { Form, Field, reduxForm, initialize } from 'redux-form';
+import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
+import { renderTextInput } from '../../utils';
+import SnackbarContent from '../../../common/SnackbarContent';
+import { updateUserToken } from '../../../../actions/authActions';
 import Button from '../../../styledComponents/Button';
-import { registration } from '../../../../graphql/processes/userProcess';
-import Registration from '../../../../graphql/processes/userProcess/mutations/Registration.graphql';
+import { editApiToken } from '../../../../graphql/processes/userProcess';
+import EditApiToken from '../../../../graphql/processes/userProcess/mutations/EditApiToken.graphql';
 
 const styles = {
   buttonFooter: {
-    width: '50%',
-    minHeight: 45,
-    fontSize: 18,
-    fontWeight: 900,
-    marginTop: 15,
+    minHeight: 35,
+    fontSize: 17,
+    marginTop: '15px !important',
     float: 'right'
   },
   loading: {
     display: 'flex',
     justifyContent: 'center'
+  },
+  message: {
+    marginBottom: 10
   }
 };
 
 export class DumbEditApiToken extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    success: false,
+    error: false
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { formData, valid } = this.props;
+    const { formData, valid, account } = this.props;
     if (valid) {
       this.setState({ loading: true }, () => {
         this.props
-          .registration({
-            firstName: formData.values.firstName,
-            lastName: formData.values.lastName,
-            email: formData.values.email,
+          .editApiToken({
+            context: account,
             password: formData.values.password
           })
-          .then(() => {
-            this.setState({ loading: false }, this.initializeForm);
+          .then((value) => {
+            const token = value.data.editApiToken.apiToken;
+            const status = value.data.editApiToken.status;
+            this.setState({ loading: false, success: status, error: !status }, () => {
+              if (token) {
+                this.initializeForm();
+                this.props.updateUserToken(token);
+              }
+            });
+          })
+          .catch(() => {
+            this.setState({ loading: false, success: false, error: true });
           });
       });
     }
   };
 
+  initializeForm = () => {
+    const { form, account } = this.props;
+    this.props.dispatch(initialize(form, { email: account.email }));
+  };
+
   render() {
-    const { action, user, classes, theme } = this.props;
-    const { loading } = this.state;
+    const { valid, account, classes, theme } = this.props;
+    const { loading, error, success } = this.state;
     return (
       <div>
-        {user.token}
-        {loading ? (
+        <div className={classes.message}>
+          {I18n.t('forms.editApiToken.message')} <strong>{account.apiToken}</strong>
+        </div>
+        <Form className={classes.form} onSubmit={this.handleSubmit}>
+          <Field
+            props={{
+              placeholder: I18n.t('forms.editApiToken.password'),
+              label: I18n.t('forms.editApiToken.password'),
+              type: 'password',
+              autoComplete: 'current-password'
+            }}
+            name="password"
+            component={renderTextInput}
+          />
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            autoHideDuration={6000}
+            open={success}
+            onClose={this.handleSnackbarClose}
+          >
+            <SnackbarContent
+              onClose={this.handleSnackbarClose}
+              variant="success"
+              message={I18n.t('forms.editApiToken.confirmation')}
+            />
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            autoHideDuration={6000}
+            open={error}
+            onClose={this.handleSnackbarClose}
+          >
+            <SnackbarContent onClose={this.handleSnackbarClose} variant="error" message={I18n.t('forms.editApiToken.error')} />
+          </Snackbar>
           <div className={classes.loading}>
-            <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+            {loading ? (
+              <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+            ) : (
+              <Button
+                type="submit"
+                background={theme.palette.success[800]}
+                className={classes.buttonFooter}
+                disabled={this.props.pristine || !valid}
+              >
+                {I18n.t('forms.editApiToken.save')}
+              </Button>
+            )}
           </div>
-        ) : (
-          <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-            Demander un nouveau jeton d'API
-          </Button>
-        )}
+        </Form>
       </div>
     );
   }
 }
 
+const validate = (values) => {
+  const errors = {};
+  const requiredMessage = I18n.t('forms.required');
+  if (!values.password) {
+    errors.password = requiredMessage;
+  }
+  return errors;
+};
+
+// Decorate the form component
+const DumbEditApiTokenReduxForm = reduxForm({
+  destroyOnUnmount: false,
+  validate: validate,
+  touchOnChange: true
+})(DumbEditApiToken);
+
 const mapStateToProps = (state, props) => {
   return {
-    formData: state.form[props.form],
-    globalProps: state.globalProps,
-    user: state.user
+    formData: state.form[props.form]
   };
 };
 
-const EditApiTokenReduxFormWithMutation = graphql(Registration, {
+export const mapDispatchToProps = {
+  updateUserToken: updateUserToken
+};
+
+const EditApiTokenReduxFormWithMutation = graphql(EditApiToken, {
   props: function (props) {
     return {
-      registration: registration(props)
+      editApiToken: editApiToken(props)
     };
   }
-})(DumbEditApiToken);
+})(DumbEditApiTokenReduxForm);
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(EditApiTokenReduxFormWithMutation));
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EditApiTokenReduxFormWithMutation)
+);

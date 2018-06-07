@@ -1,0 +1,6 @@
+mutation AssignRoles($context: String!, $roles: [String]) {
+  assignRoles(context: $context, roles: $roles) {
+    status
+    roles
+  }
+}

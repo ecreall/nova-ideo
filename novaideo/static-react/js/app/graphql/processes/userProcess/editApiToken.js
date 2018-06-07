@@ -1,15 +1,30 @@
+import update from 'immutability-helper';
+
 export default function editApiToken({ mutate }) {
-  return ({ context }) => {
+  return ({ context, password }) => {
     return mutate({
       variables: {
-        context: context.oid
+        context: context.oid,
+        password: password
       },
       optimisticResponse: {
         __typename: 'Mutation',
-        EditApiToken: {
+        editApiToken: {
           __typename: 'EditApiToken',
           status: true,
-          token: null
+          apiToken: context.apiToken
+        }
+      },
+      updateQueries: {
+        ProfileParameters: (prev, { queryVariables, mutationResult }) => {
+          if (queryVariables.id !== context.id) return false;
+          if (!mutationResult.data.editApiToken.status) return false;
+          const apiToken = mutationResult.data.editApiToken.apiToken;
+          return update(prev, {
+            person: {
+              apiToken: { $set: apiToken }
+            }
+          });
         }
       }
     });

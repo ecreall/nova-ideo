@@ -8,8 +8,9 @@ from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
+from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.util import get_obj
-from dace.objectofcollaboration.principal.util import has_role, get_current
+from dace.objectofcollaboration.principal.util import has_role, get_current, get_roles
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
@@ -28,6 +29,7 @@ from .util import (
     get_actions, connection_for_type, get_context,
     ResolverLazyList)
 from novaideo.utilities.util import get_object_examination_stat, get_object_evaluation_stat
+from novaideo.role import get_authorized_roles
 
 
 
@@ -191,6 +193,11 @@ class Root(Node, graphene.ObjectType):
     only_invitation = graphene.Boolean()
     only_for_members = graphene.Boolean()
     logo = graphene.Field(lambda: File)
+    roles = graphene.List(graphene.String)
+
+    def resolve_roles(self, args, context, info):  # pylint: disable=W0613
+        roles = get_authorized_roles(context.user)
+        return [key for key in roles.keys() if not DACE_ROLES[key].islocal]
 
     def resolve_site_id(self, args, context, info):  # pylint: disable=W0613
         # TODO return the site id exp: evolutions...
@@ -329,7 +336,8 @@ class Person(Node, graphene.ObjectType):
     mask = graphene.Field(lambda: Person)
 #   email should be visible only by user with Admin or Site Administrator role
     email = graphene.String()
-
+    api_token = graphene.String()
+    roles = graphene.List(graphene.String)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -337,6 +345,10 @@ class Person(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, (SDPerson, SDBot, SDMask))
+
+    def resolve_roles(self, args, context, info):  # pylint: disable=W0613
+        return [r for r in get_roles(self)
+                if not getattr(DACE_ROLES.get(r, None), 'islocal', False)]
 
     def resolve_is_anonymous(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'is_anonymous', False)
@@ -382,6 +394,10 @@ class Person(Node, graphene.ObjectType):
     def resolve_email(self, args, context, info):  # pylint: disable=W0613
         user = context.user
         return self.email if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
+
+    def resolve_api_token(self, args, context, info):  # pylint: disable=W0613
+        user = context.user
+        return self.api_token if user and (user is self or has_role(user=user, role=('PortalManager',))) else None
 
     def resolve_mask(self, args, context, info):  # pylint: disable=W0613
         return self.get_mask(context.root)

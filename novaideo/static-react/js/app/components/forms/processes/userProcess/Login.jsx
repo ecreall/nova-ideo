@@ -99,9 +99,6 @@ const styles = (theme) => {
       fontSize: 18,
       fontWeight: 900
     },
-    titleRoot: {
-      height: 45
-    },
     formTitle: {
       flexGrow: 1
     },
