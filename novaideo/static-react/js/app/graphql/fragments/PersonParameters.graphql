@@ -1,4 +1,3 @@
-#import "./Action.graphql"
 #import "./File.graphql"
 
 fragment PersonParameters on Person {
@@ -19,8 +18,5 @@ fragment PersonParameters on Person {
   }
   coverPicture {
     ...File
-  }
-  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
-    ...Action
   }
 }

@@ -200,7 +200,7 @@ class GetAPIToken(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-wrench'
     style_order = 1
-    tags = ['secondary', 'entity', 'parameters-menu']
+    tags = ['parameters-menu']
     title = _('Get API token')
     submission_title = _('Get a new API token')
     context = IPerson
@@ -959,7 +959,7 @@ class ExtractAlerts(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-export'
     style_order = 8
-    tags = ['secondary', 'entity']
+    tags = []
     submission_title = _('Continue')
     context = IPerson
     roles_validation = edit_roles_validation

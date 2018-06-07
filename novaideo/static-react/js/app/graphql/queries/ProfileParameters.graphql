@@ -1,7 +1,7 @@
-#import "../fragments/PersonParameters.graphql"
+#import "../fragments/PersonParametersActions.graphql"
 
 query ProfileParameters($id: ID!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
   person: node(id: $id) {
-    ...PersonParameters
+    ...PersonParametersActions
   }
 }

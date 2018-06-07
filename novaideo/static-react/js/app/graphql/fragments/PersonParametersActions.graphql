@@ -1,0 +1,10 @@
+#import "./Action.graphql"
+#import "./File.graphql"
+#import "./PersonParameters.graphql"
+
+fragment PersonParametersActions on Person {
+  ...PersonParameters
+  actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
+    ...Action
+  }
+}
