@@ -387,7 +387,8 @@ class SeePerson(InfiniteCardinality):
     # style_descriminator = 'access-action'
     # style_interaction = 'ajax-action'
     # style_interaction_type = 'sidebar'
-    # style_picto = 'glyphicon glyphicon-eye-open'
+    style_picto = 'glyphicon glyphicon-profile'
+    tags = ['main-menu']
     title = _('Details')
     context = IPerson
     actionType = ActionType.automatic

@@ -7,6 +7,8 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import ModeEditIcon from '@material-ui/icons/ModeEdit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
+import WorkIcon from '@material-ui/icons/Work';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 import { iconAdapter } from './utils/globalFunctions';
@@ -114,6 +116,11 @@ export const PROCESSES = {
         nodeId: 'edit_password',
         title: 'processes.usermanagement.editPassword.title',
         description: 'processes.usermanagement.editPassword.description'
+      },
+      see: {
+        nodeId: 'see',
+        title: 'processes.usermanagement.see.title',
+        description: 'processes.usermanagement.see.description'
       }
     }
   },
@@ -242,7 +249,9 @@ export const ICONS_MAPPING = {
   'typcn typcn-pin': iconAdapter('mdi-set mdi-pin'),
   'typcn typcn-pin-outline': iconAdapter('mdi-set mdi-pin-off'),
   'icon novaideo-icon icon-idea': iconAdapter('mdi-set mdi-lightbulb'),
-  'glyphicon glyphicon-share': iconAdapter('mdi-set mdi-earth')
+  'glyphicon glyphicon-share': iconAdapter('mdi-set mdi-earth'),
+  'glyphicon glyphicon-tower': WorkIcon,
+  'glyphicon glyphicon-profile': AccountCircleIcon
 };
 
 export const ENTITIES_ICONS = {

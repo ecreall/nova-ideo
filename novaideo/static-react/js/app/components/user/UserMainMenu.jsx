@@ -12,7 +12,7 @@ import AccountInformation from './AccountInformation';
 import { MenuList, Menu } from '../common/menu';
 import ShortcutsManager from '../common/ShortcutsManager';
 import { getFields } from '../common/MenuMore';
-import { filterActions } from '../../utils/processes';
+import { filterActions, getActions } from '../../utils/processes';
 import { ACTIONS } from '../../processes';
 import UserProcessManager from './UserProcessManager';
 
@@ -144,6 +144,10 @@ export class DumbUserMainMenu extends React.Component {
     );
   };
 
+  close = (event, callback) => {
+    this.popper.close(event, callback);
+  };
+
   render() {
     const { account, rootActions, site, processManager, classes, theme, activator } = this.props;
     const { menu } = this.state;
@@ -190,19 +194,15 @@ export class DumbUserMainMenu extends React.Component {
               }}
             >
               {(result) => {
-                return (
-                  <MenuList
-                    header={this.userSectionHeader()}
-                    fields={[
-                      {
-                        title: 'Une action importante'
-                      },
-                      {
-                        title: 'Un autre action importante'
-                      }
-                    ]}
-                  />
+                const data = result.data;
+                if (!data.actions) return null;
+                const userActions = getActions(
+                  data.actions.edges.map((action) => {
+                    return action.node;
+                  })
                 );
+                const userFields = getFields(userActions, processManager.execute, theme);
+                return <MenuList header={this.userSectionHeader()} fields={userFields} close={this.close} />;
               }}
             </Query>
           ) : null}

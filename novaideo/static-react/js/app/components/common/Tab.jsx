@@ -32,7 +32,8 @@ const styles = (theme) => {
       borderRadius: 6
     },
     summaryRoot: {
-      display: 'block'
+      display: 'block',
+      opacity: '1 !important'
     },
     summaryContainer: {
       display: 'flex'
@@ -51,19 +52,23 @@ const styles = (theme) => {
       marginRight: 10,
       height: 24,
       width: 24
+    },
+    panelDisabled: {
+      backgroundColor: 'transparent !important'
     }
   };
 };
 
-export const DumbTab = ({ title, description, Icon, content, color, onChange, expanded, classes }) => {
+export const DumbTab = ({ disabled, title, description, Icon, content, color, onChange, expanded, classes }) => {
   return (
     <ExpansionPanel
+      disabled={disabled}
       expanded={expanded}
       onChange={onChange}
       classes={{
         root: classes.panelRoot,
         expanded: classes.panelExpanded,
-        disabled: classes.panelDisabled
+        disabled: disabled && classes.panelDisabled
       }}
     >
       <ExpansionPanelSummary
@@ -71,7 +76,7 @@ export const DumbTab = ({ title, description, Icon, content, color, onChange, ex
           root: classes.summaryRoot,
           content: classes.summaryContent
         }}
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={!disabled && <ExpandMoreIcon />}
       >
         <p className={classes.summaryContainer}>
           {Icon && (

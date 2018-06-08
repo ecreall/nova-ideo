@@ -176,7 +176,7 @@ const styles = (theme) => {
     icon: {
       fontSize: 34
     },
-    iconDesabled: {
+    iconDisabled: {
       color: '#989898'
     }
   };
@@ -421,7 +421,7 @@ export class DumbCreateIdeaForm extends React.Component {
       >
         <div className={classes.form}>
           <div className={classes.titleInputContainer}>
-            <IdeaIcon className={classNames(classes.icon, { [classes.iconDesabled]: !hasTitle })} />
+            <IdeaIcon className={classNames(classes.icon, { [classes.iconDisabled]: !hasTitle })} />
             <Field
               props={{
                 placeholder: I18n.t('forms.idea.titleHelper'),

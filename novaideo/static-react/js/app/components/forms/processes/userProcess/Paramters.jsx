@@ -21,6 +21,13 @@ import AssignRoles from './AssignRoles';
 import UserAvatar from '../../../user/UserAvatar';
 import EditApiToken from './EditApiToken';
 
+export const PARAMETERS_TABS = {
+  edit: 'edit',
+  editPassword: 'editPassword',
+  editapitoken: 'editapitoken',
+  assignRoles: 'assignRoles'
+};
+
 const styles = {
   maxContainer: {
     padding: 5,
@@ -74,8 +81,12 @@ export class DumbParamters extends React.Component {
     this.form.close();
   };
 
+  isValid = (id) => {
+    !parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId) || (activeTab && activeTab !== PARAMETERS_TABS.edit);
+  };
+
   render() {
-    const { account, onClose, classes, theme } = this.props;
+    const { activeTab, account, onClose, classes, theme } = this.props;
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
     const func = account && account.function;
@@ -103,7 +114,7 @@ export class DumbParamters extends React.Component {
               <span className={classes.headerAddOn}>{func}</span>
             </div>
           </div>,
-          <div className={classes.formTitle}>Paramètres de votre compte</div>
+          <div className={classes.formTitle}>Paramètres du compte</div>
         ]}
       >
         <Query
@@ -134,9 +145,13 @@ export class DumbParamters extends React.Component {
                   panelRoot: classes.tabPanelRoot
                 }}
                 tabs={[
-                  parametersMenuActions.includes(userProcessNodes.edit.nodeId) && {
+                  {
+                    open: activeTab && activeTab === PARAMETERS_TABS.edit,
+                    invalidate:
+                      (activeTab && activeTab !== PARAMETERS_TABS.edit) ||
+                      !parametersMenuActions.includes(userProcessNodes.edit.nodeId),
                     title: 'Profil',
-                    description: 'Mise à jour de vos coordonnées, modifications des photos et images',
+                    description: 'Mise à jour des coordonnées du profil, modifications des photos et images',
                     content: (
                       <EditProfile
                         form={`edit-profile${account.id}`}
@@ -172,7 +187,11 @@ export class DumbParamters extends React.Component {
                     ),
                     Icon: AccountCircleIcon
                   },
-                  parametersMenuActions.includes(userProcessNodes.editPassword.nodeId) && {
+                  {
+                    open: activeTab && activeTab === PARAMETERS_TABS.editPassword,
+                    invalidate:
+                      (activeTab && activeTab !== PARAMETERS_TABS.editPassword) ||
+                      !parametersMenuActions.includes(userProcessNodes.editPassword.nodeId),
                     title: 'Mot de passe',
                     description: 'Modification du mot de passe',
                     content: (
@@ -188,7 +207,11 @@ export class DumbParamters extends React.Component {
                     Icon: VpnKeyIcon,
                     color: '#d72b3f'
                   },
-                  parametersMenuActions.includes(userProcessNodes.getApiToken.nodeId) && {
+                  {
+                    open: activeTab && activeTab === PARAMETERS_TABS.editApiToken,
+                    invalidate:
+                      (activeTab && activeTab !== PARAMETERS_TABS.editApiToken) ||
+                      !parametersMenuActions.includes(userProcessNodes.getApiToken.nodeId),
                     title: 'Jeton API ',
                     description:
                       'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
@@ -198,7 +221,11 @@ export class DumbParamters extends React.Component {
                     Icon: SettingsInputComponentIcon,
                     color: '#ff9000'
                   },
-                  parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId) && {
+                  {
+                    open: activeTab && activeTab === PARAMETERS_TABS.assignRoles,
+                    invalidate:
+                      (activeTab && activeTab !== PARAMETERS_TABS.assignRoles) ||
+                      !parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId),
                     title: 'Rôles',
                     description:
                       'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',

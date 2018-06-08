@@ -10,7 +10,7 @@ import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import Login from '../forms/processes/userProcess/Login';
-import Paramters from '../forms/processes/userProcess/Paramters';
+import Paramters, { PARAMETERS_TABS } from '../forms/processes/userProcess/Paramters';
 import { userLogout } from '../../actions/authActions';
 import { filterActions } from '../../utils/processes';
 
@@ -73,7 +73,16 @@ export class DumbUserProcessManager extends React.Component {
           .then(this.onActionExecuted)
           .catch(globalProps.showError);
         break;
+      case userProcessNodes.see.nodeId: {
+        this.onActionExecuted();
+        setTimeout(() => {
+          goTo(get('users', { userId: person.id }));
+        }, 200);
+      }
       case userProcessNodes.edit.nodeId:
+        this.displayForm(action);
+        break;
+      case userProcessNodes.assignRoles.nodeId:
         this.displayForm(action);
         break;
       case userProcessNodes.logout.nodeId:
@@ -113,6 +122,8 @@ export class DumbUserProcessManager extends React.Component {
       return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
     case userProcessNodes.edit.nodeId:
       return <Paramters onClose={this.onFormClose} account={person} />;
+    case userProcessNodes.assignRoles.nodeId:
+      return <Paramters onClose={this.onFormClose} account={person} activeTab={PARAMETERS_TABS.assignRoles} />;
     default:
       return null;
     }

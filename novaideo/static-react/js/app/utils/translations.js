@@ -177,6 +177,10 @@ const Translations = {
         assignRoles: {
           title: "Assigner des rôles",
           description: "Assigner des rôles"
+        },
+        see: {
+          title: "Profil",
+          description: "Voir mon profil"
         }
       },
       registrationmanagement: {
@@ -527,6 +531,10 @@ const Translations = {
         assignRoles: {
           title: "Assigner des rôles",
           description: "Assigner des rôles"
+        },
+        see: {
+          title: "Profile",
+          description: "Profile"
         }
       },
       registrationmanagement: {
