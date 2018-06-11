@@ -302,7 +302,7 @@ class Activate(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ok-circle'
     style_order = 0
-    tags = ['secondary', 'entity']
+    tags = ['secondary', 'entity', 'warning']
     title = _('Activate the profile')
     context = IPerson
     roles_validation = activate_roles_validation
@@ -340,7 +340,7 @@ class AssignRoles(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-tower'
     style_order = 2
-    tags = ['secondary', 'entity', 'parameters-menu']
+    tags = ['secondary', 'global', 'parameters-menu']
     title = _('Assign roles')
     submission_title = _('Save')
     context = IPerson

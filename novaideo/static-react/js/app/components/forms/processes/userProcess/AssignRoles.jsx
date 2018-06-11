@@ -76,6 +76,10 @@ export class DumbAssignRoles extends React.Component {
     return roles;
   };
 
+  handleSnackbarClose = () => {
+    this.setState({ success: false, error: false });
+  };
+
   render() {
     const {
       globalProps: { site },

@@ -6,3 +6,4 @@ export { default as createAndPublish } from './createAndPublish';
 export { default as deleteIdea } from './delete';
 export { default as publish } from './publish';
 export { default as edit } from './edit';
+export { default as makeItsOpinion } from './makeItsOpinion';

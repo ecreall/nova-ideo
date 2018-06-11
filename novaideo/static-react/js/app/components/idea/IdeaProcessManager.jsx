@@ -7,6 +7,7 @@ import { Translate, I18n } from 'react-redux-i18n';
 import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
+import MakeItsOpinion from '../forms/processes/ideaProcess/MakeItsOpinion';
 import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict } from '../../utils/globalFunctions';
 import { PROCESSES, ACTIONS } from '../../processes';
@@ -141,6 +142,9 @@ export class DumbIdeaProcessManager extends React.Component {
       case ideaProcessNodes.delete.nodeId:
         this.displayForm(action);
         break;
+      case ideaProcessNodes.makeItsOpinion.nodeId:
+        this.displayForm(action);
+        break;
       default:
         this.displayForm(action);
       }
@@ -194,6 +198,16 @@ export class DumbIdeaProcessManager extends React.Component {
       );
     case ideaProcessNodes.publish.nodeId:
       return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.makeItsOpinion.nodeId:
+      return (
+        <MakeItsOpinion
+          idea={idea}
+          action={action}
+          onClose={this.onFormClose}
+          key={`${idea.id}-makeItsOpinion`}
+          form={`${idea.id}-makeItsOpinion`}
+        />
+      );
     case userProcessNodes.login.nodeId:
       return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
     default:

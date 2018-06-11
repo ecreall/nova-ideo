@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import AllignedActions from '../common/AllignedActions';
-import { ACTIONS } from '../../processes';
+import { ACTIONS, PROCESSES } from '../../processes';
 import { getActions } from '../../utils/processes';
 import { getFormattedDate } from '../../utils/globalFunctions';
 import UserAvatar from '../user/UserAvatar';
@@ -92,6 +92,7 @@ const IdeaAppBar = ({ idea, hasEvaluation, stats, processManager, classes, theme
   const isAnonymous = author && author.isAnonymous;
   const createdAtF3 = getFormattedDate(idea.createdAt, 'date.format3');
   const communicationActions = getActions(idea.actions, { tags: ACTIONS.communication });
+  const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
   return (
     <div className={classes.appBarContainer}>
       <div className={classes.titleContainer}>
@@ -120,7 +121,16 @@ const IdeaAppBar = ({ idea, hasEvaluation, stats, processManager, classes, theme
           onActionClick={processManager.execute}
           classes={{ container: classes.menu, button: classes.menuButton, action: classes.menuAction }}
           actionsProps={{
-            publish: { className: classes.publishAction, type: 'button', props: { background: theme.palette.success[500] } }
+            [ideaProcessNodes.publish.nodeId]: {
+              className: classes.publishAction,
+              type: 'button',
+              props: { background: theme.palette.success[500] }
+            },
+            [ideaProcessNodes.makeItsOpinion.nodeId]: {
+              className: classes.publishAction,
+              type: 'button',
+              props: { background: theme.palette.success[500] }
+            }
           }}
         />
       </div>

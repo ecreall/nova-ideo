@@ -188,6 +188,9 @@ const textInputStyles = (theme) => {
     labelOptional: {
       fontWeight: '400 !important',
       color: '#717274 !important'
+    },
+    multiline: {
+      minHeight: 20
     }
   };
 };

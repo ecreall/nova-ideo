@@ -128,3 +128,9 @@ export const FILES_ICONS = {
     id: 'document-icon'
   }
 };
+
+export const OPINIONS = {
+  favorable: 'opinions.favorable',
+  to_study: 'opinions.toStudy',
+  unfavorable: 'opinions.unfavorable'
+};

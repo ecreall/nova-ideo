@@ -8,6 +8,7 @@ import ModeEditIcon from '@material-ui/icons/ModeEdit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
@@ -73,6 +74,12 @@ export const PROCESSES = {
         description: 'processes.ideamanagement.publish.description',
         submission: 'processes.ideamanagement.publish.submission',
         confirmation: 'processes.ideamanagement.publish.confirmation'
+      },
+      makeItsOpinion: {
+        nodeId: 'makeitsopinion',
+        title: 'processes.ideamanagement.makeItsOpinion.title',
+        description: 'processes.ideamanagement.makeItsOpinion.description',
+        icon: iconAdapter('mdi-set mdi-clipboard-check')
       }
     }
   },
@@ -228,6 +235,9 @@ export const ACTIONS = {
   communication: 'communication',
   primary: 'primary',
   danger: 'danger',
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
   secondary: 'secondary',
   entity: 'entity',
   global: 'global',

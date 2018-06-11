@@ -33,6 +33,16 @@ const Translations = {
       searchData: "résultats de recherche pour : ",
       searchData_1: "résultat de recherche pour : "
     },
+    opinions: {
+      favorable: "Favorable",
+      toStudy: "À retravailler",
+      unfavorable: "Défavorable",
+      timeo: {
+        favorable: "Validée",
+        toStudy: "Non retenue",
+        unfavorable: "Retenue"
+      }
+    },
     idea: {
       private: "Privée",
       privatePublishAction: "Privée (Cliquer pour publier)",
@@ -116,6 +126,10 @@ const Translations = {
         comment: {
           title: "Commenter la proposition",
           description: "Commenter la proposition"
+        },
+        makeItsOpinion: {
+          title: "Donner voter avis",
+          description: "Donner voter avis"
         }
       },
       commentmanagement: {
@@ -316,6 +330,11 @@ const Translations = {
         confirmation: "Les rôles ont été changés",
         error: "Une erreur est survenue! Les rôles n'ont pas été changés",
         roles: "Les rôles"
+      },
+      makeItsOpinion: {
+        submit: "Enregistrer mon avis",
+        opinion: "Avis",
+        explanation: "Explication"
       }
     },
     evaluation: {
@@ -401,6 +420,16 @@ const Translations = {
       searchData: "search results for: ",
       searchData_1: "search result for : "
     },
+    opinions: {
+      favorable: "Positive",
+      toStudy: "To be re-worked upon",
+      unfavorable: "Negative",
+      timeo: {
+        favorable: "Validée",
+        toStudy: "Non retenue",
+        unfavorable: "Retenue"
+      }
+    },
     idea: {
       private: "Private",
       privatePublishAction: "Private (Click to publish)",
@@ -484,6 +513,10 @@ const Translations = {
         comment: {
           title: "Comment the proposal",
           description: "Comment the proposal"
+        },
+        makeItsOpinion: {
+          title: "Make your opinion",
+          description: "Make your opinion"
         }
       },
       commentmanagement: {
@@ -685,6 +718,11 @@ const Translations = {
         confirmation: "The roles has been changed",
         error: "An error has occurred! The roles has not been changed",
         roles: "The roles"
+      },
+      makeItsOpinion: {
+        submit: "Save my opinion",
+        opinion: "Opinion",
+        explanation: "Explanation"
       }
     },
     evaluation: {

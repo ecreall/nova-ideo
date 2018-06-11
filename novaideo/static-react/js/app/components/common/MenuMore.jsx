@@ -38,11 +38,22 @@ const styles = (theme) => {
 
 export const getFields = (actions, onActionClick, theme, titlesProps = {}) => {
   return actions.map((action) => {
-    const isDanger = action.tags.includes(ACTIONS.danger);
+    const actionTag =
+      (action.tags.includes(ACTIONS.info) && ACTIONS.info) ||
+      (action.tags.includes(ACTIONS.success) && ACTIONS.success) ||
+      (action.tags.includes(ACTIONS.warning) && ACTIONS.warning) ||
+      (action.tags.includes(ACTIONS.danger) && ACTIONS.danger);
+    const colors = {
+      [ACTIONS.info]: theme.palette.info[500],
+      [ACTIONS.success]: theme.palette.success[500],
+      [ACTIONS.warning]: theme.palette.warning[500],
+      [ACTIONS.danger]: theme.palette.danger.primary
+    };
+    const color = actionTag && colors[actionTag];
     return {
       title: <Translate value={action.title} {...titlesProps} />,
-      color: isDanger && theme.palette.danger.primary,
-      hoverColor: isDanger && theme.palette.danger.primary,
+      color: color,
+      hoverColor: color,
       Icon: action.icon,
       onClick: () => {
         if (onActionClick) onActionClick(action);

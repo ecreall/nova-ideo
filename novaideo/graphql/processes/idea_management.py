@@ -263,7 +263,6 @@ class WithdrawToken(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             WithdrawToken.action_id, args)
         status = False
@@ -287,7 +286,6 @@ class DeleteIdea(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             DeleteIdea.action_id, args)
         status = False
@@ -312,7 +310,6 @@ class Publish(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             Publish.action_id, args)
         status = False
@@ -325,3 +322,30 @@ class Publish(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return Publish(idea=context, status=status)
+
+
+class MakeItsOpinion(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        opinion = graphene.String()
+        explanation = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.makeitsopinion'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            MakeItsOpinion.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, args)
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return MakeItsOpinion(idea=context, status=status)

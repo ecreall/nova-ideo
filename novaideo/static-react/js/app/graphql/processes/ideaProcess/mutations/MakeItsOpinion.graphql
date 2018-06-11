@@ -1,0 +1,14 @@
+#import "../../../fragments/Action.graphql"
+
+mutation MakeItsOpinion($context: String!, $opinion: String!, $explanation: String!, $actionTags: [String]) {
+  makeItsOpinion(context: $context, opinion: $opinion, explanation: $explanation) {
+    status
+    idea {
+      id
+      state
+      actions(actionTags: $actionTags) {
+        ...Action
+      }
+    }
+  }
+}

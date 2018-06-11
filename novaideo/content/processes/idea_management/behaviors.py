@@ -479,7 +479,7 @@ class ArchiveIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
-    tags = ['secondary', 'global', 'danger']
+    tags = ['secondary', 'entity', 'danger']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = decision_roles_validation
@@ -536,7 +536,7 @@ class ModerationArchiveIdea(ArchiveIdea):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
-    tags = ['secondary', 'global', 'danger']
+    tags = ['secondary', 'entity', 'danger']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = archive_roles_validation
@@ -711,7 +711,7 @@ class AbandonIdea(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-stop'
     style_order = 4
-    tags = ['secondary', 'global', 'danger']
+    tags = ['secondary', 'entity', 'warning']
     context = Iidea
     roles_validation = ab_roles_validation
     processsecurity_validation = ab_processsecurity_validation
@@ -749,7 +749,7 @@ class RecuperateIdea(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
-    tags = ['secondary', 'global']
+    tags = ['secondary', 'entity']
     context = Iidea
     roles_validation = re_roles_validation
     processsecurity_validation = re_processsecurity_validation
@@ -1116,7 +1116,7 @@ class MakeOpinion(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-checklist'
     style_order = 10
-    tags = ['secondary', 'global']
+    tags = ['primary', 'menu']
     submission_title = _('Save')
     context = Iidea
     roles_validation = opinion_roles_validation
@@ -1124,7 +1124,6 @@ class MakeOpinion(InfiniteCardinality):
     state_validation = opinion_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        appstruct.pop('_csrf_token_')
         context.opinion = PersistentDict(appstruct)
         context.state = PersistentList(
             ['examined', 'published', context.opinion['opinion']])

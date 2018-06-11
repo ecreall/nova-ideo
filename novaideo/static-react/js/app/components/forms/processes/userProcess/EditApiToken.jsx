@@ -70,6 +70,10 @@ export class DumbEditApiToken extends React.Component {
     this.props.dispatch(initialize(form, { email: account.email }));
   };
 
+  handleSnackbarClose = () => {
+    this.setState({ success: false, error: false });
+  };
+
   render() {
     const { valid, account, classes, theme } = this.props;
     const { loading, error, success } = this.state;
