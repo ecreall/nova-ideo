@@ -27,7 +27,6 @@ class Registration(graphene.Mutation):
     def mutate(root, args, context, info):
         registration_shema = select(
             PersonSchema(), ['first_name', 'last_name', 'email', 'password'])
-        args = dict(args)
         context = getSite()
         request = get_current_request()
         action = get_action(Registration.action_id, context, request)
@@ -59,7 +58,6 @@ class ConfirmRegistration(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         registration_name = args.get('registration', None)
         root = getSite()
         context = root.get(registration_name, None)
@@ -219,7 +217,6 @@ class AssignRoles(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             AssignRoles.action_id, args)
         status = False
@@ -247,11 +244,9 @@ class Activate(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             Activate.action_id, args)
         status = False
-        user_roles = []
         if action:
             action.execute(context, request, {})
             request.invalidate_cache = True
@@ -274,11 +269,9 @@ class Deactivate(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        args = dict(args)
         context, request, action, args = get_execution_data(
             Deactivate.action_id, args)
         status = False
-        user_roles = []
         if action:
             action.execute(context, request, {})
             request.invalidate_cache = True
