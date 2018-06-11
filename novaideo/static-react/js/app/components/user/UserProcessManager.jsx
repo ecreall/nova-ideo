@@ -9,14 +9,17 @@ import { ACTIONS, PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
-import Login from '../forms/processes/userProcess/Login';
+import Login, { LOGIN_VIEWS } from '../forms/processes/userProcess/Login';
+import Activate from '../forms/processes/userProcess/Activate';
+import Deactivate from '../forms/processes/userProcess/Deactivate';
 import Paramters, { PARAMETERS_TABS } from '../forms/processes/userProcess/Paramters';
 import { userLogout } from '../../actions/authActions';
 import { filterActions } from '../../utils/processes';
 
 export class DumbUserProcessManager extends React.Component {
   state = {
-    action: null
+    action: null,
+    originalAction: null
   };
 
   onActionExecuted = () => {
@@ -38,6 +41,7 @@ export class DumbUserProcessManager extends React.Component {
   execute = (action) => {
     const { person, network, globalProps } = this.props;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
+    const registrationNodes = PROCESSES.registrationmanagement.nodes;
     if (action.nodeId === userProcessNodes.discuss.nodeId) {
       this.onActionExecuted();
       setTimeout(() => {
@@ -53,16 +57,31 @@ export class DumbUserProcessManager extends React.Component {
       })[0];
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
-      case processNodes.selectAnonymous.behaviorId:
+      case userProcessNodes.login.nodeId:
         this.displayForm(loginAction);
         break;
+      case registrationNodes.registration.nodeId:
+        this.displayForm(action);
+        break;
       default:
-        this.displayForm(loginAction);
+        this.displayForm(loginAction, action);
       }
     } else {
       const { selectUser, deselectUser } = this.props;
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
+      case userProcessNodes.activate.nodeId:
+        this.displayForm(action);
+        break;
+      case userProcessNodes.deactivate.nodeId:
+        this.displayForm(action);
+        break;
+      case userProcessNodes.login.nodeId:
+        this.displayForm(action);
+        break;
+      case registrationNodes.registration.nodeId:
+        this.displayForm(action);
+        break;
       case processNodes.select.nodeId:
         selectUser({ context: person })
           .then(this.onActionExecuted)
@@ -107,23 +126,37 @@ export class DumbUserProcessManager extends React.Component {
     this.afterFormClosed();
   };
 
-  displayForm = (action) => {
+  displayForm = (action, originalAction) => {
     this.beforeFormOpened();
-    this.setState({ action: action });
+    this.setState({ action: action, originalAction: originalAction });
   };
 
   renderForm = () => {
-    const { action } = this.state;
+    const { action, originalAction } = this.state;
     const { person } = this.props;
     if (!action) return null;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
+    const registrationNodes = PROCESSES.registrationmanagement.nodes;
     switch (action.behaviorId) {
     case userProcessNodes.login.nodeId:
-      return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
+      return (
+        <Login
+          action={action}
+          onClose={this.onFormClose}
+          messageType="warning"
+          message={originalAction && originalAction !== action && I18n.t('common.needLogin')}
+        />
+      );
+    case registrationNodes.registration.nodeId:
+      return <Login action={action} onClose={this.onFormClose} view={LOGIN_VIEWS.registration} />;
     case userProcessNodes.edit.nodeId:
       return <Paramters onClose={this.onFormClose} account={person} />;
     case userProcessNodes.assignRoles.nodeId:
       return <Paramters onClose={this.onFormClose} account={person} activeTab={PARAMETERS_TABS.assignRoles} />;
+    case userProcessNodes.activate.nodeId:
+      return <Activate onClose={this.onFormClose} account={person} action={action} />;
+    case userProcessNodes.deactivate.nodeId:
+      return <Deactivate onClose={this.onFormClose} account={person} action={action} />;
     default:
       return null;
     }

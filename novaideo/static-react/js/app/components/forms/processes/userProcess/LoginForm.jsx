@@ -198,6 +198,7 @@ export class DumbLoginForm extends React.Component {
 
   render() {
     const {
+      valid,
       action,
       globalProps: { site },
       classes,
@@ -262,7 +263,12 @@ export class DumbLoginForm extends React.Component {
         ) : (
           <div className={classes.newAccountDescription}>
             {I18n.t('common.tryingCreateAccount')}
-            <Button onClick={this.goToRegistration} background={theme.palette.info[500]} className={classes.buttonSubscription}>
+            <Button
+              disabled={!valid}
+              onClick={this.goToRegistration}
+              background={theme.palette.info[500]}
+              className={classes.buttonSubscription}
+            >
               {I18n.t('common.createAccount')}
             </Button>
           </div>

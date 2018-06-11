@@ -219,9 +219,7 @@ class AssignRoles(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        context_oid = args.pop('context')
         args = dict(args)
-        args['context'] = context_oid
         context, request, action, args = get_execution_data(
             AssignRoles.action_id, args)
         status = False
@@ -236,3 +234,57 @@ class AssignRoles(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return AssignRoles(status=status, roles=user_roles)
+
+
+class Activate(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    profile = graphene.Field('novaideo.graphql.schema.Person')
+    action_id = 'usermanagement.activate'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Activate.action_id, args)
+        status = False
+        user_roles = []
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Activate(status=status, profile=context)
+
+
+class Deactivate(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    profile = graphene.Field('novaideo.graphql.schema.Person')
+    action_id = 'usermanagement.deactivate'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Deactivate.action_id, args)
+        status = False
+        user_roles = []
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Deactivate(status=status, profile=context)

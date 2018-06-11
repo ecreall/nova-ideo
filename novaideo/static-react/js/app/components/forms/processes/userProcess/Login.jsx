@@ -159,9 +159,12 @@ export const LOGIN_VIEWS = {
 };
 
 export class DumbLogin extends React.Component {
-  state = {
-    view: LOGIN_VIEWS.login
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: props.view || LOGIN_VIEWS.login
+    };
+  }
 
   form = null;
 
@@ -190,19 +193,16 @@ export class DumbLogin extends React.Component {
       classes
     } = this.props;
     const { view } = this.state;
-    let loginAction = action;
-    if (!loginAction) {
-      const userProcessNodes = PROCESSES.usermanagement.nodes;
-      loginAction = filterActions(rootActions, {
-        tags: [ACTIONS.mainMenu, ACTIONS.site],
-        behaviorId: userProcessNodes.login.nodeId
-      })[0];
-    }
+    const userProcessNodes = PROCESSES.usermanagement.nodes;
+    const loginAction = filterActions(rootActions, {
+      tags: [ACTIONS.mainMenu, ACTIONS.site],
+      nodeId: userProcessNodes.login.nodeId
+    })[0];
     const picture = site && site.logo;
-    const userProcessNodes = PROCESSES.registrationmanagement.nodes;
+    const registrationProcessNodes = PROCESSES.registrationmanagement.nodes;
     const registrationAction = filterActions(rootActions, {
       tags: [ACTIONS.mainMenu, ACTIONS.site],
-      behaviorId: userProcessNodes.registration.nodeId
+      nodeId: registrationProcessNodes.registration.nodeId
     })[0];
     return (
       <Form

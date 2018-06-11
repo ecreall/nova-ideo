@@ -1,0 +1,15 @@
+#import "../../../fragments/Action.graphql"
+
+mutation Deactivate($context: String!) {
+  deactivate(context: $context) {
+    status
+    profile {
+      ... on Person {
+        id
+        actions {
+          ...Action
+        }
+      }
+    }
+  }
+}

@@ -47,7 +47,10 @@ const styles = (theme) => {
       fontSize: '17px !important'
     },
     action: {
-      borderRight: '1px solid rgba(0, 0, 0, 0.15)'
+      borderRight: '1px solid rgba(0, 0, 0, 0.15)',
+      '&:only-child': {
+        borderRight: 'none'
+      }
     }
   };
 };
@@ -128,7 +131,6 @@ export class DumbUserMenu extends React.Component {
     const { user, classes, onActionClick, overlayPosition } = this.props;
     if (!this.state.menu) return null;
     const actions = getActions(user.actions, { tags: ACTIONS.menu });
-    if (actions.length === 0) return null;
     return (
       <div className={classes.container}>
         {actions.map((action) => {
@@ -138,18 +140,7 @@ export class DumbUserMenu extends React.Component {
             </OverlaidTooltip>
           );
         })}
-        <div>
-          <Menu
-            id="comment-more-menu"
-            activator={
-              <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
-                <MoreHorizIcon className={classes.icon} />
-              </IconButton>
-            }
-          >
-            <MenuMore context={user} onActionClick={onActionClick} />
-          </Menu>
-        </div>
+        <MenuMore context={user} onActionClick={onActionClick} />
       </div>
     );
   }

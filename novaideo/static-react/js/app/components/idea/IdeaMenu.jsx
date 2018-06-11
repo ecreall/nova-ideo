@@ -139,18 +139,7 @@ export class DumbIdeaMenu extends React.Component {
             </OverlaidTooltip>
           );
         })}
-        <div>
-          <Menu
-            id="comment-more-menu"
-            activator={
-              <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
-                <MoreHorizIcon className={classes.icon} />
-              </IconButton>
-            }
-          >
-            <MenuMore context={idea} onActionClick={onActionClick} />
-          </Menu>
-        </div>
+        <MenuMore context={idea} onActionClick={onActionClick} />
       </div>
     );
   }

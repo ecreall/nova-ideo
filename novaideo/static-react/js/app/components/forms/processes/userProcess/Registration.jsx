@@ -194,6 +194,7 @@ export class DumbRegistrationForm extends React.Component {
 
   render() {
     const {
+      valid,
       action,
       globalProps: { site },
       classes,
@@ -277,7 +278,7 @@ export class DumbRegistrationForm extends React.Component {
                   <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
                 </div>
               ) : (
-                <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+                <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
                   {I18n.t('common.singUp')}
                 </Button>
               )}

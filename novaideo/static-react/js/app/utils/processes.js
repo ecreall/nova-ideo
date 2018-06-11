@@ -17,7 +17,7 @@ function equal(element, filter, defaultValue = true) {
 export function filterActions(actions, filter = {}) {
   if (!actions) return [];
   const validKeys = Object.keys(filter).filter((key) => {
-    return filter[key];
+    return typeof filter === 'object' ? filter[key].length > 0 : filter[key];
   });
   return actions.filter((action) => {
     return validKeys.every((key) => {

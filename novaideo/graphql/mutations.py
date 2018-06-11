@@ -10,7 +10,8 @@ from .processes.comment_management import (
 from .processes.user_management import (
     Registration, ConfirmRegistration,
     EditProfile, EditPassword,
-    EditApiToken, AssignRoles)
+    EditApiToken, AssignRoles,
+    Activate, Deactivate)
 
 class Mutations(graphene.ObjectType):
     # abstract process
@@ -41,3 +42,5 @@ class Mutations(graphene.ObjectType):
     edit_password = EditPassword.Field()
     edit_api_token = EditApiToken.Field()
     assign_roles = AssignRoles.Field()
+    activate = Activate.Field()
+    deactivate = Deactivate.Field()

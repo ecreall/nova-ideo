@@ -87,7 +87,7 @@ def accept_preregistration(request, preregistration, root):
 
 
 def login_roles_validation(process, context):
-    return has_role(role=('Anonymous', ))
+    return has_role(role=('Anonymous', )) and not has_role(role=('Admin', ))
 
 
 class LogIn(InfiniteCardinality):
@@ -244,7 +244,7 @@ class Deactivate(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-ban-circle'
     style_interaction = 'ajax-action'
     style_order = 0
-    tags = ['secondary', 'entity']
+    tags = ['secondary', 'danger', 'entity']
     title = _('Disactivate the profile')
     submission_title = _('Continue')
     context = IPerson

@@ -112,18 +112,7 @@ export class DumbCommentMenu extends React.Component {
             </OverlaidTooltip>
           );
         })}
-        <div>
-          <Menu
-            id={`${comment.id}-comment-more-menu`}
-            activator={
-              <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
-                <MoreHorizIcon className={classes.icon} />
-              </IconButton>
-            }
-          >
-            <MenuMore context={comment} onActionClick={onActionClick} />
-          </Menu>
-        </div>
+        <MenuMore context={comment} onActionClick={onActionClick} />
       </div>
     );
   }

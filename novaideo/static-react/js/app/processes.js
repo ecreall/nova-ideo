@@ -81,11 +81,13 @@ export const PROCESSES = {
     nodes: {
       login: {
         nodeId: 'login',
-        title: 'processes.usermanagement.login.title'
+        title: 'processes.usermanagement.login.title',
+        icon: iconAdapter('mdi-set mdi-login-variant')
       },
       logout: {
         nodeId: 'logout',
-        title: 'processes.usermanagement.logout.title'
+        title: 'processes.usermanagement.logout.title',
+        icon: iconAdapter('mdi-set mdi-logout-variant')
       },
       discuss: {
         nodeId: 'discuss',
@@ -121,6 +123,22 @@ export const PROCESSES = {
         nodeId: 'see',
         title: 'processes.usermanagement.see.title',
         description: 'processes.usermanagement.see.description'
+      },
+      deactivate: {
+        nodeId: 'deactivate',
+        title: 'processes.usermanagement.deactivate.title',
+        description: 'processes.usermanagement.deactivate.description',
+        submission: 'processes.usermanagement.deactivate.submission',
+        confirmation: 'processes.usermanagement.deactivate.confirmation',
+        icon: iconAdapter('mdi-set mdi-account-off')
+      },
+      activate: {
+        nodeId: 'activate',
+        title: 'processes.usermanagement.activate.title',
+        description: 'processes.usermanagement.activate.description',
+        submission: 'processes.usermanagement.activate.submission',
+        confirmation: 'processes.usermanagement.activate.confirmation',
+        icon: iconAdapter('mdi-set mdi-account-key')
       }
     }
   },
@@ -130,7 +148,8 @@ export const PROCESSES = {
       registration: {
         nodeId: 'registration',
         title: 'processes.registrationmanagement.registration.title',
-        description: 'processes.registrationmanagement.registration.title'
+        description: 'processes.registrationmanagement.registration.title',
+        icon: iconAdapter('mdi-set mdi-account-plus')
       }
     }
   },

@@ -181,6 +181,20 @@ const Translations = {
         see: {
           title: "Profil",
           description: "Voir mon profil"
+        },
+        activate: {
+          title: "Activer le compte",
+          description: "Activer le compte",
+          confirmation:
+            "Voulez-vous vraiment activer ce compte utilisateur ? L'utilisateur pourra se connecter à la plateforme et y ajouter du contenu",
+          submission: "Oui ! Activer"
+        },
+        deactivate: {
+          title: "Désactiver le compte",
+          description: "Désactiver le compte",
+          confirmation:
+            "Voulez-vous vraiment désactiver ce compte utilisateur ? L'utilisateur ne pourra plus se connecter à la plateforme",
+          submission: "Oui ! Désactiver"
         }
       },
       registrationmanagement: {
@@ -535,6 +549,20 @@ const Translations = {
         see: {
           title: "Profile",
           description: "Profile"
+        },
+        activate: {
+          title: "Activate the account",
+          description: "Activate the account",
+          confirmation:
+            "Are you sure you want t activate this user account? The user will be able to connect to the platform and add content",
+          submission: "Yes! Activate"
+        },
+        deactivate: {
+          title: "Deactivate the account",
+          description: "Deactivate the account",
+          confirmation:
+            "Are you sure you want to deactivate this user account? The user will not be able to login to the platform anymore",
+          submission: "Yes! Disable"
         }
       },
       registrationmanagement: {
