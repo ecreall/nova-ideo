@@ -129,8 +129,14 @@ export const FILES_ICONS = {
   }
 };
 
+export const OPINIONS_VALUES = {
+  favorable: 'favorable',
+  toStudy: 'to_study',
+  unfavorable: 'unfavorable'
+};
+
 export const OPINIONS = {
-  favorable: 'opinions.favorable',
-  to_study: 'opinions.toStudy',
-  unfavorable: 'opinions.unfavorable'
+  [OPINIONS_VALUES.favorable]: 'opinions.favorable',
+  [OPINIONS_VALUES.toStudy]: 'opinions.toStudy',
+  [OPINIONS_VALUES.unfavorable]: 'opinions.unfavorable'
 };

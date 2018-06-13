@@ -20,6 +20,7 @@ import Select from '../../graphql/processes/abstractProcess/mutations/Select.gra
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import { filterActions } from '../../utils/processes';
 import Login from '../forms/processes/userProcess/Login';
+import { OPINIONS_VALUES } from '../../constants';
 
 export class DumbIdeaProcessManager extends React.Component {
   state = {
@@ -206,6 +207,9 @@ export class DumbIdeaProcessManager extends React.Component {
           onClose={this.onFormClose}
           key={`${idea.id}-makeItsOpinion`}
           form={`${idea.id}-makeItsOpinion`}
+          initialValues={{
+            opinion: OPINIONS_VALUES.favorable
+          }}
         />
       );
     case userProcessNodes.login.nodeId:

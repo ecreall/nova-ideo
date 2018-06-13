@@ -37,7 +37,8 @@ const styles = (theme) => {
       boxShadow: 'none'
     },
     paper: {
-      backgroundColor: '#f3f3f3'
+      backgroundColor: '#f3f3f3',
+      overflowX: 'hidden'
     },
     paperSmall: {
       position: 'absolute',

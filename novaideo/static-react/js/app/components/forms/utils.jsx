@@ -148,7 +148,7 @@ const textInputStyles = (theme) => {
     multilineRoot: {
       height: 'auto !important',
       minHeight: 45,
-      padding: '6px 0 14px 0'
+      padding: '6px 0 23px 0'
     },
     errorRoot: {
       borderColor: theme.palette.danger.primary
@@ -234,6 +234,13 @@ export const renderTextInput = withStyles(textInputStyles, {
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
+          inputProps={{
+            classes: {
+              root: classNames({
+                [classes.multiline]: multiline
+              })
+            }
+          }}
           classes={{
             root: classNames(classes.root, {
               [classes.errorRoot]: touched && error,

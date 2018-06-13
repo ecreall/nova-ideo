@@ -1,5 +1,7 @@
+import { OPINIONS_VALUES } from '../../../constants';
+
 export const OPINIONS = {
-  favorable: 'opinions.timeo.favorable',
-  to_study: 'opinions.timeo.toStudy',
-  unfavorable: 'opinions.timeo.unfavorable'
+  [OPINIONS_VALUES.favorable]: 'opinions.timeo.favorable',
+  [OPINIONS_VALUES.toStudy]: 'opinions.timeo.toStudy',
+  [OPINIONS_VALUES.unfavorable]: 'opinions.timeo.unfavorable'
 };

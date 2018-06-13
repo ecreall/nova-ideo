@@ -9,7 +9,9 @@ import { filterActions } from '../../utils/processes';
 import { ACTIONS, PROCESSES } from '../../processes';
 
 const styles = {
-  button: {}
+  button: {
+    whiteSpace: 'initial !important'
+  }
 };
 
 export class DumbLoginButton extends React.Component {
