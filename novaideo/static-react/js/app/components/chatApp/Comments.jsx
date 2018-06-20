@@ -22,6 +22,7 @@ import { COMMENTS_ACTIONS, ACTIONS } from '../../processes';
 import { NO_COMMENT, CT_COMMENT } from '../../constants';
 import { markAsRead } from '../../graphql/processes/commentProcess';
 import MarkAsRead from '../../graphql/processes/commentProcess/mutations/MarkAsRead.graphql';
+import { getFormId } from '../../utils/globalFunctions';
 
 const styles = (theme) => {
   return {
@@ -140,8 +141,7 @@ export class RenderComments extends React.Component {
     return (
       commentAction && (
         <Comment
-          key={channelId}
-          form={channelId}
+          form={getFormId(channelId)}
           channel={channel}
           context={contextOid}
           subject={contextOid}

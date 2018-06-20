@@ -20,6 +20,7 @@ import { PROCESSES, ACTIONS } from '../../../processes';
 import { NO_COMMENT, CT_COMMENT } from '../../../constants';
 import { markAsRead } from '../../../graphql/processes/commentProcess';
 import MarkAsRead from '../../../graphql/processes/commentProcess/mutations/MarkAsRead.graphql';
+import { getFormId } from '../../../utils/globalFunctions';
 
 const styles = (theme) => {
   return {
@@ -193,8 +194,7 @@ export class RenderComment extends React.Component {
       commentAction && (
         <Comment
           placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
-          key={id || rightProps.id}
-          form={id || rightProps.id}
+          form={getFormId(id || rightProps.id)}
           channel={channel}
           context={comment && comment.oid}
           subject={comment && comment.rootOid}

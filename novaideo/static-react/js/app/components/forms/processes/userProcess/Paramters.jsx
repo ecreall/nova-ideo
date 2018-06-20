@@ -20,6 +20,7 @@ import EditPassword from './EditPassword';
 import AssignRoles from './AssignRoles';
 import UserAvatar from '../../../user/UserAvatar';
 import EditApiToken from './EditApiToken';
+import { getFormId } from '../../../../utils/globalFunctions';
 
 export const PARAMETERS_TABS = {
   edit: 'edit',
@@ -154,8 +155,7 @@ export class DumbParamters extends React.Component {
                     description: 'Mise à jour des coordonnées du profil, modifications des photos et images',
                     content: (
                       <EditProfile
-                        form={`edit-profile${account.id}`}
-                        key={`edit-profile${account.id}`}
+                        form={getFormId(`edit-profile${account.id}`)}
                         account={profile}
                         initialValues={{
                           firstName: profile.firstName,
@@ -196,8 +196,7 @@ export class DumbParamters extends React.Component {
                     description: 'Modification du mot de passe',
                     content: (
                       <EditPassword
-                        form={`edit-password${account.id}`}
-                        key={`edit-password${account.id}`}
+                        form={getFormId(`edit-password${account.id}`)}
                         account={profile}
                         initialValues={{
                           email: profile.email
@@ -215,9 +214,7 @@ export class DumbParamters extends React.Component {
                     title: 'Jeton API ',
                     description:
                       'Le jeton API est un mot de passe à usage unique. C\'est un dispositif de sécurité. Vous pouvez obtenir un jeton API dans cet onglet.',
-                    content: (
-                      <EditApiToken form={`editapitoken${account.id}`} key={`editapitoken${account.id}`} account={profile} />
-                    ),
+                    content: <EditApiToken form={getFormId(`editapitoken${account.id}`)} account={profile} />,
                     Icon: SettingsInputComponentIcon,
                     color: '#ff9000'
                   },
@@ -231,8 +228,7 @@ export class DumbParamters extends React.Component {
                       'En tant qu\'administrateur, vous pouvez assigner un rôle à chacun des membres. Accéder ici à cette fonctionnalité',
                     content: (
                       <AssignRoles
-                        form={`Assign-roles${account.id}`}
-                        key={`Assign-roles${account.id}`}
+                        form={getFormId(`Assign-roles${account.id}`)}
                         account={profile}
                         initialValues={{
                           roles: roles

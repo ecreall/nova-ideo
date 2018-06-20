@@ -16,6 +16,7 @@ import { filterActions } from '../../../../utils/processes';
 import Form from '../../Form';
 import LoginForm from './LoginForm';
 import Registration from './Registration';
+import { getFormId } from '../../../../utils/globalFunctions';
 
 const styles = (theme) => {
   return {
@@ -235,8 +236,7 @@ export class DumbLogin extends React.Component {
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.login })}>
               {loginAction && (
                 <LoginForm
-                  form="user-login"
-                  key="user-login"
+                  form={getFormId('user-login')}
                   action={loginAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
@@ -248,8 +248,7 @@ export class DumbLogin extends React.Component {
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.registration })}>
               {registrationAction && (
                 <Registration
-                  form="user-registration"
-                  key="user-registration"
+                  form={getFormId('user-registration')}
                   action={registrationAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}

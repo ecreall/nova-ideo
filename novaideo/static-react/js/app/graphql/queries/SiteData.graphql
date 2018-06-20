@@ -2,6 +2,7 @@
 
 query SiteData {
   root {
+    id
     siteId
     title
     logo {

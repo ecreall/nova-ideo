@@ -21,6 +21,7 @@ import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
 import { CONTENTS_IDS } from './chatAppRight';
 import Search from '../forms/Search';
+import { getFormId } from '../../utils/globalFunctions';
 
 const styles = (theme) => {
   return {
@@ -278,8 +279,7 @@ class NavBar extends React.Component {
               </OverlaidTooltip>
               <div className={classes.search}>
                 <Search
-                  form={searchFormId}
-                  key={searchFormId}
+                  form={getFormId(searchFormId)}
                   onSearch={this.handelSearch}
                   onCancel={this.handleSearchCancel}
                   title={<Translate value="forms.comment.searchPlaceholder" name={channelTitle || '...'} />}

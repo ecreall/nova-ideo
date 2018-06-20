@@ -84,6 +84,10 @@ module.exports = {
           test: /\.json$/,
           use: 'json-loader'
         },
+        {
+         test: /\.md$/,
+         use: ['babel-loader', '@mdx-js/loader']
+       }
 ]
     },
     resolve:{

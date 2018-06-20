@@ -8,6 +8,7 @@ import FlatList from '../../common/FlatList';
 import AllContents from '../../../graphql/queries/AllContents.graphql';
 import Search from '../../forms/Search';
 import SearchContentItem from './SearchContentItem';
+import { getFormId } from '../../../utils/globalFunctions';
 
 const styles = {
   container: {
@@ -52,7 +53,7 @@ class SearchContentsList extends React.Component {
     return [
       <Search
         liveSearch
-        form="jum-contents-search"
+        form={getFormId('jump-contents-search')}
         key="jum-contents-search"
         onSearch={this.handelSearch}
         onCancel={this.handleSearchCancel}

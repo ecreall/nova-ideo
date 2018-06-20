@@ -200,6 +200,7 @@ export class DumbFlatList extends React.Component {
         .then(() => {
           if (network.url.error) this.props.setURLState(false, []);
           this.loading = false;
+          createEvent('resize', true);
         })
         .catch((e) => {
           if (!network.url.error) this.props.setURLState(true, [e.message]);

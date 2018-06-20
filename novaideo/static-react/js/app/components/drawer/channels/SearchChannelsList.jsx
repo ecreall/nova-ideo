@@ -8,6 +8,7 @@ import FlatList from '../../common/FlatList';
 import AllChannels from '../../../graphql/queries/AllChannels.graphql';
 import Search from '../../forms/Search';
 import SearchChannelItem from './SearchChannelItem';
+import { getFormId } from '../../../utils/globalFunctions';
 
 const styles = {
   container: {
@@ -52,8 +53,7 @@ class SearchChannelsList extends React.Component {
     return [
       <Search
         liveSearch
-        form="jum-channels-search"
-        key="jum-channels-search"
+        form={getFormId('jump-channels-search')}
         onSearch={this.handelSearch}
         onCancel={this.handleSearchCancel}
         title={I18n.t('channels.jumpSearch')}

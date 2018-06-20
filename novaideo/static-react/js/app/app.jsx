@@ -9,6 +9,7 @@ import ChatApp from './components/chatApp/ChatApp';
 import Account from './graphql/queries/Account.graphql';
 import { updateGlobalProps } from './actions/instanceActions';
 import Home from './components/collaborationApp/Home';
+import { setInputValue } from './utils/globalFunctions';
 
 const styles = {
   root: {
@@ -27,10 +28,12 @@ const styles = {
 
 class DumbApp extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const { data } = nextProps;
+    const { data, site } = nextProps;
     this.props.updateGlobalProps({
       account: data.account
     });
+    const accountId = data.account ? data.account.id : 'anonymous';
+    setInputValue('execution-id', `${site.id}-${accountId}`);
   }
 
   render() {
@@ -55,7 +58,8 @@ export const mapStateToProps = (state) => {
   return {
     channelOpen: state.apps.chatApp.open,
     drawerOpen: state.apps.drawer.open,
-    channel: state.apps.chatApp.channel
+    channel: state.apps.chatApp.channel,
+    site: state.globalProps.site
   };
 };
 

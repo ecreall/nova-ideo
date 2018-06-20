@@ -9,6 +9,7 @@ import { filterActions } from '../../utils/processes';
 import { ACTIONS, PROCESSES } from '../../processes';
 import CreateIdeaForm from '../forms/processes/ideaProcess/Create';
 import UserAvatar from '../user/UserAvatar';
+import { getFormId } from '../../utils/globalFunctions';
 
 const styles = {
   fromContainer: {
@@ -78,7 +79,7 @@ export class DumbCreateIdeaHome extends React.Component {
     const authorPicture = account && account.picture;
     const authorTitle = account && account.title;
     const form = account ? (
-      <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form="create-proposal-form" />
+      <CreateIdeaForm onClose={this.closeForm} key="create-proposal-form" form={getFormId('create-proposal-form')} />
     ) : (
       <Login action={loginAction} onClose={this.closeForm} messageType="warning" message={I18n.t('common.needLogin')} />
     );

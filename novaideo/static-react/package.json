@@ -24,6 +24,8 @@
   "author": "Ecreall",
   "license": "AGPL-3.0",
   "devDependencies": {
+    "@mdx-js/loader": "^0.11.0",
+    "@mdx-js/mdx": "^0.10.1",
     "apollo-test-utils": "^0.3.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.1",
@@ -37,6 +39,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.28.5",
+    "docz": "latest",
     "empty": "^0.10.1",
     "eslint": "^4.6.1",
     "eslint-config-airbnb": "^15.1.0",
@@ -64,11 +67,10 @@
     "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
     "url-loader": "^0.5.7",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
-    "docz": "latest"
+    "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
-    "@material-ui/core": "^1.2.0",
+    "@material-ui/core": "^1.2.2",
     "@material-ui/icons": "^1.1.0",
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-cache-persist": "0.1.1",

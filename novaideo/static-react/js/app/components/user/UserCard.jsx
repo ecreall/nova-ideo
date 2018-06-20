@@ -21,7 +21,7 @@ import OverlaidTooltip from '../common/OverlaidTooltip';
 import AllignedActions from '../common/AllignedActions';
 import UserMenu from './UserMenu';
 import Comment from '../forms/processes/common/Comment';
-import { initalsGenerator } from '../../utils/globalFunctions';
+import { initalsGenerator, getFormId } from '../../utils/globalFunctions';
 
 const imgGradient =
   'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
@@ -259,8 +259,7 @@ export class DumbUserCard extends React.Component {
         <Comment
           isDiscuss
           classes={{ container: classes.formContainer }}
-          key={channelId}
-          form={channelId}
+          form={getFormId(channelId)}
           action={commentAction}
           context={person.oid}
           subject={person.oid}

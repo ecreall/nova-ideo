@@ -9,7 +9,7 @@ import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
 import MakeItsOpinion from '../forms/processes/ideaProcess/MakeItsOpinion';
 import { goTo, get } from '../../utils/routeMap';
-import { arrayToDict } from '../../utils/globalFunctions';
+import { arrayToDict, getFormId } from '../../utils/globalFunctions';
 import { PROCESSES, ACTIONS } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import { support, oppose, withdraw } from '../../graphql/processes/ideaProcess';
@@ -177,8 +177,7 @@ export class DumbIdeaProcessManager extends React.Component {
           idea={idea}
           action={action}
           onClose={this.onFormClose}
-          key={`${idea.id}-edit`}
-          form={`${idea.id}-edit`}
+          form={getFormId(`${idea.id}-edit`)}
           initialValues={{
             title: idea.title,
             text: idea.text,
@@ -205,8 +204,7 @@ export class DumbIdeaProcessManager extends React.Component {
           idea={idea}
           action={action}
           onClose={this.onFormClose}
-          key={`${idea.id}-makeItsOpinion`}
-          form={`${idea.id}-makeItsOpinion`}
+          form={getFormId(`${idea.id}-makeItsOpinion`)}
           initialValues={{
             opinion: OPINIONS_VALUES.favorable
           }}

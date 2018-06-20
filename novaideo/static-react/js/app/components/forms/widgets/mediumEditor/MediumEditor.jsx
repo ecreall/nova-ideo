@@ -263,7 +263,7 @@ class MediumEditor extends React.Component {
   };
 
   getHTMLText = () => {
-    return this.exporter(this.state.editorState.getCurrentContent());
+    return this.exporter(this.state.editorState.getCurrentContent()).replace(new RegExp(emptyText, 'g'), '');
   };
 
   onChange = (editorState) => {

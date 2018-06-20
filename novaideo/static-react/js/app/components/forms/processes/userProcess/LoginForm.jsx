@@ -250,7 +250,7 @@ export class DumbLoginForm extends React.Component {
               <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
             </div>
           ) : (
-            <Button type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+            <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
               {I18n.t('common.signIn')}
             </Button>
           )}
@@ -263,12 +263,7 @@ export class DumbLoginForm extends React.Component {
         ) : (
           <div className={classes.newAccountDescription}>
             {I18n.t('common.tryingCreateAccount')}
-            <Button
-              disabled={!valid}
-              onClick={this.goToRegistration}
-              background={theme.palette.info[500]}
-              className={classes.buttonSubscription}
-            >
+            <Button onClick={this.goToRegistration} background={theme.palette.info[500]} className={classes.buttonSubscription}>
               {I18n.t('common.createAccount')}
             </Button>
           </div>

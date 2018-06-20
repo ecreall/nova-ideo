@@ -17,7 +17,7 @@ import FilesPreview from '../common/FilesPreview';
 import URLs from '../common/urlPreview/URLs';
 import URLPreview from '../common/urlPreview/URLPreview';
 import EmojiEvaluation from '../common/EmojiEvaluation';
-import { getFormattedDate } from '../../utils/globalFunctions';
+import { getFormattedDate, getFormId } from '../../utils/globalFunctions';
 import { emojiConvert } from '../../utils/emojiConvertor';
 import CommentMenu from './CommentMenu';
 import UserTitle from '../user/UserTitle';
@@ -366,8 +366,7 @@ class DumbCommentItem extends React.Component {
               )}
               {edit ? (
                 <Edit
-                  key={`edit-${node.id}`}
-                  form={`edit-${node.id}`}
+                  form={getFormId(`edit-${node.id}`)}
                   context={node}
                   onSubmit={this.onEdit}
                   action={action}

@@ -6,7 +6,7 @@ import Grow from '@material-ui/core/Grow';
 import { connect } from 'react-redux';
 
 import { search } from '../../actions/collaborationAppActions';
-import { getFormattedDate } from '../../utils/globalFunctions';
+import { getFormattedDate, getFormId } from '../../utils/globalFunctions';
 import AllignedActions from '../common/AllignedActions';
 import { getActions } from '../../utils/processes';
 import { ACTIONS } from '../../processes';
@@ -211,8 +211,7 @@ class UserAppBar extends React.Component {
             <div className={classes.search}>
               <Search
                 liveSearch
-                form={`${person.id}-search`}
-                key={`${person.id}-search`}
+                form={getFormId(`${person.id}-search`)}
                 onSearch={this.handelSearch}
                 onCancel={this.handleSearchCancel}
                 title={<Translate value="user.search" name={person.title} />}

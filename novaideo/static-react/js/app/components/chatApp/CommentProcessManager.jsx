@@ -13,6 +13,7 @@ import { addReaction } from '../../graphql/processes/abstractProcess';
 import { updateChatAppRight } from '../../actions/chatAppActions';
 import { PROCESSES } from '../../processes';
 import { CONTENTS_IDS } from './chatAppRight';
+import { getFormId } from '../../utils/globalFunctions';
 
 export class DumbCommentProcessManager extends React.Component {
   state = {
@@ -88,8 +89,7 @@ export class DumbCommentProcessManager extends React.Component {
       return (
         <CreateIdeaForm
           context={comment}
-          key={`transform-proposal-${comment.id}`}
-          form={`transform-proposal-${comment.id}`}
+          form={getFormId(`transform-proposal-${comment.id}`)}
           onClose={this.onFormClose}
           initialValues={{
             text: formatText(comment.text),

@@ -4,8 +4,8 @@ mutation EditProfile(
   $context: String!
   $firstName: String!
   $lastName: String!
-  $description: String!
-  $function: String!
+  $description: String
+  $function: String
   $email: String!
   $locale: String!
   $oldPicture: String

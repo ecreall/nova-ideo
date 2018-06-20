@@ -7,6 +7,29 @@ import * as Vibrant from 'node-vibrant';
 
 import * as constants from '../constants';
 
+export const setInputValue = (id, value) => {
+  const elem = document.getElementById(id);
+  if (elem instanceof HTMLInputElement) {
+    elem.value = value;
+    return value;
+  }
+  return null;
+};
+
+const getInputValue = (id) => {
+  const elem = document.getElementById(id);
+  const value = elem instanceof HTMLInputElement ? elem.value : null;
+  return value;
+};
+
+export const getExecutionId = () => {
+  return getInputValue('execution-id');
+};
+
+export const getFormId = (id) => {
+  return `${id}-${getExecutionId()}`;
+};
+
 export const calculatePercentage = (value1, value2) => {
   return Math.round(((value1 * 100) / value2) * 100) / 100;
 };

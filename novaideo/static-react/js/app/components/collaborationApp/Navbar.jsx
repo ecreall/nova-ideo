@@ -14,6 +14,7 @@ import { toggleDrawer, globalSearch } from '../../actions/collaborationAppAction
 import AccountInformation from '../user/AccountInformation';
 import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
+import { getFormId } from '../../utils/globalFunctions';
 
 const styles = {
   flex: {
@@ -109,8 +110,7 @@ class NavBar extends React.Component {
               <div className={classes.search}>
                 <Search
                   liveSearch
-                  form="globalSearch"
-                  key="globalSearch"
+                  form={getFormId('globalSearch')}
                   onSearch={this.handelSearch}
                   onCancel={this.handleSearchCancel}
                   title={I18n.t('common.search')}

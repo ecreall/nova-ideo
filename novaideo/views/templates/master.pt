@@ -7,6 +7,7 @@
       tal:define="mp request.sdiapi.mgmt_path;
       su request.static_url;
       notification_ids getattr(request.user, 'notification_ids', []);
+      notification_ids getattr(request.user, 'notification_ids', []);
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
       app_id getattr(request.root, 'app_id', None);
       root_title getattr(request.root, 'title', '');
@@ -74,6 +75,7 @@
     </style>
   </head>
   <body>
+    <input type="hidden" name="execution-id" id="execution-id" value="" />
     <div id='root'></div>
     <div id='modal-portal'></div>
     <script src="${su('novaideo:static-react/build/bundle.js')}"></script>
