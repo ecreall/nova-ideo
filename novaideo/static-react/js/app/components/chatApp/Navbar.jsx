@@ -210,7 +210,7 @@ class NavBar extends React.Component {
     const isBackground = rightOpen && rightFull && rightComponentId === CONTENTS_IDS.reply;
     const channel = data.channel;
     const actionWithSeparator = classNames(classes.action, classes.actionWithSeparator);
-    const searchFormId = 'channel-search-form';
+    const searchFormId = getFormId('channel-search-form');
     const channelTitle = channel && channel.title;
     return (
       <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_CLOSE: this.handleClose, CHATAPP_INFO: this.handleInfo }}>
@@ -279,7 +279,8 @@ class NavBar extends React.Component {
               </OverlaidTooltip>
               <div className={classes.search}>
                 <Search
-                  form={getFormId(searchFormId)}
+                  form={searchFormId}
+                  key={searchFormId}
                   onSearch={this.handelSearch}
                   onCancel={this.handleSearchCancel}
                   title={<Translate value="forms.comment.searchPlaceholder" name={channelTitle || '...'} />}

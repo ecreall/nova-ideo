@@ -171,13 +171,15 @@ export class DumbIdeaProcessManager extends React.Component {
     switch (action.behaviorId) {
     case ideaProcessNodes.delete.nodeId:
       return <Delete idea={idea} action={action} onClose={this.onFormClose} />;
-    case ideaProcessNodes.edit.nodeId:
+    case ideaProcessNodes.edit.nodeId: {
+      const formId = getFormId(`${idea.id}-edit`);
       return (
         <Edit
           idea={idea}
           action={action}
           onClose={this.onFormClose}
-          form={getFormId(`${idea.id}-edit`)}
+          form={formId}
+          key={formId}
           initialValues={{
             title: idea.title,
             text: idea.text,
@@ -196,20 +198,23 @@ export class DumbIdeaProcessManager extends React.Component {
           }}
         />
       );
+    }
     case ideaProcessNodes.publish.nodeId:
       return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
-    case ideaProcessNodes.makeItsOpinion.nodeId:
+    case ideaProcessNodes.makeItsOpinion.nodeId: {
+      const formId = getFormId(`${idea.id}-makeItsOpinion`);
       return (
         <MakeItsOpinion
           idea={idea}
           action={action}
           onClose={this.onFormClose}
-          form={getFormId(`${idea.id}-makeItsOpinion`)}
+          form={formId}
           initialValues={{
             opinion: OPINIONS_VALUES.favorable
           }}
         />
       );
+    }
     case userProcessNodes.login.nodeId:
       return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
     default:

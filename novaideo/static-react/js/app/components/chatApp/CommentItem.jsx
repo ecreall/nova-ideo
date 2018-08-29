@@ -309,6 +309,7 @@ class DumbCommentItem extends React.Component {
       : [];
     const addReactionAction = getActions(node.actions, { behaviorId: abstractProcessNodes.addreaction.nodeId })[0];
     const channel = (itemProps && itemProps.channel) || node.channel;
+    const formId = getFormId(`edit-${node.id}`);
     return (
       <div>
         <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
@@ -366,7 +367,8 @@ class DumbCommentItem extends React.Component {
               )}
               {edit ? (
                 <Edit
-                  form={getFormId(`edit-${node.id}`)}
+                  form={formId}
+                  key={formId}
                   context={node}
                   onSubmit={this.onEdit}
                   action={action}

@@ -190,11 +190,13 @@ export class RenderComment extends React.Component {
     const { id, rightProps, data, inline, formProps, classes } = this.props;
     const comment = data.node;
     const channel = comment && comment.channel;
+    const formId = getFormId(id || rightProps.id);
     return (
       commentAction && (
         <Comment
           placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
-          form={getFormId(id || rightProps.id)}
+          form={formId}
+          key={formId}
           channel={channel}
           context={comment && comment.oid}
           subject={comment && comment.rootOid}

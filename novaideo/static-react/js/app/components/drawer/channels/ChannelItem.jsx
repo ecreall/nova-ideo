@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import { convertFromRaw } from 'draft-js';
 
 import { goTo, get } from '../../../utils/routeMap';
+import { getFormId } from '../../../utils/globalFunctions';
 import UserAvatar from '../../user/UserAvatar';
 import { openCollaborationRight } from '../../../actions/collaborationAppActions';
 import { CONTENTS_IDS } from '../../collaborationApp/collaborationAppRight';
@@ -189,7 +190,7 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state, props) => {
   return {
-    currentMessage: state.form[props.node.id],
+    currentMessage: state.form[getFormId(props.node.id)],
     activeChannel: state.apps.chatApp.channel,
     activeIntegretedChannel: state.apps.collaborationApp.right.props.channel,
     chatAppIntegreted: state.apps.chatApp.integrations

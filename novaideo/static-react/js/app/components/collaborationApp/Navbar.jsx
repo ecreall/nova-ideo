@@ -96,6 +96,7 @@ class NavBar extends React.Component {
 
   render() {
     const { classes, className, drawer, site } = this.props;
+    const formId = getFormId('globalSearch');
     return (
       <div>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
@@ -110,7 +111,8 @@ class NavBar extends React.Component {
               <div className={classes.search}>
                 <Search
                   liveSearch
-                  form={getFormId('globalSearch')}
+                  form={formId}
+                  key={formId}
                   onSearch={this.handelSearch}
                   onCancel={this.handleSearchCancel}
                   title={I18n.t('common.search')}

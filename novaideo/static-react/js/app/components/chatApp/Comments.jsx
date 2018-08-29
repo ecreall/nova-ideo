@@ -138,10 +138,12 @@ export class RenderComments extends React.Component {
     const channel = data.node;
     const subject = channel && channel.subject;
     const contextOid = subject ? subject.oid : '';
+    const formId = getFormId(channelId);
     return (
       commentAction && (
         <Comment
-          form={getFormId(channelId)}
+          key={formId}
+          form={formId}
           channel={channel}
           context={contextOid}
           subject={contextOid}

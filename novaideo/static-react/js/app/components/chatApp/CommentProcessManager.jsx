@@ -85,11 +85,13 @@ export class DumbCommentProcessManager extends React.Component {
       return <Pin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
     case commentProcessNodes.unpin.nodeId:
       return <Unpin comment={comment} channel={channel} action={action} onClose={this.onFormClose} />;
-    case commentProcessNodes.transformtoidea.nodeId:
+    case commentProcessNodes.transformtoidea.nodeId: {
+      const formId = getFormId(`transform-proposal-${comment.id}`);
       return (
         <CreateIdeaForm
           context={comment}
-          form={getFormId(`transform-proposal-${comment.id}`)}
+          form={formId}
+          key={formId}
           onClose={this.onFormClose}
           initialValues={{
             text: formatText(comment.text),
@@ -107,6 +109,7 @@ export class DumbCommentProcessManager extends React.Component {
           }}
         />
       );
+    }
     default:
       return null;
     }

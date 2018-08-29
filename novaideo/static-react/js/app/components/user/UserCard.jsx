@@ -204,6 +204,7 @@ export class DumbUserCard extends React.Component {
     } else if (person.title && !authorPicture) {
       imgContent = <div className={classes.userIcon}>{initalsGenerator(person.title)}</div>;
     }
+    const commentFormId = getFormId(channelId);
     return [
       <div className={classes.container}>
         <div
@@ -259,7 +260,8 @@ export class DumbUserCard extends React.Component {
         <Comment
           isDiscuss
           classes={{ container: classes.formContainer }}
-          form={getFormId(channelId)}
+          form={commentFormId}
+          key={commentFormId}
           action={commentAction}
           context={person.oid}
           subject={person.oid}

@@ -50,11 +50,12 @@ class SearchContentsList extends React.Component {
 
   render() {
     const { classes, onItemClick } = this.props;
+    const formId = getFormId('jump-contents-search');
     return [
       <Search
         liveSearch
-        form={getFormId('jump-contents-search')}
-        key="jum-contents-search"
+        form={formId}
+        key={formId}
         onSearch={this.handelSearch}
         onCancel={this.handleSearchCancel}
         title={I18n.t('channels.jumpSearch')}

@@ -178,6 +178,7 @@ class UserAppBar extends React.Component {
     const isAnonymous = person.isAnonymous;
     const communicationActions = getActions(person.actions, { tags: ACTIONS.communication });
     const fCreatedAt = getFormattedDate(person.createdAt, 'date.format');
+    const searchFormId = getFormId(`${person.id}-search`);
     return (
       <div className={classes.appBarContainer}>
         <Grow in={userDataVisible} timeout={100}>
@@ -211,7 +212,8 @@ class UserAppBar extends React.Component {
             <div className={classes.search}>
               <Search
                 liveSearch
-                form={getFormId(`${person.id}-search`)}
+                form={searchFormId}
+                key={searchFormId}
                 onSearch={this.handelSearch}
                 onCancel={this.handleSearchCancel}
                 title={<Translate value="user.search" name={person.title} />}

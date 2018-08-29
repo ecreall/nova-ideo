@@ -205,6 +205,8 @@ export class DumbLogin extends React.Component {
       tags: [ACTIONS.mainMenu, ACTIONS.site],
       nodeId: registrationProcessNodes.registration.nodeId
     })[0];
+    const loginFormId = getFormId('user-login');
+    const registrationFormId = getFormId('user-registration');
     return (
       <Form
         initRef={(form) => {
@@ -236,7 +238,8 @@ export class DumbLogin extends React.Component {
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.login })}>
               {loginAction && (
                 <LoginForm
-                  form={getFormId('user-login')}
+                  form={loginFormId}
+                  key={loginFormId}
                   action={loginAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
@@ -248,7 +251,8 @@ export class DumbLogin extends React.Component {
             <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.registration })}>
               {registrationAction && (
                 <Registration
-                  form={getFormId('user-registration')}
+                  form={registrationFormId}
+                  key={registrationFormId}
                   action={registrationAction}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
