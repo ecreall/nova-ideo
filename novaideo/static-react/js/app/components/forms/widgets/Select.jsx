@@ -74,17 +74,19 @@ const styles = (theme) => {
 export class DumbSelect extends React.Component {
   constructor(props) {
     super(props);
+    const { options, value } = this.props;
     this.state = {
       menu: false,
-      options: this.props.options,
-      selected: this.props.value ? Object.keys(this.props.value) : [],
+      options: options,
+      selected: value ? Object.keys(value) : [],
       searchText: ''
     };
   }
 
   componentDidMount() {
-    if (this.props.initRef) {
-      this.props.initRef(this);
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
   }
 
@@ -95,31 +97,35 @@ export class DumbSelect extends React.Component {
   };
 
   toggleOption = (checked, id) => {
-    const selected = [...this.state.selected];
+    const { selected } = this.state;
+    const { onChange } = this.props;
+    const current = [...selected];
     if (checked && !selected.includes(id)) {
-      selected.push(id);
-    } else if (!checked && selected.includes(id)) {
-      selected.splice(selected.indexOf(id), 1);
+      current.push(id);
+    } else if (!checked && current.includes(id)) {
+      current.splice(current.indexOf(id), 1);
     }
     this.setState(
       {
-        selected: selected
+        selected: current
       },
       () => {
-        return this.props.onChange(this.getSelected());
+        return onChange(this.getSelected());
       }
     );
   };
 
   addOption(text) {
+    const { selected, options } = this.state;
+    const { onChange } = this.props;
     this.setState(
       {
         searchText: '',
-        options: { ...{ [text]: text }, ...this.state.options },
-        selected: [text, ...this.state.selected]
+        options: { ...{ [text]: text }, ...options },
+        selected: [text, ...selected]
       },
       () => {
-        return this.props.onChange(this.getSelected());
+        return onChange(this.getSelected());
       }
     );
   }
@@ -142,7 +148,9 @@ export class DumbSelect extends React.Component {
 
   render() {
     const { label, canAdd, classes } = this.props;
-    const { options, searchText } = this.state;
+    const {
+      options, searchText, menu, selected
+    } = this.state;
     let exactMatch = false;
     const optionsResult = Object.keys(options).reduce((filtered, id) => {
       const title = options[id];
@@ -154,7 +162,6 @@ export class DumbSelect extends React.Component {
       if (formattedTitle.search(titleToSearch) >= 0) filtered[id] = title;
       return filtered;
     }, {});
-    const { menu } = this.state;
     return (
       <Manager>
         <Target>
@@ -167,7 +174,7 @@ export class DumbSelect extends React.Component {
                 <div className={classes.searchRoot}>
                   <Input
                     disableUnderline
-                    value={this.state.searchText}
+                    value={searchText}
                     onChange={this.onChangeSearchText}
                     placeholder={canAdd ? I18n.t('forms.searchOrAdd') : I18n.t('forms.search')}
                     classes={{
@@ -215,12 +222,12 @@ export class DumbSelect extends React.Component {
                     return (
                       <MenuItem
                         onClick={() => {
-                          this.toggleOption(!this.state.selected.includes(id), id);
+                          this.toggleOption(!selected.includes(id), id);
                         }}
                         key={id}
                         value={id}
                       >
-                        <Checkbox checked={this.state.selected.includes(id)} />
+                        <Checkbox checked={selected.includes(id)} />
                         <ListItemText primary={title} />
                       </MenuItem>
                     );

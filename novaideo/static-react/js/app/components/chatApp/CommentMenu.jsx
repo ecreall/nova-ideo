@@ -99,7 +99,8 @@ export class DumbCommentMenu extends React.Component {
 
   render() {
     const { classes, comment, onActionClick } = this.props;
-    if (!this.state.menu) return null;
+    const { menu } = this.state;
+    if (!menu) return null;
     const actions = getActions(comment.actions, { tags: ACTIONS.menu });
     return (
       <div className={classes.container}>

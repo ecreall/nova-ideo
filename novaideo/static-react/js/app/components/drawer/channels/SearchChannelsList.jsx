@@ -50,6 +50,7 @@ class SearchChannelsList extends React.Component {
 
   render() {
     const { classes, onItemClick } = this.props;
+    const { filter: { text } } = this.state;
     const formId = getFormId('jump-channels-search');
     return [
       <Search
@@ -68,7 +69,7 @@ class SearchChannelsList extends React.Component {
         notifyOnNetworkStatusChange
         fetchPolicy="cache-and-network"
         query={AllChannels}
-        variables={{ first: 25, after: '', filter: this.state.filter.text }}
+        variables={{ first: 25, after: '', filter: text }}
       >
         {(data) => {
           return (

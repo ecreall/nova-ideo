@@ -138,7 +138,7 @@ export function getObjectExaminationStats(stats, classes) {
 }
 
 export const DumbObjectStats = ({ data, classes }) => {
-  const stats = data.stats;
+  const { stats } = data;
   if (!stats) {
     return (
       <div className={classes.progress}>

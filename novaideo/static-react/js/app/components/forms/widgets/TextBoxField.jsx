@@ -29,8 +29,9 @@ class TextBoxField extends React.Component {
   };
 
   onChange = (value) => {
+    const { onChange } = this.props;
     if (this.editor) {
-      this.props.onChange(value);
+      onChange(value);
     }
   };
 

@@ -51,10 +51,10 @@ export class DumbMenuWithActivator extends React.Component {
 
   render() {
     const {
-      id, activator, keepMounted, anchorOrigin, classes
+      id, activator, keepMounted, anchorOrigin, classes, children
     } = this.props;
     const { anchorEl } = this.state;
-    const children = React.Children.map(this.props.children, (child) => {
+    const childrenClone = React.Children.map(children, (child) => {
       return child
         ? React.cloneElement(child, {
           open: this.open,
@@ -64,9 +64,12 @@ export class DumbMenuWithActivator extends React.Component {
     });
     const open = Boolean(anchorEl);
     return [
-      <div onClick={this.open}>{activator}</div>,
+      <div key="activator" onClick={this.open}>
+        {activator}
+      </div>,
       open && (
         <Menu
+          key="menu"
           transitionDuration={150}
           keepMounted={keepMounted}
           className={classes.menu}
@@ -77,7 +80,7 @@ export class DumbMenuWithActivator extends React.Component {
           onClose={this.close}
           anchorOrigin={anchorOrigin}
         >
-          {children}
+          {childrenClone}
         </Menu>
       )
     ];

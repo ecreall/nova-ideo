@@ -10,15 +10,19 @@ import { STYLE_CONST } from '../../constants';
 
 export class DumbCommentDivider extends React.Component {
   addDateSeparator = () => {
-    const { node, reverted } = this.props;
-    const item = reverted ? this.props.next : this.props.previous;
+    const {
+      node, reverted, next, previous
+    } = this.props;
+    const item = reverted ? next : previous;
     if (!item) return true;
     return !Moment(node.createdAt).isSame(Moment(item.createdAt), 'day');
   };
 
   addUnread = () => {
-    const { node, reverted, dividerProps } = this.props;
-    const item = reverted ? this.props.next : this.props.previous;
+    const {
+      node, reverted, dividerProps, next, previous
+    } = this.props;
+    const item = reverted ? next : previous;
     const unreadComments = dividerProps.unreadCommentsIds;
     const isUnread = unreadComments.includes(node.id);
     if (!item) return isUnread;

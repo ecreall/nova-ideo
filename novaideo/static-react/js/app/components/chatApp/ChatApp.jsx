@@ -10,13 +10,11 @@ import Comments from './Comments';
 
 export class DumbChatApp extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const {
-      data: { node },
-      subject
-    } = nextProps;
+    const { data: { node }, subject } = nextProps;
+    const { updateChatAppSubject } = this.props;
     const subjectId = node && node.subject && node.subject.id;
     if (subjectId !== subject) {
-      this.props.updateChatApp({ subject: subjectId });
+      updateChatAppSubject({ subject: subjectId });
     }
   }
 
@@ -34,7 +32,7 @@ export class DumbChatApp extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateChatApp: updateChatApp
+  updateChatAppSubject: updateChatApp
 };
 
 export const mapStateToProps = (state) => {
@@ -44,10 +42,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   graphql(Channel, {
     options: (props) => {
       return {

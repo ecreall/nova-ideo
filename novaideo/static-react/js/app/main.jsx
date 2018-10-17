@@ -1,7 +1,5 @@
 /* eslint-disable react/no-did-mount-set-state */
-// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MuiThemeProvider, createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 import { withApollo, graphql } from 'react-apollo';
@@ -29,18 +27,12 @@ const generateClassName = createGenerateClassName({
 });
 const jss = create(jssPreset());
 jss.options.insertionPoint = 'insertion-point-jss';
-
 class Main extends React.Component {
-  state: { requirementsLoaded: boolean };
-
-  static childContextTypes = {
-    shortcuts: PropTypes.object.isRequired
-  };
-
-  constructor(props: any) {
+  constructor(props) {
     super(props);
+    // TODO
     this.state = {
-      requirementsLoaded: false
+      requirementsLoaded: true
     };
   }
 
@@ -56,7 +48,7 @@ class Main extends React.Component {
     // const historyEntry = history[instance.id];
     // let token = historyEntry ? historyEntry.data.token : user.token;
     // token = token || user.token;
-    const token = user.token;
+    const { token } = user;
     if (isConnected && !network.isLogged && token) {
       const reset = () => {
         client.resetStore().then(() => {
@@ -113,7 +105,7 @@ class Main extends React.Component {
     // NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
   }
 
-  handleConnectionChange = (isConnected: boolean) => {
+  handleConnectionChange = (isConnected) => {
     this.props.setConnectionState(isConnected);
   };
 
@@ -121,7 +113,8 @@ class Main extends React.Component {
     const {
       data, site, network, theme
     } = this.props;
-    if (data.loading || !site) return null;
+    const { requirementsLoaded } = this.state;
+    if (!requirementsLoaded || data.loading || !site) return null;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <MuiThemeProvider theme={theme}>
@@ -163,7 +156,7 @@ export default withWidth()(
   withApollo(
     connect(mapStateToProps, mapDispatchToProps)(
       graphql(SiteData, {
-        options: (props: any) => {
+        options: () => {
           return {
             fetchPolicy: 'cache-and-network'
           };

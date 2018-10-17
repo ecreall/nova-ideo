@@ -1,21 +1,11 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 /* eslint-disable no-param-reassign */
 import React from 'react';
-import { I18n } from 'react-redux-i18n';
-import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import { Manager, Target, Popper } from 'react-popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
 
 const styles = (theme) => {
   return {
@@ -77,24 +67,27 @@ export class DumbSelectList extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.initRef) {
-      this.props.initRef(this);
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
   }
 
   toggleOption = (checked, id) => {
-    const selected = [...this.state.selected];
-    if (checked && !selected.includes(id)) {
-      selected.push(id);
-    } else if (!checked && selected.includes(id)) {
-      selected.splice(selected.indexOf(id), 1);
+    const { selected } = this.state;
+    const { onChange } = this.props;
+    const current = [...selected];
+    if (checked && !current.includes(id)) {
+      current.push(id);
+    } else if (!checked && current.includes(id)) {
+      current.splice(current.indexOf(id), 1);
     }
     this.setState(
       {
-        selected: selected
+        selected: current
       },
       () => {
-        return this.props.onChange(this.getSelected());
+        return onChange(this.getSelected());
       }
     );
   };
@@ -108,8 +101,8 @@ export class DumbSelectList extends React.Component {
   };
 
   render() {
-    const { label, classes } = this.props;
-    const { options } = this.state;
+    const { classes } = this.props;
+    const { options, selected } = this.state;
     return (
       <MenuList role="menu">
         {Object.keys(options).map((id) => {
@@ -118,12 +111,12 @@ export class DumbSelectList extends React.Component {
             <MenuItem
               className={classes.menuItem}
               onClick={() => {
-                this.toggleOption(!this.state.selected.includes(id), id);
+                this.toggleOption(!selected.includes(id), id);
               }}
               key={id}
               value={id}
             >
-              <Checkbox checked={this.state.selected.includes(id)} />
+              <Checkbox checked={selected.includes(id)} />
               <ListItemText primary={title} />
             </MenuItem>
           );

@@ -71,10 +71,10 @@ export class DumbPopper extends React.Component {
 
   render() {
     const {
-      id, activator, keepMounted, classes
+      id, activator, keepMounted, classes, children
     } = this.props;
     const { popper } = this.state;
-    const children = React.Children.map(this.props.children, (child) => {
+    const childrenClone = React.Children.map(children, (child) => {
       return React.cloneElement(child, {
         open: this.open,
         close: this.close
@@ -97,7 +97,7 @@ export class DumbPopper extends React.Component {
               <ClickAwayListener onClickAway={this.close}>
                 <Grow in={popper} id={id} style={{ transformOrigin: '0 0 0' }}>
                   <Paper elevation={6} className={classes.paper}>
-                    {children}
+                    {childrenClone}
                   </Paper>
                 </Grow>
               </ClickAwayListener>

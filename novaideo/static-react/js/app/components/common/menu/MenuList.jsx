@@ -58,9 +58,8 @@ export class DumbMenuList extends React.Component {
     if (typeof field === 'function') {
       return <div onClick={close}>{field()}</div>;
     }
-    const Icon = field.Icon;
     return renderMenuItem({
-      Icon: Icon,
+      Icon: field.Icon,
       title: field.title,
       color: field.color,
       hoverColor: field.hoverColor || theme.palette.info[500],

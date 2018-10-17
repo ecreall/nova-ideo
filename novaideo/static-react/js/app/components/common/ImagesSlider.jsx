@@ -123,7 +123,7 @@ const styles = (theme) => {
 };
 
 const SliderHeader = ({ context, classes, image }) => {
-  const author = context.author;
+  const { author, date, title } = context;
   return (
     <div className={classes.headerContainer}>
       <div className={classes.titleContainer}>
@@ -137,8 +137,8 @@ const SliderHeader = ({ context, classes, image }) => {
           <span className={classes.headerTitle}>{image.title}</span>
           <span className={classes.headerAddOn}>
             {author.title}
-            {context.date && <span className={classes.headerItem}>{getFormattedDate(context.date, 'date.format3')}</span>}
-            <span className={classes.headerItem}>{context.title}</span>
+            {date && <span className={classes.headerItem}>{getFormattedDate(date, 'date.format3')}</span>}
+            <span className={classes.headerItem}>{title}</span>
           </span>
         </div>
       </div>

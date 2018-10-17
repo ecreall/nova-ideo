@@ -112,9 +112,9 @@ const styles = (theme) => {
 
 export class DumbChannelItem extends React.PureComponent {
   open = () => {
-    const { chatAppIntegreted, node } = this.props;
+    const { chatAppIntegreted, node, openRight } = this.props;
     if (chatAppIntegreted) {
-      this.props.openCollaborationRight({
+      openRight({
         componentId: CONTENTS_IDS.chat,
         props: { channel: node.id, channelTitle: node.title }
       });
@@ -192,7 +192,7 @@ export class DumbChannelItem extends React.PureComponent {
 }
 
 export const mapDispatchToProps = {
-  openCollaborationRight: openCollaborationRight
+  openRight: openCollaborationRight
 };
 
 export const mapStateToProps = (state, props) => {

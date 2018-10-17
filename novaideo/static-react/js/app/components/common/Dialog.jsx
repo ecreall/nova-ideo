@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { createEvent } from '../../utils/globalFunctions';
 import { addChatAppIntegration, removeChatAppIntegration } from '../../actions/chatAppActions';
-import { toggleDrawer } from '../../actions/collaborationAppActions';
+import { toggleDrawer as toggleDrawerOp } from '../../actions/collaborationAppActions';
 import CollaborationAppRight from '../collaborationApp/collaborationAppRight/CollaborationAppRight';
 import { STYLE_CONST } from '../../constants';
 
@@ -178,7 +178,8 @@ class CommonDialog extends React.Component {
   };
 
   toggleDrawer = () => {
-    this.props.toggleDrawer();
+    const { toggleDrawer } = this.props;
+    toggleDrawer();
     createEvent('resize', true);
   };
 
@@ -198,8 +199,9 @@ class CommonDialog extends React.Component {
       withRightApp,
       drawerOpen
     } = this.props;
+    const { entered } = this.state;
     const full = withDrawer || fullScreen;
-    const content = (directDisplay || this.state.entered) && <div className={classes.container}>{children}</div>;
+    const content = (directDisplay || entered) && <div className={classes.container}>{children}</div>;
     return (
       <Dialog
         hideBackdrop={hideBackdrop || withDrawer}
@@ -244,14 +246,9 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  toggleDrawer: toggleDrawer,
+  toggleDrawer: toggleDrawerOp,
   addIntegration: addChatAppIntegration,
   removeIntegration: removeChatAppIntegration
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CommonDialog)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(CommonDialog));

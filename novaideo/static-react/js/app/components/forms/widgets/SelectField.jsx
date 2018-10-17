@@ -63,31 +63,33 @@ export class DumbSelectField extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.initRef) {
-      this.props.initRef(this);
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
   }
 
   toggleOption = (event) => {
-    const value = event.target.value;
+    const { value } = event.target;
+    const { onChange } = this.props;
     this.setState(
       {
         selected: value
       },
       () => {
-        return this.props.onChange(value);
+        return onChange(value);
       }
     );
   };
 
   render() {
-    const { name, classes } = this.props;
+    const { label, name, classes } = this.props;
     const { options, selected } = this.state;
     return (
       <div className={classes.container}>
-        {this.props.label && (
+        {label && (
           <label className={classes.label} htmlFor={name}>
-            {this.props.label}
+            {label}
           </label>
         )}
         <div className={classes.selectContainer}>

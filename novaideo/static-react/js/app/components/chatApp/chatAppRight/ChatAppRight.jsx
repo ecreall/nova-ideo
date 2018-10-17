@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -20,9 +18,9 @@ const ChatAppRight = (props) => {
   }
 };
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = ({ apps }) => {
   return {
-    componentId: state.apps.chatApp.right.componentId
+    componentId: apps.chatApp.right.componentId
   };
 };
 

@@ -100,7 +100,7 @@ export const renderCheckboxField = withStyles(checkboxStyles, {
     <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />,
     touched
       && error && (
-      <FormHelperText className={classes.error} id={name}>
+      <FormHelperText className={classes.error} id={label}>
         {error}
       </FormHelperText>
     )

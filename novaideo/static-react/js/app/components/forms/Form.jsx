@@ -88,14 +88,16 @@ export class DumbForm extends React.Component {
 
   constructor(props) {
     super(props);
+    const { open } = this.props;
     this.state = {
-      open: this.props.open
+      open: open
     };
   }
 
   componentDidMount() {
-    if (this.props.initRef) {
-      this.props.initRef(this);
+    const { initRef } = this.props;
+    if (initRef) {
+      initRef(this);
     }
   }
 

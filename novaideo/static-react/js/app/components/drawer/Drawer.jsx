@@ -112,7 +112,7 @@ class AppDrawer extends React.PureComponent {
 
   render() {
     const {
-      classes, theme, drawerOpen, drawerApp, switchDrawer
+      classes, theme, drawerOpen, drawerApp, switchDrawer, hideDrawer
     } = this.props;
     return [
       <Hidden mdUp>
@@ -124,9 +124,7 @@ class AppDrawer extends React.PureComponent {
             paper: classes.temporaryDrawerPaper,
             modal: classes.temporaryDrawerRoot
           }}
-          onClose={() => {
-            this.props.closeDrawer();
-          }}
+          onClose={hideDrawer}
           ModalProps={{
             keepMounted: true // Better open performance on mobile.
           }}
@@ -141,9 +139,7 @@ class AppDrawer extends React.PureComponent {
             paper: classNames(classes.drawerPaper)
           }}
           open={drawerOpen}
-          onClose={() => {
-            this.props.closeDrawer();
-          }}
+          onClose={hideDrawer}
         >
           <DrawerContent classes={classes} drawerApp={drawerApp} switchDrawer={switchDrawer} />
         </Drawer>
@@ -153,7 +149,7 @@ class AppDrawer extends React.PureComponent {
 }
 
 export const mapDispatchToProps = {
-  closeDrawer: closeDrawer,
+  hideDrawer: closeDrawer,
   switchDrawer: updateApp
 };
 
@@ -163,9 +159,4 @@ export const mapStateToProps = (state) => {
     drawerApp: state.apps.drawer.app
   };
 };
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AppDrawer)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(AppDrawer));

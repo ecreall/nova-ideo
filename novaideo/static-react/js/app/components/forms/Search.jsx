@@ -138,9 +138,9 @@ export class DumbSearchForm extends React.Component {
   };
 
   initializeForm = () => {
-    const { form } = this.props;
+    const { form, dispatch } = this.props;
     this.editor.clear();
-    this.props.dispatch(
+    dispatch(
       initialize(form, {
         query: ''
       })

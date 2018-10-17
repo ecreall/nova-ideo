@@ -7,10 +7,14 @@ import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
 
 type URLMetadataLoaderProps = {
   url: string,
-  afterLoad: ?Function
+  afterLoad?: ?Function
 };
 
-class URLMetadataLoader extends React.Component<*, URLMetadataLoaderProps, void> {
+class URLMetadataLoader extends React.Component<URLMetadataLoaderProps, void> {
+  static defaultProps = {
+    afterLoad: () => {}
+  };
+
   render() {
     const { afterLoad, url } = this.props;
     return (

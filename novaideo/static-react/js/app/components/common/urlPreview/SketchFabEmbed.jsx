@@ -94,7 +94,7 @@ export type State = {
   open: boolean
 };
 
-class DumbSketchfabEmbed extends React.Component<*, Props, State> {
+class DumbSketchfabEmbed extends React.Component<Props, State> {
   state = {
     open: false
   };
@@ -108,7 +108,7 @@ class DumbSketchfabEmbed extends React.Component<*, Props, State> {
   };
 
   render = () => {
-    const { classes } = this.props;
+    const { classes, url } = this.props;
     const { open } = this.state;
     return (
       <Query
@@ -116,13 +116,13 @@ class DumbSketchfabEmbed extends React.Component<*, Props, State> {
         fetchPolicy="cache-and-network"
         query={URLMetadata}
         variables={{
-          url: this.props.url
+          url: url
         }}
       >
         {(result) => {
           const metadata = result.data && result.data.metadata;
           if (!metadata) return null;
-          const url = metadata && metadata.url;
+          const metadataUrl = metadata && metadata.url;
           return (
             <div className={classes.container}>
               <div className={classes.sketchfabEmbed}>
@@ -137,7 +137,7 @@ class DumbSketchfabEmbed extends React.Component<*, Props, State> {
                   </div>
                 </div>
               </div>
-              {url
+              {metadataUrl
                 && open && (
                 <div className={classes.sketchfabEmbedOpen} onClick={this.closeEmbed}>
                   <iframe
@@ -146,7 +146,7 @@ class DumbSketchfabEmbed extends React.Component<*, Props, State> {
                     type="text/html"
                     width="640"
                     height="360"
-                    src={`${url}/embed?autostart=1&autospin=0.5`}
+                    src={`${metadataUrl}/embed?autostart=1&autospin=0.5`}
                     frameBorder="0"
                   />
                   <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>

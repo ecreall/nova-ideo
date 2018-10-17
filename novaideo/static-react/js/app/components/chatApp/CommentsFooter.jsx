@@ -39,23 +39,21 @@ const styles = {
 };
 
 const CommentsIdeaFooter = ({ data, classes }) => {
-  const author = data.node.subject.author;
-  const authorPicture = author.picture;
-  const isAnonymous = author.isAnonymous;
-  const authorTitle = author && author.title;
-  const title = data.node && data.node.title;
+  const { node } = data;
+  const { subject: { author } } = node;
+  const { isAnonymous, picture, title } = author;
   return (
     <div className={classes.commentsFooter}>
       <div className={classes.titleContainer}>
-        <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={authorTitle} />
+        <UserAvatar isAnonymous={isAnonymous} picture={picture} title={title} />
         <div className={classes.header}>
           <span className={classes.headerTitle}>
             <UserTitle node={author} />
           </span>
-          <span className={classes.headerAddOn}>{title}</span>
+          <span className={classes.headerAddOn}>{node.title}</span>
         </div>
       </div>
-      <b>{<Translate value="channels.ideasCommentsFooterTitle" name={title} />}</b>
+      <b>{<Translate value="channels.ideasCommentsFooterTitle" name={node.title} />}</b>
       {' '}
       {I18n.t('channels.ideasCommentsFooter')}
     </div>

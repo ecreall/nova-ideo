@@ -55,7 +55,6 @@ export class DumbRecord extends React.Component {
   state = {
     record: false,
     open: false,
-    loading: true,
     file: null
   };
 
@@ -67,8 +66,7 @@ export class DumbRecord extends React.Component {
 
   stopRecording = () => {
     this.setState({
-      record: false,
-      loading: true
+      record: false
     });
   };
 
@@ -83,7 +81,7 @@ export class DumbRecord extends React.Component {
       type: 'audio',
       url: recordedBlob.blobURL
     };
-    this.setState({ file: file, loading: false });
+    this.setState({ file: file });
   };
 
   close = () => {

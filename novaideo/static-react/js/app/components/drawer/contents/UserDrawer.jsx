@@ -37,7 +37,12 @@ function UserDrawer({ account, classes }) {
   ) : (
     <Illustration
       img={NOT_LOGGED}
-      message={[<div className={classes.illustrationMessage}>{I18n.t('user.noUserContents')}</div>, <LoginButton />]}
+      message={(
+        <React.Fragmet>
+          <div className={classes.illustrationMessage}>{I18n.t('user.noUserContents')}</div>
+          <LoginButton />
+        </React.Fragmet>
+      )}
       classes={{
         container: classes.illustrationContainer,
         image: classes.imgIllustration

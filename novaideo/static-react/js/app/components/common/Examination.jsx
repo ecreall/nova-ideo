@@ -58,6 +58,7 @@ export class DumbExamination extends React.Component {
     const {
       value, title, message, classes
     } = this.props;
+    const { open } = this.state;
     const icon = <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />;
     return [
       <div className={classes.circleContainer} onClick={this.handleClickOpen}>
@@ -65,7 +66,7 @@ export class DumbExamination extends React.Component {
           {icon}
         </OverlaidTooltip>
       </div>,
-      this.state.open && (
+      open && (
         <Dialog
           directDisplay
           appBar={(
@@ -74,7 +75,7 @@ export class DumbExamination extends React.Component {
               <span className={classes.title}>{title}</span>
             </div>
           )}
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
         >
           <div className={classes.container}>{message}</div>

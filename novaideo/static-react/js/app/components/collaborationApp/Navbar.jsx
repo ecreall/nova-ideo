@@ -10,7 +10,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 
-import { toggleDrawer, globalSearch } from '../../actions/collaborationAppActions';
+import { toggleDrawer as toggleDrawerOp, globalSearch } from '../../actions/collaborationAppActions';
 import AccountInformation from '../user/AccountInformation';
 import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
@@ -87,23 +87,25 @@ const styles = {
 
 class NavBar extends React.Component {
   handelSearch = (filter) => {
-    this.props.search(filter.text);
+    const { search } = this.props;
+    search(filter.text);
   };
 
   handleSearchCancel = () => {
-    this.props.search('');
+    const { search } = this.props;
+    search('');
   };
 
   render() {
     const {
-      classes, className, drawer, site
+      classes, className, drawer, site, toggleDrawer
     } = this.props;
     const formId = getFormId('globalSearch');
     return (
       <div>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.props.toggleDrawer}>
+            <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={toggleDrawer}>
               {drawer ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
             </IconButton>
             <Typography type="title" color="primary" className={classes.flex}>
@@ -144,7 +146,7 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  toggleDrawer: toggleDrawer,
+  toggleDrawer: toggleDrawerOp,
   search: globalSearch
 };
 
@@ -155,9 +157,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(NavBar)
-);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NavBar));

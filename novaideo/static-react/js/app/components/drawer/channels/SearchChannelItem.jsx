@@ -77,12 +77,9 @@ export class DumbSearchChannelItem extends React.Component {
   };
 
   gotoChannel = (channel) => {
-    const {
-      chatAppIntegreted,
-      itemProps: { onClick }
-    } = this.props;
+    const { chatAppIntegreted, itemProps: { onClick }, openRight } = this.props;
     if (chatAppIntegreted) {
-      this.props.openCollaborationRight({
+      openRight({
         componentId: CONTENTS_IDS.chat,
         props: { channel: channel.id, channelTitle: channel.title }
       });
@@ -150,7 +147,7 @@ export class DumbSearchChannelItem extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  openCollaborationRight: openCollaborationRight
+  openRight: openCollaborationRight
 };
 
 export const mapStateToProps = (state, props) => {
@@ -167,10 +164,5 @@ export default withStyles(styles, { withTheme: true })(
         addChannel: addPrivateChannel(props)
       };
     }
-  })(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(DumbSearchChannelItem)
-  )
+  })(connect(mapStateToProps, mapDispatchToProps)(DumbSearchChannelItem))
 );

@@ -34,7 +34,10 @@ const styles = {
 
 function ChannelsDrawerContent({ account, classes }) {
   return account ? (
-    [<Jump />, <Channels />]
+    <React.Fragment>
+      <Jump />
+      <Channels />
+    </React.Fragment>
   ) : (
     <Illustration
       img={NOT_LOGGED}

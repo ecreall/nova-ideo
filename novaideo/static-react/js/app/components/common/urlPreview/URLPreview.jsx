@@ -128,7 +128,7 @@ export type URLPreviewProps = {
   classes: Object
 };
 
-class DumbURLPreview extends React.Component<*, URLPreviewProps, void> {
+class DumbURLPreview extends React.Component<URLPreviewProps, void> {
   componentDidMount() {
     const { html, afterLoad } = this.props;
     if (!html && afterLoad) afterLoad();

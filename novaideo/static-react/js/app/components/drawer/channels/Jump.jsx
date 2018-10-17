@@ -65,13 +65,14 @@ export class DumbJump extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { open } = this.state;
     return (
       <ShortcutsManager domain="CHATAPP" shortcuts={{ CHATAPP_OPEN_JUMP: this.handleOpen }}>
         <Button onClick={this.handleOpen} className={classes.jump} variant="raised">
           <FormatIndentIncreaseIcon className={classes.jumpIcon} />
           {I18n.t('channels.jump')}
         </Button>
-        {this.state.open && (
+        {open && (
           <Dialog
             directDisplay
             appBar={(
@@ -79,7 +80,7 @@ export class DumbJump extends React.Component {
                 <span className={classes.title}>{I18n.t('channels.jump')}</span>
               </div>
             )}
-            open={this.state.open}
+            open={open}
             onClose={this.handleClose}
           >
             <div className={classes.container}>

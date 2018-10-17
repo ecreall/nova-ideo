@@ -167,25 +167,23 @@ export class RenderComment extends React.Component {
     const {
       data, inline, account, theme, classes
     } = this.props;
+    if (account) return null;
     const comment = data.node;
     const channel = comment && comment.channel;
-    if (!account) {
-      return (
-        <div className={classNames(classes.alertsContainer, { [classes.alertsContainerInline]: inline })}>
-          <Alert
-            dismissible
-            type="warning"
-            classes={{ container: classes.alertContainer, messageContainer: classes.alertMessageContainer }}
-          >
-            <div>
-              <Translate value="channels.noUserCtReply" name={channel ? channel.title : '...'} />
-            </div>
-            <LoginButton color={theme.palette.warning[500]} />
-          </Alert>
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div className={classNames(classes.alertsContainer, { [classes.alertsContainerInline]: inline })}>
+        <Alert
+          dismissible
+          type="warning"
+          classes={{ container: classes.alertContainer, messageContainer: classes.alertMessageContainer }}
+        >
+          <div>
+            <Translate value="channels.noUserCtReply" name={channel ? channel.title : '...'} />
+          </div>
+          <LoginButton color={theme.palette.warning[500]} />
+        </Alert>
+      </div>
+    );
   };
 
   renderCommentForm = (commentAction) => {

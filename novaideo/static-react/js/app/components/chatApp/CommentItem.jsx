@@ -296,11 +296,9 @@ class DumbCommentItem extends React.Component {
     const edit = action && action.behaviorId === commentProcessNodes.edit.nodeId;
     const reply = action && action.behaviorId === commentProcessNodes.respond.nodeId;
     const ignoreMetaData = this.ignoreMetaData();
-    const author = node.author;
+    const { author, edited, pinned } = node;
+    const { isAnonymous } = author;
     const authorPicture = author.picture;
-    const isAnonymous = author.isAnonymous;
-    const edited = node.edited;
-    const pinned = node.pinned;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -406,9 +404,9 @@ class DumbCommentItem extends React.Component {
 
                       {edited && (
                         <span className={classes.edited}>
-(
+                          (
                           {I18n.t('channels.edited')}
-)
+                          )
                         </span>
                       )}
                     </div>

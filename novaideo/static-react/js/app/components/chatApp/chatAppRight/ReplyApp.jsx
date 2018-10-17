@@ -68,9 +68,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ReplyApp)
-);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ReplyApp));

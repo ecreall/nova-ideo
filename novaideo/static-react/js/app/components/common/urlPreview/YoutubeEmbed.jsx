@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
@@ -83,10 +82,6 @@ const styles = {
 };
 
 export class DumbYoutubeEmbed extends React.Component {
-  state: {
-    open: boolean
-  };
-
   state = {
     open: false
   };

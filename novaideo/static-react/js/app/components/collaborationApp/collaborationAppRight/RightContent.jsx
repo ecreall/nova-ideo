@@ -63,7 +63,7 @@ class RightContent extends React.Component {
 
   render() {
     const {
-      title, children, classes, rightFull
+      title, children, classes, rightFull, closeRight
     } = this.props;
     return (
       <div className={classes.container}>
@@ -83,7 +83,7 @@ class RightContent extends React.Component {
               color="primary"
               aria-label="Menu"
               onClick={() => {
-                this.props.closeCollaborationRight({});
+                closeRight({});
               }}
             >
               <CloseIcon className={classes.menuIcon} />
@@ -100,7 +100,7 @@ class RightContent extends React.Component {
 
 export const mapDispatchToProps = {
   updateRight: updateCollaborationAppRight,
-  closeCollaborationRight: closeCollaborationRight
+  closeRight: closeCollaborationRight
 };
 
 export const mapStateToProps = (state) => {
@@ -108,9 +108,4 @@ export const mapStateToProps = (state) => {
     rightFull: state.apps.collaborationApp.right.full
   };
 };
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(RightContent)
-);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(RightContent));

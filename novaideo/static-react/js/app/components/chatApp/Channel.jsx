@@ -14,10 +14,7 @@ class Channel extends React.Component {
   }
 
   openChannel = (props) => {
-    const {
-      params: { channelId },
-      location: { query }
-    } = props;
+    const { params: { channelId }, location: { query }, openChannel } = props;
     if (channelId) {
       const { smallScreen } = props;
       const toOpen = query && query.right;
@@ -29,7 +26,7 @@ class Channel extends React.Component {
           }
         }
         : {};
-      this.props.openChatApp({
+      openChannel({
         channel: channelId,
         ...rightOpen
       });
@@ -42,7 +39,7 @@ class Channel extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  openChatApp: openChatApp
+  openChannel: openChatApp
 };
 
 export const mapStateToProps = (state) => {
@@ -51,7 +48,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Channel);
+export default connect(mapStateToProps, mapDispatchToProps)(Channel);

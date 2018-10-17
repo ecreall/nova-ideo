@@ -4,14 +4,19 @@ import VisibilitySensor from 'react-visibility-sensor';
 import Measure from 'react-measure';
 
 class VirtualizedListItem extends React.Component {
-  state = {
-    dimensions: {
-      height: this.props.itemHeightEstimation
-    }
-  };
+  constructor(props) {
+    super(props);
+    const { itemHeightEstimation } = this.props;
+    this.state = {
+      dimensions: {
+        height: itemHeightEstimation
+      }
+    };
+  }
 
   render() {
-    const { height } = this.state.dimensions;
+    const { dimensions: { height } } = this.state;
+    const { children } = this.props;
     return (
       <VisibilitySensor partialVisibility offset={{ top: -1400, bottom: -1400 }}>
         {({ isVisible }) => {
@@ -25,7 +30,7 @@ class VirtualizedListItem extends React.Component {
               {({ measureRef }) => {
                 return (
                   <div ref={measureRef} style={{ width: '100%', minHeight: isVisible ? 'auto' : height }}>
-                    {isVisible ? this.props.children : null}
+                    {isVisible ? children : null}
                   </div>
                 );
               }}

@@ -55,10 +55,9 @@ export const DumbIdeasList = ({ filter, searchId, classes }) => {
   );
 };
 
-export const mapStateToProps = (state, props) => {
-  const searchId = props.searchId;
+export const mapStateToProps = ({ search }, { searchId }) => {
   return {
-    filter: state.search[searchId] ? state.search[searchId].text : ''
+    filter: search[searchId] ? search[searchId].text : ''
   };
 };
 

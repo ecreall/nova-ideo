@@ -42,7 +42,7 @@ class OverlayTrigger extends React.Component {
       return this.handleMouseOverOut(this.handleDelayedHide, e, 'toElement');
     };
 
-    this._mountNode = null;
+    this.mountNode = null;
 
     this.state = {
       show: props.defaultOverlayShown
@@ -50,7 +50,7 @@ class OverlayTrigger extends React.Component {
   }
 
   componentDidMount() {
-    this._mountNode = document.createElement('div');
+    this.mountNode = document.createElement('div');
     this.renderOverlay();
   }
 
@@ -59,59 +59,61 @@ class OverlayTrigger extends React.Component {
   }
 
   componentWillUnmount() {
-    ReactDOM.unmountComponentAtNode(this._mountNode);
-    this._mountNode = null;
+    ReactDOM.unmountComponentAtNode(this.mountNode);
+    this.mountNode = null;
 
-    clearTimeout(this._hoverShowDelay);
-    clearTimeout(this._hoverHideDelay);
+    clearTimeout(this.hoverShowDelay);
+    clearTimeout(this.hoverHideDelay);
   }
 
   handleDelayedHide() {
-    if (this._hoverShowDelay != null) {
-      clearTimeout(this._hoverShowDelay);
-      this._hoverShowDelay = null;
+    if (this.hoverShowDelay != null) {
+      clearTimeout(this.hoverShowDelay);
+      this.hoverShowDelay = null;
+      return;
+    }
+    const { delayHide, delay } = this.props;
+    const { show } = this.state;
+    if (!show || this.hoverHideDelay != null) {
       return;
     }
 
-    if (!this.state.show || this._hoverHideDelay != null) {
-      return;
-    }
+    const timeout = delayHide != null ? delayHide : delay;
 
-    const delay = this.props.delayHide != null ? this.props.delayHide : this.props.delay;
-
-    if (!delay) {
+    if (!timeout) {
       this.hide();
       return;
     }
 
-    this._hoverHideDelay = setTimeout(() => {
-      this._hoverHideDelay = null;
+    this.hoverHideDelay = setTimeout(() => {
+      this.hoverHideDelay = null;
       this.hide();
-    }, delay);
+    }, timeout);
   }
 
   handleDelayedShow() {
-    if (this._hoverHideDelay != null) {
-      clearTimeout(this._hoverHideDelay);
-      this._hoverHideDelay = null;
+    if (this.hoverHideDelay != null) {
+      clearTimeout(this.hoverHideDelay);
+      this.hoverHideDelay = null;
+      return;
+    }
+    const { delayShow, delay } = this.props;
+    const { show } = this.state;
+    if (show || this.hoverShowDelay != null) {
       return;
     }
 
-    if (this.state.show || this._hoverShowDelay != null) {
-      return;
-    }
+    const timeout = delayShow != null ? delayShow : delay;
 
-    const delay = this.props.delayShow != null ? this.props.delayShow : this.props.delay;
-
-    if (!delay) {
+    if (!timeout) {
       this.show();
       return;
     }
 
-    this._hoverShowDelay = setTimeout(() => {
-      this._hoverShowDelay = null;
+    this.hoverShowDelay = setTimeout(() => {
+      this.hoverShowDelay = null;
       this.show();
-    }, delay);
+    }, timeout);
   }
 
   handleHide() {
@@ -132,7 +134,8 @@ class OverlayTrigger extends React.Component {
   }
 
   handleToggle() {
-    if (this.state.show) {
+    const { show } = this.state;
+    if (show) {
       this.hide();
     } else {
       this.show();
@@ -144,8 +147,9 @@ class OverlayTrigger extends React.Component {
   }
 
   makeOverlay(overlay, props) {
+    const { show } = this.state;
     return (
-      <Overlay {...props} show={this.state.show} onHide={this.handleHide} target={this}>
+      <Overlay {...props} show={show} onHide={this.handleHide} target={this}>
         {overlay}
       </Overlay>
     );
@@ -156,14 +160,14 @@ class OverlayTrigger extends React.Component {
   }
 
   renderOverlay() {
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, this._overlay, this._mountNode);
+    ReactDOM.unstable_renderSubtreeIntoContainer(this, this.overlay, this.mountNode);
   }
 
   render() {
     const {
       trigger, overlay, children, onBlur, onClick, onFocus, onMouseOut, onMouseOver, ...props
     } = this.props;
-
+    const { show } = this.state;
     delete props.delay;
     delete props.delayShow;
     delete props.delayHide;
@@ -173,7 +177,7 @@ class OverlayTrigger extends React.Component {
     const childProps = child.props;
     const triggerProps = {};
 
-    if (this.state.show) {
+    if (show) {
       triggerProps['aria-describedby'] = overlay.props.id;
     }
 
@@ -203,7 +207,7 @@ class OverlayTrigger extends React.Component {
       triggerProps.onBlur = createChainedFunction(childProps.onBlur, onBlur, this.handleDelayedHide);
     }
 
-    this._overlay = this.makeOverlay(overlay, props);
+    this.overlay = this.makeOverlay(overlay, props);
 
     return cloneElement(child, triggerProps);
   }

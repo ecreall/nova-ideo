@@ -118,12 +118,13 @@ export class DumbCommentProcessManager extends React.Component {
   };
 
   render() {
-    const children = React.Children.map(this.props.children, (child) => {
+    const { children } = this.props;
+    const childrenClone = React.Children.map(children, (child) => {
       return React.cloneElement(child, {
         processManager: this
       });
     });
-    return [children, this.renderForm()];
+    return [childrenClone, this.renderForm()];
   }
 }
 
@@ -137,10 +138,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   graphql(AddReaction, {
     props: function (props) {
       return {

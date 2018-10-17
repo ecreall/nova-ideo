@@ -14,8 +14,8 @@ import ChatIcon from '@material-ui/icons/Chat';
 import Hidden from '@material-ui/core/Hidden';
 import MuiIconButton from '@material-ui/core/IconButton';
 
-import { updateChatAppRight, closeChatApp } from '../../actions/chatAppActions';
-import { openDrawer } from '../../actions/collaborationAppActions';
+import { updateChatAppRight as updateChatAppRightOp, closeChatApp as closeChatAppOp } from '../../actions/chatAppActions';
+import { openDrawer as openDrawerOp } from '../../actions/collaborationAppActions';
 import ShortcutsManager from '../common/ShortcutsManager';
 import OverlaidTooltip from '../common/OverlaidTooltip';
 import { goTo, get } from '../../utils/routeMap';
@@ -187,13 +187,15 @@ class NavBar extends React.Component {
   };
 
   openRight = (id, props) => {
-    this.props.updateChatAppRight({ open: true, componentId: id, props: props });
+    const { updateChatAppRight } = this.props;
+    updateChatAppRight({ open: true, componentId: id, props: props });
     return false;
   };
 
   handleClose = () => {
+    const { closeChatApp } = this.props;
     goTo(get('root'));
-    this.props.closeChatApp({ drawer: true });
+    closeChatApp({ drawer: true });
     return false;
   };
 
@@ -202,7 +204,8 @@ class NavBar extends React.Component {
   };
 
   handleSearchCancel = () => {
-    this.props.updateChatAppRight({
+    const { updateChatAppRight } = this.props;
+    updateChatAppRight({
       open: false,
       componentId: null,
       props: {},
@@ -213,10 +216,10 @@ class NavBar extends React.Component {
 
   render() {
     const {
-      data, classes, rightOpen, rightFull, rightComponentId, className
+      data, classes, rightOpen, rightFull, rightComponentId, className, openDrawer
     } = this.props;
     const isBackground = rightOpen && rightFull && rightComponentId === CONTENTS_IDS.reply;
-    const channel = data.channel;
+    const { channel } = data;
     const actionWithSeparator = classNames(classes.action, classes.actionWithSeparator);
     const searchFormId = getFormId('channel-search-form');
     const channelTitle = channel && channel.title;
@@ -230,7 +233,7 @@ class NavBar extends React.Component {
                 color="primary"
                 aria-label="Menu"
                 onClick={() => {
-                  this.props.openDrawer('chatApp');
+                  openDrawer('chatApp');
                 }}
               >
                 <ChatIcon />
@@ -307,9 +310,9 @@ class NavBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  updateChatAppRight: updateChatAppRight,
-  closeChatApp: closeChatApp,
-  openDrawer: openDrawer
+  updateChatAppRight: updateChatAppRightOp,
+  closeChatApp: closeChatAppOp,
+  openDrawer: openDrawerOp
 };
 
 export const mapStateToProps = (state) => {

@@ -82,7 +82,7 @@ export class DumbDivider extends React.Component {
   componentWillUnmount() {
     const { eventId } = this.props;
     if (eventId) {
-      document.removeEventListener(this.props.eventId, this.updatePosition);
+      document.removeEventListener(eventId, this.updatePosition);
       document.removeEventListener('resize', this.initializePosition);
     }
   }
@@ -94,14 +94,15 @@ export class DumbDivider extends React.Component {
   updatePosition = () => {
     const { dynamic } = this.props;
     if (dynamic && this.container && this.message) {
-      const top = this.container.getBoundingClientRect().top;
+      const { top } = this.container.getBoundingClientRect();
       const { shift, fixedTop, fullScreen } = this.props;
       const messageRecLeft = this.message.getBoundingClientRect().left;
       const messageOffsetLeft = this.message.offsetLeft;
       const left = (fullScreen ? messageRecLeft : messageOffsetLeft) + shift;
-      if (!this.state.fixed && top < fixedTop) {
+      const { fixed } = this.state;
+      if (!fixed && top < fixedTop) {
         this.setState({ fixed: true, left: left });
-      } else if (this.state.fixed && top >= fixedTop + 10) {
+      } else if (fixed && top >= fixedTop + 10) {
         this.setState({ fixed: false });
       }
     }
@@ -110,7 +111,8 @@ export class DumbDivider extends React.Component {
   initializePosition = () => {
     const { dynamic } = this.props;
     if (dynamic && this.container && this.message) {
-      if (this.state.fixed) {
+      const { fixed } = this.state;
+      if (fixed) {
         this.setState({ fixed: false }, this.updatePosition);
       }
     }
@@ -126,7 +128,8 @@ export class DumbDivider extends React.Component {
     const {
       message, alert, alertMessage, classes
     } = this.props;
-    const fixedStyle = this.state.fixed ? { left: this.state.left, zIndex: this.getZIndex() } : {};
+    const { fixed, left } = this.state;
+    const fixedStyle = fixed ? { left: left, zIndex: this.getZIndex() } : {};
     return (
       <div
         ref={(container) => {
@@ -134,7 +137,7 @@ export class DumbDivider extends React.Component {
         }}
         className={classNames(classes.divider, {
           [classes.dividerAlert]: alert,
-          [classes.dividerFixed]: this.state.fixed
+          [classes.dividerFixed]: fixed
         })}
       >
         {alert && <div className={classes.alert}>{alertMessage}</div>}
@@ -146,7 +149,7 @@ export class DumbDivider extends React.Component {
             }}
             style={fixedStyle}
             className={classNames(classes.message, {
-              [classes.messageFixed]: this.state.fixed
+              [classes.messageFixed]: fixed
             })}
           >
             {message}

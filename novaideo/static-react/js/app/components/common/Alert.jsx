@@ -90,11 +90,12 @@ export class DumbAlert extends React.Component {
     const {
       type, dismissible, classes, children
     } = this.props;
+    const { open } = this.state;
     const Icon = ALERTS_ICONS[type];
     const CloseIcon = iconAdapter('mdi-set mdi-close');
-    const open = (dismissible && this.state.open) || !dismissible;
+    const isOpen = (dismissible && open) || !dismissible;
     return (
-      open && (
+      isOpen && (
         <div className={classNames(classes.container, type)}>
           <Icon className={classNames(classes.icon, type)} />
           <div className={classes.messageContainer}>{children}</div>

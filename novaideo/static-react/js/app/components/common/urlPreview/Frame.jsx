@@ -22,7 +22,7 @@ const styles = {
   padding: 0
 };
 
-class Frame extends React.Component<*, FrameProps, void> {
+class Frame extends React.Component<FrameProps, void> {
   id: string;
 
   constructor(props: FrameProps) {
