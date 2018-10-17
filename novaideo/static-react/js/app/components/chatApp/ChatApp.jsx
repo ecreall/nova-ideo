@@ -21,7 +21,9 @@ export class DumbChatApp extends React.Component {
   }
 
   render() {
-    const { data, active, channel, left } = this.props;
+    const {
+      data, active, channel, left
+    } = this.props;
     const channelData = data.node ? data.node : null;
     return (
       <App active={active} left={left} Navbar={ChannelNavbar} data={{ channel: channelData }}>

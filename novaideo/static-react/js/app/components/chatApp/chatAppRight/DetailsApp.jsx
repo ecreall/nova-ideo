@@ -15,18 +15,19 @@ const styles = {
 };
 
 export const DumbDetailsApp = (props) => {
-  const { classes, channel } = props;
+  const { classes, ...otherProps } = props;
+  const { channel } = otherProps;
   return (
     <RightContent
-      title={
+      title={(
         <div className={classes.appTitle}>
           <span>
             <Translate value="channels.rightTitleAbout" name={channel.title} />
           </span>
         </div>
-      }
+      )}
     >
-      <Details {...props} />
+      <Details {...otherProps} />
     </RightContent>
   );
 };
@@ -42,9 +43,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DumbDetailsApp)
-);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DumbDetailsApp));

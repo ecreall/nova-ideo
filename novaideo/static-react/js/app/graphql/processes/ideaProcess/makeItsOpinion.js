@@ -5,7 +5,9 @@ import { ACTIONS } from '../../../processes';
 export default function makeItsOpinion({ mutate }) {
   return ({ context, opinion, explanation }) => {
     return mutate({
-      variables: { context: context.oid, opinion: opinion, explanation: explanation, actionTags: [ACTIONS.primary] },
+      variables: {
+        context: context.oid, opinion: opinion, explanation: explanation, actionTags: [ACTIONS.primary]
+      },
       optimisticResponse: {
         __typename: 'Mutation',
         makeItsOpinion: {

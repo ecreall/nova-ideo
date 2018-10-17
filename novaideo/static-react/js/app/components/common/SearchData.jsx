@@ -42,7 +42,9 @@ class SearchData extends React.Component {
         {/* <IconButton onClick={this.handleSearchCancel}>
           <CancelIcon className={classes.icon} />
         </IconButton> */}
-        <span className={classes.searchText}>{count}</span> <Translate value="common.searchData" count={count || 0} />
+        <span className={classes.searchText}>{count}</span>
+        {' '}
+        <Translate value="common.searchData" count={count || 0} />
         <span className={classes.searchText}>{filter && filter.text}</span>
       </div>
     );

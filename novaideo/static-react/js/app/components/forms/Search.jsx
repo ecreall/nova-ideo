@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Field, reduxForm, initialize } from 'redux-form';
 import SearchIcon from '@material-ui/icons/Search';
-import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
+import IconButton from '../styledComponents/IconButton';
 import { iconAdapter } from '../../utils/globalFunctions';
 import { renderTextBoxField } from './utils';
 
@@ -119,6 +119,7 @@ export class DumbSearchForm extends React.Component {
   }
 
   editor = null;
+
   searchDebounce = null;
 
   getFilters = (query) => {

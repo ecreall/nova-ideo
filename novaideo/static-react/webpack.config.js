@@ -4,13 +4,13 @@ Once you have made changes to this file, you have to run `supervisorctl restart 
 
 var path = require('path');
 var webpack = require('webpack');
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var glob = require('glob');
 var _ = require('lodash');
 
 var general_entries = {
     bundle: ['./js/app/index'],
+novaideo: ['./css/novaideo.css', './css/latofonts.css']
 };
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
             use: {
               loader: 'babel-loader',
               options: {
-                forceEnv: 'production',  // babel default to development otherwise, this is to remove the __REACT_HOT_LOADER__ conditions in the code
+                envName: 'production',  // babel default to development otherwise, this is to remove the __REACT_HOT_LOADER__ conditions in the code
                 // We specify plugins and presets here to be able to transpile
                 // dependencies that may have a .babelrc but doesn't do
                 // an actual transpilation to ES5. The .babelrc
@@ -37,15 +37,15 @@ module.exports = {
                 // we need plugins and presets here for that.
                 // A dependency is transpiled only if it's in the include below.
                 plugins: [
-                  'transform-object-rest-spread',
-                  'transform-class-properties',
-                  'transform-react-inline-elements',
-                  ['transform-runtime', { helpers: true, polyfill: false }]
+                  '@babel/plugin-proposal-object-rest-spread',
+                  '@babel/plugin-proposal-class-properties',
+                  '@babel/plugin-transform-react-inline-elements',
+                  ['@babel/plugin-transform-runtime', { helpers: true}]
                 ],
-                presets: [["env", { "modules": false, "targets": { "ie": 11 },
-                                    "debug": true, "useBuiltIns": true,
+                presets: [["@babel/preset-env", { "modules": false, "targets": { "ie": 11 },
+                                    "debug": false, "useBuiltIns": "entry",
                                     "exclude": ["web.timers", "web.immediate", "web.dom.iterable"] }],
-                          "react", "flow"]
+                          "@babel/preset-react", "@babel/preset-flow"]
               }
             },
             include: [
@@ -54,15 +54,18 @@ module.exports = {
         },
         {
             test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-              fallback:'style-loader',
-              use: ['css-loader', 'sass-loader']})
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader',
+              'sass-loader'
+            ]
         },
         {
             test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-              fallback:'style-loader',
-              use: ['css-loader', 'sass-loader']})
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader'
+            ]
         },
         {
             test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
@@ -72,27 +75,14 @@ module.exports = {
           test: /\.(graphql|gql)$/,
           exclude: /node_modules/,
           use: 'graphql-tag/loader'
-        },
-        {
-          test: /\.json$/,
-          use: 'json-loader'
-        },
-        {
-         test: /\.md$/,
-         use: ['babel-loader', '@mdx-js/loader']
         }
         ]
     },
     resolve:{
         extensions:['.js', '.jsx']
     },
+    mode: 'production',
     plugins: [
-        new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: JSON.stringify('production')
-          }
-        }),
-        new UglifyJSPlugin({ sourceMap: true, parallel: true }),
-        new ExtractTextPlugin("[name].css"),
+        new MiniCssExtractPlugin({ filename: "[name].css" }),
     ]
 };

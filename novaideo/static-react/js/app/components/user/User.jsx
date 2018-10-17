@@ -32,14 +32,14 @@ import Footer from '../collaborationApp/Footer';
 import { initalsGenerator, getFormattedDate } from '../../utils/globalFunctions';
 import UserMenu from './UserMenu';
 
-const imgGradient =
-  'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
+const imgGradient = 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
 
 const styles = (theme) => {
   return {
     root: {
       height: 'calc(100vh - 66px)',
-      overflow: 'auto'
+      overflow: 'auto',
+      width: '100%'
     },
     container: {
       display: 'block',
@@ -348,7 +348,7 @@ export class DumbUser extends React.Component {
           // closeBtn: classes.closeBtn,
           paper: classes.paper
         }}
-        appBar={
+        appBar={(
           <UserAppBar
             initRef={(appBar) => {
               this.appBar = appBar;
@@ -356,7 +356,7 @@ export class DumbUser extends React.Component {
             person={person}
             processManager={processManager}
           />
-        }
+        )}
         fullScreen
         open={open}
         onClose={this.close}

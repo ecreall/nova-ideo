@@ -3,39 +3,45 @@ var webpack = require('webpack');
 var glob = require('glob');
 var _ = require('lodash');
 
-var webpackPort = parseInt(process.env.WEBPACK_URL.split(':')[2]);
-var webpackHost = process.env.WEBPACK_URL.split('://')[1].split(':')[0];
+//Env vars
+var APP_URL = 'http://localhost:6543'
+var WEBPACK_URL = 'http://localhost:8081'
+var webpackPort = parseInt(WEBPACK_URL.split(':')[2]);
+var webpackHost = WEBPACK_URL.split('://')[1].split(':')[0];
 
 // For css hot reload to work, don't use ExtractTextPlugin
 module.exports = {
     // devtool: '#cheap-module-eval-source-map',  // http://webpack.github.io/docs/configuration.html#devtool
-    devtool: '#cheap-module-source-map', // https://github.com/webpack/webpack-dev-server/issues/1090
+    devtool: 'eval', // https://github.com/webpack/webpack-dev-server/issues/1090
     devServer: {
         inline: true,
         hot: true,
         headers: {
-            "Access-Control-Allow-Credentials": 'true'
+            "Access-Control-Allow-Origin": APP_URL,
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
         port: webpackPort,
         host: webpackHost,
         proxy: {
           '/static-react': {
-            target: process.env.WEBPACK_URL
+            target: APP_URL
           }
         }
     },
     entry: {
         bundle: [
-            'babel-polyfill', // this is already in index.jsx but we need it to be first, otherwise it doesn't work on IE 11
-            'webpack-dev-server/client?' + process.env.WEBPACK_URL,
             'react-hot-loader/patch',
+            '@babel/polyfill', // this is already in index.jsx but we need it to be first, otherwise it doesn't work on IE 11
+            'webpack-dev-server/client?' + WEBPACK_URL,
             './js/app/index',
-        ]
+        ],
+       novaideo: ['./css/novaideo.css', './css/latofonts.css']
     },
     output: {
         path: path.join(__dirname, 'build'),
         filename: '[name].js',
-        publicPath: process.env.WEBPACK_URL + '/build/'
+        publicPath: WEBPACK_URL + '/build/'
     },
     module: {
         rules: [
@@ -44,15 +50,18 @@ module.exports = {
             use: {
               loader: 'babel-loader',
               options: {
-                forceEnv: 'development',
+                envName: 'development',
                 plugins: [
-                  'transform-object-rest-spread', 'transform-class-properties',
-                  ['transform-runtime', { helpers: true, polyfill: false }]
+                  '@babel/plugin-proposal-object-rest-spread',
+                  '@babel/plugin-proposal-class-properties',
+                  '@babel/plugin-transform-react-inline-elements',
+                  'react-hot-loader/babel',
+                  ['@babel/plugin-transform-runtime', { helpers: true }]
                 ],
-                presets: [["env", { "modules": false, "targets": { "ie": 11 },
-                                    "debug": true, "useBuiltIns": true,
+                presets: [["@babel/preset-env", { "modules": false, "targets": { "ie": 11 },
+                                    "debug": true, "useBuiltIns": "entry",
                                     "exclude": ["web.timers", "web.immediate", "web.dom.iterable"] }],
-                          "react", "flow"]
+                          "@babel/preset-react", "@babel/preset-flow"]
               }
             },
             include: [
@@ -79,26 +88,14 @@ module.exports = {
           test: /\.(graphql|gql)$/,
           exclude: /node_modules/,
           use: 'graphql-tag/loader'
-        },
-        {
-          test: /\.json$/,
-          use: 'json-loader'
-        },
-        {
-         test: /\.md$/,
-         use: ['babel-loader', '@mdx-js/loader']
-       }
+        }
 ]
     },
     resolve:{
         extensions:['.js', '.jsx']
     },
+    mode: 'development',
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: JSON.stringify('development')
-          }
-        }),
     ]
 };

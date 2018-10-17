@@ -1,6 +1,10 @@
 import React from 'react';
-import { EditorState, Modifier, convertToRaw, SelectionState, convertFromRaw } from 'draft-js';
-import { Editor, Block, createEditorState, addNewBlockAt, rendererFn, HANDLED, NOT_HANDLED } from 'medium-draft';
+import {
+  EditorState, Modifier, convertToRaw, SelectionState, convertFromRaw
+} from 'draft-js';
+import {
+  Editor, Block, createEditorState, addNewBlockAt, rendererFn, HANDLED, NOT_HANDLED
+} from 'medium-draft';
 import { setImportOptions, htmlToStyle } from 'medium-draft/lib/importer';
 import { setRenderOptions, styleToHTML } from 'medium-draft/lib/exporter';
 import 'medium-draft/lib/index.css';

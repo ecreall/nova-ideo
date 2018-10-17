@@ -52,7 +52,9 @@ export class DumbIdeaAppBarTitle extends React.Component {
   };
 
   render() {
-    const { idea, hasEvaluation, stats, classes } = this.props;
+    const {
+      idea, hasEvaluation, stats, classes
+    } = this.props;
     const { titleVisible } = this.state;
     const IdeaIcon = getEntityIcon(idea.__typename);
     return (

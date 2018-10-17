@@ -4,24 +4,25 @@ import { filterActions } from '../../../utils/processes';
 import { PROCESSES, ACTIONS } from '../../../processes';
 
 export default function comment({ ownProps, mutate }) {
-  return ({ context, text, action, attachedFiles, anonymous, account }) => {
+  return ({
+    context, text, action, attachedFiles, anonymous, account
+  }) => {
     const { formData } = ownProps;
-    const files =
-      attachedFiles.length > 0
-        ? formData.values.files.map((file, index) => {
-          return {
-            id: file.id || `file-id${index}`,
-            oid: file.oid || `file-oid${index}`,
-            title: file.name,
-            url: file.preview.url,
-            isImage: file.preview.type === 'image',
-            variations: [],
-            size: file.size || 0,
-            mimetype: file.preview.type,
-            __typename: 'File'
-          };
-        })
-        : [];
+    const files = attachedFiles.length > 0
+      ? formData.values.files.map((file, index) => {
+        return {
+          id: file.id || `file-id${index}`,
+          oid: file.oid || `file-oid${index}`,
+          title: file.name,
+          url: file.preview.url,
+          isImage: file.preview.type === 'image',
+          variations: [],
+          size: file.size || 0,
+          mimetype: file.preview.type,
+          __typename: 'File'
+        };
+      })
+      : [];
     const createdAt = new Date();
     let authorId = account.id;
     let authorOid = account.oid;
@@ -160,7 +161,11 @@ export default function comment({ ownProps, mutate }) {
             active: { $set: true }
           });
           const setChannel = !commentChannel && {
-            channel: { $set: { __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title } }
+            channel: {
+              $set: {
+                __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title
+              }
+            }
           };
           return update(prev, {
             person: {
@@ -183,7 +188,11 @@ export default function comment({ ownProps, mutate }) {
             active: { $set: true }
           });
           const setChannel = !commentChannel && {
-            channel: { $set: { __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title } }
+            channel: {
+              $set: {
+                __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title
+              }
+            }
           };
           return update(prev, {
             person: {

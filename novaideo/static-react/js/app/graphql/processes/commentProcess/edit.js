@@ -3,7 +3,9 @@ import update from 'immutability-helper';
 import { ACTIONS } from '../../../processes';
 
 export default function edit({ ownProps, mutate }) {
-  return ({ context, text, attachedFiles, oldFiles }) => {
+  return ({
+    context, text, attachedFiles, oldFiles
+  }) => {
     const { formData } = ownProps;
     const files = formData.values.files
       ? formData.values.files.map((file, index) => {

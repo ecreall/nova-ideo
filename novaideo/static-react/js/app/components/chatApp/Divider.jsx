@@ -33,7 +33,9 @@ export class DumbCommentDivider extends React.Component {
       eventId,
       drawer,
       reverted,
-      dividerProps: { fullScreen, ignorDrawer, dynamic, unreadCommentsIds }
+      dividerProps: {
+        fullScreen, ignorDrawer, dynamic, unreadCommentsIds
+      }
     } = this.props;
     const addUnread = this.addUnread();
     const addDateSeparator = this.addDateSeparator();

@@ -24,7 +24,9 @@ import { goTo, get } from '../../utils/routeMap';
 import { closeChatApp } from '../../actions/chatAppActions';
 import Idea from '../../graphql/queries/Idea.graphql';
 import UserAvatar from '../user/UserAvatar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getExaminationTtile } from '.';
+import {
+  getEvaluationIcons, getEvaluationActions, getExaminationValue, getExaminationTtile
+} from '.';
 
 const styles = {
   container: {
@@ -295,7 +297,9 @@ export const mapStateToProps = (state) => {
 };
 
 function IdeaPopoverWithProcessManager(props) {
-  const { data, onActionClick, onFormOpened, onFormClosed } = props;
+  const {
+    data, onActionClick, onFormOpened, onFormClosed
+  } = props;
   return (
     <IdeaProcessManager idea={data.idea} onActionClick={onActionClick} onFormOpened={onFormOpened} onFormClosed={onFormClosed}>
       <DumbIdeaPopover {...props} />

@@ -2,7 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
-import { select, withKnobs, text, boolean } from '@storybook/addon-knobs';
+import {
+  select, withKnobs, text, boolean
+} from '@storybook/addon-knobs';
 
 import Button from '../../components/styledComponents/Button';
 

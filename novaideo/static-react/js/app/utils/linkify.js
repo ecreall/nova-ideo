@@ -18,7 +18,7 @@ type LinkifyLink = {
 export function getUrls(html: string): Array<string> {
   // first, we add spaces before </p> to help linkify
   const htmlForLinkify = html.replace(/<\/p>/gi, ' </p>');
-  return linkify.find(htmlForLinkify).map((link: LinkifyLink) => link.href);
+  return linkify.find(htmlForLinkify).map((link: LinkifyLink) => { return link.href; });
 }
 
 export function transformLinksInHtml(html: string): string {
@@ -39,7 +39,7 @@ export function transformLinksInHtml(html: string): string {
       return null;
     })
     // remove null values
-    .filter((link: LinkToReplace | null) => link);
+    .filter((link: LinkToReplace | null) => { return link; });
 
   let transformedHtml = html;
   linksToReplace.forEach((linkToReplace: LinkToReplace) => {

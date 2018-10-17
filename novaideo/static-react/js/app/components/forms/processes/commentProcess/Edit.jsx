@@ -93,7 +93,9 @@ export class DumbEditCommentForm extends React.Component {
   editor = null;
 
   handleSubmit = () => {
-    const { formData, valid, context, onSubmit } = this.props;
+    const {
+      formData, valid, context, onSubmit
+    } = this.props;
     if (valid) {
       const files = formData.values.files || [];
       const newFiles = files.filter((file) => {
@@ -119,7 +121,9 @@ export class DumbEditCommentForm extends React.Component {
   };
 
   render() {
-    const { action, formData, placeholder, onSubmit, classes, theme } = this.props;
+    const {
+      action, formData, placeholder, onSubmit, classes, theme
+    } = this.props;
     const hasComment = this.editor && this.editor.getPlainText();
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];
     files = files.filter((file) => {
@@ -178,7 +182,7 @@ export class DumbEditCommentForm extends React.Component {
               role="presentation"
               tabIndex="-1"
             >
-              {placeholder || <Translate value="forms.comment.textPlaceholder" name={'...'} />}
+              {placeholder || <Translate value="forms.comment.textPlaceholder" name="..." />}
             </div>
           </div>
         </div>

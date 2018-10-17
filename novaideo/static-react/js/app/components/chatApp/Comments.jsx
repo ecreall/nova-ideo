@@ -111,8 +111,11 @@ export class RenderComments extends React.Component {
       }, 400)();
     }
   }
+
   renderAlert = () => {
-    const { data, inline, account, displayForm, theme, classes } = this.props;
+    const {
+      data, inline, account, displayForm, theme, classes
+    } = this.props;
     const channel = data.node;
     if (displayForm && !account) {
       return (
@@ -134,7 +137,9 @@ export class RenderComments extends React.Component {
   };
 
   renderCommentForm = (commentAction) => {
-    const { channelId, data, inline, formProps, classes } = this.props;
+    const {
+      channelId, data, inline, formProps, classes
+    } = this.props;
     const channel = data.node;
     const subject = channel && channel.subject;
     const contextOid = subject ? subject.oid : '';
@@ -179,8 +184,7 @@ export class RenderComments extends React.Component {
     } = this.props;
     const channel = data.node;
     const subject = channel && channel.subject;
-    const commentAction =
-      displayForm && subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
+    const commentAction = displayForm && subject && subject.actions && filterActions(subject.actions, { behaviorId: COMMENTS_ACTIONS })[0];
     const displayRightBlock = !rightDisabled && rightOpen;
     const commentForm = this.renderCommentForm(commentAction);
     return (

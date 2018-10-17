@@ -62,7 +62,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbApp = ({ data, classes, Navbar, active, left, children }) => {
+export const DumbApp = ({
+  data, classes, Navbar, active, left, children
+}) => {
   return (
     <div
       className={classNames(classes.app, {

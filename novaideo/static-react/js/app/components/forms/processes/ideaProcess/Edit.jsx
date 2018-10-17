@@ -14,7 +14,9 @@ import Zoom from '@material-ui/core/Zoom';
 
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import SelectChipPreview from '../../widgets/SelectChipPreview';
-import { renderTextInput, renderRichTextField, renderFilesListField, renderSelect } from '../../utils';
+import {
+  renderTextInput, renderRichTextField, renderFilesListField, renderSelect
+} from '../../utils';
 import UserAvatar from '../../../user/UserAvatar';
 import { PROCESSES } from '../../../../processes';
 import { getFormattedDate } from '../../../../utils/globalFunctions';
@@ -185,7 +187,9 @@ export class DumbEditIdeaForm extends React.Component {
   editor = null;
 
   handleSubmit = () => {
-    const { formData, valid, idea, action } = this.props;
+    const {
+      formData, valid, idea, action
+    } = this.props;
     const processNodes = PROCESSES.ideamanagement.nodes;
     if (valid) {
       const files = formData.values.files || [];
@@ -236,7 +240,9 @@ export class DumbEditIdeaForm extends React.Component {
   };
 
   render() {
-    const { idea, formData, site, action, onClose, onOpen, classes, theme } = this.props;
+    const {
+      idea, formData, site, action, onClose, onOpen, classes, theme
+    } = this.props;
     const author = idea.author;
     const isAnonymous = author && author.isAnonymous;
     const authorPicture = author && author.picture;
@@ -300,7 +306,7 @@ export class DumbEditIdeaForm extends React.Component {
                 label: (
                   <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
                     <IconButton className={classes.button}>
-                      <Icon className={'mdi-set mdi-tag-multiple'} />
+                      <Icon className="mdi-set mdi-tag-multiple" />
                     </IconButton>
                   </Tooltip>
                 ),

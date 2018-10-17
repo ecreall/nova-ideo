@@ -41,7 +41,7 @@ export const ListItemText = glamorous(MuiListItemText)((props) => {
 export const ListItemIcon = glamorous(MuiListItemIcon)((props) => {
   return {
     width: 20,
-    height: 28,
+    height: 25,
     marginRight: 10,
     color: props.iconColor || '#a0a0a2'
   };

@@ -163,7 +163,9 @@ class ImagePicker extends React.Component {
   };
 
   render() {
-    const { name, label, helper, classes } = this.props;
+    const {
+      name, label, helper, classes
+    } = this.props;
     const { image } = this.state;
     const inputAttributes = {
       type: 'file',

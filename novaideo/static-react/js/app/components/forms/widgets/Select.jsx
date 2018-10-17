@@ -174,19 +174,19 @@ export class DumbSelect extends React.Component {
                       root: classes.search,
                       input: classes.input
                     }}
-                    endAdornment={
+                    endAdornment={(
                       <InputAdornment position="start">
                         <IconButton>
                           <SearchIcon />
                         </IconButton>
                       </InputAdornment>
-                    }
+                    )}
                   />
                 </div>
                 <MenuList role="menu">
-                  {searchText &&
-                    canAdd &&
-                    !exactMatch && (
+                  {searchText
+                    && canAdd
+                    && !exactMatch && (
                     <MenuItem
                       onClick={() => {
                         this.addOption(searchText);

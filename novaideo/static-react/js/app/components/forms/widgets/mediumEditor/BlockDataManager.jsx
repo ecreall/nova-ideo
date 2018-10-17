@@ -1,5 +1,7 @@
 import React from 'react';
-import { Entity, EditorState, Modifier, SelectionState } from 'draft-js';
+import {
+  Entity, EditorState, Modifier, SelectionState
+} from 'draft-js';
 import { getCurrentBlock } from 'medium-draft/lib/model';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';

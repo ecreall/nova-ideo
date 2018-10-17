@@ -37,7 +37,9 @@ export class DumbDeactivate extends React.Component {
   };
 
   render() {
-    const { action, onClose, classes, theme } = this.props;
+    const {
+      action, onClose, classes, theme
+    } = this.props;
     return (
       <Form
         initRef={(form) => {

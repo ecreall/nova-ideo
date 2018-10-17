@@ -26,7 +26,9 @@ const styles = {
   }
 };
 
-export const DumbUserEvaluations = ({ classes, onOpen, id, open }) => {
+export const DumbUserEvaluations = ({
+  classes, onOpen, id, open
+}) => {
   return (
     <Query notifyOnNetworkStatusChange fetchPolicy="cache-and-network" query={MySupports} variables={{ first: 20, after: '' }}>
       {(result) => {
@@ -37,12 +39,12 @@ export const DumbUserEvaluations = ({ classes, onOpen, id, open }) => {
             id={id}
             onOpen={onOpen}
             open={open}
-            title={
+            title={(
               <span>
                 <span>{I18n.t('user.myEvaluations')}</span>
                 <span className={classes.counter}>{totalCount && `(${totalCount})`}</span>
               </span>
-            }
+            )}
             Icon={SwapVerticalCircleIcon}
           >
             <FlatList

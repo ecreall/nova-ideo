@@ -69,12 +69,16 @@ const styles = {
 export const createTooltip = (title, count, className) => {
   return (
     <Tooltip className={className}>
-      {count} {title}
+      {count}
+      {' '}
+      {title}
     </Tooltip>
   );
 };
 
-const StatisticsDoughnut = ({ elements, placement, title, caption, disableTotalCount, classes }) => {
+const StatisticsDoughnut = ({
+  elements, placement, title, caption, disableTotalCount, classes
+}) => {
   const totalCount = elements.reduce((result, element) => {
     return result + element.count;
   }, 0);

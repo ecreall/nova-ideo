@@ -4,11 +4,10 @@ import StarIcon from '@material-ui/icons/Star';
 import HistoryIcon from '@material-ui/icons/History';
 import ReportIcon from '@material-ui/icons/Report';
 import ReplyIcon from '@material-ui/icons/Reply';
-import ModeEditIcon from '@material-ui/icons/ModeEdit';
+import ModeEditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 

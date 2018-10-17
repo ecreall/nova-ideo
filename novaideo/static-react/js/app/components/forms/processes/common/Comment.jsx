@@ -11,7 +11,9 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MicNoneIcon from '@material-ui/icons/MicNone';
 import IconButton from '@material-ui/core/IconButton';
 
-import { renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderRecordField } from '../../utils';
+import {
+  renderTextBoxField, renderAnonymousCheckboxField, renderFilesListField, renderRecordField
+} from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
 import CommentMenu from './CommentMenu';
 import { renderMenuItem } from '../../../common/menu/MenuList';
@@ -111,8 +113,8 @@ const styles = (theme) => {
       padding: 5
     },
     maskIcon: {
-      width: '45px !important',
-      height: '45px !important'
+      width: '20px !important',
+      height: '20px !important'
     },
     maskDefault: {
       height: 41,
@@ -131,7 +133,9 @@ export class DumbCommentForm extends React.Component {
   editor = null;
 
   handleSubmit = () => {
-    const { globalProps, formData, valid, context, action, onSubmit } = this.props;
+    const {
+      globalProps, formData, valid, context, action, onSubmit
+    } = this.props;
     if (valid) {
       let files = formData.values.files || [];
       files = files.filter((file) => {
@@ -155,10 +159,10 @@ export class DumbCommentForm extends React.Component {
   };
 
   initializeForm = () => {
-    const { formData, form } = this.props;
+    const { formData, form, dispatch } = this.props;
     const anonymous = formData && formData.values && Boolean(formData.values.anonymous);
     this.editor.clear();
-    this.props.dispatch(
+    dispatch(
       initialize(form, {
         comment: '',
         anonymous: anonymous,
@@ -169,15 +173,7 @@ export class DumbCommentForm extends React.Component {
 
   render() {
     const {
-      formData,
-      channel,
-      isDiscuss,
-      title,
-      globalProps: { site },
-      autoFocus,
-      placeholder,
-      classes,
-      theme
+      formData, channel, isDiscuss, title, globalProps: { site }, autoFocus, placeholder, classes, theme
     } = this.props;
     const hasComment = this.editor && this.editor.getPlainText();
     let files = formData && formData.values && formData.values.files ? formData.values.files : [];

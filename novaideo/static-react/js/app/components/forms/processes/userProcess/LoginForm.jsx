@@ -1,6 +1,8 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow, no-throw-literal */
 import React from 'react';
-import { Form, Field, reduxForm, initialize } from 'redux-form';
+import {
+  Form, Field, reduxForm, initialize
+} from 'redux-form';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';

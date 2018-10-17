@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash.debounce';
 
 import { setURLState } from '../../actions/instanceActions';
-import { VirtualizedListItem } from './VirtualizedListItem';
+import VirtualizedListItem from './VirtualizedListItem';
 import { APOLLO_NETWORK_STATUS } from '../../constants';
 import Scrollbar from './Scrollbar';
 import { createEvent } from '../../utils/globalFunctions';
@@ -49,7 +49,9 @@ function emptyContainer({ children }) {
   return children;
 }
 
-function scrollbarContainer({ children, handleScroll, scrollEvent, reverted, classes }) {
+function scrollbarContainer({
+  children, handleScroll, scrollEvent, reverted, classes
+}) {
   return (
     <Scrollbar
       scrollEvent={scrollEvent}
@@ -99,7 +101,9 @@ export class DumbFlatList extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    const { data, filter, network, getEntities, offlineFilter } = nextProps;
+    const {
+      data, filter, network, getEntities, offlineFilter
+    } = nextProps;
     let entities;
     let offlineStatus = false;
     try {
@@ -161,7 +165,9 @@ export class DumbFlatList extends React.Component {
   };
 
   handleScroll = (event) => {
-    const { data, customScrollbar, getEntities, scrollEvent } = this.props;
+    const {
+      data, customScrollbar, getEntities, scrollEvent
+    } = this.props;
     if (!customScrollbar && scrollEvent) createEvent(scrollEvent, true);
     if (getEntities(data).pageInfo.hasNextPage) {
       if (this.loadingDebounce) this.loadingDebounce.cancel();
@@ -325,9 +331,9 @@ export class DumbFlatList extends React.Component {
                 })
                 : null}
               {networkStatus === APOLLO_NETWORK_STATUS.fetchMore && items.pageInfo.hasNextPage && this.renderProgress()}
-              {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore &&
-                items.pageInfo.hasNextPage &&
-                moreBtn && (
+              {networkStatus !== APOLLO_NETWORK_STATUS.fetchMore
+                && items.pageInfo.hasNextPage
+                && moreBtn && (
                 <div className={classes.moreBtn} onClick={this.fetchMore}>
                   {moreBtn}
                 </div>
@@ -350,9 +356,4 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = { setURLState: setURLState };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DumbFlatList)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbFlatList));

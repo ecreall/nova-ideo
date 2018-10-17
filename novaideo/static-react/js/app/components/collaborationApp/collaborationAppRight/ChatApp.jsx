@@ -26,12 +26,12 @@ const styles = {
 export const DumbChatApp = ({ classes, appProps }) => {
   return (
     <RightContent
-      title={
+      title={(
         <div>
           <Icon className={classNames('mdi-set mdi-pound', classes.appIcon)} />
           {(appProps && appProps.channelTitle) || I18n.t('channels.comments')}
         </div>
-      }
+      )}
     >
       <Comments
         inline

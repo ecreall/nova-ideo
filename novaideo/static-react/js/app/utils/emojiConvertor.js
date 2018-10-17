@@ -1,10 +1,10 @@
 import { EmojiConvertor } from 'emoji-js';
 
-import { CONVERTOR_EMOJI_SHEET_APPLE_32 } from '../constants';
+import { PICKER_EMOJI_SHEET_APPLE_32 } from '../constants';
 
 function getNewEmojiConvertor() {
   const emoji = new EmojiConvertor();
-  const emojiUrl = CONVERTOR_EMOJI_SHEET_APPLE_32;
+  const emojiUrl = PICKER_EMOJI_SHEET_APPLE_32;
   emoji.img_sets = {
     apple: {
       path: emojiUrl,

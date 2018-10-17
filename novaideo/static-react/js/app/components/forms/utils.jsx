@@ -45,7 +45,9 @@ export const renderTextBoxField = ({
   );
 };
 
-export const renderRichTextField = ({ input: { name, value, onChange }, placeholder, autoFocus, initRef }) => {
+export const renderRichTextField = ({
+  input: { name, value, onChange }, placeholder, autoFocus, initRef
+}) => {
   return (
     <MediumEditor
       initRef={initRef}
@@ -63,8 +65,8 @@ export const renderAnonymousCheckboxField = ({ input: { value, onChange }, class
   return (
     <Tooltip title={anonymous ? I18n.t('forms.disableAnonymity') : I18n.t('forms.remainAnonymous')} placement="top">
       <Checkbox
-        icon={<Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
-        checkedIcon={<Icon className={'mdi-set mdi-guy-fawkes-mask'} />}
+        icon={<Icon className="mdi-set mdi-guy-fawkes-mask" />}
+        checkedIcon={<Icon className="mdi-set mdi-guy-fawkes-mask" />}
         value={value}
         onChange={onChange}
         classes={{
@@ -91,11 +93,13 @@ const checkboxStyles = (theme) => {
 
 export const renderCheckboxField = withStyles(checkboxStyles, {
   withTheme: true
-})(({ input: { value, onChange }, meta: { touched, error }, label, classes }) => {
+})(({
+  input: { value, onChange }, meta: { touched, error }, label, classes
+}) => {
   return [
     <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />,
-    touched &&
-      error && (
+    touched
+      && error && (
       <FormHelperText className={classes.error} id={name}>
         {error}
       </FormHelperText>
@@ -111,7 +115,9 @@ export const renderFilesListField = ({ input: { value, onChange }, node, initRef
   );
 };
 
-export const renderImageField = ({ input: { value, onChange }, initRef, label, helper }) => {
+export const renderImageField = ({
+  input: { value, onChange }, initRef, label, helper
+}) => {
   return <ImagePicker initRef={initRef} value={value} onChange={onChange} label={label} helper={helper} />;
 };
 
@@ -123,15 +129,21 @@ export const renderRecordField = ({ input: { value, onChange }, node, initRef })
   );
 };
 
-export const renderSelect = ({ input: { value, onChange }, options, label, canAdd, initRef }) => {
+export const renderSelect = ({
+  input: { value, onChange }, options, label, canAdd, initRef
+}) => {
   return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
 };
 
-export const renderSelectList = ({ input: { value, onChange }, options, label, initRef }) => {
+export const renderSelectList = ({
+  input: { value, onChange }, options, label, initRef
+}) => {
   return <SelectList initRef={initRef} label={label} options={options} value={value} onChange={onChange} />;
 };
 
-export const renderSelectField = ({ input: { name, value, onChange }, options, label, initRef }) => {
+export const renderSelectField = ({
+  input: { name, value, onChange }, options, label, initRef
+}) => {
   return <SelectField initRef={initRef} name={name} label={label} options={options} value={value} onChange={onChange} />;
 };
 
@@ -219,7 +231,12 @@ export const renderTextInput = withStyles(textInputStyles, {
         {label && (
           <label className={classes.label} htmlFor={name}>
             {label}
-            {optional && <span className={classes.labelOptional}> {I18n.t('forms.optional')}</span>}
+            {optional && (
+              <span className={classes.labelOptional}>
+                {' '}
+                {I18n.t('forms.optional')}
+              </span>
+            )}
           </label>
         )}
         <Input
@@ -255,8 +272,8 @@ export const renderTextInput = withStyles(textInputStyles, {
             {helper}
           </FormHelperText>
         )}
-        {touched &&
-          error && (
+        {touched
+          && error && (
           <FormHelperText className={classes.error} id={name}>
             {error}
           </FormHelperText>

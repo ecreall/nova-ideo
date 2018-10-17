@@ -5,7 +5,7 @@ export const LANGUAGES_TITLES = {
   fr: 'Français'
 };
 
-export const STATIC_URL = '/novaideostatic-react/';
+export const STATIC_URL = '';
 
 export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
 
@@ -30,8 +30,6 @@ export const REGISTRATION_CONFIRMATION = STATIC_URL + require('./assets/registra
 export const USER_BACKGROUND = STATIC_URL + require('./assets/background-person.png');
 
 export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
-
-export const CONVERTOR_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/convertor_apple_32.png');
 
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';
 

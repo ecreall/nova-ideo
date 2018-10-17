@@ -164,7 +164,9 @@ export class RenderComment extends React.Component {
   }
 
   renderAlert = () => {
-    const { data, inline, account, theme, classes } = this.props;
+    const {
+      data, inline, account, theme, classes
+    } = this.props;
     const comment = data.node;
     const channel = comment && comment.channel;
     if (!account) {
@@ -187,14 +189,16 @@ export class RenderComment extends React.Component {
   };
 
   renderCommentForm = (commentAction) => {
-    const { id, rightProps, data, inline, formProps, classes } = this.props;
+    const {
+      id, rightProps, data, inline, formProps, classes
+    } = this.props;
     const comment = data.node;
     const channel = comment && comment.channel;
     const formId = getFormId(id || rightProps.id);
     return (
       commentAction && (
         <Comment
-          placeholder={<Translate value={'channels.reply'} name={comment && comment.author.title} />}
+          placeholder={<Translate value="channels.reply" name={comment && comment.author.title} />}
           form={formId}
           key={formId}
           channel={channel}
@@ -231,11 +235,10 @@ export class RenderComment extends React.Component {
     } = this.props;
     const comment = data.node;
     const channel = comment && comment.channel;
-    const commentAction =
-      displayForm &&
-      comment &&
-      comment.actions &&
-      filterActions(comment.actions, { behaviorId: PROCESSES.commentmanagement.nodes.respond.nodeId })[0];
+    const commentAction = displayForm
+      && comment
+      && comment.actions
+      && filterActions(comment.actions, { behaviorId: PROCESSES.commentmanagement.nodes.respond.nodeId })[0];
     const commentForm = this.renderCommentForm(commentAction);
     return (
       <Grid className={classNames(classes.container, { [classes.containerInline]: inline })} container>

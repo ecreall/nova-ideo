@@ -62,7 +62,9 @@ class RightContent extends React.Component {
   };
 
   render() {
-    const { title, children, classes, rightFull } = this.props;
+    const {
+      title, children, classes, rightFull
+    } = this.props;
     return (
       <div className={classes.container}>
         <AppBar className={classes.appBar}>

@@ -27,7 +27,9 @@ const styles = {
   }
 };
 
-export function renderMenuItem({ Icon, title, onClick, color, hoverColor }) {
+export function renderMenuItem({
+  Icon, title, onClick, color, hoverColor
+}) {
   return (
     <MenuItem onClick={onClick} hoverColor={hoverColor}>
       {Icon && (

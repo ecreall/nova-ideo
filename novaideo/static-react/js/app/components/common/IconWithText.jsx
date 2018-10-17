@@ -19,7 +19,9 @@ const styles = {
   }
 };
 
-export const DumbIconWithText = ({ name, text, containerStyle, styleText, styleIcon, classes }) => {
+export const DumbIconWithText = ({
+  name, text, containerStyle, styleText, styleIcon, classes
+}) => {
   return (
     <div className={classNames(classes.containerStyle, containerStyle)}>
       <Icon className={classNames(classes.styleIcon, styleIcon, name)} />

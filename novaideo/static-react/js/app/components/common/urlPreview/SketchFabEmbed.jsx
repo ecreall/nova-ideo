@@ -137,8 +137,8 @@ class DumbSketchfabEmbed extends React.Component<*, Props, State> {
                   </div>
                 </div>
               </div>
-              {url &&
-                open && (
+              {url
+                && open && (
                 <div className={classes.sketchfabEmbedOpen} onClick={this.closeEmbed}>
                   <iframe
                     title="Sketchfab"

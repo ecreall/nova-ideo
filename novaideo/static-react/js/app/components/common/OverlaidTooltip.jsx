@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import Tooltip from './overlay/Tooltip';
-import OverlayTrigger from '../common/overlay/OverlayTrigger';
+import OverlayTrigger from './overlay/OverlayTrigger';
 
 const styles = {
   tooltip: {
@@ -14,7 +14,9 @@ const styles = {
   }
 };
 
-export const DumbOverlaidTooltip = ({ children, tooltip, placement, classes }) => {
+export const DumbOverlaidTooltip = ({
+  children, tooltip, placement, classes
+}) => {
   return (
     <OverlayTrigger
       overlay={<Tooltip className={classes.tooltip}>{tooltip}</Tooltip>}

@@ -3,7 +3,9 @@
 import React from 'react';
 import ReactFrame from 'react-frame-component';
 
-import { resizeIframe, getScripts, getIframeDocument, type Script } from '../../../utils/urlPreview';
+import {
+  resizeIframe, getScripts, getIframeDocument, type Script
+} from '../../../utils/urlPreview';
 
 type FrameProps = {
   id: string,

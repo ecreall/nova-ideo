@@ -93,7 +93,9 @@ export class DumbImagesPreview extends React.Component {
     this.setState({ sliderOpen: true, current: index });
   };
 
-  renderItem = ({ image, key, width, className }) => {
+  renderItem = ({
+    image, key, width, className
+  }) => {
     const { classes } = this.props;
     return (
       <div
@@ -124,7 +126,9 @@ export class DumbImagesPreview extends React.Component {
           {otherImages.length > 0 && (
             <div className={classes.otherItemsContainer}>
               {otherImages.map((image, key) => {
-                return this.renderItem({ image: image, key: key + 1, width: 'small', className: classes.otherItem });
+                return this.renderItem({
+                  image: image, key: key + 1, width: 'small', className: classes.otherItem
+                });
               })}
               {nbHiddenImages ? (
                 <div

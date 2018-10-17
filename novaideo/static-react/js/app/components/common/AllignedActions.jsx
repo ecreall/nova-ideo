@@ -17,6 +17,8 @@ const styles = (theme) => {
       color: '#585858',
       fontWeight: '700',
       marginRight: 35,
+      height: 40,
+      width: 40,
       '&:hover': {
         color: theme.palette.info['700']
       }
@@ -39,7 +41,9 @@ const styles = (theme) => {
   };
 };
 
-const IconActions = ({ actions, onActionClick, overlayPosition, actionDecoration, classes }) => {
+const IconActions = ({
+  actions, onActionClick, overlayPosition, actionDecoration, classes
+}) => {
   return (
     <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
       {actions.map((action, key) => {
@@ -64,7 +68,9 @@ const IconActions = ({ actions, onActionClick, overlayPosition, actionDecoration
   );
 };
 
-const BtnActions = ({ actions, onActionClick, theme, classes }) => {
+const BtnActions = ({
+  actions, onActionClick, theme, classes
+}) => {
   return (
     <CardActions classes={{ root: classes.actionsContainer }} disableActionSpacing>
       {actions.map((action, key) => {

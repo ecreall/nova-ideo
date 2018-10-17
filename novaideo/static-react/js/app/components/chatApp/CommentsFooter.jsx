@@ -55,7 +55,9 @@ const CommentsIdeaFooter = ({ data, classes }) => {
           <span className={classes.headerAddOn}>{title}</span>
         </div>
       </div>
-      <b>{<Translate value="channels.ideasCommentsFooterTitle" name={title} />}</b> {I18n.t('channels.ideasCommentsFooter')}
+      <b>{<Translate value="channels.ideasCommentsFooterTitle" name={title} />}</b>
+      {' '}
+      {I18n.t('channels.ideasCommentsFooter')}
     </div>
   );
 };
@@ -74,7 +76,8 @@ const CommentsUserFooter = ({ data, classes }) => {
           </span>
         </div>
       </div>
-      <b>{<Translate value="channels.usersCommentsFooterTitle" name={data.node && data.node.title} />}</b>{' '}
+      <b>{<Translate value="channels.usersCommentsFooterTitle" name={data.node && data.node.title} />}</b>
+      {' '}
       {<Translate value="channels.usersCommentsFooter" name={data.node && data.node.title} />}
     </div>
   );

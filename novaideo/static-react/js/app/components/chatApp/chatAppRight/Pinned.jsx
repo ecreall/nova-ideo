@@ -37,7 +37,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbPinned = ({ id, channel, classes, onOpen, open, data }) => {
+export const DumbPinned = ({
+  id, channel, classes, onOpen, open, data
+}) => {
   const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
   return (
     <DetailsSection

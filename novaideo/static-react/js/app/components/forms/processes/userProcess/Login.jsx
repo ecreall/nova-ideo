@@ -216,12 +216,12 @@ export class DumbLogin extends React.Component {
         fullScreen
         transition={Zoom}
         onClose={this.close}
-        appBar={
+        appBar={(
           <div className={classes.appBarHeaderTitle}>
             <Avatar className={classes.avatar} src={picture ? `${picture.url}/profil` : DEFAULT_LOGO} />
             <div className={classes.appBarHeaderTitleText}>{site && site.title}</div>
           </div>
-        }
+        )}
         classes={{
           closeBtn: classes.closeBtn,
           maxContainer: classes.maxContainer,

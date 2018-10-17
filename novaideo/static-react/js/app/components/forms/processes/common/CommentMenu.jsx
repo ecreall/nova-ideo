@@ -71,7 +71,7 @@ export class DumbCommentMenu extends React.Component {
         id={menuId}
         onOpen={this.onMenuOpen}
         onClose={this.onMenuClose}
-        activator={
+        activator={(
           <IconButton
             className={classNames('menu-button', classes.button, {
               [classes.buttonOpen]: menu
@@ -81,7 +81,7 @@ export class DumbCommentMenu extends React.Component {
           >
             <AddIcon />
           </IconButton>
-        }
+        )}
       >
         <MenuList
           fields={fields}

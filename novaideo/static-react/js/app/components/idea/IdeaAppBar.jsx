@@ -40,7 +40,7 @@ const styles = (theme) => {
     },
     actionsText: {
       color: '#2c2d30',
-      marginRight: 5,
+      marginRight: 10,
       fontSize: 14,
       fontWeight: 400,
       '&:hover': {
@@ -86,7 +86,9 @@ const styles = (theme) => {
   };
 };
 
-const IdeaAppBar = ({ idea, hasEvaluation, stats, processManager, classes, theme }) => {
+const IdeaAppBar = ({
+  idea, hasEvaluation, stats, processManager, classes, theme
+}) => {
   const author = idea.author;
   const authorPicture = author && author.picture;
   const isAnonymous = author && author.isAnonymous;

@@ -160,7 +160,9 @@ class OverlayTrigger extends React.Component {
   }
 
   render() {
-    const { trigger, overlay, children, onBlur, onClick, onFocus, onMouseOut, onMouseOver, ...props } = this.props;
+    const {
+      trigger, overlay, children, onBlur, onClick, onFocus, onMouseOut, onMouseOver, ...props
+    } = this.props;
 
     delete props.delay;
     delete props.delayShow;
@@ -186,10 +188,10 @@ class OverlayTrigger extends React.Component {
     if (isOneOf('hover', trigger)) {
       warning(
         !(trigger === 'hover'),
-        'Specifying only the `"hover"` trigger limits the ' +
-          'visibility of the overlay to just mouse users. Consider also ' +
-          'including the `"focus"` trigger so that touch and keyboard only ' +
-          'users can see the overlay as well.'
+        'Specifying only the `"hover"` trigger limits the '
+          + 'visibility of the overlay to just mouse users. Consider also '
+          + 'including the `"focus"` trigger so that touch and keyboard only '
+          + 'users can see the overlay as well.'
       );
 
       triggerProps.onMouseOver = createChainedFunction(childProps.onMouseOver, onMouseOver, this.handleMouseOver);

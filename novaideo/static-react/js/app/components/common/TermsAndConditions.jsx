@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
-import Dialog from '../common/Dialog';
+import Dialog from './Dialog';
 
 const styles = (theme) => {
   return {
@@ -52,11 +52,11 @@ export class DumbTermsAndConditions extends React.Component {
       this.state.open && (
         <Dialog
           directDisplay
-          appBar={
+          appBar={(
             <div className={classes.titleContainer}>
               <span className={classes.title}>{I18n.t('common.termesConditions')}</span>
             </div>
-          }
+          )}
           open={this.state.open}
           onClose={this.handleClose}
         >

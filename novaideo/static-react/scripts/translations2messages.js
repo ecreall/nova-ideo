@@ -1,6 +1,6 @@
 const fs = require('fs');
-const translations = require('../js/app/utils/translations');
 const flattenDeep = require('lodash/flattenDeep');
+const translations = require('../js/app/utils/translations');
 
 const englishTranslations = translations.en;
 

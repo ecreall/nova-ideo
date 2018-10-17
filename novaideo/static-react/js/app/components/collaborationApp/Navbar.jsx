@@ -95,7 +95,9 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { classes, className, drawer, site } = this.props;
+    const {
+      classes, className, drawer, site
+    } = this.props;
     const formId = getFormId('globalSearch');
     return (
       <div>
@@ -123,14 +125,14 @@ class NavBar extends React.Component {
             {!drawer && (
               <div className={classes.userMenuContainer}>
                 <UserMainMenu
-                  activator={
+                  activator={(
                     <AccountInformation
                       onlyIcon
                       classes={{
                         avatar: classes.accountAvatar
                       }}
                     />
-                  }
+                  )}
                 />
               </div>
             )}

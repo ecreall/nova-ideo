@@ -20,8 +20,8 @@ import IdeaPopover from '../../idea/IdeaPopover';
 const styles = (theme) => {
   return {
     listItem: {
-      paddingTop: 4,
-      paddingBottom: 4,
+      paddingTop: 2,
+      paddingBottom: 2,
       paddingLeft: 16,
       paddingRight: 10
     },
@@ -33,6 +33,9 @@ const styles = (theme) => {
       '&:hover': {
         backgroundColor: theme.palette.tertiary.color
       }
+    },
+    listItemIcon: {
+      marginRight: 4
     },
     text: {
       color: 'white',
@@ -126,12 +129,14 @@ export class DumbIdeaListingItem extends React.Component {
   menu = null;
 
   renderIcon = (isActive) => {
-    const { classes, node, edit, site } = this.props;
+    const {
+      classes, node, edit, site
+    } = this.props;
     const { open } = this.state;
     const isEdit = edit && edit.values && edit.values.text;
     if (isEdit) {
       return (
-        <ListItemIcon>
+        <ListItemIcon classes={{ root: classes.listItemIcon }}>
           <CreateIcon
             className={classNames(classes.icon, {
               [classes.iconActive]: isActive,
@@ -153,7 +158,7 @@ export class DumbIdeaListingItem extends React.Component {
     }
 
     return (
-      <ListItemIcon>
+      <ListItemIcon classes={{ root: classes.listItemIcon }}>
         <EntityIcon
           className={classNames(classes.icon, {
             [classes.iconActive]: isActive,
@@ -207,7 +212,7 @@ export class DumbIdeaListingItem extends React.Component {
           menuPaper: classes.menuPaper,
           menu: hide && classes.root
         }}
-        activator={
+        activator={(
           <ListItem
             dense
             button
@@ -228,7 +233,7 @@ export class DumbIdeaListingItem extends React.Component {
               </ListItemSecondaryAction>
             )}
           </ListItem>
-        }
+        )}
       >
         <IdeaPopover id={node.id} onActionClick={this.closeMenu} onFormOpened={this.hideMenu} onFormClosed={this.showMenu} />
       </Menu>

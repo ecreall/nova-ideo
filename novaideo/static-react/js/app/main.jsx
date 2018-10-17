@@ -13,7 +13,9 @@ import App from './app';
 import SiteData from './graphql/queries/SiteData.graphql';
 import { SMALL_WIDTH } from './constants';
 import { userLogin, userLogout, updateUserToken } from './actions/authActions';
-import { setConnectionState, loadAdapters, updateGlobalProps, updateNavigation } from './actions/instanceActions';
+import {
+  setConnectionState, loadAdapters, updateGlobalProps, updateNavigation
+} from './actions/instanceActions';
 import { closeDrawer } from './actions/collaborationAppActions';
 import { getCurrentLocation } from './utils/routeMap';
 import { getActions } from './utils/processes';
@@ -116,7 +118,9 @@ class Main extends React.Component {
   };
 
   render() {
-    const { data, site, network, theme } = this.props;
+    const {
+      data, site, network, theme
+    } = this.props;
     if (data.loading || !site) return null;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -157,10 +161,7 @@ export const mapDispatchToProps = {
 
 export default withWidth()(
   withApollo(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(
+    connect(mapStateToProps, mapDispatchToProps)(
       graphql(SiteData, {
         options: (props: any) => {
           return {

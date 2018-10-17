@@ -16,11 +16,11 @@ const SearchApp = (props) => {
   const { classes } = props;
   return (
     <RightContent
-      title={
+      title={(
         <div className={classes.appTitle}>
           <span>{I18n.t('channels.searchBlockTitle')}</span>
         </div>
-      }
+      )}
     >
       <Search {...props} />
     </RightContent>

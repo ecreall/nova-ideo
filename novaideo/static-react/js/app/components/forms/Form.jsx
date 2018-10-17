@@ -113,7 +113,9 @@ export class DumbForm extends React.Component {
   };
 
   render() {
-    const { classes, fullScreen, appBar, footer, transition, children, withDrawer, onOpen } = this.props;
+    const {
+      classes, fullScreen, appBar, footer, transition, children, withDrawer, onOpen
+    } = this.props;
     const integretedForm = withDrawer || fullScreen;
     const { open } = this.state;
     const content = <div className={fullScreen ? classes.maxContainer : classes.container}>{children}</div>;

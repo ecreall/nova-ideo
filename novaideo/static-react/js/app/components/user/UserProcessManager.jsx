@@ -48,14 +48,11 @@ export class DumbUserProcessManager extends React.Component {
         goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      const {
-        globalProps: { rootActions }
-      } = this.props;
+      const { globalProps: { rootActions } } = this.props;
       const loginAction = filterActions(rootActions, {
         tags: [ACTIONS.mainMenu, ACTIONS.site],
         behaviorId: userProcessNodes.login.nodeId
       })[0];
-      const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
       case userProcessNodes.login.nodeId:
         this.displayForm(loginAction);
@@ -67,7 +64,7 @@ export class DumbUserProcessManager extends React.Component {
         this.displayForm(loginAction, action);
       }
     } else {
-      const { selectUser, deselectUser } = this.props;
+      const { selectUser, deselectUser, client } = this.props;
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
       case userProcessNodes.activate.nodeId:
@@ -92,12 +89,12 @@ export class DumbUserProcessManager extends React.Component {
           .then(this.onActionExecuted)
           .catch(globalProps.showError);
         break;
-      case userProcessNodes.see.nodeId: {
+      case userProcessNodes.see.nodeId:
         this.onActionExecuted();
         setTimeout(() => {
           goTo(get('users', { userId: person.id }));
         }, 200);
-      }
+        break;
       case userProcessNodes.edit.nodeId:
         this.displayForm(action);
         break;
@@ -109,7 +106,7 @@ export class DumbUserProcessManager extends React.Component {
           .userLogout()
           .then(({ value }) => {
             if (value.status) {
-              this.props.client.resetStore();
+              client.resetStore();
             }
           })
           .catch(() => {
@@ -121,6 +118,7 @@ export class DumbUserProcessManager extends React.Component {
       }
     }
   };
+
   onFormClose = () => {
     this.setState({ action: null });
     this.afterFormClosed();
@@ -199,11 +197,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withApollo(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    null,
-    { withRef: true }
-  )(UserProcessManagerWithActions)
-);
+export default withApollo(connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(UserProcessManagerWithActions));

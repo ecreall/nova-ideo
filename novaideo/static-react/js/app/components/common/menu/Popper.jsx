@@ -70,7 +70,9 @@ export class DumbPopper extends React.Component {
   };
 
   render() {
-    const { id, activator, keepMounted, classes } = this.props;
+    const {
+      id, activator, keepMounted, classes
+    } = this.props;
     const { popper } = this.state;
     const children = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
@@ -85,8 +87,8 @@ export class DumbPopper extends React.Component {
         })}
       >
         <Target onClick={this.open}>{activator}</Target>
-        {(popper || keepMounted) &&
-          ReactDOM.createPortal(
+        {(popper || keepMounted)
+          && ReactDOM.createPortal(
             <PopperBase
               placement="top-start"
               eventsEnabled={popper}

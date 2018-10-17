@@ -39,7 +39,9 @@ export class DumbPin extends React.Component {
   };
 
   render() {
-    const { action, comment, onClose, classes, theme } = this.props;
+    const {
+      action, comment, onClose, classes, theme
+    } = this.props;
     return (
       <Form
         initRef={(form) => {

@@ -3,12 +3,11 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { Translate } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
+import IconButton from '../styledComponents/IconButton';
 import Actions from '../../graphql/queries/Actions.graphql';
-import { Menu, MenuList } from '../common/menu';
+import { Menu, MenuList } from './menu';
 import { ACTIONS } from '../../processes';
 import { getActions, filterActions } from '../../utils/processes';
 
@@ -38,11 +37,10 @@ const styles = (theme) => {
 
 export const getFields = (actions, onActionClick, theme, titlesProps = {}) => {
   return actions.map((action) => {
-    const actionTag =
-      (action.tags.includes(ACTIONS.info) && ACTIONS.info) ||
-      (action.tags.includes(ACTIONS.success) && ACTIONS.success) ||
-      (action.tags.includes(ACTIONS.warning) && ACTIONS.warning) ||
-      (action.tags.includes(ACTIONS.danger) && ACTIONS.danger);
+    const actionTag = (action.tags.includes(ACTIONS.info) && ACTIONS.info)
+      || (action.tags.includes(ACTIONS.success) && ACTIONS.success)
+      || (action.tags.includes(ACTIONS.warning) && ACTIONS.warning)
+      || (action.tags.includes(ACTIONS.danger) && ACTIONS.danger);
     const colors = {
       [ACTIONS.info]: theme.palette.info[500],
       [ACTIONS.success]: theme.palette.success[500],
@@ -62,7 +60,9 @@ export const getFields = (actions, onActionClick, theme, titlesProps = {}) => {
   });
 };
 
-export const DumbMenuMore = ({ context, data, close, onActionClick, theme, classes }) => {
+export const DumbMenuMore = ({
+  context, data, close, onActionClick, theme, classes
+}) => {
   if (!data.actions) return null;
   const actions = getActions(
     data.actions.edges.map((action) => {
@@ -89,11 +89,11 @@ export const DumbMenuMore = ({ context, data, close, onActionClick, theme, class
     fields.length > 0 && (
       <Menu
         id={`${context.id}-menu-more`}
-        activator={
+        activator={(
           <IconButton aria-haspopup="true" className={classes.button} aria-label="More">
             <MoreHorizIcon className={classes.icon} />
           </IconButton>
-        }
+        )}
       >
         <MenuList fields={fields} close={close} />
       </Menu>

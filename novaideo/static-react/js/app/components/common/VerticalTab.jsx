@@ -6,10 +6,9 @@ import Tab from './Tab';
 export class DumbVerticalTab extends React.Component {
   constructor(props) {
     super(props);
-    this.uniqueTab =
-      props.tabs.filter((tab) => {
-        return !tab.invalidate;
-      }).length === 1;
+    this.uniqueTab = props.tabs.filter((tab) => {
+      return !tab.invalidate;
+    }).length === 1;
     this.state = {
       expanded:
         props.tabs.length > 1

@@ -157,7 +157,7 @@ class FilesPicker extends React.Component {
         file
       );
       return false;
-    } else if (file.size < this.props.minFileSize) {
+    } if (file.size < this.props.minFileSize) {
       this.onError(
         {
           code: 3,
@@ -219,7 +219,9 @@ class FilesPicker extends React.Component {
   };
 
   render() {
-    const { accepts, multiple, name, clickable, className, style, children } = this.props;
+    const {
+      accepts, multiple, name, clickable, className, style, children
+    } = this.props;
     const inputAttributes = {
       type: 'file',
       accept: accepts ? accepts.join() : '',

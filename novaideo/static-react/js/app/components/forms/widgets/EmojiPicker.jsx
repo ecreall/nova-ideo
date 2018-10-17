@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Picker } from 'emoji-mart';
-import IconButton from '@material-ui/core/IconButton';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
+import IconButton from '../../styledComponents/IconButton';
 import { Menu } from '../../common/menu';
 import { PICKER_EMOJI_SHEET_APPLE_32 } from '../../../constants';
 
@@ -82,7 +82,7 @@ class EmojiPicker extends React.Component {
         }}
         onOpen={this.openPicker}
         onClose={this.closePicker}
-        activator={
+        activator={(
           <IconButton
             className={classNames(classes.button, {
               [classes.buttonActive]: this.state.opened
@@ -90,7 +90,7 @@ class EmojiPicker extends React.Component {
           >
             <InsertEmoticonIcon className={classes.icon} />
           </IconButton>
-        }
+        )}
       >
         <Picker
           color={theme.palette.primary[500]}

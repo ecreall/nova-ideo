@@ -1,7 +1,9 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow, no-throw-literal */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field, reduxForm, initialize } from 'redux-form';
+import {
+  Form, Field, reduxForm, initialize
+} from 'redux-form';
 import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import { graphql } from 'react-apollo';
@@ -75,12 +77,16 @@ export class DumbEditApiToken extends React.Component {
   };
 
   render() {
-    const { valid, account, classes, theme } = this.props;
+    const {
+      valid, account, classes, theme
+    } = this.props;
     const { loading, error, success } = this.state;
     return (
       <div>
         <div className={classes.message}>
-          {I18n.t('forms.editApiToken.message')} <strong>{account.apiToken}</strong>
+          {I18n.t('forms.editApiToken.message')}
+          {' '}
+          <strong>{account.apiToken}</strong>
         </div>
         <Form className={classes.form} onSubmit={this.handleSubmit}>
           <Field

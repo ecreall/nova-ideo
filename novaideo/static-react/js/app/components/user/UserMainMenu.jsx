@@ -149,7 +149,9 @@ export class DumbUserMainMenu extends React.Component {
   };
 
   render() {
-    const { account, rootActions, site, processManager, classes, theme, activator } = this.props;
+    const {
+      account, rootActions, site, processManager, classes, theme, activator
+    } = this.props;
     const { menu } = this.state;
     const siteActions = filterActions(rootActions, { tags: [ACTIONS.mainMenu, ACTIONS.site] });
     const siteFields = getFields(siteActions, processManager.execute, theme, { siteTitle: site.title });
@@ -162,7 +164,7 @@ export class DumbUserMainMenu extends React.Component {
           id="user-menu"
           onOpen={this.onMenuOpen}
           onClose={this.onMenuClose}
-          activator={
+          activator={(
             <div
               ref={(anchor) => {
                 this.anchor = anchor;
@@ -178,7 +180,7 @@ export class DumbUserMainMenu extends React.Component {
                 </div>
               )}
             </div>
-          }
+          )}
         >
           {account ? (
             <Query

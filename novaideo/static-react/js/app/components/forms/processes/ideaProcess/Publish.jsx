@@ -38,7 +38,9 @@ export class Dumbpublish extends React.Component {
   };
 
   render() {
-    const { action, idea, onClose, classes, theme } = this.props;
+    const {
+      action, idea, onClose, classes, theme
+    } = this.props;
     return (
       <Form
         initRef={(form) => {

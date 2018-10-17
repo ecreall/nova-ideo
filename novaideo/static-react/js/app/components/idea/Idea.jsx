@@ -23,7 +23,9 @@ import Scrollbar from '../common/Scrollbar';
 import Evaluation from '../common/Evaluation';
 import IdeaProcessManager from './IdeaProcessManager';
 import IdeaAppBar from './IdeaAppBar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
+import {
+  getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile
+} from '.';
 import { MediumEditor } from '../forms/widgets/mediumEditor';
 
 const styles = (theme) => {
@@ -210,7 +212,9 @@ export class DumbIdea extends React.Component {
   };
 
   render() {
-    const { classes, data, site, processManager, adapters } = this.props;
+    const {
+      classes, data, site, processManager, adapters
+    } = this.props;
     const { idea } = data;
     if (data.loading || !idea) {
       return null;

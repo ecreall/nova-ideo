@@ -23,8 +23,7 @@ import UserMenu from './UserMenu';
 import Comment from '../forms/processes/common/Comment';
 import { initalsGenerator, getFormId } from '../../utils/globalFunctions';
 
-const imgGradient =
-  'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
+const imgGradient = 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
 
 const styles = (theme) => {
   return {
@@ -183,7 +182,9 @@ export class DumbUserCard extends React.Component {
   };
 
   render() {
-    const { data, processManager, withCommentForm, classes } = this.props;
+    const {
+      data, processManager, withCommentForm, classes
+    } = this.props;
     const person = data.person;
     if (!person) {
       return (

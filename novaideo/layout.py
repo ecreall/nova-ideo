@@ -4,6 +4,7 @@
 
 # licence: AGPL
 # author: Amen Souissi
+import os
 import pytz
 import datetime
 from pyramid_layout.layout import layout_config
@@ -13,6 +14,7 @@ from novaideo.utilities.util import (
     render_files, render_files_slider)
 from novaideo.utilities.analytics_utility import get_colors
 from novaideo.emojis import DEFAULT_EMOJIS
+from novaideo.lib import config
 
 
 @layout_config(template='views/templates/master.pt')
@@ -61,3 +63,15 @@ class GlobalLayout(object):
 
     def get_colors(self, nb):
         return get_colors(count=nb)
+
+    def get_root(self):
+        novaideo_config = config.get_config()
+        use_webpack_server = novaideo_config.get('use_webpack_server', False)
+        root_url = 'static-react'
+        node_env = os.getenv('NODE_MODE', 'production')
+        if use_webpack_server:
+            root_url = 'http://{}:{}'.format(
+                novaideo_config.get('webpack_host', 'localhost'),
+                novaideo_config.get('webpack_port', 8081))
+
+        return {'root_url': root_url, 'node_env': node_env}

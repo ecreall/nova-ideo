@@ -78,7 +78,9 @@ export const stylesContentCollapse = (theme) => {
   };
 };
 
-export const DumbDetailsSection = ({ id, title, children, Icon, onOpen, open, classes }) => {
+export const DumbDetailsSection = ({
+  id, title, children, Icon, onOpen, open, classes
+}) => {
   return (
     <ContentCollapse
       classes={{

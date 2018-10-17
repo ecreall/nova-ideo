@@ -31,7 +31,9 @@ export class DumbIdeasDivider extends React.PureComponent {
   };
 
   render() {
-    const { node, index, eventId, classes } = this.props;
+    const {
+      node, index, eventId, classes
+    } = this.props;
     const addDateSeparator = this.addDateSeparator();
     const createdAtF = getFormattedDate(node.createdAt, 'date.format', { today: 'date.today', yesterday: 'date.yesterday' });
     const dateSeparator = addDateSeparator && createdAtF;

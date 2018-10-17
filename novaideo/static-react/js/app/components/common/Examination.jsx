@@ -55,7 +55,9 @@ export class DumbExamination extends React.Component {
   };
 
   render() {
-    const { value, title, message, classes } = this.props;
+    const {
+      value, title, message, classes
+    } = this.props;
     const icon = <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />;
     return [
       <div className={classes.circleContainer} onClick={this.handleClickOpen}>
@@ -66,12 +68,12 @@ export class DumbExamination extends React.Component {
       this.state.open && (
         <Dialog
           directDisplay
-          appBar={
+          appBar={(
             <div className={classes.titleContainer}>
               {icon}
               <span className={classes.title}>{title}</span>
             </div>
-          }
+          )}
           open={this.state.open}
           onClose={this.handleClose}
         >

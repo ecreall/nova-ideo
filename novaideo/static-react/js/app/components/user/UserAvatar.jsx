@@ -26,7 +26,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl, anonymousIcon = 'guy-fawkes-mask' }) => {
+export const DumbUserAvatar = ({
+  classes, picture, isAnonymous, title, strictUrl, anonymousIcon = 'guy-fawkes-mask'
+}) => {
   let content = null;
   if (isAnonymous) {
     content = <Icon className={`mdi-set mdi-${anonymousIcon}`} />;
@@ -42,7 +44,7 @@ export const DumbUserAvatar = ({ classes, picture, isAnonymous, title, strictUrl
         [classes.noPicture]: !isAnonymous && !picture
       })}
       classes={{ root: classes.avatar }}
-      src={picture ? `${picture.url}${urlAddon}` : ''}
+      src={!isAnonymous && picture ? `${picture.url}${urlAddon}` : ''}
     >
       {content}
     </Avatar>

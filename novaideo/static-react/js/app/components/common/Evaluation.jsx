@@ -120,7 +120,9 @@ const styles = {
   }
 };
 
-export const DumbEvaluation = ({ icon, text, actions, onClick, active, big, classes }) => {
+export const DumbEvaluation = ({
+  icon, text, actions, onClick, active, big, classes
+}) => {
   const IconTop = icon.top;
   const IconDown = icon.down;
   if (active) {

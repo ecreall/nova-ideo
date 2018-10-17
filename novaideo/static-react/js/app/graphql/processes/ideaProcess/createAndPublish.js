@@ -4,27 +4,28 @@ import { ACTIONS, STATE } from '../../../processes';
 import { truncateText } from '../../../utils/globalFunctions';
 
 export default function createAndPublish({ ownProps, mutate }) {
-  return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account }) => {
+  return ({
+    context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account
+  }) => {
     const {
       formData,
       globalProps: { site }
     } = ownProps;
-    const files =
-      attachedFiles.length > 0
-        ? formData.values.files.map((file, index) => {
-          return {
-            id: file.id || `file-id${index}`,
-            oid: file.oid || `file-oid${index}`,
-            title: file.name,
-            url: file.preview.url,
-            isImage: file.preview.type === 'image',
-            variations: [],
-            size: file.size || 0,
-            mimetype: file.preview.type,
-            __typename: 'File'
-          };
-        })
-        : [];
+    const files = attachedFiles.length > 0
+      ? formData.values.files.map((file, index) => {
+        return {
+          id: file.id || `file-id${index}`,
+          oid: file.oid || `file-oid${index}`,
+          title: file.name,
+          url: file.preview.url,
+          isImage: file.preview.type === 'image',
+          variations: [],
+          size: file.size || 0,
+          mimetype: file.preview.type,
+          __typename: 'File'
+        };
+      })
+      : [];
     const createdAt = new Date();
     let authorId = account.id;
     let authorOid = account.oid;

@@ -199,7 +199,9 @@ export class DumbImagesSlider extends React.Component {
   };
 
   render() {
-    const { context, images, open, onClose, onOpen, classes } = this.props;
+    const {
+      context, images, open, onClose, onOpen, classes
+    } = this.props;
     const { currentImage, color } = this.state;
     const lengthImages = images.length;
     const image = images[currentImage];

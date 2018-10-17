@@ -37,7 +37,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbMembers = ({ data, id, classes, onOpen, open }) => {
+export const DumbMembers = ({
+  data, id, classes, onOpen, open
+}) => {
   const totalCount = data.node && data.node.members && data.node.members.totalCount;
   return (
     <DetailsSection

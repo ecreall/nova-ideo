@@ -28,7 +28,9 @@ export class DumbLoginButton extends React.Component {
   };
 
   render() {
-    const { rootActions, site, color, classes, theme } = this.props;
+    const {
+      rootActions, site, color, classes, theme
+    } = this.props;
     const { open } = this.state;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     const loginAction = filterActions(rootActions, {

@@ -24,8 +24,8 @@ const styles = (theme) => {
       height: '100%'
     },
     listItem: {
-      paddingTop: 4,
-      paddingBottom: 4,
+      paddingTop: 2,
+      paddingBottom: 2,
       paddingLeft: 14,
       paddingRight: 10
     },
@@ -81,7 +81,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbContentCollapse = ({ id, onOpen, title, Icon, open, children, classes }) => {
+export const DumbContentCollapse = ({
+  id, onOpen, title, Icon, open, children, classes
+}) => {
   const textClasses = classNames(classes.text, { [classes.textActive]: open });
   const iconClasses = classNames(classes.icon, { [classes.iconActive]: open });
   const sectionIconClasses = classNames(classes.sectionIcon, { [classes.sectionIconActive]: open });

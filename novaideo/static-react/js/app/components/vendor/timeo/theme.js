@@ -1,4 +1,6 @@
-import { teal, grey, deepOrange, orange, blue } from '@material-ui/core/colors';
+import {
+  teal, grey, deepOrange, orange, blue
+} from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 function theme() {
@@ -22,6 +24,7 @@ function theme() {
       warning: orange
     },
     typography: {
+      useNextVariants: true,
       htmlFontSize: 15,
       fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
     },

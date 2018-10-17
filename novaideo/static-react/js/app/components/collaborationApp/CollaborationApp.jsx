@@ -36,7 +36,9 @@ export const styles = {
   }
 };
 
-function CollaborationApp({ children, active, left, account, smallScreen, classes }) {
+function CollaborationApp({
+  children, active, left, account, smallScreen, classes
+}) {
   return (
     <App active={active} left={left} Navbar={Navbar}>
       <div className={classes.root}>

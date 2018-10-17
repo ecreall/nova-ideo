@@ -1,10 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import IconButton from '../styledComponents/IconButton';
 import { truncateText } from '../../utils/globalFunctions';
 
 const styles = {
@@ -29,7 +29,9 @@ export class DumbCollapsibleText extends React.Component {
   };
 
   render() {
-    const { text, className, textLen, classes } = this.props;
+    const {
+      text, className, textLen, classes
+    } = this.props;
     const { open } = this.state;
     const smallText = !text || text.length <= textLen;
     return (

@@ -42,7 +42,9 @@ const styles = (theme) => {
   };
 };
 
-const Files = ({ data, id, channel, classes, onOpen, open }) => {
+const Files = ({
+  data, id, channel, classes, onOpen, open
+}) => {
   const totalCount = data.node && data.node.comments && data.node.comments.totalCount;
   return (
     <DetailsSection

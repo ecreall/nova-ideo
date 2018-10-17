@@ -46,7 +46,9 @@ export const AtomicBlock = (props) => {
           {...props}
           readOnly={blockProps.readOnly}
           entity={index}
-          data={{ ...entitydata, type: type, position: position, size: size }}
+          data={{
+            ...entitydata, type: type, position: position, size: size
+          }}
         />
       </div>
     );

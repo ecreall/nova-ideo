@@ -34,7 +34,7 @@ const ReplyApp = (props) => {
   const { classes, rightProps, updateRight } = props;
   return (
     <RightContent
-      title={
+      title={(
         <div>
           <div className={classes.appTitle}>
             <ForumIcon className={classes.appIcon} />
@@ -51,7 +51,7 @@ const ReplyApp = (props) => {
             {rightProps.channelTitle}
           </div>
         </div>
-      }
+      )}
     >
       <Reply {...props} />
     </RightContent>

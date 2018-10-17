@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export, no-underscore-dangle, no-param-reassign */
 import HelpIcon from '@material-ui/icons/Help';
-import { PROCESSES, ICONS_MAPPING, ENTITIES_ICONS, STATE } from '../processes';
+import {
+  PROCESSES, ICONS_MAPPING, ENTITIES_ICONS, STATE
+} from '../processes';
 
 function equal(element, filter, defaultValue = true) {
   if (!filter) return defaultValue;
@@ -32,14 +34,13 @@ export function getActionData(action) {
   const processDef = PROCESSES[processId];
   const newAction = { ...action, icon: action.icon in ICONS_MAPPING ? ICONS_MAPPING[action.icon] : HelpIcon };
   if (!processDef) return newAction;
-  const actionDef =
-    processDef.nodes[
-      Object.keys(processDef.nodes).filter((key) => {
-        const node = processDef.nodes[key];
-        const id = node.behaviorId || node.nodeId;
-        return id === behaviorId;
-      })[0]
-    ];
+  const actionDef = processDef.nodes[
+    Object.keys(processDef.nodes).filter((key) => {
+      const node = processDef.nodes[key];
+      const id = node.behaviorId || node.nodeId;
+      return id === behaviorId;
+    })[0]
+  ];
   if (!actionDef) return newAction;
   return { ...newAction, ...actionDef };
 }

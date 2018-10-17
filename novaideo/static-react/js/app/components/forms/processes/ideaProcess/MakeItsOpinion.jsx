@@ -1,6 +1,8 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import { Form as ReduxForm, Field, reduxForm, initialize } from 'redux-form';
+import {
+  Form as ReduxForm, Field, reduxForm, initialize
+} from 'redux-form';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
@@ -37,7 +39,9 @@ export class DumMakeItsOpinion extends React.Component {
   };
 
   render() {
-    const { action, idea, adapters, onClose, valid, classes, theme } = this.props;
+    const {
+      action, idea, adapters, onClose, valid, classes, theme
+    } = this.props;
     const opinionsBase = adapters.opinions || OPINIONS;
     const opinions = {};
     Object.keys(opinionsBase).forEach((key) => {

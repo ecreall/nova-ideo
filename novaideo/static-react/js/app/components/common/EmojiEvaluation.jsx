@@ -73,7 +73,9 @@ const styles = (theme) => {
   };
 };
 
-const EmojiTitle = ({ emoji, users, isUserEmoji, currentUser, classes }) => {
+const EmojiTitle = ({
+  emoji, users, isUserEmoji, currentUser, classes
+}) => {
   const allUsers = currentUser
     ? users.filter((user) => {
       return currentUser.id !== user.node.id;
@@ -97,14 +99,16 @@ const EmojiTitle = ({ emoji, users, isUserEmoji, currentUser, classes }) => {
   );
 };
 
-export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes }) => {
+export const DumbEmojiEvaluation = ({
+  emojis, onEmojiClick, currentUser, classes
+}) => {
   if (emojis.length === 0) return null;
   let emojisContents = emojis.map((emoji) => {
     const count = emoji.users.totalCount;
     if (count === 0) return null;
     return (
       <OverlaidTooltip
-        tooltip={
+        tooltip={(
           <EmojiTitle
             classes={classes}
             emoji={emoji.title}
@@ -112,7 +116,7 @@ export const DumbEmojiEvaluation = ({ emojis, onEmojiClick, currentUser, classes
             isUserEmoji={emoji.isUserEmoji}
             currentUser={currentUser}
           />
-        }
+        )}
         placement="top"
       >
         <div

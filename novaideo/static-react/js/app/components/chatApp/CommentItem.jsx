@@ -220,7 +220,9 @@ class DumbCommentItem extends React.Component {
   menu = null;
 
   ignoreMetaData = () => {
-    const { node, reverted, next, previous } = this.props;
+    const {
+      node, reverted, next, previous
+    } = this.props;
     const item = reverted ? next : previous;
     if (!item) return false;
     const currentNode = reverted ? node : item;
@@ -235,7 +237,9 @@ class DumbCommentItem extends React.Component {
   };
 
   ignorePinned = () => {
-    const { node, reverted, next, previous } = this.props;
+    const {
+      node, reverted, next, previous
+    } = this.props;
     const item = reverted ? next : previous;
     if (!item) return false;
     const currentNode = reverted ? node : item;
@@ -283,7 +287,9 @@ class DumbCommentItem extends React.Component {
   };
 
   render() {
-    const { node, classes, processManager, disableReply, itemProps } = this.props;
+    const {
+      node, classes, processManager, disableReply, itemProps
+    } = this.props;
     const commentProcessNodes = PROCESSES.commentmanagement.nodes;
     const abstractProcessNodes = PROCESSES.novaideoabstractprocess.nodes;
     const { action } = this.state;
@@ -313,8 +319,8 @@ class DumbCommentItem extends React.Component {
     return (
       <div>
         <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
-          {pinned &&
-            !this.ignorePinned() && (
+          {pinned
+            && !this.ignorePinned() && (
             <div className={classes.pinnedLabel}>
               <div className={classes.pinnedIcon}>
                 <Icon className="mdi-set mdi-pin" />
@@ -328,8 +334,8 @@ class DumbCommentItem extends React.Component {
               [classes.editContainer]: edit
             })}
           >
-            {!edit &&
-              processManager && (
+            {!edit
+              && processManager && (
               <CommentMenu
                 initRef={(menu) => {
                   this.menu = menu;
@@ -398,7 +404,13 @@ class DumbCommentItem extends React.Component {
                         }}
                       />
 
-                      {edited && <span className={classes.edited}>({I18n.t('channels.edited')})</span>}
+                      {edited && (
+                        <span className={classes.edited}>
+(
+                          {I18n.t('channels.edited')}
+)
+                        </span>
+                      )}
                     </div>
                     <ImagesPreview
                       images={images}

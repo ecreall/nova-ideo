@@ -1,12 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { I18n } from 'react-redux-i18n';
 
+import IconButton from '../styledComponents/IconButton';
 import Button from '../styledComponents/Button';
-import { Menu } from '../common/menu';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
 import { ACTIONS, PROCESSES } from '../../processes';
 import { getActions } from '../../utils/processes';
@@ -127,7 +125,9 @@ export class DumbIdeaMenu extends React.Component {
   };
 
   render() {
-    const { idea, classes, onActionClick, overlayPosition } = this.props;
+    const {
+      idea, classes, onActionClick, overlayPosition
+    } = this.props;
     if (!this.state.menu) return null;
     const actions = getActions(idea.actions, { tags: ACTIONS.menu });
     return (

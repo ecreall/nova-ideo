@@ -6,13 +6,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
 import CardActions from '@material-ui/core/CardActions';
 import ChatIcon from '@material-ui/icons/Chat';
 import Hidden from '@material-ui/core/Hidden';
+import MuiIconButton from '@material-ui/core/IconButton';
 
 import { updateChatAppRight, closeChatApp } from '../../actions/chatAppActions';
 import { openDrawer } from '../../actions/collaborationAppActions';
@@ -22,6 +22,7 @@ import { goTo, get } from '../../utils/routeMap';
 import { CONTENTS_IDS } from './chatAppRight';
 import Search from '../forms/Search';
 import { getFormId } from '../../utils/globalFunctions';
+import IconButton from '../styledComponents/IconButton';
 
 const styles = (theme) => {
   return {
@@ -201,12 +202,19 @@ class NavBar extends React.Component {
   };
 
   handleSearchCancel = () => {
-    this.props.updateChatAppRight({ open: false, componentId: null, props: {}, full: false });
+    this.props.updateChatAppRight({
+      open: false,
+      componentId: null,
+      props: {},
+      full: false
+    });
     return false;
   };
 
   render() {
-    const { data, classes, rightOpen, rightFull, rightComponentId, className } = this.props;
+    const {
+      data, classes, rightOpen, rightFull, rightComponentId, className
+    } = this.props;
     const isBackground = rightOpen && rightFull && rightComponentId === CONTENTS_IDS.reply;
     const channel = data.channel;
     const actionWithSeparator = classNames(classes.action, classes.actionWithSeparator);
@@ -288,9 +296,9 @@ class NavBar extends React.Component {
                 />
               </div>
             </div>
-            <IconButton color="primary" aria-label="Menu" onClick={this.handleClose}>
+            <MuiIconButton color="primary" aria-label="Menu" onClick={this.handleClose}>
               <CloseIcon />
-            </IconButton>
+            </MuiIconButton>
           </Toolbar>
         </AppBar>
       </ShortcutsManager>
@@ -312,9 +320,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(NavBar)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(NavBar));

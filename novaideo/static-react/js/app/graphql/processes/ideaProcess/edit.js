@@ -4,7 +4,9 @@ import { ACTIONS } from '../../../processes';
 import { truncateText } from '../../../utils/globalFunctions';
 
 export default function edit({ ownProps, mutate }) {
-  return ({ context, plainText, text, title, keywords, attachedFiles, oldFiles }) => {
+  return ({
+    context, plainText, text, title, keywords, attachedFiles, oldFiles
+  }) => {
     const { formData } = ownProps;
     const files = formData.values.files
       ? formData.values.files.map((file, index) => {

@@ -123,7 +123,9 @@ export class DumbDivider extends React.Component {
   };
 
   render() {
-    const { message, alert, alertMessage, classes } = this.props;
+    const {
+      message, alert, alertMessage, classes
+    } = this.props;
     const fixedStyle = this.state.fixed ? { left: this.state.left, zIndex: this.getZIndex() } : {};
     return (
       <div

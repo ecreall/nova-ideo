@@ -1,5 +1,7 @@
 export default function registration({ mutate }) {
-  return ({ firstName, lastName, email, password }) => {
+  return ({
+    firstName, lastName, email, password
+  }) => {
     return mutate({
       variables: {
         firstName: firstName,

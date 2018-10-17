@@ -1,11 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { I18n } from 'react-redux-i18n';
 
-import { Menu } from '../common/menu';
+import IconButton from '../styledComponents/IconButton';
 import EmojiPicker from '../forms/widgets/EmojiPicker';
 import { ACTIONS, PROCESSES } from '../../processes';
 import { getActions } from '../../utils/processes';

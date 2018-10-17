@@ -59,7 +59,9 @@ const styles = (theme) => {
   };
 };
 
-export const DumbTab = ({ disabled, title, description, Icon, content, color, onChange, expanded, classes }) => {
+export const DumbTab = ({
+  disabled, title, description, Icon, content, color, onChange, expanded, classes
+}) => {
   return (
     <ExpansionPanel
       disabled={disabled}

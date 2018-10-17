@@ -196,7 +196,9 @@ export class DumbCreateIdeaForm extends React.Component {
   };
 
   handleSubmit = (action) => {
-    const { context, formData, valid, globalProps } = this.props;
+    const {
+      context, formData, valid, globalProps
+    } = this.props;
     // context if transformation (transform a comment in to idea)
     const processNodes = PROCESSES.ideamanagement.nodes;
     if (valid) {
@@ -342,7 +344,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 label: (
                   <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
                     <IconButton className={classes.button}>
-                      <Icon className={'mdi-set mdi-tag-multiple'} />
+                      <Icon className="mdi-set mdi-tag-multiple" />
                     </IconButton>
                   </Tooltip>
                 ),

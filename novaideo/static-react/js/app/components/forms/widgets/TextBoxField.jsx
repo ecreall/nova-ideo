@@ -11,8 +11,8 @@ class TextBoxField extends React.Component {
   };
 
   componentDidMount() {
-    const { autoFocus, initRef } = this.props;
-    if (autoFocus) this.editor.focus(this.props.value);
+    const { autoFocus, initRef, value } = this.props;
+    if (autoFocus) this.editor.focus(value);
     if (initRef) initRef(this);
   }
 
@@ -50,9 +50,12 @@ class TextBoxField extends React.Component {
   };
 
   render() {
-    const { placeholder, value, style, withEmoji, onCtrlEnter, onEnter } = this.props;
+    const {
+      placeholder, value, style, withEmoji, onCtrlEnter, onEnter
+    } = this.props;
     return [
       <TextEditor
+        key="text-editor"
         ref={(editor) => {
           this.editor = editor;
         }}
@@ -62,7 +65,7 @@ class TextBoxField extends React.Component {
         onCtrlEnter={onCtrlEnter}
         onEnter={onEnter}
       />,
-      withEmoji ? <EmojiPicker style={style || {}} onSelect={this.onSelectEmoji} /> : null
+      withEmoji ? <EmojiPicker key="emoji-picker" style={style || {}} onSelect={this.onSelectEmoji} /> : null
     ];
   }
 }

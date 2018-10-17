@@ -1,12 +1,16 @@
 import React from 'react';
 import { EditorState, Modifier } from 'draft-js';
-import { StringToTypeMap, Block, Entity as EntityConstants, beforeInput, getCurrentBlock, HANDLED } from 'medium-draft';
+import {
+  StringToTypeMap, Block, Entity as EntityConstants, beforeInput, getCurrentBlock, HANDLED
+} from 'medium-draft';
 import { blockToHTML, entityToHTML } from 'medium-draft/lib/exporter';
 import { htmlToBlock, htmlToEntity } from 'medium-draft/lib/importer';
 import Icon from '@material-ui/core/Icon';
 import { I18n } from 'react-redux-i18n';
 
-import { DQUOTE_START, DQUOTE_END, SQUOTE_START, SQUOTE_END } from './constants';
+import {
+  DQUOTE_START, DQUOTE_END, SQUOTE_START, SQUOTE_END
+} from './constants';
 
 import { getEmbedDataFromNode, extractEmbedData } from './BlockDataManager';
 
@@ -24,7 +28,7 @@ export const newHTMLtoBlock = (nodeName, node) => {
           ...getEmbedDataFromNode(imageNode)
         }
       };
-    } else if (node.className.match(/md-block-atomic/)) {
+    } if (node.className.match(/md-block-atomic/)) {
       const aNode = node.querySelector('a');
       return {
         type: Block.ATOMIC,
@@ -36,7 +40,7 @@ export const newHTMLtoBlock = (nodeName, node) => {
       };
     }
     return undefined;
-  } else if (node.className.match(/md-block-atomic-break/)) {
+  } if (node.className.match(/md-block-atomic-break/)) {
     return {
       type: Block.ATOMIC,
       data: {
@@ -62,7 +66,7 @@ export const newBlockToHTML = (block) => {
     if (type === 'embed' || block.text === 'E') {
       if (data.url) {
         return (
-          <figure className={'md-block-atomic md-block-atomic-embed'}>
+          <figure className="md-block-atomic md-block-atomic-embed">
             <a
               href={data.url}
               className="md-inline-link"
@@ -79,7 +83,7 @@ export const newBlockToHTML = (block) => {
         start: '<figure class="md-block-atomic md-block-atomic-embed">',
         end: '</figure>'
       };
-    } else if (type === 'separator' || block.text === '-') {
+    } if (type === 'separator' || block.text === '-') {
       return (
         <div className="md-block-atomic md-block-atomic-break">
           <hr className="text-node-separator" />
@@ -134,7 +138,7 @@ export const handleBeforeInput = (editorState, str, onChange) => {
         )
       );
       return HANDLED;
-    } else if (len > 0) {
+    } if (len > 0) {
       const lastChar = text[len - 1];
       if (lastChar !== ' ') {
         onChange(

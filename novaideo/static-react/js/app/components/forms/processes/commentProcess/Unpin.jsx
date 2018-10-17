@@ -39,7 +39,9 @@ export class DumbUnpin extends React.Component {
   };
 
   render() {
-    const { action, comment, classes, theme, onClose } = this.props;
+    const {
+      action, comment, classes, theme, onClose
+    } = this.props;
     return (
       <Form
         initRef={(form) => {

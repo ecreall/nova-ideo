@@ -111,7 +111,9 @@ class AppDrawer extends React.PureComponent {
   }
 
   render() {
-    const { classes, theme, drawerOpen, drawerApp, switchDrawer } = this.props;
+    const {
+      classes, theme, drawerOpen, drawerApp, switchDrawer
+    } = this.props;
     return [
       <Hidden mdUp>
         <Drawer

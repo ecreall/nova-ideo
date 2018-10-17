@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { I18n } from 'react-redux-i18n';
-import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutlined';
 import { withStyles } from '@material-ui/core/styles';
 
 import DetailsSection from './DetailsSection';
@@ -31,7 +31,9 @@ const styles = {
   }
 };
 
-const InformationsContent = ({ id, onActionClick, kind, classes }) => {
+const InformationsContent = ({
+  id, onActionClick, kind, classes
+}) => {
   switch (kind) {
   case 'Idea':
     return <Idea id={id} onActionClick={onActionClick} classes={{ container: classes.ideaContainer }} />;
@@ -53,7 +55,9 @@ const InformationsContent = ({ id, onActionClick, kind, classes }) => {
   }
 };
 
-export const DumbInformations = ({ id, subject, onActionClick, channel, onOpen, open, classes }) => {
+export const DumbInformations = ({
+  id, subject, onActionClick, channel, onOpen, open, classes
+}) => {
   return (
     <DetailsSection
       classes={{
@@ -62,11 +66,11 @@ export const DumbInformations = ({ id, subject, onActionClick, channel, onOpen, 
       id={id}
       onOpen={onOpen}
       open={open}
-      title={
+      title={(
         <span>
           <span>{I18n.t('channels.infoBlockTitle')}</span>
         </span>
-      }
+      )}
       Icon={InfoOutlineIcon}
     >
       {open && (

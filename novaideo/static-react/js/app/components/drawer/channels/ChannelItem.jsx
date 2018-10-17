@@ -21,8 +21,8 @@ import { CONTENTS_IDS } from '../../collaborationApp/collaborationAppRight';
 const styles = (theme) => {
   return {
     listItem: {
-      paddingTop: 4,
-      paddingBottom: 4,
+      paddingTop: 2,
+      paddingBottom: 2,
       paddingLeft: 16,
       paddingRight: 10
     },
@@ -103,6 +103,9 @@ const styles = (theme) => {
     unreadComment: {
       color: 'white',
       fontWeight: '700'
+    },
+    listItemIcon: {
+      marginRight: 4
     }
   };
 };
@@ -121,13 +124,15 @@ export class DumbChannelItem extends React.PureComponent {
   };
 
   renderIcon = (isActive, isSelected) => {
-    const { classes, node, itemProps, currentMessage } = this.props;
+    const {
+      classes, node, itemProps, currentMessage
+    } = this.props;
     const channelPicture = node.subject.picture;
     const editor = currentMessage && currentMessage.values && currentMessage.values.comment;
     const hasMessage = !isSelected && editor && convertFromRaw(editor).getPlainText();
     if (hasMessage) {
       return (
-        <ListItemIcon>
+        <ListItemIcon classes={{ root: classes.listItemIcon }}>
           <CreateIcon
             className={classNames(classes.icon, {
               [classes.iconActive]: isActive,
@@ -144,7 +149,7 @@ export class DumbChannelItem extends React.PureComponent {
         title={node.title}
       />
     ) : (
-      <ListItemIcon>
+      <ListItemIcon classes={{ root: classes.listItemIcon }}>
         <Icon
           className={classNames('mdi-set mdi-pound', classes.icon, {
             [classes.iconActive]: isActive,
@@ -156,10 +161,12 @@ export class DumbChannelItem extends React.PureComponent {
   };
 
   render() {
-    const { classes, node, activeChannel, activeIntegretedChannel, chatAppIntegreted } = this.props;
-    const lenUnreadComments = node.lenUnreadComments;
+    const {
+      classes, node, activeChannel, activeIntegretedChannel, chatAppIntegreted
+    } = this.props;
+    const { id, title, lenUnreadComments } = node;
     const hasUnread = lenUnreadComments > 0;
-    const isSelected = activeChannel === node.id || (chatAppIntegreted && activeIntegretedChannel === node.id);
+    const isSelected = activeChannel === id || (chatAppIntegreted && activeIntegretedChannel === id);
     const isActive = isSelected || hasUnread;
     const textClasses = classNames(classes.text, { [classes.textActive]: isActive, [classes.textSelected]: isSelected });
     return (
@@ -173,7 +180,7 @@ export class DumbChannelItem extends React.PureComponent {
         }}
       >
         {this.renderIcon(isActive, isSelected)}
-        <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={node.title} />
+        <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={title} />
         {hasUnread && (
           <ListItemSecondaryAction className={classes.badge}>
             <Badge classes={{ colorAccent: classes.badgeColor }} badgeContent={lenUnreadComments} color="accent" />
@@ -197,9 +204,4 @@ export const mapStateToProps = (state, props) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DumbChannelItem)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(DumbChannelItem));

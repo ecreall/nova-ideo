@@ -45,17 +45,19 @@ const styles = (theme) => {
 };
 
 function SnackbarContent(props) {
-  const { classes, className, message, onClose, variant, ...other } = props;
+  const {
+    classes, className, message, onClose, variant, ...other
+  } = props;
   const Icon = variantIcon[variant];
   return (
     <SnackbarContentBase
       className={classNames(classes[variant], className)}
-      message={
+      message={(
         <span className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
           {message}
         </span>
-      }
+      )}
       action={[
         <IconButton key="close" aria-label="Close" color="inherit" className={classes.close} onClick={onClose}>
           <CloseIcon className={classes.icon} />

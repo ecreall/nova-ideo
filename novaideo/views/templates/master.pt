@@ -11,16 +11,16 @@
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
       app_id getattr(request.root, 'app_id', None);
       root_title getattr(request.root, 'title', '');
-      view_title getattr(view, 'title', '');">
+      view_title getattr(view, 'title', '');
+      root_data layout.get_root();
+      root_url root_data['root_url'];
+      node_env root_data['node_env']">
   <head >
     <meta charset="utf-8"/>
     <title metal:define-slot="page-title">${view_title if view_title else root_title}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
-    <link href="${su('novaideo:static-react/css/latofonts.css')}"
-            rel="stylesheet"/>
-    <link href="${su('novaideo:static-react/css/novaideo.css')}"
-            rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet"  tal:condition="node_env == 'production'" href="${root_url}/build/novaideo.css" />
     <div tal:omit-tag="" tal:condition="request.user and activate_push_notification and app_id">
       <link rel="manifest" href="${request.resource_url(request.root, 'manifest.json')}">
       <script src="${su('novaideo:static/js/OneSignalSDK.js')}" async></script>
@@ -78,8 +78,7 @@
     <input type="hidden" name="execution-id" id="execution-id" value="" />
     <div id='root'></div>
     <div id='modal-portal'></div>
-    <script src="${su('novaideo:static-react/build/bundle.js')}"></script>
-    <link href="${su('novaideo:static-react/build/bundle.css')}"
-            rel="stylesheet"/>
+    <script src="${root_url}/build/bundle.js"></script>
+    <script tal:condition="node_env == 'development'" src="${root_url}/build/novaideo.js"></script>
   </body>
 </html>

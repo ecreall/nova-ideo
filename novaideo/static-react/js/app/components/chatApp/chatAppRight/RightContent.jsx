@@ -67,7 +67,9 @@ class RightContent extends React.Component {
   };
 
   render() {
-    const { title, children, classes, updateRight, rightFull } = this.props;
+    const {
+      title, children, classes, updateRight, rightFull
+    } = this.props;
     return (
       <div className={classes.container}>
         <AppBar className={classes.appBar}>
@@ -86,7 +88,9 @@ class RightContent extends React.Component {
               color="primary"
               aria-label="Menu"
               onClick={() => {
-                return updateRight({ open: false, componentId: undefined, full: false, props: {} });
+                return updateRight({
+                  open: false, componentId: undefined, full: false, props: {}
+                });
               }}
             >
               <CloseIcon className={classes.menuIcon} />

@@ -118,11 +118,11 @@ export class DumbRecord extends React.Component {
       <div onClick={this.open}>{children}</div>,
       <Dialog
         directDisplay
-        appBar={
+        appBar={(
           <div className={classes.titleContainer}>
             <span className={classes.title}>{I18n.t('forms.record')}</span>
           </div>
-        }
+        )}
         open={open}
         onClose={this.leave}
       >

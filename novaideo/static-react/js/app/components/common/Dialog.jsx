@@ -114,7 +114,9 @@ const styles = (theme) => {
 };
 
 const AppRightContainer = (props) => {
-  const { children, classes, withDrawer, rightOpen, rightFull } = props;
+  const {
+    children, classes, withDrawer, rightOpen, rightFull
+  } = props;
   return (
     <Grid className={classes.grid} container>
       <Grid
@@ -160,7 +162,9 @@ class CommonDialog extends React.Component {
 
   onEntered = () => {
     this.setState({ entered: true }, () => {
-      const { withDrawer, withRightApp, onOpen, addIntegration } = this.props;
+      const {
+        withDrawer, withRightApp, onOpen, addIntegration
+      } = this.props;
       if (onOpen) onOpen();
       if (withDrawer && withRightApp) addIntegration();
     });

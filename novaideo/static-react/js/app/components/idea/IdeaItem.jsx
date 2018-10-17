@@ -25,7 +25,9 @@ import IdeaProcessManager from './IdeaProcessManager';
 import { closeChatApp } from '../../actions/chatAppActions';
 import UserTitle from '../user/UserTitle';
 import UserAvatar from '../user/UserAvatar';
-import { getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile } from '.';
+import {
+  getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile
+} from '.';
 
 const styles = (theme) => {
   return {

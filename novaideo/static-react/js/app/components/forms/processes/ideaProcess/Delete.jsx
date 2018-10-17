@@ -47,7 +47,9 @@ export class DumbDelete extends React.Component {
   };
 
   render() {
-    const { action, classes, theme, onClose } = this.props;
+    const {
+      action, classes, theme, onClose
+    } = this.props;
     return (
       <Form
         initRef={(form) => {
