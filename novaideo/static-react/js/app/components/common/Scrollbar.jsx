@@ -65,11 +65,11 @@ class Scrollbar extends React.Component {
   };
 
   scrollToLastPosition = () => {
-    const scroller = this.scroll.getScroller();
-    const scrollHeight = scroller.scrollHeight;
-    const positions = this.positions;
-    if (positions) {
-      const top = scrollHeight - positions.scrollHeight + positions.scrollTop;
+    if (this.positions) {
+      const scroller = this.scroll.getScroller();
+      const scrollerHeight = scroller.scrollHeight;
+      const { scrollHeight, scrollTop } = this.positions;
+      const top = scrollerHeight - scrollHeight + scrollTop;
       if (top >= 0) {
         this.scrollTo(top);
       }

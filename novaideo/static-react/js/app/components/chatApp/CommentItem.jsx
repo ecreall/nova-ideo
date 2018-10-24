@@ -316,7 +316,7 @@ class DumbCommentItem extends React.Component {
     const formId = getFormId(`edit-${node.id}`);
     return (
       <div>
-        <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned && classes.pinned}>
+        <div onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave} className={pinned ? classes.pinned : ''}>
           {pinned
             && !this.ignorePinned() && (
             <div className={classes.pinnedLabel}>
@@ -455,7 +455,7 @@ class DumbCommentItem extends React.Component {
             </div>
           </div>
         </div>
-        <div className={reply && classes.replyCommentsContainer}>
+        <div className={reply ? classes.replyCommentsContainer : ''}>
           {reply && <Icon className={classNames('mdi-set mdi-source-commit-start-next-local', classes.iconStart)} />}
           {reply && (
             <IconButton onClick={this.toggleReply} className={classNames('close-reply', classes.closeReply)}>

@@ -31,7 +31,7 @@ export function renderMenuItem({
   Icon, title, onClick, color, hoverColor
 }) {
   return (
-    <MenuItem onClick={onClick} hoverColor={hoverColor}>
+    <MenuItem key={title} onClick={onClick} hoverColor={hoverColor}>
       {Icon && (
         <ListItemIcon iconColor={color}>
           <Icon className="menu-item-icon" />

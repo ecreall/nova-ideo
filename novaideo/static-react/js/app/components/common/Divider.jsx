@@ -141,20 +141,22 @@ export class DumbDivider extends React.Component {
         })}
       >
         {alert && <div className={classes.alert}>{alertMessage}</div>}
-        {message && [
-          <div className={classes.background} />,
-          <div
-            ref={(messageContainer) => {
-              this.message = messageContainer;
-            }}
-            style={fixedStyle}
-            className={classNames(classes.message, {
-              [classes.messageFixed]: fixed
-            })}
-          >
-            {message}
-          </div>
-        ]}
+        {message && (
+          <React.Fragment>
+            <div className={classes.background} />
+            <div
+              ref={(messageContainer) => {
+                this.message = messageContainer;
+              }}
+              style={fixedStyle}
+              className={classNames(classes.message, {
+                [classes.messageFixed]: fixed
+              })}
+            >
+              {message}
+            </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

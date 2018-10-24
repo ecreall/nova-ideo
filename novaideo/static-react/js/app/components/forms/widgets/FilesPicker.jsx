@@ -116,7 +116,7 @@ class FilesPicker extends React.Component {
   };
 
   fileTypeAcceptable = (file) => {
-    const accepts = this.props.accepts;
+    const { accepts } = this.props;
     if (accepts) {
       if (file.type) {
         const typeLeft = this.mimeTypeLeft(file.type);
@@ -157,7 +157,8 @@ class FilesPicker extends React.Component {
         file
       );
       return false;
-    } if (file.size < this.props.minFileSize) {
+    }
+    if (file.size < this.props.minFileSize) {
       this.onError(
         {
           code: 3,
