@@ -24,17 +24,11 @@ const styles = {
     textShadow: '0 0px 2px rgba(128, 128, 128, 0.4)',
     fontSize: '25px !important',
     transition: 'all .1s ease-in-out',
-    display: 'block',
-    '&:hover': {
-      fontSize: '30px !important'
-    }
+    display: 'block'
   },
   tokenBig: {
     fontSize: '35px !important',
-    display: 'block',
-    '&:hover': {
-      fontSize: '40px !important'
-    }
+    display: 'block'
   },
   tokenTop: {
     color: '#4eaf4e'
@@ -60,7 +54,7 @@ const styles = {
   },
   tokenNbBottomBig: {
     fontSize: 14,
-    marginBottom: -5
+    marginBottom: -12
   },
   tokenNbTop: {
     color: '#4eaf4e',
@@ -72,7 +66,7 @@ const styles = {
   },
   tokenNbTopBig: {
     fontSize: 14,
-    marginTop: -3
+    marginTop: -10
   },
   inactive: {
     color: '#c3c3c3',

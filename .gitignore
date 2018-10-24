@@ -15,3 +15,13 @@ parts/
 src/
 tmp/
 var/
+
+# static-react
+/novaideo/static-react/node_modules/
+/novaideo/static-react/build/
+/novaideo/static-react/coverage/
+/novaideo/static-react/.eslintcache
+/novaideo/static-react/.stylelintcache
+/novaideo/static-react/npm-debug.log
+/novaideo/static-react/yarn-error.log
+/novaideo/static-react/js/npm-debug.log

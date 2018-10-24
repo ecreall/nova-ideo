@@ -49,6 +49,9 @@
     "babel-loader": "^8.0.0",
     "css-loader": "^1.0.0",
     "empty": "^0.10.1",
+    "enzyme": "^3.4.1",
+    "enzyme-adapter-react-16": "^1.2.0",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -64,11 +67,11 @@
     "jest": "^23.6.0",
     "jest-transform-graphql": "^2.1.0",
     "mini-css-extract-plugin": "^0.4.3",
+    "node-sass": "^4.5.3",
     "prettier": "1.9.1",
     "prettier-eslint": "8.2.5",
     "prettier-eslint-cli": "4.4.2",
     "react-test-renderer": "^16.0.0-alpha.12",
-    "node-sass": "^4.5.3",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "stylelint": "^9.5.0",
@@ -99,6 +102,7 @@
     "draft-js": "^0.10.5",
     "emoji-js": "^3.4.0",
     "emoji-mart": "^2.4.0",
+    "enzyme-to-json": "^3.3.4",
     "filesize": "^3.6.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.13.0",
@@ -159,12 +163,26 @@
   },
   "//": "See https://facebook.github.io/jest/docs/webpack.html for more info",
   "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "moduleNameMapper": {
-      "\\.(css|less|scss)$": "identity-obj-proxy"
+      "\\.(css|less|scss)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/__mocks__/fileMock.js"
     },
+    "moduleFileExtensions": [
+      "gql",
+      "graphql",
+      "js",
+      "json",
+      "jsx"
+    ],
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
       "\\.(js|jsx)$": "babel-jest"
-    }
+    },
+    "setupFiles": [
+      "<rootDir>/tests/setupTests.js"
+    ]
   }
 }

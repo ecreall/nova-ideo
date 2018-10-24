@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert component should render a danger alert 1`] = `
+<div
+  class="DumbAlert-container-1 danger"
+>
+  <span
+    aria-hidden="true"
+    class="material-icons MuiIcon-root-4 mdi-set mdi-alert-outline DumbAlert-icon-2 danger"
+  />
+  <div>
+    Foo Bar
+  </div>
+  <button
+    class="MuiButtonBase-root-19 MuiIconButton-root-13 DumbAlert-closeBtn-3 danger"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiIconButton-label-18"
+    >
+      <span
+        aria-hidden="true"
+        class="material-icons MuiIcon-root-4 mdi-set mdi-close"
+      />
+    </span>
+    <span
+      class="MuiTouchRipple-root-22"
+    />
+  </button>
+</div>
+`;
