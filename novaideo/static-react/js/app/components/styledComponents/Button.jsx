@@ -2,18 +2,18 @@ import glamorous from 'glamorous';
 import Button from '@material-ui/core/Button';
 import IconButtonBase from '@material-ui/core/IconButton';
 
-const StyledButton = glamorous(Button)((props) => {
-  const background = props.background || '#2ea664';
-  const color = props.color || '#fff';
+const StyledButton = glamorous(Button, { filterProps: ['background'] })(({ background, color }) => {
+  const backgroundColor = background || '#2ea664';
+  const textColor = color || '#fff';
   return {
-    background: background,
-    color: color,
+    background: backgroundColor,
+    color: textColor,
     lineHeight: '19px',
     fontWeight: 700,
     textDecoration: 'none',
     cursor: 'pointer',
     textShadow: '0 1px 1px rgba(0,0,0,.2)',
-    border: `solid 1px ${color}`,
+    border: `solid 1px ${textColor}`,
     borderRadius: 4,
     boxShadow: 'none',
     position: 'relative',
@@ -24,9 +24,9 @@ const StyledButton = glamorous(Button)((props) => {
     margin: 0,
     textTransform: 'none',
     '&:hover': {
-      backgroundColor: color,
-      color: background,
-      border: `solid 1px ${background}`,
+      backgroundColor: textColor,
+      color: backgroundColor,
+      border: `solid 1px ${backgroundColor}`,
       boxShadow: '0 1px 2px 1px rgba(128, 128, 128, 0.4)'
     },
     '&:disabled': {
@@ -57,12 +57,12 @@ export const CancelButton = glamorous(Button)(() => {
   };
 });
 
-export const IconButton = glamorous(IconButtonBase)((props) => {
-  return props.textColor
+export const IconButton = glamorous(IconButtonBase, { filterProps: ['textColor'] })(({ textColor }) => {
+  return textColor
     ? {
-      color: props.textColor,
+      color: textColor,
       '&:hover': {
-        color: props.textColor
+        color: textColor
       }
     }
     : {};

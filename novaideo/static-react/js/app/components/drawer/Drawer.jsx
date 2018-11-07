@@ -112,39 +112,41 @@ class AppDrawer extends React.PureComponent {
 
   render() {
     const {
-      classes, theme, drawerOpen, drawerApp, switchDrawer, hideDrawer
+      classes, theme, drawerOpen, drawerApp, channelOpen, switchDrawer, hideDrawer
     } = this.props;
-    return [
-      <Hidden mdUp>
-        <Drawer
-          variant="temporary"
-          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-          open={drawerOpen}
-          classes={{
-            paper: classes.temporaryDrawerPaper,
-            modal: classes.temporaryDrawerRoot
-          }}
-          onClose={hideDrawer}
-          ModalProps={{
-            keepMounted: true // Better open performance on mobile.
-          }}
-        >
-          <DrawerContent classes={classes} drawerApp={drawerApp} switchDrawer={switchDrawer} />
-        </Drawer>
-      </Hidden>,
-      <Hidden mdDown implementation="css">
-        <Drawer
-          variant="persistent"
-          classes={{
-            paper: classNames(classes.drawerPaper)
-          }}
-          open={drawerOpen}
-          onClose={hideDrawer}
-        >
-          <DrawerContent classes={classes} drawerApp={drawerApp} switchDrawer={switchDrawer} />
-        </Drawer>
-      </Hidden>
-    ];
+    return (
+      <React.Fragment>
+        <Hidden mdUp>
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={drawerOpen}
+            classes={{
+              paper: classes.temporaryDrawerPaper,
+              modal: classes.temporaryDrawerRoot
+            }}
+            onClose={hideDrawer}
+            ModalProps={{
+              keepMounted: true // Better open performance on mobile.
+            }}
+          >
+            <DrawerContent classes={classes} drawerApp={drawerApp} switchDrawer={switchDrawer} />
+          </Drawer>
+        </Hidden>
+        <Hidden mdDown implementation="css">
+          <Drawer
+            variant="persistent"
+            classes={{
+              paper: classNames(classes.drawerPaper)
+            }}
+            open={drawerOpen || channelOpen}
+            onClose={hideDrawer}
+          >
+            <DrawerContent classes={classes} drawerApp={drawerApp} switchDrawer={switchDrawer} />
+          </Drawer>
+        </Hidden>
+      </React.Fragment>
+    );
   }
 }
 
@@ -155,6 +157,7 @@ export const mapDispatchToProps = {
 
 export const mapStateToProps = (state) => {
   return {
+    channelOpen: state.apps.chatApp.open,
     drawerOpen: state.apps.drawer.open,
     drawerApp: state.apps.drawer.app
   };

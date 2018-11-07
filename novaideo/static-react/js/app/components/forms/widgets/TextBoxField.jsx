@@ -43,11 +43,11 @@ class TextBoxField extends React.Component {
   };
 
   getPlainText = () => {
-    return this.editor.getPlainText();
+    return this.editor ? this.editor.getPlainText() : '';
   };
 
   getHTMLText = () => {
-    return this.editor.getHTMLText();
+    return this.editor ? this.editor.getHTMLText() : '';
   };
 
   render() {

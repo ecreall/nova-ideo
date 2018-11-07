@@ -76,7 +76,7 @@ class RightContent extends React.Component {
                 <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
               )}
             </IconButton>
-            <Typography type="title" color="primary" className={classes.appBarContent}>
+            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
               {title}
             </Typography>
             <IconButton

@@ -8,7 +8,7 @@ export const MenuList = glamorous(MuiMenuList)({
   minWidth: 230
 });
 
-export const MenuItem = glamorous(MuiMenuItem)((props) => {
+export const MenuItem = glamorous(MuiMenuItem, { filterProps: ['hoverColor'] })(({ hoverColor }) => {
   return {
     borderRadius: 5,
     padding: '0 16px 0 8px',
@@ -16,7 +16,7 @@ export const MenuItem = glamorous(MuiMenuItem)((props) => {
     minHeight: 28,
     transition: 'none',
     '&:hover, &:focus, &:active': {
-      backgroundColor: props.hoverColor,
+      backgroundColor: hoverColor,
       '& .menu-item-icon': {
         color: 'white'
       },

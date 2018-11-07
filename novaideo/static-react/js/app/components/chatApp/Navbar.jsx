@@ -239,7 +239,7 @@ class NavBar extends React.Component {
                 <ChatIcon />
               </IconButton>
             </Hidden>
-            <Typography type="title" color="inherit" className={classes.titleContainer}>
+            <Typography component="div" type="title" color="inherit" className={classes.titleContainer}>
               <div className={classNames(classes.title, { [classes.titleBackground]: isBackground })}>
                 <Icon className={classNames('mdi-set mdi-pound', classes.icon, { [classes.titleBackground]: isBackground })} />
                 {channelTitle}

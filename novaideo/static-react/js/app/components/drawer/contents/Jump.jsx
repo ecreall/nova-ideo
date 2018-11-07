@@ -68,7 +68,7 @@ export class DumbJump extends React.Component {
     const { open } = this.state;
     return (
       <ShortcutsManager domain="APP" shortcuts={{ APP_OPEN_JUMP: this.handleOpen }}>
-        <Button onClick={this.handleOpen} className={classes.jump} variant="raised">
+        <Button onClick={this.handleOpen} className={classes.jump} variant="contained">
           <FormatIndentIncreaseIcon className={classes.jumpIcon} />
           {I18n.t('channels.jump')}
         </Button>

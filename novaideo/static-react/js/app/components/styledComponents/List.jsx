@@ -3,7 +3,7 @@ import MuiListItem from '@material-ui/core/ListItem';
 import MuiListItemText from '@material-ui/core/ListItemText';
 import MuiListItemIcon from '@material-ui/core/ListItemIcon';
 
-export const ListItem = glamorous(MuiListItem)((props) => {
+export const ListItem = glamorous(MuiListItem, { filterProps: ['hoverColor'] })(({ hoverColor }) => {
   return {
     borderRadius: 5,
     padding: '0 16px 0 8px',
@@ -12,7 +12,7 @@ export const ListItem = glamorous(MuiListItem)((props) => {
     minHeight: 28,
     transition: 'none',
     '&:hover, &:focus, &:active': {
-      backgroundColor: props.hoverColor,
+      backgroundColor: hoverColor,
       '& .menu-item-icon': {
         color: 'white'
       },
@@ -24,7 +24,7 @@ export const ListItem = glamorous(MuiListItem)((props) => {
   };
 });
 
-export const ListItemText = glamorous(MuiListItemText)((props) => {
+export const ListItemText = glamorous(MuiListItemText, { filterProps: ['color'] })(({ color }) => {
   return {
     padding: 0,
     '& .menu-item-text': {
@@ -33,16 +33,16 @@ export const ListItemText = glamorous(MuiListItemText)((props) => {
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       fontSize: 15,
-      color: props.color || '#2c2d30'
+      color: color || '#2c2d30'
     }
   };
 });
 
-export const ListItemIcon = glamorous(MuiListItemIcon)((props) => {
+export const ListItemIcon = glamorous(MuiListItemIcon, { filterProps: ['iconColor'] })(({ iconColor }) => {
   return {
     width: 20,
     height: 25,
     marginRight: 10,
-    color: props.iconColor || '#a0a0a2'
+    color: iconColor || '#a0a0a2'
   };
 });

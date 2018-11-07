@@ -143,8 +143,9 @@ export class DumbDivider extends React.Component {
         {alert && <div className={classes.alert}>{alertMessage}</div>}
         {message && (
           <React.Fragment>
-            <div className={classes.background} />
+            <div key="background" className={classes.background} />
             <div
+              key="message"
               ref={(messageContainer) => {
                 this.message = messageContainer;
               }}

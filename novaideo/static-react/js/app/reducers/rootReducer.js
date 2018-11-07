@@ -96,7 +96,7 @@ export const user = (state = initialUserTest, action) => {
 export const search = (state = {}, action) => {
   switch (action.type) {
   case actionTypes.SEARCH_ENTITIES: {
-    const id = action.id;
+    const { id } = action;
     return {
       ...state,
       [id]: {
@@ -293,7 +293,7 @@ export const history = (state = initNavigationState, action) => {
   //   return update(state, { $merge: newStateEntry });
   // }
   case actionTypes.UPDATE_NAVIGATION: {
-    const navigation = state.navigation;
+    const { navigation } = state;
     const newPrevious = action.updatePrevious ? navigation.location : navigation.previous;
     return { ...state, navigation: { location: action.location, previous: newPrevious } };
   }
@@ -358,7 +358,7 @@ export const apps = (state = initialAppsState, action) => {
 
   switch (action.type) {
   case actionTypes.UPDATE_APP: {
-    const app = action.app;
+    const { app } = action;
     return updateApp(app);
   }
   case actionTypes.UPDATE_COLLABORATIONAPP: {
@@ -377,15 +377,15 @@ export const apps = (state = initialAppsState, action) => {
     return { ...state, drawer: { ...state.drawer, open: !state.drawer.open } };
   }
   case actionTypes.OPEN_CHATAPP: {
-    const config = action.config;
-    let drawer = state.drawer;
-    if ('drawer' in config) {
-      drawer = config.drawer;
+    const { config } = action;
+    const drawerConfigured = 'drawer' in config;
+    const { drawer } = drawerConfigured ? config : state;
+    if (drawerConfigured) {
       delete config.drawer;
     }
     return {
       ...state,
-      drawer: { open: drawer, app: 'chatApp' },
+      drawer: { ...drawer, app: 'chatApp' },
       chatApp: { ...state.chatApp, open: true, ...action.config }
     };
   }
@@ -413,17 +413,17 @@ export const apps = (state = initialAppsState, action) => {
         componentId: undefined
       }
     };
-    const actionConfig = action.config || {};
-    let drawer = state.drawer.open;
-    if ('drawer' in actionConfig) {
-      drawer = actionConfig.drawer;
-      delete actionConfig.drawer;
+    const config = action.config || {};
+    const drawerConfigured = 'drawer' in config;
+    const { drawer } = drawerConfigured ? config : state;
+    if (drawerConfigured) {
+      delete config.drawer;
     }
-    const config = { ...defaultConfig, ...actionConfig };
+    const actionCconfig = { ...defaultConfig, ...config };
     return {
       ...state,
-      drawer: { ...state.drawer, open: drawer },
-      chatApp: { ...state.chatApp, ...{ open: false }, ...config }
+      drawer: { ...state.drawer, ...drawer },
+      chatApp: { ...state.chatApp, open: false, ...actionCconfig }
     };
   }
   case actionTypes.OPEN_COLLABORATION_RIGHT: {

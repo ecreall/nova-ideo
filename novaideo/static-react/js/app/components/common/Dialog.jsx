@@ -223,7 +223,7 @@ class CommonDialog extends React.Component {
                 {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
               </IconButton>
             )}
-            <Typography type="title" color="primary" className={classes.appBarContent}>
+            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
               {appBar}
             </Typography>
             <IconButton className={classes.closeBtn} color="primary" onClick={close || this.onClose} aria-label="Close">

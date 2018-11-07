@@ -127,7 +127,8 @@ const styles = {
     }
   },
   imagesContainer: {
-    padding: '0 0 0 8px !important'
+    padding: '0 0 0 8px !important',
+    maxWidth: 460
   },
   progress: {
     width: '100%',
@@ -171,11 +172,7 @@ export class DumbIdeaPopover extends React.Component {
 
   render() {
     const {
-      data,
-      processManager,
-      adapters,
-      globalProps: { site },
-      classes
+      data, processManager, adapters, globalProps: { site }, classes
     } = this.props;
     const node = data.idea;
     if (!node || !node.author) {
@@ -185,9 +182,8 @@ export class DumbIdeaPopover extends React.Component {
         </div>
       );
     }
-    const author = node.author;
-    const authorPicture = author.picture;
-    const isAnonymous = author.isAnonymous;
+    const { author } = node;
+    const { isAnonymous, title, picture } = author;
     const createdAt = Moment(node.createdAt).format(I18n.t('date.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -205,7 +201,7 @@ export class DumbIdeaPopover extends React.Component {
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
         <div className={classes.left}>
-          <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={author.title} />
+          <UserAvatar isAnonymous={isAnonymous} picture={picture} title={title} />
           <div className={classes.leftActions}>
             {hasEvaluation ? (
               <Evaluation
@@ -244,7 +240,7 @@ export class DumbIdeaPopover extends React.Component {
         <div className={classes.body}>
           <div className={classes.header}>
             <IdeaMenu open idea={node} onActionClick={processManager.execute} />
-            <span className={classes.headerTitle}>{author && author.title}</span>
+            <span className={classes.headerTitle}>{title}</span>
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>{createdAt}</span>
             </Tooltip>
@@ -308,10 +304,7 @@ function IdeaPopoverWithProcessManager(props) {
 }
 
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(
+  connect(mapStateToProps, mapDispatchToProps)(
     graphql(Idea, {
       options: (props) => {
         return {

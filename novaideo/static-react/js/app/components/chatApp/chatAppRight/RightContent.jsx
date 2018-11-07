@@ -81,7 +81,7 @@ class RightContent extends React.Component {
                 <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
               )}
             </IconButton>
-            <Typography type="title" color="primary" className={classes.appBarContent}>
+            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
               {title}
             </Typography>
             <IconButton
@@ -89,7 +89,10 @@ class RightContent extends React.Component {
               aria-label="Menu"
               onClick={() => {
                 return updateRight({
-                  open: false, componentId: undefined, full: false, props: {}
+                  open: false,
+                  componentId: undefined,
+                  full: false,
+                  props: {}
                 });
               }}
             >
@@ -114,9 +117,4 @@ export const mapStateToProps = (state) => {
     rightFull: state.apps.chatApp.right.full
   };
 };
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(RightContent)
-);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(RightContent));

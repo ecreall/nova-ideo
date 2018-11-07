@@ -44,7 +44,7 @@ class DumbApp extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <CollaborationApp active={!channelOpen} left={drawerOpen || channelOpen}>
+          <CollaborationApp active={!channelOpen} left={drawerOpen}>
             {children}
             <Home />
           </CollaborationApp>
@@ -70,10 +70,7 @@ export const mapDispatchToProps = {
 };
 
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(
+  connect(mapStateToProps, mapDispatchToProps)(
     graphql(Account, {
       options: () => {
         return {

@@ -33,11 +33,12 @@ export function renderMenuItem({
   return (
     <MenuItem key={title} onClick={onClick} hoverColor={hoverColor}>
       {Icon && (
-        <ListItemIcon iconColor={color}>
+        <ListItemIcon key={`${title}icon`} iconColor={color}>
           <Icon className="menu-item-icon" />
         </ListItemIcon>
       )}
       <ListItemText
+        key={`${title}text`}
         color={color}
         classes={{
           primary: 'menu-item-text'

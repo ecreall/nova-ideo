@@ -155,7 +155,8 @@ const styles = (theme) => {
       }
     },
     imagesContainer: {
-      padding: '0 0 0 8px !important'
+      padding: '0 0 0 8px !important',
+      maxWidth: 460
     },
     iconPrivate: {
       fontSize: '30px !important',
@@ -193,17 +194,11 @@ export class DumbIdeaItem extends React.Component {
 
   render() {
     const {
-      node,
-      processManager,
-      passive,
-      adapters,
-      globalProps: { site },
-      classes
+      node, processManager, passive, adapters, globalProps: { site }, classes
     } = this.props;
-    const author = node.author;
-    const authorPicture = author.picture;
-    const isAnonymous = author.isAnonymous;
-    const authorTitle = author && author.title;
+
+    const { author } = node;
+    const { isAnonymous, title, picture } = author;
     const createdAt = Moment(node.createdAt).format(I18n.t('time.format'));
     const createdAtF3 = getFormattedDate(node.createdAt, 'date.format3');
     const images = node.attachedFiles
@@ -225,7 +220,7 @@ export class DumbIdeaItem extends React.Component {
         onMouseLeave={this.onMouseLeave}
       >
         <div className={classes.left}>
-          <UserAvatar isAnonymous={isAnonymous} picture={authorPicture} title={authorTitle} />
+          <UserAvatar isAnonymous={isAnonymous} picture={picture} title={title} />
           <div className={classes.leftActions}>
             {hasEvaluation ? (
               <Evaluation
@@ -344,9 +339,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(IdeaItemWithProcessManager)
-);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(IdeaItemWithProcessManager));

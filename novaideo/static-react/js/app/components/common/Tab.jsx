@@ -87,13 +87,19 @@ export const DumbTab = ({
             </div>
           )}
           <div>
-            <Typography className={classes.heading}>{title}</Typography>
-            <Typography className={classes.secondaryHeading}>{description}</Typography>
+            <Typography component="div" className={classes.heading}>
+              {title}
+            </Typography>
+            <Typography component="div" className={classes.secondaryHeading}>
+              {description}
+            </Typography>
           </div>
         </p>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Typography className={classes.detailsContainer}>{content}</Typography>
+        <Typography component="div" className={classes.detailsContainer}>
+          {content}
+        </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

@@ -108,7 +108,7 @@ class NavBar extends React.Component {
             <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={toggleDrawer}>
               {drawer ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
             </IconButton>
-            <Typography type="title" color="primary" className={classes.flex}>
+            <Typography component="div" type="title" color="primary" className={classes.flex}>
               {!drawer && site.title}
             </Typography>
             <div className={classes.menuContainer}>

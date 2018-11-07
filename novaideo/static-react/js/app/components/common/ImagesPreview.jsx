@@ -124,7 +124,7 @@ export class DumbImagesPreview extends React.Component {
               {otherImages.map((image, key) => {
                 return this.renderItem({
                   image: image,
-                  key: key,
+                  key: key + 1,
                   width: 'small',
                   className: classes.otherItem
                 });

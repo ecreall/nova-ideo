@@ -7,9 +7,7 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { find as findUrls } from 'linkifyjs';
 
-import { formatText } from '../../../../utils/textFormatter';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import { renderTextBoxField, renderFilesListField } from '../../utils';
 import FilesPickerPreview from '../../widgets/FilesPickerPreview';
