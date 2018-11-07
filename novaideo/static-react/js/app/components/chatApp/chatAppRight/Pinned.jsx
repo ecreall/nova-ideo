@@ -53,7 +53,7 @@ export const DumbPinned = ({
       title={<span>{<Translate value="channels.pinnedBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-pin')}
     >
-      {open && (
+      {open ? (
         <RenderComments
           rightDisabled
           dynamicDivider={false}
@@ -68,7 +68,7 @@ export const DumbPinned = ({
           filter={{ pinned: true }}
           classes={{ container: classes.container, list: classes.container }}
         />
-      )}
+      ) : null}
     </DetailsSection>
   );
 };

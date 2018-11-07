@@ -58,7 +58,7 @@ const Files = ({
       title={<span>{<Translate value="channels.filesBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-file-outline')}
     >
-      {open && (
+      {open ? (
         <RenderComments
           rightDisabled
           dynamicDivider={false}
@@ -73,7 +73,7 @@ const Files = ({
           filter={{ file: true }}
           classes={{ container: classes.container, list: classes.container }}
         />
-      )}
+      ) : null}
     </DetailsSection>
   );
 };

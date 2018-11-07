@@ -269,11 +269,11 @@ export class DumbFlatList extends React.Component {
       // Do nothing
     }
     const items = getEntities(data);
-    const networkStatus = data.networkStatus;
+    const { networkStatus } = data;
     if (!items) {
       return this.renderProgress();
     }
-    const offline = this.offline;
+    const { offline } = this;
     const entities = offline.status ? offline.entities : items.edges;
     const ScrollContainer = customScrollbar ? scrollbarContainer : emptyContainer;
     const ItemContainer = virtualized ? virtualizedItemContainer : emptyContainer;
@@ -298,7 +298,7 @@ export class DumbFlatList extends React.Component {
                   const previous = entities[index - 1];
                   const next = entities[index + 1];
                   const result = [
-                    <ItemContainer itemHeightEstimation={itemHeightEstimation}>
+                    <ItemContainer key="item-container" itemHeightEstimation={itemHeightEstimation}>
                       <ListItem
                         reverted={reverted}
                         index={index}
@@ -312,6 +312,7 @@ export class DumbFlatList extends React.Component {
                   if (Divider) {
                     const divider = (
                       <Divider
+                        key="divider"
                         reverted={reverted}
                         index={index}
                         node={item.node}

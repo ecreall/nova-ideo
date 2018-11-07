@@ -55,7 +55,7 @@ export const DumbMembers = ({
       title={<span>{<Translate value="channels.membersBlockTitle" count={totalCount} />}</span>}
       Icon={iconAdapter('mdi-set mdi-account-multiple-outline')}
     >
-      {open && (
+      {open ? (
         <FlatList
           data={data}
           getEntities={(entities) => {
@@ -66,7 +66,7 @@ export const DumbMembers = ({
           moreBtn={<span>{I18n.t('common.moreResult')}</span>}
           className={classes.list}
         />
-      )}
+      ) : null}
     </DetailsSection>
   );
 };

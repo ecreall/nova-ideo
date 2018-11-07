@@ -25,10 +25,34 @@ class Details extends React.Component {
     const { classes, componentId } = this.props;
     return (
       <div className={classes.container}>
-        <Informations {...this.props} id={CONTENTS_IDS.info} open={componentId === CONTENTS_IDS.info} onOpen={this.onOpen} />
-        <Pinned {...this.props} id={CONTENTS_IDS.pinned} open={componentId === CONTENTS_IDS.pinned} onOpen={this.onOpen} />
-        <Files {...this.props} id={CONTENTS_IDS.files} open={componentId === CONTENTS_IDS.files} onOpen={this.onOpen} />
-        <Members {...this.props} id={CONTENTS_IDS.members} open={componentId === CONTENTS_IDS.members} onOpen={this.onOpen} />
+        <Informations
+          {...this.props}
+          key="informations"
+          id={CONTENTS_IDS.info}
+          open={componentId === CONTENTS_IDS.info}
+          onOpen={this.onOpen}
+        />
+        <Pinned
+          {...this.props}
+          key="pinned"
+          id={CONTENTS_IDS.pinned}
+          open={componentId === CONTENTS_IDS.pinned}
+          onOpen={this.onOpen}
+        />
+        <Files
+          {...this.props}
+          key="files"
+          id={CONTENTS_IDS.files}
+          open={componentId === CONTENTS_IDS.files}
+          onOpen={this.onOpen}
+        />
+        <Members
+          {...this.props}
+          key="members"
+          id={CONTENTS_IDS.members}
+          open={componentId === CONTENTS_IDS.members}
+          onOpen={this.onOpen}
+        />
       </div>
     );
   }

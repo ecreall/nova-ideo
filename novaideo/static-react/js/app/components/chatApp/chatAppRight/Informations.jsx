@@ -73,9 +73,9 @@ export const DumbInformations = ({
       )}
       Icon={InfoOutlineIcon}
     >
-      {open && (
+      {open ? (
         <InformationsContent id={subject} kind={channel.subject.__typename} onActionClick={onActionClick} classes={classes} />
-      )}
+      ) : null}
     </DetailsSection>
   );
 };
