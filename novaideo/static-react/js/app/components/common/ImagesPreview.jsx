@@ -2,6 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 import ImagesSlider from './ImagesSlider';
 
@@ -16,8 +17,7 @@ const styles = {
   itemsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    maxWidth: 300
+    width: '100%'
   },
   images: {
     borderRadius: 3,
@@ -35,22 +35,27 @@ const styles = {
   },
   firstItem: {
     width: '100%',
-    height: 150,
-    borderRadius: 3,
+    paddingTop: '100%',
+    borderRadius: 15,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
     borderStyle: 'solid'
   },
   otherItem: {
     width: '100%',
-    height: 49,
-    borderRadius: 3,
+    paddingTop: '100%',
+    marginBottom: 2,
+    borderRadius: 7,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
     borderStyle: 'solid'
   },
   otherItemsContainer: {
-    width: '20%'
+    width: '20%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: 2
   },
   globalItemContainer: {
     width: '100%'
@@ -58,24 +63,14 @@ const styles = {
   firstItemContainer: {
     width: '80%'
   },
-  plusItemContainer: {
-    display: 'flex',
-    width: '100%',
-    height: 49,
-    borderRadius: 3,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    backgroundColor: '#d8d8d8',
-    marginTop: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    borderStyle: 'solid'
+  button: {
+    boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+    marginTop: 5
   },
   plusItem: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#929292'
+    color: '#fff'
   }
 };
 
@@ -135,17 +130,18 @@ export class DumbImagesPreview extends React.Component {
                 });
               })}
               {nbHiddenImages ? (
-                <div
+                <Button
+                  variant="fab"
+                  color="primary"
+                  aria-label="Add"
                   onClick={() => {
-                    this.onClick(otherImagesToPreview + 1);
+                    this.onClick(otherImagesToPreview);
                   }}
-                  className={classes.plusItemContainer}
+                  className={classes.button}
                 >
                   <span className={classes.plusItem}>{`+${nbHiddenImages}`}</span>
-                </div>
-              ) : (
-                undefined
-              )}
+                </Button>
+              ) : null}
             </div>
           )}
         </div>

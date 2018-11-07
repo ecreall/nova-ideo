@@ -210,6 +210,9 @@ const styles = (theme) => {
       fontSize: '20px !important',
       color: theme.palette.success['500'],
       backgroundColor: 'white'
+    },
+    imagesPreview: {
+      maxWidth: 460
     }
   };
 };
@@ -417,6 +420,7 @@ class DumbCommentItem extends React.Component {
                         author: author,
                         date: node.createdAt
                       }}
+                      classes={{ imagesContainer: classes.imagesPreview }}
                     />
                     <FilesPreview files={files} />
                   </div>
