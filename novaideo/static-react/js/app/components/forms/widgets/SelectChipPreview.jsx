@@ -5,7 +5,7 @@ import Chip from '@material-ui/core/Chip';
 const styles = {
   chipContainer: {
     display: 'flex',
-    padding: 5
+    padding: '5px 0px 10px'
   },
   chip: {
     marginRight: 5,
@@ -13,7 +13,9 @@ const styles = {
   }
 };
 
-export const DumbSelectChipPreview = ({ classes, items, onItemDelete }) => {
+export const DumbSelectChipPreview = ({
+  classes, items, onItemDelete, icon
+}) => {
   return (
     <div className={classes.chipContainer}>
       {Object.keys(items).map((id) => {
@@ -21,9 +23,14 @@ export const DumbSelectChipPreview = ({ classes, items, onItemDelete }) => {
         return (
           <Chip
             label={option}
-            onDelete={() => {
-              onItemDelete(id);
-            }}
+            icon={icon}
+            onDelete={
+              onItemDelete
+                ? () => {
+                  onItemDelete(id);
+                }
+                : null
+            }
             className={classes.chip}
           />
         );

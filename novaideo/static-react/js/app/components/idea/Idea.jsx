@@ -8,6 +8,7 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Zoom from '@material-ui/core/Zoom';
 
+import SelectChipPreview from '../forms/widgets/SelectChipPreview';
 import URLs from '../common/urlPreview/URLs';
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
@@ -40,6 +41,7 @@ const styles = (theme) => {
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
+      marginBottom: 10,
       lineHeight: 'normal'
     },
     tooltipSupport: {
@@ -189,6 +191,14 @@ const styles = (theme) => {
       paddingRight: 30,
       marginTop: 15,
       maxWidth: 400
+    },
+    divider: {
+      width: 60,
+      borderTop: '1px solid #e8e8e8'
+    },
+    content: {
+      paddingTop: 10,
+      paddingBottom: 10
     }
   };
 };
@@ -299,21 +309,25 @@ export class DumbIdea extends React.Component {
                 <IdeaIcon className={classes.icon} />
                 {idea && idea.title}
               </h1>
-              {images.length > 0 && (
-                <div className={classes.imagesContainer}>
-                  <ImagesPreview
-                    images={images}
-                    context={{
-                      title: idea.title,
-                      author: idea.author,
-                      date: idea.createdAt
-                    }}
-                  />
-                </div>
-              )}
-              <MediumEditor readOnly value={idea.text} />
-              <FilesPreview files={files} />
-              <URLs body={idea.text} className={classes.urlsContainer} />
+              <SelectChipPreview items={idea.keywords} icon={<Icon className="mdi-set mdi-tag-multiple" />} />
+              <div className={classes.divider} />
+              <div className={classes.content}>
+                {images.length > 0 && (
+                  <div className={classes.imagesContainer}>
+                    <ImagesPreview
+                      images={images}
+                      context={{
+                        title: idea.title,
+                        author: idea.author,
+                        date: idea.createdAt
+                      }}
+                    />
+                  </div>
+                )}
+                <MediumEditor readOnly value={idea.text} />
+                <FilesPreview files={files} />
+                <URLs body={idea.text} className={classes.urlsContainer} />
+              </div>
               <div
                 ref={(comments) => {
                   this.comments = comments;

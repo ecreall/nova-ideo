@@ -143,6 +143,7 @@ const styles = (theme) => {
       lineHeight: '20px',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
+      cursor: 'pointer',
       '& a': {
         color: '#0576b9',
         textDecoration: 'none',
@@ -213,6 +214,7 @@ export class DumbIdeaItem extends React.Component {
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
     const publishAction = !passive && isPrevate && getActions(node.actions, { nodeId: ideaProcessNodes.publish.nodeId })[0];
     const Examination = adapters.examination;
+    const onIdeaClick = !passive ? this.openDetails : null;
     return (
       <div
         className={classNames(classes.container, { [classes.privateContainer]: isPrevate })}
@@ -275,10 +277,7 @@ export class DumbIdeaItem extends React.Component {
           </div>
           <div className={classes.bodyContent}>
             <div>
-              <div
-                className={classNames(classes.bodyTitle, { [classes.disableBodyTitle]: passive })}
-                onClick={!passive && this.openDetails}
-              >
+              <div className={classNames(classes.bodyTitle, { [classes.disableBodyTitle]: passive })} onClick={onIdeaClick}>
                 <IconWithText
                   name="mdi-set mdi-lightbulb"
                   text={node.title}
@@ -287,7 +286,11 @@ export class DumbIdeaItem extends React.Component {
                 />
               </div>
               <div>
-                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
+                <div
+                  onClick={onIdeaClick}
+                  className={classes.ideaText}
+                  dangerouslySetInnerHTML={{ __html: node.presentationText }}
+                />
                 {images.length > 0 && (
                   <div className={classes.imagesContainer}>
                     <ImagesPreview

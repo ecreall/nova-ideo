@@ -29,7 +29,7 @@ import Form from '../../Form';
 const styles = (theme) => {
   return {
     textContainer: {
-      marginTop: 20
+      marginTop: 10
     },
     addon: {
       display: 'flex',
@@ -75,7 +75,7 @@ const styles = (theme) => {
     },
     titleInput: {
       color: '#2c2d30',
-      fontSize: 34,
+      fontSize: 30,
       fontWeight: 900,
       paddingTop: 3,
       paddingLeft: 0,
@@ -144,13 +144,16 @@ const styles = (theme) => {
       color: theme.palette.warning[700]
     },
     titleInputContainer: {
-      fontSize: 34,
+      fontSize: 30,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
       lineHeight: 'normal',
       display: 'flex',
       alignItems: 'baseline'
+    },
+    titleFieldContainer: {
+      marginBottom: 2
     },
     closeBtn: {
       '&::after': {
@@ -168,11 +171,18 @@ const styles = (theme) => {
         color: '#2c2d30'
       }
     },
+    maxContainer: {
+      padding: '9px 16px'
+    },
     icon: {
-      fontSize: 34
+      fontSize: '30px !important'
     },
     iconDisabled: {
       color: '#989898'
+    },
+    divider: {
+      width: 60,
+      borderTop: '1px solid #e8e8e8'
     }
   };
 };
@@ -204,7 +214,7 @@ export class DumbEditIdeaForm extends React.Component {
         .map((file) => {
           return file.oid;
         });
-      const keywords = formData.values.keywords;
+      const { keywords } = formData.values;
       const htmlText = this.editor.getHTMLText();
       const plainText = this.editor.getPlainText();
       if (action.nodeId === processNodes.edit.nodeId) {
@@ -243,7 +253,7 @@ export class DumbEditIdeaForm extends React.Component {
     const {
       idea, formData, site, action, onClose, onOpen, classes, theme
     } = this.props;
-    const author = idea.author;
+    const { author } = idea;
     const isAnonymous = author && author.isAnonymous;
     const authorPicture = author && author.picture;
     const authorTitle = author && author.title;
@@ -262,7 +272,7 @@ export class DumbEditIdeaForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
-      const keywordsRequired = site.keywordsRequired;
+      const { keywordsRequired } = site;
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       hasTitle = formData.values.title;
@@ -282,85 +292,88 @@ export class DumbEditIdeaForm extends React.Component {
         onClose={onClose}
         onOpen={onOpen}
         classes={{
-          closeBtn: classes.closeBtn
+          closeBtn: classes.closeBtn,
+          maxContainer: classes.maxContainer
         }}
-        appBar={[
-          <div className={classes.titleContainer}>
-            <UserAvatar
-              isAnonymous={isAnonymous}
-              picture={authorPicture}
-              title={authorTitle}
-              classes={{ avatar: classes.avatar }}
-            />
-            <div className={classes.header}>
-              <span className={classes.headerTitle}>{authorTitle}</span>
-              <span className={classes.headerAddOn}>{date}</span>
+        appBar={(
+          <React.Fragment>
+            <div className={classes.titleContainer}>
+              <UserAvatar
+                isAnonymous={isAnonymous}
+                picture={authorPicture}
+                title={authorTitle}
+                classes={{ avatar: classes.avatar }}
+              />
+              <div className={classes.header}>
+                <span className={classes.headerTitle}>{authorTitle}</span>
+                <span className={classes.headerAddOn}>{date}</span>
+              </div>
             </div>
-          </div>,
-
-          <div className={classes.formTitle}>{I18n.t(action.description)}</div>,
-
-          <div className={classes.addon}>
-            <Field
-              props={{
-                label: (
-                  <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
-                    <IconButton className={classes.button}>
-                      <Icon className="mdi-set mdi-tag-multiple" />
-                    </IconButton>
-                  </Tooltip>
-                ),
-                options: keywords,
-                canAdd: site.canAddKeywords,
-                initRef: (keywordsPicker) => {
-                  this.keywordsPicker = keywordsPicker;
-                }
+            <div className={classes.formTitle}>{I18n.t(action.description)}</div>
+            <div className={classes.addon}>
+              <Field
+                props={{
+                  label: (
+                    <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
+                      <IconButton className={classes.button}>
+                        <Icon className="mdi-set mdi-tag-multiple" />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                  options: keywords,
+                  canAdd: site.canAddKeywords,
+                  initRef: (keywordsPicker) => {
+                    this.keywordsPicker = keywordsPicker;
+                  }
+                }}
+                withRef
+                name="keywords"
+                component={renderSelect}
+              />
+              <Field
+                props={{
+                  node: (
+                    <Tooltip title={I18n.t('forms.attachFiles')} placement="top">
+                      <IconButton className={classes.button}>
+                        <AttachFileIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                  initRef: (filesPicker) => {
+                    this.filesPicker = filesPicker;
+                  }
+                }}
+                withRef
+                name="files"
+                component={renderFilesListField}
+              />
+            </div>
+          </React.Fragment>
+        )}
+        footer={(
+          <React.Fragment>
+            <FilesPickerPreview
+              classes={{
+                container: classes.filesPreviewContainer,
+                image: classes.filesPreviewImage,
+                fileIcon: classes.filesPreviewFileIcon
               }}
-              withRef
-              name="keywords"
-              component={renderSelect}
-            />
-            <Field
-              props={{
-                node: (
-                  <Tooltip title={I18n.t('forms.attachFiles')} placement="top">
-                    <IconButton className={classes.button}>
-                      <AttachFileIcon />
-                    </IconButton>
-                  </Tooltip>
-                ),
-                initRef: (filesPicker) => {
-                  this.filesPicker = filesPicker;
-                }
+              files={files}
+              getPicker={() => {
+                return this.filesPicker;
               }}
-              withRef
-              name="files"
-              component={renderFilesListField}
             />
-          </div>
-        ]}
-        footer={[
-          <FilesPickerPreview
-            classes={{
-              container: classes.filesPreviewContainer,
-              image: classes.filesPreviewImage,
-              fileIcon: classes.filesPreviewFileIcon
-            }}
-            files={files}
-            getPicker={() => {
-              return this.filesPicker;
-            }}
-          />,
-          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
-          <Button
-            disabled={!canSubmit}
-            onClick={this.handleSubmit}
-            background={theme.palette.success[500]}
-            className={classes.buttonFooter}
-          >
-            {I18n.t(action.submission)}
-          </Button>
-        ]}
+            <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>
+            <Button
+              disabled={!canSubmit}
+              onClick={this.handleSubmit}
+              background={theme.palette.success[500]}
+              className={classes.buttonFooter}
+            >
+              {I18n.t(action.submission)}
+            </Button>
+          </React.Fragment>
+        )}
       >
         <div className={classes.form}>
           <div className={classes.titleInputContainer}>
@@ -369,6 +382,7 @@ export class DumbEditIdeaForm extends React.Component {
               props={{
                 placeholder: I18n.t('forms.idea.titleHelper'),
                 classes: {
+                  container: classes.titleFieldContainer,
                   root: classes.titleRoot,
                   input: classes.titleInput
                 }
@@ -384,6 +398,7 @@ export class DumbEditIdeaForm extends React.Component {
               this.keywordsPicker.toggleOption(false, id);
             }}
           />
+          <div className={classes.divider} />
           <div className={classes.textContainer}>
             <Field
               props={{

@@ -115,6 +115,7 @@ const styles = {
     lineHeight: '20px',
     whiteSpace: 'pre-wrap',
     wordWrap: 'break-word',
+    cursor: 'pointer',
     '& a': {
       color: '#0576b9',
       textDecoration: 'none',
@@ -251,7 +252,11 @@ export class DumbIdeaPopover extends React.Component {
                 <IconWithText name="mdi-set mdi-lightbulb" text={node.title} styleText={classes.title} styleIcon={classes.icon} />
               </div>
               <div>
-                <div className={classes.ideaText} dangerouslySetInnerHTML={{ __html: node.presentationText }} />
+                <div
+                  onClick={this.openDetails}
+                  className={classes.ideaText}
+                  dangerouslySetInnerHTML={{ __html: node.presentationText }}
+                />
                 {images.length > 0 && (
                   <div className={classes.imagesContainer}>
                     <ImagesPreview
