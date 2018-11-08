@@ -35,7 +35,7 @@ import Form from '../../Form';
 const styles = (theme) => {
   return {
     textContainer: {
-      marginTop: 20
+      marginTop: 10
     },
     addon: {
       display: 'flex',
@@ -149,13 +149,16 @@ const styles = (theme) => {
       color: theme.palette.warning[700]
     },
     titleInputContainer: {
-      fontSize: 34,
+      fontSize: 30,
       color: '#2c2d30',
       fontWeight: 900,
       paddingTop: 3,
       lineHeight: 'normal',
       display: 'flex',
       alignItems: 'baseline'
+    },
+    titleFieldContainer: {
+      marginBottom: 2
     },
     closeBtn: {
       '&::after': {
@@ -173,11 +176,18 @@ const styles = (theme) => {
         color: '#2c2d30'
       }
     },
+    maxContainer: {
+      padding: '9px 16px'
+    },
     icon: {
-      fontSize: 34
+      fontSize: '30px !important'
     },
     iconDisabled: {
       color: '#989898'
+    },
+    divider: {
+      width: 60,
+      borderTop: '1px solid #e8e8e8'
     }
   };
 };
@@ -215,7 +225,7 @@ export class DumbCreateIdeaForm extends React.Component {
           return file.oid;
         });
 
-      const keywords = formData.values.keywords;
+      const { keywords } = formData.values;
       const htmlText = this.editor.getHTMLText();
       const plainText = this.editor.getPlainText();
       if (action.nodeId === processNodes.createAndPublish.nodeId) {
@@ -270,11 +280,7 @@ export class DumbCreateIdeaForm extends React.Component {
 
   render() {
     const {
-      formData,
-      globalProps: { site, account, rootActions },
-      onClose,
-      classes,
-      theme
+      formData, globalProps: { site, account, rootActions }, onClose, classes, theme
     } = this.props;
     const ideamanagementProcess = PROCESSES.ideamanagement;
     const creationActions = filterActions(rootActions, {
@@ -299,7 +305,7 @@ export class DumbCreateIdeaForm extends React.Component {
       files = files.filter((file) => {
         return file;
       });
-      const keywordsRequired = site.keywordsRequired;
+      const { keywordsRequired } = site;
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
@@ -320,73 +326,76 @@ export class DumbCreateIdeaForm extends React.Component {
         transition={Zoom}
         onClose={onClose}
         classes={{
-          closeBtn: classes.closeBtn
+          closeBtn: classes.closeBtn,
+          maxContainer: classes.maxContainer
         }}
-        appBar={[
-          <div className={classes.titleContainer}>
-            <UserAvatar
-              isAnonymous={anonymousSelected}
-              picture={authorPicture}
-              title={authorTitle}
-              classes={{ avatar: classes.avatar }}
-            />
-            <div className={classes.header}>
-              <span className={classes.headerTitle}>{authorTitle}</span>
-              <span className={classes.headerAddOn}>{date}</span>
+        appBar={(
+          <React.Fragment>
+            <div className={classes.titleContainer}>
+              <UserAvatar
+                isAnonymous={anonymousSelected}
+                picture={authorPicture}
+                title={authorTitle}
+                classes={{ avatar: classes.avatar }}
+              />
+              <div className={classes.header}>
+                <span className={classes.headerTitle}>{authorTitle}</span>
+                <span className={classes.headerAddOn}>{date}</span>
+              </div>
             </div>
-          </div>,
 
-          <div className={classes.formTitle}>{I18n.t('forms.idea.addProposal')}</div>,
+            <div className={classes.formTitle}>{I18n.t('forms.idea.addProposal')}</div>
 
-          <div className={classes.addon}>
-            <Field
-              props={{
-                label: (
-                  <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
-                    <IconButton className={classes.button}>
-                      <Icon className="mdi-set mdi-tag-multiple" />
-                    </IconButton>
-                  </Tooltip>
-                ),
-                options: keywords,
-                canAdd: site.canAddKeywords,
-                initRef: (keywordsPicker) => {
-                  this.keywordsPicker = keywordsPicker;
-                }
-              }}
-              withRef
-              name="keywords"
-              component={renderSelect}
-            />
-            <Field
-              props={{
-                node: (
-                  <Tooltip title={I18n.t('forms.attachFiles')} placement="top">
-                    <IconButton className={classes.button}>
-                      <AttachFileIcon />
-                    </IconButton>
-                  </Tooltip>
-                ),
-                initRef: (filesPicker) => {
-                  this.filesPicker = filesPicker;
-                }
-              }}
-              withRef
-              name="files"
-              component={renderFilesListField}
-            />
-            {withAnonymous ? (
+            <div className={classes.addon}>
               <Field
                 props={{
-                  classes: classes
+                  label: (
+                    <Tooltip title={I18n.t('forms.idea.keywords')} placement="top">
+                      <IconButton className={classes.button}>
+                        <Icon className="mdi-set mdi-tag-multiple" />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                  options: keywords,
+                  canAdd: site.canAddKeywords,
+                  initRef: (keywordsPicker) => {
+                    this.keywordsPicker = keywordsPicker;
+                  }
                 }}
-                name="anonymous"
-                component={renderAnonymousCheckboxField}
-                type="boolean"
+                withRef
+                name="keywords"
+                component={renderSelect}
               />
-            ) : null}
-          </div>
-        ]}
+              <Field
+                props={{
+                  node: (
+                    <Tooltip title={I18n.t('forms.attachFiles')} placement="top">
+                      <IconButton className={classes.button}>
+                        <AttachFileIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                  initRef: (filesPicker) => {
+                    this.filesPicker = filesPicker;
+                  }
+                }}
+                withRef
+                name="files"
+                component={renderFilesListField}
+              />
+              {withAnonymous ? (
+                <Field
+                  props={{
+                    classes: classes
+                  }}
+                  name="anonymous"
+                  component={renderAnonymousCheckboxField}
+                  type="boolean"
+                />
+              ) : null}
+            </div>
+          </React.Fragment>
+        )}
         footer={[
           <FilesPickerPreview
             classes={{
@@ -429,6 +438,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 placeholder: I18n.t('forms.idea.titleHelper'),
                 autoFocus: true,
                 classes: {
+                  container: classes.titleFieldContainer,
                   root: classes.titleRoot,
                   input: classes.titleInput
                 }
@@ -444,6 +454,7 @@ export class DumbCreateIdeaForm extends React.Component {
               this.keywordsPicker.toggleOption(false, id);
             }}
           />
+          <div className={classes.divider} />
           <div className={classes.textContainer}>
             <Field
               props={{

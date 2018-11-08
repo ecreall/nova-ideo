@@ -81,19 +81,19 @@ const styles = (theme) => {
       paddingLeft: 0,
       lineHeight: 'normal',
       '&::placeholder': {
-        fontSize: 34,
+        fontSize: 30,
         fontWeight: 900
       },
       '&::-webkit-input-placeholder': {
-        fontSize: 34,
+        fontSize: 30,
         fontWeight: 900
       },
       '&::-moz-placeholder': {
-        fontSize: 34,
+        fontSize: 30,
         fontWeight: 900
       },
       '&::-ms-input-placeholder': {
-        fontSize: 34,
+        fontSize: 30,
         fontWeight: 900
       }
     },
