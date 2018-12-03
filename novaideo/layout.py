@@ -67,7 +67,7 @@ class GlobalLayout(object):
     def get_root(self):
         novaideo_config = config.get_config()
         use_webpack_server = novaideo_config.get('use_webpack_server', False)
-        root_url = 'static-react'
+        root_url = 'novaideostatic-react'
         if use_webpack_server:
             root_url = 'http://{}:{}'.format(
                 novaideo_config.get('webpack_host', 'localhost'),

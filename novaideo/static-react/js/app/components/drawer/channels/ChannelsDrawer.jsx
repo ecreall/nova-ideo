@@ -41,7 +41,12 @@ function ChannelsDrawerContent({ account, classes }) {
   ) : (
     <Illustration
       img={NOT_LOGGED}
-      message={[<div className={classes.illustrationMessage}>{I18n.t('user.noUserChannels')}</div>, <LoginButton />]}
+      message={(
+        <React.Fragment>
+          <div className={classes.illustrationMessage}>{I18n.t('user.noUserChannels')}</div>
+          <LoginButton />
+        </React.Fragment>
+      )}
       classes={{
         container: classes.illustrationContainer,
         image: classes.imgIllustration

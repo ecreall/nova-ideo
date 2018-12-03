@@ -187,11 +187,7 @@ export class DumbLogin extends React.Component {
 
   render() {
     const {
-      action,
-      message,
-      messageType,
-      globalProps: { site, rootActions },
-      classes
+      message, messageType, globalProps: { site, rootActions }, classes
     } = this.props;
     const { view } = this.state;
     const userProcessNodes = PROCESSES.usermanagement.nodes;

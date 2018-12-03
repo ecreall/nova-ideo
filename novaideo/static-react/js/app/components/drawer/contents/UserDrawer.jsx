@@ -33,15 +33,18 @@ const styles = {
 
 function UserDrawer({ account, classes }) {
   return account ? (
-    [<Jump />, <Contents />]
+    <React.Fragment>
+      <Jump />
+      <Contents />
+    </React.Fragment>
   ) : (
     <Illustration
       img={NOT_LOGGED}
       message={(
-        <React.Fragmet>
+        <React.Fragment>
           <div className={classes.illustrationMessage}>{I18n.t('user.noUserContents')}</div>
           <LoginButton />
-        </React.Fragmet>
+        </React.Fragment>
       )}
       classes={{
         container: classes.illustrationContainer,

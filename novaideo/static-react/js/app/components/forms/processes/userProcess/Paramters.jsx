@@ -82,9 +82,9 @@ export class DumbParamters extends React.Component {
     this.form.close();
   };
 
-  isValid = (id) => {
-    !parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId) || (activeTab && activeTab !== PARAMETERS_TABS.edit);
-  };
+  // isValid = (id) => {
+  //   !parametersMenuActions.includes(userProcessNodes.assignRoles.nodeId) || (activeTab && activeTab !== PARAMETERS_TABS.edit);
+  // };
 
   render() {
     const {

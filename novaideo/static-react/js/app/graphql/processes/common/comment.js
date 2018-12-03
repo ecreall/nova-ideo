@@ -163,7 +163,10 @@ export default function comment({ ownProps, mutate }) {
           const setChannel = !commentChannel && {
             channel: {
               $set: {
-                __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title
+                __typename: 'channel',
+                id: newChannel.id,
+                oid: newChannel.oid,
+                title: newChannel.title
               }
             }
           };
@@ -190,7 +193,10 @@ export default function comment({ ownProps, mutate }) {
           const setChannel = !commentChannel && {
             channel: {
               $set: {
-                __typename: 'channel', id: newChannel.id, oid: newChannel.oid, title: newChannel.title
+                __typename: 'channel',
+                id: newChannel.id,
+                oid: newChannel.oid,
+                title: newChannel.title
               }
             }
           };
