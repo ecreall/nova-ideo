@@ -7,6 +7,9 @@ import { Translate, I18n } from 'react-redux-i18n';
 import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
+import Abandon from '../forms/processes/ideaProcess/Abandon';
+import Recuperate from '../forms/processes/ideaProcess/Recuperate';
+import Archive from '../forms/processes/ideaProcess/Archive';
 import MakeItsOpinion from '../forms/processes/ideaProcess/MakeItsOpinion';
 import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict, getFormId } from '../../utils/globalFunctions';
@@ -106,9 +109,7 @@ export class DumbIdeaProcessManager extends React.Component {
         goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
       }, 200);
     } else if (!network.isLogged) {
-      const {
-        globalProps: { rootActions }
-      } = this.props;
+      const { globalProps: { rootActions } } = this.props;
       const userProcessNodes = PROCESSES.usermanagement.nodes;
       const loginAction = filterActions(rootActions, {
         tags: [ACTIONS.mainMenu, ACTIONS.site],
@@ -201,6 +202,14 @@ export class DumbIdeaProcessManager extends React.Component {
     }
     case ideaProcessNodes.publish.nodeId:
       return <Publish idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.abandon.nodeId:
+      return <Abandon idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.recuperate.nodeId:
+      return <Recuperate idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.archive.nodeId: {
+      const formId = getFormId(`${idea.id}-archive-idea`);
+      return <Archive idea={idea} action={action} onClose={this.onFormClose} form={formId} />;
+    }
     case ideaProcessNodes.makeItsOpinion.nodeId: {
       const formId = getFormId(`${idea.id}-makeItsOpinion`);
       return (
@@ -279,9 +288,4 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  null,
-  { withRef: true }
-)(IdeaProcessManagerWithActions);
+export default connect(mapStateToProps, null, null, { withRef: true })(IdeaProcessManagerWithActions);

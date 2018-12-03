@@ -259,11 +259,12 @@ class CrateAndPublishAsProposal(CrateAndPublish):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return ((has_role(role=('Owner', context)) and \
-            'archived' not in context.state or \
-            'version' in context.state) or \
-            'published' in context.state) and \
-        global_user_processsecurity()
+    return False 
+        # ((has_role(role=('Owner', context)) and \
+        #     'archived' not in context.state or \
+        #     'version' in context.state) or \
+        #     'published' in context.state) and \
+        # global_user_processsecurity()
 
 
 class DuplicateIdea(InfiniteCardinality):
@@ -749,7 +750,7 @@ class RecuperateIdea(InfiniteCardinality):
     style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
-    tags = ['secondary', 'entity']
+    tags = ['secondary', 'global']
     context = Iidea
     roles_validation = re_roles_validation
     processsecurity_validation = re_processsecurity_validation

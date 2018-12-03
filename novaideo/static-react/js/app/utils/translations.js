@@ -105,6 +105,24 @@ const Translations = {
           confirmation: "Voulez-vous vraiment publier cette proposition ? Cette opération est irréversible.",
           submission: "Oui ! Publier"
         },
+        abandon: {
+          title: "Abandonner",
+          description: "Abandonner la proposition",
+          confirmation: "Voulez-vous vraiment Abandonner cette proposition ?",
+          submission: "Oui ! Abandonner"
+        },
+        recuperate: {
+          title: "Récupérer",
+          description: "Récupérer la proposition",
+          confirmation: "Voulez-vous vraiment Récupérer cette proposition ?",
+          submission: "Oui ! Récupérer"
+        },
+        archive: {
+          title: "Archiver",
+          description: "Archiver la proposition",
+          confirmation: "Voulez-vous vraiment Archiver cette proposition ? Cette opération est irréversible.",
+          submission: "Oui ! Archiver"
+        },
         delete: {
           title: "Supprimer",
           description: "Supprimer la proposition",
@@ -335,6 +353,9 @@ const Translations = {
         submit: "Enregistrer mon avis",
         opinion: "Avis",
         explanation: "Explication"
+      },
+      archiveIdea: {
+        explanation: "Explication"
       }
     },
     evaluation: {
@@ -491,6 +512,24 @@ const Translations = {
           description: "Publish the proposal",
           confirmation: "Are you sure you want to publish this proposal? This cannot be undone.",
           submission: "Yes ! Publish"
+        },
+        abandon: {
+          title: "Abandon",
+          description: "Abandon the proposal",
+          confirmation: "Are you sure you want to abandon this proposal?",
+          submission: "Yes ! Abandon"
+        },
+        recuperate: {
+          title: "Recuperate",
+          description: "Recuperate the proposal",
+          confirmation: "Are you sure you want to recuperate this proposal?",
+          submission: "Yes ! Recuperate"
+        },
+        archive: {
+          title: "Archive",
+          description: "Archive the proposal",
+          confirmation: "Are you sure you want to archive this proposal? This cannot be undone.",
+          submission: "Yes ! Archive"
         },
         delete: {
           title: "Remove",
@@ -722,6 +761,9 @@ const Translations = {
       makeItsOpinion: {
         submit: "Save my opinion",
         opinion: "Opinion",
+        explanation: "Explanation"
+      },
+      archiveIdea: {
         explanation: "Explanation"
       }
     },

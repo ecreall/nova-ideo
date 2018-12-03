@@ -7,3 +7,6 @@ export { default as deleteIdea } from './delete';
 export { default as publish } from './publish';
 export { default as edit } from './edit';
 export { default as makeItsOpinion } from './makeItsOpinion';
+export { default as archiveIdea } from './archive';
+export { default as abandonIdea } from './abandon';
+export { default as recuperateIdea } from './recuperate';

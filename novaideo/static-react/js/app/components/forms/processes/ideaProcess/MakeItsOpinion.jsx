@@ -1,8 +1,6 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
-import {
-  Form as ReduxForm, Field, reduxForm, initialize
-} from 'redux-form';
+import { Form as ReduxForm, Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
@@ -40,7 +38,7 @@ export class DumMakeItsOpinion extends React.Component {
 
   render() {
     const {
-      action, idea, adapters, onClose, valid, classes, theme
+      action, adapters, onClose, valid, classes, theme, pristine
     } = this.props;
     const opinionsBase = adapters.opinions || OPINIONS;
     const opinions = {};
@@ -55,17 +53,19 @@ export class DumMakeItsOpinion extends React.Component {
         open
         appBar={I18n.t(action.description)}
         onClose={onClose}
-        footer={[
-          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
-          <Button
-            onClick={this.handleSubmit}
-            background={theme.palette.success[800]}
-            className={classes.button}
-            disabled={this.props.pristine || !valid}
-          >
-            {I18n.t('forms.makeItsOpinion.submit')}
-          </Button>
-        ]}
+        footer={(
+          <React.Fragment>
+            <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>
+            <Button
+              onClick={this.handleSubmit}
+              background={theme.palette.success[800]}
+              className={classes.button}
+              disabled={pristine || !valid}
+            >
+              {I18n.t('forms.makeItsOpinion.submit')}
+            </Button>
+          </React.Fragment>
+        )}
       >
         <ReduxForm className={classes.form} onSubmit={this.handleSubmit}>
           <Field
@@ -104,7 +104,7 @@ const validate = (values) => {
 };
 
 // Decorate the form component
-const EditProfileReduxForm = reduxForm({
+const DumMakeItsOpinionReduxForm = reduxForm({
   destroyOnUnmount: false,
   validate: validate,
   touchOnChange: true
@@ -125,6 +125,6 @@ export default withStyles(styles, { withTheme: true })(
           makeItsOpinion: makeItsOpinion(props)
         };
       }
-    })(EditProfileReduxForm)
+    })(DumMakeItsOpinionReduxForm)
   )
 );

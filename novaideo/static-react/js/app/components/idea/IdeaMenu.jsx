@@ -139,7 +139,7 @@ export class DumbIdeaMenu extends React.Component {
             </OverlaidTooltip>
           );
         })}
-        <MenuMore context={idea} onActionClick={onActionClick} />
+        <MenuMore key={idea.state[0]} context={idea} onActionClick={onActionClick} />
       </div>
     );
   }

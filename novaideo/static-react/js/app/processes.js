@@ -2,6 +2,8 @@
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import HistoryIcon from '@material-ui/icons/History';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import ReportIcon from '@material-ui/icons/Report';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ModeEditIcon from '@material-ui/icons/Edit';
@@ -73,6 +75,30 @@ export const PROCESSES = {
         description: 'processes.ideamanagement.publish.description',
         submission: 'processes.ideamanagement.publish.submission',
         confirmation: 'processes.ideamanagement.publish.confirmation'
+      },
+      abandon: {
+        nodeId: 'abandon',
+        title: 'processes.ideamanagement.abandon.title',
+        description: 'processes.ideamanagement.abandon.description',
+        submission: 'processes.ideamanagement.abandon.submission',
+        confirmation: 'processes.ideamanagement.abandon.confirmation',
+        icon: ArchiveIcon
+      },
+      archive: {
+        nodeId: 'moderationarchive',
+        title: 'processes.ideamanagement.archive.title',
+        description: 'processes.ideamanagement.archive.description',
+        submission: 'processes.ideamanagement.archive.submission',
+        confirmation: 'processes.ideamanagement.archive.confirmation',
+        icon: ArchiveIcon
+      },
+      recuperate: {
+        nodeId: 'recuperate',
+        title: 'processes.ideamanagement.recuperate.title',
+        description: 'processes.ideamanagement.recuperate.description',
+        submission: 'processes.ideamanagement.recuperate.submission',
+        confirmation: 'processes.ideamanagement.recuperate.confirmation',
+        icon: UnarchiveIcon
       },
       makeItsOpinion: {
         nodeId: 'makeitsopinion',

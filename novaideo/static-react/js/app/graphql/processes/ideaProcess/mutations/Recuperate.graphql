@@ -1,0 +1,10 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Recuperate($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  recuperateIdea(context: $context) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

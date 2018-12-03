@@ -1,0 +1,10 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Abandon($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  abandonIdea(context: $context) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

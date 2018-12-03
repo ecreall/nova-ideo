@@ -349,3 +349,79 @@ class MakeItsOpinion(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return MakeItsOpinion(idea=context, status=status)
+
+
+class Abandon(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.abandon'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            Abandon.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Abandon(idea=context, status=status)
+
+
+class Recuperate(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.recuperate'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            Recuperate.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Recuperate(idea=context, status=status)
+
+
+class Archive(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        explanation = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.moderationarchive'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            Archive.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, args)
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Archive(idea=context, status=status)
