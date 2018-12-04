@@ -189,7 +189,10 @@ export class DumbIdeaItem extends React.Component {
   };
 
   openDetails = () => {
-    this.props.closeChatApp();
+    const { channelOpen } = this.props;
+    if (channelOpen) {
+      this.props.closeChatApp();
+    }
     goTo(get('ideas', { ideaId: this.props.node.id }));
   };
 
@@ -338,7 +341,8 @@ export const mapDispatchToProps = {
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
-    adapters: state.adapters
+    adapters: state.adapters,
+    channelOpen: state.apps.chatApp.open
   };
 };
 

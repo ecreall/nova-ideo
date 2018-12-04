@@ -237,7 +237,12 @@ export class DumbIdeaProcessManager extends React.Component {
         processManager: this
       });
     });
-    return [children, this.renderForm()];
+    return (
+      <React.Fragment>
+        {children}
+        {this.renderForm()}
+      </React.Fragment>
+    );
   }
 }
 

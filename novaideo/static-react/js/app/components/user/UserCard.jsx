@@ -206,71 +206,73 @@ export class DumbUserCard extends React.Component {
       imgContent = <div className={classes.userIcon}>{initalsGenerator(person.title)}</div>;
     }
     const commentFormId = getFormId(channelId);
-    return [
-      <div className={classes.container}>
-        <div
-          className={classNames(classes.imgContainer, { [classes.noImgContainer]: imgContent })}
-          onClick={!isAnonymous ? this.openDetails : null}
-        >
-          {!imgContent ? (
-            <div
-              className={classNames(classes.img, { [classes.imgAnonymous]: isAnonymous })}
-              style={{
-                backgroundImage: `${imgGradient} url('${authorPicture && authorPicture.url}')`
-              }}
-            />
-          ) : (
-            imgContent
-          )}
-          <div className={classes.header}>
-            <div className={classes.headerTitle}>{person.title}</div>
-            {!isAnonymous && <div className={classes.headerAddOn}>{person.function}</div>}
+    return (
+      <React.Fragment>
+        <div className={classes.container}>
+          <div
+            className={classNames(classes.imgContainer, { [classes.noImgContainer]: imgContent })}
+            onClick={!isAnonymous ? this.openDetails : null}
+          >
+            {!imgContent ? (
+              <div
+                className={classNames(classes.img, { [classes.imgAnonymous]: isAnonymous })}
+                style={{
+                  backgroundImage: `${imgGradient} url('${authorPicture && authorPicture.url}')`
+                }}
+              />
+            ) : (
+              imgContent
+            )}
+            <div className={classes.header}>
+              <div className={classes.headerTitle}>{person.title}</div>
+              {!isAnonymous && <div className={classes.headerAddOn}>{person.function}</div>}
+            </div>
+          </div>
+          <div className={classes.body}>
+            {!isAnonymous ? (
+              <React.Fragment>
+                <div className={classes.actions}>
+                  {communicationActions.length > 0 && (
+                    <AllignedActions
+                      type="button"
+                      actions={communicationActions}
+                      onActionClick={processManager.execute}
+                      classes={{ actionsContainer: classes.actionsContainer }}
+                    />
+                  )}
+                  <UserMenu open user={person} onActionClick={processManager.execute} />
+                </div>
+                <div className={classes.bodyContent}>
+                  <CollapsibleText className={classes.text} text={person.description} textLen={150} />
+                  <div className={classes.stats}>
+                    <OverlaidTooltip tooltip={<Translate value="user.folloers" count={person.nbFollowers} />} placement="top">
+                      <div className={classes.followers}>
+                        <StarBorderIcon className={classes.followersIcon} />
+                        {person.nbFollowers}
+                      </div>
+                    </OverlaidTooltip>
+                    <ObjectStats id={person.id} />
+                  </div>
+                </div>
+              </React.Fragment>
+            ) : null}
           </div>
         </div>
-        <div className={classes.body}>
-          {!isAnonymous
-            ? [
-              <div className={classes.actions}>
-                {communicationActions.length > 0 && (
-                  <AllignedActions
-                    type="button"
-                    actions={communicationActions}
-                    onActionClick={processManager.execute}
-                    classes={{ actionsContainer: classes.actionsContainer }}
-                  />
-                )}
-                <UserMenu open user={person} onActionClick={processManager.execute} />
-              </div>,
-              <div className={classes.bodyContent}>
-                <CollapsibleText className={classes.text} text={person.description} textLen={150} />
-                <div className={classes.stats}>
-                  <OverlaidTooltip tooltip={<Translate value="user.folloers" count={person.nbFollowers} />} placement="top">
-                    <div className={classes.followers}>
-                      <StarBorderIcon className={classes.followersIcon} />
-                      {person.nbFollowers}
-                    </div>
-                  </OverlaidTooltip>
-                  <ObjectStats id={person.id} />
-                </div>
-              </div>
-            ]
-            : null}
-        </div>
-      </div>,
-      withCommentForm && commentAction ? (
-        <Comment
-          isDiscuss
-          classes={{ container: classes.formContainer }}
-          form={commentFormId}
-          key={commentFormId}
-          action={commentAction}
-          context={person.oid}
-          subject={person.oid}
-          channel={person.channel}
-          onSubmit={this.onCommentSubmit}
-        />
-      ) : null
-    ];
+        {withCommentForm && commentAction ? (
+          <Comment
+            isDiscuss
+            classes={{ container: classes.formContainer }}
+            form={commentFormId}
+            key={commentFormId}
+            action={commentAction}
+            context={person.oid}
+            subject={person.oid}
+            channel={person.channel}
+            onSubmit={this.onCommentSubmit}
+          />
+        ) : null}
+      </React.Fragment>
+    );
   }
 }
 
@@ -288,10 +290,7 @@ function UserCardWithProcessManager(props) {
 }
 
 export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(
+  connect(null, mapDispatchToProps)(
     graphql(PersonData, {
       options: (props) => {
         return {

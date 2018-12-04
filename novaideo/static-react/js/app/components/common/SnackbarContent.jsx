@@ -58,11 +58,11 @@ function SnackbarContent(props) {
           {message}
         </span>
       )}
-      action={[
+      action={(
         <IconButton key="close" aria-label="Close" color="inherit" className={classes.close} onClick={onClose}>
           <CloseIcon className={classes.icon} />
         </IconButton>
-      ]}
+      )}
       {...other}
     />
   );

@@ -54,20 +54,22 @@ class TextBoxField extends React.Component {
     const {
       placeholder, value, style, withEmoji, onCtrlEnter, onEnter
     } = this.props;
-    return [
-      <TextEditor
-        key="text-editor"
-        ref={(editor) => {
-          this.editor = editor;
-        }}
-        placeholder={placeholder}
-        value={value}
-        onChange={this.onChange}
-        onCtrlEnter={onCtrlEnter}
-        onEnter={onEnter}
-      />,
-      withEmoji ? <EmojiPicker key="emoji-picker" style={style || {}} onSelect={this.onSelectEmoji} /> : null
-    ];
+    return (
+      <React.Fragment>
+        <TextEditor
+          key="text-editor"
+          ref={(editor) => {
+            this.editor = editor;
+          }}
+          placeholder={placeholder}
+          value={value}
+          onChange={this.onChange}
+          onCtrlEnter={onCtrlEnter}
+          onEnter={onEnter}
+        />
+        {withEmoji ? <EmojiPicker key="emoji-picker" style={style || {}} onSelect={this.onSelectEmoji} /> : null}
+      </React.Fragment>
+    );
   }
 }
 

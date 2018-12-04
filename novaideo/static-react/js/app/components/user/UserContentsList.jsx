@@ -38,20 +38,22 @@ export const DumbUserContentsList = ({ id, filter, classes }) => {
     >
       {(result) => {
         const totalCount = result.data && result.data.person && result.data.person.contents.totalCount;
-        return [
-          filter ? <SearchData id={`${id}-search`} count={totalCount} /> : null,
-          <FlatList
-            fetchMoreOnEvent={`${id}user-contents`}
-            // scrollEvent={`${id}user-contents`}
-            data={result}
-            getEntities={(entities) => {
-              return entities.data ? entities.data.person && entities.data.person.contents : entities.person.contents;
-            }}
-            ListItem={IdeaItem}
-            Divider={Divider}
-            className={classes.list}
-          />
-        ];
+        return (
+          <React.Fragment>
+            {filter ? <SearchData id={`${id}-search`} count={totalCount} /> : null}
+            <FlatList
+              fetchMoreOnEvent={`${id}user-contents`}
+              // scrollEvent={`${id}user-contents`}
+              data={result}
+              getEntities={(entities) => {
+                return entities.data ? entities.data.person && entities.data.person.contents : entities.person.contents;
+              }}
+              ListItem={IdeaItem}
+              Divider={Divider}
+              className={classes.list}
+            />
+          </React.Fragment>
+        );
       }}
     </Query>
   );

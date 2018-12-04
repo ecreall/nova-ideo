@@ -112,66 +112,68 @@ export class DumbRecord extends React.Component {
   render() {
     const { children, theme, classes } = this.props;
     const { open, record, file } = this.state;
-    return [
-      <div onClick={this.open}>{children}</div>,
-      <Dialog
-        directDisplay
-        appBar={(
-          <div className={classes.titleContainer}>
-            <span className={classes.title}>{I18n.t('forms.record')}</span>
-          </div>
-        )}
-        open={open}
-        onClose={this.leave}
-      >
-        <div className={classes.container}>
-          <ReactMic
-            record={record}
-            className={classes.soundWave}
-            onStop={this.onStop}
-            strokeColor={theme.palette.tertiary.color}
-            backgroundColor={theme.palette.primary[500]}
-          />
-          <div className={classes.control}>
-            <Button
-              disabled={record}
-              onClick={this.startRecording}
-              variant="fab"
-              color="primary"
-              aria-label="add"
-              className={classes.button}
-            >
-              <MicNoneIcon />
-            </Button>
-            <Button
-              disabled={!record}
-              onClick={this.stopRecording}
-              variant="fab"
-              color="secondary"
-              aria-label="edit"
-              className={classNames(classes.button, classes.tertiaryBtn)}
-            >
-              <StopIcon />
-            </Button>
-          </div>
-          {file && (
-            <audio controls style={{ width: '100%' }}>
-              <source src={file.preview.url} type={file.type} />
-            </audio>
+    return (
+      <React.Fragment>
+        <div onClick={this.open}>{children}</div>
+        <Dialog
+          directDisplay
+          appBar={(
+            <div className={classes.titleContainer}>
+              <span className={classes.title}>{I18n.t('forms.record')}</span>
+            </div>
           )}
-          <div className={classes.footer}>
-            <StyledButton
-              disabled={!file}
-              onClick={this.close}
-              background={theme.palette.success[500]}
-              className={classes.buttonFooter}
-            >
-              {I18n.t('forms.add')}
-            </StyledButton>
+          open={open}
+          onClose={this.leave}
+        >
+          <div className={classes.container}>
+            <ReactMic
+              record={record}
+              className={classes.soundWave}
+              onStop={this.onStop}
+              strokeColor={theme.palette.tertiary.color}
+              backgroundColor={theme.palette.primary[500]}
+            />
+            <div className={classes.control}>
+              <Button
+                disabled={record}
+                onClick={this.startRecording}
+                variant="fab"
+                color="primary"
+                aria-label="add"
+                className={classes.button}
+              >
+                <MicNoneIcon />
+              </Button>
+              <Button
+                disabled={!record}
+                onClick={this.stopRecording}
+                variant="fab"
+                color="secondary"
+                aria-label="edit"
+                className={classNames(classes.button, classes.tertiaryBtn)}
+              >
+                <StopIcon />
+              </Button>
+            </div>
+            {file && (
+              <audio controls style={{ width: '100%' }}>
+                <source src={file.preview.url} type={file.type} />
+              </audio>
+            )}
+            <div className={classes.footer}>
+              <StyledButton
+                disabled={!file}
+                onClick={this.close}
+                background={theme.palette.success[500]}
+                className={classes.buttonFooter}
+              >
+                {I18n.t('forms.add')}
+              </StyledButton>
+            </div>
           </div>
-        </div>
-      </Dialog>
-    ];
+        </Dialog>
+      </React.Fragment>
+    );
   }
 }
 

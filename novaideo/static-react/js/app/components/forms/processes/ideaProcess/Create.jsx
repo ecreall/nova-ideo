@@ -396,39 +396,41 @@ export class DumbCreateIdeaForm extends React.Component {
             </div>
           </React.Fragment>
         )}
-        footer={[
-          <FilesPickerPreview
-            classes={{
-              container: classes.filesPreviewContainer,
-              image: classes.filesPreviewImage,
-              fileIcon: classes.filesPreviewFileIcon
-            }}
-            files={files}
-            getPicker={() => {
-              return this.filesPicker;
-            }}
-          />,
-          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
-          creationActions.map((action, key) => {
-            return (
-              <Button
-                key={key}
-                disabled={!canSubmit}
-                onClick={
-                  canSubmit
-                    ? () => {
-                      this.handleSubmit(action);
-                    }
-                    : undefined
-                }
-                background={theme.palette.success[500]}
-                className={classes.buttonFooter}
-              >
-                {I18n.t(action.submission)}
-              </Button>
-            );
-          })
-        ]}
+        footer={(
+          <React.Fragment>
+            <FilesPickerPreview
+              classes={{
+                container: classes.filesPreviewContainer,
+                image: classes.filesPreviewImage,
+                fileIcon: classes.filesPreviewFileIcon
+              }}
+              files={files}
+              getPicker={() => {
+                return this.filesPicker;
+              }}
+            />
+            <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>
+            {creationActions.map((action, key) => {
+              return (
+                <Button
+                  key={key}
+                  disabled={!canSubmit}
+                  onClick={
+                    canSubmit
+                      ? () => {
+                        this.handleSubmit(action);
+                      }
+                      : undefined
+                  }
+                  background={theme.palette.success[500]}
+                  className={classes.buttonFooter}
+                >
+                  {I18n.t(action.submission)}
+                </Button>
+              );
+            })}
+          </React.Fragment>
+        )}
       >
         <div className={classes.form}>
           <div className={classes.titleInputContainer}>

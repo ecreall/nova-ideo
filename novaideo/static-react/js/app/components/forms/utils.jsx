@@ -96,15 +96,16 @@ export const renderCheckboxField = withStyles(checkboxStyles, {
 })(({
   input: { value, onChange }, meta: { touched, error }, label, classes
 }) => {
-  return [
-    <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />,
-    touched
-      && error && (
-      <FormHelperText className={classes.error} id={label}>
-        {error}
-      </FormHelperText>
-    )
-  ];
+  return (
+    <React.Fragment>
+      <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />
+      {touched && error ? (
+        <FormHelperText className={classes.error} id={label}>
+          {error}
+        </FormHelperText>
+      ) : null}
+    </React.Fragment>
+  );
 });
 
 export const renderFilesListField = ({ input: { value, onChange }, node, initRef }) => {

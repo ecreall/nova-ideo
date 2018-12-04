@@ -32,11 +32,11 @@ export function renderMenuItem({
 }) {
   return (
     <MenuItem key={title} onClick={onClick} hoverColor={hoverColor}>
-      {Icon && (
+      {Icon ? (
         <ListItemIcon key={`${title}icon`} iconColor={color}>
           <Icon className="menu-item-icon" />
         </ListItemIcon>
-      )}
+      ) : null}
       <ListItemText
         key={`${title}text`}
         color={color}

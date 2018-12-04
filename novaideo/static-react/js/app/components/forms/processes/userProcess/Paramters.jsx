@@ -109,16 +109,18 @@ export class DumbParamters extends React.Component {
           maxContainer: classes.maxContainer,
           paper: classes.paper
         }}
-        appBar={[
-          <div className={classes.titleContainer}>
-            <UserAvatar picture={authorPicture} title={authorTitle} classes={{ avatar: classes.avatar }} />
-            <div className={classes.header}>
-              <span className={classes.headerTitle}>{authorTitle}</span>
-              <span className={classes.headerAddOn}>{func}</span>
+        appBar={(
+          <React.Fragment>
+            <div className={classes.titleContainer}>
+              <UserAvatar picture={authorPicture} title={authorTitle} classes={{ avatar: classes.avatar }} />
+              <div className={classes.header}>
+                <span className={classes.headerTitle}>{authorTitle}</span>
+                <span className={classes.headerAddOn}>{func}</span>
+              </div>
             </div>
-          </div>,
-          <div className={classes.formTitle}>Paramètres du compte</div>
-        ]}
+            <div className={classes.formTitle}>Paramètres du compte</div>
+          </React.Fragment>
+        )}
       >
         <Query
           notifyOnNetworkStatusChange

@@ -132,10 +132,11 @@ const styles = {
     maxWidth: 460
   },
   progress: {
-    width: '100%',
-    minWidth: 320,
-    minHeight: 340,
     display: 'flex',
+    position: 'relative',
+    padding: '15px 12px',
+    minWidth: 320,
+    maxWidth: 450,
     justifyContent: 'center'
   },
   iconPrivate: {

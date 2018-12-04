@@ -60,28 +60,30 @@ export class DumbExamination extends React.Component {
     } = this.props;
     const { open } = this.state;
     const icon = <Icon className={classNames(classes.circle, classes[value], 'mdi-set mdi-checkbox-blank-circle')} />;
-    return [
-      <div className={classes.circleContainer} onClick={this.handleClickOpen}>
-        <OverlaidTooltip tooltip={<Translate value="common.examinationClick" name={title} />} placement="top">
-          {icon}
-        </OverlaidTooltip>
-      </div>,
-      open && (
-        <Dialog
-          directDisplay
-          appBar={(
-            <div className={classes.titleContainer}>
-              {icon}
-              <span className={classes.title}>{title}</span>
-            </div>
-          )}
-          open={open}
-          onClose={this.handleClose}
-        >
-          <div className={classes.container}>{message}</div>
-        </Dialog>
-      )
-    ];
+    return (
+      <React.Fragment>
+        <div className={classes.circleContainer} onClick={this.handleClickOpen}>
+          <OverlaidTooltip tooltip={<Translate value="common.examinationClick" name={title} />} placement="top">
+            {icon}
+          </OverlaidTooltip>
+        </div>
+        {open ? (
+          <Dialog
+            directDisplay
+            appBar={(
+              <div className={classes.titleContainer}>
+                {icon}
+                <span className={classes.title}>{title}</span>
+              </div>
+            )}
+            open={open}
+            onClose={this.handleClose}
+          >
+            <div className={classes.container}>{message}</div>
+          </Dialog>
+        ) : null}
+      </React.Fragment>
+    );
   }
 }
 

@@ -50,12 +50,14 @@ export class DumbDelete extends React.Component {
         open
         appBar={I18n.t(action.description)}
         onClose={onClose}
-        footer={[
-          <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>,
-          <Button onClick={this.handleSubmit} background={theme.palette.danger.primary} className={classes.button}>
-            {I18n.t(action.submission)}
-          </Button>
-        ]}
+        footer={(
+          <React.Fragment>
+            <CancelButton onClick={this.closeForm}>{I18n.t('forms.cancel')}</CancelButton>
+            <Button onClick={this.handleSubmit} background={theme.palette.danger.primary} className={classes.button}>
+              {I18n.t(action.submission)}
+            </Button>
+          </React.Fragment>
+        )}
       >
         {I18n.t(action.confirmation)}
         <div className={classes.contextContainer}>

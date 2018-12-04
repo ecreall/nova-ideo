@@ -216,22 +216,24 @@ class CommonDialog extends React.Component {
         onExited={this.onClose}
         TransitionComponent={transition}
       >
-        <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
-          <Toolbar>
-            {withDrawer && (
-              <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleDrawer}>
-                {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
+        <React.Fragment>
+          <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
+            <Toolbar>
+              {withDrawer && (
+                <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleDrawer}>
+                  {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
+                </IconButton>
+              )}
+              <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
+                {appBar}
+              </Typography>
+              <IconButton className={classes.closeBtn} color="primary" onClick={close || this.onClose} aria-label="Close">
+                <CloseIcon />
               </IconButton>
-            )}
-            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
-              {appBar}
-            </Typography>
-            <IconButton className={classes.closeBtn} color="primary" onClick={close || this.onClose} aria-label="Close">
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        {withDrawer && withRightApp ? <AppRightContainer {...this.props}>{content}</AppRightContainer> : content}
+            </Toolbar>
+          </AppBar>
+          {withDrawer && withRightApp ? <AppRightContainer {...this.props}>{content}</AppRightContainer> : content}
+        </React.Fragment>
       </Dialog>
     );
   }

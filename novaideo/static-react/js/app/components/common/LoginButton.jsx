@@ -37,14 +37,14 @@ export class DumbLoginButton extends React.Component {
       tags: [ACTIONS.mainMenu, ACTIONS.site],
       behaviorId: userProcessNodes.login.nodeId
     })[0];
-    return (
-      loginAction && [
+    return loginAction ? (
+      <React.Fragment>
         <Button onClick={this.open} background={color || theme.palette.success[500]} className={classes.button}>
           <Translate value={loginAction.title} siteTitle={site.title} />
-        </Button>,
-        open && <Login action={loginAction} onClose={this.close} />
-      ]
-    );
+        </Button>
+        {open ? <Login action={loginAction} onClose={this.close} /> : null}
+      </React.Fragment>
+    ) : null;
   }
 }
 

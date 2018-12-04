@@ -196,109 +196,112 @@ export class DumbRegistrationForm extends React.Component {
 
   render() {
     const {
-      valid,
-      action,
-      globalProps: { site },
-      classes,
-      theme
+      valid, action, globalProps: { site }, classes, theme
     } = this.props;
     const { loading, error, submitted } = this.state;
-    return [
-      error && (
-        <Alert type="danger" classes={{ container: classes.alertContainer }}>
-          {I18n.t('common.failedLogin')}
-        </Alert>
-      ),
-      <Form className={classes.form} onSubmit={this.handleSubmit}>
-        <div className={submitted ? classes.validationContainer : classes.formContainer}>
-          <div className={classes.formTitle}>
-            <div className={classes.siteTitle}>
-              <div>
-                {submitted ? I18n.t('forms.singin.accountCreated') : <Translate value={action.title} siteTitle={site.title} />}
+    return (
+      <React.Fragment>
+        {error ? (
+          <Alert type="danger" classes={{ container: classes.alertContainer }}>
+            {I18n.t('common.failedLogin')}
+          </Alert>
+        ) : null}
+        <Form className={classes.form} onSubmit={this.handleSubmit}>
+          <div className={submitted ? classes.validationContainer : classes.formContainer}>
+            <div className={classes.formTitle}>
+              <div className={classes.siteTitle}>
+                <div>
+                  {submitted ? I18n.t('forms.singin.accountCreated') : <Translate value={action.title} siteTitle={site.title} />}
+                </div>
               </div>
             </div>
-          </div>
-          {submitted ? (
-            <div>{I18n.t('forms.singin.confirmationSent')}</div>
-          ) : (
-            <div>
-              <Field
-                props={{
-                  placeholder: I18n.t('forms.singin.firstName'),
-                  autoFocus: true
-                }}
-                name="firstName"
-                component={renderTextInput}
-              />
-              <Field
-                props={{
-                  placeholder: I18n.t('forms.singin.lastName')
-                }}
-                name="lastName"
-                component={renderTextInput}
-              />
-              <Field
-                props={{
-                  placeholder: I18n.t('forms.singin.email'),
-                  type: 'email'
-                }}
-                name="email"
-                component={renderTextInput}
-              />
-              <Field
-                props={{
-                  placeholder: I18n.t('forms.singin.password'),
-                  type: 'password',
-                  autoComplete: 'current-password'
-                }}
-                name="password"
-                component={renderTextInput}
-              />
-              <Field
-                props={{
-                  placeholder: I18n.t('forms.singin.passwordConfirmation'),
-                  type: 'password',
-                  autoComplete: 'current-password'
-                }}
-                name="confirmPassword"
-                component={renderTextInput}
-              />
-              <Field
-                props={{
-                  label: (
-                    <div>
-                      {I18n.t('common.readAccept')}
-                      {' '}
-                      <TermsAndConditions />
-                    </div>
-                  )
-                }}
-                name="terms"
-                component={renderCheckboxField}
-              />
+            {submitted ? (
+              <div>{I18n.t('forms.singin.confirmationSent')}</div>
+            ) : (
+              <div>
+                <Field
+                  props={{
+                    placeholder: I18n.t('forms.singin.firstName'),
+                    autoFocus: true
+                  }}
+                  name="firstName"
+                  component={renderTextInput}
+                />
+                <Field
+                  props={{
+                    placeholder: I18n.t('forms.singin.lastName')
+                  }}
+                  name="lastName"
+                  component={renderTextInput}
+                />
+                <Field
+                  props={{
+                    placeholder: I18n.t('forms.singin.email'),
+                    type: 'email'
+                  }}
+                  name="email"
+                  component={renderTextInput}
+                />
+                <Field
+                  props={{
+                    placeholder: I18n.t('forms.singin.password'),
+                    type: 'password',
+                    autoComplete: 'current-password'
+                  }}
+                  name="password"
+                  component={renderTextInput}
+                />
+                <Field
+                  props={{
+                    placeholder: I18n.t('forms.singin.passwordConfirmation'),
+                    type: 'password',
+                    autoComplete: 'current-password'
+                  }}
+                  name="confirmPassword"
+                  component={renderTextInput}
+                />
+                <Field
+                  props={{
+                    label: (
+                      <div>
+                        {I18n.t('common.readAccept')}
+                        {' '}
+                        <TermsAndConditions />
+                      </div>
+                    )
+                  }}
+                  name="terms"
+                  component={renderCheckboxField}
+                />
 
-              {loading ? (
-                <div className={classes.loading}>
-                  <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
-                </div>
-              ) : (
-                <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-                  {I18n.t('common.singUp')}
-                </Button>
-              )}
-            </div>
-          )}
+                {loading ? (
+                  <div className={classes.loading}>
+                    <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+                  </div>
+                ) : (
+                  <Button
+                    disabled={!valid}
+                    type="submit"
+                    background={theme.palette.success[800]}
+                    className={classes.buttonFooter}
+                  >
+                    {I18n.t('common.singUp')}
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        </Form>
+        <div className={classes.newAccountContainer}>
+          <div className={classes.newAccountTitle}>{I18n.t('common.haveAccount')}</div>
+          <div className={classes.newAccountDescription}>
+            <Button onClick={this.goToLogin} background={theme.palette.info[500]} className={classes.buttonSubscription}>
+              {I18n.t('common.signIn')}
+            </Button>
+          </div>
         </div>
-      </Form>,
-      <div className={classes.newAccountContainer}>
-        <div className={classes.newAccountTitle}>{I18n.t('common.haveAccount')}</div>
-        <div className={classes.newAccountDescription}>
-          <Button onClick={this.goToLogin} background={theme.palette.info[500]} className={classes.buttonSubscription}>
-            {I18n.t('common.signIn')}
-          </Button>
-        </div>
-      </div>
-    ];
+      </React.Fragment>
+    );
   }
 }
 

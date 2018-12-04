@@ -65,39 +65,48 @@ class EmbedButton extends React.Component {
   render() {
     const { theme, classes } = this.props;
     const { url } = this.state;
-    return [
-      <button
-        className="md-sb-button md-sb-img-button"
-        type="button"
-        title={I18n.t('editor.addEmbed')}
-        onClick={this.handleClickOpen}
-      >
-        <i className="mdi-set mdi-code-tags" />
-      </button>,
-      <Form
-        initRef={(form) => {
-          this.form = form;
-        }}
-        appBar={I18n.t('editor.addEmbedForm')}
-        footer={[
-          <CancelButton onClick={this.handleClose}>{I18n.t('forms.cancel')}</CancelButton>,
-          <Button disabled={!url} onClick={this.handleSubmit} background={theme.palette.success[500]} className={classes.button}>
-            {I18n.t('editor.addEmbedFormSubmission')}
-          </Button>
-        ]}
-      >
-        <Input
-          fullWidth
-          disableUnderline
-          placeholder={I18n.t('editor.addEmbedFormPlaceholder')}
-          onChange={this.onUrlChange}
-          classes={{
-            root: classes.root,
-            input: classes.input
+    return (
+      <React.Fragment>
+        <button
+          className="md-sb-button md-sb-img-button"
+          type="button"
+          title={I18n.t('editor.addEmbed')}
+          onClick={this.handleClickOpen}
+        >
+          <i className="mdi-set mdi-code-tags" />
+        </button>
+        <Form
+          initRef={(form) => {
+            this.form = form;
           }}
-        />
-      </Form>
-    ];
+          appBar={I18n.t('editor.addEmbedForm')}
+          footer={(
+            <React.Fragment>
+              <CancelButton onClick={this.handleClose}>{I18n.t('forms.cancel')}</CancelButton>
+              <Button
+                disabled={!url}
+                onClick={this.handleSubmit}
+                background={theme.palette.success[500]}
+                className={classes.button}
+              >
+                {I18n.t('editor.addEmbedFormSubmission')}
+              </Button>
+            </React.Fragment>
+          )}
+        >
+          <Input
+            fullWidth
+            disableUnderline
+            placeholder={I18n.t('editor.addEmbedFormPlaceholder')}
+            onChange={this.onUrlChange}
+            classes={{
+              root: classes.root,
+              input: classes.input
+            }}
+          />
+        </Form>
+      </React.Fragment>
+    );
   }
 }
 

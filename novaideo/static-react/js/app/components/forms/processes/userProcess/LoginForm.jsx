@@ -200,78 +200,76 @@ export class DumbLoginForm extends React.Component {
 
   render() {
     const {
-      valid,
-      action,
-      globalProps: { site },
-      classes,
-      theme
+      valid, action, globalProps: { site }, classes, theme
     } = this.props;
     const { loading, error } = this.state;
-    return [
-      error && (
-        <Alert type="danger" classes={{ container: classes.alertContainer }}>
-          {I18n.t('common.failedLogin')}
-        </Alert>
-      ),
-      <Form className={classes.form} onSubmit={this.handleSubmit}>
-        <div className={classes.formContainer}>
-          <div className={classes.formTitle}>
-            <div className={classes.siteTitle}>
-              <div>
-                <Translate value={action.title} siteTitle={site.title} />
+    return (
+      <React.Fragment>
+        {error ? (
+          <Alert type="danger" classes={{ container: classes.alertContainer }}>
+            {I18n.t('common.failedLogin')}
+          </Alert>
+        ) : null}
+        <Form className={classes.form} onSubmit={this.handleSubmit}>
+          <div className={classes.formContainer}>
+            <div className={classes.formTitle}>
+              <div className={classes.siteTitle}>
+                <div>
+                  <Translate value={action.title} siteTitle={site.title} />
+                </div>
+                <div className={classes.sectionHeaderTitle}>
+                  <div className={classes.sectionHeaderAddon}>{window.location.host}</div>
+                </div>
               </div>
-              <div className={classes.sectionHeaderTitle}>
-                <div className={classes.sectionHeaderAddon}>{window.location.host}</div>
+              <div className={classes.description}>
+                <div dangerouslySetInnerHTML={{ __html: I18n.t('forms.singin.enterLogin') }} />
               </div>
             </div>
-            <div className={classes.description}>
-              <div dangerouslySetInnerHTML={{ __html: I18n.t('forms.singin.enterLogin') }} />
-            </div>
+            <Field
+              props={{
+                placeholder: I18n.t('forms.singin.email'),
+                autoFocus: true
+              }}
+              name="login"
+              component={renderTextInput}
+              onChange={() => {}}
+            />
+            <Field
+              props={{
+                placeholder: I18n.t('forms.singin.password'),
+                type: 'password',
+                autoComplete: 'current-password'
+              }}
+              name="password"
+              component={renderTextInput}
+              onChange={() => {}}
+            />
+            {loading ? (
+              <div className={classes.loading}>
+                <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+              </div>
+            ) : (
+              <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
+                {I18n.t('common.signIn')}
+              </Button>
+            )}
           </div>
-          <Field
-            props={{
-              placeholder: I18n.t('forms.singin.email'),
-              autoFocus: true
-            }}
-            name="login"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          <Field
-            props={{
-              placeholder: I18n.t('forms.singin.password'),
-              type: 'password',
-              autoComplete: 'current-password'
-            }}
-            name="password"
-            component={renderTextInput}
-            onChange={() => {}}
-          />
-          {loading ? (
-            <div className={classes.loading}>
-              <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
-            </div>
+        </Form>
+        <div className={classes.newAccountContainer}>
+          <div className={classes.newAccountTitle}>{I18n.t('common.dontHaveAccount')}</div>
+          {site.onlyInvitation ? (
+            <div className={classes.newAccountInvitation}>{I18n.t('common.requestInvitation')}</div>
           ) : (
-            <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>
-              {I18n.t('common.signIn')}
-            </Button>
+            <div className={classes.newAccountDescription}>
+              {I18n.t('common.tryingCreateAccount')}
+              <Button onClick={this.goToRegistration} background={theme.palette.info[500]} className={classes.buttonSubscription}>
+                {I18n.t('common.createAccount')}
+              </Button>
+            </div>
           )}
         </div>
-      </Form>,
-      <div className={classes.newAccountContainer}>
-        <div className={classes.newAccountTitle}>{I18n.t('common.dontHaveAccount')}</div>
-        {site.onlyInvitation ? (
-          <div className={classes.newAccountInvitation}>{I18n.t('common.requestInvitation')}</div>
-        ) : (
-          <div className={classes.newAccountDescription}>
-            {I18n.t('common.tryingCreateAccount')}
-            <Button onClick={this.goToRegistration} background={theme.palette.info[500]} className={classes.buttonSubscription}>
-              {I18n.t('common.createAccount')}
-            </Button>
-          </div>
-        )}
-      </div>
-    ];
+      </React.Fragment>
+    );
   }
 }
 
@@ -316,11 +314,4 @@ export const mapDispatchToProps = {
   updateUserToken: updateUserToken
 };
 
-export default withStyles(styles, { withTheme: true })(
-  withApollo(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(LoginReduxForm)
-  )
-);
+export default withStyles(styles, { withTheme: true })(withApollo(connect(mapStateToProps, mapDispatchToProps)(LoginReduxForm)));

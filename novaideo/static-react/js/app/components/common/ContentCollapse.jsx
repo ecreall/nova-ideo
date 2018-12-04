@@ -90,27 +90,38 @@ export const DumbContentCollapse = ({
   const toggle = () => {
     onOpen(id);
   };
-  return [
-    <ListItem onClick={toggle} dense button classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: open }) }}>
-      <ListItemIcon>
-        <Icon classes={{ root: sectionIconClasses }} />
-      </ListItemIcon>
-      <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={title} />
-      {open ? <KeyboardArrowUpIcon classes={{ root: iconClasses }} /> : <KeyboardArrowDownIcon classes={{ root: iconClasses }} />}
-    </ListItem>,
-    <Collapse
-      in={open}
-      timeout={300}
-      classes={{
-        container: classes.container,
-        entered: classes.entered,
-        wrapper: classes.wrapper,
-        wrapperInner: classes.wrapperInner
-      }}
-    >
-      {children}
-    </Collapse>
-  ];
+  return (
+    <React.Fragment>
+      <ListItem
+        onClick={toggle}
+        dense
+        button
+        classes={{ root: classNames(classes.listItem, { [classes.listItemActive]: open }) }}
+      >
+        <ListItemIcon>
+          <Icon classes={{ root: sectionIconClasses }} />
+        </ListItemIcon>
+        <ListItemText classes={{ primary: textClasses }} className={textClasses} primary={title} />
+        {open ? (
+          <KeyboardArrowUpIcon classes={{ root: iconClasses }} />
+        ) : (
+          <KeyboardArrowDownIcon classes={{ root: iconClasses }} />
+        )}
+      </ListItem>
+      <Collapse
+        in={open}
+        timeout={300}
+        classes={{
+          container: classes.container,
+          entered: classes.entered,
+          wrapper: classes.wrapper,
+          wrapperInner: classes.wrapperInner
+        }}
+      >
+        {children}
+      </Collapse>
+    </React.Fragment>
+  );
 };
 
 export default withStyles(styles)(DumbContentCollapse);

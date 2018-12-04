@@ -63,18 +63,16 @@ export class DumbMenuWithActivator extends React.Component {
         : null;
     });
     const open = Boolean(anchorEl);
-    return [
-      <div key="activator" onClick={this.open}>
-        {activator}
-      </div>,
-      open && (
+    return (
+      <React.Fragment>
+        <div onClick={this.open}>{activator}</div>
         <Menu
-          key="menu"
-          transitionDuration={150}
+          key={`${id}-menu`}
+          id={`${id}-menu`}
+          transitionDuration={250}
           keepMounted={keepMounted}
           className={classes.menu}
           classes={{ paper: classes.menuPaper }}
-          id={id}
           anchorEl={anchorEl}
           open={open}
           onClose={this.close}
@@ -82,8 +80,8 @@ export class DumbMenuWithActivator extends React.Component {
         >
           {childrenClone}
         </Menu>
-      )
-    ];
+      </React.Fragment>
+    );
   }
 }
 

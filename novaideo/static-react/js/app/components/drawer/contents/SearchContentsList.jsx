@@ -52,42 +52,44 @@ class SearchContentsList extends React.Component {
     const { classes, onItemClick } = this.props;
     const { filter: { text } } = this.state;
     const formId = getFormId('jump-contents-search');
-    return [
-      <Search
-        liveSearch
-        form={formId}
-        key={formId}
-        onSearch={this.handelSearch}
-        onCancel={this.handleSearchCancel}
-        title={I18n.t('channels.jumpSearch')}
-        classes={{
-          container: classes.searchContainer,
-          placeholder: classes.placeholder
-        }}
-      />,
-      <Query
-        notifyOnNetworkStatusChange
-        fetchPolicy="cache-and-network"
-        query={AllContents}
-        variables={{ first: 25, after: '', filter: text }}
-      >
-        {(data) => {
-          return (
-            <FlatList
-              customScrollbar
-              className={classes.container}
-              data={data}
-              getEntities={(entities) => {
-                return entities.data ? entities.data.allContents : entities.allContents;
-              }}
-              ListItem={SearchContentItem}
-              itemProps={{ onClick: onItemClick }}
-              moreBtn={<span>{I18n.t('common.moreResult')}</span>}
-            />
-          );
-        }}
-      </Query>
-    ];
+    return (
+      <React.Fragment>
+        <Search
+          liveSearch
+          form={formId}
+          key={formId}
+          onSearch={this.handelSearch}
+          onCancel={this.handleSearchCancel}
+          title={I18n.t('channels.jumpSearch')}
+          classes={{
+            container: classes.searchContainer,
+            placeholder: classes.placeholder
+          }}
+        />
+        <Query
+          notifyOnNetworkStatusChange
+          fetchPolicy="cache-and-network"
+          query={AllContents}
+          variables={{ first: 25, after: '', filter: text }}
+        >
+          {(data) => {
+            return (
+              <FlatList
+                customScrollbar
+                className={classes.container}
+                data={data}
+                getEntities={(entities) => {
+                  return entities.data ? entities.data.allContents : entities.allContents;
+                }}
+                ListItem={SearchContentItem}
+                itemProps={{ onClick: onItemClick }}
+                moreBtn={<span>{I18n.t('common.moreResult')}</span>}
+              />
+            );
+          }}
+        </Query>
+      </React.Fragment>
+    );
   }
 }
 
