@@ -142,7 +142,7 @@ export const DumbObjectStats = ({ data, classes }) => {
   if (!stats) {
     return (
       <div className={classes.progress}>
-        <CircularProgress size={30} />
+        <CircularProgress disableShrink size={30} />
       </div>
     );
   }

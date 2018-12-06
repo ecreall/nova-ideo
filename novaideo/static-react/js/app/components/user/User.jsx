@@ -326,7 +326,7 @@ export class DumbUser extends React.Component {
     if (!person) {
       return (
         <div className={classes.progress}>
-          <CircularProgress size={30} />
+          <CircularProgress disableShrink size={30} />
         </div>
       );
     }

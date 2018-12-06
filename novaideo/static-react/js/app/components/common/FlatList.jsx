@@ -239,7 +239,7 @@ export class DumbFlatList extends React.Component {
     const progressColor = progressStyle.color || theme.palette.primary[500];
     return (
       <div className={classes.progress}>
-        <CircularProgress size={progressStyle.size} style={{ color: progressColor }} />
+        <CircularProgress disableShrink size={progressStyle.size} style={{ color: progressColor }} />
       </div>
     );
   };
