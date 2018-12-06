@@ -10,7 +10,9 @@ import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
 
 const styles = {
   container: {
-    height: '100%'
+    height: '100%',
+    marginTop: 10,
+    marginBottom: 10
   },
   sketchfabEmbed: {
     transitionProperty: 'background-color',
@@ -26,7 +28,6 @@ const styles = {
     borderRadius: 4,
     backgroundColor: 'black',
     boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1) inset',
-    width: 360,
     height: 270,
     display: 'flex',
     alignItems: 'center',
@@ -44,8 +45,6 @@ const styles = {
   },
   playButton: {
     opacity: 0.8,
-    width: 60,
-    height: 60,
     '&:hover': {
       opacity: 1
     }
