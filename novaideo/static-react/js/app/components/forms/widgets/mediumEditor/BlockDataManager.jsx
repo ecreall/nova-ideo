@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  Entity, EditorState, Modifier, SelectionState
-} from 'draft-js';
-import { getCurrentBlock } from 'medium-draft/lib/model';
+import { EditorState, SelectionState } from 'draft-js';
+import { updateDataOfBlock, getCurrentBlock } from 'medium-draft/lib/model';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 
@@ -82,17 +80,12 @@ class BlockDataManager extends React.Component {
   };
 
   updateData = (key, value) => {
-    const {
-      entity,
-      contentState,
-      selection,
-      blockProps: { getEditorState, setEditorState }
-    } = this.props;
+    const { block, blockProps: { getEditorState, setEditorState } } = this.props;
     const data = { [key]: value };
     this.setState(data, () => {
-      if (entity !== undefined) Entity.mergeData(entity, data);
-      const editorState = getEditorState();
-      setEditorState(EditorState.push(editorState, Modifier.mergeBlockData(contentState, selection, data), 'change-block-data'));
+      const blockData = block.getData();
+      const newData = blockData.set(key, value);
+      setEditorState(updateDataOfBlock(getEditorState(), block, newData));
     });
   };
 

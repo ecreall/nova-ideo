@@ -1,22 +1,40 @@
 // @flow
 import React from 'react';
 import { Query } from 'react-apollo';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import UrlPreview from './URLPreview';
 import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
 
 type URLMetadataLoaderProps = {
   url: string,
-  afterLoad?: ?Function
+  afterLoad?: ?Function,
+  integreted?: boolean,
+  classes: { [string]: string },
+  withLoader?: boolean
+};
+
+const styles = {
+  progress: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 };
 
 class URLMetadataLoader extends React.Component<URLMetadataLoaderProps, void> {
   static defaultProps = {
-    afterLoad: () => {}
+    afterLoad: () => {},
+    integreted: false,
+    withLoader: false
   };
 
   render() {
-    const { afterLoad, url } = this.props;
+    const {
+      afterLoad, classes, url, integreted, withLoader
+    } = this.props;
     return (
       <Query
         notifyOnNetworkStatusChange
@@ -28,11 +46,16 @@ class URLMetadataLoader extends React.Component<URLMetadataLoaderProps, void> {
       >
         {(result) => {
           const metadata = result.data && result.data.metadata;
-          return metadata ? <UrlPreview {...metadata} afterLoad={afterLoad} /> : null;
+          const loader = withLoader ? (
+            <div className={classes.progress}>
+              <CircularProgress size={27} />
+            </div>
+          ) : null;
+          return metadata ? <UrlPreview {...metadata} integreted={integreted} classes={classes} afterLoad={afterLoad} /> : loader;
         }}
       </Query>
     );
   }
 }
 
-export default URLMetadataLoader;
+export default withStyles(styles)(URLMetadataLoader);

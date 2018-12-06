@@ -850,7 +850,7 @@ class ContentWithURLs(Entity):
         content = self.get_content()
         self.urls = PersistentList()
         if content:
-            for url in extract_urls(content):
+            for url in set(extract_urls(content)):
                 metadata = extract_url_metadata(request, url)
                 if metadata:
                     self.urls.append(metadata)

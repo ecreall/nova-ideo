@@ -12,7 +12,7 @@ type Props = {
 const URLs = (props: Props) => {
   const { body, className } = props;
   // We need to add the URLs previews to the end of each post (See URLMetadataLoader)
-  const urls = body ? [...getUrls(body)] : [];
+  const urls = body ? Array.from(new Set([...getUrls(body)])) : [];
   if (urls.length === 0) return null;
   return (
     <div className={className}>

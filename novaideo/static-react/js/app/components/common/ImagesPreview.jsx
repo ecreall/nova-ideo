@@ -43,7 +43,7 @@ const styles = {
   },
   otherItem: {
     width: '100%',
-    paddingTop: '100%',
+    minHeight: '25%',
     marginBottom: 2,
     borderRadius: 7,
     borderWidth: 0.5,
@@ -55,7 +55,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginLeft: 2
+    marginLeft: 3
   },
   globalItemContainer: {
     width: '100%'
@@ -98,7 +98,7 @@ export class DumbImagesPreview extends React.Component {
           this.onClick(key || 0);
         }}
         key={key}
-        style={{ backgroundImage: `url("${image.url}${image.variations.includes(width) ? width : ''}")` }}
+        style={{ backgroundImage: `url("${image.url}${image.variations && image.variations.includes(width) ? width : ''}")` }}
         className={classNames(className, classes.imgBag)}
       />
     );

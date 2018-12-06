@@ -142,7 +142,7 @@ figure.md-block-image {
   background-color: transparent !important;
 }
 
-.md-RichEditor-editor .md-RichEditor-blockquote {
+.md-RichEditor-editor .md-RichEditor-blockquote, .md-block-blockquote {
   border-left: 3px solid rgba(43, 43, 43, 0.8) !important;
   color: #555 !important;
   font-size: 15px !important;
@@ -150,6 +150,7 @@ figure.md-block-image {
   background-color: transparent !important;
   font-family: inherit !important;
   letter-spacing: inherit !important;
+  margin: 0px;
 }
 
 .md-RichEditor-editor h1,
@@ -279,7 +280,7 @@ figure.md-block-image {
 /* MediumEditor --*/
 
 .comment-text p {
-	margin: 0
+  margin: 0
 }
 
 .tooltip {
@@ -466,7 +467,7 @@ img.emoji {
 }
 
 
-pre.format-mrkdwn-pre{
+pre.format-mrkdwn-pre, pre.md-block-code-block {
   margin: .5rem 0 .2rem;
   font-size: .75rem;
   line-height: 1.15rem;
@@ -482,7 +483,30 @@ pre.format-mrkdwn-pre{
   border-radius: 4px;
 }
 
-code.format-code-var {
+.public-DraftStyleDefault-pre {
+  background-color: transparent !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.public-DraftStyleDefault-pre pre {
+  margin-top: unset !important;
+  padding-top: .5rem !important;
+  display: flex;
+}
+
+.md-block-with-data, .md-block-code-container  {
+  display: flex;
+}
+
+.md-inline-highlight {
+  background-color: rgba(3, 169, 244, 0.5);
+  padding: 3px;
+  border-radius: 3px;
+}
+
+code.format-code-var, code.md-inline-code {
   font-family: Monaco,Menlo,Consolas,"Courier New",monospace !important;
   font-size: .75rem;
   line-height: .75rem;

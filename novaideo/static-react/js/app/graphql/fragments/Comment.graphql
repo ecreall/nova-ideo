@@ -1,6 +1,7 @@
 #import "./Action.graphql"
 #import "./Author.graphql"
 #import "./File.graphql"
+#import "./Url.graphql"
 
 fragment Comment on Comment {
   id
@@ -17,19 +18,7 @@ fragment Comment on Comment {
     ...File
   }
   urls {
-    url
-    html
-    title
-    description
-    thumbnailUrl
-    providerName
-    faviconUrl
-    authorName
-    authorAvatar
-    data {
-      label
-      data
-    }
+    ...Url
   }
   emojis {
     title

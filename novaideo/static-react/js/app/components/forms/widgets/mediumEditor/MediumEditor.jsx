@@ -17,13 +17,14 @@ import {
   newHtmlToEntity,
   handleBeforeInput,
   BLOCK_BUTTONS,
-  INLINE_BUTTONS
+  INLINE_BUTTONS,
+  customStyleMap
 } from './utils';
 import { AtomicEmbedComponent, AtomicSeparatorComponent, AtomicBlock } from './blocks/Atomic';
 import ImageBlock from './blocks/ImageBlock';
 import SeparatorButton from './SeparatorButton';
 import EmbedButton from './EmbedButton';
-import ImageButton from './ImageButton';
+// import ImageButton from './ImageButton';
 
 export const emptyText = '<p class="md-block-unstyled"><br/></p>';
 
@@ -44,12 +45,12 @@ class MediumEditor extends React.Component {
     });
 
     this.sideButtons = [
-      {
-        title: 'Image',
-        component: (btnProps) => {
-          return <ImageButton {...btnProps} addFile={this.addFile} />;
-        }
-      },
+      // {
+      //   title: 'Image',
+      //   component: (btnProps) => {
+      //     return <ImageButton {...btnProps} addFile={this.addFile} />;
+      //   }
+      // },
       {
         title: 'Embed',
         component: EmbedButton
@@ -237,7 +238,9 @@ class MediumEditor extends React.Component {
   focus = (end) => {
     if (this.editor) {
       if (end) {
-        this.setState({ editorState: this.endFocus(this.state.editorState) });
+        this.setState((prevState) => {
+          return { editorState: this.endFocus(prevState.editorState) };
+        });
       } else {
         this.editor.focus();
       }
@@ -308,6 +311,7 @@ class MediumEditor extends React.Component {
         handleReturn={this.handleReturn}
         sideButtons={this.sideButtons}
         inlineButtons={this.inlineButtons}
+        customStyleMap={customStyleMap}
         blockButtons={this.blockButtons}
         rendererFn={this.rendererFn}
       />

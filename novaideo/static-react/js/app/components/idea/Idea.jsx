@@ -10,6 +10,7 @@ import Zoom from '@material-ui/core/Zoom';
 
 import SelectChipPreview from '../forms/widgets/SelectChipPreview';
 import URLs from '../common/urlPreview/URLs';
+import URLPreview from '../common/urlPreview/URLPreview';
 import ImagesPreview from '../common/ImagesPreview';
 import FilesPreview from '../common/FilesPreview';
 import Anchor from '../common/Anchor';
@@ -27,7 +28,7 @@ import IdeaAppBar from './IdeaAppBar';
 import {
   getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile
 } from '.';
-import { MediumEditor } from '../forms/widgets/mediumEditor';
+import { Html } from '../common/html';
 
 const styles = (theme) => {
   return {
@@ -83,7 +84,6 @@ const styles = (theme) => {
       minWidth: 300,
       float: 'right',
       padding: '0 0 0 8px !important',
-      zIndex: 1000,
       position: 'relative'
     },
     root: {
@@ -199,6 +199,16 @@ const styles = (theme) => {
     content: {
       paddingTop: 10,
       paddingBottom: 10
+    },
+    textContainer: {
+      fontSize: 17,
+      fontStyle: 'normal',
+      lineHeight: '1.5 !important',
+      letterSpacing: '-.003em',
+      color: 'rgba(0, 0, 0, 0.87)',
+      fontWeight: 400,
+      wordWrap: 'break-word',
+      whiteSpace: 'pre-wrap'
     }
   };
 };
@@ -324,9 +334,18 @@ export class DumbIdea extends React.Component {
                     />
                   </div>
                 )}
-                <MediumEditor readOnly value={idea.text} />
+                <Html className={classes.textContainer} html={idea.text} />
+                <div className={classes.divider} />
                 <FilesPreview files={files} />
-                <URLs body={idea.text} className={classes.urlsContainer} />
+                {idea.urls.length > 0 ? (
+                  <div className={classes.urlsContainer}>
+                    {idea.urls.map((url) => {
+                      return <URLPreview {...url} />;
+                    })}
+                  </div>
+                ) : (
+                  <URLs body={idea.text} className={classes.urlsContainer} />
+                )}
               </div>
               <div
                 ref={(comments) => {

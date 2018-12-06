@@ -570,13 +570,18 @@ class Idea(Node, graphene.ObjectType):
     attached_files = graphene.List(File)
     user_token = graphene.String()
     opinion = graphene.String()
-    
+    urls = graphene.List(Url)
+
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
         if isinstance(root, cls):
             return True
 
         return isinstance(root, SDIdea)
+
+    def resolve_urls(self, args, context, info):
+        urls = getattr(self, 'urls', [])
+        return [Url(**extract_url_metadata(url_metadata)) for url_metadata in urls]
 
     def resolve_presentation_text(self, args, context, info):
         return self.presentation_text(300)

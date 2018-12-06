@@ -6,7 +6,9 @@ import IconButton from '@material-ui/core/IconButton';
 
 const styles = {
   container: {
-    height: '100%'
+    height: '100%',
+    marginTop: 10,
+    marginBottom: 10
   },
   youtubeEmbed: {
     transitionProperty: 'background-color',
@@ -22,7 +24,7 @@ const styles = {
     borderRadius: 4,
     backgroundColor: 'black',
     boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1) inset',
-    width: 360,
+    // width: 360,
     height: 270,
     display: 'flex',
     alignItems: 'center',

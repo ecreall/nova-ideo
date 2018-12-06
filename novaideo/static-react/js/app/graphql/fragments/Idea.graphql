@@ -1,6 +1,7 @@
 #import "./Action.graphql"
 #import "./Author.graphql"
 #import "./File.graphql"
+#import "./Url.graphql"
 
 fragment Idea on Idea {
   id
@@ -29,5 +30,8 @@ fragment Idea on Idea {
   }
   actions(processIds: $processIds, nodeIds: $nodeIds, processTags: $processTags, actionTags: $actionTags) {
     ...Action
+  }
+  urls {
+    ...Url
   }
 }

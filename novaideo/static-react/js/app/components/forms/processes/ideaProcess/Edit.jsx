@@ -25,6 +25,7 @@ import { edit } from '../../../../graphql/processes/ideaProcess';
 import Edit from '../../../../graphql/processes/ideaProcess/mutations/Edit.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
+import ImagesPreview from '../../../common/ImagesPreview';
 
 const styles = (theme) => {
   return {
@@ -183,6 +184,13 @@ const styles = (theme) => {
     divider: {
       width: 60,
       borderTop: '1px solid #e8e8e8'
+    },
+    imagesContainer: {
+      minWidth: 300,
+      float: 'right',
+      padding: '0 0 0 8px !important',
+      position: 'relative',
+      zIndex: 3
     }
   };
 };
@@ -266,12 +274,18 @@ export class DumbEditIdeaForm extends React.Component {
     let selectedKeywords = {};
     let hasTitle = false;
     let canSubmit = false;
+    let images = [];
     if (formData && formData.values) {
       hasText = this.editor && !this.editor.isEmpty();
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
       });
+      images = files
+        .filter((file) => {
+          return file.preview && file.preview.type === 'image';
+        })
+        .map((image) => { return { url: image.preview.url, name: image.preview.name }; });
       const { keywordsRequired } = site;
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
@@ -280,6 +294,7 @@ export class DumbEditIdeaForm extends React.Component {
     }
     const date = getFormattedDate(idea.createdAt, 'date.format3');
     const IdeaIcon = getEntityIcon(idea.__typename);
+
     return (
       <Form
         initRef={(form) => {
@@ -400,6 +415,18 @@ export class DumbEditIdeaForm extends React.Component {
           />
           <div className={classes.divider} />
           <div className={classes.textContainer}>
+            {images.length > 0 && (
+              <div className={classes.imagesContainer}>
+                <ImagesPreview
+                  images={images}
+                  context={{
+                    title: idea.title,
+                    author: idea.author,
+                    date: idea.createdAt
+                  }}
+                />
+              </div>
+            )}
             <Field
               props={{
                 initRef: (editor) => {

@@ -5,6 +5,7 @@ import {
 } from 'medium-draft';
 import { blockToHTML, entityToHTML } from 'medium-draft/lib/exporter';
 import { htmlToBlock, htmlToEntity } from 'medium-draft/lib/importer';
+import { Inline } from 'medium-draft/lib/util/constants';
 import Icon from '@material-ui/core/Icon';
 import { I18n } from 'react-redux-i18n';
 
@@ -28,7 +29,8 @@ export const newHTMLtoBlock = (nodeName, node) => {
           ...getEmbedDataFromNode(imageNode)
         }
       };
-    } if (node.className.match(/md-block-atomic/)) {
+    }
+    if (node.className.match(/md-block-atomic/)) {
       const aNode = node.querySelector('a');
       return {
         type: Block.ATOMIC,
@@ -40,7 +42,8 @@ export const newHTMLtoBlock = (nodeName, node) => {
       };
     }
     return undefined;
-  } if (node.className.match(/md-block-atomic-break/)) {
+  }
+  if (node.className.match(/md-block-atomic-break/)) {
     return {
       type: Block.ATOMIC,
       data: {
@@ -83,7 +86,8 @@ export const newBlockToHTML = (block) => {
         start: '<figure class="md-block-atomic md-block-atomic-embed">',
         end: '</figure>'
       };
-    } if (type === 'separator' || block.text === '-') {
+    }
+    if (type === 'separator' || block.text === '-') {
       return (
         <div className="md-block-atomic md-block-atomic-break">
           <hr className="text-node-separator" />
@@ -138,7 +142,8 @@ export const handleBeforeInput = (editorState, str, onChange) => {
         )
       );
       return HANDLED;
-    } if (len > 0) {
+    }
+    if (len > 0) {
       const lastChar = text[len - 1];
       if (lastChar !== ' ') {
         onChange(
@@ -184,8 +189,8 @@ export const BLOCK_BUTTONS = () => {
       description: I18n.t('editor.heading3')
     },
     {
-      label: 'Code',
-      style: 'code-bloc',
+      label: <Icon className="icon mdi-set mdi-code-braces" />,
+      style: 'code-block',
       icon: 'header',
       description: I18n.t('editor.heading3')
     },
@@ -206,12 +211,12 @@ export const BLOCK_BUTTONS = () => {
       style: 'ordered-list-item',
       icon: 'list-ol',
       description: I18n.t('editor.orderedL')
-    },
-    {
-      label: <Icon className="icon mdi-set mdi-format-list-checks" />,
-      style: 'todo',
-      description: I18n.t('editor.todoL')
     }
+    // {
+    //   label: <Icon className="icon mdi-set mdi-format-list-checks" />,
+    //   style: 'todo',
+    //   description: I18n.t('editor.todoL')
+    // }
   ];
 };
 
@@ -245,6 +250,33 @@ export const INLINE_BUTTONS = () => {
       style: 'hyperlink',
       icon: 'link',
       description: I18n.t('editor.addLink')
+    },
+    {
+      label: <Icon className="icon mdi-set mdi-code-tags" />,
+      style: 'CODE',
+      icon: 'code',
+      description: I18n.t('editor.bold')
     }
   ];
+};
+
+export const customStyleMap = {
+  [Inline.HIGHLIGHT]: {
+    backgroundColor: 'rgba(3, 169, 244, 0.5)',
+    padding: 3,
+    borderRadius: 3
+  },
+  [Inline.CODE]: {
+    fontFamily: 'Monaco,Menlo,Consolas,"Courier New",monospace !important',
+    fontSize: '.75rem',
+    lineHeight: '.75rem',
+    whiteSpace: 'normal',
+    color: '#d72b3f',
+    padding: '2px 3px 1px',
+    fontVariantLigatures: 'none',
+    tabSize: 4,
+    backgroundColor: '#f7f7f9',
+    border: '1px solid #e1e1e8',
+    borderRadius: 3
+  }
 };

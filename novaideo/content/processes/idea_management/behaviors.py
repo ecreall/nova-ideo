@@ -1314,6 +1314,7 @@ class WithdrawToken(InfiniteCardinality):
 
 
 def seewgs_state_validation(process, context):
+    return False
     request = get_current_request()
     if 'proposal' not in request.content_to_manage:
         return False
@@ -1330,7 +1331,6 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
     style_interaction_type = 'slider'
     style_picto = 'glyphicon glyphicon-link'
     style_order = 2
-    tags = ['secondary', 'global']
     context = Iidea
     #processsecurity_validation = seeideas_processsecurity_validation
     #roles_validation = seeideas_roles_validation

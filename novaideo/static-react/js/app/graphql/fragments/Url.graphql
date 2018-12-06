@@ -1,0 +1,15 @@
+fragment Url on Url {
+  url
+  html
+  title
+  description
+  thumbnailUrl
+  providerName
+  faviconUrl
+  authorName
+  authorAvatar
+  data {
+    label
+    data
+  }
+}

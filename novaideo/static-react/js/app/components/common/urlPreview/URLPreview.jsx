@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Embed from './Embed';
 import ImagesPreview from '../ImagesPreview';
 // For a future development (integration of graphs ...)
-// import Frame from './frame';
+// import Frame from './Frame';
 
 const styles = {
   container: {
@@ -17,11 +17,25 @@ const styles = {
     borderLeftStyle: 'solid',
     textAlign: 'initial'
   },
+  integretedContainer: {
+    backgroundColor: 'white',
+    border: 'solid 1px #e8e8e8',
+    borderRadius: 5,
+    padding: '10px 25px',
+    wordWrap: 'initial',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    whiteSpace: 'initial',
+    letterSpacing: 'initial',
+    margin: 15,
+    display: 'grid'
+  },
   header: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: '5px 0'
+    padding: '5px 0',
+    marginBottom: 5
   },
   headerAvatar: {
     width: 16,
@@ -51,7 +65,6 @@ const styles = {
     fontSize: 15,
     fontWeight: 'bold',
     paddingLeft: 5,
-    width: '99%',
     textDecoration: 'none'
   },
   image: {
@@ -71,7 +84,8 @@ const styles = {
   description: {
     color: 'gray',
     paddingLeft: 5,
-    fontSize: 12
+    fontSize: 12,
+    lineHeight: '18px'
   },
   sliderHeader: {
     marginLeft: 4,
@@ -103,7 +117,9 @@ const styles = {
   },
   titleContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'space-between'
   }
 };
 
@@ -114,6 +130,7 @@ type URLDataType = {
 
 export type URLPreviewProps = {
   // id: string,
+  integreted?: boolean,
   url: string,
   html: string,
   title: string,
@@ -129,17 +146,22 @@ export type URLPreviewProps = {
 };
 
 class DumbURLPreview extends React.Component<URLPreviewProps, void> {
+  static defaultProps = {
+    integreted: false
+  };
+
   componentDidMount() {
     const { html, afterLoad } = this.props;
     if (!html && afterLoad) afterLoad();
   }
 
   render() {
-    // const { id, afterLoad } = this.props;
+    // const { url, html, afterLoad } = this.props;
     // For a future development (integration of graphs ...)
     // If we have an integration HTML code, we need to include it into an iframe (the Frame component)
-    // if (html) return <Frame id={id} html={html} afterLoad={afterLoad} />;
+    // if (html) return <Frame id={url} html={html} afterLoad={afterLoad} />;
     const {
+      integreted,
       authorName,
       authorAvatar,
       url,
@@ -155,7 +177,7 @@ class DumbURLPreview extends React.Component<URLPreviewProps, void> {
     // isContribution like a twitter post
     const isContribution = authorName || authorAvatar;
     return (
-      <div className={classes.container}>
+      <div className={integreted ? classes.integretedContainer : classes.container}>
         {isContribution ? (
           <div className={classes.header}>
             <Avatar className={classes.avatar} classes={{ root: classes.avatarRoot }} size={10} src={authorAvatar} />
@@ -163,7 +185,7 @@ class DumbURLPreview extends React.Component<URLPreviewProps, void> {
               <a target="_blank" href={url} className={classes.contributionTitle}>
                 {title}
               </a>
-              <span className={classes.authorName}>{authorName}</span>
+              <div className={classes.authorName}>{authorName}</div>
             </div>
           </div>
         ) : (
@@ -179,7 +201,7 @@ class DumbURLPreview extends React.Component<URLPreviewProps, void> {
             </div>
           </div>
         )}
-        <span className={classes.description}>{description}</span>
+        <div className={classes.description}>{description}</div>
         <Embed
           url={url}
           defaultEmbed={

@@ -1,5 +1,4 @@
 import React from 'react';
-// import CircularProgress from '@material-ui/core/CircularProgress';
 
 import BlockDataManager from '../BlockDataManager';
 import URLMetadataLoader from '../../../../common/urlPreview/URLMetadataLoader';
@@ -9,7 +8,7 @@ export class AtomicEmbedComponent extends React.Component {
     const { url } = this.props.data;
     return (
       <BlockDataManager {...this.props} className="md-block-with-data md-block-atomic-embed">
-        <URLMetadataLoader url={url} />
+        <URLMetadataLoader withLoader integreted url={url} />
       </BlockDataManager>
     );
   }
@@ -47,7 +46,10 @@ export const AtomicBlock = (props) => {
           readOnly={blockProps.readOnly}
           entity={index}
           data={{
-            ...entitydata, type: type, position: position, size: size
+            ...entitydata,
+            type: type,
+            position: position,
+            size: size
           }}
         />
       </div>
