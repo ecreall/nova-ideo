@@ -246,7 +246,7 @@ export class DumbLoginForm extends React.Component {
             />
             {loading ? (
               <div className={classes.loading}>
-                <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+                <CircularProgress disableShrink size={30} style={{ color: theme.palette.success[800] }} />
               </div>
             ) : (
               <Button disabled={!valid} type="submit" background={theme.palette.success[800]} className={classes.buttonFooter}>

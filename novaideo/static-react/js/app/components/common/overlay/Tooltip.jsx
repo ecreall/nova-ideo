@@ -18,7 +18,11 @@ class Tooltip extends React.Component {
       arrowOffsetTop,
       arrowOffsetLeft,
       className,
+      innerClassName,
+      arrowClassName,
       style,
+      innerStyle,
+      color,
       children,
       ...props
     } = this.props;
@@ -35,17 +39,26 @@ class Tooltip extends React.Component {
       left: positionLeft,
       ...style
     };
-
+    const placementCapitalize = placement.charAt(0).toUpperCase() + placement.slice(1);
+    const borderColorLable = `border${placementCapitalize}Color`;
     const arrowStyle = {
       top: arrowOffsetTop,
-      left: arrowOffsetLeft
+      left: arrowOffsetLeft,
+      [borderColorLable]: color
     };
 
     return (
       <div {...elementProps} role="tooltip" className={classNames(className, classes)} style={outerStyle}>
-        <div className={prefix(bsProps, 'arrow')} style={arrowStyle} />
-
-        <div className={prefix(bsProps, 'inner')}>{children}</div>
+        <div className={classNames(arrowClassName, prefix(bsProps, 'arrow'))} style={arrowStyle} />
+        <div
+          className={classNames(innerClassName, prefix(bsProps, 'inner'))}
+          style={{
+            backgroundColor: color,
+            ...innerStyle
+          }}
+        >
+          {children}
+        </div>
       </div>
     );
   }

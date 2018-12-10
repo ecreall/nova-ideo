@@ -1,0 +1,10 @@
+mutation EditDeadline($context: String!, $date: String!) {
+  editDeadline(context: $context, date: $date) {
+    root {
+      examinationDates {
+        start
+        end
+      }
+    }
+  }
+}

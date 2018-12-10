@@ -94,7 +94,8 @@ export default function create({ ownProps, mutate }) {
                   }
                   : null
             },
-            actions: []
+            actions: [],
+            urls: []
           }
         }
       },

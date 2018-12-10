@@ -209,6 +209,16 @@ export const PROCESSES = {
         nodeId: 'addreaction',
         title: 'processes.novaideoabstractprocess.addreaction.title',
         description: 'processes.novaideoabstractprocess.addreaction.title'
+      },
+      addDeadline: {
+        nodeId: 'adddeadline',
+        title: 'processes.novaideoabstractprocess.adddeadline.title',
+        description: 'processes.novaideoabstractprocess.adddeadline.title'
+      },
+      editDeadline: {
+        nodeId: 'editdeadline',
+        title: 'processes.novaideoabstractprocess.editdeadline.title',
+        description: 'processes.novaideoabstractprocess.editdeadline.title'
       }
     }
   },

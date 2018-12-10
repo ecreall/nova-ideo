@@ -276,7 +276,7 @@ export class DumbRegistrationForm extends React.Component {
 
                 {loading ? (
                   <div className={classes.loading}>
-                    <CircularProgress size={30} style={{ color: theme.palette.success[800] }} />
+                    <CircularProgress disableShrink size={30} style={{ color: theme.palette.success[800] }} />
                   </div>
                 ) : (
                   <Button

@@ -15,6 +15,7 @@ import AccountInformation from '../user/AccountInformation';
 import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
 import { getFormId } from '../../utils/globalFunctions';
+import ExaminationProgress from './ExaminationProgress';
 
 const styles = {
   flex: {
@@ -139,6 +140,7 @@ class NavBar extends React.Component {
               </div>
             )}
           </Toolbar>
+          {site.examineIdeas ? <ExaminationProgress values={site.examinationDates} /> : null}
         </AppBar>
       </div>
     );

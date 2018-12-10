@@ -13,8 +13,13 @@ from .processes.user_management import (
     EditProfile, EditPassword,
     EditApiToken, AssignRoles,
     Activate, Deactivate)
+from .processes.admin_process import EditDeadline, AddDeadline
+
 
 class Mutations(graphene.ObjectType):
+    # admin process
+    add_deadline = AddDeadline.Field()
+    edit_deadline = EditDeadline.Field()
     # abstract process
     select = Select.Field()
     deselect = Deselect.Field()

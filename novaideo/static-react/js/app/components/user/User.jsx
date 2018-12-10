@@ -322,6 +322,7 @@ export class DumbUser extends React.Component {
 
   render() {
     const { data, processManager, classes } = this.props;
+    const { open } = this.state;
     const person = data.person;
     if (!person) {
       return (

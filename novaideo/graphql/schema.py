@@ -24,6 +24,7 @@ from novaideo.utilities.util import html_to_text
 from novaideo import log
 from .mutations import Mutations
 from .interfaces import IEntity, IDebatable
+from .types import SecureObjectType
 from .util import (
     get_user_by_token, get_entities, get_all_comments,
     get_actions, connection_for_type, get_context,
@@ -163,6 +164,15 @@ class Emojiable(graphene.AbstractType):
         return self.get_user_emoji(getattr(context, 'user', None))
 
 
+class ExaminationDate(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    start = graphene.String()
+    end = graphene.String()
+
+
 class Root(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -194,6 +204,13 @@ class Root(Node, graphene.ObjectType):
     only_for_members = graphene.Boolean()
     logo = graphene.Field(lambda: File)
     roles = graphene.List(graphene.String)
+    examination_dates = graphene.List(ExaminationDate)
+
+    def resolve_examination_dates(self, args, context, info):
+        dates = [d.isoformat() for d in self.deadlines]
+        allDates = [d.isoformat() for d in self.deadlines]
+        allDates.insert(0, self.created_at.isoformat())
+        return [ExaminationDate(start=start, end=end) for start, end in zip(allDates, dates)]
 
     def resolve_roles(self, args, context, info):  # pylint: disable=W0613
         roles = get_authorized_roles(context.user)
@@ -554,7 +571,7 @@ class Channel(Node, graphene.ObjectType):
 Channel.Connection = connection_for_type(Channel)
 
 
-class Idea(Node, graphene.ObjectType):
+class Idea(SecureObjectType, Node, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
 

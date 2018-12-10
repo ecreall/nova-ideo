@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Zoom from '@material-ui/core/Zoom';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import SelectChipPreview from '../forms/widgets/SelectChipPreview';
 import URLs from '../common/urlPreview/URLs';
@@ -29,6 +30,7 @@ import {
   getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile
 } from '.';
 import { Html } from '../common/html';
+import SnackbarContent from '../common/SnackbarContent';
 
 const styles = (theme) => {
   return {
@@ -231,11 +233,27 @@ export class DumbIdea extends React.Component {
     });
   };
 
+  renderError = (message) => {
+    return (
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        autoHideDuration={6000}
+        open
+        onClose={() => { return goTo(get('root')); }}
+      >
+        <SnackbarContent onClose={() => { return goTo(get('root')); }} variant="error" message={message} />
+      </Snackbar>
+    );
+  };
+
   render() {
     const {
       classes, data, site, processManager, adapters
     } = this.props;
     const { idea } = data;
+    if (data.error) {
+      return this.renderError(data.error.graphQLErrors[0].message);
+    }
     if (data.loading || !idea) {
       return null;
     }

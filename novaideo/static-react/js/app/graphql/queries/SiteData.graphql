@@ -3,6 +3,7 @@
 query SiteData {
   root {
     id
+    oid
     siteId
     title
     logo {
@@ -24,6 +25,10 @@ query SiteData {
     onlyInvitation
     onlyForMembers
     roles
+    examinationDates {
+      start
+      end
+    }
   }
   actions {
     edges {

@@ -83,6 +83,14 @@ const Translations = {
         addreaction: {
           title: "Ajouter une réaction",
           description: "Ajouter une réaction"
+        },
+        adddeadline: {
+          title: "Ajouter une nouvelle date d'examin",
+          description: "Ajouter une nouvelle date d'examin"
+        },
+        editdeadline: {
+          title: "Modifier la date d'examin",
+          description: "Modifier la date d'examin"
         }
       },
       ideamanagement: {
@@ -294,6 +302,7 @@ const Translations = {
       search: "Recherche",
       cancel: "Annuler",
       add: "Ajouter",
+      edit: "Modifier",
       record: "Enregistrer un message vocal",
       required: "Champs obligatoires",
       idea: {
@@ -371,7 +380,11 @@ const Translations = {
       examin_1: "Examen",
       favorable: "Favorable",
       unfavorable: "Défavorable",
-      toStudy: "À retravailler"
+      toStudy: "À retravailler",
+      noExaminationDate: "Il n'y a pas de date d'examen fixée.",
+      examinationDate: "Le comité d'examen a prévu de se réunir le %{date}",
+      expiredDeadline: "Le comité d'examen s'est tenu en dernier lieu le %{date}, il n'y a pas de nouvelle date d'examen fixée.",
+      edit: "(cliquez pour editer la date)"
     },
     date: {
       format: "D MMMM YYYY",
@@ -491,6 +504,14 @@ const Translations = {
         addreaction: {
           title: "Ass a reaction",
           description: "Ass a reaction"
+        },
+        adddeadline: {
+          title: "Add a new examination date",
+          description: "Add a new examination date"
+        },
+        editdeadline: {
+          title: "Edit the examination date",
+          description: "Edit the examination date"
         }
       },
       ideamanagement: {
@@ -703,6 +724,7 @@ const Translations = {
       search: "Search",
       cancel: "Cancel",
       add: "Add",
+      edit: "Edit",
       record: "Record a voice message",
       required: "Required",
       idea: {
@@ -780,7 +802,11 @@ const Translations = {
       examin_1: "Examination",
       favorable: "Positive",
       unfavorable: "Negative",
-      toStudy: "To be re-worked upon"
+      toStudy: "To be re-worked upon",
+      noExaminationDate: "No examination date was fixed.",
+      examinationDate: "The review committee is scheduled to convene on %{date}",
+      expiredDeadline: "The review committee convened for the last time on %{date}, no new examination date was fixed.",
+      edit: "(click to edit the date)"
     },
     date: {
       format: "MMMM Do, YYYY",
