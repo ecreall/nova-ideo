@@ -285,7 +285,9 @@ export class DumbEditIdeaForm extends React.Component {
         .filter((file) => {
           return file.preview && file.preview.type === 'image';
         })
-        .map((image) => { return { url: image.preview.url, name: image.preview.name }; });
+        .map((image) => {
+          return { url: image.preview.url, name: image.preview.name };
+        });
       const { keywordsRequired } = site;
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
@@ -408,7 +410,9 @@ export class DumbEditIdeaForm extends React.Component {
             />
           </div>
           <SelectChipPreview
-            items={selectedKeywords}
+            items={Object.keys(selectedKeywords).map((id) => {
+              return { id: id, label: selectedKeywords[id] };
+            })}
             onItemDelete={(id) => {
               this.keywordsPicker.toggleOption(false, id);
             }}

@@ -1,20 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import Idea from '../../fragments/Idea.graphql';
 import { ACTIONS } from '../../../processes';
-
-export const publishMutation = gql`
-  mutation($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
-    publishIdea(context: $context) {
-      status
-      idea {
-        ...Idea
-      }
-    }
-  }
-  ${Idea}
-`;
 
 export default function publish({ mutate }) {
   return ({ context }) => {

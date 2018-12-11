@@ -10,3 +10,4 @@ export { default as makeItsOpinion } from './makeItsOpinion';
 export { default as archiveIdea } from './archive';
 export { default as abandonIdea } from './abandon';
 export { default as recuperateIdea } from './recuperate';
+export { default as share } from './share';

@@ -1,6 +1,15 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    messages: {
+      present: {
+        proposal: {
+          message:
+            "Bonjour,\n\n%{user} souhaite vous présenter la proposition « %{proposal} » figurant sur la plateforme %{site}. Cette proposition est accessible à l'adresse : %{url} .\n\nCordialement,\n\nLa Plateforme %{site}",
+          subject: "Présentation de la proposition « %{proposal} »"
+        }
+      }
+    },
     common: {
       termesConditions: "Termes & conditions",
       you: "Vous",
@@ -156,6 +165,10 @@ const Translations = {
         makeItsOpinion: {
           title: "Donner voter avis",
           description: "Donner voter avis"
+        },
+        present: {
+          title: "Partager",
+          description: "Partager la proposition"
         }
       },
       commentmanagement: {
@@ -365,6 +378,14 @@ const Translations = {
       },
       archiveIdea: {
         explanation: "Explication"
+      },
+      share: {
+        placeholderSubject: "Ajouter l'objet de votre message",
+        placeholderMessage: "Ajouter un message",
+        subject: "L'objet du message",
+        message: "Le message",
+        submit: "Envoyer",
+        addMembers: "Ajouter des membres"
       }
     },
     evaluation: {
@@ -422,6 +443,15 @@ const Translations = {
     }
   },
   en: {
+    messages: {
+      present: {
+        proposal: {
+          message:
+            "Dear,\n\n%{user} wishes to present to you the proposal « %{proposal} » on the {site} platform. You can access this proposal at: %{url} .\n\nKind regards,\n\nThe %{site} platform.",
+          subject: "Presentation of the proposal « %{proposal} »"
+        }
+      }
+    },
     common: {
       termesConditions: "Termes & conditions",
       you: "You",
@@ -577,6 +607,10 @@ const Translations = {
         makeItsOpinion: {
           title: "Make your opinion",
           description: "Make your opinion"
+        },
+        present: {
+          title: "Share",
+          description: "Share the proposal"
         }
       },
       commentmanagement: {
@@ -787,6 +821,14 @@ const Translations = {
       },
       archiveIdea: {
         explanation: "Explanation"
+      },
+      share: {
+        placeholderSubject: "Add a subject for your message",
+        placeholderMessage: "Add a message",
+        subject: "The subject of the message",
+        message: "The message",
+        submit: "Send",
+        addMembers: "Add members"
       }
     },
     evaluation: {

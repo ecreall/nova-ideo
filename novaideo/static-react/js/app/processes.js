@@ -105,6 +105,19 @@ export const PROCESSES = {
         title: 'processes.ideamanagement.makeItsOpinion.title',
         description: 'processes.ideamanagement.makeItsOpinion.description',
         icon: iconAdapter('mdi-set mdi-clipboard-check')
+      },
+      share: {
+        nodeId: 'present',
+        title: 'processes.ideamanagement.present.title',
+        description: 'processes.ideamanagement.present.description',
+        icon: iconAdapter('mdi-set mdi-share')
+      },
+      shareAnonymous: {
+        nodeId: 'present',
+        behaviorId: 'present_anonymous',
+        title: 'processes.ideamanagement.present.title',
+        description: 'processes.ideamanagement.present.description',
+        icon: iconAdapter('mdi-set mdi-share')
       }
     }
   },

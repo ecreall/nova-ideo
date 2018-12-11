@@ -1,0 +1,16 @@
+#import "../fragments/Author.graphql"
+
+query Members($first: Int!, $after: String!, $filter: String!) {
+  members(first: $first, after: $after, filter: $filter) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Author
+      }
+    }
+  }
+}

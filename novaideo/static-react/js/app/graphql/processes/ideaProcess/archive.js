@@ -1,27 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import Idea from '../../fragments/Idea.graphql';
 import { ACTIONS } from '../../../processes';
-
-export const archiveMutation = gql`
-  mutation(
-    $context: String!
-    $explanation: String
-    $processIds: [String]
-    $nodeIds: [String]
-    $processTags: [String]
-    $actionTags: [String]
-  ) {
-    archiveIdea(context: $context, explanation: $explanation) {
-      status
-      idea {
-        ...Idea
-      }
-    }
-  }
-  ${Idea}
-`;
 
 export default function archive({ mutate }) {
   return ({ context, explanation }) => {

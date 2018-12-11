@@ -18,6 +18,7 @@ import SelectList from './widgets/SelectList';
 import MediumEditor from './widgets/mediumEditor/MediumEditor';
 import Record from './widgets/Record';
 import ImagePicker from './widgets/ImagePicker';
+import RichSelect from './widgets/richSelect/RichSelect';
 
 export const renderTextBoxField = ({
   input: { name, value, onChange },
@@ -142,6 +143,23 @@ export const renderSelectList = ({
   return <SelectList initRef={initRef} label={label} options={options} value={value} onChange={onChange} />;
 };
 
+export const renderRichSelect = ({
+  input: { value, onChange }, id, query, getData, Item, label, placeholder
+}) => {
+  return (
+    <RichSelect
+      id={id}
+      label={label}
+      value={value}
+      onChange={onChange}
+      Item={Item}
+      query={query}
+      getData={getData}
+      placeholder={placeholder}
+    />
+  );
+};
+
 export const renderSelectField = ({
   input: { name, value, onChange }, options, label, initRef
 }) => {
@@ -173,7 +191,8 @@ const textInputStyles = (theme) => {
     input: {
       padding: '10px 10px 10px',
       fontSize: 15,
-      width: 'calc(100% - 19px)',
+      width: 'calc(100% - 20px)',
+      minHeight: 20,
       '&::placeholder': {
         color: '#000',
         fontSize: 15,

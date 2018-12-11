@@ -1,0 +1,7 @@
+mutation Share($context: String!, $message: String!, $subject: String!, $members: [String]) {
+  share(context: $context, message: $message, subject: $subject, members: $members) {
+    idea {
+      id
+    }
+  }
+}

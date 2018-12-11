@@ -239,9 +239,17 @@ export class DumbIdea extends React.Component {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         autoHideDuration={6000}
         open
-        onClose={() => { return goTo(get('root')); }}
+        onClose={() => {
+          return goTo(get('root'));
+        }}
       >
-        <SnackbarContent onClose={() => { return goTo(get('root')); }} variant="error" message={message} />
+        <SnackbarContent
+          onClose={() => {
+            return goTo(get('root'));
+          }}
+          variant="error"
+          message={message}
+        />
       </Snackbar>
     );
   };
@@ -337,7 +345,12 @@ export class DumbIdea extends React.Component {
                 <IdeaIcon className={classes.icon} />
                 {idea && idea.title}
               </h1>
-              <SelectChipPreview items={idea.keywords} icon={<Icon className="mdi-set mdi-tag-multiple" />} />
+              <SelectChipPreview
+                items={idea.keywords.map((keyword) => {
+                  return { id: keyword, label: keyword };
+                })}
+                icon={<Icon className="mdi-set mdi-tag-multiple" />}
+              />
               <div className={classes.divider} />
               <div className={classes.content}>
                 {images.length > 0 && (

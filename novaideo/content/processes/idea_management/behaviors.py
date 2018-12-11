@@ -996,6 +996,7 @@ class PresentIdeaAnonymous(PresentIdea):
     processsecurity_validation = presenta_processsecurity_validation
     style_interaction = 'ajax-action'
     style_interaction_type = 'popover'
+    behavior_id = 'present_anonymous'
 
     def start(self, context, request, appstruct, **kw):
         return {}

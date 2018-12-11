@@ -7,12 +7,14 @@ import { Translate, I18n } from 'react-redux-i18n';
 import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
+import Share from '../forms/processes/ideaProcess/Share';
 import Abandon from '../forms/processes/ideaProcess/Abandon';
 import Recuperate from '../forms/processes/ideaProcess/Recuperate';
 import Archive from '../forms/processes/ideaProcess/Archive';
 import MakeItsOpinion from '../forms/processes/ideaProcess/MakeItsOpinion';
 import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict, getFormId } from '../../utils/globalFunctions';
+import { getPresentProposalSubject, getPresentProposalMessage } from '../../utils/messages';
 import { PROCESSES, ACTIONS } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
 import { support, oppose, withdraw } from '../../graphql/processes/ideaProcess';
@@ -116,9 +118,6 @@ export class DumbIdeaProcessManager extends React.Component {
         behaviorId: userProcessNodes.login.nodeId
       })[0];
       switch (action.behaviorId) {
-      case processNodes.selectAnonymous.behaviorId:
-        this.displayForm(loginAction);
-        break;
       default:
         this.displayForm(loginAction);
       }
@@ -130,22 +129,10 @@ export class DumbIdeaProcessManager extends React.Component {
           .then(this.onActionExecuted)
           .catch(globalProps.showError);
         break;
-      case processNodes.selectAnonymous.behaviorId:
-        this.displayForm(action);
-        break;
       case processNodes.deselect.nodeId:
         deselectIdea({ context: idea })
           .then(this.onActionExecuted)
           .catch(globalProps.showError);
-        break;
-      case ideaProcessNodes.edit.nodeId:
-        this.displayForm(action);
-        break;
-      case ideaProcessNodes.delete.nodeId:
-        this.displayForm(action);
-        break;
-      case ideaProcessNodes.makeItsOpinion.nodeId:
-        this.displayForm(action);
         break;
       default:
         this.displayForm(action);
@@ -226,6 +213,22 @@ export class DumbIdeaProcessManager extends React.Component {
     }
     case userProcessNodes.login.nodeId:
       return <Login action={action} onClose={this.onFormClose} messageType="warning" message={I18n.t('common.needLogin')} />;
+    case ideaProcessNodes.share.nodeId: {
+      const formId = getFormId(`${idea.id}-share`);
+      const { globalProps: { site, account } } = this.props;
+      return (
+        <Share
+          initialValues={{
+            subject: getPresentProposalSubject(idea),
+            message: getPresentProposalMessage(idea, account.title, site.title)
+          }}
+          form={formId}
+          idea={idea}
+          action={action}
+          onClose={this.onFormClose}
+        />
+      );
+    }
     default:
       return null;
     }

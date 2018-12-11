@@ -1,20 +1,6 @@
 import update from 'immutability-helper';
-import gql from 'graphql-tag';
 
-import Idea from '../../fragments/Idea.graphql';
 import { ACTIONS } from '../../../processes';
-
-export const abandonMutation = gql`
-  mutation($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
-    abandonIdea(context: $context) {
-      status
-      idea {
-        ...Idea
-      }
-    }
-  }
-  ${Idea}
-`;
 
 export default function abandon({ mutate }) {
   return ({ context }) => {

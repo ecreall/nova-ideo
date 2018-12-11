@@ -4,7 +4,7 @@ from .processes.abstract_process import Select, Deselect, AddReaction
 from .processes.idea_management import (
     CreateIdea, CreateAndPublishIdea, DeleteIdea,
     Support, Oppose, WithdrawToken, Publish, EditIdea,
-    MakeItsOpinion, Abandon, Archive, Recuperate)
+    MakeItsOpinion, Abandon, Archive, Recuperate, Share)
 from .processes.comment_management import (
     CommentObject, MarkCommentsAsRead, DeleteComment,
     Pin, Unpin, Edit, AddPrivateChannel)
@@ -37,6 +37,7 @@ class Mutations(graphene.ObjectType):
     abandon_idea = Abandon.Field()
     recuperate_idea = Recuperate.Field()
     archive_idea = Archive.Field()
+    share = Share.Field()
     # comment management process
     add_private_channel = AddPrivateChannel.Field()
     comment_object = CommentObject.Field()

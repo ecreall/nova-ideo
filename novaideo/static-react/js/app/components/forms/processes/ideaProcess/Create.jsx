@@ -318,10 +318,12 @@ export class DumbCreateIdeaForm extends React.Component {
         .filter((file) => {
           return file.preview && file.preview.type === 'image';
         })
-        .map((image) => { return { url: image.preview.url, name: image.preview.name }; });
+        .map((image) => {
+          return { url: image.preview.url, name: image.preview.name };
+        });
       const { keywordsRequired } = site;
-      const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
+      const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
       anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
       hasTitle = formData.values.title;
       canSubmit = hasTitle && keywordsSatisfied && hasText;
@@ -465,7 +467,7 @@ export class DumbCreateIdeaForm extends React.Component {
             />
           </div>
           <SelectChipPreview
-            items={selectedKeywords}
+            items={Object.keys(selectedKeywords).map((id) => { return { id: id, label: selectedKeywords[id] }; })}
             onItemDelete={(id) => {
               this.keywordsPicker.toggleOption(false, id);
             }}

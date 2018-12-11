@@ -425,3 +425,31 @@ class Archive(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return Archive(idea=context, status=status)
+
+
+class Share(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        message = graphene.String()
+        subject = graphene.String()
+        members = graphene.List(graphene.String)
+
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.present'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            Share.action_id, args)
+        args['send_to_me'] = True
+        args['members'] = [get_obj(int(member)) for member in args['members']]
+        if action:
+            action.execute(context, request, args)
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Share(idea=context)
+
+

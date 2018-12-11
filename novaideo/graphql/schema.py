@@ -661,6 +661,10 @@ EntityData.Connection = connection_for_type(EntityData)
 class Query(graphene.ObjectType):
 
     node = relay.Node.Field()
+    members = relay.ConnectionField(
+        Person,
+        filter=graphene.String()
+    )
     ideas = relay.ConnectionField(
         Idea,
         filter=graphene.String()
@@ -688,6 +692,11 @@ class Query(graphene.ObjectType):
         user = get_current(context)
         total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=user)
         return ResolverLazyList(oids, Idea, total_count=total_count)
+
+    def resolve_members(self, args, context, info):  # pylint: disable=W0613
+        user = get_current(context)
+        total_count, oids = get_entities([IPerson], ['active'], args, info, user=user)
+        return ResolverLazyList(oids, Person, total_count=total_count)
 
     def resolve_all_channels(self, args, context, info):  # pylint: disable=W0613
         user = get_current(context)
