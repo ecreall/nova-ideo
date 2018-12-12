@@ -15,6 +15,7 @@ const Translations = {
       you: "Vous",
       signIn: "Se connecter",
       singUp: "Créer un compte",
+      resetPassword: "Mot de passe oublié ?",
       haveAccount: "Vous avez un compte sur cette plateforme?",
       readAccept: "J'ai lu et j'accepte les ",
       dontHaveAccount: "Vous n'avez pas encore de compte sur cette plateforme ?",
@@ -318,6 +319,21 @@ const Translations = {
       edit: "Modifier",
       record: "Enregistrer un message vocal",
       required: "Champs obligatoires",
+      richSelect: {
+        validateList: "Valider la liste"
+      },
+      resetPassword: {
+        title: "Réinitialisation du mot de passe",
+        description:
+          "Pour réinitialiser votre mot de passe, veuillez saisir l'adresse e-mail que vous utilisez pour vous connecter à <strong>%{site}</strong>.",
+        submit: "Obtenir le lien de réinitialisation",
+        resetPasswordSended:
+          "Un e-mail de confirmation a été envoyé à votre compte et devrait apparaître dans votre boîte de réception dans quelques minutes. Il contient un lien de confirmation, veuillez cliquer dessus pour modifier votre mot de passe. Vérifiez votre dossier spam si vous n'avez pas reçu d'e-mail de confirmation."
+      },
+      confirmResetPassword: {
+        title: "Réinitialisation du mot de passe",
+        submit: "Modifier mon mot de passe"
+      },
       idea: {
         title: "Titre de la proposition",
         titleHelper: "Titre",
@@ -457,6 +473,7 @@ const Translations = {
       you: "You",
       signIn: "Sign in",
       singUp: "Sing up",
+      resetPassword: "Forgot your password?",
       haveAccount: "You have an account on this platform?",
       readAccept: "I have read and I accept the ",
       dontHaveAccount: "Don't have an account on this platform yet?",
@@ -761,6 +778,20 @@ const Translations = {
       edit: "Edit",
       record: "Record a voice message",
       required: "Required",
+      richSelect: {
+        validateList: "Validate the list"
+      },
+      resetPassword: {
+        title: "Reset password",
+        description: "To reset your password, please enter the email address you use to sign in to <strong>%{site}</strong>.",
+        submit: "Get the reset link",
+        resetPasswordSended:
+          "A confirmation e-mail has been sent to your account and should be in your inbox in a few minutes. It contains a confirmation link, please click on it in order to edit your password. Check your spam folder if you did not receive a confirmation e-mail."
+      },
+      confirmResetPassword: {
+        title: "Reset password",
+        submit: "Edit my password"
+      },
       idea: {
         title: "The title of the proposal",
         titleHelper: "Title",

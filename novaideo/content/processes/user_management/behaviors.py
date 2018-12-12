@@ -26,7 +26,8 @@ from substanced.util import find_service
 
 from dace.util import (
     getSite, name_chooser, name_normalizer,
-    push_callback_after_commit, get_socket)
+    push_callback_after_commit, get_socket,
+    find_catalog)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
     grant_roles,
@@ -60,6 +61,44 @@ from novaideo.content.processes import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.role import get_authorized_roles
 from novaideo.adapters import EXTRACTION_ATTR
+
+
+def send_reset_password(login, request):
+    dace_catalog = find_catalog('dace')
+    novaideo_catalog = find_catalog('novaideo')
+    identifier_index = novaideo_catalog['identifier']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any([IPerson.__identifier__]) &\
+            identifier_index.any([login])
+    users = list(query.execute().all())
+    user = users[0] if users else None
+    if user is not None:
+        principals = find_service(user, 'principals')
+        reset = principals.add_reset(user)
+        # reseturl = request.resource_url(reset)
+        reseturl = request.route_url('resets', reset.__name__)
+        if not user.email:
+            raise ValueError('User does not possess a valid email address.')
+
+        root = request.root
+        mail_template = root.get_mail_template(
+            'reset_password', user.user_locale)
+        subject = mail_template['subject'].format(
+            novaideo_title=request.root.title)
+        localizer = request.localizer
+        message = mail_template['template'].format(
+            recipient_title=localizer.translate(
+                _(getattr(user, 'user_title', ''))),
+            recipient_first_name=getattr(user, 'first_name', user.name),
+            recipient_last_name=getattr(user, 'last_name', ''),
+            reseturl=reseturl,
+            novaideo_title=request.root.title
+        )
+        alert('email', [root.get_site_sender()], [user.email],
+              subject=subject, body=message)
+        return reset
+
+    return None
 
 
 def accept_preregistration(request, preregistration, root):

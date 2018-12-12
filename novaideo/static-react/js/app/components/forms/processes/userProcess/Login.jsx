@@ -16,6 +16,7 @@ import { filterActions } from '../../../../utils/processes';
 import Form from '../../Form';
 import LoginForm from './LoginForm';
 import Registration from './Registration';
+import ResetPassword from './ResetPassword';
 import { getFormId } from '../../../../utils/globalFunctions';
 
 const styles = (theme) => {
@@ -156,7 +157,8 @@ const styles = (theme) => {
 
 export const LOGIN_VIEWS = {
   login: 'login',
-  registration: 'registration'
+  registration: 'registration',
+  resetPassword: 'resetPassword'
 };
 
 export class DumbLogin extends React.Component {
@@ -202,6 +204,7 @@ export class DumbLogin extends React.Component {
       nodeId: registrationProcessNodes.registration.nodeId
     })[0];
     const loginFormId = getFormId('user-login');
+    const resetPasswordFormId = getFormId('user-reset_password');
     const registrationFormId = getFormId('user-registration');
     return (
       <Form
@@ -237,6 +240,18 @@ export class DumbLogin extends React.Component {
                   form={loginFormId}
                   key={loginFormId}
                   action={loginAction}
+                  onSucces={this.closeForm}
+                  switchView={this.switchView}
+                />
+              )}
+            </div>
+          </Fade>
+          <Fade in={view === LOGIN_VIEWS.resetPassword}>
+            <div className={classNames({ [classes.open]: view === LOGIN_VIEWS.resetPassword })}>
+              {loginAction && (
+                <ResetPassword
+                  form={resetPasswordFormId}
+                  key={resetPasswordFormId}
                   onSucces={this.closeForm}
                   switchView={this.switchView}
                 />

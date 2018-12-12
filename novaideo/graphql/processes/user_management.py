@@ -1,14 +1,19 @@
 import graphene
 import urllib
 
+from substanced.util import find_service
+from substanced.interfaces import UserToPasswordReset
+from substanced.objectmap import find_objectmap
+
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import get_roles
 from dace.util import getSite, get_obj
 from pontus.schema import select
 
 from novaideo.content.person import Preregistration, PersonSchema
-from ..util import get_context, get_current_request, get_action, extract_files, get_execution_data
+from novaideo.content.processes.user_management.behaviors import send_reset_password
 from novaideo import _
+from ..util import get_context, get_current_request, get_action, extract_files, get_execution_data
 from . import Upload
 
 
@@ -66,8 +71,8 @@ class ConfirmRegistration(graphene.Mutation):
             request = get_current_request()
             action = get_action(ConfirmRegistration.action_id, context, request)
             if action:
-                preson = action.execute(context, request, {})
-                token = preson.api_token
+                person = action.execute(context, request, {})
+                token = person.api_token
             else:
                 raise Exception(
                     request.localizer.translate(_("Authorization failed")))
@@ -281,3 +286,62 @@ class Deactivate(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         return Deactivate(status=status, profile=context)
+
+
+class ResetPassword(graphene.Mutation):
+
+    class Input:
+        email = graphene.String()
+
+    status = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        reset = None
+        request = get_current_request()
+        if args.get('email', None):
+            reset = send_reset_password(args['email'], request)
+        else:
+            raise Exception(
+                request.localizer.translate(_("Reset password failed")))
+
+        status = reset is not None
+        return ResetPassword(status=status)
+
+
+class ConfirmResetPassword(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        password = graphene.String()
+
+    token = graphene.String()
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        reset_name = args.get('context', None)
+        root = getSite()
+        principals = find_service(root, 'principals')
+        context = principals['resets'].get(reset_name, None)
+        request = get_current_request()
+        localizer = request.localizer
+        if not context:
+           raise Exception(
+                localizer.translate(_("Invalid reset request"))) 
+
+        person_schema = select(
+            PersonSchema(), ['password'])
+        args = person_schema.deserialize(dict(args))
+        token = None
+        if context:
+            objectmap = find_objectmap(root)
+            users = objectmap.sourceids(context, UserToPasswordReset)
+            if users:
+                context.reset_password(args['password'])
+                person = get_obj(users[0])
+                token = person.api_token
+        else:
+            raise Exception(
+                localizer.translate(_("Reset password failed")))
+
+        return ConfirmResetPassword(token=token)

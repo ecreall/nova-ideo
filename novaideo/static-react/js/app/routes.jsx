@@ -6,10 +6,12 @@ import Idea from './components/idea/Idea';
 import User from './components/user/User';
 import Login from './components/forms/processes/userProcess/Login';
 import ConfirmRegistration from './components/forms/processes/userProcess/ConfirmRegistration';
+import ConfirmResetPassword from './components/forms/processes/userProcess/ConfirmResetPassword';
 
 export default [
   <Route path="/" component={Main}>
     <Route path="/registrations/:registrationId" component={ConfirmRegistration} />
+    <Route path="/resets/:resetpasswordId" component={ConfirmResetPassword} />
     <Route path="/messages/:channelId" component={Channel} />
     <Route path="/ideas/:ideaId" component={Idea} />
     <Route path="/users/:userId" component={User} />

@@ -119,6 +119,7 @@ export class DumbRichSelect extends React.Component {
                 onItemDeselect={(item) => {
                   return this.deselectItem(item.id);
                 }}
+                onValidate={this.handleClose}
               />
             </div>
           </Dialog>

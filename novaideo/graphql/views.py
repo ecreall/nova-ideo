@@ -16,7 +16,8 @@ from substanced.util import get_oid
 from substanced.event import LoggedIn
 
 from novaideo.content.interface import IPerson
-from .schema import schema, get_user_by_token
+from .schema import schema
+from .util import get_user_by_token
 
 
 def auth_user(token, request):

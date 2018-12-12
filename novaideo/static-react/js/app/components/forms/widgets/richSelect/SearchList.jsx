@@ -8,17 +8,21 @@ import FlatList from '../../../common/FlatList';
 import Search from '../../Search';
 import SelectItem from './SelectItem';
 import { getFormId } from '../../../../utils/globalFunctions';
+import Button from '../../../styledComponents/Button';
 
 const styles = {
+  button: {
+    marginLeft: '5px !important'
+  },
   container: {
-    height: 400,
+    height: 200,
     '@media  (max-height:450px)': {
       height: 'calc(100vh - 215px)'
     },
-    '@media (max-height:370px)': {
+    '@media (max-height:200px)': {
       height: 'calc(100vh - 205px)'
     },
-    '@media(max-height:280px)': {
+    '@media(max-height:150px)': {
       height: 'calc(100vh - 195px)'
     }
   },
@@ -31,6 +35,11 @@ const styles = {
   },
   placeholder: {
     top: 16
+  },
+  footer: {
+    padding: 15,
+    display: 'flex',
+    justifyContent: 'center'
   }
 };
 
@@ -49,7 +58,7 @@ class SearchList extends React.Component {
 
   render() {
     const {
-      id, query, Item, classes, onItemSelect, onItemDeselect, selected, getData
+      id, query, Item, classes, theme, onItemSelect, onItemDeselect, selected, getData, onValidate
     } = this.props;
     const { filter: { text } } = this.state;
     const formId = getFormId(`${id}select-search`);
@@ -75,20 +84,32 @@ class SearchList extends React.Component {
         >
           {(data) => {
             return (
-              <FlatList
-                customScrollbar
-                className={classes.container}
-                data={data}
-                getEntities={getData}
-                ListItem={SelectItem}
-                itemProps={{
-                  Item: Item,
-                  onSelect: onItemSelect,
-                  onDeselect: onItemDeselect,
-                  selected: selected
-                }}
-                moreBtn={<span>{I18n.t('common.moreResult')}</span>}
-              />
+              <React.Fragment>
+                <FlatList
+                  customScrollbar
+                  className={classes.container}
+                  data={data}
+                  getEntities={getData}
+                  ListItem={SelectItem}
+                  itemProps={{
+                    Item: Item,
+                    onSelect: onItemSelect,
+                    onDeselect: onItemDeselect,
+                    selected: selected
+                  }}
+                  moreBtn={<span>{I18n.t('common.moreResult')}</span>}
+                />
+                <div className={classes.footer}>
+                  <Button
+                    onClick={onValidate}
+                    background={theme.palette.success[800]}
+                    className={classes.button}
+                    disabled={!selected || selected.length === 0}
+                  >
+                    {I18n.t('forms.richSelect.validateList')}
+                  </Button>
+                </div>
+              </React.Fragment>
             );
           }}
         </Query>
@@ -97,4 +118,4 @@ class SearchList extends React.Component {
   }
 }
 
-export default withStyles(styles)(SearchList);
+export default withStyles(styles, { withTheme: true })(SearchList);

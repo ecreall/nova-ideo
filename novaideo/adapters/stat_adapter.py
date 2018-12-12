@@ -32,9 +32,9 @@ SUPPORT_COLOR = '#2ea88d'
 OPPOSE_COLOR = '#de6819'
 
 EXAMINATION_VALUES = {
-    'favorable': {'title':_('Positive'), 'color': '#40b322'},
-    'to_study': {'title':_('To be re-worked upon'), 'color': '#f1a02d'},
-    'unfavorable': {'title':_('Negative'), 'color': '#f13b2d'}
+    'favorable': {'title': _('Positive'), 'color': '#40b322'},
+    'to_study': {'title': _('To be re-worked upon'), 'color': '#f1a02d'},
+    'unfavorable': {'title': _('Negative'), 'color': '#f13b2d'}
 }
 
 
@@ -52,8 +52,7 @@ class IStat(Interface):
     def render_stat(request, template=DEFAULT_STAT_TEMPLATE, data=None):
         pass
 
-    def render_evaluation_stat(
-        request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
+    def render_evaluation_stat(request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         pass
 
     def render_examination_stat(
@@ -148,9 +147,6 @@ class ChallengeAdapter(Adapter):
 
     def get_evaluation_stat(self, request):
         novaideo_index = find_catalog('novaideo')
-        dace_catalog = find_catalog('dace')
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         challenges_index = novaideo_index['challenges']
         query = challenges_index.any([self.context.__oid__])
         objects = query.execute()
@@ -191,9 +187,7 @@ class ChallengeAdapter(Adapter):
         novaideo_index = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         challenges_index = novaideo_index['challenges']
-        object_keywords = novaideo_index['object_keywords']
         items = {}
         localizer = request.localizer
         for examination, data in EXAMINATION_VALUES.items():
@@ -219,7 +213,7 @@ class ChallengeAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_evaluation_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,
@@ -236,7 +230,7 @@ class ChallengeAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_examination_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,
@@ -287,9 +281,6 @@ class OrganizationAdapter(Adapter):
 
     def get_evaluation_stat(self, request):
         novaideo_index = find_catalog('novaideo')
-        dace_catalog = find_catalog('dace')
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         organizations_index = novaideo_index['organizations']
         query = organizations_index.any([self.context.__oid__])
         objects = query.execute()
@@ -330,9 +321,7 @@ class OrganizationAdapter(Adapter):
         novaideo_index = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         organizations_index = novaideo_index['organizations']
-        object_keywords = novaideo_index['object_keywords']
         items = {}
         localizer = request.localizer
         for examination, data in EXAMINATION_VALUES.items():
@@ -358,7 +347,7 @@ class OrganizationAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_evaluation_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,
@@ -375,7 +364,7 @@ class OrganizationAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_examination_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,
@@ -427,9 +416,6 @@ class PersonAdapter(Adapter):
 
     def get_evaluation_stat(self, request):
         novaideo_index = find_catalog('novaideo')
-        dace_catalog = find_catalog('dace')
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         authors = novaideo_index['object_authors']
         query = authors.any([self.context.__oid__])
         objects = query.execute()
@@ -470,9 +456,7 @@ class PersonAdapter(Adapter):
         novaideo_index = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
         authors = novaideo_index['object_authors']
-        object_keywords = novaideo_index['object_keywords']
         items = {}
         localizer = request.localizer
         for examination, data in EXAMINATION_VALUES.items():
@@ -498,7 +482,7 @@ class PersonAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_evaluation_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,
@@ -514,7 +498,7 @@ class PersonAdapter(Adapter):
         self, request, template=DEFAULT_EVALUATION_STAT_TEMPLATE, data=None):
         if data is None:
             data = self.get_examination_stat(request)
-        
+
         result = {
           'object': self.context,
           'items': data,

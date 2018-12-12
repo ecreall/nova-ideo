@@ -4,13 +4,14 @@ import pytz
 import graphene
 from graphene import relay
 
-from pyramid.threadlocal import get_current_request
-from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.util import get_obj
-from dace.objectofcollaboration.principal.util import has_role, get_current, get_roles
+from dace.objectofcollaboration.principal.util import (
+    has_role,
+    get_current,
+    get_roles)
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
@@ -20,18 +21,17 @@ from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
 from novaideo.core import Channel as SDChannel
 from novaideo.content.interface import Iidea, IPerson
-from novaideo.utilities.util import html_to_text
-from novaideo import log
 from .mutations import Mutations
 from .interfaces import IEntity, IDebatable
 from .types import SecureObjectType
 from .util import (
-    get_user_by_token, get_entities, get_all_comments,
+    get_entities, get_all_comments,
     get_actions, connection_for_type, get_context,
     ResolverLazyList)
-from novaideo.utilities.util import get_object_examination_stat, get_object_evaluation_stat
+from novaideo.utilities.util import (
+    get_object_examination_stat,
+    get_object_evaluation_stat)
 from novaideo.role import get_authorized_roles
-
 
 
 url_data_keys = [
@@ -94,19 +94,19 @@ class Url(graphene.ObjectType):
 
 
 class ExaminationStats(Node, graphene.ObjectType):
-    
+
     class Meta(object):
         interfaces = (relay.Node, )
-    
+
     favorable = graphene.Int()
     unfavorable = graphene.Int()
     toStudy = graphene.Int()
-    
+
     def resolve_favorable(self, args, context, info):
         stats = get_object_examination_stat(self, context)
         if not stats: return 0
         return stats['favorable']['value']
-    
+
     def resolve_unfavorable(self, args, context, info):
         stats = get_object_examination_stat(self, context)
         if not stats: return 0
@@ -119,18 +119,18 @@ class ExaminationStats(Node, graphene.ObjectType):
 
 
 class EvaluationStats(Node, graphene.ObjectType):
-    
+
     class Meta(object):
         interfaces = (relay.Node, )
-    
+
     opposition = graphene.Int()
     support = graphene.Int()
-    
+
     def resolve_opposition(self, args, context, info):
         stats = get_object_evaluation_stat(self, context)
         if not stats: return 0
         return stats['opposition']['value']
-    
+
     def resolve_support(self, args, context, info):
         stats = get_object_evaluation_stat(self, context)
         if not stats: return 0
@@ -138,16 +138,17 @@ class EvaluationStats(Node, graphene.ObjectType):
 
 
 class Emoji(Node, graphene.ObjectType):
-    
+
     class Meta(object):
         interfaces = (relay.Node, )
-    
+
     users = relay.ConnectionField(lambda: Person)
     title = graphene.String()
     is_user_emoji = graphene.Boolean()
-    
+
     def resolve_users(self, args, context, info):
-        return ResolverLazyList(self.users, Person, total_count=len(self.users))
+        return ResolverLazyList(
+            self.users, Person, total_count=len(self.users))
 
 
 class Emojiable(graphene.AbstractType):
@@ -405,7 +406,7 @@ class Person(Node, graphene.ObjectType):
     def resolve_available_tokens(self, args, context, info):  # pylint: disable=W0613
         if hasattr(self, 'get_len_free_tokens'):
             return self.get_len_free_tokens(context.root, True)
-        
+
         return 0
 
     def resolve_email(self, args, context, info):  # pylint: disable=W0613
@@ -521,7 +522,7 @@ class Channel(Node, graphene.ObjectType):
     len_unread_comments = graphene.Int()
     len_comments = graphene.Int()
     is_discuss = graphene.Boolean()
-    
+
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
         if isinstance(root, cls):
@@ -653,7 +654,7 @@ class EntityData(Node, graphene.ObjectType):
 
     def resolve_subject(self, args, context, info):
         return self
- 
+
 
 EntityData.Connection = connection_for_type(EntityData)
 

@@ -6,3 +6,5 @@ export { default as editApiToken } from './editApiToken';
 export { default as assignRoles } from './assignRoles';
 export { default as activate } from './activate';
 export { default as deactivate } from './deactivate';
+export { default as resetPassword } from './resetPassword';
+export { default as confirmResetPassword } from './confirmResetPassword';

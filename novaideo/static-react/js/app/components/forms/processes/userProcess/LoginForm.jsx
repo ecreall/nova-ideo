@@ -150,6 +150,15 @@ const styles = (theme) => {
     },
     buttonSubscription: {
       marginLeft: '10px !important'
+    },
+    resetPassword: {
+      marginBottom: 15,
+      marginTop: 15,
+      cursor: 'pointer',
+      color: '#0576b9',
+      '&:hover': {
+        textDecoration: 'underline'
+      }
     }
   };
 };
@@ -198,6 +207,11 @@ export class DumbLoginForm extends React.Component {
     switchView(LOGIN_VIEWS.registration);
   };
 
+  goToResetPassword = () => {
+    const { switchView } = this.props;
+    switchView(LOGIN_VIEWS.resetPassword);
+  };
+
   render() {
     const {
       valid, action, globalProps: { site }, classes, theme
@@ -244,6 +258,10 @@ export class DumbLoginForm extends React.Component {
               component={renderTextInput}
               onChange={() => {}}
             />
+            <div onClick={this.goToResetPassword} className={classes.resetPassword}>
+              {I18n.t('common.resetPassword')}
+            </div>
+
             {loading ? (
               <div className={classes.loading}>
                 <CircularProgress disableShrink size={30} style={{ color: theme.palette.success[800] }} />
