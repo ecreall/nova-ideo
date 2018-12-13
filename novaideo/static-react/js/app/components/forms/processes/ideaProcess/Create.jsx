@@ -2,7 +2,7 @@
 import React from 'react';
 import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
+import { withApollo, graphql } from 'react-apollo';
 import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -32,6 +32,7 @@ import CreateAndPublish from '../../../../graphql/processes/ideaProcess/mutation
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 import ImagesPreview from '../../../common/ImagesPreview';
+import SimilarProposalsButton from './SimilarProposalsButton';
 
 const styles = (theme) => {
   return {
@@ -308,8 +309,10 @@ export class DumbCreateIdeaForm extends React.Component {
     let canSubmit = false;
     let hasTitle = false;
     let images = [];
+    let plainText = '';
     if (formData && formData.values) {
       hasText = this.editor && !this.editor.isEmpty();
+      plainText = hasText ? this.editor.getPlainText() : '';
       files = formData.values.files ? formData.values.files : [];
       files = files.filter((file) => {
         return file;
@@ -360,7 +363,13 @@ export class DumbCreateIdeaForm extends React.Component {
               </div>
             </div>
 
-            <div className={classes.formTitle}>{I18n.t('forms.idea.addProposal')}</div>
+            <div className={classes.formTitle}>
+              <SimilarProposalsButton
+                defaultContent={I18n.t('forms.idea.addProposal')}
+                text={`${plainText} ${hasTitle}`}
+                keywords={Object.keys(selectedKeywords)}
+              />
+            </div>
 
             <div className={classes.addon}>
               <Field
@@ -467,7 +476,9 @@ export class DumbCreateIdeaForm extends React.Component {
             />
           </div>
           <SelectChipPreview
-            items={Object.keys(selectedKeywords).map((id) => { return { id: id, label: selectedKeywords[id] }; })}
+            items={Object.keys(selectedKeywords).map((id) => {
+              return { id: id, label: selectedKeywords[id] };
+            })}
             onItemDelete={(id) => {
               this.keywordsPicker.toggleOption(false, id);
             }}
@@ -532,4 +543,4 @@ const CreateIdeaForm = graphql(CreateAndPublish, {
   })(CreateIdeaReduxForm)
 );
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(CreateIdeaForm));
+export default withStyles(styles, { withTheme: true })(withApollo(connect(mapStateToProps)(CreateIdeaForm)));

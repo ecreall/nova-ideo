@@ -1,4 +1,4 @@
-query AllChannels($first: Int!, $after: String!, $filter: String!) {
+query AllChannels($first: Int!, $after: String!, $filter: FilterInput!) {
   allChannels(first: $first, after: $after, filter: $filter) {
     pageInfo {
       endCursor

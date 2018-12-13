@@ -80,7 +80,7 @@ export default withStyles(styles, { withTheme: true })(
         fetchPolicy: 'cache-and-network',
         notifyOnNetworkStatusChange: true,
         variables: {
-          filter: '',
+          filter: {},
           pinned: true,
           file: false,
           first: 25,

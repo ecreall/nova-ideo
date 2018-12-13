@@ -60,7 +60,7 @@ class SearchList extends React.Component {
     const {
       id, query, Item, classes, theme, onItemSelect, onItemDeselect, selected, getData, onValidate
     } = this.props;
-    const { filter: { text } } = this.state;
+    const { filter } = this.state;
     const formId = getFormId(`${id}select-search`);
     return (
       <React.Fragment>
@@ -80,7 +80,7 @@ class SearchList extends React.Component {
           notifyOnNetworkStatusChange
           fetchPolicy="cache-and-network"
           query={query}
-          variables={{ first: 25, after: '', filter: text }}
+          variables={{ first: 25, after: '', filter: filter }}
         >
           {(data) => {
             return (

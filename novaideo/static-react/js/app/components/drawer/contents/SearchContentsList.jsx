@@ -50,7 +50,7 @@ class SearchContentsList extends React.Component {
 
   render() {
     const { classes, onItemClick } = this.props;
-    const { filter: { text } } = this.state;
+    const { filter } = this.state;
     const formId = getFormId('jump-contents-search');
     return (
       <React.Fragment>
@@ -70,7 +70,7 @@ class SearchContentsList extends React.Component {
           notifyOnNetworkStatusChange
           fetchPolicy="cache-and-network"
           query={AllContents}
-          variables={{ first: 25, after: '', filter: text }}
+          variables={{ first: 25, after: '', filter: filter }}
         >
           {(data) => {
             return (

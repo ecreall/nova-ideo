@@ -85,7 +85,7 @@ export default withStyles(styles, { withTheme: true })(
         fetchPolicy: 'cache-and-network',
         notifyOnNetworkStatusChange: true,
         variables: {
-          filter: '',
+          filter: {},
           pinned: false,
           file: true,
           first: 25,

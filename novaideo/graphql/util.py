@@ -72,7 +72,6 @@ class ResolverLazyList(object):
 
 
 def get_user_by_token(token):
-    current_user = None
     novaideo_catalog = find_catalog('novaideo')
     dace_catalog = find_catalog('dace')
     identifier_index = novaideo_catalog['api_token']
@@ -83,7 +82,9 @@ def get_user_by_token(token):
     return users[0] if users else None
 
 
-def get_entities(interfaces, states, args, info, user=None, intersect=None):  #pylint: disable=W0613
+def get_entities(
+    interfaces, states, args, info, user=None,
+    intersect=None, defined_search=False, generate_text_search=False):  #pylint: disable=W0613
     try:
         after = cursor_to_offset(args.get('after'))
         first = args.get('first')
@@ -111,13 +112,16 @@ def get_entities(interfaces, states, args, info, user=None, intersect=None):  #p
     # from the last known oid + 1, but the last known oid may not be in the
     # array anymore, so it doesn't work. It's not too bad we skip x events, in
     # reality it should rarely happen.
+    filter = args.get('filter', {'text': '', 'keywords': []})
     rs = find_entities(
         sort_on=None,
         user=user,
         interfaces=interfaces,
-        metadata_filter={'states': states},
-        text_filter={'text_to_search': args.get('filter', '')},
-        intersect=intersect
+        metadata_filter={'states': states, 'keywords': filter.get('keywords', [])},
+        text_filter={'text_to_search': filter.get('text', '')},
+        intersect=intersect,
+        defined_search=defined_search,
+        generate_text_search=generate_text_search
     )
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
@@ -138,7 +142,8 @@ def get_all_comments(container, args):
     except Exception:  # FIXME:
         limit = None
 
-    filter_ = args.get('filter', '')
+    filter_ = args.get('filter', {'text': ''})
+    text_to_search = filter_.get('text', '')
     pinned = args.get('pinned', False)
     file = args.get('file', False)
     filters = []
@@ -147,7 +152,7 @@ def get_all_comments(container, args):
     if file: filters.append('file')
 
     comments = get_comments(
-        container, filters, filter_, filter_ or pinned or file)
+        container, filters, text_to_search, text_to_search or pinned or file)
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
 

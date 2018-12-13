@@ -319,6 +319,8 @@ const Translations = {
       edit: "Modifier",
       record: "Enregistrer un message vocal",
       required: "Champs obligatoires",
+      similarProposals_1: "Une proposition similaire possible",
+      similarProposals: "%{count} propositions similaires possible",
       richSelect: {
         validateList: "Valider la liste"
       },
@@ -778,6 +780,8 @@ const Translations = {
       edit: "Edit",
       record: "Record a voice message",
       required: "Required",
+      similarProposals_1: "One similar proposal",
+      similarProposals: "%{count} similar proposals",
       richSelect: {
         validateList: "Validate the list"
       },

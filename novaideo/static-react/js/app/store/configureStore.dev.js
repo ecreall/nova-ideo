@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'NovaIdeo',
   storage: storage,
-  blacklist: ['i18n', 'network', 'adapters', 'search']
+  blacklist: ['i18n', 'network', 'adapters', 'search', 'apps']
 };
 
 export default function configureStore(initialState, rootReducer, middlewares) {

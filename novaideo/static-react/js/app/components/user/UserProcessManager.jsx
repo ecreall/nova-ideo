@@ -15,6 +15,8 @@ import Deactivate from '../forms/processes/userProcess/Deactivate';
 import Paramters, { PARAMETERS_TABS } from '../forms/processes/userProcess/Paramters';
 import { userLogout } from '../../actions/authActions';
 import { filterActions } from '../../utils/processes';
+import { openCollaborationRight } from '../../actions/collaborationAppActions';
+import { CONTENTS_IDS } from '../collaborationApp/collaborationAppRight';
 
 export class DumbUserProcessManager extends React.Component {
   state = {
@@ -38,15 +40,27 @@ export class DumbUserProcessManager extends React.Component {
     // this.onActionExecuted();
   };
 
+  openChannel = () => {
+    const { chatAppIntegreted, person, openRight } = this.props;
+    this.onActionExecuted();
+    if (chatAppIntegreted) {
+      openRight({
+        componentId: CONTENTS_IDS.chat,
+        props: { channel: person.channel.id, channelTitle: person.channel.title }
+      });
+    } else {
+      setTimeout(() => {
+        goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
+      }, 200);
+    }
+  };
+
   execute = (action) => {
     const { person, network, globalProps } = this.props;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     const registrationNodes = PROCESSES.registrationmanagement.nodes;
     if (action.nodeId === userProcessNodes.discuss.nodeId) {
-      this.onActionExecuted();
-      setTimeout(() => {
-        goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
-      }, 200);
+      this.openChannel();
     } else if (!network.isLogged) {
       const { globalProps: { rootActions } } = this.props;
       const loginAction = filterActions(rootActions, {
@@ -187,13 +201,15 @@ const UserProcessManagerWithActions = graphql(Select, {
 );
 
 export const mapDispatchToProps = {
-  userLogout: userLogout
+  userLogout: userLogout,
+  openRight: openCollaborationRight
 };
 
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
-    network: state.network
+    network: state.network,
+    chatAppIntegreted: state.apps.chatApp.integrations
   };
 };
 

@@ -1,6 +1,6 @@
 #import "../fragments/Author.graphql"
 
-query Members($first: Int!, $after: String!, $filter: String!) {
+query Members($first: Int!, $after: String!, $filter: FilterInput!) {
   members(first: $first, after: $after, filter: $filter) {
     totalCount
     pageInfo {

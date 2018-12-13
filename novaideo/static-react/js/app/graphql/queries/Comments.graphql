@@ -4,7 +4,7 @@
 query Comments(
   $first: Int!
   $after: String!
-  $filter: String!
+  $filter: FilterInput!
   $pinned: Boolean!
   $file: Boolean!
   $id: ID!

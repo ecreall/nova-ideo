@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -11,11 +11,9 @@ import pytz
 import string
 import random
 import unicodedata
-import io
-import re
 import json
+import itertools
 from webob.multidict import MultiDict
-from itertools import groupby
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from pyramid import renderers
@@ -40,7 +38,6 @@ from novaideo.content.ballot import DEFAULT_BALLOT_GROUP
 from novaideo.utilities.url_extractor import extract_urls
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
-from novaideo.file import Image
 from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
@@ -95,8 +92,7 @@ DATE_FORMAT = {
         'day_hour_minute_month': _('${day}/${month} ${hour}:${minute}'),
         'day_hour_minute': _('${day} ${hour}:${minute}'),
         'day_hour_month_year': _('${day}/${month}/${year} ${hour}:00'),
-        'day_hour_month': _('${day}/${month} ${hour}:00'),
-        'day_hour_month': _('${day} ${hour}:00')
+        'day_hour_month': _('${day}/${month} ${hour}:00')
     }
 }
 
@@ -271,67 +267,9 @@ def guess_extension(file_):
 
     return 'file'
 
-#source: http://dinoblog.tuxfamily.org/?p=40
 
-def factorielle(x):
-    if x < 2:
-        return 1
-    else:
-        return x * factorielle(x - 1)
-
-
-def combinaisons(L, N, k):
-    h = 0
-    i = 0
-    j = 0
-
-    n = [0] * (N - 1)
-
-    G = []
-    s = ""
-
-    if len(L) < N:
-        return G
-    elif N == 1:
-        return L
-    elif len(L) == N:
-        while i < len(L):
-            s = s + L[i]
-            i = i + 1
-
-        G.append(s)
-    elif len(L) > N:
-        l = factorielle(len(L) - 1)/(factorielle(N - 1)
-             * factorielle((len(L) - 1) - (N - 1)));
-
-        while i < l:
-            s = L[len(L) - 1]
-
-            while h < len(n):
-                if j > 0 and j < len(n):
-                    n[j] = n[j - 1] + 1
-
-                s = s + L[n[h]]
-                h = h + 1
-                j = j + 1
-
-            G.append(s)
-
-            h = 0
-            j = 0
-
-            while j < len(n) and n[j] != j + k:
-                j = j + 1
-
-            if j > 0:
-                n[j - 1] = n[j - 1] + 1
-
-            i = i + 1
-
-        L.pop()
-        G = G + combinaisons(L, N, k - 1)
-
-    return G
+def combinaisons(items, nb):
+    return itertools.combinations(items, nb)
 
 # end source: http://dinoblog.tuxfamily.org/?p=40
 
@@ -355,7 +293,7 @@ def word_frequencies(content, blacklist):
     sorted_words = sorted(
         [word for word in content.lower().replace('"', '').split()
          if word not in blacklist])
-    return ((len(list(group)), word) for word, group in groupby(sorted_words))
+    return ((len(list(group)), word) for word, group in itertools.groupby(sorted_words))
 
 
 def extract_keywords(text):
@@ -749,7 +687,7 @@ def render_object_header(context, request, **kw):
             active_folder = get_obj(int(active_folder_id))
     except (TypeError, ValueError):
         active_folder = None
-    
+
     context = active_folder or context
     header_template = getattr(context, 'templates', {}).get('header', None)
     body = ''

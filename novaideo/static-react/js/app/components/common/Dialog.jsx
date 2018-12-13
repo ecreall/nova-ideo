@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { createEvent } from '../../utils/globalFunctions';
 import { addChatAppIntegration, removeChatAppIntegration } from '../../actions/chatAppActions';
-import { toggleDrawer as toggleDrawerOp } from '../../actions/collaborationAppActions';
+import { toggleDrawer as toggleDrawerOp, closeCollaborationRight } from '../../actions/collaborationAppActions';
 import CollaborationAppRight from '../collaborationApp/collaborationAppRight/CollaborationAppRight';
 import { STYLE_CONST } from '../../constants';
 
@@ -172,7 +172,8 @@ class CommonDialog extends React.Component {
 
   onClose = () => {
     this.setState({ entered: false }, () => {
-      const { onClose } = this.props;
+      const { onClose, closeRight } = this.props;
+      closeRight();
       if (onClose) onClose();
     });
   };
@@ -250,7 +251,8 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = {
   toggleDrawer: toggleDrawerOp,
   addIntegration: addChatAppIntegration,
-  removeIntegration: removeChatAppIntegration
+  removeIntegration: removeChatAppIntegration,
+  closeRight: closeCollaborationRight
 };
 
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(CommonDialog));

@@ -261,7 +261,7 @@ export default withStyles(styles, { withTheme: true })(
           fetchPolicy: 'cache-and-network',
           notifyOnNetworkStatusChange: true,
           variables: {
-            filter: props.filter ? props.filter.text : '',
+            filter: props.filter ? props.filter : {},
             pinned: props.filter ? !!props.filter.pinned : false,
             file: props.filter ? !!props.filter.file : false,
             first: 25,

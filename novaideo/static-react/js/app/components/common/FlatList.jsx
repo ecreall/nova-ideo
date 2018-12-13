@@ -352,7 +352,7 @@ export class DumbFlatList extends React.Component {
 }
 
 export const mapStateToProps = (state) => {
-  return { network: state.network, filter: state.search.text };
+  return { network: state.network, filter: state.search };
 };
 
 export const mapDispatchToProps = { setURLState: setURLState };

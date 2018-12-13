@@ -1,0 +1,3 @@
+query HasProposals($filter: FilterInput!) {
+  hasProposals(filter: $filter)
+}

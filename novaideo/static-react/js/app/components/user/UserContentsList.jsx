@@ -40,7 +40,7 @@ export const DumbUserContentsList = ({ id, filter, classes }) => {
         const totalCount = result.data && result.data.person && result.data.person.contents.totalCount;
         return (
           <React.Fragment>
-            {filter ? <SearchData id={`${id}-search`} count={totalCount} /> : null}
+            {filter && filter.text ? <SearchData id={`${id}-search`} count={totalCount} /> : null}
             <FlatList
               fetchMoreOnEvent={`${id}user-contents`}
               // scrollEvent={`${id}user-contents`}
@@ -62,7 +62,7 @@ export const DumbUserContentsList = ({ id, filter, classes }) => {
 export const mapStateToProps = (state, props) => {
   const searchId = `${props.id}-search`;
   return {
-    filter: state.search[searchId] ? state.search[searchId].text : ''
+    filter: state.search[searchId] ? state.search[searchId] : {}
   };
 };
 

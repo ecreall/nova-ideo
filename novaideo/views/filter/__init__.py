@@ -24,7 +24,7 @@ from substanced.util import get_oid
 from dace.objectofcollaboration.principal.util import Anonymous
 from dace.util import getSite, find_catalog, get_obj, request_memoize
 from dace.objectofcollaboration.principal.util import (
-    get_current, has_any_roles)
+    get_current)
 from dace.interfaces import IEntity
 from pontus.widget import (
     Select2Widget, AjaxSelect2Widget, SimpleMappingWidget)
@@ -41,10 +41,8 @@ from novaideo.content.processes import (
 from novaideo.utilities.util import (
     normalize_title, combinaisons)
 from novaideo.views.filter.util import (
-    match_in, get_zipcodes, get_zipcodes_from_cities,
     deepcopy, get_node_query,
-    get_filters_query, QUERY_OPERATORS, get_analyzed_data,
-    merge_with_filter_view)
+    get_filters_query, QUERY_OPERATORS, get_analyzed_data)
 from novaideo.widget import SimpleMappingtWidget
 from novaideo import log
 from .sort import sort_on as filter_sort
@@ -205,17 +203,17 @@ def text_to_search_query(node, **args):
     if text:
         if args.get('defined_search', False):
             text = text.replace('(', '').replace(')', '').lower()
-            list_text = [t + '*' for t in re.split(', *', text)]
+            list_text = [t for t in re.split(', *', text)]
             if not args.get('generate_text_search', False):
                 operator = args.get('text_operator', 'AND')
-                text = (' ' + operator + ' ').join(list_text)
+                text = (' ' + operator + '* ').join(list_text)
             else:
-                percentage = args.get('percentage', 80)
+                percentage = args.get('percentage', 50)
                 text_nb = int((len(list_text) * percentage) / 100)
-                result = combinaisons(list_text, text_nb, 1)
+                result = combinaisons(list_text, text_nb)
                 text = ' OR '.join(['('+' AND '.join(
-                                   [a+'*' for a in key.split('*') if a]) + ')'
-                                     for key in result])
+                                   [a+'*' for a in items if a]) + ')'
+                                     for items in result])
         else:
             text += '*'
 
@@ -1266,7 +1264,7 @@ def find_entities(user=None,
         result_set = query.execute()
     except ParseError as error:
         log.warning(error)
-        return []
+        return ResultSet([], 0, None)
     #    end = timer() - start
     #    print(end)
     if intersect is not None:
@@ -1420,7 +1418,6 @@ def get_contents_by_states(
         add_query=query,
         **filter_)
     content_types = filter_.get('metadata_filter').get('content_types')
-    states = filter_.get('metadata_filter').get('states')
     flattened_states = get_content_types_states(content_types, True)
     index = find_catalog('dace')['object_states']
     intersection = index.family.IF.intersection

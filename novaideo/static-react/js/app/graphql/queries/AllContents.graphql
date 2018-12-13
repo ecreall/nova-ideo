@@ -1,4 +1,4 @@
-query AllContents($first: Int!, $after: String!, $filter: String!) {
+query AllContents($first: Int!, $after: String!, $filter: FilterInput!) {
   allContents(first: $first, after: $after, filter: $filter) {
     pageInfo {
       endCursor

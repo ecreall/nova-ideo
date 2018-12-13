@@ -59,9 +59,14 @@ def extract_url_metadata(url_metadata):
 class Node(object):
 
     @classmethod
-    def get_node(cls, id, context, info):  #pylint: disable=W0613,W0622
+    def get_node(cls, id, context, info):  # pylint: disable=W0613,W0622
         oid = int(id)
         return get_obj(oid)
+
+
+class FilterInput(graphene.InputObjectType):
+    text = graphene.String(required=False)
+    keywords = graphene.List(graphene.String, required=False)
 
 
 class UrlData(graphene.ObjectType):
@@ -104,17 +109,23 @@ class ExaminationStats(Node, graphene.ObjectType):
 
     def resolve_favorable(self, args, context, info):
         stats = get_object_examination_stat(self, context)
-        if not stats: return 0
+        if not stats:
+            return 0
+
         return stats['favorable']['value']
 
     def resolve_unfavorable(self, args, context, info):
         stats = get_object_examination_stat(self, context)
-        if not stats: return 0
+        if not stats:
+            return 0
+
         return stats['unfavorable']['value']
 
     def resolve_toStudy(self, args, context, info):
         stats = get_object_examination_stat(self, context)
-        if not stats: return 0
+        if not stats:
+            return 0
+
         return stats['to_study']['value']
 
 
@@ -128,12 +139,16 @@ class EvaluationStats(Node, graphene.ObjectType):
 
     def resolve_opposition(self, args, context, info):
         stats = get_object_evaluation_stat(self, context)
-        if not stats: return 0
+        if not stats:
+            return 0
+
         return stats['opposition']['value']
 
     def resolve_support(self, args, context, info):
         stats = get_object_evaluation_stat(self, context)
-        if not stats: return 0
+        if not stats:
+            return 0
+
         return stats['support']['value']
 
 
@@ -158,7 +173,8 @@ class Emojiable(graphene.AbstractType):
 
     def resolve_emojis(self, args, context, info):
         user_emoji = self.get_user_emoji(getattr(context, 'user', None))
-        return [Emoji(title=title, users=users, is_user_emoji=user_emoji==title)
+        return [Emoji(
+                title=title, users=users, is_user_emoji=user_emoji == title)
                 for title, users in self.emojis.items()]
 
     def resolve_user_emoji(self, args, context, info):
@@ -211,7 +227,8 @@ class Root(Node, graphene.ObjectType):
         dates = [d.isoformat() for d in self.deadlines]
         allDates = [d.isoformat() for d in self.deadlines]
         allDates.insert(0, self.created_at.isoformat())
-        return [ExaminationDate(start=start, end=end) for start, end in zip(allDates, dates)]
+        return [ExaminationDate(start=start, end=end)
+                for start, end in zip(allDates, dates)]
 
     def resolve_roles(self, args, context, info):  # pylint: disable=W0613
         roles = get_authorized_roles(context.user)
@@ -261,14 +278,15 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_submission_title(self, args, context, info):  # pylint: disable=W0613
         submission_title = getattr(self.action, 'submission_title', '')
-        return context.localizer.translate(submission_title) if submission_title else submission_title
+        return context.localizer.translate(submission_title) \
+            if submission_title else submission_title
 
     def resolve_counter(self, args, context, info):  # pylint: disable=W0613
         try:
             action = self.action
             if hasattr(action, 'get_title'):
                 return action.get_title(self.context, context, True)
-        except Exception as e:
+        except Exception:
             return None
 
         return None
@@ -280,7 +298,8 @@ class Action(Node, graphene.ObjectType):
         return self.action.node_id
 
     def resolve_behavior_id(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self.action, 'behavior_id', self.action.__class__.__name__)
+        return getattr(
+            self.action, 'behavior_id', self.action.__class__.__name__)
 
     def resolve_style(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style', '')
@@ -296,7 +315,8 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_active(self, args, context, info):  # pylint: disable=W0613
         is_active = getattr(self.action, 'is_active', None)
-        return False if not is_active else self.action.is_active(self.context, context)
+        return False if not is_active \
+            else self.action.is_active(self.context, context)
 
 
 class File(Node, graphene.ObjectType):
@@ -337,15 +357,15 @@ class Person(Node, graphene.ObjectType):
     locale = graphene.String()
     contents = relay.ConnectionField(
         lambda: Idea,
-        filter=graphene.String()
+        filter=FilterInput()
     )
     followed_ideas = relay.ConnectionField(
         lambda: Idea,
-        filter=graphene.String()
+        filter=FilterInput()
     )
     supported_ideas = relay.ConnectionField(
         lambda: Idea,
-        filter=graphene.String()
+        filter=FilterInput()
     )
     channels = relay.ConnectionField(lambda: Channel)
     discussions = relay.ConnectionField(lambda: Channel)
@@ -376,17 +396,22 @@ class Person(Node, graphene.ObjectType):
         contents = self.get_contents(user) \
             if hasattr(self, 'get_contents') else getattr(self, 'contents', [])
         user_ideas = [get_oid(o) for o in contents]
-        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=user, intersect=user_ideas)
+        total_count, oids = get_entities(
+            [Iidea], ['published', 'to work', 'draft'],
+            args, info, user=user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
         user_ideas = [get_oid(o) for o in getattr(self, 'selections', [])]
-        total_count, oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        total_count, oids = get_entities(
+            [Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = self.evaluated_objs_ids() if hasattr(self, 'evaluated_objs_ids') else []
-        total_count, oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        user_ideas = self.evaluated_objs_ids() \
+            if hasattr(self, 'evaluated_objs_ids') else []
+        total_count, oids = get_entities(
+            [Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea, total_count=total_count)
 
     def resolve_channels(self, args, context, info):  # pylint: disable=W0613
@@ -438,7 +463,7 @@ class Comment(Node, Emojiable, graphene.ObjectType):
     oid = graphene.String()
     comments = relay.ConnectionField(
         lambda: Comment,
-        filter=graphene.String())
+        filter=FilterInput())
     len_comments = graphene.Int()
     root_oid = graphene.String()
     channel = graphene.Field(lambda: Channel)
@@ -513,10 +538,10 @@ class Channel(Node, graphene.ObjectType):
         Comment,
         pinned=graphene.Boolean(),
         file=graphene.Boolean(),
-        filter=graphene.String())
+        filter=FilterInput())
     members = relay.ConnectionField(
         Person,
-        filter=graphene.String())
+        filter=FilterInput())
     subject = graphene.Field(lambda: EntityUnion)
     unread_comments = graphene.List(Comment)
     len_unread_comments = graphene.Int()
@@ -649,7 +674,9 @@ class EntityData(Node, graphene.ObjectType):
 
     def resolve_channel(self, args, context, info):
         user = getattr(context, 'user', None)
-        if not hasattr(self, 'get_channel') or user is self: return None
+        if not hasattr(self, 'get_channel') or user is self:
+            return None
+
         return self.get_channel(getattr(context, 'user', None))
 
     def resolve_subject(self, args, context, info):
@@ -664,11 +691,12 @@ class Query(graphene.ObjectType):
     node = relay.Node.Field()
     members = relay.ConnectionField(
         Person,
-        filter=graphene.String()
+        filter=FilterInput()
     )
     ideas = relay.ConnectionField(
         Idea,
-        filter=graphene.String()
+        filter=FilterInput(),
+        generate_filter=graphene.Boolean()
     )
     account = graphene.Field(Person)
     actions = relay.ConnectionField(
@@ -682,26 +710,40 @@ class Query(graphene.ObjectType):
     root = graphene.Field(Root)
     all_channels = relay.ConnectionField(
         EntityData,
-        filter=graphene.String()
+        filter=FilterInput()
     )
     all_contents = relay.ConnectionField(
         EntityData,
-        filter=graphene.String()
+        filter=FilterInput()
     )
+    has_proposals = graphene.Int(filter=FilterInput())
 
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
         user = get_current(context)
-        total_count, oids = get_entities([Iidea], ['published', 'to work', 'draft'], args, info, user=user)
+        generate_filter = args.get('generate_filter', False)
+        total_count, oids = get_entities(
+            [Iidea], ['published', 'to work', 'draft'], args, info, user=user,
+            defined_search=generate_filter,
+            generate_text_search=generate_filter)
         return ResolverLazyList(oids, Idea, total_count=total_count)
+
+    def resolve_has_proposals(self, args, context, info):  # pylint: disable=W0613
+        user = get_current(context)
+        total_count, oids = get_entities(
+            [Iidea], ['published', 'to work', 'draft'], args, info, user=user,
+            defined_search=True, generate_text_search=True)
+        return total_count
 
     def resolve_members(self, args, context, info):  # pylint: disable=W0613
         user = get_current(context)
-        total_count, oids = get_entities([IPerson], ['active'], args, info, user=user)
+        total_count, oids = get_entities(
+            [IPerson], ['active'], args, info, user=user)
         return ResolverLazyList(oids, Person, total_count=total_count)
 
     def resolve_all_channels(self, args, context, info):  # pylint: disable=W0613
         user = get_current(context)
-        total_count, oids = get_entities([Iidea, IPerson], ['published', 'active'], args, info, user=user)
+        total_count, oids = get_entities(
+             [Iidea, IPerson], ['published', 'active'], args, info, user=user)
         return ResolverLazyList(oids, EntityData, total_count=total_count)
 
     def resolve_all_contents(self, args, context, info):  # pylint: disable=W0613

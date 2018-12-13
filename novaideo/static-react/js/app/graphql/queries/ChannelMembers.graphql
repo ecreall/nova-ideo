@@ -1,4 +1,4 @@
-query ChannelMembers($first: Int!, $after: String!, $filter: String!, $id: ID!) {
+query ChannelMembers($first: Int!, $after: String!, $filter: FilterInput!, $id: ID!) {
   node(id: $id) {
     ... on Channel {
       id

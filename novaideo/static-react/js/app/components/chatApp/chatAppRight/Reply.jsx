@@ -297,7 +297,7 @@ export default withStyles(styles, { withTheme: true })(
           fetchPolicy: 'cache-and-network',
           notifyOnNetworkStatusChange: true,
           variables: {
-            filter: props.filter ? props.filter.text : '',
+            filter: props.filter ? props.filter : {},
             first: 25,
             after: '',
             id: props.id || props.rightProps.id,

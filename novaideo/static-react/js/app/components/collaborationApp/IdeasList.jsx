@@ -37,19 +37,21 @@ export const DumbIdeasList = ({ filter, searchId, classes }) => {
     >
       {(result) => {
         const totalCount = result.data && result.data.ideas && result.data.ideas.totalCount;
-        return [
-          filter ? <SearchData id={searchId} count={totalCount} /> : null,
-          <FlatList
-            scrollEvent="ideas"
-            data={result}
-            getEntities={(entities) => {
-              return entities.data ? entities.data.ideas : entities.ideas;
-            }}
-            ListItem={IdeaItem}
-            Divider={Divider}
-            className={classes.list}
-          />
-        ];
+        return (
+          <React.Fragment>
+            {filter && filter.text ? <SearchData id={searchId} count={totalCount} /> : null}
+            <FlatList
+              scrollEvent="ideas"
+              data={result}
+              getEntities={(entities) => {
+                return entities.data ? entities.data.ideas : entities.ideas;
+              }}
+              ListItem={IdeaItem}
+              Divider={Divider}
+              className={classes.list}
+            />
+          </React.Fragment>
+        );
       }}
     </Query>
   );
@@ -57,7 +59,7 @@ export const DumbIdeasList = ({ filter, searchId, classes }) => {
 
 export const mapStateToProps = ({ search }, { searchId }) => {
   return {
-    filter: search[searchId] ? search[searchId].text : ''
+    filter: search[searchId] ? search[searchId] : {}
   };
 };
 

@@ -78,7 +78,7 @@ export default withStyles(styles, { withTheme: true })(
         fetchPolicy: 'cache-and-network',
         notifyOnNetworkStatusChange: true,
         variables: {
-          filter: '',
+          filter: {},
           first: 25,
           after: '',
           id: props.channel.id

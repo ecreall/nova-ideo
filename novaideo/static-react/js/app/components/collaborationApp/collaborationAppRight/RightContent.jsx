@@ -48,6 +48,10 @@ const styles = {
 };
 
 class RightContent extends React.Component {
+  static defaultProps = {
+    canExpand: true
+  };
+
   componentDidMount() {
     createEvent('resize', true);
   }
@@ -63,19 +67,21 @@ class RightContent extends React.Component {
 
   render() {
     const {
-      title, children, classes, rightFull, closeRight
+      title, children, classes, rightFull, closeRight, canExpand
     } = this.props;
     return (
       <div className={classes.container}>
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <IconButton onClick={this.toggleWidth}>
-              {rightFull ? (
-                <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-right')} />
-              ) : (
-                <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
-              )}
-            </IconButton>
+            {canExpand ? (
+              <IconButton onClick={this.toggleWidth}>
+                {rightFull ? (
+                  <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-right')} />
+                ) : (
+                  <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
+                )}
+              </IconButton>
+            ) : null}
             <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
               {title}
             </Typography>

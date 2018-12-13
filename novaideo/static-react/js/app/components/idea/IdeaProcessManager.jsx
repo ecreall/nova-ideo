@@ -26,6 +26,8 @@ import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect
 import { filterActions } from '../../utils/processes';
 import Login from '../forms/processes/userProcess/Login';
 import { OPINIONS_VALUES } from '../../constants';
+import { openCollaborationRight } from '../../actions/collaborationAppActions';
+import { CONTENTS_IDS } from '../collaborationApp/collaborationAppRight';
 
 export class DumbIdeaProcessManager extends React.Component {
   state = {
@@ -101,15 +103,27 @@ export class DumbIdeaProcessManager extends React.Component {
     }
   };
 
+  openChannel = () => {
+    const { chatAppIntegreted, idea, openRight } = this.props;
+    this.onActionExecuted();
+    if (chatAppIntegreted) {
+      openRight({
+        componentId: CONTENTS_IDS.chat,
+        props: { channel: idea.channel.id, channelTitle: idea.channel.title }
+      });
+    } else {
+      setTimeout(() => {
+        goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
+      }, 200);
+    }
+  };
+
   execute = (action) => {
     const { idea, network, globalProps } = this.props;
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     const processNodes = PROCESSES.novaideoabstractprocess.nodes;
     if (action.nodeId === ideaProcessNodes.comment.nodeId) {
-      this.onActionExecuted();
-      setTimeout(() => {
-        goTo(get('messages', { channelId: idea.channel.id }, { right: 'info' }));
-      }, 200);
+      this.openChannel();
     } else if (!network.isLogged) {
       const { globalProps: { rootActions } } = this.props;
       const userProcessNodes = PROCESSES.usermanagement.nodes;
@@ -292,8 +306,14 @@ const IdeaProcessManagerWithActions = graphql(Support, {
 export const mapStateToProps = (state) => {
   return {
     globalProps: state.globalProps,
-    network: state.network
+    network: state.network,
+    chatApp: state.apps.chatApp,
+    chatAppIntegreted: state.apps.chatApp.integrations
   };
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(IdeaProcessManagerWithActions);
+export const mapDispatchToProps = {
+  openRight: openCollaborationRight
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(IdeaProcessManagerWithActions);

@@ -6,7 +6,7 @@
 query Comment(
   $first: Int!
   $after: String!
-  $filter: String!
+  $filter: FilterInput!
   $id: ID!
   $processIds: [String]
   $nodeIds: [String]

@@ -3,13 +3,14 @@
 query IdeasList(
   $first: Int!
   $after: String!
-  $filter: String!
+  $filter: FilterInput!
+  $generateFilter: Boolean
   $processIds: [String]
   $nodeIds: [String]
   $processTags: [String]
   $actionTags: [String]
 ) {
-  ideas(first: $first, after: $after, filter: $filter) {
+  ideas(first: $first, after: $after, filter: $filter, generateFilter: $generateFilter) {
     totalCount
     pageInfo {
       endCursor
