@@ -1,3 +1,9 @@
+FROM node:10
+COPY . /app/
+WORKDIR /app/novaideo/static-react/
+RUN yarn
+RUN yarn build
+
 FROM python:3.6
 
 ARG userid=1000
@@ -47,6 +53,7 @@ RUN arch="$(dpkg --print-architecture)" \
 RUN mkdir -p /app/cache
 COPY . /app/
 COPY start.bash /start
+COPY --from=0 /app/novaideo/static-react/build /app/novaideo/static-react/
 RUN chown -R u1000:u1000 /app
 
 # compile all pyc in sys.path
