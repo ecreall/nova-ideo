@@ -112,13 +112,13 @@ def get_entities(
     # from the last known oid + 1, but the last known oid may not be in the
     # array anymore, so it doesn't work. It's not too bad we skip x events, in
     # reality it should rarely happen.
-    filter = args.get('filter', {'text': '', 'keywords': [], 'states': []})
+    filter_ = args.get('filter', {'text': '', 'keywords': [], 'states': []})
     rs = find_entities(
         sort_on=None,
         user=user,
         interfaces=interfaces,
-        metadata_filter={'states': filter.get('states', states), 'keywords': filter.get('keywords', [])},
-        text_filter={'text_to_search': filter.get('text', '')},
+        metadata_filter={'states': filter_.get('states', states), 'keywords': filter_.get('keywords', [])},
+        text_filter={'text_to_search': filter_.get('text', '')},
         intersect=intersect,
         defined_search=defined_search,
         generate_text_search=generate_text_search
