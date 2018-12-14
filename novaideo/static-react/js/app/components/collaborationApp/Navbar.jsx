@@ -129,7 +129,6 @@ class NavBar extends React.Component {
                   onCancel={this.handleSearchCancel}
                   title={I18n.t('common.search')}
                   classes={{ container: classes.searchContainer }}
-                  onFilterClick={this.openFilter}
                 />
               </div>
             </div>

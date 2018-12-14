@@ -10,8 +10,6 @@ import App from '../common/App';
 import Scrollbar from '../common/Scrollbar';
 import UserCard from '../user/UserCard';
 import AnonymousCard from '../user/AnonymousCard';
-import Filter from '../common/Filter';
-import IdeasFilter from './IdeasFilter';
 
 export const styles = {
   root: {
@@ -50,7 +48,6 @@ function CollaborationApp({
             scroll: classes.scroll
           }}
         >
-          <Filter live id="globalFilter" Form={IdeasFilter} />
           <div className={classes.maxContainer}>
             <Grid container>
               <Grid item xs={12} md={4}>
