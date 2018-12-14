@@ -21,6 +21,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
     <link type="text/css" rel="stylesheet"  tal:condition="node_env == 'production'" href="/${root_url}/build/novaideo.css" />
+    <link type="text/css" rel="stylesheet"  tal:condition="node_env == 'production'" href="/${root_url}/build/build.css" />
     <div tal:omit-tag="" tal:condition="request.user and activate_push_notification and app_id">
       <link rel="manifest" href="${request.resource_url(request.root, 'manifest.json')}">
       <script src="${su('novaideo:static/js/OneSignalSDK.js')}" async></script>
