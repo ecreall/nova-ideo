@@ -5,7 +5,13 @@ export const LANGUAGES_TITLES = {
   fr: 'Français'
 };
 
-export const STATIC_URL = '';
+let staticUrl = ''
+
+if (process.env.NODE_ENV === 'production') {
+  staticUrl = '/novaideostatic-react/'
+}
+
+export const STATIC_URL = staticUrl;
 
 export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
 
