@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key, no-confusing-arrow */
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
@@ -180,7 +180,9 @@ export class DumbEditCommentForm extends React.Component {
               role="presentation"
               tabIndex="-1"
             >
-              {placeholder || <Translate value="forms.comment.textPlaceholder" name="..." />}
+              {placeholder || (
+                <div dangerouslySetInnerHTML={{ __html: I18n.t('forms.comment.textPlaceholder', { name: '...' }) }} />
+              )}
             </div>
           </div>
         </div>

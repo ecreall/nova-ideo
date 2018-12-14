@@ -175,7 +175,8 @@ const styles = (theme) => {
 
 export class DumbIdeaItem extends React.Component {
   static defaultProps = {
-    passive: false
+    passive: false,
+    itemProps: { withStatic: true }
   };
 
   menu = null;
@@ -198,7 +199,7 @@ export class DumbIdeaItem extends React.Component {
 
   render() {
     const {
-      node, processManager, passive, adapters, globalProps: { site }, classes
+      node, processManager, passive, adapters, itemProps: { withStatic }, globalProps: { site }, classes
     } = this.props;
 
     const { author } = node;
@@ -315,7 +316,8 @@ export class DumbIdeaItem extends React.Component {
             </div>
           </div>
         </div>
-        {hasEvaluation && (
+        {withStatic
+          && hasEvaluation && (
           <div className={classes.right}>
             <StatisticsDoughnut title="evaluation.tokens" elements={getIdeaSupportStats(node, classes)} />
           </div>

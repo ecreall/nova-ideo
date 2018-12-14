@@ -63,6 +63,7 @@ export const DumbSimilarProposals = ({
                 return entities.data ? entities.data.ideas : entities.ideas;
               }}
               ListItem={IdeaItem}
+              itemProps={{ withStatic: false }}
             />
           );
         }}

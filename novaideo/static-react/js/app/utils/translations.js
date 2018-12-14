@@ -291,7 +291,7 @@ const Translations = {
       usersCommentsFooterTitle: "Ceci est votre espace de discussion privée avec %{name}.",
       replyCommentFooter:
         "Vous êtes au tout début de ce fil de discussion. Dans ce fil vous pouvez répondre à l'auteur de ce message, partager votre point de vu avec les autres utilisateurs, partagez des fichiers ou des liens...",
-      reply: "Ajouter une réponse à %{name}",
+      reply: "Ajouter une réponse à <strong>%{name}</strong>",
       replies: "%{count} réponses",
       replies_1: "Une réponse",
       unreadReplies: "%{count} non lus",
@@ -304,8 +304,8 @@ const Translations = {
       },
       unreadMessages: "nouveaux messages",
       unreadMessages_1: "nouveau message",
-      noUserCtComment: "Vous ne pouvez pas envoyer des messages à #%{name}. Veuillez vous connecter avant.",
-      noUserCtReply: "Vous ne pouvez pas répendre à %{name}. Veuillez vous connecter avant."
+      noUserCtComment: "Vous ne pouvez pas envoyer des messages à <strong>#%{name}</strong>. Veuillez vous connecter avant.",
+      noUserCtReply: "Vous ne pouvez pas répendre à <strong>%{name}</strong>. Veuillez vous connecter avant."
     },
     forms: {
       optional: "(facultatif)",
@@ -345,8 +345,8 @@ const Translations = {
         addProposal: "Ajouter une nouvelle proposition"
       },
       comment: {
-        textPlaceholder: "Envoyer un message à #%{name}",
-        searchPlaceholder: "Rechercher dans #%{name}"
+        textPlaceholder: "Envoyer un message à <strong>#%{name}</strong>",
+        searchPlaceholder: "Rechercher dans <strong>#%{name}</strong>"
       },
       singin: {
         email: "votre-email@exemple.com",
@@ -752,7 +752,7 @@ const Translations = {
       usersCommentsFooterTitle: "This is your private discussion with %{name}.",
       replyCommentFooter:
         "You are at the beginning of this thread. In this thread you can respond to the author of this message, share your point of view with other users, share files or links ...",
-      reply: "Add reply to %{name}",
+      reply: "Add reply to <strong>%{name}</strong>",
       replies: "%{count} replies",
       replies_1: "One reply",
       unreadReplies: "%{count} unread",
@@ -765,8 +765,8 @@ const Translations = {
       },
       unreadMessages: "new messages",
       unreadMessages_1: "new message",
-      noUserCtComment: "You cannot send a message to #%{name}. Please login before.",
-      noUserCtReply: "You cannot answer %{name}. Please login before."
+      noUserCtComment: "You cannot send a message to <strong>#%{name}</strong>. Please login before.",
+      noUserCtReply: "You cannot answer <strong>%{name}</strong>. Please login before."
     },
     forms: {
       optional: "(optional)",
@@ -805,8 +805,8 @@ const Translations = {
         addProposal: "Add a new proposal"
       },
       comment: {
-        textPlaceholder: "Submit a message to #%{name}",
-        searchPlaceholder: "Search in #%{name}"
+        textPlaceholder: "Submit a message to <strong>#%{name}</strong>",
+        searchPlaceholder: "Search in <strong>#%{name}</strong>"
       },
       singin: {
         email: "yor-email@example.com",

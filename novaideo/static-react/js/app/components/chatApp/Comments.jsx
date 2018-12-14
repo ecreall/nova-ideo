@@ -1,5 +1,5 @@
 import React from 'react';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import Grid from '@material-ui/core/Grid';
@@ -125,9 +125,9 @@ export class RenderComments extends React.Component {
             type="warning"
             classes={{ container: classes.alertContainer, messageContainer: classes.alertMessageContainer }}
           >
-            <div>
-              <Translate value="channels.noUserCtComment" name={channel ? channel.title : '...'} />
-            </div>
+            <div
+              dangerouslySetInnerHTML={{ __html: I18n.t('channels.noUserCtComment', { name: channel ? channel.title : '...' }) }}
+            />
             <LoginButton color={theme.palette.warning[500]} />
           </Alert>
         </div>

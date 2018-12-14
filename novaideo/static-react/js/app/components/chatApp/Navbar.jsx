@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -294,7 +294,13 @@ class NavBar extends React.Component {
                   key={searchFormId}
                   onSearch={this.handelSearch}
                   onCancel={this.handleSearchCancel}
-                  title={<Translate value="forms.comment.searchPlaceholder" name={channelTitle || '...'} />}
+                  title={(
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: I18n.t('forms.comment.searchPlaceholder', { name: channelTitle || '...' })
+                      }}
+                    />
+                  )}
                   classes={{ container: classes.searchContainer }}
                 />
               </div>
