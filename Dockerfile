@@ -53,7 +53,7 @@ RUN arch="$(dpkg --print-architecture)" \
 RUN mkdir -p /app/cache
 COPY . /app/
 COPY start.bash /start
-COPY --from=0 /app/novaideo/static-react/build /app/novaideo/static-react/
+COPY --from=0 /app/novaideo/static-react/build /app/novaideo/static-react/build
 RUN chown -R u1000:u1000 /app
 
 # compile all pyc in sys.path
