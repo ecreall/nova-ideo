@@ -10,7 +10,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 
-import { toggleDrawer as toggleDrawerOp, globalSearch } from '../../actions/collaborationAppActions';
+import { toggleDrawer as toggleDrawerOp, globalSearch, openFilter } from '../../actions/collaborationAppActions';
 import AccountInformation from '../user/AccountInformation';
 import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
@@ -88,13 +88,20 @@ const styles = {
 
 class NavBar extends React.Component {
   handelSearch = (filter) => {
-    const { search } = this.props;
-    search(filter.text);
+    if (filter.text) {
+      const { search } = this.props;
+      search(filter.text);
+    }
   };
 
   handleSearchCancel = () => {
     const { search } = this.props;
     search('');
+  };
+
+  openFilter = () => {
+    const { openFilterSection } = this.props;
+    openFilterSection('globalFilter', {});
   };
 
   render() {
@@ -122,6 +129,7 @@ class NavBar extends React.Component {
                   onCancel={this.handleSearchCancel}
                   title={I18n.t('common.search')}
                   classes={{ container: classes.searchContainer }}
+                  onFilterClick={this.openFilter}
                 />
               </div>
             </div>
@@ -149,7 +157,8 @@ class NavBar extends React.Component {
 
 export const mapDispatchToProps = {
   toggleDrawer: toggleDrawerOp,
-  search: globalSearch
+  search: globalSearch,
+  openFilterSection: openFilter
 };
 
 export const mapStateToProps = (state) => {

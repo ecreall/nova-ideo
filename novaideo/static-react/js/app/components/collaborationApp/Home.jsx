@@ -8,10 +8,11 @@ import CreateIdeaHome from '../idea/CreateIdeaHome';
 export const DumbHome = ({ filter }) => {
   const hasFilter = filter && filter.text;
   const searchId = 'globalSearch';
+  const filterId = 'globalFilter';
   return (
     <Typography component="div">
       {!hasFilter && <CreateIdeaHome />}
-      <IdeasList searchId={searchId} />
+      <IdeasList searchId={searchId} filterId={filterId} />
     </Typography>
   );
 };

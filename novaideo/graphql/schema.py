@@ -66,6 +66,7 @@ class Node(object):
 
 class FilterInput(graphene.InputObjectType):
     text = graphene.String(required=False)
+    states = graphene.List(graphene.String, required=False)
     keywords = graphene.List(graphene.String, required=False)
 
 
@@ -721,8 +722,9 @@ class Query(graphene.ObjectType):
     def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
         user = get_current(context)
         generate_filter = args.get('generate_filter', False)
+        default_states = ['published', 'to work', 'draft']
         total_count, oids = get_entities(
-            [Iidea], ['published', 'to work', 'draft'], args, info, user=user,
+            [Iidea], default_states, args, info, user=user,
             defined_search=generate_filter,
             generate_text_search=generate_filter)
         return ResolverLazyList(oids, Idea, total_count=total_count)

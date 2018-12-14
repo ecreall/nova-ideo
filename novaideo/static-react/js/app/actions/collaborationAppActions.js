@@ -16,6 +16,21 @@ export const globalSearch = (text) => {
   };
 };
 
+export const openFilter = (id, filter) => {
+  return {
+    type: actionTypes.FILTER_ENTITIES,
+    filter: filter,
+    id: id
+  };
+};
+
+export const clearFilter = (id) => {
+  return {
+    type: actionTypes.FILTER_CLEAR,
+    id: id
+  };
+};
+
 export const updateApp = (app, data) => {
   return {
     type: actionTypes.UPDATE_APP,

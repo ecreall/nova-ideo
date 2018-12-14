@@ -67,6 +67,9 @@ const styles = (theme) => {
     },
     newOption: {
       color: theme.palette.tertiary.hover.color
+    },
+    itemText: {
+      paddingLeft: '0 !important'
     }
   };
 };
@@ -146,22 +149,83 @@ export class DumbSelect extends React.Component {
     this.setState({ menu: false });
   };
 
-  render() {
-    const { label, canAdd, classes } = this.props;
-    const {
-      options, searchText, menu, selected
-    } = this.state;
+  renderSelect = () => {
+    const { inline, canAdd, classes } = this.props;
+    const { options, searchText, selected } = this.state;
     let exactMatch = false;
-    const optionsResult = Object.keys(options).reduce((filtered, id) => {
-      const title = options[id];
-      const titleToSearch = searchText.toLowerCase().trim();
-      const formattedTitle = title.toLowerCase().trim();
-      if (!exactMatch) {
-        exactMatch = titleToSearch === formattedTitle;
-      }
-      if (formattedTitle.search(titleToSearch) >= 0) filtered[id] = title;
-      return filtered;
-    }, {});
+    const optionsResult = inline
+      ? options
+      : Object.keys(options).reduce((filtered, id) => {
+        const title = options[id];
+        const titleToSearch = searchText.toLowerCase().trim();
+        const formattedTitle = title.toLowerCase().trim();
+        if (!exactMatch) {
+          exactMatch = titleToSearch === formattedTitle;
+        }
+        if (formattedTitle.search(titleToSearch) >= 0) filtered[id] = title;
+        return filtered;
+      }, {});
+
+    return (
+      <MenuList role="menu">
+        {searchText
+          && canAdd
+          && !exactMatch && (
+          <MenuItem
+            onClick={() => {
+              this.addOption(searchText);
+            }}
+            classes={{
+              root: classes.newOptionLi
+            }}
+            value={searchText}
+          >
+            <Checkbox
+              classes={{
+                default: classes.newOption,
+                checked: classes.newOption
+              }}
+            />
+            <ListItemText
+              classes={{
+                primary: classes.newOption,
+                root: classes.itemText
+              }}
+              primary={searchText}
+            />
+          </MenuItem>
+        )}
+        {Object.keys(optionsResult).map((id) => {
+          const title = optionsResult[id];
+          return (
+            <MenuItem
+              onClick={() => {
+                this.toggleOption(!selected.includes(id), id);
+              }}
+              key={id}
+              value={id}
+            >
+              <Checkbox checked={selected.includes(id)} />
+              <ListItemText
+                classes={{
+                  root: classes.itemText
+                }}
+              >
+                {title}
+              </ListItemText>
+            </MenuItem>
+          );
+        })}
+      </MenuList>
+    );
+  };
+
+  render() {
+    const {
+      inline, label, canAdd, classes
+    } = this.props;
+    const { searchText, menu } = this.state;
+    if (inline) return this.renderSelect();
     return (
       <Manager>
         <Target>
@@ -190,49 +254,7 @@ export class DumbSelect extends React.Component {
                     )}
                   />
                 </div>
-                <MenuList role="menu">
-                  {searchText
-                    && canAdd
-                    && !exactMatch && (
-                    <MenuItem
-                      onClick={() => {
-                        this.addOption(searchText);
-                      }}
-                      classes={{
-                        root: classes.newOptionLi
-                      }}
-                      value={searchText}
-                    >
-                      <Checkbox
-                        classes={{
-                          default: classes.newOption,
-                          checked: classes.newOption
-                        }}
-                      />
-                      <ListItemText
-                        classes={{
-                          primary: classes.newOption
-                        }}
-                        primary={searchText}
-                      />
-                    </MenuItem>
-                  )}
-                  {Object.keys(optionsResult).map((id) => {
-                    const title = optionsResult[id];
-                    return (
-                      <MenuItem
-                        onClick={() => {
-                          this.toggleOption(!selected.includes(id), id);
-                        }}
-                        key={id}
-                        value={id}
-                      >
-                        <Checkbox checked={selected.includes(id)} />
-                        <ListItemText primary={title} />
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
+                {this.renderSelect()}
               </Paper>
             </Grow>
           </ClickAwayListener>

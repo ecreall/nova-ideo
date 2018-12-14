@@ -132,9 +132,11 @@ export const renderRecordField = ({ input: { value, onChange }, node, initRef })
 };
 
 export const renderSelect = ({
-  input: { value, onChange }, options, label, canAdd, initRef
+  input: { value, onChange }, options, label, canAdd, initRef, inline
 }) => {
-  return <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} />;
+  return (
+    <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} inline={inline} />
+  );
 };
 
 export const renderSelectList = ({

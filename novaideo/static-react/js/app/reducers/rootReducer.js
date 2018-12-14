@@ -96,13 +96,35 @@ export const user = (state = initialUserTest, action) => {
 export const search = (state = {}, action) => {
   switch (action.type) {
   case actionTypes.SEARCH_ENTITIES: {
-    const { id } = action;
+    const { id, text } = action;
     return {
       ...state,
       [id]: {
-        text: action.text
+        text: text
       }
     };
+  }
+  default:
+    return state;
+  }
+};
+
+export const filter = (state = {}, action) => {
+  switch (action.type) {
+  case actionTypes.FILTER_ENTITIES: {
+    const { id, filter } = action;
+    return {
+      ...state,
+      [id]: {
+        ...filter
+      }
+    };
+  }
+  case actionTypes.FILTER_CLEAR: {
+    const { id } = action;
+    const newState = { ...state };
+    delete newState[id];
+    return newState;
   }
   default:
     return state;
@@ -481,6 +503,7 @@ export default combineReducers({
   i18n: i18nReducer,
   user: user,
   search: search,
+  filter: filter,
   network: network,
   adapters: adapters,
   globalProps: globalProps,

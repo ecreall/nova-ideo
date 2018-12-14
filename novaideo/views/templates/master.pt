@@ -55,7 +55,7 @@
           }
         });
     </script>
-    <link rel="stylesheet" href="http://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css">
     <style class="embedly-css">
       body#cards {
         padding: 15px;

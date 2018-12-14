@@ -57,9 +57,9 @@ export const DumbIdeasList = ({ filter, searchId, classes }) => {
   );
 };
 
-export const mapStateToProps = ({ search }, { searchId }) => {
+export const mapStateToProps = ({ search, filter }, { searchId, filterId }) => {
   return {
-    filter: search[searchId] ? search[searchId] : {}
+    filter: { text: (search[searchId] && search[searchId].text) || '', ...filter[filterId] }
   };
 };
 
