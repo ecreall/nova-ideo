@@ -19,7 +19,8 @@ from novaideo.content.interface import IChallenge
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.views.filter import (
-    get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
+    get_filter, FILTER_SOURCES, find_entities)
+from novaideo.views.filter.util import merge_with_filter_view
 from novaideo.views.filter.sort import (
     sort_view_objects)
 from novaideo.views.core import asyn_component_config

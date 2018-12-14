@@ -256,7 +256,7 @@ export default function comment({ ownProps, mutate }) {
           });
         },
         Comments: (prev, { mutationResult, queryVariables }) => {
-          const search = queryVariables.filter || queryVariables.pinned || queryVariables.file;
+          const search = queryVariables.filter.text || queryVariables.pinned || queryVariables.file;
           if (search || ownProps.context !== prev.node.subject.oid) return false;
           const newComment = mutationResult.data.commentObject.comment;
           return update(prev, {

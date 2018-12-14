@@ -30,7 +30,8 @@ from novaideo.utilities.util import (
     render_listing_obj,
     render_listing_objs)
 from novaideo.views.filter import (
-    merge_with_filter_view, get_filter, FILTER_SOURCES)
+    get_filter, FILTER_SOURCES)
+from novaideo.views.filter.util import merge_with_filter_view
 from novaideo.views.filter.sort import sort_view_objects
 
 

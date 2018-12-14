@@ -24,7 +24,8 @@ from novaideo import _
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
-    merge_with_filter_view, find_entities)
+    find_entities)
+from novaideo.views.filter.util import merge_with_filter_view
 from novaideo.views.filter.sort import (
     sort_view_objects)
 from novaideo.content.interface import IAmendment

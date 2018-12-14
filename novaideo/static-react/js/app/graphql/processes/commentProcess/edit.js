@@ -51,7 +51,7 @@ export default function edit({ ownProps, mutate }) {
       },
       updateQueries: {
         Comments: (prev, { mutationResult, queryVariables }) => {
-          const search = queryVariables.filter || queryVariables.pinned || queryVariables.file;
+          const search = queryVariables.filter.text || queryVariables.pinned || queryVariables.file;
           if (search) return false;
           const newContext = mutationResult.data.editComment.comment;
           const currentComment = prev.node.comments.edges.filter((item) => {

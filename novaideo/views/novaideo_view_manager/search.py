@@ -28,7 +28,8 @@ from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     FilterView, FILTER_SOURCES,
-    merge_with_filter_view, find_entities)
+    find_entities)
+from novaideo.views.filter.util import merge_with_filter_view
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person

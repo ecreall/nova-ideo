@@ -366,7 +366,7 @@ export class DumbCreateIdeaForm extends React.Component {
             <div className={classes.formTitle}>
               <SimilarProposalsButton
                 defaultContent={I18n.t('forms.idea.addProposal')}
-                text={`${plainText} ${hasTitle}`}
+                text={hasText && hasTitle ? `${plainText} ${hasTitle}` : ''}
                 keywords={Object.keys(selectedKeywords)}
               />
             </div>
