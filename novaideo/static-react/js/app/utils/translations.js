@@ -10,6 +10,19 @@ const Translations = {
         }
       }
     },
+    states: {
+      idea: {
+        private: "Privée",
+        published: "Publiée",
+        submittedSupport: "Soumise pour appréciation",
+        favorable: "Favorable",
+        toStudy: "À retravailler",
+        unfavorable: "Défavorable",
+        examined: "Examinée",
+        submitted: "Soumise à modération",
+        archived: "Archivée"
+      }
+    },
     common: {
       termesConditions: "Termes & conditions",
       you: "Vous",
@@ -95,12 +108,12 @@ const Translations = {
           description: "Ajouter une réaction"
         },
         adddeadline: {
-          title: "Ajouter une nouvelle date d'examin",
-          description: "Ajouter une nouvelle date d'examin"
+          title: "Ajouter une nouvelle date d'examen",
+          description: "Ajouter une nouvelle date d'examen"
         },
         editdeadline: {
-          title: "Modifier la date d'examin",
-          description: "Modifier la date d'examin"
+          title: "Modifier la date d'examen",
+          description: "Modifier la date d'examen"
         }
       },
       ideamanagement: {
@@ -321,6 +334,16 @@ const Translations = {
       required: "Champs obligatoires",
       similarProposals_1: "Une proposition similaire possible",
       similarProposals: "%{count} propositions similaires possible",
+      filter: {
+        filterBy: "Filtrer par",
+        examination: "Examen",
+        states: "Ètats",
+        authors: "Auteurs",
+        addMembers: "Ajouter des membres",
+        date: "Date",
+        startDate: "Du",
+        endDate: "au"
+      },
       richSelect: {
         validateList: "Valider la liste"
       },
@@ -468,6 +491,19 @@ const Translations = {
             "Dear,\n\n%{user} wishes to present to you the proposal « %{proposal} » on the {site} platform. You can access this proposal at: %{url} .\n\nKind regards,\n\nThe %{site} platform.",
           subject: "Presentation of the proposal « %{proposal} »"
         }
+      }
+    },
+    states: {
+      idea: {
+        private: "Private",
+        published: "Published",
+        submittedSupport: "Submitted for evaluation",
+        favorable: "Positive",
+        toStudy: "To be re-worked upon",
+        unfavorable: "Negative",
+        examined: "Examined",
+        submitted: "Submitted for moderation",
+        archived: "Archived"
       }
     },
     common: {
@@ -782,6 +818,16 @@ const Translations = {
       required: "Required",
       similarProposals_1: "One similar proposal",
       similarProposals: "%{count} similar proposals",
+      filter: {
+        filterBy: "Filter by",
+        examination: "Examination",
+        states: "States",
+        authors: "Authors",
+        addMembers: "Add membres",
+        date: "Date",
+        startDate: "From",
+        endDate: "to"
+      },
       richSelect: {
         validateList: "Validate the list"
       },

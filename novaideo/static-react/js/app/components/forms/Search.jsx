@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, initialize } from 'redux-form';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
@@ -149,7 +150,9 @@ export class DumbSearchForm extends React.Component {
   };
 
   render() {
-    const { onFilterClick, classes, title } = this.props;
+    const {
+      filterOpened, onFilterClick, classes, title
+    } = this.props;
     const hasQuery = this.editor && this.editor.getPlainText();
     const CancelIcon = iconAdapter('mdi-set mdi-close-circle-outline');
     return (
@@ -188,7 +191,7 @@ export class DumbSearchForm extends React.Component {
 
           {onFilterClick ? (
             <IconButton className={classes.cancelButton} onClick={onFilterClick}>
-              <FilterListIcon className={classes.icon} />
+              {filterOpened ? <ClearAllIcon className={classes.icon} /> : <FilterListIcon className={classes.icon} />}
             </IconButton>
           ) : null}
         </div>

@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 import DatePicker from 'react-datepicker';
+import Moment from 'moment';
 
 import { addDeadline } from '../../../../graphql/processes/adminProcess';
 import AddDeadline from '../../../../graphql/processes/adminProcess/mutations/AddDeadline.graphql';
@@ -55,7 +56,7 @@ export class DumbAddDeadline extends React.Component {
       action, onClose, classes, theme
     } = this.props;
     const { date } = this.state;
-    const now = new Date();
+    const now = Moment();
     return (
       <Form
         initRef={(form) => {

@@ -2,6 +2,7 @@
 import graphene
 import json
 import urllib
+import dateutil.parser
 from pyramid.threadlocal import get_current_request
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 from hypatia.interfaces import STABLE
@@ -82,6 +83,28 @@ def get_user_by_token(token):
     return users[0] if users else None
 
 
+default_filter = {
+   'text': '',
+   'keywords': [],
+   'examination': [],
+   'states': [],
+   'authors': [],
+   'start_date': None,
+   'end_date': None
+}
+
+
+def get_filter(args):
+    filter_ = args.get('filter', default_filter)
+    filter_['states'] = filter_.get('states', []) + filter_.get('examination', [])
+    filter_['authors'] = [int(author_id) for author_id in filter_.get('authors', [])]
+    start_date = filter_.get('start_date', None)
+    end_date = filter_.get('end_date', None)
+    filter_['start_date'] = dateutil.parser.parse(start_date) if start_date else None
+    filter_['end_date'] = dateutil.parser.parse(end_date) if end_date else None
+    return filter_
+
+
 def get_entities(
     interfaces, states, args, info, user=None,
     intersect=None, defined_search=False, generate_text_search=False):  #pylint: disable=W0613
@@ -112,13 +135,17 @@ def get_entities(
     # from the last known oid + 1, but the last known oid may not be in the
     # array anymore, so it doesn't work. It's not too bad we skip x events, in
     # reality it should rarely happen.
-    filter_ = args.get('filter', {'text': '', 'keywords': [], 'states': []})
+    filter_ = get_filter(args)
     rs = find_entities(
         sort_on=None,
         user=user,
         interfaces=interfaces,
         metadata_filter={'states': filter_.get('states', states), 'keywords': filter_.get('keywords', [])},
         text_filter={'text_to_search': filter_.get('text', '')},
+        contribution_filter={'authors': filter_.get('authors', [])},
+        temporal_filter={'created_date': {
+            'created_after': filter_.get('start_date', None),
+            'created_before': filter_.get('end_date', None)}},
         intersect=intersect,
         defined_search=defined_search,
         generate_text_search=generate_text_search

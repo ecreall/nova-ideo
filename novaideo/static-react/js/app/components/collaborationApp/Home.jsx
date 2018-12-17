@@ -4,22 +4,20 @@ import { connect } from 'react-redux';
 
 import IdeasList from './IdeasList';
 import CreateIdeaHome from '../idea/CreateIdeaHome';
+import { MAIN_SEARCH_ID, MAIN_FILTER_ID } from '../../constants';
 
 export const DumbHome = ({ filter }) => {
-  const hasFilter = filter && filter.text;
-  const searchId = 'globalSearch';
-  const filterId = 'globalFilter';
   return (
     <Typography component="div">
-      {!hasFilter && <CreateIdeaHome />}
-      <IdeasList searchId={searchId} filterId={filterId} />
+      {!filter || !filter.text ? <CreateIdeaHome /> : null}
+      <IdeasList searchId={MAIN_SEARCH_ID} filterId={MAIN_FILTER_ID} />
     </Typography>
   );
 };
 
 export const mapStateToProps = (state) => {
   return {
-    filter: state.search.globalSearch
+    filter: state.search[MAIN_SEARCH_ID]
   };
 };
 

@@ -31,6 +31,8 @@ import UserContentsList from './UserContentsList';
 import Footer from '../collaborationApp/Footer';
 import { initalsGenerator, getFormattedDate } from '../../utils/globalFunctions';
 import UserMenu from './UserMenu';
+import IdeasFilter from '../collaborationApp/IdeasFilter';
+import Filter from '../common/Filter';
 
 const imgGradient = 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0) 34%, rgba(0,0,0,0.2) 66%, rgba(0,0,0,0.2) 83%, rgba(0,0,0,0.6)),';
 
@@ -365,6 +367,7 @@ export class DumbUser extends React.Component {
       >
         <div className={classes.root}>
           <Scrollbar scrollEvent={scrollEvent}>
+            <Filter live id={`${person.id}-filter`} Form={IdeasFilter} sections={['states', 'examination', 'date']} />
             <div
               ref={(header) => {
                 this.header = header;

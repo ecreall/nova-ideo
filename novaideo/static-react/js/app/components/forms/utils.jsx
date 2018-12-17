@@ -9,6 +9,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/core/styles';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import DatePicker from 'react-datepicker';
+import Moment from 'moment';
 
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
@@ -20,45 +22,12 @@ import Record from './widgets/Record';
 import ImagePicker from './widgets/ImagePicker';
 import RichSelect from './widgets/richSelect/RichSelect';
 
-export const renderTextBoxField = ({
-  input: { name, value, onChange },
-  placeholder,
-  onCtrlEnter,
-  onEnter,
-  autoFocus,
-  style,
-  withEmoji,
-  initRef
-}) => {
-  return (
-    <TextBoxField
-      initRef={initRef}
-      withEmoji={withEmoji}
-      autoFocus={autoFocus}
-      style={style}
-      onEnter={onEnter}
-      onCtrlEnter={onCtrlEnter}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-    />
-  );
+export const renderTextBoxField = ({ input: { name, value, onChange }, ...props }) => {
+  return <TextBoxField {...props} name={name} value={value} onChange={onChange} />;
 };
 
-export const renderRichTextField = ({
-  input: { name, value, onChange }, placeholder, autoFocus, initRef
-}) => {
-  return (
-    <MediumEditor
-      initRef={initRef}
-      autoFocus={autoFocus}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-    />
-  );
+export const renderRichTextField = ({ input: { name, value, onChange }, ...props }) => {
+  return <MediumEditor {...props} name={name} value={value} onChange={onChange} />;
 };
 
 export const renderAnonymousCheckboxField = ({ input: { value, onChange }, classes }) => {
@@ -95,13 +64,13 @@ const checkboxStyles = (theme) => {
 export const renderCheckboxField = withStyles(checkboxStyles, {
   withTheme: true
 })(({
-  input: { value, onChange }, meta: { touched, error }, label, classes
+  input: { name, value, onChange }, meta: { touched, error }, label, classes
 }) => {
   return (
     <React.Fragment>
       <FormControlLabel control={<Checkbox value={value} onChange={onChange} />} label={label} />
       {touched && error ? (
-        <FormHelperText className={classes.error} id={label}>
+        <FormHelperText className={classes.error} id={name}>
           {error}
         </FormHelperText>
       ) : null}
@@ -109,18 +78,16 @@ export const renderCheckboxField = withStyles(checkboxStyles, {
   );
 });
 
-export const renderFilesListField = ({ input: { value, onChange }, node, initRef }) => {
+export const renderFilesListField = ({ input: { value, onChange }, node, ...props }) => {
   return (
-    <FilesPicker initRef={initRef} className="files-dropzone-list" value={value} onChange={onChange} multiple clickable>
+    <FilesPicker {...props} className="files-dropzone-list" value={value} onChange={onChange} multiple clickable>
       {node}
     </FilesPicker>
   );
 };
 
-export const renderImageField = ({
-  input: { value, onChange }, initRef, label, helper
-}) => {
-  return <ImagePicker initRef={initRef} value={value} onChange={onChange} label={label} helper={helper} />;
+export const renderImageField = ({ input: { value, onChange }, ...props }) => {
+  return <ImagePicker {...props} value={value} onChange={onChange} />;
 };
 
 export const renderRecordField = ({ input: { value, onChange }, node, initRef }) => {
@@ -131,41 +98,20 @@ export const renderRecordField = ({ input: { value, onChange }, node, initRef })
   );
 };
 
-export const renderSelect = ({
-  input: { value, onChange }, options, label, canAdd, initRef, inline
-}) => {
-  return (
-    <Select initRef={initRef} label={label} options={options} value={value} onChange={onChange} canAdd={canAdd} inline={inline} />
-  );
+export const renderSelect = ({ input: { value, onChange }, ...props }) => {
+  return <Select {...props} value={value} onChange={onChange} />;
 };
 
-export const renderSelectList = ({
-  input: { value, onChange }, options, label, initRef
-}) => {
-  return <SelectList initRef={initRef} label={label} options={options} value={value} onChange={onChange} />;
+export const renderSelectList = ({ input: { value, onChange }, ...props }) => {
+  return <SelectList {...props} value={value} onChange={onChange} />;
 };
 
-export const renderRichSelect = ({
-  input: { value, onChange }, id, query, getData, Item, label, placeholder
-}) => {
-  return (
-    <RichSelect
-      id={id}
-      label={label}
-      value={value}
-      onChange={onChange}
-      Item={Item}
-      query={query}
-      getData={getData}
-      placeholder={placeholder}
-    />
-  );
+export const renderRichSelect = ({ input: { value, onChange }, ...props }) => {
+  return <RichSelect {...props} value={value} onChange={onChange} />;
 };
 
-export const renderSelectField = ({
-  input: { name, value, onChange }, options, label, initRef
-}) => {
-  return <SelectField initRef={initRef} name={name} label={label} options={options} value={value} onChange={onChange} />;
+export const renderSelectField = ({ input: { name, value, onChange }, ...props }) => {
+  return <SelectField {...props} name={name} value={value} onChange={onChange} />;
 };
 
 const textInputStyles = (theme) => {
@@ -235,18 +181,15 @@ export const renderTextInput = withStyles(textInputStyles, {
   ({
     input: { name, value, onChange },
     meta: { touched, error },
-    multiline,
-    disabled,
-    placeholder,
     endAdornment,
     endAdornmentPosition,
     label,
     helper,
     optional,
-    autoFocus,
     type,
-    autoComplete,
-    classes
+    classes,
+    multiline,
+    ...props
   }) => {
     return (
       <div className={classes.container}>
@@ -262,17 +205,14 @@ export const renderTextInput = withStyles(textInputStyles, {
           </label>
         )}
         <Input
+          {...props}
           type={type || 'text'}
-          autoComplete={autoComplete}
-          autoFocus={autoFocus}
           fullWidth
           disableUnderline
           multiline={multiline}
           id={name}
           value={value}
           onChange={onChange}
-          placeholder={placeholder}
-          disabled={disabled}
           inputProps={{
             classes: {
               root: classNames({
@@ -304,3 +244,44 @@ export const renderTextInput = withStyles(textInputStyles, {
     );
   }
 );
+
+export const renderDatePicker = withStyles(textInputStyles, {
+  withTheme: true
+})(({
+  input: { name, value, onChange }, meta: { touched, error }, label, helper, optional, classes, placeholder, ...props
+}) => {
+  return (
+    <div className={classes.container}>
+      {label && (
+        <label className={classes.label} htmlFor={name}>
+          {label}
+          {optional && (
+            <span className={classes.labelOptional}>
+              {' '}
+              {I18n.t('forms.optional')}
+            </span>
+          )}
+        </label>
+      )}
+      <DatePicker
+        {...props}
+        placeholderText={placeholder}
+        selected={value ? Moment(value) : null}
+        onChange={onChange}
+        locale="fr"
+        className={classes.root}
+      />
+      {helper && (
+        <FormHelperText className={classes.helper} id={name}>
+          {helper}
+        </FormHelperText>
+      )}
+      {touched
+        && error && (
+        <FormHelperText className={classes.error} id={name}>
+          {error}
+        </FormHelperText>
+      )}
+    </div>
+  );
+});

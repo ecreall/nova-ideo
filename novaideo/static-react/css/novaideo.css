@@ -574,3 +574,12 @@ body {
   font-size: 15px;
   font-weight: 400;
 }
+
+
+.react-datepicker__input-container, .react-datepicker-wrapper {
+  display: block;
+}
+
+.react-datepicker__close-icon::after {
+    background-color: #f13b2d;
+}

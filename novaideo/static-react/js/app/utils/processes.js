@@ -72,3 +72,19 @@ export function isPrivate(type, state) {
     return false;
   }
 }
+
+export function getIdeaStates(config) {
+  const ideaState = { ...STATE.idea };
+  if (!config.moderateIdeas) {
+    delete ideaState.submitted;
+  }
+
+  if (!config.supportIdeas) {
+    delete ideaState.submittedSupport;
+  }
+
+  if (!config.examineIdeas) {
+    delete ideaState.examined;
+  }
+  return ideaState;
+}

@@ -5,7 +5,7 @@ import { Translate } from 'react-redux-i18n';
 import Grow from '@material-ui/core/Grow';
 import { connect } from 'react-redux';
 
-import { search } from '../../actions/collaborationAppActions';
+import { search, openFilter, clearFilter } from '../../actions/collaborationAppActions';
 import { getFormattedDate, getFormId } from '../../utils/globalFunctions';
 import AllignedActions from '../common/AllignedActions';
 import { getActions } from '../../utils/processes';
@@ -171,8 +171,21 @@ class UserAppBar extends React.Component {
     this.setState({ userDataVisible: false });
   };
 
+  toggleFilter = () => {
+    const {
+      openFilterSection, closeFilterSection, filterOpened, person
+    } = this.props;
+    if (filterOpened) {
+      closeFilterSection(`${person.id}-filter`);
+    } else {
+      openFilterSection(`${person.id}-filter`, {});
+    }
+  };
+
   render() {
-    const { person, processManager, classes } = this.props;
+    const {
+      person, processManager, filterOpened, classes
+    } = this.props;
     const { userDataVisible } = this.state;
     const authorPicture = person.picture;
     const isAnonymous = person.isAnonymous;
@@ -218,6 +231,8 @@ class UserAppBar extends React.Component {
                 onCancel={this.handleSearchCancel}
                 title={<Translate value="user.search" name={person.title} />}
                 classes={{ container: classes.searchContainer }}
+                onFilterClick={this.toggleFilter}
+                filterOpened={filterOpened}
               />
             </div>
           </div>
@@ -228,12 +243,15 @@ class UserAppBar extends React.Component {
 }
 
 export const mapDispatchToProps = {
-  search: search
+  search: search,
+  closeFilterSection: clearFilter,
+  openFilterSection: openFilter
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    null,
-    mapDispatchToProps
-  )(UserAppBar)
-);
+export const mapStateToProps = (state, { person }) => {
+  return {
+    filterOpened: !!state.filter[`${person.id}-filter`]
+  };
+};
+
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(UserAppBar));

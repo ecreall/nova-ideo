@@ -59,10 +59,11 @@ export const DumbUserContentsList = ({ id, filter, classes }) => {
   );
 };
 
-export const mapStateToProps = (state, props) => {
+export const mapStateToProps = ({ search, filter }, props) => {
   const searchId = `${props.id}-search`;
+  const filterId = `${props.id}-filter`;
   return {
-    filter: state.search[searchId] ? state.search[searchId] : {}
+    filter: { text: (search[searchId] && search[searchId].text) || '', ...filter[filterId] }
   };
 };
 

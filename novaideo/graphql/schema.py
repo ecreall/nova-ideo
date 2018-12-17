@@ -66,8 +66,12 @@ class Node(object):
 
 class FilterInput(graphene.InputObjectType):
     text = graphene.String(required=False)
+    examination = graphene.List(graphene.String, required=False)
     states = graphene.List(graphene.String, required=False)
     keywords = graphene.List(graphene.String, required=False)
+    authors = graphene.List(graphene.String, required=False)
+    start_date = graphene.String(required=False)
+    end_date = graphene.String(required=False)
 
 
 class UrlData(graphene.ObjectType):

@@ -16,6 +16,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 const styles = (theme) => {
   return {
@@ -30,12 +32,14 @@ const styles = (theme) => {
       border: '1px solid rgba(0,0,0,.15)'
     },
     menuItem: {
+      paddingTop: 8,
+      paddingBottom: 8
+    },
+    smallMenuItem: {
       paddingTop: 0,
-      paddingBottom: 0,
-      height: 'auto',
-      '&:hover': {
-        backgroundColor: 'transparent'
-      }
+      paddingBottom: 4,
+      paddingLeft: 0,
+      paddingRight: 0
     },
     searchRoot: {
       padding: 10,
@@ -150,7 +154,9 @@ export class DumbSelect extends React.Component {
   };
 
   renderSelect = () => {
-    const { inline, canAdd, classes } = this.props;
+    const {
+      fontSize, inline, canAdd, classes
+    } = this.props;
     const { options, searchText, selected } = this.state;
     let exactMatch = false;
     const optionsResult = inline
@@ -166,8 +172,10 @@ export class DumbSelect extends React.Component {
         return filtered;
       }, {});
 
+    const checkedIcon = <CheckBoxIcon fontSize={fontSize} />;
+    const icon = <CheckBoxOutlineBlankIcon fontSize={fontSize} />;
     return (
-      <MenuList role="menu">
+      <MenuList classes={{ padding: classes.padding }} role="menu">
         {searchText
           && canAdd
           && !exactMatch && (
@@ -176,15 +184,18 @@ export class DumbSelect extends React.Component {
               this.addOption(searchText);
             }}
             classes={{
-              root: classes.newOptionLi
+              root: classNames(classes.newOptionLi, classes.menuItem, { [classes.smallMenuItem]: fontSize === 'small' })
             }}
             value={searchText}
           >
             <Checkbox
+              checkedIcon={checkedIcon}
+              icon={icon}
               classes={{
                 default: classes.newOption,
                 checked: classes.newOption
               }}
+              fontSize="small"
             />
             <ListItemText
               classes={{
@@ -204,8 +215,11 @@ export class DumbSelect extends React.Component {
               }}
               key={id}
               value={id}
+              classes={{
+                root: classNames(classes.menuItem, { [classes.smallMenuItem]: fontSize === 'small' })
+              }}
             >
-              <Checkbox checked={selected.includes(id)} />
+              <Checkbox checked={selected.includes(id)} checkedIcon={checkedIcon} icon={icon} />
               <ListItemText
                 classes={{
                   root: classes.itemText

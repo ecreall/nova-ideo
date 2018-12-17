@@ -10,12 +10,15 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 import { I18n } from 'react-redux-i18n';
 
-import { toggleDrawer as toggleDrawerOp, globalSearch, openFilter } from '../../actions/collaborationAppActions';
+import {
+  toggleDrawer as toggleDrawerOp, search, openFilter, clearFilter
+} from '../../actions/collaborationAppActions';
 import AccountInformation from '../user/AccountInformation';
 import UserMainMenu from '../user/UserMainMenu';
 import Search from '../forms/Search';
 import { getFormId } from '../../utils/globalFunctions';
 import ExaminationProgress from './ExaminationProgress';
+import { MAIN_SEARCH_ID, MAIN_FILTER_ID } from '../../constants';
 
 const styles = {
   flex: {
@@ -89,26 +92,28 @@ const styles = {
 class NavBar extends React.Component {
   handelSearch = (filter) => {
     if (filter.text) {
-      const { search } = this.props;
-      search(filter.text);
+      this.props.search(MAIN_SEARCH_ID, filter.text);
     }
   };
 
   handleSearchCancel = () => {
-    const { search } = this.props;
-    search('');
+    this.props.search(MAIN_SEARCH_ID, '');
   };
 
-  openFilter = () => {
-    const { openFilterSection } = this.props;
-    openFilterSection('globalFilter', {});
+  toggleFilter = () => {
+    const { openFilterSection, closeFilterSection, filterOpened } = this.props;
+    if (filterOpened) {
+      closeFilterSection(MAIN_FILTER_ID);
+    } else {
+      openFilterSection(MAIN_FILTER_ID, {});
+    }
   };
 
   render() {
     const {
-      classes, className, drawer, site, toggleDrawer
+      classes, className, drawer, site, toggleDrawer, filterOpened
     } = this.props;
-    const formId = getFormId('globalSearch');
+    const formId = getFormId(MAIN_SEARCH_ID);
     return (
       <div>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
@@ -129,7 +134,8 @@ class NavBar extends React.Component {
                   onCancel={this.handleSearchCancel}
                   title={I18n.t('common.search')}
                   classes={{ container: classes.searchContainer }}
-                  onFilterClick={this.openFilter}
+                  onFilterClick={this.toggleFilter}
+                  filterOpened={filterOpened}
                 />
               </div>
             </div>
@@ -157,14 +163,16 @@ class NavBar extends React.Component {
 
 export const mapDispatchToProps = {
   toggleDrawer: toggleDrawerOp,
-  search: globalSearch,
+  search: search,
+  closeFilterSection: clearFilter,
   openFilterSection: openFilter
 };
 
 export const mapStateToProps = (state) => {
   return {
     drawer: state.apps.drawer.open,
-    site: state.globalProps.site
+    site: state.globalProps.site,
+    filterOpened: !!state.filter[MAIN_FILTER_ID]
   };
 };
 

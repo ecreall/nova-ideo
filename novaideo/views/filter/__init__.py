@@ -361,7 +361,7 @@ def authors_query(node, **args):
 
     #index
     authors_index = novaideo_catalog['object_authors']
-    return authors_index.any([get_oid(v) for v in authors])
+    return authors_index.any([get_oid(v, v) for v in authors])
 
 
 def contribution_filter_query(node, **args):
@@ -1582,7 +1582,7 @@ def get_organizations_by_evaluations(
 def get_all_user_contributions(user, interfaces=[IEntity]):
     novaideo_index = find_catalog('novaideo')
     object_authors_index = novaideo_index['object_authors']
-    query = object_authors_index.any([get_oid(user)])
+    query = object_authors_index.any([get_oid(user, user)])
     return find_entities(
         interfaces=interfaces,
         metadata_filter={

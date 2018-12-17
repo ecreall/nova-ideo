@@ -12,7 +12,7 @@ var webpackHost = WEBPACK_URL.split('://')[1].split(':')[0];
 // For css hot reload to work, don't use ExtractTextPlugin
 module.exports = {
     // devtool: '#cheap-module-eval-source-map',  // http://webpack.github.io/docs/configuration.html#devtool
-    devtool: 'eval', // https://github.com/webpack/webpack-dev-server/issues/1090
+    devtool: 'eval-source-map', // https://github.com/webpack/webpack-dev-server/issues/1090
     devServer: {
         inline: true,
         hot: true,

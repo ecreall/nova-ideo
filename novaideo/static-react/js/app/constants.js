@@ -5,10 +5,10 @@ export const LANGUAGES_TITLES = {
   fr: 'Français'
 };
 
-let staticUrl = ''
+let staticUrl = '';
 
 if (process.env.NODE_ENV === 'production') {
-  staticUrl = '/novaideostatic-react/'
+  staticUrl = '/novaideostatic-react/';
 }
 
 export const STATIC_URL = staticUrl;
@@ -40,6 +40,10 @@ export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';
 
 export const PRIVACY_POLICY_URL_EN = 'https://www.iubenda.com/privacy-policy/8216928';
+
+export const MAIN_SEARCH_ID = 'mainSearch';
+
+export const MAIN_FILTER_ID = 'mainFilter';
 
 export const PRESENTATION_TEXT_LEN = 300;
 

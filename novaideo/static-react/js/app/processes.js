@@ -305,7 +305,25 @@ export const STATE = {
     favorable: 'favorable',
     unfavorable: 'unfavorable',
     examined: 'examined',
-    submitted: 'submitted'
+    submitted: 'submitted',
+    archived: 'archived'
+  }
+};
+
+export const STATE_LABEL = {
+  idea: {
+    [STATE.idea.private]: { title: 'states.idea.private', icon: iconAdapter('mdi-set mdi-lock') },
+    [STATE.idea.published]: { title: 'states.idea.published', icon: iconAdapter('mdi-set mdi-earth') },
+    [STATE.idea.submittedSupport]: {
+      title: 'states.idea.submittedSupport',
+      icon: iconAdapter('mdi-set mdi-arrow-up-drop-circle')
+    },
+    [STATE.idea.toStudy]: { title: 'states.idea.toStudy', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
+    [STATE.idea.favorable]: { title: 'states.idea.favorable', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
+    [STATE.idea.unfavorable]: { title: 'states.idea.unfavorable', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
+    [STATE.idea.examined]: { title: 'states.idea.examined', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
+    [STATE.idea.submitted]: { title: 'states.idea.submitted', icon: iconAdapter('mdi-set mdi-shield-check-outline') },
+    [STATE.idea.archived]: { title: 'states.idea.archived', icon: iconAdapter('mdi-set mdi-package-down') }
   }
 };
 

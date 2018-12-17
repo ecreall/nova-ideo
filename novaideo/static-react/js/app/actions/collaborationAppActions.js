@@ -8,14 +8,6 @@ export const search = (id, text) => {
   };
 };
 
-export const globalSearch = (text) => {
-  return {
-    type: actionTypes.SEARCH_ENTITIES,
-    text: text,
-    id: 'globalSearch'
-  };
-};
-
 export const openFilter = (id, filter) => {
   return {
     type: actionTypes.FILTER_ENTITIES,
