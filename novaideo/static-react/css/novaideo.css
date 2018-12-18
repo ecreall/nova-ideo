@@ -577,9 +577,9 @@ body {
 
 
 .react-datepicker__input-container, .react-datepicker-wrapper {
-  display: block;
+  display: block !important;
 }
 
 .react-datepicker__close-icon::after {
-    background-color: #f13b2d;
+    background-color: #f13b2d !important;
 }
