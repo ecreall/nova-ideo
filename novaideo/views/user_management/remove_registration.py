@@ -52,6 +52,7 @@ class RemoveRegistrationView(FormView):
     name='removeregistration',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveRegistrationViewMultipleView(MultipleView):
     title = _('Remove the registration')

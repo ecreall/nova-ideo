@@ -19,6 +19,7 @@ from novaideo import _
     name='submitproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SubmitProposalView(BasicView):
     title = _('Submit the proposal as is')

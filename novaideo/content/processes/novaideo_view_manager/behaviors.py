@@ -206,7 +206,7 @@ class SeeOrderedProposal(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seeindeas_roles_validation(process, context):
@@ -231,7 +231,7 @@ class SeeIdeasToExamine(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seeideasm_roles_validation(process, context):
@@ -256,7 +256,7 @@ class SeeIdeasToModerate(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seepropm_processsecurity_validation(process, context):
@@ -277,7 +277,7 @@ class SeeProposalsToModerate(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seereported_processsecurity_validation(process, context):
@@ -297,7 +297,7 @@ class SeeReportedContents(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def history_roles_validation(process, context):
@@ -402,7 +402,7 @@ class SeeUsers(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seeanalytics_roles_validation(process, context):
@@ -426,7 +426,7 @@ class SeeAnalytics(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def seegraph_roles_validation(process, context):

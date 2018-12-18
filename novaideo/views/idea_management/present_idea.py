@@ -189,6 +189,7 @@ class PresentIdeaFormView(FormView):
     name='present',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentIdeaView(MultipleView):
 
@@ -219,6 +220,7 @@ class PresentIdeaView(MultipleView):
     name='presentanonymous',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentIdeaAnonymousView(ActionAnonymousView):
     behaviors = [PresentIdeaAnonymous]

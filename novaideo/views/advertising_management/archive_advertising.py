@@ -45,6 +45,7 @@ class ArchiveAdvertisingView(FormView):
     name='archiveadvertising',
     context=Advertising,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ArchiveAdvertisingViewMultipleView(MultipleView):
     title = _('Archive the announcement')

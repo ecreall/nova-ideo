@@ -44,6 +44,7 @@ class CompareProposalFormView(CompareIdeaFormView):
     name='compare',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CompareProposalView(CompareIdeaView):
     views = (CompareProposalFormView, DiffView)

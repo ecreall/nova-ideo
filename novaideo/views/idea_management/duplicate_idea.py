@@ -29,6 +29,7 @@ def add_file_data(file_):
     name='duplicateidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DuplicateIdeaView(FormView):
     title = _('Duplicate the idea')

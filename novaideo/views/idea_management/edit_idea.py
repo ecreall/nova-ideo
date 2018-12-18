@@ -58,6 +58,7 @@ class EditIdeaActionsView(MultipleView):
     name='editidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditIdeaView(MultipleView):
     title = _('Edit the idea')

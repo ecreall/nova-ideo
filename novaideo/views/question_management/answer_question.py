@@ -91,6 +91,7 @@ class AnswerQuestionFormView(FormView):
     name='answerquestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AnswerQuestionView(MultipleView):
     title = _('Answer the question')
@@ -106,6 +107,7 @@ class AnswerQuestionView(MultipleView):
     name='answerquestionanonymous',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AnswerQuestionAnonymousView(ActionAnonymousView):
     behaviors = [AnswerQuestionAnonymous]

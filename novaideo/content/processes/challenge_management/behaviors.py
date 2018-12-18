@@ -554,7 +554,7 @@ class SeeChallenges(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def addmember_roles_validation(process, context):

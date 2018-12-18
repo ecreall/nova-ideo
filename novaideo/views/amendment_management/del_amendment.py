@@ -19,6 +19,7 @@ from novaideo import _
     name='delamendment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DelAmendmentView(BasicView):
     title = _('Delete')

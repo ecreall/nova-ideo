@@ -22,6 +22,7 @@ from novaideo import _
     name='addfilesws',
     context=Workspace,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AddFilesView(FormView):
 

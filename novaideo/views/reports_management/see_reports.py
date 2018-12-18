@@ -144,6 +144,7 @@ class DetailSubjectView(BasicView):
     name='seereports',
     context=SignalableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeReportsView(MultipleView):
     name = 'seereports'

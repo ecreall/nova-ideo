@@ -59,6 +59,7 @@ class RemoveForm(FormView):
     name='removecomment',
     context=Comment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveView(MultipleView):
     title = _('Comment deletion')

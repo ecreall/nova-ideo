@@ -32,6 +32,7 @@ CONTENTS_MESSAGES = {
     name='seesmartfolders',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeSmartFoldersView(BasicView):
     title = ''

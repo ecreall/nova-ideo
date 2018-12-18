@@ -33,6 +33,7 @@ CONTENTS_MESSAGES = {
     name='seemysupports',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMySupportsView(SeeMyContentsView):
     title = _('My evaluations')

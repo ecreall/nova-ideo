@@ -52,6 +52,7 @@ class SubmitChallengeView(FormView):
     name='submitchallenge',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishChallengeViewMultipleView(MultipleView):
     title = _('Submit for publication')

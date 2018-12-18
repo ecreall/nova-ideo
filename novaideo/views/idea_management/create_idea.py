@@ -36,6 +36,7 @@ from novaideo import _, log
     name='createidea',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CreateIdeaView(FormView):
 

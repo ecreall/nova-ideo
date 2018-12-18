@@ -46,6 +46,7 @@ CONTENTS_MESSAGES = {
     name='seeanswers',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AnswersView(BasicView):
     name = 'seeanswers'
@@ -259,6 +260,7 @@ class SeeQuestionHeaderView(BasicView):
     name='seequestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeQuestionView(MultipleView):
     name = 'seequestion'

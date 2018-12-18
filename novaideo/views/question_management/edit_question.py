@@ -52,6 +52,7 @@ class EditQuestionFormView(FormView):
     name='editquestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditQuestionView(MultipleView):
     title = _('Edit the question')

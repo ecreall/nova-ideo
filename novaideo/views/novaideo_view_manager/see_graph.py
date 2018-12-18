@@ -24,6 +24,7 @@ from novaideo.core import can_access
     name='seegraph',
     context=Node,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeGraphView(BasicView):
     title = _('Graph of dependences')

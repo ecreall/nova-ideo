@@ -34,6 +34,7 @@ WG_MESSAGES = {
     name='seedependencies',
     context=Node,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeDependenciesView(BasicView):
     name = 'seedependencies'

@@ -20,6 +20,7 @@ from novaideo import _
 @view_config(
     context=HTTPNotFound,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class NotFoundView(BasicView):
     title = _('Document not found!')
@@ -41,6 +42,7 @@ class NotFoundView(BasicView):
 @view_config(
     context=HTTPInternalServerError,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class InternalServerError(BasicView):
     title = _('An error has occurred!')
@@ -62,6 +64,7 @@ class InternalServerError(BasicView):
 @view_config(
     context=ViewError,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ViewErrorToLoginView(ViewErrorView):
     title = _('An error has occurred!')

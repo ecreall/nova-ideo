@@ -212,6 +212,7 @@ class CorrectProposalFormView(FormView):
     name='improveproposalwiki',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CorrectProposalView(MultipleView):
     title = _('Improve the proposal')

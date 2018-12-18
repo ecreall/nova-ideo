@@ -51,6 +51,7 @@ class RemoveForm(FormView):
     name='delidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DelIdeaView(MultipleView):
     title = _('Idea deletion')

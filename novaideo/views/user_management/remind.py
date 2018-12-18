@@ -53,6 +53,7 @@ class RemindView(FormView):
     name='remind',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemindViewMultipleView(MultipleView):
     title = _('Remind the user')

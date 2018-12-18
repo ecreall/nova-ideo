@@ -49,6 +49,7 @@ class ChallengeSchema(Schema):
     name='removemembers',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveMembersView(FormView):
 

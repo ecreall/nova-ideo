@@ -127,6 +127,7 @@ class CompareIdeaFormView(FormView):
     name='compare',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CompareIdeaView(MultipleView):
     name = 'compare'

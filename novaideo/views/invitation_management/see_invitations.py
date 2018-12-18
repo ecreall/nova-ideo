@@ -39,6 +39,7 @@ CONTENTS_MESSAGES = {
     name='seeinvitations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeInvitationsView(BasicView):
     title = _('The invitations')

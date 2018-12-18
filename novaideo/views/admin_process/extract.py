@@ -43,6 +43,7 @@ class ExtractionSchema(FilterSchema):
     name='extract',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ExtractView(FilterView):
     title = _('Extract')

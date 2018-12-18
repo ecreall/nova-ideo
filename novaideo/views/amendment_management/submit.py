@@ -186,6 +186,7 @@ class SubmitAmendmentView(FormView):
     name='submitamendment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SubmitAmendmentViewMultipleView(MultipleView):
     title = _('Prepare amendments')

@@ -193,6 +193,7 @@ class CommentIdeaFormView(FormView):
     name='comment',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentIdeaView(MultipleView):
     title = _('Discuss the idea')
@@ -220,6 +221,7 @@ class CommentIdeaView(MultipleView):
     name='commentanonymous',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentIdeaAnonymousView(ActionAnonymousView):
     behaviors = [CommentIdeaAnonymous]

@@ -48,6 +48,7 @@ class AssociateFormView(FormView):
     name='associate',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AssociateView(AssociateIdeaView):
     title = _('Associate the challenge')

@@ -34,6 +34,7 @@ WG_MESSAGES = {
     name='seemembers',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMembersView(BasicView):
     name = 'seemembers'

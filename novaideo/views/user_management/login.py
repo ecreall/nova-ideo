@@ -36,6 +36,7 @@ from novaideo.connectors.core import CONNECTOR_PROCESSES
     name='login',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class LoginView(BasicView):
     title = _('Log in')

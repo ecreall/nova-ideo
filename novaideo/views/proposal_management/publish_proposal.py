@@ -211,6 +211,7 @@ class PublishProposalFormView(FormView):
     name='publishproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishProposalView(MultipleView):
     title = _("Improve the proposal or submit it as is")

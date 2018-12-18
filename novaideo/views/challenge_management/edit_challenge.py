@@ -43,6 +43,7 @@ class EditChallengeFormView(FormView):
     name='editchallenge',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditChallengeView(MultipleView):
     title = _('Edit the challenge')

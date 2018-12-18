@@ -24,6 +24,7 @@ from novaideo import _
     name='createwebadvertising',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CreateWebAdvertisingView(FormView):
 

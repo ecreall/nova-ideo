@@ -61,6 +61,7 @@ class UnpinForm(FormView):
     name='unpincomment',
     context=Comment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UnpinView(MultipleView):
     title = _('Unpin comment')

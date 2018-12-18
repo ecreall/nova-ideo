@@ -18,6 +18,7 @@ from novaideo import _
     name='alertend',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AlertEndView(BasicView):
     title = _('Alert for the end of an improvement cycle')

@@ -52,6 +52,7 @@ class UnsubscribeForm(FormView):
     name='unsubscribechannel',
     context=Channel,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UnsubscribeView(MultipleView):
     title = _('Unsubscribe from the discussion')

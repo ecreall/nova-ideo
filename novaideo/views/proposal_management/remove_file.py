@@ -52,6 +52,7 @@ class RemoveForm(FormView):
     name='removefile',
     context=File,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DelFileView(MultipleView):
     title = _('Delete file')

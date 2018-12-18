@@ -344,7 +344,7 @@ class DelIdea(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 
 def edit_roles_validation(process, context):

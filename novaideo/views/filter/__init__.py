@@ -1048,6 +1048,7 @@ class FilterSchema(Schema):
 @view_config(
     name='filter',
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class FilterView(FormView):
     title = _('Filter')

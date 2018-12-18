@@ -26,8 +26,11 @@ from novaideo import _
 #         raise ValidationError(msg=_("Permission denied"))
 
 
-@view_config(name='novaideoconfig',
-             renderer='pontus:templates/views_templates/grid.pt')
+@view_config(
+    name='novaideoconfig',
+    renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
+    )
 class NovaIdeoConfigView(BasicView):
 
     title = _('Main numeric parameters')

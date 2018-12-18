@@ -27,6 +27,7 @@ from novaideo.utilities.util import add_file_data
     name='configurenewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ConfigureNewsletterView(FormView):
 

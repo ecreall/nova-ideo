@@ -19,6 +19,7 @@ from novaideo import _
     name='opposeidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OpposeIdeaView(BasicView):
     title = _('Oppose')

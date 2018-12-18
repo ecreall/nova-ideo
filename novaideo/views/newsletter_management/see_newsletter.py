@@ -23,6 +23,7 @@ from novaideo.utilities.util import (
     name='seenewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeNewsletterView(BasicView):
     title = ''

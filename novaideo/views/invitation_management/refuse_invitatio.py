@@ -19,6 +19,7 @@ from novaideo import _
     name='refuse_invitation',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RefuseInvitationView(BasicView):
 

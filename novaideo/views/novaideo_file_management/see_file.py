@@ -24,6 +24,7 @@ from novaideo.content.processes import get_states_mapping
     name='seefile',
     context=FileEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeFileView(BasicView):
     title = ''

@@ -39,6 +39,7 @@ from novaideo.views.filter.sort import sort_view_objects
     name='seesmartfolder',
     context=SmartFolder,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeSmartFolderView(BasicView):
     title = ''
@@ -79,6 +80,7 @@ class SeeSmartFolderView(BasicView):
     name='open',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OpenFolderView(BasicView):
     title = _('Open the folder')

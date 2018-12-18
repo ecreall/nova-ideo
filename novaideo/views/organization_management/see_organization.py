@@ -232,11 +232,13 @@ class DetailsView(BasicView):
     name='index',
     context=Organization,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 @view_config(
     name='',
     context=Organization,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeOrganizationView(MultipleView):
     title = ''

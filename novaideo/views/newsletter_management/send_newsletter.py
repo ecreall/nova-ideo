@@ -20,6 +20,7 @@ from novaideo import _
     name='sendnewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SendNewsletterView(BasicView):
     title = _('Send newsletter')

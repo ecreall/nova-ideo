@@ -69,6 +69,7 @@ class ArchiveIdeaView(FormView):
     name='archiveidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ArchiveIdeaViewMultipleView(MultipleView):
     title = _('Archive the idea')
@@ -100,6 +101,7 @@ class ModerationArchiveIdeaView(FormView):
     name='moderationarchiveidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ModerationArchiveIdeaViewMultipleView(MultipleView):
     title = _('Archive the idea')

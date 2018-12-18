@@ -46,6 +46,7 @@ CONTENTS_MESSAGES = {
     name='seeusers',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeUsersView(BasicView):
     title = _('Members')

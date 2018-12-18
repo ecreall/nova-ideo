@@ -50,6 +50,7 @@ class ParticipateSchema(Schema):
     name='participate',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ParticipateView(FormView):
     title = _('Participate')

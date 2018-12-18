@@ -18,6 +18,10 @@ from novaideo.lib import config
 
 
 @layout_config(template='views/templates/master.pt')
+@layout_config(
+    name='old',
+    template='views/templates/master-old.pt'
+    )
 class GlobalLayout(object):
 
     emoji_template = 'novaideo:views/templates/emoji_selector.pt'

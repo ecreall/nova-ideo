@@ -23,6 +23,7 @@ from novaideo import _
     name='attachfiles',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AttachFilesView(FormView):
     title = _('Attach files to the proposal')

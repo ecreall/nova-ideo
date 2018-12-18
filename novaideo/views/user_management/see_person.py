@@ -221,11 +221,13 @@ class DetailsView(BasicView):
     name='index',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 @view_config(
     name='',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeePersonView(MultipleView):
     title = ''

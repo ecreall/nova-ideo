@@ -25,8 +25,10 @@ class DocAnonymousValidator(Validator):
         raise ValidationError(msg=_("Permission denied"))
 
 
-@view_config(name='docanonymous',
-             renderer='pontus:templates/views_templates/grid.pt')
+@view_config(
+    name='docanonymous',
+    renderer='pontus:templates/views_templates/grid.pt',
+    layout='old')
 class ParticipantsView(BasicView):
 
     title = _('Contribute')

@@ -53,6 +53,7 @@ class PublishFileView(FormView):
     name='publishfile',
     context=FileEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishFileMultipleView(MultipleView):
     title = _('Publish the document')

@@ -22,6 +22,7 @@ from novaideo import _
     name='seenewsletterhistory',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeNewsletterHistoryView(BasicView):
     title = _('Content history')

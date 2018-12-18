@@ -32,6 +32,7 @@ class DeadlineSchema(Schema):
     name='adddeadline',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AddDeadLineView(FormView):
 

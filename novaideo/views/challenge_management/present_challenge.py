@@ -98,6 +98,7 @@ class PresentChallengeFormView(FormView):
     name='present',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentChallengeView(PresentIdeaView):
     title = _('Transmit the challenge to others')
@@ -114,6 +115,7 @@ class PresentChallengeView(PresentIdeaView):
     name='presentanonymous',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentChallengeAnonymousView(ActionAnonymousView):
     behaviors = [PresentChallengeAnonymous]

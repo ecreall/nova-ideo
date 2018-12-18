@@ -61,7 +61,7 @@ class ConfigureSite(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, ""))
+        return HTTPFound(request.resource_url(context, "old"))
 
 
 class ManageKeywords(InfiniteCardinality):
@@ -99,7 +99,7 @@ class ManageKeywords(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, ""))
+        return HTTPFound(request.resource_url(context, "old"))
 
 
 class Extract(InfiniteCardinality):

@@ -30,6 +30,7 @@ from novaideo.content.processes import get_states_mapping
     name='',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeInvitationView(BasicView):
     title = ''

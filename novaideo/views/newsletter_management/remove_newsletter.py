@@ -46,6 +46,7 @@ class RemoveNewsletterView(FormView):
     name='removenewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveNewsletterViewMultipleView(MultipleView):
     title = _('Remove the newsletter')

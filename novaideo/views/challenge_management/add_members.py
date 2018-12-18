@@ -63,6 +63,7 @@ class AddMembersSchema(Schema):
     name='addmembers',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AddMembersView(FormView):
 

@@ -214,6 +214,7 @@ class SeeProposalActionsView(MultipleView):
     name='seeproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeProposalView(MultipleView):
     name = 'seeproposal'

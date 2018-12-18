@@ -130,6 +130,7 @@ class ResetRequestView(FormView):
     name='resetpassword',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ResetRequestViewMultipleView(MultipleView):
     title = _('Request password reset')
@@ -167,6 +168,7 @@ class ResetSchema(Schema):
     name='',
     context=IPasswordReset,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ResetView(FormView):
     title = _('Reset Password')

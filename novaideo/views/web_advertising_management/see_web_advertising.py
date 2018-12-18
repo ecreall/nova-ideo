@@ -25,6 +25,7 @@ from novaideo.utilities.util import (
     name='seewebadvertising',
     context=WebAdvertising,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeWebAdvertisingView(BasicView):
     title = ''

@@ -80,7 +80,7 @@ class DeactivateUsers(ElementaryAction):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 class ManageContents(ElementaryAction):

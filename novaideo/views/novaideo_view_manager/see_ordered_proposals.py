@@ -39,6 +39,7 @@ CONTENTS_MESSAGES = {
     name='proposalstoexamine',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeOrderedProposalView(BasicView):
     title = _('Proposals to be examined')

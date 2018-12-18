@@ -21,6 +21,7 @@ from novaideo import _
     name='editfile',
     context=FileEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditFileView(FormView):
 

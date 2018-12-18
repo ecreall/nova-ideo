@@ -38,6 +38,7 @@ CONTENTS_MESSAGES = {
     name='seevotes',
     context=Ballot,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class VotesView(BasicView):
     name = 'seevotes'

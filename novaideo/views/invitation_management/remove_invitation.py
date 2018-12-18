@@ -19,6 +19,7 @@ from novaideo import _
     name='remove_invitation',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveInvitationView(BasicView):
 

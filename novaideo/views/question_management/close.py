@@ -53,6 +53,7 @@ class CloseQuestionView(FormView):
     name='closequestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CloseQuestionViewMultipleView(MultipleView):
     title = _('Close the question')

@@ -21,6 +21,7 @@ from novaideo.views.core import asyn_component_config
     name='seechannels',
     context=Entity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeChannels(BasicView):
     title = ''

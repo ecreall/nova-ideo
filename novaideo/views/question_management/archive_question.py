@@ -69,6 +69,7 @@ class ArchiveQuestionView(FormView):
     name='archivequestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ArchiveQuestionViewMultipleView(MultipleView):
     title = _('Archive the question')

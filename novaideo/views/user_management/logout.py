@@ -19,6 +19,7 @@ from novaideo import _
     name='logout',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class LogoutView(BasicView):
     title = _('Log out')

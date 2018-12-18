@@ -52,6 +52,7 @@ class WithdrawForm(FormView):
     name='withdrawuser',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class WithdrawView(MultipleView):
     title = _('Withdraw user from the organization')

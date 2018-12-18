@@ -19,6 +19,7 @@ from novaideo import _
     name='explanationitem',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ExplanationItemView(BasicView):
     title = _('Justification of the item')

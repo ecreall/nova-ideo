@@ -127,6 +127,7 @@ class ContactForm(FormView):
     name='contact',
     context=Entity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ContactMultipleView(MultipleView):
     title = _('Contact')

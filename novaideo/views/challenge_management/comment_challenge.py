@@ -47,6 +47,7 @@ class CommentChallengeFormView(CommentIdeaFormView):
     name='comment',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentChallengeView(CommentIdeaView):
     title = _('Discuss the challenge')
@@ -65,6 +66,7 @@ class CommentChallengeView(CommentIdeaView):
     name='commentanonymous',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentChallengeAnonymousView(ActionAnonymousView):
     behaviors = [CommentChallengeAnonymous]

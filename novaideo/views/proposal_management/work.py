@@ -18,6 +18,7 @@ from novaideo import _
     name='amendable',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class WorkView(BasicView):
     title = _('Being amended')

@@ -98,6 +98,7 @@ class PresentQuestionFormView(FormView):
     name='present',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentQuestionView(PresentIdeaView):
     title = _('Transmit the question to others')
@@ -114,6 +115,7 @@ class PresentQuestionView(PresentIdeaView):
     name='presentanonymous',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentQuestionAnonymousView(ActionAnonymousView):
     behaviors = [PresentQuestionAnonymous]

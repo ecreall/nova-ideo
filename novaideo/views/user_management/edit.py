@@ -77,6 +77,7 @@ class EditPersonSchema(PersonSchema):
     name='edit',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditView(FormView):
 

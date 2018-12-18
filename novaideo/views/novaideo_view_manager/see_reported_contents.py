@@ -40,6 +40,7 @@ CONTENTS_MESSAGES = {
     name='seereportedcontents',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeReportedContentsView(BasicView):
     title = _('Reported contents')

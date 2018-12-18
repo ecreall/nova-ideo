@@ -34,6 +34,7 @@ CONTENTS_MESSAGES = {
     name='seealerts',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeAlertsView(BasicView):
     title = _('The notifications')

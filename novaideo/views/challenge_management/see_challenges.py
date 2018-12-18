@@ -44,6 +44,7 @@ CONTENTS_MESSAGES = {
     name='seechallenges',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeChallengesView(BasicView):
     title = _('Participate in our challenges')
@@ -130,6 +131,7 @@ class SeeChallengesView(BasicView):
     name='seehomechallenges',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeChallengesHomeView(BasicView):
     title = _('Participate in our challenges')

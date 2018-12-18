@@ -130,6 +130,7 @@ class SeeIdeaActionsView(MultipleView):
     name='seeidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeIdeaView(MultipleView):
     name = 'seeidea'

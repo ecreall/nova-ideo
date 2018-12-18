@@ -69,6 +69,7 @@ class ArchiveChallengeView(FormView):
     name='archivechallenge',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ArchiveChallengeViewMultipleView(MultipleView):
     title = _('Archive the challenge')

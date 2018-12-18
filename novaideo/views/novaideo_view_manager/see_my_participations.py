@@ -33,6 +33,7 @@ CONTENTS_MESSAGES = {
     name='seemyparticipations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMyParticipationsView(SeeMyContentsView):
     title = _('My working groups')

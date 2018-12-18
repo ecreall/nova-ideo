@@ -23,6 +23,7 @@ from novaideo import _, log
     name='userunsubscribenewsletter',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UserUnsubscribeNewsletterView(BasicView):
 

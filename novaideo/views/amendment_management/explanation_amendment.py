@@ -83,6 +83,7 @@ class ExplanationFormView(FormView):
     name='explanationamendment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ExplanationView(MultipleView):
     title = _('Explain my improvements')

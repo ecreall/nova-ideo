@@ -67,6 +67,7 @@ class EditAPITokenView(FormView):
     name='get_api_token',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class GetAPITokenView(MultipleView):
     title = _('Get API token')

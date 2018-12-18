@@ -110,6 +110,7 @@ class VoteFormView(FormView):
     name='votefptp',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class VoteViewMultipleView(MultipleView):
     title = _('Vote')

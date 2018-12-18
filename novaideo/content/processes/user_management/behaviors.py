@@ -141,7 +141,7 @@ class LogIn(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 
 def logout_roles_validation(process, context):
@@ -160,7 +160,7 @@ class LogOut(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 
 def edit_roles_validation(process, context):
@@ -204,10 +204,6 @@ class Edit(InfiniteCardinality):
 
 
 class EditPassword(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-settings'
-    style_order = 1
     tags = ['parameters-menu']
     title = _('Edit password')
     submission_title = _('Save')
@@ -777,7 +773,7 @@ class SeeRegistrations(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 class RemoveRegistration(InfiniteCardinality):
@@ -991,7 +987,7 @@ class GeneralDiscuss(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 class ExtractAlerts(InfiniteCardinality):

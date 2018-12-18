@@ -61,6 +61,7 @@ class UploadUsersForm(FormView):
     name='upload_users',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UploadUsersView(MultipleView):
     title = _('Upload invitations')

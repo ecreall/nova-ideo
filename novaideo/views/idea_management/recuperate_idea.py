@@ -18,6 +18,7 @@ from novaideo import _
     name='recuperateidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RecuperateIdeaView(BasicView):
     title = _('Restore')

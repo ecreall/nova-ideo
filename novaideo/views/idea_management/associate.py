@@ -136,6 +136,7 @@ class AssociateFormView(FormView):
     name='associate',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AssociateView(MultipleView):
     title = _('Associate the idea')

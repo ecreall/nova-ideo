@@ -1072,6 +1072,7 @@ def main(global_config, **settings):
     config.include('.graphql')
     config.include("pyramid_sms")
     config.scan()
+    config.add_route('old', '/old')
     config.add_static_view('novaideostatic',
                            'novaideo:static',
                            cache_max_age=86400)

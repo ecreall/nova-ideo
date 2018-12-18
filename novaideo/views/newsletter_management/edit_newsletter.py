@@ -23,6 +23,7 @@ from novaideo import _
     name='editnewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditNewsletterView(FormView):
 

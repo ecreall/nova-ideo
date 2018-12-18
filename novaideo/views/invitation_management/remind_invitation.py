@@ -18,6 +18,7 @@ from novaideo import _
     name='remind_invitation',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemindInvitationView(BasicView):
 

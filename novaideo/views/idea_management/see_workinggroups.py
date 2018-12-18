@@ -33,6 +33,7 @@ WG_MESSAGES = {
     name='relatedworkinggroups',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeRelatedWorkingGroupsView(BasicView):
     name = 'relatedworkinggroups'

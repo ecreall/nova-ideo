@@ -66,6 +66,7 @@ def validate_file_content(node, appstruct, width, height):
 @view_config(
     name='banner_click',
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class BannerClick(BasicView):
     title = ''

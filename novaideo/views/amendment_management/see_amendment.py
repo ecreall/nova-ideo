@@ -28,6 +28,7 @@ from .explanation_amendment import IntentionFormView
     name='seeamendment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DetailAmendmentView(BasicView):
     title = ''

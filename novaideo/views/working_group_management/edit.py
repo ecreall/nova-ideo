@@ -21,6 +21,7 @@ from novaideo import _
     name='edit_wg',
     context=WorkingGroup,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditView(FormView):
 

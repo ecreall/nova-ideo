@@ -53,6 +53,7 @@ class DeactivateView(FormView):
     name='disactivate',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DeactivateViewMultipleView(MultipleView):
     title = _('Disactivate the profile')

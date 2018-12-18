@@ -22,6 +22,7 @@ from novaideo import _
     name='editwebadvertising',
     context=WebAdvertising,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditWebAdvertisingView(FormView):
 

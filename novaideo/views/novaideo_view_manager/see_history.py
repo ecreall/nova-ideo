@@ -24,6 +24,7 @@ from novaideo import _
     name='seeentityhistory',
     context=Entity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeEntityHistoryView(BasicView):
     title = _('History of processes')

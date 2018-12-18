@@ -44,6 +44,7 @@ class ReactionSchema(Schema):
     name='addreaction',
     context=Emojiable,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AddReactionEmojiableView(FormView):
     schema = select(ReactionSchema(),
@@ -71,6 +72,7 @@ class AddReactionEmojiableView(FormView):
     name='updatereaction',
     context=Emojiable,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UpdateReactionView(BasicView):
     title = _('Update reaction')

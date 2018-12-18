@@ -59,6 +59,7 @@ class ReportFormView(FormView):
     name='report',
     context=SignalableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ReportView(MultipleView):
     title = _('Report')

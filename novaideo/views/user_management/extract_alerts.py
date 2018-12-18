@@ -18,6 +18,7 @@ from novaideo import _
     name='extractalerts',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ExtractalertsView(BasicView):
     title = _('Extract alerts')

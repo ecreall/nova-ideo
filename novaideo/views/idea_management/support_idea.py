@@ -19,6 +19,7 @@ from novaideo import _
     name='supportidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SupportIdeaView(BasicView):
     title = _('Support')

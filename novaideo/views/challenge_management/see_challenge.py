@@ -362,11 +362,13 @@ class ParticipateContentView(MultipleView):
     name='index',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 @view_config(
     name='',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ChallengeView(MultipleView):
     title = ''

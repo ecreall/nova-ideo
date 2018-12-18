@@ -51,6 +51,7 @@ class ResignView(FormView):
     name='resign',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ResignViewMultipleView(MultipleView):
     title = _('Quit')

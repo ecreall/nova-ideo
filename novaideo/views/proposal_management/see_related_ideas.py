@@ -33,6 +33,7 @@ ADDIDEAS_MESSAGES = {
     name='addideas',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeRelatedIdeasView(BasicView):
     name = 'relatedideas'

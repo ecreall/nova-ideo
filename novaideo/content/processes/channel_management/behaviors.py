@@ -48,7 +48,7 @@ class Subscribe(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 
 def unsubscribe_processsecurity_validation(process, context):
@@ -78,6 +78,6 @@ class Unsubscribe(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 #TODO behaviors

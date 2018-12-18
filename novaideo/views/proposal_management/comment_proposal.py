@@ -47,6 +47,7 @@ class CommentProposalFormView(CommentIdeaFormView):
     name='comment',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentProposalView(CommentIdeaView):
     title = _('Discuss the proposal')
@@ -65,6 +66,7 @@ class CommentProposalView(CommentIdeaView):
     name='commentanonymous',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentProposalAnonymousView(ActionAnonymousView):
     behaviors = [CommentProposalAnonymous]

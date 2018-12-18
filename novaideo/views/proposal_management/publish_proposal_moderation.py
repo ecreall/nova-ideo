@@ -53,6 +53,7 @@ class PublishProposalView(FormView):
     name='publishproposalmoderation',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishProposalViewMultipleView(MultipleView):
     title = _('Publish the proposal')

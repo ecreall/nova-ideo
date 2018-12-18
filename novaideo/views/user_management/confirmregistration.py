@@ -22,6 +22,7 @@ from novaideo import _
     name='',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ConfirmRegistrationView(BasicView):
     title = _('Registration confirmation')

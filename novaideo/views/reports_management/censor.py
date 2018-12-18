@@ -69,6 +69,7 @@ class CensorFormView(FormView):
     name='censor',
     context=SignalableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CensorView(MultipleView):
     title = _('Censor')

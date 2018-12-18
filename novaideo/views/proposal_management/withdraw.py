@@ -18,6 +18,7 @@ from novaideo import _
     name='withdraw',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class WithdrawView(BasicView):
     title = _('Withdraw')

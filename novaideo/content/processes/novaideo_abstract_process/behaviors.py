@@ -243,7 +243,7 @@ class AddDeadLine(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def editdeadline_processsecurity_validation(process, context):
@@ -269,6 +269,6 @@ class EditDeadLine(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 #TODO behaviors

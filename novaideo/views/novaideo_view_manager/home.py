@@ -183,6 +183,15 @@ class QuestionsView(ContentView):
     name='index',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    route_name='old',
+    layout='old'
+    )
+@view_config(
+    name='',
+    context=NovaIdeoApplication,
+    renderer='pontus:templates/views_templates/grid.pt',
+    route_name='old',
+    layout='old'
     )
 @view_config(
     name='',

@@ -58,6 +58,7 @@ class AcceptInvitationSchema(Schema):
     name='accept_invitation',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AcceptInvitationView(FormView):
     title = _('Validate the invitation')

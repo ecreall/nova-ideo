@@ -232,6 +232,7 @@ class CreateProposalFormView(FormView):
     name='createproposal',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CreateProposalView(MultipleView):
     title = _('Create a proposal')

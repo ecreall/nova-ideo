@@ -52,6 +52,7 @@ class RefuseRegistrationView(FormView):
     name='refuseregistration',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RefuseRegistrationViewMultipleView(MultipleView):
     title = _('Refuse the registration')

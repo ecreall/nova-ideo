@@ -39,6 +39,7 @@ CONTENTS_MESSAGES = {
     name='seeideastoexamine',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeIdeasToExamineView(BasicView):
     title = _('Ideas to be examined')

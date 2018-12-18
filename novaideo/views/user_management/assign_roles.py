@@ -50,6 +50,7 @@ class RolesSchema(Schema):
     name='assignroles',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AssignRolesView(FormView):
 

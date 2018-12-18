@@ -53,6 +53,7 @@ class RedactFormNewsletterView(FormView):
     name='redactnewsletter',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RedactNewsletterView(MultipleView):
     title = _('Write a newsletter')

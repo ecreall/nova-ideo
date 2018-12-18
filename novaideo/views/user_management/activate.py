@@ -18,6 +18,7 @@ from novaideo import _
     name='activate',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ActivateView(BasicView):
     title = _('Activate the profile')

@@ -64,6 +64,7 @@ class ManageKeywordsFormView(FormView):
     name='managekeywords',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ManageKeywordsView(MultipleView):
     title = _('Manage keywords')

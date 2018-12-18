@@ -26,6 +26,7 @@ from novaideo import _
     name='editorganizations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditOrganizationsView(FormView):
 

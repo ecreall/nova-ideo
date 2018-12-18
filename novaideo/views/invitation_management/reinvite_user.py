@@ -19,6 +19,7 @@ from novaideo import _
     name='reinvite_user',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ReinviteUserView(BasicView):
 

@@ -34,6 +34,7 @@ CONTENTS_MESSAGES = {
     name='seeadvertisings',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeAdvertisingsView(BasicView):
     title = _('The announcements')

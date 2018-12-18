@@ -97,6 +97,7 @@ class PresentAmendmentFormView(FormView):
     name='present',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PresentAmendmentView(PresentIdeaView):
     title = _('Submit the amended version to others')

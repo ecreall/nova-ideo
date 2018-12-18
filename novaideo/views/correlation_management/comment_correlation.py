@@ -51,6 +51,7 @@ class CommentCorrelationFormView(FormView):
     name='commentcorrelation',
     context=Correlation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CommentCorrelationView(MultipleView):
     title = _('Comment')

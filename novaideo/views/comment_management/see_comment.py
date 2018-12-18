@@ -30,6 +30,7 @@ from novaideo.utilities.util import render_listing_obj
     name='seecomment',
     context=Entity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeCommentView(BasicView):
     title = ''

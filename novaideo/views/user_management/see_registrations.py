@@ -35,6 +35,7 @@ CONTENTS_MESSAGES = {
     name='seeregistrations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeRegistrationsView(BasicView):
     title = _('Registrations')

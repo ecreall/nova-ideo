@@ -13,6 +13,7 @@ from pyramid.threadlocal import get_current_registry
 from substanced.util import get_oid
 
 from daceui.interfaces import IDaceUIAPI
+from dace.interfaces import IObject
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
@@ -21,6 +22,7 @@ from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
+from pontus.index import Index
 
 from novaideo.views.novaideo_view_manager.search import (
     get_default_searchable_content)
@@ -44,6 +46,18 @@ from novaideo.core import can_access
 ALL_VALUES_KEY = "*"
 
 NBRESULT = 20
+
+
+@view_config(
+    name='index',
+    context=IObject,
+    renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
+    )
+class NovaIdeoIndex(Index):
+    
+    def update(self):
+        return super(NovaIdeoIndex, self).update()
 
 
 def is_all_values_key(key):

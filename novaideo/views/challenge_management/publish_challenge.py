@@ -51,6 +51,7 @@ class PublishChallengeView(FormView):
     name='publishchallenge',
     context=Challenge,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishChallengeViewMultipleView(MultipleView):
     title = _('Publish the challenge')

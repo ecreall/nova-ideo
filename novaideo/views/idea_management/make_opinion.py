@@ -49,6 +49,7 @@ class OpinionSchema(Schema):
     name='makeopinionformidea',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class MakeOpinionFormView(FormView):
     title = _('Give your opinion')

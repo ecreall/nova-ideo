@@ -20,6 +20,7 @@ from novaideo.views.core import ActionAnonymousView
     name='selectentity',
     context=SearchableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SelectEntityView(BasicView):
     title = _('Add to my favourites')
@@ -36,6 +37,7 @@ class SelectEntityView(BasicView):
     name='selectentityanonymous',
     context=SearchableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SelectEntityAnonymousView(ActionAnonymousView):
     behaviors = [SelectEntityAnonymous]

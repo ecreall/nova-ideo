@@ -22,6 +22,7 @@ from novaideo import _
     name='editorganization',
     context=Organization,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditOrganizationView(FormView):
 

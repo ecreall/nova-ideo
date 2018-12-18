@@ -36,6 +36,7 @@ MEMBERS_MESSAGES = {
     name='seeproposalmembers',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMembersView(BasicView):
     title = _('Members')

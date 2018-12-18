@@ -36,6 +36,7 @@ class SubmitSchema(Schema):
     name='directsubmitamendmentform',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DirectSubmitAmendmentFormView(FormView):
     title = _('Submit the amendment')

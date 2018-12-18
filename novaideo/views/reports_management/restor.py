@@ -52,6 +52,7 @@ class RestorFormView(FormView):
     name='restor',
     context=SignalableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RestorView(MultipleView):
     title = _('Restore')

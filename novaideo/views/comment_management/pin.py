@@ -61,6 +61,7 @@ class PinForm(FormView):
     name='pincomment',
     context=Comment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PinView(MultipleView):
     title = _('Pin comment')

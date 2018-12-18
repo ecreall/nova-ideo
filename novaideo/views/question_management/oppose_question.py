@@ -20,6 +20,7 @@ from novaideo.views.core import ActionAnonymousView
     name='opposequestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OpposeQuestionView(BasicView):
     title = _('Oppose')
@@ -36,6 +37,7 @@ class OpposeQuestionView(BasicView):
     name='opposequestionanonymous',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OpposeQuestionAnonymousView(ActionAnonymousView):
     behaviors = [OpposeQuestionAnonymous]

@@ -64,6 +64,7 @@ class OrderSmartFoldersSchema(Schema):
     name='ordersmartfolders',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OrderSmartFoldersView(FormView):
 

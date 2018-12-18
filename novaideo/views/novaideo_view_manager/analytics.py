@@ -552,6 +552,7 @@ class EvaluationsByOrganizationsView(MultipleView):
     name='analytics',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AnalyticsView(MultipleView):
     title = _('Analytics')

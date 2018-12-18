@@ -22,6 +22,7 @@ from novaideo.utilities.pseudo_react import (
     name='correctitem',
     context=Correction,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CorrectItemView(BasicView):
     title = _('Correct')

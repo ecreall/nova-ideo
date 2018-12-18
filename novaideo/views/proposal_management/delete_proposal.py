@@ -76,6 +76,7 @@ class DeleteProposalFormView(FormView):
     name='deleteproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DeleteProposalView(MultipleView):
     title = _('Delete the proposal')

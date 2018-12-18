@@ -52,6 +52,7 @@ class IgnoreFormView(FormView):
     name='ignore',
     context=SignalableEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class IgnoreView(MultipleView):
     title = _('Ignore')

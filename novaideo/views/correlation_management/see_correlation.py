@@ -41,6 +41,7 @@ class DetailCorrelation(BasicView):
     name='seecorrelation',
     context=Correlation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeCorrelationView(MultipleView):
     title = _('Detail')

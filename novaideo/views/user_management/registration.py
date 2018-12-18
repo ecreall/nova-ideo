@@ -60,6 +60,7 @@ class RegistrationSchema(PersonSchema):
     name='registration',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RegistrationView(FormView):
 
@@ -85,6 +86,7 @@ class RegistrationView(FormView):
     name='registrationsubmitted',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RegistrationSubmittedView(BasicView):
     template = 'novaideo:views/user_management/templates/registrationsubmitted.pt'

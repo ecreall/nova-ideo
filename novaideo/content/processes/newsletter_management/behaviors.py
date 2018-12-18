@@ -421,7 +421,7 @@ class UserUnsubscribeNewsletter(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, ""))
+        return HTTPFound(request.resource_url(root, 'old'))
 
 
 def unsubscribe_processsecurity_validation(process, context):
@@ -493,7 +493,7 @@ class SeeNewsletters(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context, 'old'))
 
 
 def see_subscribed_processsecurity_validation(process, context):

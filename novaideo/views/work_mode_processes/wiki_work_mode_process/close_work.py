@@ -19,6 +19,7 @@ from novaideo import _
     name='closewikiwork',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CloseWorkView(BasicView):
     title = _('Close the work')

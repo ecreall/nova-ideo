@@ -62,6 +62,7 @@ class DiscussFormView(FormView):
     name='discuss',
     context=IPerson,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DiscussView(MultipleView):
     title = _('Private discussion')
@@ -121,6 +122,7 @@ class GeneralDiscussFormView(DiscussFormView):
     name='discuss',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class GeneralDiscussView(DiscussView):
     title = _('General discussion')

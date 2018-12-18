@@ -28,6 +28,7 @@ from novaideo.utilities.util import add_file_data
     name='configuresite',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ConfigureSiteView(FormView):
 

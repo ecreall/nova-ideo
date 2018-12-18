@@ -28,6 +28,7 @@ from novaideo.views.core import update_anonymous_schemanode, update_challenge_sc
     name='createidea',
     context=Comment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class CreateIdeaView(FormView):
 

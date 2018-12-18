@@ -27,6 +27,7 @@ from novaideo import _
     name='seefiles',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeFilesView(BasicView):
     title = _('The documents')

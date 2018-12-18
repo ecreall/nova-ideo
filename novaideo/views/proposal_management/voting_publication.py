@@ -19,6 +19,7 @@ from novaideo import _
     name='votingpublication',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class VotingPublicationView(BasicView):
     title = _('Decision')

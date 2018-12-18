@@ -153,6 +153,7 @@ class PublishAsProposalFormView(MultipleView):
     name='publishasproposal',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishAsProposalView(CreateProposalView):
     title = _('Transform the idea into a proposal')

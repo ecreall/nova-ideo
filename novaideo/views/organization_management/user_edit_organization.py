@@ -35,6 +35,7 @@ class UserEditOrganizationSchema(PersonSchema):
     name='usereditorganization',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class UserEditOrganizationView(FormView):
 

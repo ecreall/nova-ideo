@@ -23,6 +23,7 @@ from novaideo import _
     name='editsmartfolder',
     context=SmartFolder,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditSmartFolderView(FormView):
 

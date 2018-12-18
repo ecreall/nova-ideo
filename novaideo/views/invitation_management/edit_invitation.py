@@ -23,6 +23,7 @@ from novaideo import _
     name='editinvitation',
     context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditInvitationView(FormView):
 

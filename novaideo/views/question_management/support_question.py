@@ -20,6 +20,7 @@ from novaideo.views.core import ActionAnonymousView
     name='supportquestion',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SupportQuestionView(BasicView):
     title = _('Support')
@@ -36,6 +37,7 @@ class SupportQuestionView(BasicView):
     name='supportquestionanonymous',
     context=Question,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SupportQuestionAnonymousView(ActionAnonymousView):
     behaviors = [SupportQuestionAnonymous]

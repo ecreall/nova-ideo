@@ -40,6 +40,7 @@ CONTENTS_MESSAGES = {
     name='seemycontents',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMyContentsView(BasicView):
     title = _('My contents')

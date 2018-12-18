@@ -34,6 +34,7 @@ CONTENTS_MESSAGES = {
     name='seeorganizations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeOrganizationsView(BasicView):
     title = _('The Organizations')

@@ -69,6 +69,7 @@ class ModerationArchiveProposalView(FormView):
     name='moderationarchiveproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class ModerationArchiveProposalViewMultipleView(MultipleView):
     title = _('Archive the proposal')

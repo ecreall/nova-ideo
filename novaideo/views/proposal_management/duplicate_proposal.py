@@ -75,6 +75,7 @@ class DuplicateProposalFormView(FormView):
     name='duplicateproposal',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class DuplicateProposalView(MultipleView):
     title = _('Duplicate the proposal')

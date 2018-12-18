@@ -25,6 +25,7 @@ from novaideo.utilities.util import (
     name='',
     context=Workspace,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeWorkspaceView(BasicView):
     title = ''

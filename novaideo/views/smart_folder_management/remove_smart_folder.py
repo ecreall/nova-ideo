@@ -53,6 +53,7 @@ class RemoveSmartFolderView(FormView):
     name='removesmartfolder',
     context=SmartFolder,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveSmartFolderViewMultipleView(MultipleView):
     title = _('Remove the topic of interest')

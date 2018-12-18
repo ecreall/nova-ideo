@@ -32,6 +32,7 @@ CONTENTS_MESSAGES = {
     name='seemyselections',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeMySelectionsView(SeeMyContentsView):
     title = _('My followings')

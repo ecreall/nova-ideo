@@ -21,6 +21,7 @@ from novaideo import _
     name='editamendment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class EditAmendmentView(FormView):
     title = _('Edit the amendment')

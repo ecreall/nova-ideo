@@ -45,6 +45,7 @@ class RemoveAdvertisingView(FormView):
     name='removeadvertising',
     context=Advertising,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveAdvertisingViewMultipleView(MultipleView):
     title = _('Remove the announcement')

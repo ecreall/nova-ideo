@@ -64,6 +64,7 @@ def get_default_searchable_content(request=None):
 @view_config(
     name='advanced_search',
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AdvancedSearchView(FilterView):
     title = _('Advanced search')
@@ -227,6 +228,7 @@ class SearchView(FormView):
     name='search',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SearchResultView(BasicView):
     title = _('Nova-Ideo contents')

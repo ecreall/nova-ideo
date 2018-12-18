@@ -53,6 +53,7 @@ class PrivateFileView(FormView):
     name='privatefile',
     context=FileEntity,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PrivateFileMultipleView(MultipleView):
     title = _('Privatize the document')

@@ -60,6 +60,7 @@ class AddOrganizationsForm(FormView):
     name='add_organizations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AddOrganizationsView(MultipleView):
     title = _('Upload organizations')

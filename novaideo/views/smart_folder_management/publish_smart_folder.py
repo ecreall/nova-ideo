@@ -53,6 +53,7 @@ class PublishSmartFolderView(FormView):
     name='publishsmartfolder',
     context=SmartFolder,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class PublishSmartFolderViewMultipleView(MultipleView):
     title = _('Publish the topic of interest')

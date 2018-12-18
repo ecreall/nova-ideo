@@ -61,6 +61,7 @@ class OrderSmartFoldersSchema(Schema):
     name='ordersubsmartfolders',
     context=SmartFolder,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class OrderSmartFoldersView(FormView):
 

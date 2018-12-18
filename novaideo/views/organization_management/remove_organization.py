@@ -52,6 +52,7 @@ class RemoveForm(FormView):
     name='removeorganization',
     context=Organization,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class RemoveView(MultipleView):
     title = _('Organization deletion')

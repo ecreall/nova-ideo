@@ -19,6 +19,7 @@ from novaideo import _
     name='amendmentsresult',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AmendmentsResultView(BasicView):
     title = _('Result of the vote on amendments')

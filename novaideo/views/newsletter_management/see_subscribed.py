@@ -20,6 +20,7 @@ from novaideo import _
     name='seenewslettersubscribed',
     context=Newsletter,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SeeSubscribedView(BasicView):
     title = _('Subscribed users')

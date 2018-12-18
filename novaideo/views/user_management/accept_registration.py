@@ -52,6 +52,7 @@ class AcceptRegistrationView(FormView):
     name='acceptregistration',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class AcceptRegistrationViewMultipleView(MultipleView):
     title = _('Accept the registration')

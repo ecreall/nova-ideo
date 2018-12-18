@@ -52,6 +52,7 @@ class SubscribeForm(FormView):
     name='subscribechannel',
     context=Channel,
     renderer='pontus:templates/views_templates/grid.pt',
+    layout='old'
     )
 class SubscribeView(MultipleView):
     title = _('Subscribe to the discussion')
