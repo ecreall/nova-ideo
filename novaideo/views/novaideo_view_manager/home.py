@@ -193,11 +193,6 @@ class QuestionsView(ContentView):
     route_name='old',
     layout='old'
     )
-@view_config(
-    name='',
-    context=NovaIdeoApplication,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
 class HomeView(MultipleView):
     title = ''
     name = ''
