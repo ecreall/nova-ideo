@@ -470,9 +470,9 @@ const Translations = {
       folloers_0: "N'est suivis par personne",
       search: "Rechercher dans les contenus de %{name}",
       subscribed: "Inscrit le %{date}",
-      noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
+      noUserCard: "Connectez vous pour accéder aux données de votre profil et plus encore!",
       noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
-      noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
+      noUserChannels: "Pour accéder à vos discussions vous devez être connecté.",
       confirmRegistration: "Veuillez patienter pendant que nous vérifions votre inscription !"
     },
     roles: {
@@ -953,9 +953,9 @@ const Translations = {
       folloers_0: "Not followed",
       search: "Search on the %{name} contents",
       subscribed: "Subscribed the %{date}",
-      noUserCard: "Connecter vous pour accéder aux données de votre profil et plus encore!",
-      noUserContents: "Pour accéder à vos contenus vous devez être connecté.",
-      noUserChannels: "Pour accéder à vos discussion vous devez être connecté.",
+      noUserCard: "Please connect to access to your profile data and more!",
+      noUserContents: "You must be logged in to access to your contents.",
+      noUserChannels: "You must be logged in to access to your discussions.",
       confirmRegistration: "Please wait while we check your registration!"
     },
     roles: {
