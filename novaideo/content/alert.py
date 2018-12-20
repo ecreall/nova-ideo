@@ -12,6 +12,7 @@ from pyramid import renderers
 from substanced.util import get_oid
 from substanced.content import content
 
+from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedMultipleProperty
 from pontus.core import VisualisableElement
@@ -63,6 +64,18 @@ class Alert(VisualisableElement, Entity):
     @property
     def icon(self):
         return self.pattern.get_icon(self)
+
+    @property
+    def alert_data(self):
+        return self.pattern.get_data(self)
+
+    @property
+    def subject(self):
+        return self.pattern.get_subject(self)
+
+    @property
+    def sub_kind(self):
+        return getattr(self, 'alert_kind', None)
 
     def init_alert(self, users, subjects=[], exclude=[]):
         self.subscribe(users)
@@ -149,6 +162,19 @@ class _CommentAlert(object):
     def get_icon(self, alert):
         return self.icon
 
+    def get_data(self, alert):
+        return {
+            'is_respons': getattr(alert, 'is_respons', False),
+            'alert_kind': getattr(alert, 'alert_kind', None),
+            'author_title': getattr(alert, 'author_title', None),
+            'author_first_name': getattr(alert, 'author_first_name', None),
+            'author_last_name': getattr(alert, 'author_last_name', None),
+            'comment_oid': getattr(alert, 'comment_oid', None)
+        }
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else getSite().channel
+
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
             'notification', user, request)
@@ -158,7 +184,7 @@ class _CommentAlert(object):
             subject.get_title(user))
         channel = subject
         subject = channel.get_subject(user)
-        if getattr(alert, 'comment_kind', '') == 'discuss':
+        if getattr(alert, 'alert_kind', '') == 'discuss':
             subject = channel.get_subject(subject)
 
         return {
@@ -185,6 +211,21 @@ class _ContentAlert(object):
 
     def get_icon(self, alert):
         return self.icon
+
+    def get_data(self, alert):
+        return {
+            'author_title': getattr(alert, 'author_title', None),
+            'author_first_name': getattr(alert, 'author_first_name', None),
+            'author_last_name': getattr(alert, 'author_last_name', None),
+            'comment_oid': getattr(alert, 'comment_oid', None),
+            'url': getattr(alert, 'url', None),
+            'duplicate_title': getattr(alert, 'duplicate_title', None),
+            'member_url': getattr(alert, 'member_url', None),
+            'member_title': getattr(alert, 'member_title', None)
+        }
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
 
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
@@ -216,6 +257,12 @@ class _WorkingGroupAlert(object):
     def get_icon(self, alert):
         return self.icon
 
+    def get_data(self, alert):
+        return {}
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
+
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
             'notification', user, request)
@@ -244,6 +291,12 @@ class _ModerationAlert(object):
 
     def get_icon(self, alert):
         return self.icon
+
+    def get_data(self, alert):
+        return {}
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
 
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
@@ -275,6 +328,12 @@ class _ExaminationAlert(object):
     def get_icon(self, alert):
         return self.icon
 
+    def get_data(self, alert):
+        return {}
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
+
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
             'notification', user, request)
@@ -302,17 +361,23 @@ class _SupportAlert(object):
         return Alert(InternalAlertKind.support_alert, **kwargs)
 
     def get_icon(self, alert):
-        support_kind = getattr(alert, 'support_kind', '')
-        if support_kind == 'support':
+        alert_kind = getattr(alert, 'alert_kind', '')
+        if alert_kind == 'support':
             return 'octicon octicon-triangle-up'
 
-        if support_kind == 'oppose':
+        if alert_kind == 'oppose':
             return 'octicon octicon-triangle-down'
 
-        if support_kind == 'withdraw':
+        if alert_kind == 'withdraw':
             return 'glyphicon glyphicon-remove'
 
         return self.icon
+
+    def get_data(self, alert):
+        return {}
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
 
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(
@@ -342,6 +407,12 @@ class _AdminAlert(object):
 
     def get_icon(self, alert):
         return self.icon
+
+    def get_data(self, alert):
+        return {}
+
+    def get_subject(self, alert):
+        return alert.subjects[0] if alert.subjects else None
 
     def get_notification_data(self, subject, user, request, alert):
         html_message = alert.render(

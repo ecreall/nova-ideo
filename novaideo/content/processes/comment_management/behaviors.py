@@ -141,7 +141,7 @@ class Respond(InfiniteCardinality):
             if comment_author in authors:
                 authors.remove(comment_author)
 
-            comment_kind = 'general_discuss' if not channel.get_subject(author) \
+            alert_kind = 'general_discuss' if not channel.get_subject(author) \
                 else 'discuss' if is_discuss else 'comment'
             author_data = get_user_data(author, 'author', request)
             alert_data = get_entity_data(comment, 'comment', request)
@@ -149,7 +149,7 @@ class Respond(InfiniteCardinality):
             alert('internal', [root], authors,
                   internal_kind=InternalAlertKind.comment_alert,
                   subjects=[channel],
-                  comment_kind=comment_kind,
+                  alert_kind=alert_kind,
                   **alert_data)
             subject_data = get_entity_data(content, 'subject', request)
             alert_data.update(subject_data)
@@ -172,7 +172,7 @@ class Respond(InfiniteCardinality):
                 alert('internal', [root], [comment_author],
                       internal_kind=InternalAlertKind.comment_alert,
                       subjects=[channel], is_respons=True,
-                      comment_kind=comment_kind,
+                      alert_kind=alert_kind,
                       **alert_data
                       )
                 if getattr(comment_author, 'email', ''):

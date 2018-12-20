@@ -1,0 +1,5 @@
+mutation MarkAlertsAsRead($userId: ID!, $alerts: [ID]!) {
+  markAlertsAsRead(userId: $userId, alerts: $alerts) {
+    status
+  }
+}

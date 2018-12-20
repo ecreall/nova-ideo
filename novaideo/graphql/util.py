@@ -187,7 +187,30 @@ def get_all_comments(container, args):
         list(comments.ids), limit=limit, sort_type=STABLE, reverse=True))
 
 
+def get_user_alerts(user, args):
+    try:
+        after = cursor_to_offset(args.get('after'))
+        first = args.get('first')
+        if after is None:
+            limit = first
+        else:
+            limit = after + 1 + first
+
+        limit = limit + 1  # retrieve one more so the hasNextPage works
+    except Exception:  # FIXME:
+        limit = None
+
+    alerts = user.all_alerts
+    catalog = find_catalog('novaideo')
+    release_date_index = catalog['created_at']
+    return len(alerts), list(release_date_index.sort(
+        list(alerts.ids), limit=limit, sort_type=STABLE, reverse=True))
+
+
 def get_actions(context, request, args):
+    if not context:
+        return []
+
     process_ids = args.get('process_id', None)
     node_ids = args.get('node_ids', None)
     action_tags = args.get('action_tags', None)

@@ -1,0 +1,20 @@
+fragment Alert on Alert {
+  id
+  createdAt
+  type
+  kind
+  data {
+    key
+    value
+  }
+  subject {
+    ... on IEntity {
+      id
+      oid
+      title
+    }
+    ... on Idea {
+      state
+    }
+  }
+}

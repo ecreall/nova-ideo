@@ -488,6 +488,29 @@ def evolve_alert_subjects(root, registry):
     log.info('Alerts evolved')
 
 
+def evolve_alert_kind(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IAlert
+    from BTrees.OOBTree import OOBTree
+    import transaction
+
+    contents = find_entities(interfaces=[IAlert])
+    len_entities = str(len(contents))
+    for index, alert in enumerate(contents):
+        kind = getattr(alert, 'comment_kind', getattr(alert, 'support_kind', None))
+        if kind:
+            alert.alert_kind = kind
+            alert.reindex()
+
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Alert kind evolved')
+
+
 def subscribe_users_notif_ids(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
@@ -1037,6 +1060,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_roles_comments)
     config.add_evolution_step(evolve_alerts)
     config.add_evolution_step(evolve_alert_subjects)
+    config.add_evolution_step(evolve_alert_kind)
     config.add_evolution_step(subscribe_users_notif_ids)
     config.add_evolution_step(evolve_mails)
     config.add_evolution_step(evolve_access_keys)

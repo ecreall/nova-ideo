@@ -545,7 +545,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
             self.delfromproperty('organization', current_organization)
 
     @property
-    def all_alerts(self):
+    def all_alert_subscriptions(self):
         novaideo_catalog = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
         alert_keys_index = novaideo_catalog['alert_keys']
@@ -560,10 +560,11 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
             alert_exclude_keys_index.notany(exclude)
         return query.execute()
 
+    # TODO optimization
     @property
     def alerts(self):
         old_alerts = [get_oid(a) for a in self.old_alerts]
-        result = self.all_alerts
+        result = self.all_alert_subscriptions
 
         def exclude(result_set, docids):
             filtered_ids = list(result_set.ids)
@@ -575,6 +576,23 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                 filtered_ids, len(filtered_ids), result_set.resolver)
 
         return exclude(result, old_alerts)
+
+    # TODO optimization
+    @property
+    def all_alerts(self):
+        old_alerts = [get_oid(a) for a in self.old_alerts]
+        result = self.all_alert_subscriptions
+
+        def include(result_set, docids):
+            filtered_ids = list(result_set.ids)
+            for _id in docids:
+                if _id not in filtered_ids:
+                    filtered_ids.append(_id)
+
+            return result_set.__class__(
+                filtered_ids, len(filtered_ids), result_set.resolver)
+
+        return include(result, old_alerts)
 
     def get_alerts_keys(self):
         result = ['all', str(get_oid(self))]

@@ -208,7 +208,7 @@ def text_to_search_query(node, **args):
                 operator = args.get('text_operator', 'AND')
                 text = (' ' + operator + '* ').join(list_text)
             else:
-                percentage = args.get('percentage', 50)
+                percentage = args.get('percentage', 80)
                 text_nb = int((len(list_text) * percentage) / 100)
                 result = combinaisons(list_text, text_nb)
                 text = ' OR '.join(['('+' AND '.join(

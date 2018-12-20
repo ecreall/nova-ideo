@@ -54,7 +54,7 @@ export class DumbSimilarProposalsButton extends React.Component {
         .use(Retextkeywords)
         .process(text, this.getSimilarProposals);
     }
-  }, 200);
+  }, 300);
 
   getSimilarProposals = (err, file) => {
     const { keywords, client, collaborationAppRightOpened } = this.props;
@@ -63,12 +63,12 @@ export class DumbSimilarProposalsButton extends React.Component {
       ? []
       : file.data.keywords
         .filter((keyword) => {
-          return keyword.score >= 0.5;
+          return keyword.score >= 1;
         })
         .map((keyword) => {
           return toString(keyword.matches[0].node);
         });
-    textkeywords = [...textkeywords, ...keywords];
+    textkeywords = [...textkeywords, ...keywords].slice(0, 10);
     const filterText = textkeywords.join(',');
     const currentFilter = hasSimilarProposalsFilter ? hasSimilarProposalsFilter.text : '';
     if (filterText !== currentFilter && filterText) {

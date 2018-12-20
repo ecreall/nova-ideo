@@ -1221,7 +1221,7 @@ class SupportIdea(InfiniteCardinality):
         if user is not context.author:
             alert('internal', [request.root], [context.author],
                   internal_kind=InternalAlertKind.support_alert,
-                  subjects=[context], support_kind='support')
+                  subjects=[context], alert_kind='support')
 
         return {}
 
@@ -1270,7 +1270,7 @@ class OpposeIdea(InfiniteCardinality):
         if user is not context.author:
             alert('internal', [request.root], [context.author],
                   internal_kind=InternalAlertKind.support_alert,
-                  subjects=[context], support_kind='oppose')
+                  subjects=[context], alert_kind='oppose')
 
         return {}
 
@@ -1306,7 +1306,7 @@ class WithdrawToken(InfiniteCardinality):
         if user is not context.author:
             alert('internal', [request.root], [context.author],
                   internal_kind=InternalAlertKind.support_alert,
-                  subjects=[context], support_kind='withdraw')
+                  subjects=[context], alert_kind='withdraw')
 
         return {}
 

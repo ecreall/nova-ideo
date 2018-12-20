@@ -19,6 +19,7 @@ import Search from '../forms/Search';
 import { getFormId } from '../../utils/globalFunctions';
 import ExaminationProgress from './ExaminationProgress';
 import { MAIN_SEARCH_ID, MAIN_FILTER_ID } from '../../constants';
+import Alerts from '../user/Alerts';
 
 const styles = {
   flex: {
@@ -111,7 +112,7 @@ class NavBar extends React.Component {
 
   render() {
     const {
-      classes, className, drawer, site, toggleDrawer, filterOpened
+      classes, className, drawer, site, toggleDrawer, filterOpened, account
     } = this.props;
     const formId = getFormId(MAIN_SEARCH_ID);
     return (
@@ -139,6 +140,7 @@ class NavBar extends React.Component {
                 />
               </div>
             </div>
+            {account ? <Alerts userId={account.id} /> : null}
             {!drawer && (
               <div className={classes.userMenuContainer}>
                 <UserMainMenu
@@ -172,6 +174,7 @@ export const mapStateToProps = (state) => {
   return {
     drawer: state.apps.drawer.open,
     site: state.globalProps.site,
+    account: state.globalProps.account,
     filterOpened: !!state.filter[MAIN_FILTER_ID]
   };
 };

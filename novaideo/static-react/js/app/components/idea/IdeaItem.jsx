@@ -190,11 +190,13 @@ export class DumbIdeaItem extends React.Component {
   };
 
   openDetails = () => {
-    const { channelOpen } = this.props;
-    if (channelOpen) {
-      this.props.closeChatApp();
+    const { channelOpen, node: { id } } = this.props;
+    if (id !== '0') {
+      if (channelOpen) {
+        this.props.closeChatApp();
+      }
+      goTo(get('ideas', { ideaId: id }));
     }
-    goTo(get('ideas', { ideaId: this.props.node.id }));
   };
 
   render() {

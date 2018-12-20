@@ -5,7 +5,7 @@
                  author_last_name getattr(object, 'author_last_name', '');
                  author_parts [author_title, author_first_name, author_last_name];
                  author ' '.join([a for a in author_parts if a]);
-                 comment_kind getattr(object, 'comment_kind', 'comment');
+                 alert_kind getattr(object, 'alert_kind', 'comment');
                  subjects object.subjects if object.subjects else [request.root.channel];
                  icon object.icon;
                  new_alert object.is_to_alert(current_user)">
@@ -15,7 +15,7 @@
      <div tal:define="channel subjects[0];
 		  	          subject channel.get_subject(current_user);"
 		  class="alert-item ${new_alert and 'new-alert'}">
-	     <div tal:condition="comment_kind == 'comment'">  
+	     <div tal:condition="alert_kind == 'comment'">  
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
@@ -29,7 +29,7 @@
 			    <span i18n:translate="" ><span i18n:name="aut" >${author or 'Une personne'}</span> answered your comment regarding the contribution <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
 			  </div>
 		  </div>
-		  <div tal:condition="comment_kind == 'discuss'">  
+		  <div tal:condition="alert_kind == 'discuss'">  
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
@@ -43,7 +43,7 @@
 			    <span i18n:translate=""><a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a> answered your message.</span>
 			  </div>
 		  </div>
-		  <div tal:condition="comment_kind == 'general_discuss'">  
+		  <div tal:condition="alert_kind == 'general_discuss'">  
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>

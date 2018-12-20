@@ -1,0 +1,22 @@
+#import "../fragments/Alert.graphql"
+
+query Alerts($id: ID!, $first: Int!, $after: String!) {
+  person: node(id: $id) {
+    ... on Person {
+      id
+      unreadAlertsIds
+      alerts(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          node {
+            ...Alert
+          }
+        }
+      }
+    }
+  }
+}

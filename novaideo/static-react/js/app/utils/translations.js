@@ -1,6 +1,49 @@
 /* eslint max-len: "off", quotes: ["error", "double"] */
 const Translations = {
   fr: {
+    alerts: {
+      commentAlert: {
+        comment: {
+          notRespons: "<strong>%{author_first_name}</strong> a commenté la contribution <strong>%{subjectTtitle}</strong>",
+          respons:
+            "<strong>%{author_first_name}</strong> a répondu à votre commentaire concernant la contribution <strong>%{subjectTtitle}</strong>"
+        },
+        discuss: {
+          notRespons: "<strong>%{author_first_name}</strong> a ajouté un message à votre discussion privée.",
+          respons: "<strong>%{author_first_name}</strong> a répondu à votre message."
+        },
+        generalDiscuss: {
+          notRespons: "<strong>%{author_first_name}</strong> a ajouté un message à la discussion générale.",
+          respons: "<strong>%{author_first_name}</strong> a répondu à votre message."
+        }
+      },
+      supportAlert: {
+        support: "Un Membre a soutenu cette contribution <strong>%{subjectTtitle}</strong>",
+        oppose: "Un Membre s'est opposé à cette contribution <strong>%{subjectTtitle}</strong>",
+        withdraw: "Un Membre a retiré son jeton de cette contribution <strong>%{subjectTtitle}</strong>"
+      },
+      examinationAlert: "Le comité d'examen a statué sur cette contribution <strong>%{subjectTtitle}</strong>",
+      contentAlert: {
+        modified: "Le contenu <strong>%{subjectTtitle}</strong>, faisant partie de vos favoris a été modifié.",
+        published: "Le contenu <strong>%{subjectTtitle}</strong>, faisant partie de vos centres d'intérêt a été publié.",
+        publishedAuthor:
+          "Le Membre <strong>%{member_title}</strong>, que vous avez mis en favori a publié le contenu <strong>%{subjectTtitle}</strong>",
+        present: "Le contenu <strong>%{subjectTtitle}</strong> vous a été communiqué.",
+        userDeactivated: "Le compte du Membre <strong>%{subjectTtitle}</strong>, que vous avez mis en favori a été désactivé."
+      },
+      moderationAlert: {
+        moderation: "Les modérateurs ont statué sur la contribution <strong>%{subjectTtitle}</strong>",
+        newReport:
+          "Un nouveau contenu vient d'être signalé comme potentiellement non conforme. Le contenu signalé est <strong>%{subjectTtitle}</strong>",
+        objectArchive: "La contribution <strong>%{subjectTtitle}</strong> a été archivée.",
+        objectRestor: "La contribution <strong>%{subjectTtitle}</strong> a été restaurée.",
+        objectCensor: "La contribution <strong>%{subjectTtitle}</strong> a été censurée.",
+        moderateContent:
+          "Un nouveau contenu vient d'être ajouté. Le contenu est <strong>%{subjectTtitle}</strong>. Vous êtes invité(e) à le modérer.",
+        moderateReport:
+          "Un contenu vient d'être signalé comme potentiellement non conforme. Le contenu est <strong>%{subjectTtitle}</strong>. Vous êtes invité(e) à le modérer."
+      }
+    },
     messages: {
       present: {
         proposal: {
@@ -484,6 +527,49 @@ const Translations = {
     }
   },
   en: {
+    alerts: {
+      commentAlert: {
+        comment: {
+          notRespons: "%{author_first_name} commented the contribution %{subjectTtitle}",
+          respons: "%{author_first_name} answered your comment regarding the contribution %{subjectTtitle}"
+        },
+        discuss: {
+          notRespons: "added a message to your discussion",
+          respons: "answered your message."
+        },
+        generalDiscuss: {
+          notRespons: " added a message to the general discussion.",
+          respons: " answered your comment."
+        }
+      },
+      supportAlert: {
+        support: "A Member supported this contribution <strong>%{subjectTtitle}</strong>",
+        oppose: "A Member opposed this contribution <strong>%{subjectTtitle}</strong>",
+        withdraw: "A Member withdrew his/her token from this contribution <strong>%{subjectTtitle}</strong>"
+      },
+      examinationAlert: "The Examination Committee has decided over the contribution <strong>%{subjectTtitle}</strong>",
+      contentAlert: {
+        modified: "The content <strong>%{subjectTtitle}</strong>, which is part of your favourites, has been modified.",
+        published: "The content <strong>%{subjectTtitle}</strong>, which is part of your topics of interest, has been published.",
+        publishedAuthor:
+          "The member <strong>%{member_title}</strong>, which is part of your favourites, has published the content <strong>%{subjectTtitle}</strong>",
+        present: "The content <strong>%{subjectTtitle}</strong> has been sent to you.",
+        userDeactivated:
+          " The account of the Member <strong>%{subjectTtitle}</strong>, which is part of your favourites, has been disactivated."
+      },
+      moderationAlert: {
+        moderation: "The moderators have decided on the contribution <strong>%{subjectTtitle}</strong>",
+        newReport:
+          "A new content has been reported as potentially offensive. The reported content is <strong>%{subjectTtitle}</strong>",
+        objectArchive: "The contribution <strong>%{subjectTtitle}</strong> has been archived.",
+        objectRestor: "The contribution <strong>%{subjectTtitle}</strong> has been restored.",
+        objectCensor: "The contribution <strong>%{subjectTtitle}</strong> has been censored.",
+        moderateContent:
+          "A new content has just been added. The content is <strong>%{subjectTtitle}</strong>. You are invited to moderate it.",
+        moderateReport:
+          "A content has just been reported as potentially offensive. The content is <strong>%{subjectTtitle}</strong>. You are invited to moderate it."
+      }
+    },
     messages: {
       present: {
         proposal: {

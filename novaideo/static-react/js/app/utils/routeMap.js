@@ -81,6 +81,10 @@ export const goToEntity = (type, id) => {
   switch (type) {
   case 'Idea':
     return goTo(get('ideas', { ideaId: id }));
+  case 'Channel':
+    return goTo(get('messages', { channelId: id }));
+  case 'Person':
+    return goTo(get('users', { userId: id }));
   default:
     return false;
   }

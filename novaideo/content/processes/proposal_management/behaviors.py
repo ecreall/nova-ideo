@@ -942,7 +942,7 @@ class SupportProposal(InfiniteCardinality):
         users.extend(context.working_group.members)
         alert('internal', [request.root], users,
               internal_kind=InternalAlertKind.support_alert,
-              subjects=[context], support_kind='support')
+              subjects=[context], alert_kind='support')
         return {}
 
     def redirect(self, context, request, **kw):
@@ -991,7 +991,7 @@ class OpposeProposal(InfiniteCardinality):
         users.extend(context.working_group.members)
         alert('internal', [request.root], users,
               internal_kind=InternalAlertKind.support_alert,
-              subjects=[context], support_kind='oppose')
+              subjects=[context], alert_kind='oppose')
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1101,7 +1101,7 @@ class WithdrawToken(InfiniteCardinality):
         users.extend(context.working_group.members)
         alert('internal', [request.root], users,
               internal_kind=InternalAlertKind.support_alert,
-              subjects=[context], support_kind='withdraw')
+              subjects=[context], alert_kind='withdraw')
         return {}
 
     def redirect(self, context, request, **kw):

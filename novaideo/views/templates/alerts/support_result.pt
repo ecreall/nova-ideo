@@ -1,16 +1,16 @@
 <div class="listing-card result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="support_kind getattr(object, 'support_kind', '')">
+     tal:define="alert_kind getattr(object, 'alert_kind', '')">
   <div tal:define="subject object.subjects[0]">
     <h4>
     	<span class="alert-token token ${object.icon}"></span> 
         <span tal:replace="layout.to_localized_time(object.modified_at)"/>
     </h4>
     <span>
-      <span i18n:translate="" tal:condition="support_kind == 'support'">One Member supported this contribution</span> 
-      <span i18n:translate="" tal:condition="support_kind == 'oppose'">One Member opposed this contribution</span> 
-      <span i18n:translate="" tal:condition="support_kind == 'withdraw'">One Member withdrew his/her token from this contribution</span> 
+      <span i18n:translate="" tal:condition="alert_kind == 'support'">One Member supported this contribution</span> 
+      <span i18n:translate="" tal:condition="alert_kind == 'oppose'">One Member opposed this contribution</span> 
+      <span i18n:translate="" tal:condition="alert_kind == 'withdraw'">One Member withdrew his/her token from this contribution</span> 
        <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
      </span>
   </div>

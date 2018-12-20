@@ -19,6 +19,7 @@ from novaideo.content.mask import Mask as SDMask
 from novaideo.content.bot import Bot as SDBot
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
+from novaideo.content.alert import Alert as SDAlert
 from novaideo.core import Channel as SDChannel
 from novaideo.content.interface import Iidea, IPerson
 from .mutations import Mutations
@@ -27,7 +28,7 @@ from .types import SecureObjectType
 from .util import (
     get_entities, get_all_comments,
     get_actions, connection_for_type, get_context,
-    ResolverLazyList)
+    ResolverLazyList, get_user_alerts)
 from novaideo.utilities.util import (
     get_object_examination_stat,
     get_object_evaluation_stat)
@@ -347,6 +348,57 @@ class File(Node, graphene.ObjectType):
         return self.get_size()
 
 
+class DictItem(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    key = graphene.String()
+    value = graphene.String()
+
+
+class Alert(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, IEntity)
+
+    created_at = graphene.String()
+    type = graphene.String()
+    kind = graphene.String()
+    data = graphene.List(DictItem)
+    subject = graphene.Field(lambda: EntityUnion)
+
+
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, (SDAlert, ))
+
+    def resolve_created_at(self, args, context, info):
+        return self.created_at.isoformat()
+
+    def resolve_type(self, args, context, info):  #pylint: disable=W0613
+        return self.kind
+
+    def resolve_subject(self, args, context, info):  #pylint: disable=W0613
+        subject = self.subject
+        if isinstance(subject, (SDIdea, NovaIdeoApplication, SDPerson, SDChannel)):
+            return subject
+
+        return None
+
+    def resolve_kind(self, args, context, info):  #pylint: disable=W0613
+        return self.sub_kind
+
+    def resolve_data(self, args, context, info):  #pylint: disable=W0613
+        return [DictItem(key=key, value=str(value)) for key, value in self.alert_data.items()]
+
+
+Alert.Connection = connection_for_type(Alert)
+
+
 class Person(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -381,6 +433,8 @@ class Person(Node, graphene.ObjectType):
     email = graphene.String()
     api_token = graphene.String()
     roles = graphene.List(graphene.String)
+    alerts = relay.ConnectionField(lambda: Alert)
+    unread_alerts_ids = graphene.List(graphene.String)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -388,6 +442,17 @@ class Person(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, (SDPerson, SDBot, SDMask))
+
+    def resolve_alerts(self, args, context, info):
+        total_count, oids = get_user_alerts(self, args)
+        return ResolverLazyList(
+            oids,
+            Alert,
+            total_count=total_count)
+
+    def resolve_unread_alerts_ids(self, args, context, info):
+        alerts = list(self.alerts)
+        return [relay.Node.to_global_id('Alert', get_oid(alert)) for alert in alerts]
 
     def resolve_roles(self, args, context, info):  # pylint: disable=W0613
         return [r for r in get_roles(self)
@@ -652,7 +717,7 @@ Idea.Connection = connection_for_type(Idea)
 
 class EntityUnion(graphene.Union):
     class Meta:
-        types = (Idea, Root, Person) # TODO add Question...
+        types = (Idea, Root, Person, Channel, Comment) # TODO add Question...
 
     @classmethod
     def resolve_type(cls, instance, context, info):
@@ -664,6 +729,12 @@ class EntityUnion(graphene.Union):
 
         if isinstance(instance, SDPerson):
             return Person
+
+        if isinstance(instance, SDChannel):
+            return Channel
+
+        if isinstance(instance, SDComment):
+            return Comment
 
         raise Exception()
 
@@ -762,7 +833,11 @@ class Query(graphene.ObjectType):
         return context.user
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
-        return get_actions(get_context(args.get('context', '')), context, args)
+        context_id = args.get('context', '')
+        if context_id == '0':
+            return []
+
+        return get_actions(get_context(context_id), context, args)
 
     def resolve_root(self, args, context, info):  # pylint: disable=W0613
         return context.root

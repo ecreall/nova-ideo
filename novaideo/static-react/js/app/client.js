@@ -29,12 +29,12 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
         {
           kind: 'UNION',
           name: 'EntityUnion',
-          possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }]
+          possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }, { name: 'Channel' }, { name: 'Comment' }]
         },
         {
           kind: 'INTERFACE',
           name: 'IEntity',
-          possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }]
+          possibleTypes: [{ name: 'Root' }, { name: 'Idea' }, { name: 'Person' }, { name: 'Channel' }, { name: 'Comment' }]
         },
         {
           kind: 'INTERFACE',

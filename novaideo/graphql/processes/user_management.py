@@ -1,5 +1,6 @@
 import graphene
 import urllib
+from graphene import relay
 
 from substanced.util import find_service
 from substanced.interfaces import UserToPasswordReset
@@ -345,3 +346,26 @@ class ConfirmResetPassword(graphene.Mutation):
                 localizer.translate(_("Reset password failed")))
 
         return ConfirmResetPassword(token=token)
+
+
+class MarkAlertsAsRead(graphene.Mutation):
+
+    class Input:
+        userId = graphene.ID()
+        alerts = graphene.List(graphene.ID)
+
+
+    status = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        alertsIds = args.get('alerts', [])
+        userId = args.get('userId', None)
+        if alertsIds and userId:
+            alerts = [get_obj(int(relay.Node.from_global_id(alert)[1])) for alert in alertsIds]
+            user = get_obj(int(relay.Node.from_global_id(userId)[1]))
+            if alerts and user:
+                for alert in alerts:
+                    alert.unsubscribe(user)
+
+        return MarkAlertsAsRead(status=True)

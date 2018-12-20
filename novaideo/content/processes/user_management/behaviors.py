@@ -867,7 +867,7 @@ class Discuss(InfiniteCardinality):
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
-              comment_kind='discuss',
+              alert_kind='discuss',
               **alert_data)
         subject_data = get_entity_data(user, 'subject', request)
         alert_data.update(subject_data)
@@ -958,7 +958,7 @@ class GeneralDiscuss(InfiniteCardinality):
               subjects=[channel],
               comment_oid=comment_oid,
               comment_content=comment.comment,
-              comment_kind='general_discuss',
+              alert_kind='general_discuss',
               **authordata)
 
     def start(self, context, request, appstruct, **kw):
