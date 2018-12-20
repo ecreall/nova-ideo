@@ -18,7 +18,8 @@ export default function share({ mutate }) {
         share: {
           __typename: 'Share',
           idea: {
-            id: context.id
+            id: context.id,
+            __typename: context.__typename,
           }
         }
       },
