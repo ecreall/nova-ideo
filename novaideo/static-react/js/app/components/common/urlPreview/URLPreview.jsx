@@ -85,7 +85,8 @@ const styles = {
     color: 'gray',
     paddingLeft: 5,
     fontSize: 12,
-    lineHeight: '18px'
+    lineHeight: '18px',
+    wordBreak: 'break-word'
   },
   sliderHeader: {
     marginLeft: 4,

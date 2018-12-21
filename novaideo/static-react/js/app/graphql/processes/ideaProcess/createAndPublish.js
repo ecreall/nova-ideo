@@ -97,7 +97,8 @@ export default function createAndPublish({ ownProps, mutate }) {
                   }
                   : null
             },
-            actions: []
+            actions: [],
+            urls: []
           }
         }
       },

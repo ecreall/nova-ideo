@@ -28,6 +28,8 @@ import UserAvatar from '../user/UserAvatar';
 import {
   getEvaluationIcons, getEvaluationActions, getExaminationValue, getIdeaSupportStats, getExaminationTtile
 } from '.';
+import URLPreview from '../common/urlPreview/URLPreview';
+import Slider from '../common/Slider';
 
 const styles = (theme) => {
   return {
@@ -169,6 +171,9 @@ const styles = (theme) => {
       '&:hover': {
         color: '#3c525d'
       }
+    },
+    urlsControlContainer: {
+      marginTop: -10
     }
   };
 };
@@ -297,7 +302,7 @@ export class DumbIdeaItem extends React.Component {
                   className={classes.ideaText}
                   dangerouslySetInnerHTML={{ __html: node.presentationText }}
                 />
-                {images.length > 0 && (
+                {images.length > 0 ? (
                   <div className={classes.imagesContainer}>
                     <ImagesPreview
                       images={images}
@@ -308,7 +313,17 @@ export class DumbIdeaItem extends React.Component {
                       }}
                     />
                   </div>
-                )}
+                ) : null}
+                {node.urls.length > 0 ? (
+                  <div className={classes.urlsContainer}>
+                    <Slider
+                      classes={{ controlContainer: classes.urlsControlContainer }}
+                      items={node.urls.map((url) => {
+                        return <URLPreview integreted {...url} />;
+                      })}
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className={classes.bodyFooter}>
