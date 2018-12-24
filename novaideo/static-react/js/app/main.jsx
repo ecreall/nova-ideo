@@ -83,7 +83,7 @@ class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data, width, navigation } = nextProps;
-    if (!data.loading && data.root) {
+    if (!data.loading && !data.error) {
       const { root, account, actions } = data;
       const smallScreen = SMALL_WIDTH.includes(width);
       this.props.updateGlobalProps({
@@ -118,8 +118,8 @@ class Main extends React.Component {
   render() {
     const { data, network, theme } = this.props;
     const { requirementsLoaded } = this.state;
-    if (!requirementsLoaded || data.loading) return null;
     const { root, account } = data;
+    if (!requirementsLoaded || data.loading || !root) return null;
     const userPreferencesTheme = account && account.preferences && account.preferences.theme;
     const themeToUse = (userPreferencesTheme && getTheme(userPreferencesTheme)) || theme;
     return (
