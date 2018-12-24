@@ -25,7 +25,7 @@ export default function withdraw({ mutate }) {
         }
       },
       updateQueries: {
-        Account: (prev, { mutationResult }) => {
+        SiteData: (prev, { mutationResult }) => {
           return update(prev, {
             account: {
               availableTokens: {

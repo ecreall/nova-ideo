@@ -112,11 +112,11 @@ export const search = (state = {}, action) => {
 export const filter = (state = {}, action) => {
   switch (action.type) {
   case actionTypes.FILTER_ENTITIES: {
-    const { id, filter } = action;
+    const { id } = action;
     return {
       ...state,
       [id]: {
-        ...filter
+        ...action.filter
       }
     };
   }
@@ -247,7 +247,7 @@ export const history = (state = initNavigationState, action) => {
   case `${actionTypes.SET_INSTANCE}_FULFILLED`: {
     if (action.payload) {
       const instanceId = action.payload.app;
-      const currentEntry = state[instanceId] || { data: {}, userPreferences: {} };
+      const currentEntry = state[instanceId] || {};
       const newEntry = {
         ...currentEntry,
         data: {
@@ -265,42 +265,18 @@ export const history = (state = initNavigationState, action) => {
     }
     return state;
   }
-  case actionTypes.SET_THEME: {
-    const instanceId = action.instance.id;
-    let currentEntry = state[instanceId];
-    if (!currentEntry) {
-      currentEntry = {
-        data: {
-          id: instanceId,
-          url: action.instance.url,
-          isPrivate: action.instance.isPrivate,
-          logo: action.instance.logo,
-          title: action.instance.title
-        },
-        userPreferences: {}
-      };
-    }
-    const newEntry = {
-      ...currentEntry,
-      userPreferences: { ...currentEntry.userPreferences, appColor: action.color }
-    };
-    const newStateEntry = {};
-    newStateEntry[instanceId] = newEntry;
-    return update(state, { $merge: newStateEntry });
-  }
   // case actionTypes.UPDATE_TOKEN: {
-  //   const instanceId = action.instance.id;
+  //   const instanceId = action.instance.siteId;
   //   let currentEntry = state[instanceId];
   //   if (!currentEntry) {
   //     currentEntry = {
   //       data: {
   //         id: instanceId,
-  //         url: action.instance.url,
-  //         isPrivate: action.instance.isPrivate,
+  //         url: windows.location,
+  //         isPrivate: action.instance.onlyForMembers,
   //         logo: action.instance.logo,
   //         title: action.instance.title
-  //       },
-  //       userPreferences: {}
+  //       }
   //     };
   //   }
   //   const newEntry = {

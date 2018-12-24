@@ -22,7 +22,7 @@ from novaideo.content.processes.\
     newsletter_management.behaviors import (
         SubscribeNewsletter)
 from novaideo import _
-from novaideo.content.person import EmailInputWidget
+from novaideo.widget import EmailInputWidget
 
 
 @colander.deferred

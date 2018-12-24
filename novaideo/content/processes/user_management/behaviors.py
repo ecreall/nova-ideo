@@ -15,13 +15,10 @@ import pytz
 import itertools
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import remember
-from pyramid.threadlocal import get_current_request
 from pyramid import renderers
 from pyramid.response import FileIter
 
 from substanced.util import get_oid
-from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.util import (
@@ -48,7 +45,7 @@ from novaideo.content.interface import (
 from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
-    to_localized_time, gen_random_token, connect)
+    to_localized_time, gen_random_token, update)
 from novaideo import _, nothing, my_locale_negotiator
 from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
@@ -190,7 +187,7 @@ class Edit(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct.get('organization', None)
-        root = getSite()
+        # root = getSite()
         # root.merge_keywords(context.keywords)
         context.set_title()
         context.set_organization(organization)
@@ -225,6 +222,24 @@ class EditPassword(InfiniteCardinality):
 
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {'edited': edited}
+
+    def redirect(self, context, request, **kw):
+        return kw
+
+
+class EditPreferences(InfiniteCardinality):
+    tags = ['main-menu']
+    title = _('Preferences')
+    submission_title = _('Save')
+    context = IPerson
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        update(context.preferences, appstruct)
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        return {}
 
     def redirect(self, context, request, **kw):
         return kw
@@ -447,7 +462,6 @@ def reg_processsecurity_validation(process, context):
 
 def remove_expired_preregistration(root, preregistration):
     if preregistration.__parent__ is not None:
-        oid = str(get_oid(preregistration))
         root.delfromproperty('preregistrations', preregistration)
 
 
@@ -1031,7 +1045,6 @@ class ExtractAlerts(InfiniteCardinality):
         writer = csv.DictWriter(
             csv_file, fieldnames=fieldnames, dialect='excel', delimiter=';')
         writer.writeheader()
-        registry = request.registry
         for obj in alerts:
             writer.writerow(
                 dict([(localizer.translate(EXTRACTION_ATTR[attr]['title']),

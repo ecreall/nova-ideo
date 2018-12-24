@@ -230,7 +230,6 @@ class NavBar extends React.Component {
             <Hidden mdUp>
               <IconButton
                 className={classes.menuButton}
-                color="primary"
                 aria-label="Menu"
                 onClick={() => {
                   openDrawer('chatApp');
@@ -305,7 +304,7 @@ class NavBar extends React.Component {
                 />
               </div>
             </div>
-            <MuiIconButton color="primary" aria-label="Menu" onClick={this.handleClose}>
+            <MuiIconButton aria-label="Menu" onClick={this.handleClose}>
               <CloseIcon />
             </MuiIconButton>
           </Toolbar>

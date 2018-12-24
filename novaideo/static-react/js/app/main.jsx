@@ -17,6 +17,8 @@ import {
 import { closeDrawer } from './actions/collaborationAppActions';
 import { getCurrentLocation } from './utils/routeMap';
 import { getActions } from './utils/processes';
+import { getTheme } from './theme';
+import { setInputValue } from './utils/globalFunctions';
 
 const styleNode = document.createComment('insertion-point-jss');
 // $FlowFixMe
@@ -81,18 +83,22 @@ class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data, width, navigation } = nextProps;
-    if (data.root) {
+    if (!data.loading) {
+      const { root, account, actions } = data;
       const smallScreen = SMALL_WIDTH.includes(width);
       this.props.updateGlobalProps({
-        site: data.root,
+        site: root,
+        account: account,
         rootActions: getActions(
-          data.actions.edges.map((action) => {
+          actions.edges.map((action) => {
             return action.node;
           })
         ),
         smallScreen: smallScreen
       });
-      this.props.loadAdapters(data.root.siteId);
+      const accountId = account ? account.id : 'anonymous';
+      setInputValue('execution-id', `${root.id}-${accountId}`);
+      this.props.loadAdapters(root.siteId);
       const currentLocation = getCurrentLocation();
       if (navigation.location !== currentLocation) {
         this.props.updateNavigation(currentLocation, true);
@@ -110,16 +116,17 @@ class Main extends React.Component {
   };
 
   render() {
-    const {
-      data, site, network, theme
-    } = this.props;
+    const { data, network, theme } = this.props;
     const { requirementsLoaded } = this.state;
-    if (!requirementsLoaded || data.loading || !site) return null;
+    if (!requirementsLoaded || data.loading) return null;
+    const { root, account } = data;
+    const userPreferencesTheme = account && account.preferences && account.preferences.theme;
+    const themeToUse = (userPreferencesTheme && getTheme(userPreferencesTheme)) || theme;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={themeToUse}>
           <div className="main">
-            {network.isLogged || (site && !site.onlyForMembers) ? (
+            {network.isLogged || (root && !root.onlyForMembers) ? (
               <App params={this.props.params}>{this.props.children}</App>
             ) : (
               'login'
@@ -136,8 +143,7 @@ const mapStateToProps = (state) => {
     user: state.user,
     theme: state.adapters.theme,
     network: state.network,
-    navigation: state.history.navigation,
-    site: state.globalProps.site
+    navigation: state.history.navigation
   };
 };
 

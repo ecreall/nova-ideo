@@ -119,10 +119,10 @@ class NavBar extends React.Component {
       <div>
         <AppBar className={classNames(className, classes.appBar)} color="inherit">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={toggleDrawer}>
+            <IconButton className={classes.menuButton} aria-label="Menu" onClick={toggleDrawer}>
               {drawer ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
             </IconButton>
-            <Typography component="div" type="title" color="primary" className={classes.flex}>
+            <Typography component="div" type="title" className={classes.flex}>
               {!drawer && site.title}
             </Typography>
             <div className={classes.menuContainer}>

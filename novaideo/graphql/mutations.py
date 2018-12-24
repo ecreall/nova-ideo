@@ -13,7 +13,8 @@ from .processes.user_management import (
     EditProfile, EditPassword,
     EditApiToken, AssignRoles,
     Activate, Deactivate, ResetPassword,
-    ConfirmResetPassword, MarkAlertsAsRead)
+    ConfirmResetPassword, MarkAlertsAsRead,
+    EditPreferences)
 from .processes.admin_process import EditDeadline, AddDeadline
 
 
@@ -59,3 +60,4 @@ class Mutations(graphene.ObjectType):
     reset_password = ResetPassword.Field()
     confirm_reset_password = ConfirmResetPassword.Field()
     mark_alerts_as_read = MarkAlertsAsRead.Field()
+    edit_preferences = EditPreferences.Field()

@@ -1,5 +1,4 @@
 import graphene
-import urllib
 from graphene import relay
 
 from substanced.util import find_service
@@ -12,10 +11,22 @@ from dace.util import getSite, get_obj
 from pontus.schema import select
 
 from novaideo.content.person import Preregistration, PersonSchema
-from novaideo.content.processes.user_management.behaviors import send_reset_password
+from novaideo.content.processes.user_management.behaviors import (
+    send_reset_password)
 from novaideo import _
-from ..util import get_context, get_current_request, get_action, extract_files, get_execution_data
+from ..util import (
+    get_current_request, get_action,
+    extract_files, get_execution_data)
 from . import Upload
+
+
+class ThemePreferencesInput(graphene.InputObjectType):
+    primary_color = graphene.String(required=False)
+    secondary_color = graphene.String(required=False)
+
+
+class PreferencesInput(graphene.InputObjectType):
+    theme = ThemePreferencesInput(required=False)
 
 
 class Registration(graphene.Mutation):
@@ -36,7 +47,8 @@ class Registration(graphene.Mutation):
         context = getSite()
         request = get_current_request()
         action = get_action(Registration.action_id, context, request)
-        registration_shema = registration_shema.bind(context=context, request=request)
+        registration_shema = registration_shema.bind(
+            context=context, request=request)
         args = registration_shema.deserialize(args)
         preregistration = None
         if action:
@@ -328,7 +340,7 @@ class ConfirmResetPassword(graphene.Mutation):
         localizer = request.localizer
         if not context:
            raise Exception(
-                localizer.translate(_("Invalid reset request"))) 
+                localizer.translate(_("Invalid reset request")))
 
         person_schema = select(
             PersonSchema(), ['password'])
@@ -354,7 +366,6 @@ class MarkAlertsAsRead(graphene.Mutation):
         userId = graphene.ID()
         alerts = graphene.List(graphene.ID)
 
-
     status = graphene.Boolean()
 
     @staticmethod
@@ -362,10 +373,33 @@ class MarkAlertsAsRead(graphene.Mutation):
         alertsIds = args.get('alerts', [])
         userId = args.get('userId', None)
         if alertsIds and userId:
-            alerts = [get_obj(int(relay.Node.from_global_id(alert)[1])) for alert in alertsIds]
+            alerts = [get_obj(int(relay.Node.from_global_id(alert)[1]))
+                      for alert in alertsIds]
             user = get_obj(int(relay.Node.from_global_id(userId)[1]))
             if alerts and user:
                 for alert in alerts:
                     alert.unsubscribe(user)
 
         return MarkAlertsAsRead(status=True)
+
+
+class EditPreferences(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        preferences = PreferencesInput()
+
+    profile = graphene.Field('novaideo.graphql.schema.Person')
+    action_id = 'usermanagement.edit_preferences'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            EditPreferences.action_id, args)
+        if action:
+            action.execute(context, request, args.get('preferences', {}))
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return EditPreferences(profile=context)

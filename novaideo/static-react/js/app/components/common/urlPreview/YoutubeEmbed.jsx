@@ -122,7 +122,7 @@ export class DumbYoutubeEmbed extends React.Component {
               src={`https://www.youtube.com/embed/${id}?autoplay=1`}
               frameBorder="0"
             />
-            <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>
+            <IconButton className={classes.closeEmbedButton} onClick={this.closeEmbed}>
               <CloseIcon />
             </IconButton>
           </div>

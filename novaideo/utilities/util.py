@@ -13,6 +13,7 @@ import random
 import unicodedata
 import json
 import itertools
+import collections
 from webob.multidict import MultiDict
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -1359,6 +1360,16 @@ def get_home_actions_bodies(process_id, action_id, form_id, request, context):
         result['action'] = add_content_action
 
     return result
+
+
+def update(source, values):
+    """Recursive dict update"""
+    for k, v in values.items():
+        if k in source:
+            if isinstance(source[k], dict) and isinstance(v, collections.Mapping):
+                update(source[k], v)
+            else:
+                source[k] = v
 
 #add unrecognized mimetype
 

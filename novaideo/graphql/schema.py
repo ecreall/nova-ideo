@@ -393,10 +393,31 @@ class Alert(Node, graphene.ObjectType):
         return self.sub_kind
 
     def resolve_data(self, args, context, info):  #pylint: disable=W0613
-        return [DictItem(key=key, value=str(value)) for key, value in self.alert_data.items()]
+        return [DictItem(key=key, value=str(value)) for
+                key, value in self.alert_data.items()]
 
 
 Alert.Connection = connection_for_type(Alert)
+
+
+class ThemePreferences(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    primary_color = graphene.String()
+    secondary_color = graphene.String()
+
+
+class Preferences(graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    theme = graphene.Field(lambda: ThemePreferences)
+
+    def resolve_theme(self, args, context, info):
+        return ThemePreferences(**self.theme)
 
 
 class Person(Node, graphene.ObjectType):
@@ -435,6 +456,7 @@ class Person(Node, graphene.ObjectType):
     roles = graphene.List(graphene.String)
     alerts = relay.ConnectionField(lambda: Alert)
     unread_alerts_ids = graphene.List(graphene.String)
+    preferences = graphene.Field(lambda: Preferences)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -449,6 +471,9 @@ class Person(Node, graphene.ObjectType):
             oids,
             Alert,
             total_count=total_count)
+
+    def resolve_preferences(self, args, context, info):
+        return Preferences(**self.get_preferences())
 
     def resolve_unread_alerts_ids(self, args, context, info):
         alerts = list(self.alerts)

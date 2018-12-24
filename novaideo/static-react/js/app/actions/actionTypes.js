@@ -26,8 +26,6 @@ export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
 export const SET_URL_STATE = 'SET_URL_STATE';
 
-export const SET_THEME = 'SET_THEME';
-
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 
 export const LOAD_ADAPTERS = 'LOAD_ADAPTERS';

@@ -37,7 +37,8 @@ from .behaviors import (
     AcceptRegistration,
     RefuseRegistration,
     ExtractAlerts,
-    EditPassword)
+    EditPassword,
+    EditPreferences)
 from novaideo import _
 
 
@@ -65,6 +66,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 edit = ActivityDefinition(contexts=[Edit],
                                        description=_("Edit"),
                                        title=_("Edit"),
+                                       groups=[]),
+                edit_preferences = ActivityDefinition(contexts=[EditPreferences],
+                                       description=_("Edit preferences"),
+                                       title=_("Edit preferences"),
                                        groups=[]),
                 edit_password = ActivityDefinition(contexts=[EditPassword],
                                        description=_("Edit password"),
@@ -119,6 +124,8 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('general_discuss', 'eg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('edit', 'eg'),
+                TransitionDefinition('pg', 'edit_preferences'),
+                TransitionDefinition('edit_preferences', 'eg'),
                 TransitionDefinition('pg', 'edit_password'),
                 TransitionDefinition('edit_password', 'eg'),
                 TransitionDefinition('pg', 'get_api_token'),

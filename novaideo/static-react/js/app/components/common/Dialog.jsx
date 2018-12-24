@@ -221,14 +221,14 @@ class CommonDialog extends React.Component {
           <AppBar className={classNames({ [classes.appBar]: full, [classes.modal]: !full })}>
             <Toolbar>
               {withDrawer && (
-                <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleDrawer}>
+                <IconButton className={classes.menuButton} aria-label="Menu" onClick={this.toggleDrawer}>
                   {drawerOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
                 </IconButton>
               )}
-              <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
+              <Typography component="div" type="title" className={classes.appBarContent}>
                 {appBar}
               </Typography>
-              <IconButton className={classes.closeBtn} color="primary" onClick={close || this.onClose} aria-label="Close">
+              <IconButton className={classes.closeBtn} onClick={close || this.onClose} aria-label="Close">
                 <CloseIcon />
               </IconButton>
             </Toolbar>

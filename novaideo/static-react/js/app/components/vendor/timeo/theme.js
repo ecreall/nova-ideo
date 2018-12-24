@@ -1,37 +1,10 @@
-import {
-  teal, grey, deepOrange, orange, blue
-} from '@material-ui/core/colors';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { teal, blue } from '@material-ui/core/colors';
 
-function theme() {
-  return createMuiTheme({
-    palette: {
-      primary: {
-        ...teal,
-        light: teal[50],
-        dark: teal[700],
-        dark2: teal[800]
-      },
-      secondary: grey,
-      tertiary: {
-        color: blue[500],
-        hover: {
-          color: 'white'
-        }
-      },
-      danger: deepOrange,
-      info: blue,
-      warning: orange
-    },
-    typography: {
-      useNextVariants: true,
-      htmlFontSize: 15,
-      fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
-    },
-    body1: {
-      margin: 0
-    }
-  });
-}
+import { getTheme } from '../../../theme';
 
-export default theme;
+const timioTheme = {
+  primaryColor: teal[500],
+  secondaryColor: blue[500]
+};
+
+export default getTheme(timioTheme);

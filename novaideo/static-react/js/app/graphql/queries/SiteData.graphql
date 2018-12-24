@@ -37,4 +37,28 @@ query SiteData {
       }
     }
   }
+  account {
+    oid
+    id
+    title
+    description
+    function
+    availableTokens
+    mask {
+      id
+      oid
+      title
+    }
+    picture {
+      id
+      url
+      variations
+    }
+    preferences {
+      theme {
+        primaryColor
+        secondaryColor
+      }
+    }
+  }
 }

@@ -8,3 +8,4 @@ export { default as activate } from './activate';
 export { default as deactivate } from './deactivate';
 export { default as resetPassword } from './resetPassword';
 export { default as confirmResetPassword } from './confirmResetPassword';
+export { default as editPreferences } from './editPreferences';

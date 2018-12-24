@@ -148,7 +148,7 @@ class DumbSketchfabEmbed extends React.Component<Props, State> {
                     src={`${metadataUrl}/embed?autostart=1&autospin=0.5`}
                     frameBorder="0"
                   />
-                  <IconButton className={classes.closeEmbedButton} color="primary" onClick={this.closeEmbed}>
+                  <IconButton className={classes.closeEmbedButton} onClick={this.closeEmbed}>
                     <CloseIcon />
                   </IconButton>
                 </div>

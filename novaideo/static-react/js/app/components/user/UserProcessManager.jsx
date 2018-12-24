@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withApollo, graphql } from 'react-apollo';
-import { Translate, I18n } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 
 import { goTo, get } from '../../utils/routeMap';
 import { ACTIONS, PROCESSES } from '../../processes';
@@ -10,6 +10,7 @@ import { select, deselect } from '../../graphql/processes/abstractProcess';
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import Login, { LOGIN_VIEWS } from '../forms/processes/userProcess/Login';
+import EditPreferences from '../forms/processes/userProcess/Preferences';
 import Activate from '../forms/processes/userProcess/Activate';
 import Deactivate from '../forms/processes/userProcess/Deactivate';
 import Paramters, { PARAMETERS_TABS } from '../forms/processes/userProcess/Paramters';
@@ -17,6 +18,7 @@ import { userLogout } from '../../actions/authActions';
 import { filterActions } from '../../utils/processes';
 import { openCollaborationRight } from '../../actions/collaborationAppActions';
 import { CONTENTS_IDS } from '../collaborationApp/collaborationAppRight';
+import { getFormId } from '../../utils/globalFunctions';
 
 export class DumbUserProcessManager extends React.Component {
   state = {
@@ -81,18 +83,6 @@ export class DumbUserProcessManager extends React.Component {
       const { selectUser, deselectUser, client } = this.props;
       const processNodes = PROCESSES.novaideoabstractprocess.nodes;
       switch (action.behaviorId) {
-      case userProcessNodes.activate.nodeId:
-        this.displayForm(action);
-        break;
-      case userProcessNodes.deactivate.nodeId:
-        this.displayForm(action);
-        break;
-      case userProcessNodes.login.nodeId:
-        this.displayForm(action);
-        break;
-      case registrationNodes.registration.nodeId:
-        this.displayForm(action);
-        break;
       case processNodes.select.nodeId:
         selectUser({ context: person })
           .then(this.onActionExecuted)
@@ -109,12 +99,6 @@ export class DumbUserProcessManager extends React.Component {
           goTo(get('users', { userId: person.id }));
         }, 200);
         break;
-      case userProcessNodes.edit.nodeId:
-        this.displayForm(action);
-        break;
-      case userProcessNodes.assignRoles.nodeId:
-        this.displayForm(action);
-        break;
       case userProcessNodes.logout.nodeId:
         this.props
           .userLogout()
@@ -128,7 +112,7 @@ export class DumbUserProcessManager extends React.Component {
           });
         break;
       default:
-        globalProps.showMessage(<Translate value="comingSoon" />);
+        this.displayForm(action);
       }
     }
   };
@@ -145,7 +129,7 @@ export class DumbUserProcessManager extends React.Component {
 
   renderForm = () => {
     const { action, originalAction } = this.state;
-    const { person } = this.props;
+    const { person, globalProps: { account } } = this.props;
     if (!action) return null;
     const userProcessNodes = PROCESSES.usermanagement.nodes;
     const registrationNodes = PROCESSES.registrationmanagement.nodes;
@@ -169,6 +153,19 @@ export class DumbUserProcessManager extends React.Component {
       return <Activate onClose={this.onFormClose} account={person} action={action} />;
     case userProcessNodes.deactivate.nodeId:
       return <Deactivate onClose={this.onFormClose} account={person} action={action} />;
+    case userProcessNodes.editPreferences.nodeId: {
+      const formId = getFormId(`${person.id}-preferences`);
+      return (
+        <EditPreferences
+          form={formId}
+          key={formId}
+          onClose={this.onFormClose}
+          user={person}
+          account={account}
+          action={action}
+        />
+      );
+    }
     default:
       return null;
     }

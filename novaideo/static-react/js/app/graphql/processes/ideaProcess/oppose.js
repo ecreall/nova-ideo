@@ -25,7 +25,7 @@ export default function oppose({ mutate }) {
         }
       },
       updateQueries: {
-        Account: (prev, { mutationResult }) => {
+        SiteData: (prev, { mutationResult }) => {
           return update(prev, {
             account: {
               availableTokens: { $set: mutationResult.data.opposeIdea.user.availableTokens }

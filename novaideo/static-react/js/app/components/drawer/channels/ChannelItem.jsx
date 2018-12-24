@@ -36,16 +36,14 @@ const styles = (theme) => {
       }
     },
     text: {
-      color: 'white',
+      color: theme.palette.primary.light,
       fontSize: 15,
-      opacity: 0.8,
       padding: 0,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       overflow: 'hidden'
     },
     textActive: {
-      opacity: 1,
       fontWeight: '700'
     },
     textSelected: {
@@ -57,8 +55,8 @@ const styles = (theme) => {
     icon: {
       width: 17,
       height: 15,
-      color: 'white',
-      opacity: 0.4,
+      color: theme.palette.primary.light,
+      opacity: 0.8,
       marginRight: 0,
       fontSize: '12px !important'
     },
@@ -79,7 +77,7 @@ const styles = (theme) => {
     },
     avatarNoPicture: {
       fontSize: 11,
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.primary.light,
       color: theme.palette.primary['500']
     },
     badge: {
@@ -88,7 +86,7 @@ const styles = (theme) => {
       fontWeight: '700'
     },
     badgeColor: {
-      color: 'white',
+      color: theme.palette.primary.light,
       backgroundColor: theme.palette.danger['500'],
       padding: '3px 7px',
       marginLeft: 4,
@@ -99,10 +97,6 @@ const styles = (theme) => {
       height: 'auto',
       top: 0,
       right: -7
-    },
-    unreadComment: {
-      color: 'white',
-      fontWeight: '700'
     },
     listItemIcon: {
       marginRight: 4

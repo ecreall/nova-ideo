@@ -38,16 +38,14 @@ const styles = (theme) => {
       marginRight: 4
     },
     text: {
-      color: 'white',
+      color: theme.palette.primary.light,
       fontSize: 15,
-      opacity: 0.8,
       padding: 0,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       overflow: 'hidden'
     },
     textSelected: {
-      opacity: 1,
       fontWeight: '700',
       color: theme.palette.tertiary.hover.color,
       '&:hover': {
@@ -57,8 +55,8 @@ const styles = (theme) => {
     icon: {
       width: 17,
       height: 15,
-      color: 'white',
-      opacity: 0.4,
+      color: theme.palette.primary.light,
+      opacity: 0.8,
       marginRight: 0,
       fontSize: '12px !important'
     },
@@ -88,7 +86,7 @@ const styles = (theme) => {
     },
     badgeColor: {
       color: theme.palette.primary['500'],
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.primary.light,
       marginLeft: 4,
       fontSize: 12,
       fontWeight: 700,
@@ -100,10 +98,6 @@ const styles = (theme) => {
     },
     badgeColorSelected: {
       opacity: 1
-    },
-    unreadComment: {
-      color: 'white',
-      fontWeight: '700'
     },
     toStudy: {
       color: '#ef6e18',

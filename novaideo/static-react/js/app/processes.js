@@ -8,6 +8,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ModeEditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PaletteIcon from '@material-ui/icons/Palette';
 import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -163,6 +164,12 @@ export const PROCESSES = {
         nodeId: 'edit_password',
         title: 'processes.usermanagement.editPassword.title',
         description: 'processes.usermanagement.editPassword.description'
+      },
+      editPreferences: {
+        nodeId: 'edit_preferences',
+        title: 'processes.usermanagement.editPreferences.title',
+        description: 'processes.usermanagement.editPreferences.description',
+        icon: PaletteIcon
       },
       see: {
         nodeId: 'see',

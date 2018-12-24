@@ -15,6 +15,7 @@ import Moment from 'moment';
 import TextBoxField from './widgets/TextBoxField';
 import FilesPicker from './widgets/FilesPicker';
 import Select from './widgets/Select';
+import CardSelect from './widgets/CardSelect';
 import SelectField from './widgets/SelectField';
 import SelectList from './widgets/SelectList';
 import MediumEditor from './widgets/mediumEditor/MediumEditor';
@@ -100,6 +101,10 @@ export const renderRecordField = ({ input: { value, onChange }, node, initRef })
 
 export const renderSelect = ({ input: { value, onChange }, ...props }) => {
   return <Select {...props} value={value} onChange={onChange} />;
+};
+
+export const renderCardSelect = ({ input: { name, value, onChange }, ...props }) => {
+  return <CardSelect {...props} name={name} value={value} onChange={onChange} />;
 };
 
 export const renderSelectList = ({ input: { value, onChange }, ...props }) => {

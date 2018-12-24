@@ -81,11 +81,10 @@ class RightContent extends React.Component {
                 <Icon className={classNames(classes.menuIcon, 'mdi-set mdi-arrow-collapse-left')} />
               )}
             </IconButton>
-            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
+            <Typography component="div" type="title" className={classes.appBarContent}>
               {title}
             </Typography>
             <IconButton
-              color="primary"
               aria-label="Menu"
               onClick={() => {
                 return updateRight({

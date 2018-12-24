@@ -1,10 +1,9 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 # -*- coding: utf8 -*-
-import os
 import datetime
 import pytz
 import uuid
@@ -36,7 +35,7 @@ from pontus.widget import (
     Select2Widget
     )
 from pontus.form import FileUploadTempStore
-from pontus.file import ObjectData, Object as ObjectType, File
+from pontus.file import ObjectData, Object as ObjectType
 
 from novaideo.core import (
     SearchableEntity,
@@ -51,13 +50,19 @@ from .interface import (
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
 from novaideo.content.mask import Mask
-from novaideo.content import get_file_widget
 from novaideo.widget import (
-    TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
+    TOUCheckboxWidget, LimitedTextAreaWidget)
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
 
+DEFAULT_PREFERENCES = {
+    'theme': {
+       'primary_color': '#282e3f',
+       'secondary_color': '#de9100'
+    },
+    # notifications...
+}
 
 @colander.deferred
 def organization_choice(node, kw):
@@ -275,38 +280,45 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                  'header': 'novaideo:views/templates/person_header.pt',}
     default_picture = 'novaideo:static/images/user100.png'
     name = renamer()
-    tokens = CompositeMultipleProperty('tokens')
-    tokens_ref = SharedMultipleProperty('tokens_ref')
-    organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
     cover_picture = CompositeUniqueProperty('cover_picture')
+    organization = SharedUniqueProperty('organization', 'members')
+    mask = SharedUniqueProperty('mask', 'member')
     ideas = SharedMultipleProperty('ideas', 'author')
-    selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
-    old_alerts = SharedMultipleProperty('old_alerts')
-    following_channels = SharedMultipleProperty('following_channels', 'members')
-    folders = SharedMultipleProperty('folders', 'author')
     questions = SharedMultipleProperty('questions', 'author')
     challenges = SharedMultipleProperty('challenges', 'author')
-    mask = SharedUniqueProperty('mask', 'member')
+    folders = SharedMultipleProperty('folders', 'author')
+    tokens = CompositeMultipleProperty('tokens')
+    tokens_ref = SharedMultipleProperty('tokens_ref')
+    selections = SharedMultipleProperty('selections')
+    following_channels = SharedMultipleProperty('following_channels', 'members')
+    old_alerts = SharedMultipleProperty('old_alerts')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password', None)
         self.set_data(kwargs)
         self.set_title()
+        self.preferences = PersistentDict(DEFAULT_PREFERENCES)
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
         self._read_at = OOBTree()
         self.guide_tour_data = PersistentDict({})
         self.allocated_tokens = OOBTree()
         self.len_allocated_tokens = PersistentDict({})
         self.reserved_tokens = PersistentList([])
-        self.api_token = uuid.uuid4().hex 
+        self.api_token = uuid.uuid4().hex
 
     def __setattr__(self, name, value):
         super(Person, self).__setattr__(name, value)
         if name == 'organization' and value:
             self.init_contents_organizations()
+
+    def get_preferences(self):
+        return getattr(self, 'preferences', DEFAULT_PREFERENCES)
+
+    def reset_preferences(self):
+        self.preferences = PersistentDict(DEFAULT_PREFERENCES)
 
     def get_len_tokens(self, root=None, exclude_reserved_tokens=False):
         root = root or getSite()
@@ -319,7 +331,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if exclude_reserved_tokens:
             return total - len([o for o in self.reserved_tokens
                                 if o in self.allocated_tokens])
-        return  total
+        return total
 
     def get_len_free_tokens(self, root=None, exclude_reserved_tokens=False):
         root = root or getSite()
@@ -332,7 +344,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if obj_oid and obj_oid in self.reserved_tokens:
             return obj_oid not in self.allocated_tokens
 
-        return self.get_len_free_tokens(root, True)>0
+        return self.get_len_free_tokens(root, True) > 0
 
     def add_token(self, obj, evaluation_type, root=None):
         if self.has_token(obj, root):
@@ -361,7 +373,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if evaluation_type:
             return [get_obj(key) for value, key
                     in self.allocated_tokens.byValue(evaluation_type)]
-        
+
         return [get_obj(key) for key
                 in self.allocated_tokens.keys()]
 
@@ -369,7 +381,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if evaluation_type:
             return [key for value, key
                     in self.allocated_tokens.byValue(evaluation_type)]
-        
+
         return list(self.allocated_tokens.keys())
 
     def init_contents_organizations(self):
@@ -425,19 +437,19 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def get_questions(self, user):
         if user is self:
             return self.questions + getattr(self.mask, 'questions', [])
-        
+
         return self.questions
 
     def get_ideas(self, user):
         if user is self:
             return self.ideas + getattr(self.mask, 'ideas', [])
-        
+
         return self.ideas
 
     def get_working_groups(self, user):
         if user is self:
             return self.working_groups + getattr(self.mask, 'working_groups', [])
-        
+
         return self.working_groups
 
     @property
@@ -447,7 +459,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def get_proposals(self, user):
         if user is self:
             return self.proposals + getattr(self.mask, 'proposals', [])
-        
+
         return self.proposals
 
     @property
@@ -467,7 +479,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def get_participations(self, user):
         if user is self:
             return self.participations + getattr(self.mask, 'participations', [])
-        
+
         return self.participations
 
     @property
@@ -481,7 +493,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def get_contents(self, user):
         if user is self:
             return self.contents + getattr(self.mask, 'contents', [])
-        
+
         return self.contents
 
     @property
@@ -491,7 +503,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     def get_active_working_groups(self, user):
         if user is self:
             return self.active_working_groups + getattr(self.mask, 'active_working_groups', [])
-        
+
         return self.active_working_groups
 
     @property

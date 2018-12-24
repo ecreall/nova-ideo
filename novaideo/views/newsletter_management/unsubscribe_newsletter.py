@@ -17,7 +17,7 @@ from novaideo.content.processes.\
         UnsubscribeNewsletter)
 from novaideo.content.newsletter import Newsletter
 from novaideo import _
-from novaideo.content.person import EmailInputWidget
+from novaideo.widget import EmailInputWidget
 
 
 @colander.deferred

@@ -284,6 +284,10 @@ const Translations = {
           title: "Changer le mot de passe",
           description: "Paramètres du compte"
         },
+        editPreferences: {
+          title: "Préférences",
+          description: "Préférences du compte"
+        },
         assignRoles: {
           title: "Assigner des rôles",
           description: "Assigner des rôles"
@@ -371,12 +375,16 @@ const Translations = {
       searchOrAdd: "Recherche ou ajout",
       search: "Recherche",
       cancel: "Annuler",
+      save: "Enregistrer",
       add: "Ajouter",
       edit: "Modifier",
       record: "Enregistrer un message vocal",
       required: "Champs obligatoires",
       similarProposals_1: "Une proposition similaire possible",
       similarProposals: "%{count} propositions similaires possible",
+      editPreferences: {
+        theme: "Thème"
+      },
       filter: {
         filterBy: "Filtrer par",
         examination: "Examen",
@@ -810,6 +818,10 @@ const Translations = {
           title: "Changer le mot de passe",
           description: "Paramètres du compte"
         },
+        editPreferences: {
+          title: "Préferences",
+          description: "User Preferences"
+        },
         assignRoles: {
           title: "Assigner des rôles",
           description: "Assigner des rôles"
@@ -898,12 +910,16 @@ const Translations = {
       searchOrAdd: "Search or add",
       search: "Search",
       cancel: "Cancel",
+      save: "Save",
       add: "Add",
       edit: "Edit",
       record: "Record a voice message",
       required: "Required",
       similarProposals_1: "One similar proposal",
       similarProposals: "%{count} similar proposals",
+      editPreferences: {
+        theme: "Theme"
+      },
       filter: {
         filterBy: "Filter by",
         examination: "Examination",

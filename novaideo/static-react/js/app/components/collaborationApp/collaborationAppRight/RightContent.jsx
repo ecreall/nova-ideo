@@ -82,11 +82,10 @@ class RightContent extends React.Component {
                 )}
               </IconButton>
             ) : null}
-            <Typography component="div" type="title" color="primary" className={classes.appBarContent}>
+            <Typography component="div" type="title" className={classes.appBarContent}>
               {title}
             </Typography>
             <IconButton
-              color="primary"
               aria-label="Menu"
               onClick={() => {
                 closeRight({});

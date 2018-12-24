@@ -1,0 +1,13 @@
+mutation EditPreferences($context: String!, $preferences: PreferencesInput) {
+  editPreferences(context: $context, preferences: $preferences) {
+    profile {
+      id
+      preferences {
+        theme {
+          primaryColor
+          secondaryColor
+        }
+      }
+    }
+  }
+}

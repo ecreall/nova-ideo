@@ -14,14 +14,6 @@ export const updateGlobalProps = (props) => {
   };
 };
 
-export const setTheme = (instance, color) => {
-  return {
-    type: actionTypes.SET_THEME,
-    instance: instance,
-    color: color
-  };
-};
-
 export const updateNavigation = (location, updatePrevious) => {
   return {
     type: actionTypes.UPDATE_NAVIGATION,

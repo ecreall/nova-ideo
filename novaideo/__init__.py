@@ -371,6 +371,23 @@ def evolve_person(root, registry):
     log.info('Persons evolved.')
 
 
+def evolve_user_preferences(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'preferences'):
+            node.reset_preferences()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('User Preferences evolved.')
+
+
 def evolve_access_keys(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
@@ -1055,6 +1072,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_nodes)
     config.add_evolution_step(evolve_channels)
     config.add_evolution_step(evolve_person)
+    config.add_evolution_step(evolve_user_preferences)
     config.add_evolution_step(evolve_channel_comments_at)
     config.add_evolution_step(subscribe_users_newsletter)
     config.add_evolution_step(evolve_roles_comments)
