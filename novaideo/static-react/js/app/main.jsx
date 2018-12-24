@@ -90,7 +90,7 @@ class Main extends React.Component {
         site: root,
         account: account,
         rootActions: getActions(
-          actions.edges.map((action) => {
+          actions && actions.edges.map((action) => {
             return action.node;
           })
         ),
