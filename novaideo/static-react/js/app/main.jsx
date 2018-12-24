@@ -83,7 +83,7 @@ class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data, width, navigation } = nextProps;
-    if (!data.loading && !data.error) {
+    if (!data.loading && data.root) {
       const { root, account, actions } = data;
       const smallScreen = SMALL_WIDTH.includes(width);
       this.props.updateGlobalProps({
