@@ -14,10 +14,11 @@ import datetime
 import pytz
 import itertools
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
 from pyramid.response import FileIter
-
+ 
 from substanced.util import get_oid
 from substanced.util import find_service
 
@@ -237,7 +238,7 @@ class EditPreferences(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        update(context.preferences, appstruct)
+        context.preferences = PersistentDict(update(context.preferences, appstruct))
         request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 

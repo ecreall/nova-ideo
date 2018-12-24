@@ -1371,6 +1371,7 @@ def update(source, values):
             else:
                 source[k] = v
 
+    return source
 #add unrecognized mimetype
 
 add_mimetype_map('audio/mp3', 'mp3')
