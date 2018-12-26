@@ -256,7 +256,7 @@ class Comment(Commentable, CorrelableEntity, Emojiable, ContentWithURLs, Signala
         return [content[0] for content in self.contextualized_contents
                 if content[0] is not subject and not getattr(content[1], 'tags', [])]
 
-    def get_channel(self, user):
+    def get_channel(self, user, force=False):
         return self.channel
 
     def set_associated_contents(self, associated_contents, user):
