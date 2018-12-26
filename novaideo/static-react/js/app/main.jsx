@@ -25,10 +25,11 @@ const styleNode = document.createComment('insertion-point-jss');
 document.head.insertBefore(styleNode, document.head.firstChild);
 
 const generateClassName = createGenerateClassName({
-  productionPrefix: 'n-i'
+  productionPrefix: 'ni'
 });
 const jss = create(jssPreset());
 jss.options.insertionPoint = 'insertion-point-jss';
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -90,9 +91,10 @@ class Main extends React.Component {
         site: root,
         account: account,
         rootActions: getActions(
-          actions && actions.edges.map((action) => {
-            return action.node;
-          })
+          actions
+            && actions.edges.map((action) => {
+              return action.node;
+            })
         ),
         smallScreen: smallScreen
       });
@@ -119,7 +121,7 @@ class Main extends React.Component {
     const { data, network, theme } = this.props;
     const { requirementsLoaded } = this.state;
     const { root, account } = data;
-    if (!requirementsLoaded || data.loading || !root) return null;
+    if (!requirementsLoaded || data.loading || !root) return null;
     const userPreferencesTheme = account && account.preferences && account.preferences.theme;
     const themeToUse = (userPreferencesTheme && getTheme(userPreferencesTheme)) || theme;
     return (

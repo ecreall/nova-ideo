@@ -162,11 +162,16 @@ export class DumIdeasFilter extends React.Component {
   };
 
   getStates = () => {
-    const { config } = this.props;
+    const { config, isLogged } = this.props;
     const ideaState = getIdeaStates(config);
     delete ideaState.toStudy;
     delete ideaState.favorable;
     delete ideaState.unfavorable;
+    if (!isLogged) {
+      delete ideaState.published;
+      delete ideaState.private;
+      delete ideaState.archived;
+    }
     const states = {};
     Object.keys(ideaState).forEach((key) => {
       const value = ideaState[key];
@@ -324,7 +329,8 @@ const mapStateToProps = (state, { form, id }) => {
     config: state.globalProps.site,
     formData: state.form[form],
     adapters: state.adapters,
-    filterOpened: !!state.filter[id]
+    filterOpened: !!state.filter[id],
+    isLogged: state.network.isLogged
   };
 };
 

@@ -28,7 +28,7 @@ function Filter(props) {
     <div className={classes.root}>
       <ExpansionPanel classes={{ root: classes.paper }} expanded={filterOpened}>
         <ExpansionPanelDetails className={classes.details}>
-          <Form id={id} form={formId} key={formId} {...restProps} />
+          {filterOpened ? <Form id={id} form={formId} key={formId} {...restProps} /> : null}
         </ExpansionPanelDetails>
         <Divider />
       </ExpansionPanel>

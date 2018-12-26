@@ -84,6 +84,16 @@ const barbieTheme = {
   secondaryColor: '#44a3ce'
 };
 
+const coffeeTheme = {
+  primaryColor: '#886952',
+  secondaryColor: '#cdcdc0'
+};
+
+const iceTheme = {
+  primaryColor: '#267a8a',
+  secondaryColor: '#bcbabe'
+};
+
 const defaultTheme = getTheme(minionsTheme);
 
 export const THEMES_IDS = {
@@ -92,16 +102,20 @@ export const THEMES_IDS = {
   chocolat: 'chocolat',
   aubergine: 'aubergine',
   halloween: 'halloween',
-  barbie: 'barbie'
+  barbie: 'barbie',
+  coffee: 'coffee',
+  ice: 'ice'
 };
 
 export const THEMES = {
-  [THEMES_IDS.minions]: { title: 'Minions', colors: minionsTheme },
+  [THEMES_IDS.minions]: { title: 'Mignon', colors: minionsTheme },
   [THEMES_IDS.green]: { title: 'Green', colors: greenTheme },
   [THEMES_IDS.chocolat]: { title: 'Chocolat', colors: chocolatTheme },
   [THEMES_IDS.aubergine]: { title: 'Aubergine', colors: aubergineTheme },
   [THEMES_IDS.halloween]: { title: 'Halloween', colors: halloweenTheme },
-  [THEMES_IDS.barbie]: { title: 'Barbie', colors: barbieTheme }
+  [THEMES_IDS.barbie]: { title: 'Barby', colors: barbieTheme },
+  [THEMES_IDS.coffee]: { title: 'Coffee', colors: coffeeTheme },
+  [THEMES_IDS.ice]: { title: 'Ice', colors: iceTheme }
 };
 
 export default defaultTheme;

@@ -115,7 +115,7 @@ def alert_comment_nia(context, request, root, **kwargs):
     if nia and channel and alert_class:
         # For Nia the alert is volatil
         alert = alert_class(**kwargs)
-        alert.subject = context
+        alert.addtoproperty('subjects', context)
         comment_text = alert.render('nia', None, request).strip()
         # remove spaces and new lines between tags
         comment_text = re.sub('>[\n|\r|\s]*<', '><', comment_text)
