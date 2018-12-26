@@ -77,7 +77,7 @@ const styles = (theme) => {
     },
     avatarNoPicture: {
       fontSize: 11,
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: 'white',
       color: theme.palette.primary['500']
     },
     badge: {
@@ -86,7 +86,7 @@ const styles = (theme) => {
       fontWeight: '700'
     },
     badgeColor: {
-      color: theme.palette.primary.light,
+      color: 'white',
       backgroundColor: theme.palette.danger['500'],
       padding: '3px 7px',
       marginLeft: 4,
