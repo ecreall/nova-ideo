@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { withApollo, graphql } from 'react-apollo';
 import { I18n } from 'react-redux-i18n';
 
+import { addPrivateChannel } from '../../graphql/processes/commentProcess';
+import AddPrivateChannel from '../../graphql/processes/commentProcess/mutations/AddPrivateChannel.graphql';
 import { goTo, get } from '../../utils/routeMap';
 import { ACTIONS, PROCESSES } from '../../processes';
 import { select, deselect } from '../../graphql/processes/abstractProcess';
@@ -26,6 +28,21 @@ export class DumbUserProcessManager extends React.Component {
     originalAction: null
   };
 
+  openChannel = () => {
+    const { person, addChannel } = this.props;
+    if (person.channel) {
+      this.gotoChannel(person.channel);
+    } else {
+      addChannel({
+        context: person
+      }).then((result) => {
+        if (result) {
+          this.gotoChannel(result.data.addPrivateChannel.channel);
+        }
+      });
+    }
+  };
+
   onActionExecuted = () => {
     const { onActionClick } = this.props;
     if (onActionClick) onActionClick();
@@ -42,17 +59,17 @@ export class DumbUserProcessManager extends React.Component {
     // this.onActionExecuted();
   };
 
-  openChannel = () => {
-    const { chatAppIntegreted, person, openRight } = this.props;
+  gotoChannel = (channel) => {
+    const { chatAppIntegreted, openRight } = this.props;
     this.onActionExecuted();
     if (chatAppIntegreted) {
       openRight({
         componentId: CONTENTS_IDS.chat,
-        props: { channel: person.channel.id, channelTitle: person.channel.title }
+        props: { channel: channel.id, channelTitle: channel.title }
       });
     } else {
       setTimeout(() => {
-        goTo(get('messages', { channelId: person.channel.id }, { right: 'info' }));
+        goTo(get('messages', { channelId: channel.id }, { right: 'info' }));
       }, 200);
     }
   };
@@ -194,7 +211,15 @@ const UserProcessManagerWithActions = graphql(Select, {
         deselectUser: deselect(props)
       };
     }
-  })(DumbUserProcessManager)
+  })(
+    graphql(AddPrivateChannel, {
+      props: function (props) {
+        return {
+          addChannel: addPrivateChannel(props)
+        };
+      }
+    })(DumbUserProcessManager)
+  )
 );
 
 export const mapDispatchToProps = {

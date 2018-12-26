@@ -64,7 +64,7 @@ class CommentObject(graphene.Mutation):
         # implemented in graphql-wsgi and batched mode is enabled on apollo.
 
     status = graphene.Boolean()
-    is_new_channel = graphene.Boolean() 
+    is_new_channel = graphene.Boolean()
     comment = graphene.Field('novaideo.graphql.schema.Comment')
 
     @staticmethod
@@ -78,7 +78,7 @@ class CommentObject(graphene.Mutation):
         args['files'] = extract_files('attached_files', request)
         args = comment_schema.deserialize(args)
         args['files'] = [f['_object_data']
-                                  for f in args['files']]
+                         for f in args['files']]
         args['context'] = context_oid
         args['intention'] = 'Remark' # TODO the intention must be submitted by the user
         context, request, action, args = get_execution_data(
@@ -86,7 +86,7 @@ class CommentObject(graphene.Mutation):
         new_comment = None
         is_new_channel = False
         if action:
-            channel = context.get_channel(request.user)
+            channel = context.get_channel(request.user, True)
             is_new_channel = request.user not in channel.members
             anonymous = args.get('anonymous', False)
             new_comment = CommentClass(**args)
@@ -100,7 +100,8 @@ class CommentObject(graphene.Mutation):
                 request.localizer.translate(_("Authorization failed")))
 
         status = new_comment is not None
-        return CommentObject(comment=new_comment, is_new_channel=is_new_channel, status=status)
+        return CommentObject(
+            comment=new_comment, is_new_channel=is_new_channel, status=status)
 
 
 class MarkCommentsAsRead(graphene.Mutation):

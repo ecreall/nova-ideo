@@ -281,7 +281,6 @@ export class DumbIdeaItem extends React.Component {
               />
             )}
             <UserTitle node={author} classes={{ title: classes.headerTitle }} />
-            {node.keywords.length > 0 && <Keywords onKeywordPress={this.props.searchEntities} keywords={node.keywords} />}
             <Tooltip id={node.id} title={createdAtF3} placement="top">
               <span className={classes.headerAddOn}>{createdAt}</span>
             </Tooltip>
@@ -326,6 +325,7 @@ export class DumbIdeaItem extends React.Component {
                 ) : null}
               </div>
             </div>
+            {node.keywords.length > 0 && <Keywords keywords={node.keywords} />}
             <div className={classes.bodyFooter}>
               {!passive && (
                 <AllignedActions actionDecoration actions={communicationActions} onActionClick={processManager.execute} />

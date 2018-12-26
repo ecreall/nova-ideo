@@ -49,7 +49,11 @@ export class DumbSelectItem extends React.Component {
         }}
       >
         <Item node={node} isSelected={isSelected} />
-        <ListItemSecondaryAction>
+        <ListItemSecondaryAction
+          onClick={() => {
+            return onClick(node);
+          }}
+        >
           {isSelected ? (
             <CheckBoxIcon className={classNames('menu-item-text', classes.iconSelected)} />
           ) : (

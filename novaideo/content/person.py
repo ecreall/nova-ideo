@@ -44,7 +44,8 @@ from novaideo.core import (
     CorrelableEntity,
     generate_access_keys,
     Debatable,
-    Evaluations)
+    Evaluations,
+    PrivateChannel)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
@@ -407,13 +408,20 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         return self._read_at.get(
             get_oid(channel), default_date)
 
-    def get_channel(self, user):
+    def get_channel(self, user, force=False):
         all_channels = list(self.channels)
         all_channels.extend(list(getattr(user, 'channels', [])))
         for channel in all_channels:
             members = channel.members
             if user in members and self in members:
                 return channel
+        if force:
+            channel = PrivateChannel()
+            self.addtoproperty('channels', channel)
+            channel.addtoproperty('members', self)
+            channel.addtoproperty('members', user)
+            self.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
+            return channel
 
         return None
 

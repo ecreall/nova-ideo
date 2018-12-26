@@ -16,9 +16,7 @@ const styles = {
     paddingLeft: 5,
     paddingRight: 5,
     marginBottom: 2,
-    marginLeft: 7,
     marginRight: 3,
-    backgroundColor: '#e8e8e8',
     borderRadius: 3
   },
   keywordsText: {

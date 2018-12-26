@@ -10,6 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 
+import Keywords from '../common/Keywords';
 import OverlaidTooltip from '../common/OverlaidTooltip';
 import ImagesPreview from '../common/ImagesPreview';
 import IconWithText from '../common/IconWithText';
@@ -272,6 +273,7 @@ export class DumbIdeaPopover extends React.Component {
                 )}
               </div>
             </div>
+            {node.keywords.length > 0 && <Keywords keywords={node.keywords} />}
             <div className={classes.bodyFooter}>
               <AllignedActions
                 actionDecoration
