@@ -440,7 +440,7 @@ const Translations = {
       },
       editProfile: {
         save: "Enregistrer mes données",
-        confirmation: "Vos données de profile ont bien été enregistrées",
+        confirmation: "Vos données de profil ont bien été enregistrées",
         error: "Une erreur est survenue! Les données de votre profil n'ont pas été enregistrées"
       },
       editPassword: {
