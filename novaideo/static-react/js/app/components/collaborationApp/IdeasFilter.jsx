@@ -171,6 +171,7 @@ export class DumIdeasFilter extends React.Component {
       delete ideaState.published;
       delete ideaState.private;
       delete ideaState.archived;
+      delete ideaState.submitted;
     }
     const states = {};
     Object.keys(ideaState).forEach((key) => {

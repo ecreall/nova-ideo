@@ -1,0 +1,10 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation Submit($context: String!, $processIds: [String], $nodeIds: [String], $processTags: [String], $actionTags: [String]) {
+  submitIdea(context: $context) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

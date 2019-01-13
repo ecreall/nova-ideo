@@ -7,10 +7,7 @@ export default function createAndPublish({ ownProps, mutate }) {
   return ({
     context, plainText, text, title, keywords, attachedFiles, oldFiles, anonymous, account
   }) => {
-    const {
-      formData,
-      globalProps: { site }
-    } = ownProps;
+    const { formData, globalProps: { site } } = ownProps;
     const files = attachedFiles.length > 0
       ? formData.values.files.map((file, index) => {
         return {
@@ -40,6 +37,10 @@ export default function createAndPublish({ ownProps, mutate }) {
         authorOid = 'anonymousOid';
         authorTitle = 'Anonymous';
       }
+    }
+    const ideaState = site.moderateIdeas ? [STATE.idea.submitted] : [STATE.idea.published];
+    if (site.moderateIdeas && site.supportIdeas) {
+      ideaState.splice(0, 0, STATE.idea.submittedSupport);
     }
     return mutate({
       variables: {
@@ -73,7 +74,7 @@ export default function createAndPublish({ ownProps, mutate }) {
             tokensSupport: 0,
             tokensOpposition: 0,
             userToken: null,
-            state: site.supportIdeas ? [STATE.idea.submittedSupport, STATE.idea.published] : [STATE.idea.published],
+            state: ideaState,
             channel: {
               __typename: 'Channel',
               id: 'channel-id',

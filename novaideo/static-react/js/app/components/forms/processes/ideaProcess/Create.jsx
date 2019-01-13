@@ -301,7 +301,7 @@ export class DumbCreateIdeaForm extends React.Component {
     site.keywords.forEach((keyword) => {
       keywords[keyword] = keyword;
     });
-    const withAnonymous = site.anonymisation;
+    const { moderateIdeas, anonymisation } = site;
     let hasText = false;
     let files = [];
     let selectedKeywords = {};
@@ -327,7 +327,7 @@ export class DumbCreateIdeaForm extends React.Component {
       const { keywordsRequired } = site;
       selectedKeywords = formData.values.keywords ? formData.values.keywords : {};
       const keywordsSatisfied = !keywordsRequired || (keywordsRequired && Object.keys(selectedKeywords).length > 0);
-      anonymousSelected = withAnonymous && Boolean(formData.values.anonymous);
+      anonymousSelected = anonymisation && Boolean(formData.values.anonymous);
       hasTitle = formData.values.title;
       canSubmit = hasTitle && keywordsSatisfied && hasText;
     }
@@ -408,7 +408,7 @@ export class DumbCreateIdeaForm extends React.Component {
                 name="files"
                 component={renderFilesListField}
               />
-              {withAnonymous ? (
+              {anonymisation ? (
                 <Field
                   props={{
                     classes: classes
@@ -445,12 +445,12 @@ export class DumbCreateIdeaForm extends React.Component {
                       ? () => {
                         this.handleSubmit(action);
                       }
-                      : undefined
+                      : null
                   }
                   background={theme.palette.success[500]}
                   className={classes.buttonFooter}
                 >
-                  {I18n.t(action.submission)}
+                  {I18n.t(moderateIdeas ? action.submissionModeration || action.submission : action.submission)}
                 </Button>
               );
             })}

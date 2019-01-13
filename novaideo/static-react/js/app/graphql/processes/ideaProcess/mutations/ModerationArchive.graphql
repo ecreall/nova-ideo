@@ -1,0 +1,17 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation ModerationArchive(
+  $context: String!
+  $explanation: String!
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  moderationArchiveIdea(context: $context, explanation: $explanation) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

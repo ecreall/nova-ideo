@@ -78,7 +78,7 @@ const styles = (theme) => {
       borderRight: 'none'
     },
     publishAction: {
-      marginRight: '20px !important',
+      marginRight: '15px !important',
       minWidth: 'auto',
       minHeight: 'auto',
       padding: '5px 10px'
@@ -129,6 +129,21 @@ const IdeaAppBar = ({
               props: { background: theme.palette.success[500] }
             },
             [ideaProcessNodes.makeItsOpinion.nodeId]: {
+              className: classes.publishAction,
+              type: 'button',
+              props: { background: theme.palette.success[500] }
+            },
+            [ideaProcessNodes.moderationPublish.nodeId]: {
+              className: classes.publishAction,
+              type: 'button',
+              props: { background: theme.palette.success[500] }
+            },
+            [ideaProcessNodes.moderationArchive.nodeId]: {
+              className: classes.publishAction,
+              type: 'button',
+              props: { background: theme.palette.danger.primary }
+            },
+            [ideaProcessNodes.submit.nodeId]: {
               className: classes.publishAction,
               type: 'button',
               props: { background: theme.palette.success[500] }

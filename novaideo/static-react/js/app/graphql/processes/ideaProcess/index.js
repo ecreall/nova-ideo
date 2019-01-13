@@ -11,3 +11,6 @@ export { default as archiveIdea } from './archive';
 export { default as abandonIdea } from './abandon';
 export { default as recuperateIdea } from './recuperate';
 export { default as share } from './share';
+export { default as moderationArchive } from './moderationArchive';
+export { default as moderationPublish } from './moderationPublish';
+export { default as submit } from './submit';

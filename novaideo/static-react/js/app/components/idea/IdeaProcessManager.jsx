@@ -7,11 +7,15 @@ import { Translate, I18n } from 'react-redux-i18n';
 import Delete from '../forms/processes/ideaProcess/Delete';
 import Edit from '../forms/processes/ideaProcess/Edit';
 import Publish from '../forms/processes/ideaProcess/Publish';
+import Submit from '../forms/processes/ideaProcess/Submit';
 import Share from '../forms/processes/ideaProcess/Share';
 import Abandon from '../forms/processes/ideaProcess/Abandon';
 import Recuperate from '../forms/processes/ideaProcess/Recuperate';
 import Archive from '../forms/processes/ideaProcess/Archive';
 import MakeItsOpinion from '../forms/processes/ideaProcess/MakeItsOpinion';
+import Login from '../forms/processes/userProcess/Login';
+import ModerationPublish from '../forms/processes/ideaProcess/ModerationPublish';
+import ModerationArchive from '../forms/processes/ideaProcess/ModerationArchive';
 import { goTo, get } from '../../utils/routeMap';
 import { arrayToDict, getFormId } from '../../utils/globalFunctions';
 import { getPresentProposalSubject, getPresentProposalMessage } from '../../utils/messages';
@@ -24,7 +28,6 @@ import Withdraw from '../../graphql/processes/ideaProcess/mutations/Withdraw.gra
 import Select from '../../graphql/processes/abstractProcess/mutations/Select.graphql';
 import Deselect from '../../graphql/processes/abstractProcess/mutations/Deselect.graphql';
 import { filterActions } from '../../utils/processes';
-import Login from '../forms/processes/userProcess/Login';
 import { OPINIONS_VALUES } from '../../constants';
 import { openCollaborationRight } from '../../actions/collaborationAppActions';
 import { CONTENTS_IDS } from '../collaborationApp/collaborationAppRight';
@@ -211,6 +214,14 @@ export class DumbIdeaProcessManager extends React.Component {
       const formId = getFormId(`${idea.id}-archive-idea`);
       return <Archive idea={idea} action={action} onClose={this.onFormClose} form={formId} />;
     }
+    case ideaProcessNodes.moderationPublish.nodeId:
+      return <ModerationPublish idea={idea} action={action} onClose={this.onFormClose} />;
+    case ideaProcessNodes.moderationArchive.nodeId: {
+      const formId = getFormId(`${idea.id}-moderation-archive-idea`);
+      return <ModerationArchive idea={idea} action={action} onClose={this.onFormClose} form={formId} />;
+    }
+    case ideaProcessNodes.submit.nodeId:
+      return <Submit idea={idea} action={action} onClose={this.onFormClose} />;
     case ideaProcessNodes.makeItsOpinion.nodeId: {
       const formId = getFormId(`${idea.id}-makeItsOpinion`);
       return (

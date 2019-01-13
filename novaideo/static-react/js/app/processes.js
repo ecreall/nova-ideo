@@ -26,7 +26,8 @@ export const PROCESSES = {
       },
       createAndPublish: {
         nodeId: 'creatandpublish',
-        submission: 'processes.ideamanagement.createAndPublish.submission'
+        submission: 'processes.ideamanagement.createAndPublish.submission',
+        submissionModeration: 'processes.ideamanagement.createAndPublish.submissionModeration'
       },
       comment: {
         nodeId: 'comment',
@@ -119,6 +120,30 @@ export const PROCESSES = {
         title: 'processes.ideamanagement.present.title',
         description: 'processes.ideamanagement.present.description',
         icon: iconAdapter('mdi-set mdi-share')
+      },
+      submit: {
+        nodeId: 'submit',
+        title: 'processes.ideamanagement.submit.title',
+        description: 'processes.ideamanagement.submit.description',
+        submission: 'processes.ideamanagement.submit.submission',
+        confirmation: 'processes.ideamanagement.submit.confirmation',
+        icon: iconAdapter('mdi-set mdi-send')
+      },
+      moderationArchive: {
+        nodeId: 'archive',
+        title: 'processes.ideamanagement.moderationArchive.title',
+        description: 'processes.ideamanagement.moderationArchive.description',
+        submission: 'processes.ideamanagement.moderationArchive.submission',
+        confirmation: 'processes.ideamanagement.moderationArchive.confirmation',
+        icon: ArchiveIcon
+      },
+      moderationPublish: {
+        nodeId: 'publish_moderation',
+        title: 'processes.ideamanagement.moderationPublish.title',
+        description: 'processes.ideamanagement.moderationPublish.description',
+        submission: 'processes.ideamanagement.moderationPublish.submission',
+        confirmation: 'processes.ideamanagement.moderationPublish.confirmation',
+        icon: iconAdapter('mdi-set mdi-earth')
       }
     }
   },
@@ -329,7 +354,7 @@ export const STATE_LABEL = {
     [STATE.idea.favorable]: { title: 'states.idea.favorable', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
     [STATE.idea.unfavorable]: { title: 'states.idea.unfavorable', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
     [STATE.idea.examined]: { title: 'states.idea.examined', icon: iconAdapter('mdi-set mdi-checkbox-blank-circle') },
-    [STATE.idea.submitted]: { title: 'states.idea.submitted', icon: iconAdapter('mdi-set mdi-shield-check-outline') },
+    [STATE.idea.submitted]: { title: 'states.idea.submitted', icon: iconAdapter('mdi-set mdi-send') },
     [STATE.idea.archived]: { title: 'states.idea.archived', icon: iconAdapter('mdi-set mdi-package-down') }
   }
 };

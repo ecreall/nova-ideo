@@ -26,9 +26,9 @@ export function getExaminationValue(idea) {
 }
 
 export function getExaminationTtile(idea) {
-  if (idea.state.includes(STATE.idea.favorable)) return I18n.t('idea.favorable');
-  if (idea.state.includes(STATE.idea.toStudy)) return I18n.t('idea.toStudy');
-  if (idea.state.includes(STATE.idea.unfavorable)) return I18n.t('idea.unfavorable');
+  if (idea.state.includes(STATE.idea.favorable)) return I18n.t('states.idea.favorable');
+  if (idea.state.includes(STATE.idea.toStudy)) return I18n.t('states.idea.toStudy');
+  if (idea.state.includes(STATE.idea.unfavorable)) return I18n.t('states.idea.unfavorable');
   return undefined;
 }
 

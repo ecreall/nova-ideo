@@ -1,0 +1,16 @@
+#import "../../../fragments/Idea.graphql"
+
+mutation ModerationPublish(
+  $context: String!
+  $processIds: [String]
+  $nodeIds: [String]
+  $processTags: [String]
+  $actionTags: [String]
+) {
+  moderationPublishIdea(context: $context) {
+    status
+    idea {
+      ...Idea
+    }
+  }
+}

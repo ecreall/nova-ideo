@@ -110,11 +110,8 @@ const Translations = {
       }
     },
     idea: {
-      private: "Privée",
       privatePublishAction: "Privée (Cliquer pour publier)",
-      favorable: "Favorable",
-      unfavorable: "Défavorable",
-      toStudy: "À retravailler"
+      privateSubmitAction: "Privée (Cliquer pour soumettre)"
     },
     editor: {
       addEmbed: "Integrer le contenu d'une URL (une video, un article ....)",
@@ -166,7 +163,8 @@ const Translations = {
           submission: "Enregistrer"
         },
         createAndPublish: {
-          submission: "Enregistrer et publier"
+          submission: "Enregistrer et publier",
+          submissionModeration: "Enregistrer et soumettre"
         },
         edit: {
           title: "Editer",
@@ -226,6 +224,24 @@ const Translations = {
         present: {
           title: "Partager",
           description: "Partager la proposition"
+        },
+        submit: {
+          title: "Soumettre",
+          description: "Soumettre la proposition",
+          confirmation: "Voulez-vous vraiment soumettre cette proposition ? Cette opération est irréversible.",
+          submission: "Oui ! Soumettre"
+        },
+        moderationPublish: {
+          title: "Publier",
+          description: "Publier la proposition",
+          confirmation: "Voulez-vous vraiment publier cette proposition ? Cette opération est irréversible.",
+          submission: "Oui ! Publier"
+        },
+        moderationArchive: {
+          title: "Archiver",
+          description: "Archiver la proposition",
+          confirmation: "Voulez-vous vraiment Archiver cette proposition ? Cette opération est irréversible.",
+          submission: "Oui ! Archiver"
         }
       },
       commentmanagement: {
@@ -644,11 +660,8 @@ const Translations = {
       }
     },
     idea: {
-      private: "Private",
       privatePublishAction: "Private (Click to publish)",
-      favorable: "Positive",
-      unfavorable: "Negative",
-      toStudy: "To be re-worked upon"
+      privateSubmitAction: "Private (Click to submit)"
     },
     editor: {
       addEmbed: "Embed the content of an URL (a video, an article ....)",
@@ -700,7 +713,8 @@ const Translations = {
           submission: "Save"
         },
         createAndPublish: {
-          submission: "Save and publish"
+          submission: "Save and publish",
+          submissionModeration: "Save and submit"
         },
         edit: {
           title: "Edit",
@@ -760,6 +774,24 @@ const Translations = {
         present: {
           title: "Share",
           description: "Share the proposal"
+        },
+        submit: {
+          title: "Submit",
+          description: "Submit the proposal",
+          confirmation: "Are you sure you want to submit this proposal? This cannot be undone.",
+          submission: "Yes ! Submit"
+        },
+        moderationPublish: {
+          title: "Publish",
+          description: "Publish the proposal",
+          confirmation: "Are you sure you want to publish this proposal? This cannot be undone.",
+          submission: "Yes ! Publish"
+        },
+        moderationArchive: {
+          title: "Archive",
+          description: "Archive the proposal",
+          confirmation: "Are you sure you want to archive this proposal? This cannot be undone.",
+          submission: "Yes ! Archive"
         }
       },
       commentmanagement: {

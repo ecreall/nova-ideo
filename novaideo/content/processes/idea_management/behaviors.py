@@ -43,8 +43,7 @@ from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles, Evaluations
 from novaideo.utilities.util import connect
 from novaideo.event import (
-    ObjectPublished, CorrelableRemoved,
-    ObjectModified)
+    ObjectPublished, CorrelableRemoved)
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data, alert_comment_nia)
 from novaideo.content.alert import InternalAlertKind
@@ -113,7 +112,7 @@ class CreateIdea(InfiniteCardinality):
                 alert_kind='transformation_'+context_type,
                 content=context
                 )
-        
+
         idea.extract_urls_metadata(request)
         idea.reindex()
         request.registry.notify(ActivityExecuted(self, [idea], author))
@@ -259,7 +258,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return False 
+    return False
         # ((has_role(role=('Owner', context)) and \
         #     'archived' not in context.state or \
         #     'version' in context.state) or \
@@ -373,7 +372,6 @@ class EditIdea(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
         user = context.author
         last_version = context.version
         copy_of_idea = copy(
@@ -442,7 +440,7 @@ class SubmitIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
-    tags = ['secondary', 'global']
+    tags = ['primary', 'menu']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = submit_roles_validation
@@ -480,7 +478,7 @@ class ArchiveIdea(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
-    tags = ['secondary', 'entity', 'danger']
+    tags = ['primary', 'menu']
     submission_title = _('Continue')
     context = Iidea
     roles_validation = decision_roles_validation

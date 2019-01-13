@@ -197,9 +197,11 @@ export class DumbIdeaPopover extends React.Component {
     const state = node.state || [];
     const hasEvaluation = site.supportIdeas && state.includes(STATE.idea.published);
     const isPrevate = state.includes(STATE.idea.private);
+    const isSubmitted = state.includes(STATE.idea.submitted);
     const ideaProcessNodes = PROCESSES.ideamanagement.nodes;
     const communicationActions = getActions(node.actions, { tags: ACTIONS.communication });
-    const publishAction = isPrevate && getActions(node.actions, { nodeId: ideaProcessNodes.publish.nodeId })[0];
+    const publishAction = isPrevate && getActions(node.actions, { nodeId: [ideaProcessNodes.publish.nodeId, ideaProcessNodes.submit.nodeId] })[0];
+    const isSubmit = publishAction && publishAction.nodeId === ideaProcessNodes.submit.nodeId;
     const Examination = adapters.examination;
     return (
       <div className={classes.container} onMouseOver={this.onMouseOver} onMouseLeave={this.onMouseLeave}>
@@ -223,7 +225,11 @@ export class DumbIdeaPopover extends React.Component {
             ) : null}
             {isPrevate && (
               <OverlaidTooltip
-                tooltip={publishAction ? I18n.t('idea.privatePublishAction') : I18n.t('idea.private')}
+                tooltip={
+                  publishAction
+                    ? I18n.t(isSubmit ? 'idea.privateSubmitAction' : 'idea.privatePublishAction')
+                    : I18n.t('states.idea.private')
+                }
                 placement="top"
               >
                 <Icon
@@ -236,6 +242,11 @@ export class DumbIdeaPopover extends React.Component {
                       : null
                   }
                 />
+              </OverlaidTooltip>
+            )}
+            {isSubmitted && (
+              <OverlaidTooltip tooltip={I18n.t('states.idea.submitted')} placement="top">
+                <Icon className={classNames('mdi-set mdi-send', classes.iconPrivate)} />
               </OverlaidTooltip>
             )}
           </div>

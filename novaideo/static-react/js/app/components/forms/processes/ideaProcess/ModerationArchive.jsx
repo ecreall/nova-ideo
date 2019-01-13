@@ -7,8 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { I18n } from 'react-redux-i18n';
 
 import { renderTextInput } from '../../utils';
-import { archiveIdea } from '../../../../graphql/processes/ideaProcess';
-import Archive from '../../../../graphql/processes/ideaProcess/mutations/Archive.graphql';
+import { moderationArchive } from '../../../../graphql/processes/ideaProcess';
+import ModerationArchive from '../../../../graphql/processes/ideaProcess/mutations/ModerationArchive.graphql';
 import Button, { CancelButton } from '../../../styledComponents/Button';
 import Form from '../../Form';
 import IdeaItem from '../../../idea/IdeaItem';
@@ -112,10 +112,10 @@ const mapStateToProps = (state, props) => {
 
 export default withStyles(styles, { withTheme: true })(
   connect(mapStateToProps)(
-    graphql(Archive, {
+    graphql(ModerationArchive, {
       props: function (props) {
         return {
-          archiveIdea: archiveIdea(props)
+          archiveIdea: moderationArchive(props)
         };
       }
     })(DumArchiveReduxForm)

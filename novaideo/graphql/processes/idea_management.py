@@ -1,5 +1,4 @@
 import graphene
-import urllib
 
 from dace.util import get_obj
 from pontus.schema import select
@@ -7,7 +6,7 @@ from pontus.schema import select
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 from novaideo.content.comment import Comment
 from ..util import (
-    get_context, get_action, get_execution_data,
+    get_context, get_execution_data,
     get_current_request, extract_files)
 from . import Upload
 from novaideo import _, log
@@ -34,7 +33,6 @@ class CreateIdea(graphene.Mutation):
         'default': 'ideamanagement.creat'
     }
 
-
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
@@ -56,7 +54,9 @@ class CreateIdea(graphene.Mutation):
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]
         args['attached_files'].extend(old_files)
-        if context_oid: args['context'] = context_oid
+        if context_oid:
+            args['context'] = context_oid
+
         default_action_id = CreateIdea.actions_ids['default']
         context = get_context(context_oid)
         context, request, action, args = get_execution_data(
@@ -167,7 +167,9 @@ class CreateAndPublishIdea(graphene.Mutation):
         args['attached_files'] = [f['_object_data']
                                   for f in args['attached_files']]
         args['attached_files'].extend(old_files)
-        if context_oid: args['context'] = context_oid
+        if context_oid:
+            args['context'] = context_oid
+
         context, request, action, args = get_execution_data(
             CreateAndPublishIdea.action_id, args)
         new_idea = None
@@ -453,3 +455,77 @@ class Share(graphene.Mutation):
         return Share(idea=context)
 
 
+class Submit(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.submit'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            Submit.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return Submit(idea=context, status=status)
+
+
+class ModerationPublish(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.publish_moderation'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            ModerationPublish.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return ModerationPublish(idea=context, status=status)
+
+
+class ModerationArchive(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+        explanation = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.archive'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        context, request, action, args = get_execution_data(
+            ModerationArchive.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, args)
+            request.invalidate_cache = True
+            status = True
+        else:
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
+
+        return ModerationArchive(idea=context, status=status)
