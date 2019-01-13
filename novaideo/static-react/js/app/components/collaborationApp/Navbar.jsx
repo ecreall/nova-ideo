@@ -92,7 +92,8 @@ const styles = {
 
 class NavBar extends React.Component {
   handelSearch = (filter) => {
-    if (filter.text) {
+    const { currentFilter } = this.props;
+    if (currentFilter !== filter.text) {
       this.props.search(MAIN_SEARCH_ID, filter.text);
     }
   };
@@ -175,7 +176,8 @@ export const mapStateToProps = (state) => {
     drawer: state.apps.drawer.open,
     site: state.globalProps.site,
     account: state.globalProps.account,
-    filterOpened: !!state.filter[MAIN_FILTER_ID]
+    filterOpened: !!state.filter[MAIN_FILTER_ID],
+    currentFilter: state.search[MAIN_SEARCH_ID]
   };
 };
 
