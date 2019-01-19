@@ -9,16 +9,17 @@ import JssProvider from 'react-jss/lib/JssProvider';
 
 import App from './app';
 import SiteData from './graphql/queries/SiteData.graphql';
-import { SMALL_WIDTH } from './constants';
+import { SMALL_WIDTH, AUTHORIZED_VIEWS } from './constants';
 import { userLogin, userLogout, updateUserToken } from './actions/authActions';
 import {
   setConnectionState, loadAdapters, updateGlobalProps, updateNavigation
 } from './actions/instanceActions';
 import { closeDrawer } from './actions/collaborationAppActions';
-import { getCurrentLocation } from './utils/routeMap';
+import { getCurrentLocation, getViewName } from './utils/routeMap';
 import { getActions } from './utils/processes';
 import { getTheme } from './theme';
 import { setInputValue } from './utils/globalFunctions';
+import LoginHome from './components/forms/processes/userProcess/LoginHome';
 
 const styleNode = document.createComment('insertion-point-jss');
 // $FlowFixMe
@@ -83,7 +84,9 @@ class Main extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { data, width, navigation } = nextProps;
+    const {
+      data, width, navigation, user, client
+    } = nextProps;
     if (!data.loading && !data.error) {
       const { root, account, actions } = data;
       const smallScreen = SMALL_WIDTH.includes(width);
@@ -106,6 +109,9 @@ class Main extends React.Component {
         this.props.updateNavigation(currentLocation, true);
       }
       if (smallScreen) this.props.closeDrawer();
+      if (user.token !== this.props.user.token) {
+        client.resetStore();
+      }
     }
   }
 
@@ -118,20 +124,26 @@ class Main extends React.Component {
   };
 
   render() {
-    const { data, network, theme } = this.props;
+    const {
+      data, network, theme, children, params
+    } = this.props;
     const { requirementsLoaded } = this.state;
     const { root, account } = data;
     if (!requirementsLoaded || data.loading || !root) return null;
     const userPreferencesTheme = account && account.preferences && account.preferences.theme;
     const themeToUse = (userPreferencesTheme && getTheme(userPreferencesTheme)) || theme;
+    const viewName = getViewName();
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <MuiThemeProvider theme={themeToUse}>
           <div className="main">
-            {network.isLogged || (root && !root.onlyForMembers) ? (
-              <App params={this.props.params}>{this.props.children}</App>
+            {network.isLogged || !root.onlyForMembers ? (
+              <App params={params}>{children}</App>
             ) : (
-              'login'
+              <React.Fragment>
+                <LoginHome />
+                {AUTHORIZED_VIEWS.includes(viewName) ? children : null}
+              </React.Fragment>
             )}
           </div>
         </MuiThemeProvider>

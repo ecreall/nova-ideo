@@ -93,3 +93,7 @@ export const goToEntity = (type, id) => {
 export const getCurrentLocation = () => {
   return browserHistory.getCurrentLocation().pathname;
 };
+
+export const getViewName = () => {
+  return browserHistory.getCurrentLocation().pathname.split('/')[1];
+};

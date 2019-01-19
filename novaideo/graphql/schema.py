@@ -251,8 +251,7 @@ class Root(Node, graphene.ObjectType):
         return False
 
     def resolve_only_for_members(self, args, context, info):  # pylint: disable=W0613
-        # TODO return the site id exp: evolutions...
-        return False
+        return getattr(self, 'only_for_members', False)
 
 
 class Action(Node, graphene.ObjectType):

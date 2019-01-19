@@ -5,31 +5,31 @@ export const LANGUAGES_TITLES = {
   fr: 'Français'
 };
 
-export const STATIC_URL = '';
+export const HOME_IMG = require('./assets/home.svg');
 
-export const DEFAULT_LOGO = STATIC_URL + require('./assets/novaideo_logo.png');
+export const DEFAULT_LOGO = require('./assets/novaideo_logo.png');
 
-export const STICKER_WOMEN_1 = STATIC_URL + require('./assets/sticker-women-1.svg');
+export const STICKER_WOMEN_1 = require('./assets/sticker-women-1.svg');
 
-export const STICKER_WOMEN_2 = STATIC_URL + require('./assets/sticker-women-2.svg');
+export const STICKER_WOMEN_2 = require('./assets/sticker-women-2.svg');
 
-export const STICKER_MAN_1 = STATIC_URL + require('./assets/sticker-man-1.svg');
+export const STICKER_MAN_1 = require('./assets/sticker-man-1.svg');
 
-export const STICKER_MAN_2 = STATIC_URL + require('./assets/sticker-man-2.svg');
+export const STICKER_MAN_2 = require('./assets/sticker-man-2.svg');
 
-export const NO_COMMENT = STATIC_URL + require('./assets/no-comment.svg');
+export const NO_COMMENT = require('./assets/no-comment.svg');
 
-export const NOT_LOGGED = STATIC_URL + require('./assets/not-logged.svg');
+export const NOT_LOGGED = require('./assets/not-logged.svg');
 
-export const NOT_LOGGED_2 = STATIC_URL + require('./assets/not-logged-2.svg');
+export const NOT_LOGGED_2 = require('./assets/not-logged-2.svg');
 
-export const CT_COMMENT = STATIC_URL + require('./assets/ct-comment.svg');
+export const CT_COMMENT = require('./assets/ct-comment.svg');
 
-export const REGISTRATION_CONFIRMATION = STATIC_URL + require('./assets/registration-confirmation.svg');
+export const REGISTRATION_CONFIRMATION = require('./assets/registration-confirmation.svg');
 
-export const USER_BACKGROUND = STATIC_URL + require('./assets/background-person.png');
+export const USER_BACKGROUND = require('./assets/background-person.png');
 
-export const PICKER_EMOJI_SHEET_APPLE_32 = STATIC_URL + require('./assets/sheets/picker_apple_32.png');
+export const PICKER_EMOJI_SHEET_APPLE_32 = require('./assets/sheets/picker_apple_32.png');
 
 export const PRIVACY_POLICY_URL_FR = 'https://www.iubenda.com/privacy-policy/8216991';
 
@@ -142,3 +142,5 @@ export const OPINIONS = {
   [OPINIONS_VALUES.toStudy]: 'opinions.toStudy',
   [OPINIONS_VALUES.unfavorable]: 'opinions.unfavorable'
 };
+
+export const AUTHORIZED_VIEWS = ['registrations', 'resets'];

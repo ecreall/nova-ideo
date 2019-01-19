@@ -7,6 +7,7 @@ import uuid
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 from graphql_wsgi import graphql_wsgi
+from graphql_wsgi.main import parse_body, get_graphql_params
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.request import Response
 from pyramid.view import view_config
@@ -19,6 +20,7 @@ from novaideo.content.interface import IPerson
 from .schema import schema
 from .util import get_user_by_token
 
+AUTHORIZED_QUERIES = ['SiteData', 'Registration', 'ConfirmRegistration', 'ResetPassword', 'ConfirmResetPassword']
 
 def auth_user(token, request):
     current_user = None
@@ -45,9 +47,19 @@ def graphqlview(context, request):  #pylint: disable=W0613
     is_private = getattr(request.root, 'only_for_members', False)
     auth = auth_user(token, request)
     if is_private and not auth:
-        response = HTTPUnauthorized()
-        response.content_type = 'application/json'
-        return response
+        to_verify = False
+        try:
+            query, variables, operation_name = get_graphql_params(
+                request, parse_body(request))
+            if operation_name not in AUTHORIZED_QUERIES:
+                to_verify = True
+        except:
+            to_verify = True
+        
+        if to_verify:
+            response = HTTPUnauthorized()
+            response.content_type = 'application/json'
+            return response
 
     if request.method == 'OPTIONS':
         response = Response(status=200, body=b'')

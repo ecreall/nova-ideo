@@ -80,7 +80,8 @@ const styles = {
   },
   newAccountDescription: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   buttonSubscription: {
     marginLeft: '10px !important'
