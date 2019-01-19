@@ -60,23 +60,8 @@ const styles = {
   formTitle: {
     flexGrow: 1
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '0 10px',
-    position: 'relative'
-  },
   alertContainer: {
     marginBottom: 20
-  },
-  newAccountContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  newAccountTitle: {
-    fontWeight: 'bold',
-    marginBottom: 5
   },
   newAccountDescription: {
     display: 'flex',
