@@ -21,9 +21,12 @@ const styles = {
 
 function Filter(props) {
   const {
-    id, filterOpened, closeFilterSection, Form, classes, ...restProps
+    id, filterOpened, closeFilterSection, Form, onOpen, classes, ...restProps
   } = props;
   const formId = getFormId(`${id}-filter`);
+  if (filterOpened && onOpen) {
+    onOpen();
+  }
   return (
     <div className={classes.root}>
       <ExpansionPanel classes={{ root: classes.paper }} expanded={filterOpened}>

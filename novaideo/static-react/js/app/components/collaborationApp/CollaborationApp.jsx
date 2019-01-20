@@ -39,37 +39,50 @@ export const styles = {
   }
 };
 
-function CollaborationApp({
-  children, active, left, account, smallScreen, classes
-}) {
-  return (
-    <App active={active} left={left} Navbar={Navbar}>
-      <div className={classes.root}>
-        <Scrollbar
-          scrollEvent="scroll"
-          classes={{
-            scroll: classes.scroll
-          }}
-        >
-          <Filter live id={MAIN_FILTER_ID} Form={IdeasFilter} />
-          <div className={classes.maxContainer}>
-            <Grid container>
-              <Grid item xs={12} md={4}>
-                {!account && !smallScreen ? <AnonymousCard classes={{ container: classes.userCardContainer }} /> : null}
-                {account && !smallScreen ? <UserCard id={account.id} classes={{ container: classes.userCardContainer }} /> : null}
+export class CollaborationApp extends React.Component {
+  container = React.createRef();
+
+  scrollToTop = () => {
+    const parent = this.container.current.offsetParent;
+    parent.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
+  render() {
+    const {
+      children, active, left, account, smallScreen, classes
+    } = this.props;
+
+    return (
+      <App active={active} left={left} Navbar={Navbar}>
+        <div className={classes.root}>
+          <Scrollbar
+            scrollEvent="scroll"
+            classes={{
+              scroll: classes.scroll
+            }}
+          >
+            <Filter live id={MAIN_FILTER_ID} Form={IdeasFilter} onOpen={this.scrollToTop} />
+            <div ref={this.container} className={classes.maxContainer}>
+              <Grid container>
+                <Grid item xs={12} md={4}>
+                  {!account && !smallScreen ? <AnonymousCard classes={{ container: classes.userCardContainer }} /> : null}
+                  {account && !smallScreen ? (
+                    <UserCard id={account.id} classes={{ container: classes.userCardContainer }} />
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  {children}
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <Footer />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                {children}
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <Footer />
-              </Grid>
-            </Grid>
-          </div>
-        </Scrollbar>
-      </div>
-    </App>
-  );
+            </div>
+          </Scrollbar>
+        </div>
+      </App>
+    );
+  }
 }
 
 export const mapStateToProps = (state) => {

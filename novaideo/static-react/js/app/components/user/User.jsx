@@ -322,6 +322,11 @@ export class DumbUser extends React.Component {
     }
   }
 
+  scrollToTop = () => {
+    const parent = this.header.offsetParent;
+    parent.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
   render() {
     const { data, processManager, classes } = this.props;
     const { open } = this.state;
@@ -367,7 +372,13 @@ export class DumbUser extends React.Component {
       >
         <div className={classes.root}>
           <Scrollbar scrollEvent={scrollEvent}>
-            <Filter live id={`${person.id}-filter`} Form={IdeasFilter} sections={['states', 'examination', 'date']} />
+            <Filter
+              live
+              onOpen={this.scrollToTop}
+              id={`${person.id}-filter`}
+              Form={IdeasFilter}
+              sections={['states', 'examination', 'date']}
+            />
             <div
               ref={(header) => {
                 this.header = header;
