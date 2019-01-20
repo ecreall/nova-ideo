@@ -11,9 +11,7 @@ import App from './app';
 import SiteData from './graphql/queries/SiteData.graphql';
 import { SMALL_WIDTH, AUTHORIZED_VIEWS } from './constants';
 import { userLogin, userLogout, updateUserToken } from './actions/authActions';
-import {
-  setConnectionState, loadAdapters, updateGlobalProps, updateNavigation
-} from './actions/instanceActions';
+import { /* setConnectionState, */ loadAdapters, updateGlobalProps, updateNavigation } from './actions/instanceActions';
 import { closeDrawer } from './actions/collaborationAppActions';
 import { getCurrentLocation, getViewName } from './utils/routeMap';
 import { getActions } from './utils/processes';
@@ -32,28 +30,23 @@ const jss = create(jssPreset());
 jss.options.insertionPoint = 'insertion-point-jss';
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    // TODO
-    this.state = {
-      requirementsLoaded: true
-    };
-  }
+  state = {
+    requirementsLoaded: true
+  };
 
   // $FlowFixMe
   async componentDidMount() {
     // we need the connection status
     // const isConnected = await NetInfo.isConnected.fetch();
-    const isConnected = true;
+    // const isConnected = true;
     // NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
-    const { user, network, client } = this.props;
+    const { user: { token }, network, client } = this.props;
     // connect the user if he is not logged in (only if online).
     // When Offline mode is enabled (isConnected === false), we must display all of stored data
     // const historyEntry = history[instance.id];
     // let token = historyEntry ? historyEntry.data.token : user.token;
     // token = token || user.token;
-    const { token } = user;
-    if (isConnected && !network.isLogged && token) {
+    if (/* isConnected && */ !network.isLogged && token) {
       const reset = () => {
         client.resetStore().then(() => {
           return this.setState({ requirementsLoaded: true });
@@ -80,7 +73,7 @@ class Main extends React.Component {
     } else {
       this.setState({ requirementsLoaded: true });
     }
-    this.handleConnectionChange(isConnected);
+    // this.handleConnectionChange(isConnected);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -115,13 +108,13 @@ class Main extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    // NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
-  }
+  // componentWillUnmount() {
+  // NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+  // }
 
-  handleConnectionChange = (isConnected) => {
-    this.props.setConnectionState(isConnected);
-  };
+  // handleConnectionChange = (isConnected) => {
+  //   this.props.setConnectionState(isConnected);
+  // };
 
   render() {
     const {
@@ -162,7 +155,7 @@ const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  setConnectionState: setConnectionState,
+  // setConnectionState: setConnectionState,
   userLogin: userLogin,
   logout: userLogout,
   loadAdapters: loadAdapters,

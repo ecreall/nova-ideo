@@ -148,7 +148,7 @@ export const adapters = (state = { theme: theme }, action) => {
 
 export const network = (
   state = {
-    isConnected: false,
+    isConnected: true,
     isLogged: false,
     url: { error: false, messages: [] }
   },
