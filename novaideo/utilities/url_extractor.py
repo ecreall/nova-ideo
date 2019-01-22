@@ -34,7 +34,7 @@ def extract_urls(text):
 
 def extract_url_metadata(request, url=None):
     try:
-        ws_url = request.resource_url(request.root, 'url_metadata')
+        ws_url = request.resource_url(request.root, 'urlmetadata')
         parsed_uri = urlparse(ws_url)
         # If dev mode
         if parsed_uri.port:
