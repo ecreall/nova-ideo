@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.4 (unreleased)
-----------------
+3.0.0 (unreleased)
+------------------
 
-- Nothing changed yet.
+- New frontend written with React.
 
 
 1.3 (2017-02-25)

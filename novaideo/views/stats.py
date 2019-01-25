@@ -1,3 +1,5 @@
+import pkg_resources
+
 from dace.util import find_catalog
 from pyramid.view import view_config
 
@@ -75,5 +77,6 @@ def site_data(context, request):
     config["manage_challenges"] = root.manage_challenges
     config["manage_questions"] = root.manage_questions
     config["manage_proposals"] = root.manage_proposals
+    config["version"] = pkg_resources.get_distribution("novaideo").version
     result['config'] = config
     return result
