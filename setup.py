@@ -41,7 +41,8 @@ requires = [
     'yampy2',
     'ovh',
     'pyramid-sms',
-    'velruse'
+    'velruse',
+    'setuptools'
     ]
 
 setup(name='novaideo',
