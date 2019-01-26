@@ -32,6 +32,7 @@ from .util import (
 from novaideo.utilities.util import (
     get_object_examination_stat,
     get_object_evaluation_stat)
+from novaideo.utilities.url_extractor import get_urlmetadata_url
 from novaideo.role import get_authorized_roles
 
 
@@ -102,6 +103,15 @@ class Url(graphene.ObjectType):
 
     def resolve_data(self, args, context, info):  # pylint: disable=W0613
         return [UrlData(**entry) for entry in self.data]
+
+    def resolve_thumbnail_url(self, args, context, info):  # pylint: disable=W0613
+        return self.thumbnail_url and '{}{}'.format(get_urlmetadata_url(context), self.thumbnail_url)
+
+    def resolve_favicon_url(self, args, context, info):  # pylint: disable=W0613
+        return self.favicon_url and '{}{}'.format(get_urlmetadata_url(context), self.favicon_url)
+
+    def resolve_author_avatar(self, args, context, info):  # pylint: disable=W0613
+        return self.author_avatar and '{}{}'.format(get_urlmetadata_url(context), self.author_avatar)
 
 
 class ExaminationStats(Node, graphene.ObjectType):

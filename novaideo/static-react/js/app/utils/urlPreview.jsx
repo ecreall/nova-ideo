@@ -5,6 +5,7 @@ import type { Node } from 'react';
 
 import YoutubeEmbed from '../components/common/urlPreview/YoutubeEmbed';
 import SketchFabEmbed from '../components/common/urlPreview/SketchFabEmbed';
+import { urlMetadataUrl } from '../client';
 
 type URLMetadataProps = {
   providerName: string,
@@ -16,6 +17,8 @@ export type Script = {
   src: string,
   type: 'url' | 'js'
 };
+
+const PICTURES = ['thumbnailUrl', 'authorAvatar', 'faviconUrl'];
 
 export const EMBED_PROVIDERS = {
   youtube: {
@@ -147,4 +150,17 @@ export function getURLComponent(url: string): Node | null {
     if (component) return component;
   }
   return null;
+}
+
+export function updateMetadataImagesUrls(urlMetadata: Object | null): Object | null {
+  if (!urlMetadata) {
+    return urlMetadata;
+  }
+  const updatedMetadata = { ...urlMetadata };
+  Object.keys(updatedMetadata).forEach((key) => {
+    if (PICTURES.includes(key)) {
+      updatedMetadata[key] = updatedMetadata[key] ? `${urlMetadataUrl}${updatedMetadata[key]}` : null;
+    }
+  });
+  return updatedMetadata;
 }

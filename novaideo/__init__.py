@@ -32,12 +32,14 @@ from novaideo.content.bot import Bot
 
 nothing = object()
 
+
 log = logging.getLogger('novaideo')
 
 _ = TranslationStringFactory('novaideo')
 
 
 DEFAULT_SESSION_TIMEOUT = 25200
+
 
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 

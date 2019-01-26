@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Query } from 'react-apollo';
 
 import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
+import { updateMetadataImagesUrls } from '../../../utils/urlPreview';
 
 const styles = {
   container: {
@@ -119,9 +120,10 @@ class DumbSketchfabEmbed extends React.Component<Props, State> {
         }}
       >
         {(result) => {
-          const metadata = result.data && result.data.metadata;
+          let metadata = result.data && result.data.metadata;
           if (!metadata) return null;
-          const metadataUrl = metadata && metadata.url;
+          metadata = updateMetadataImagesUrls(metadata);
+          const metadataUrl = metadata.url;
           return (
             <div className={classes.container}>
               <div className={classes.sketchfabEmbed}>

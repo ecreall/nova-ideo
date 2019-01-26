@@ -32,14 +32,26 @@ def extract_urls(text):
     return re.findall(WEB_URL_REGEX, text)
 
 
+URLMETADATA_URL = None
+
+
+def get_urlmetadata_url(request):
+    global URLMETADATA_URL
+    if URLMETADATA_URL:
+        return URLMETADATA_URL
+
+    URLMETADATA_URL = request.resource_url(request.root, 'urlmetadata')
+    parsed_uri = urlparse(URLMETADATA_URL)
+    # If dev mode
+    if parsed_uri.port:
+        URLMETADATA_URL = 'http://0.0.0.0:5000'
+
+    return URLMETADATA_URL
+
+
 def extract_url_metadata(request, url=None):
     try:
-        ws_url = request.resource_url(request.root, 'urlmetadata')
-        parsed_uri = urlparse(ws_url)
-        # If dev mode
-        if parsed_uri.port:
-            ws_url = 'http://0.0.0.0:5000'
-
+        ws_url = get_urlmetadata_url(request)
         # get metadata: use url_metadata web service
         req_url = '{ws_url}/?url={url}'.format(url=url, ws_url=ws_url)
         response = urllib.request.urlopen(req_url).read()

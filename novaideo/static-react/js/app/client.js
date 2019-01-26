@@ -112,3 +112,5 @@ export default function getApolloClient(store) {
     cache: cache
   });
 }
+
+export const urlMetadataUrl = urlMetadataWebServiceUrl;

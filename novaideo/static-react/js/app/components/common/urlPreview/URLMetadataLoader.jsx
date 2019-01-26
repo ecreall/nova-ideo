@@ -6,6 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import UrlPreview from './URLPreview';
 import URLMetadata from '../../../graphql/queries/URLMetadata.graphql';
+import { updateMetadataImagesUrls } from '../../../utils/urlPreview';
 
 type URLMetadataLoaderProps = {
   url: string,
@@ -51,7 +52,11 @@ class URLMetadataLoader extends React.Component<URLMetadataLoaderProps, void> {
               <CircularProgress size={27} />
             </div>
           ) : null;
-          return metadata ? <UrlPreview {...metadata} integreted={integreted} classes={classes} afterLoad={afterLoad} /> : loader;
+          return metadata ? (
+            <UrlPreview {...updateMetadataImagesUrls(metadata)} integreted={integreted} classes={classes} afterLoad={afterLoad} />
+          ) : (
+            loader
+          );
         }}
       </Query>
     );
