@@ -33,7 +33,7 @@ const styles = {
     marginBottom: 32
   },
   formContainer: {
-    maxWidth: 400,
+    maxWidth: 450,
     width: '100%'
   },
   validationContainer: {
