@@ -18,7 +18,7 @@ from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
 from pyramid.response import FileIter
- 
+
 from substanced.util import get_oid
 from substanced.util import find_service
 
@@ -74,7 +74,7 @@ def send_reset_password(login, request):
         principals = find_service(user, 'principals')
         reset = principals.add_reset(user)
         # reseturl = request.resource_url(reset)
-        reseturl = request.route_url('resets', reset.__name__)
+        reseturl = request.route_url('resets', extra_path=reset.__name__)
         if not user.email:
             raise ValueError('User does not possess a valid email address.')
 
@@ -105,7 +105,7 @@ def accept_preregistration(request, preregistration, root):
         deadline_date = preregistration.get_deadline_date()
         locale = my_locale_negotiator(request)
         # url = request.resource_url(preregistration, "")
-        url = request.route_url('registrations', preregistration.__name__)
+        url = request.route_url('registrations', extra_path=preregistration.__name__)
         mail_template = root.get_mail_template(
             'preregistration', getattr(preregistration, 'locale', locale))
         email_data = get_user_data(preregistration, 'recipient', request)

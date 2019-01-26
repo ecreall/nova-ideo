@@ -393,7 +393,6 @@ def evolve_user_preferences(root, registry):
 def evolve_access_keys(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from BTrees.OOBTree import OOBTree
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -481,7 +480,6 @@ def evolve_alert_subjects(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IAlert
     from novaideo.content.alert import InternalAlertKind
-    from BTrees.OOBTree import OOBTree
     import transaction
 
     contents = find_entities(interfaces=[IAlert])
@@ -510,7 +508,6 @@ def evolve_alert_subjects(root, registry):
 def evolve_alert_kind(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IAlert
-    from BTrees.OOBTree import OOBTree
     import transaction
 
     contents = find_entities(interfaces=[IAlert])
@@ -781,7 +778,7 @@ def evolve_usermanagement_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('user_management process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_idea_management_process(root, registry):
@@ -793,7 +790,7 @@ def evolve_idea_management_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('ideamanagement process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_abstract_process(root, registry):
@@ -805,7 +802,7 @@ def evolve_abstract_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('novaideoabstractprocess process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_nia_comments(root, registry):
@@ -813,7 +810,6 @@ def evolve_nia_comments(root, registry):
     from novaideo.content.interface import IComment
     nia = root['principals']['users'].get('nia', None)
     if nia:
-        request = get_current_request()
         contents = find_entities(
             interfaces=[IComment],
             contribution_filter={
@@ -926,7 +922,6 @@ def evolve_examined_tokens(root, registry):
 def evolve_source_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import ISearchableEntity
-    from BTrees.OOBTree import OOBTree
 
     contents = find_entities(
         interfaces=[ISearchableEntity]
@@ -951,7 +946,7 @@ def evolve_user_masks(root, registry):
     from novaideo.content.mask import Mask
 
     request = get_current_request()
-    request.root = root 
+    request.root = root
     contents = find_entities(
         interfaces=[IPerson]
         )
@@ -977,7 +972,7 @@ def evolve_amendmentmanagement_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('amendmentmanagement process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_emojiable_data(root, registry):
@@ -1008,14 +1003,14 @@ def evolve_invitation_organization_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('organizationmanagement process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
     try:
         proc = runtime['invitationmanagement']
         runtime.delfromproperty('processes', proc)
         log.info('invitationmanagement process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_novaideoabstractprocess_process(root, registry):
@@ -1027,13 +1022,13 @@ def evolve_novaideoabstractprocess_process(root, registry):
         runtime.delfromproperty('processes', proc)
         log.info('novaideoabstractprocess process evolved.')
     except KeyError as e:
-        pass 
+        pass
 
 
 def evolve_content_with_urls(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IContentWithURLs
-    
+
     contents = find_entities(
         interfaces=[IContentWithURLs]
         )
@@ -1114,6 +1109,7 @@ def main(global_config, **settings):
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
     config.include('.graphql')
+    config.include('.views.react_view')
     config.include("pyramid_sms")
     config.scan()
     config.add_route('old', '/old')

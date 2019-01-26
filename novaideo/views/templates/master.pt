@@ -7,17 +7,15 @@
       tal:define="mp request.sdiapi.mgmt_path;
       su request.static_url;
       notification_ids getattr(request.user, 'notification_ids', []);
-      notification_ids getattr(request.user, 'notification_ids', []);
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
       app_id getattr(request.root, 'app_id', None);
       root_title getattr(request.root, 'title', '');
-      view_title getattr(view, 'title', '');
       root_data layout.get_root();
       root_url root_data['root_url'];
       node_env root_data['node_env']">
   <head >
     <meta charset="utf-8"/>
-    <title metal:define-slot="page-title">${view_title if view_title else root_title}</title>
+    <title metal:define-slot="page-title">${root_title}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
     <link type="text/css" rel="stylesheet"  tal:condition="node_env == 'production'" href="${root_url}/build/novaideo.css" />
@@ -37,8 +35,6 @@
       </script>
     </div>
 
-    ${panel('debatescore')}
-    
     <script type="text/javascript" tal:condition="request.user and activate_push_notification and app_id">
         var OneSignal = OneSignal || [];
         OneSignal.getIdsAvailable(function(ids) {
@@ -57,23 +53,6 @@
         });
     </script>
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css">
-    <style class="embedly-css">
-      body#cards {
-        padding: 15px;
-      }
-      .card.article {
-        font-family: "LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        box-shadow: 0 0px 2px rgba(128, 128, 128, 0.4);
-        background: white;
-      }
-      .card .txt-bd {
-        padding: 6px 10px 6px 10px;
-      }
-      .card .brd,
-      .hdr {
-        display:none;
-      }
-    </style>
   </head>
   <body>
     <input type="hidden" name="execution-id" id="execution-id" value="" />
