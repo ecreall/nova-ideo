@@ -17,51 +17,54 @@ import { getFormId } from '../../../../utils/globalFunctions';
 import { LOGIN_VIEWS } from './Login';
 import { HOME_IMG, DEFAULT_LOGO } from '../../../../constants';
 
-const styles = {
-  container: {
-    display: 'flex',
-    width: '100%',
-    minHeight: '100vh'
-  },
-  form: {
-    borderRadius: 0,
-    border: 'none',
-    background: 'transparent',
-    boxShadow: 'none'
-  },
-  formContainer: { width: '40%' },
-  sliderContainer: {
-    transform: 'scale(0.9)'
-  },
-  open: {
-    top: 0,
-    width: '100%',
-    zIndex: 1
-  },
-  img: {
-    backgroundClip: ' padding-box',
-    backgroundPosition: 'center',
-    transition: 'background-position 150ms ease',
-    width: '60%',
-    backgroundRepeat: 'no-repeat'
-  },
-  headerTitle: {
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center',
-    padding: '10px 0px 0px 10px'
-  },
-  headerTitleText: {
-    color: '#2c2d30',
-    fontSize: 18,
-    fontWeight: 900,
-    marginLeft: 7
-  },
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 4
-  }
+const styles = (theme) => {
+  return {
+    container: {
+      display: 'flex',
+      width: '100%',
+      minHeight: '100vh'
+    },
+    form: {
+      borderRadius: 0,
+      border: 'none',
+      background: 'transparent',
+      boxShadow: 'none'
+    },
+    formContainer: { width: '40%' },
+    sliderContainer: {
+      transform: 'scale(0.9)'
+    },
+    open: {
+      top: 0,
+      width: '100%',
+      zIndex: 1
+    },
+    img: {
+      backgroundClip: ' padding-box',
+      backgroundPosition: 'center',
+      transition: 'background-position 150ms ease',
+      width: '60%',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: theme.palette.primary[500]
+    },
+    headerTitle: {
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center',
+      padding: '10px 0px 0px 10px'
+    },
+    headerTitleText: {
+      color: '#2c2d30',
+      fontSize: 18,
+      fontWeight: 900,
+      marginLeft: 7
+    },
+    avatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 4
+    }
+  };
 };
 
 export class DumbLoginHome extends React.Component {

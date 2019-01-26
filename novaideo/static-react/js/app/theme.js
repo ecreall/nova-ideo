@@ -48,7 +48,13 @@ export const getTheme = ({ primaryColor, secondaryColor }) => {
       typography: {
         useNextVariants: true,
         htmlFontSize: 15,
-        fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif'
+        fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif',
+        body1: {
+          letterSpacing: 0.3
+        },
+        body2: {
+          letterSpacing: 0.3
+        }
       }
     });
   };

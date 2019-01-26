@@ -81,8 +81,7 @@ const styles = (theme) => {
       color: theme.palette.primary['500']
     },
     badge: {
-      right: 15,
-      marginTop: -11,
+      right: 20,
       fontWeight: '700'
     },
     badgeColor: {

@@ -32,6 +32,7 @@ const styles = (theme) => {
       paddingTop: 8,
       marginLeft: 0,
       fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif',
+      letterSpacing: 0.3,
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: STYLE_CONST.drawerDuration

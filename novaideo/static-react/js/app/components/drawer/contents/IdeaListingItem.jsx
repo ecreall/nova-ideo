@@ -80,8 +80,7 @@ const styles = (theme) => {
       zIndex: -1
     },
     badge: {
-      right: 15,
-      marginTop: -11,
+      right: 20,
       fontWeight: '700'
     },
     badgeColor: {

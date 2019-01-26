@@ -11,6 +11,7 @@ import { PICKER_EMOJI_SHEET_APPLE_32 } from '../../../constants';
 const styles = {
   picker: {
     fontFamily: '"LatoWebMedium", "Helvetica Neue", Helvetica, Arial, sans-serif',
+    letterSpacing: 0.3,
     position: 'relative',
     zIndex: 2
   }
