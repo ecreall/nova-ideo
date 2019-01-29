@@ -80,11 +80,11 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'duplicate', 'edit',
+            'edit',
             'publish', 'abandon',
             'associate', 'see']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 6)
+        self.assertEqual(len(actions_ids), 5)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Other member actions
@@ -141,11 +141,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement')
         # User == sd Admin (No tokens, he can't support)
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'moderationarchive']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 5)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Other member actions
@@ -158,11 +157,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'support', 'oppose']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 8)
+        self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
@@ -176,12 +174,14 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'duplicate', 'edit', 'abandon',
+            # 'duplicate',
+            'edit', 'abandon',
             'associate', 'see', 'submit']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 6)
+        self.assertEqual(len(actions_ids), 5)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+
     def test_edit_idea(self):
         # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
@@ -224,9 +224,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         actions = getAllBusinessAction(
             version, self.request,
             process_id='ideamanagement')
-        expected_actions = ['duplicate', 'associate', 'see']
+        expected_actions = ['associate', 'see']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 3)
+        self.assertEqual(len(actions_ids), 2)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
@@ -302,10 +302,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'duplicate', 'associate', 'see',
+            'associate', 'see',
             'publish_moderation', 'archive']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 5)
+        self.assertEqual(len(actions_ids), 4)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Other member actions
@@ -347,11 +347,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement')
         # User == sd Admin (No tokens, he can't support)
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'moderationarchive']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 5)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
@@ -422,10 +421,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement')
         # User == sd Admin (No tokens, he can't support)
         expected_actions = [
-            'duplicate', 'associate', 'see',
+            'associate', 'see',
             'publish_moderation', 'archive']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 5)
+        self.assertEqual(len(actions_ids), 4)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Other member actions
@@ -439,7 +438,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement')
         actions_ids = [a.node_id for a in actions]
         self.assertEqual(len(actions_ids), 0)
-    
+
     def test_support_no_support_novaideo_config(self):
         # SetUp the 'no_support' Nova-Ideo configuration
         self.no_support_novaideo_config()
@@ -463,18 +462,15 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             'last_name': 'Alice'
         }, self.request)
         self.request.user = alice
-        alice_oid = get_oid(alice)
         actions = getAllBusinessAction(
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate', 'see']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 6)
+        self.assertEqual(len(actions_ids), 4)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
-        
 
     def test_support_withdraw_oppose_idea(self):
         # SetUp the default Nova-Ideo configuration
@@ -521,11 +517,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'withdraw_token', 'oppose']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 8)
+        self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Withdraw
@@ -548,11 +543,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'support', 'oppose']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 8)
+        self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # oppose
@@ -575,15 +569,14 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'withdraw_token', 'support']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 8)
+        self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
-    def test_duplicate(self):
+    def _test_duplicate(self):
         # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
         context = self.request.root
@@ -807,9 +800,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         expected_actions = [
-            'duplicate', 'comment',
+            'comment',
             'present', 'associate', 'see']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 5)
+        self.assertEqual(len(actions_ids), 4)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))

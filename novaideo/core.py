@@ -9,7 +9,6 @@ import venusian
 from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
-from webob.multidict import MultiDict
 from zope.interface import implementer
 
 from pyramid.threadlocal import get_current_request
@@ -32,8 +31,7 @@ from pontus.core import VisualisableElement
 from pontus.widget import (
     Select2Widget)
 
-from novaideo.utilities.util import extract_urls
-from novaideo.utilities.url_extractor import extract_url_metadata
+from novaideo.utilities.url_extractor import extract_urls, extract_url_metadata
 from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
     IVersionableEntity,
@@ -330,10 +328,10 @@ class Emojiable(Entity):
         current_emoji = self.get_user_emoji(user)
         if current_emoji:
             self.remove_emoji(current_emoji, user)
-        
+
         if emoji and current_emoji != emoji:
             self.emojis.setdefault(emoji, PersistentList())
-            self.emojis[emoji].append(user_oid) 
+            self.emojis[emoji].append(user_oid)
             self.users_emoji[user_oid] = emoji
 
     def remove_emoji(self, emoji, user):
@@ -480,7 +478,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def set_source_data(self, source_data):
         if not hasattr(self, 'source_data'):
             self.source_data = PersistentDict({})
-        
+
         app_name = source_data.get('app_name')
         self.source_data.setdefault(app_name, {})
         self.source_data[app_name] = source_data
@@ -488,7 +486,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def get_source_data(self, app_id):
         if not hasattr(self, 'source_data'):
             return {}
-        
+
         return self.source_data.get(app_id, {})
 
     def is_managed(self, root):
