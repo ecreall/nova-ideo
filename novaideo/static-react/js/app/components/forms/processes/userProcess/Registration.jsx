@@ -84,7 +84,8 @@ const styles = {
 export class DumbRegistrationForm extends React.Component {
   state = {
     loading: false,
-    submitted: false
+    submitted: false,
+    error: false
   };
 
   handleSubmit = (event) => {
@@ -101,6 +102,9 @@ export class DumbRegistrationForm extends React.Component {
           })
           .then(() => {
             this.setState({ submitted: true }, this.initializeForm);
+          })
+          .catch(() => {
+            this.setState({ loading: false, error: true });
           });
       });
     }
@@ -125,7 +129,7 @@ export class DumbRegistrationForm extends React.Component {
       <React.Fragment>
         {error ? (
           <Alert type="danger" classes={{ container: classes.alertContainer }}>
-            {I18n.t('common.failedLogin')}
+            {I18n.t('common.failedSubmission')}
           </Alert>
         ) : null}
         <Form className={classes.form} onSubmit={this.handleSubmit}>
@@ -268,7 +272,7 @@ const RegistrationReduxForm = reduxForm({
   destroyOnUnmount: false,
   validate: validate,
   asyncValidate: asyncValidate,
-  asyncChangeFields: ['email'],
+  asyncChangeFields: ['email', 'terms'],
   touchOnChange: true
 })(DumbRegistrationForm);
 

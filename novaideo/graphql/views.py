@@ -20,7 +20,12 @@ from novaideo.content.interface import IPerson
 from .schema import schema
 from .util import get_user_by_token
 
-AUTHORIZED_QUERIES = ['SiteData', 'Registration', 'ConfirmRegistration', 'ResetPassword', 'ConfirmResetPassword']
+AUTHORIZED_QUERIES = [
+    'SiteData', 'Registration',
+    'ConfirmRegistration', 'ResetPassword',
+    'ConfirmResetPassword'
+]
+
 
 def auth_user(token, request):
     current_user = None
@@ -55,7 +60,7 @@ def graphqlview(context, request):  #pylint: disable=W0613
                 to_verify = True
         except:
             to_verify = True
-        
+
         if to_verify:
             response = HTTPUnauthorized()
             response.content_type = 'application/json'
@@ -139,15 +144,12 @@ def logout(context, request):
 def validate_login(context, request):
     login_data = json.loads(request.body.decode())
     login = login_data.get('login', None)
-    user= None
+    user = None
     if login:
         novaideo_catalog = find_catalog('novaideo')
-        dace_catalog = find_catalog('dace')
         identifier_index = novaideo_catalog['identifier']
-        object_provides_index = dace_catalog['object_provides']
-        query = object_provides_index.any([IPerson.__identifier__]) &\
-            identifier_index.any([login])
+        query = identifier_index.any([login])
         users = list(query.execute().all())
         user = users[0] if users else None
-    
+
     return {'status': True if user else False}
