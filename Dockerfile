@@ -1,4 +1,8 @@
-FROM python:3.6
+# FROM python:3.6
+# Latest python 3.6 moved from stretch to buster the 10th july 2019
+# https://github.com/docker-library/python/commit/2a11f610a56ff3c0f0157790dde940894fad7a1a#diff-bd1ee42cf5f4ce9024db9d1f6b1a82e4
+# This gives an error with the varnish repository, keep the old image based on stretch for now and do an apt-get upgrade
+FROM python@sha256:d0f068df622b07c06e7753a95fc826747c0e9668992c41f09d5c37ad48d4fb17
 
 ARG userid=1000
 ARG run_buildout=true
@@ -6,6 +10,7 @@ ARG run_buildout=true
 # varnish 4.1 repo has a package for debian jessie, debian stretch,
 # ubuntu xenial (16.04), but not ubuntu zesty (17.04) so defaults to varnish 5.0.0 from ubuntu repo.
 RUN apt-get update && \
+    apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl git libzmq3-dev libyaml-dev apt-transport-https lsb-release && \
     curl -L https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - && \
     oslower=$(lsb_release -s -i | tr '[:upper:]' '[:lower:]') && \
