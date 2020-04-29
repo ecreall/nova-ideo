@@ -29,7 +29,7 @@
     "bootstrap": "^3.3.5",
     "bootstrap-social": "^4.11.0",
     "draft-js-plugins-editor": "^1.1.0",
-    "jquery": "^2.2.4",
+    "jquery": "^3.5.0",
     "jquery-ui": "^1.10.5",
     "jquery.cookie": "^1.4.1",
     "jquery.placeholder": "^2.0.7"
