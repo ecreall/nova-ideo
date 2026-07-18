@@ -482,3 +482,10 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   and one regression — all fixed and guarded); CHANGES consolidates
   the deepening; modern-harness gains the ballot-conduct idiom and
   the two-halves suite doctrine.
+
+- **Nova-Ideo 2.0: the parent adopts the modernised trunk.** README
+  re-branded (Nova-Ideo identity, Lineage section naming the KuneAgi
+  reference trunk and the Logikascium stewardship); CHANGES carries
+  the adoption entry. Applied on the nova-ideo repository AFTER the
+  adoption merge (`-s ours` with the 2020 tip as parent) — never on
+  the KuneAgi repository.

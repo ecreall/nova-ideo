@@ -520,3 +520,10 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   gardés) ; CHANGES consolide l'approfondissement ; le harnais
   moderne gagne l'idiome de conduite de scrutin et la doctrine de la
   suite en deux moitiés.
+
+- **Nova-Ideo 2.0 : le parent adopte le tronc modernisé.** README
+  re-marqué (identité Nova-Ideo, section Filiation nommant le tronc de
+  référence KuneAgi et l'intendance Logikascium) ; CHANGES porte
+  l'entrée d'adoption. Appliqué sur le dépôt nova-ideo APRÈS la
+  couture d'adoption (`-s ours` avec le tip 2020 en parent) — jamais
+  sur le dépôt KuneAgi.

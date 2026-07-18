@@ -1,6 +1,15 @@
 # Changelog
 
 ## Unreleased
+### Nova-Ideo 2.0 — the parent adopts the modernised trunk — 2026-07-18
+- This repository becomes **Nova-Ideo 2.0** by adopting the modernised
+  KuneAgi trunk (dual-stack, 128-test suite, both moderation ballots
+  conducted, four latent bugs and one regression fixed and guarded).
+  The adoption merge keeps the historical 2010-2020 Nova-Ideo line
+  reachable as a parent; the nine Nova-Ideo-specific files of
+  2016-2020 are catalogued for selective review
+  (``nova-ideo-2016-2020-exclusifs.diff``).
+
 ### Rename — 2026-07-17
 - The historical typos leave the code (nothing persisted): the
   ``pseudo_react`` callers move to daceui's ``action_informations``

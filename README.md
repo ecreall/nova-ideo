@@ -1,6 +1,4 @@
-# KuneAgi
-
-[![golden-master](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml/badge.svg)](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml)
+# Nova-Ideo
 
 **Golden master certified, port executed (2026-07):** the full 2017
 stack rebuilds from scratch and its certified suite stays green — and
@@ -18,7 +16,25 @@ guarded by its consciously flipped pinning test**; both CI pipelines
 (see [`docs/en/worklog.md`](docs/en/worklog.md) and
 [`docs/en/phase3-porting-plan.md`](docs/en/phase3-porting-plan.md)).
 
-KuneAgi is a free (AGPL) participatory-innovation and cooperative-governance platform, a variant of [Nova-Ideo](https://github.com/ecreall/nova-ideo) — the merger of the ideas box and the collaborative portal. Members post ideas and questions, organise idea challenges, form working groups that co-write proposals through short timeboxed iterations (wiki, validation or amendment modes), vote using majority judgment, and support or reject published content with a limited number of tokens. KuneAgi extends this base with cooperative-governance features (ballots, citizenship processes) and German translations.
+Nova-Ideo is a free (AGPL) participatory-innovation platform — the
+merger of the ideas box and the collaborative portal. Members post
+ideas and questions, organise idea challenges, form working groups
+that co-write proposals through short timeboxed iterations (wiki,
+validation or amendment modes), vote using majority judgment, and
+support or reject published content with a limited number of tokens.
+
+## Lineage
+
+Nova-Ideo (Ecréall, 2014-2020) is the PARENT project of this code
+line and served several deployments. Its
+[KuneAgi](https://github.com/michaellaunay/KuneAgi) variant — the
+reference trunk of the cooperative-governance branch — carried the
+development from 2020 to 2023, then the full modernisation
+(2026). This repository ADOPTS that modernised trunk as
+**Nova-Ideo 2.0**: the historical 2010-2020 line remains reachable
+underneath the adoption merge, and the few Nova-Ideo-specific changes
+of 2016-2020 (nine files) are catalogued for selective review.
+Maintained by Logikascium since 2024 (Ecréall's IP acquired).
 
 The Python package inside this repository is still named `novaideo`: module paths are **frozen** to keep existing ZODB databases loadable (see the roadmap).
 
